@@ -1,0 +1,249 @@
+dvdisaster (0.72-2) unstable; urgency=low
+
+  * Updating to standards version 3.8.3.
+  * Removing vcs fields.
+  * Orphaning package.
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 27 Aug 2009 10:24:34 +0200
+
+dvdisaster (0.72-1) unstable; urgency=low
+
+  * Using correct rfc-2822 date formats in changelog.
+  * Merging upstream version 0.72.
+  * Removing shebang.patch, not required anymore.
+  * Updating standards version to 3.8.2.
+  * Tidy rules file.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 07 Jul 2009 01:11:52 +0200
+
+dvdisaster (0.72~rc1-1) unstable; urgency=low
+
+  * Merging upstream version 0.72~rc1.
+  * Upgrading to standards 3.8.1.
+
+ -- Daniel Baumann <daniel@debian.org>  Fri, 17 Apr 2009 21:20:00 +0200
+
+dvdisaster (0.71.28-1) unstable; urgency=medium
+
+  * Merging upstream version 0.71.28:
+    - Fixes "illegal instruction" crashes on x86 machines which do not support
+      SSE2 (Closes: #515950).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 17 Mar 2009 09:55:00 +0100
+
+dvdisaster (0.71.27-1) unstable; urgency=low
+
+  * Using patch-stamp rather than patch in rules file.
+  * Replacing obsolete dh_clean -k with dh_prep.
+  * Merging upstream version 0.71.27.
+  * Rediffing help-dialog.dpatch.
+  * Using quilt rather than dpatch.
+  * Updating year in copyright.
+  * Adding longtitle and description in menu file.
+  * Using usual name for pixmaps directory.
+  * Updating rules to current state of the art.
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 25 Jan 2009 14:01:00 +0100
+
+dvdisaster (0.71.26-2) unstable; urgency=medium
+
+  * Updating to standards 3.8.0.
+  * Updating vcs fields in control file.
+  * Correcting 03-dvdrom.dpatch to not crash when opening a DVD-ROM.
+    Thanks to Tobias Gruetzmacher <tobias-debian@23.gs> (Closes: #498296).
+
+ -- Daniel Baumann <daniel@debian.org>  Mon, 08 Sep 2008 22:08:00 +0200
+
+dvdisaster (0.71.26-1) unstable; urgency=medium
+
+  * Reordering rules file.
+  * Using examples debhelper to install examples.
+  * Removing 08-xdg.dpatch, went upstream.
+  * Removing 07-adaptive-read.dpatch, went upstream.
+  * Rediffing 05-help-dialog.dpatch.
+  * Rediffing 03-dvdrom.dpatch.
+  * Rediffing 02-encryption.dpatch.
+  * Removing watch file.
+  * Removing useless whitespaces at end of debian gmkrs02 example.
+  * Rewriting copyright file in machine-interpretable format.
+  * Adding vcs fields in control file.
+  * Upgrading package to debhelper 7.
+  * Merging upstream version 0.71.26.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat, 03 May 2008 11:34:00 +0200
+
+dvdisaster (0.71~devel23-7) unstable; urgency=low
+
+  * Bumping to new policy.
+  * Updating menu file to new policy.
+  * Don't hide make errors in clean target of rules.
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 23 Dec 2007 13:26:00 +0100
+
+dvdisaster (0.71~devel23-6) unstable; urgency=low
+
+  * Using xdg-open rather than gnome-open.
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 29 Nov 2007 10:39:00 +0100
+
+dvdisaster (0.71~devel23-5) unstable; urgency=low
+
+  * Setting configure shebang to bash.
+
+ -- Daniel Baumann <daniel@debian.org>  Wed, 24 Oct 2007 06:14:00 +0200
+
+dvdisaster (0.71~devel23-4) unstable; urgency=low
+
+  * Fixed clean target in rules (Closes: #442559).
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 17 Sep 2007 00:37:00 +0200
+
+dvdisaster (0.71~devel23-3) unstable; urgency=medium
+
+  * Applied patch from Wolfgang Weisselberg <g35fckt001@sneakemail.com> to fix
+    segfault when reading CD with --adaptive-read (Closes: #427980).
+  * Including example script from Osamu Aoki <osamu@debian.org> to provide a
+    GUI for creating RS02 supplimented ISO images (Closes: #442145).
+
+ -- Daniel Baumann <daniel@debian.org>  Fri, 14 Sep 2007 11:13:00 +0200
+
+dvdisaster (0.71~devel23-2) unstable; urgency=low
+
+  * Fix shebang in configure.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 04 Sep 2007 22:53:00 +0200
+
+dvdisaster (0.71~devel23-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Baumann <daniel@debian.org>  Mon, 14 May 2007 10:46:00 +0200
+
+dvdisaster (0.71~devel22-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 29 Apr 2007 16:47:00 +0200
+
+dvdisaster (0.70.4-2) unstable; urgency=low
+
+  * Uploading to unstable.
+  * Bumped package to debhelper 5.
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 08 Mar 2007 10:35:00 +0100
+
+dvdisaster (0.70.4-1) experimental; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat, 27 Jan 2007 18:05:00 +0100
+
+dvdisaster (0.70.3-2) unstable; urgency=medium
+
+  * Added patch from Carsten Gnoerlich <carsten@dvdisaster.com> to fix issues
+    with glib threading (Closes: #405757).
+
+ -- Daniel Baumann <daniel@debian.org>  Wed, 17 Jan 2007 10:42:00 +0100
+
+dvdisaster (0.70.3-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Baumann <daniel@debian.org>  Wed, 13 Dec 2006 11:57:00 +0100
+
+dvdisaster (0.70.2-2) unstable; urgency=medium
+
+  * Adjusted 05-help-dialog.dpatch as suggested by
+    Corey Wright <undefined@pobox.com> (Closes: #393671).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 17 Oct 2006 14:01:00 +0200
+
+dvdisaster (0.70.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added patch to customize the help-dialog according to README.MODIFYING.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 03 Oct 2006 20:58:00 +0200
+
+dvdisaster (0.70.1-2) unstable; urgency=low
+
+  * Added patch from upstream to fix some code errors (Closes: #388304).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 21 Sep 2006 01:29:00 +0200
+
+dvdisaster (0.70.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 22 Aug 2006 23:09:00 +0200
+
+dvdisaster (0.70-1) unstable; urgency=low
+
+  * New upstream release (Closes: #377757).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 11 Jul 2006 07:19:00 +0200
+
+dvdisaster (0.66-4) unstable; urgency=low
+
+  * New email address.
+  * Fixed typo in manpage (Closes: #376752).
+
+ -- Daniel Baumann <daniel@debian.org>  Fri, 07 Jul 2006 09:01:00 +0200
+
+dvdisaster (0.66-3) unstable; urgency=low
+
+  * Fixed docsubdir (Closes: #366274).
+  * Disabled skipping of encrypted disks (Closes: #366399).
+  * Added patch for DVD-ROM medias (Closes: #366392).
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Mon, 15 May 2006 03:17:00 -0500
+
+dvdisaster (0.66-2) unstable; urgency=low
+
+  * Set dvdisaster-doc to recommends instead of suggests (Closes: #363291).
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Tue, 18 Apr 2006 16:35:00 +0100
+
+dvdisaster (0.66-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added pixmap.
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Tue, 28 Mar 2006 10:13:00 +0100
+
+dvdisaster (0.65-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed patch stack buffer patch (went upstream).
+  * Removed manpage patches (went upstream).
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Tue, 17 Jan 2006 14:32:00 +0100
+
+dvdisaster (0.64.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Now using dpatch for updating manpages.
+  * Fixed definitely the documentation path in the manpages (Closes: #333591).
+  * Added patch from Robert Bihlmeyer <robbe@orcus.priv.at> to fix segfault on
+    allocating stack buffer (Closes: #335792).
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Fri, 25 Nov 2005 11:01:00 +0100
+
+dvdisaster (0.63.2-1) unstable; urgency=low
+
+  * New upstream release:
+    - no longer needs gawk.
+    - manpage updated and moved to upstream.
+    - manpage now mentions correct documentation-location (Closes: #322187).
+  * Now update config.{guess,sub} via .diff.gz.
+  * Corrected non-ascii chars in the German and Italian manpage.
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Sat, 06 Aug 2005 20:03:00 +0200
+
+dvdisaster (0.63-1) unstable; urgency=low
+
+  * Initial release (Closes: #319742).
+  * Fixed Makefile for $(DESTDIR)-use.
+  * Added manpage.
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Sun, 24 Jul 2005 13:35:00 +0200

@@ -1,0 +1,51 @@
+Author: Daniel Baumann <daniel@debian.org>
+Description: Hardcode documentation subdirectory, autodetection doesn't work.
+
+diff -Naurp dvdisaster.orig/documentation/dvdisaster.cs.1 dvdisaster/documentation/dvdisaster.cs.1
+--- dvdisaster.orig/documentation/dvdisaster.cs.1	2009-01-19 20:53:35.000000000 +0000
++++ dvdisaster/documentation/dvdisaster.cs.1	2009-01-25 12:51:13.000000000 +0000
+@@ -119,7 +119,7 @@ rozdělí soubory na segmenty <= 2 GB.
+ .SH VIZ TÉŽ
+ .B Dokumentace
+ DVDISASTER je dokumentován svým vlastním manuálem, nainstalovaným v
+-.IR %docdir%.
++.IR /usr/share/doc/dvdisaster-doc/html.
+ 
+ .SH AUTOR
+ DVDISASTER napsal Carsten Gnoerlich <carsten@dvdisaster.com>.
+diff -Naurp dvdisaster.orig/documentation/dvdisaster.de.1 dvdisaster/documentation/dvdisaster.de.1
+--- dvdisaster.orig/documentation/dvdisaster.de.1	2009-01-19 20:53:35.000000000 +0000
++++ dvdisaster/documentation/dvdisaster.de.1	2009-01-25 12:51:13.000000000 +0000
+@@ -231,7 +231,7 @@ Abbild in mehrere Dateien <= 2GB aufteil
+ .SH SIEHE AUCH
+ .B Dokumentation
+ DVDISASTER ist in seinem eigenen Handbuch dokumentiert, welches in
+-.IR %docdir%
++.IR /usr/share/doc/dvdisaster-doc/html
+ installiert ist.
+ 
+ .SH AUTHOR
+diff -Naurp dvdisaster.orig/documentation/dvdisaster.en.1 dvdisaster/documentation/dvdisaster.en.1
+--- dvdisaster.orig/documentation/dvdisaster.en.1	2009-01-19 20:53:35.000000000 +0000
++++ dvdisaster/documentation/dvdisaster.en.1	2009-01-25 12:51:13.000000000 +0000
+@@ -220,7 +220,7 @@ split image into files <= 2GB.
+ .SH SEE ALSO
+ .B Documentation
+ DVDISASTER is documented by its own manual, installed in
+-.IR %docdir%
++.IR /usr/share/doc/dvdisaster-doc/html
+ 
+ .SH AUTHOR
+ DVDISASTER was written by Carsten Gnoerlich <carsten@dvdisaster.com>.
+diff -Naurp dvdisaster.orig/documentation/dvdisaster.it.1 dvdisaster/documentation/dvdisaster.it.1
+--- dvdisaster.orig/documentation/dvdisaster.it.1	2009-01-19 20:53:35.000000000 +0000
++++ dvdisaster/documentation/dvdisaster.it.1	2009-01-25 12:51:13.000000000 +0000
+@@ -115,7 +115,7 @@ Suddividere l'immagine in file <= 2GB.
+ .SH "VEDERE ANCHE"
+ .B Documentation
+ DVDISASTER is documented by its own manual, installed in
+-.IR %docdir%
++.IR /usr/share/doc/dvdisaster-doc/html
+ 
+ .SH AUTORI
+ DVDISASTER was written by Carsten Gnoerlich <carsten@dvdisaster.com>.

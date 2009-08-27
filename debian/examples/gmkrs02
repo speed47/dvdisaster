@@ -1,0 +1,41 @@
+#!/bin/sh -e
+# Copyright (C) 2007 Osamu Aoki <osamu@debian.org>, Public Domain
+set -x
+# Initialize variables
+DATA_SRC=""
+DATA_ISO="$HOME/Desktop/iso-$$.img"
+LABEL=$(date +%Y%m%d-%H%M%S-%Z)
+error_exit()
+{
+  echo "$1" >&2
+  exit 1
+}
+# Erase disk image
+rm -f "$DATA_ISO" || true
+# Select directory for creating ISO image from folder on desktop
+DATA_SRC=$(zenity --file-selection --directory  \
+  --title="Select the directory tree root to create ISO image") \
+  || error_exit "Exit on directry selection"
+# Check size of archive
+xterm -T "Check size $DATA_SRC" -e du -s $DATA_SRC/*
+SIZE=$(($(du -s $DATA_SRC | awk '{print $1}')/1024))
+if [ $SIZE -le 520 ] ; then
+  zenity --info --title="Dvdisaster RS02" --width 640  --height 400 \
+    --text="The data size is good for CD backup:\\n $SIZE MB"
+elif [ $SIZE -le 3500 ]; then
+  zenity --info --title="Dvdisaster RS02" --width 640  --height 400 \
+    --text="The data size is good for DVD backup :\\n $SIZE MB"
+else
+  zenity --info --title="Dvdisaster RS02" --width 640  --height 400 \
+    --text="The data size is too big to backup : $SIZE MB"
+  error_exit "The data size is too big to backup :\\n $SIZE MB"
+fi
+# only xterm is sure to have working -e option
+# Create raw ISO image
+xterm -T "genisoimage $DATA_ISO" \
+  -e genisoimage -r -J -V "$LABEL" -o "$DATA_ISO" "$DATA_SRC"
+# Create RS02 supplimental redundancy
+xterm -T "dvdisaster $DATA_ISO" -e  dvdisaster -i "$DATA_ISO" -mRS02 -c
+zenity --info --title="Dvdisaster RS02" --width 640  --height 400 \
+  --text="ISO/RS02 data ($SIZE MB) \\n created at: $DATA_ISO"
+# EOF

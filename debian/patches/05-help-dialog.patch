@@ -1,0 +1,57 @@
+Author: Daniel Baumann <daniel@debian.org>
+Description: Customizes the help-dialog according to README.MODIFYING.
+
+diff -Naurp dvdisaster.orig/help-dialogs.c dvdisaster/help-dialogs.c
+--- dvdisaster.orig/help-dialogs.c	2009-01-19 20:53:35.000000000 +0000
++++ dvdisaster/help-dialogs.c	2009-01-25 12:49:22.000000000 +0000
+@@ -385,7 +385,7 @@ void ShowGPL()
+   ShowTextfile(_("windowtitle|GNU General Public License"), 
+ 	       _("<big>GNU General Public License</big>\n"
+ 		 "<i>The license terms of dvdisaster.</i>"),
+-	       "COPYING", NULL, NULL);
++	       "/usr/share/common/licenses/GPL-2", NULL, NULL);
+ }
+ 
+ /*
+@@ -541,7 +541,7 @@ static void show_modifying(void)
+ {  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
+ 	       _("<big>Modifying dvdisaster</big>\n"
+ 		 "<i>Your changes are not ours.</i>"),
+-	       "README.MODIFYING", NULL, NULL);
++	       "/usr/share/doc/dvdisaster/README.MODIFYING", NULL, NULL);
+ }
+ 
+ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
+@@ -698,9 +698,9 @@ void AboutDialog()
+ 
+ #ifdef MODIFIED_SOURCE
+    AboutTextWithLink(vbox, 
+-		     _("Modified version Copyright 2009 (please fill in - [directions])\n"
+-		       "Copyright 2004-2009 Carsten Gnoerlich"),
+-		     "MODIFYING");
++		     _("Modified version for [Debian GNU/Linux]\n"
++		       "Original Copyright 2004-2009 Carsten Gnoerlich"),
++		     "http://www.debian.org/");
+ #else
+    AboutText(vbox, _("Copyright 2004-2009 Carsten Gnoerlich"));
+ #endif
+@@ -717,14 +717,14 @@ void AboutDialog()
+    AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
+ 				"This is free software and you are welcome to redistribute it\n"
+ 				"under the conditions of the [GNU General Public License].\n"), 
+-			"GPL");
++			"/usr/share/common-licenses/GPL-2");
+ 
+ #ifdef MODIFIED_SOURCE
+-   AboutTextWithLink(vbox, _("\nThis program is <b>not the original</b>. It is based on the\n"
+-			     "source code of dvdisaster, but contains third-party changes.\n\n"
++   AboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
++			     "for Debian to support DVD-ROMs (with and without encryption).\n\n"
+ 			     "Please do not bother the original authors of dvdisaster\n"
+-			     "([www.dvdisaster.org]) about issues with this version.\n"),
+-		             "http://www.dvdisaster.org");
++			     "but submit bugreports against the [debian package] instead.\n"),
++			     "http://packages.qa.debian.org/dvdisaster");
+ 
+ #else
+    lang = g_getenv("LANG");

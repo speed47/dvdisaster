@@ -1,0 +1,18 @@
+Author: Corey Wright <undefined@pobox.com>
+Description: Adds support for DVD-ROM medium-type.
+
+diff -Naurp dvdisaster.orig/scsi-layer.c dvdisaster/scsi-layer.c
+--- dvdisaster.orig/scsi-layer.c	2008-03-30 09:10:52.000000000 +0000
++++ dvdisaster/scsi-layer.c	2008-05-03 08:32:22.000000000 +0000
+@@ -719,6 +719,11 @@ static int query_dvd(DeviceHandle *dh, i
+ 	    break;
+ 	 }
+ 
++	 if(layer_type & 0x01)
++	 {  dh->typeDescr = g_strdup("DVD-ROM");
++	    break;
++	 }
++
+ 	 if(layer_type & 0x06) /* strange thing: (re-)writeable but neither plus nor dash */ 
+ 	 {  dh->typeDescr = g_strdup("DVD-ROM (fake)");
+ 	    dh->subType = DVD;
