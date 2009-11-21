@@ -1,0 +1,270 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/howtos60.html"></a> 
+       <a href="../en/howtos60.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howto's</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Общая картина</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos61.html">исправление ошибок</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos62.html">правильное использование</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos63.html">неправильное использование</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Поиск ошибок на носителях</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Размещение данных для исправления ошибок в отдельном файле</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Размещение данных для исправления ошибок на носителе</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Восстановление образов носителей</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Получение информации об образах и данных для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Проверка совместимости образов</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Диалоги и кнопки</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Общая картина - сравнение dvdisaster с обычным резервированием</h3>
+
+dvdisaster хранит данные на CD/DVD/BD таким образом, что данные полностью восстановимы даже после
+того, как у носителя появились ошибки чтения. Метод, применяемый в dvdisaster, использует
+меньше места (или дополнительных носителей), чем полное резервное копирование.
+Перед тем, как использовать dvdisaster, важно понять сходства и 
+различия между dvdisaster и обычным (полным) резерированием:<p> 
+
+Давайте сначала рассмотрим, как работает обычная схема резервирования:<p>
+
+<table width="100%">
+<tr>
+<td width="60px"><img src="../images/backup1.png"></td>
+<td width="60px">Copy<br><img src="../images/right-arrow.png"></td>
+<td width="60px"><img src="../images/backup2.png"></td>
+<td> &nbsp; </td>
+<td>Существующий носитель (1) копируется на резервный носитель (2).</td>
+</tr>
+
+<tr>
+<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td></td>
+<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td> </td>
+</tr>
+
+<tr>
+<td width="60px"><img src="../images/bad-cd1.png"></td>
+<td width="60px"> </td>
+<td width="60px"><img src="../images/backup2.png"></td>
+<td></td>
+<td>Если люой один из этих носителей будет поврежден после этого, 
+у нас все еще останется нетронутый носитель.</td>
+</tr>
+</table><p>
+
+На самом деле, есть случаи, когда важно иметь вторую копию
+CD/DVD/BD: один носитель может быть утерян, разрушен при вращении в приводе
+или он может быть уничтожен вследствие неправильного обращения с ним. Однако
+такие случаи полной потери данных редки, если с носителем правильно обращаются.<p>
+
+Более вероятно, что носитель начнет постепенно терять данные 
+через несколько лет - почти неизбежный процесс старения.
+Когда носитель регулярно используется (или проверяется на дефекты), потеря данных
+обычно замечается после того, как от 5% до 10% носителя уже стало
+нечитаемым. На этой стадии носитель непригоден как целое, 
+но, вероятно, 90% его все еще читается. <i>На этой стадии полная резервная копия 
+носителя не требуется; нам просто нужен метод восстановления 
+недостающих 10% данных.</i><p>
+
+Вот тут dvdisaster и вступает в игру. Рассмотрим:<p>
+
+<table width="100%">
+<tr>
+<td width="60px"><img src="../images/good-cd.png"></td>
+<td width="60px">Создание<br><img src="../images/right-arrow.png"><br>ECC</td>
+<td width="60px"><img src="../images/ecc.png"></td>
+<td> &nbsp; </td>
+<td>
+В этот раз мы не делаем полное резервирование. dvdisaster используется для создания данных для исправления ошибок ("ECC"), которые могут восстановить до 20% испорченного носителя.
+Значение 20% было выбрано для того, чтобы иметь запас безопасности по отношению к ожидаемой потере данных в 5-10%.  
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td></td>
+<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td> </td>
+</tr>
+
+<tr>
+<td><img src="../images/bad-cd.png"></td>
+<td> </td>
+<td><img src="../images/ecc.png"></td>
+<td> &nbsp; </td>
+<td>
+Когда носитель дает сбой через какое-то время,
+его содержимое восстанавливается из все еще читаемых его частей и из
+данных для исправления ошибок.
+</td>
+</tr>
+
+<tr>
+<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td> </td>
+<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td> </td>
+<td>
+Для успешного восстановления не меньше 80% данных все еще должны быть читаемыми с носителя, а оставшиеся 20% рассчитываются по данным для исправления ошибок.</td>
+</tr>
+
+<tr>
+<td> </td>
+<td> <img src="../images/good-image.png"></td>
+<td> </td>
+<td> </td>
+<td>Теперь полностью восстановленные данные имются в виде ISO-образа на жестком диске 
+(носитель остается поврежденным, так как физическая потеря данных необратима). 
+</td>
+</tr>
+
+<tr>
+<td> </td>
+<td align="center"><img src="../images/down-arrow.png"></td>
+<td> </td>
+<td> </td>
+<td>Запишите образ на чистый носитель с помощью своей любимой программы для 
+создания CD/DVD/BD.</td>
+</tr>
+
+<tr>
+<td> </td>
+<td align="center"><img src="../images/good-cd.png"></td>
+<td> </td>
+<td> </td>
+<td>Теперь у вас есть новый носитель без ошибок.</td>
+</tr>
+</table><p>
+
+Как видите, восстановление данных потребовало больше шагов, чем обычное резервирование.
+Итак, давайте подведем итоги "за" и "против" dvdisaster в сравнении с обычным резервированием:<p>
+
+<table>
+<tr valign="top"><td>Преимущества</td>
+<td><ul>
+<li>dvdisaster использует меньше места для хранения. При использовании данных для исправления ошибок с возможностью восстановления в 20%, защита 5 носителей требует только одного дополнительного носителя для ECC-данных.</li>
+<li>Поскольку все носители, в конце концов, стареют и начинают терять данные в одних и тех же местах (обычно в самой внешней области), создание копии 1:1 может быть бесполезно. Через несколько лет обе копии могут оказаться поврежденными в одних и тех же местах.</li>
+</ul></td></tr>
+<tr valign="top"><td>Сходство</td>
+<td><ul><li>Обе резервные копии и данные для коррекции ошибок должны быть созданы до того, как основной диск даст сбой. Нельзя создать их из уже поврежденного носителя.</li></ul></td></tr>
+<tr valign="top"><td>Недостатки</td>
+<td><ul><li>Если возможности восстановления данных для исправления ошибок будут превышены (или будет утерян носитель), данные не могут быть восстановлены!
+В особенности имейте в виду, что данные для исправления ошибок с уровнем исправления  20% и носитель, читаемый на 75%, не дадут в результате восстановление в 95%! В этом случае ничего, кроме 75% читаемых данных не может быть восстановлено!</li></ul></td></tr>
+</table> 
+
+На следующих трех страницах дается более конкретная информация:<p>
+
+<ul>
+<li>Объяснение общей идеи <a href="howtos61.html">исправления ошибок</a>.<p></li>
+<li>Джейн демонстрирует <a href="howtos62.html">правильное использование dvdisaster</a>. Она заранее создаст данные для исправления ошибок и, следовательно, сможет восстановить все данные, когда ее носители повредятся.<p></li>
+<li>Однако вам не следует <a href="howtos63.html">повторять подход</a> Джо. 
+Он не использует данные для исправления ошибок и узнает, что его дефектные 
+носители не восстанавливаются даже с помощью многократного чтения. Таким образом, он теряет данные на дефектном носителе.<p></li>
+</ul>
+
+Конечно, эти рассказы являются чистым вымыслом и любое сходство с существующими  людьми или ситуациями полностью случайное.
+
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

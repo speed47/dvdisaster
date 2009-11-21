@@ -1,0 +1,170 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/index10.html"></a> 
+        
+       <a href="../ru/index10.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Examples of the error correction</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="index20.html">dvdisaster complements quality scans</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="index30.html">Pro and con of dvdisaster</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Examples of the error correction</h3>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+   <b>Recovery of aged media.</b> The medium processed here has become
+   discolored and partly unreadable in its outer region. A surface scan
+   yields about 23.000 unreadable sectors of 342.000 sectors total; resulting
+   in about 7,2% defective sectors.
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Reading the defective medium.</font></td></tr>
+        <tr><td><a href="index10_expand=1.html#snap1"><img src="thumbnails/recover-linear.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap2"></a>
+   <b>Repairing the defective image.</b> The resulting image is still incomplete
+   since about 23.000 sectors could not be read. These sectors are now 
+   reconstructed using 
+   the error correction data created with dvdisaster.
+   During the recovery a maximum of 20 errors
+   per error correction block is encountered. This results in a peak
+   error correction load of 63%, meaning that this degree of damage is handled well
+   by error correction data created with default settings.
+  </td></tr>
+  <tr><td align="center">
+    <a href="index10.html#snap2">
+      <img src="images/fix-image.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Screen shot: Repairing the defective image.</td></tr>
+</table><pre> </pre>
+<!--- end of screen shot --->
+
+<b>Recovery needs error correction data:</b> The recovery process described above uses
+error correction ("ecc") data. 
+Think of this data as a special
+form of backup data (it needs less space than a normal backup, though).
+Like an ordinary backup, the ecc data needs to be created
+<i>before</i> the medium goes defective.<p>
+
+So if you have a defective medium but never created ecc data for it - sorry, 
+your data is probably lost.<p>
+
+
+<a href="index20.html">Why quality scans won't suffice...</a>
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

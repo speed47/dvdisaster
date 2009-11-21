@@ -1,0 +1,109 @@
+# UTF-8
+Summary: Additional error protection for CD/DVD media
+Name: dvdisaster
+Version: 0.66
+Release: 1
+License: GPL 
+Group: Applications/Archiving
+URL: http://www.dvdisaster.com
+Source0: http://download.berlios.de/dvdisaster/%{name}-%{version}.tar.bz2
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: gtk2-devel
+BuildRequires: gettext, desktop-file-utils
+BuildRequires: bzip2-devel, libpng-devel
+BuildRequires: sed
+
+%define desktop_vendor fedora
+
+%description
+%{name} provides a margin of safety against data loss on CD and DVD media
+caused by scratches or aging. It creates error correction data,
+which is used to recover unreadable sectors if the disc becomes damaged
+at a later time.
+
+%description -l cs
+%{name} poskytuje dodatečnou ochranu proti ztrátě dat na médiích CD a DVD
+způsobených poškrábáním nebo stárnutím. Vytváří data oprav chyb, která
+jsou použita pro obnovu nečitelných sektorů, pokud se disk později
+poškodí.
+
+%description -l de
+%{name} erzeugt einen Sicherheitspuffer gegen Datenverluste, die auf
+CD- und DVD-Datenträgern durch Alterung oder Kratzer entstehen. Es erzeugt
+Fehlerkorrekturdaten, um bei nachfolgenden Datenträger-Problemen unlesbare
+Sektoren zu rekonstruieren.
+
+%description -l it
+%{name} offre un margine di sicurezza contro la perdita di dati dei supporti
+CD e DVD causata dall'invecchiamento e dai graffi. Crea dei dati di correzione
+degli errori che saranno poi utilizzati per recuperare i settori illeggibili
+se il supporto dovesse danneggiarsi col tempo.
+
+%prep
+%setup -q
+
+%build
+./configure \
+    --prefix=%{_prefix} \
+    --bindir=%{_bindir} \
+    --mandir=%{_datadir}/man \
+    --docdir=%{_docdir} \
+    --docsubdir=%{name}-%{version} \
+    --localedir=%{_datadir}/locale \
+    --with-nls=yes \
+    --buildroot=%{buildroot}
+%{__make} %{?_smp_mflags}
+
+%install
+[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
+%{__make} install
+
+%{__install} -d %{buildroot}%{_datadir}/pixmaps
+%{__install} -m 0644 contrib/dvdisaster48.png %{buildroot}%{_datadir}/pixmaps/
+
+%{__install} -d %{buildroot}%{_datadir}/applications
+
+desktop-file-install \
+  --vendor=%{desktop_vendor} \
+  --add-category="DiscBurning" \
+  --dir=%{buildroot}%{_datadir}/applications \
+  --mode=0644 \
+  contrib/%{name}.desktop
+
+%find_lang %{name}
+
+%clean
+[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
+
+%files -f %{name}.lang
+%defattr(-,root,root,-)
+%doc %{_docdir}/%{name}-%{version}/CHANGELOG
+%doc %{_docdir}/%{name}-%{version}/COPYING
+%doc %{_docdir}/%{name}-%{version}/CREDITS.en
+%doc %{_docdir}/%{name}-%{version}/TODO
+%doc %{_docdir}/%{name}-%{version}/en
+# common images
+%doc %{_docdir}/%{name}-%{version}/images/*
+# localized files
+%lang(cs) %doc %{_docdir}/%{name}-%{version}/CREDITS.cs
+%lang(cs) %doc %{_docdir}/%{name}-%{version}/cs
+%lang(de) %doc %{_docdir}/%{name}-%{version}/CREDITS.de
+%lang(de) %doc %{_docdir}/%{name}-%{version}/de
+# common
+%{_bindir}//dvdisaster
+%{_datadir}/applications/*.desktop
+%{_datadir}/pixmaps/%{name}*.png
+%{_mandir}/man1/dvdisaster.*
+# localized files
+%lang(cs) %{_mandir}/cs/man1/dvdisaster.*
+%lang(de) %{_mandir}/de/man1/dvdisaster.*
+%lang(it) %{_mandir}/it/man1/dvdisaster.*
+
+%changelog
+* Thu Mar 16 2006 Luboš Staněk <lubek@users.sourceforge.net> - 0.66
+- Spec update.
+  - Remove unneeded CFLAGS modification.
+  - Remove manpage's documentation path modification.
+  - fix file list
+* Thu Feb 23 2006 Luboš Staněk <lubek@users.sourceforge.net> - 0.66-rc2
+- Spec file skeleton.

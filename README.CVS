@@ -1,0 +1,32 @@
+Development releases of dvdisaster are made available 
+via CVS on SourceForge.
+
+You can check them out via anonymous pserver access, e.g.:
+
+cvs -z3 -d:pserver:anonymous@dvdisaster.cvs.sourceforge.net:/cvsroot/dvdisaster checkout dvdisaster
+
+WARNING: Development releases must be considered UNSTABLE.
+
+Especially, development versions may:
+
+- NOT be downward compatible with past releases
+- NOT be upward compatible with future releases
+- NOT correctly recover an image
+- DAMAGE processed images to a point beyond recoverability
+
+Do not keep image and/or error correction files created by 
+development releases for permanent storage.
+
+
+Release name scheme
+-------------------
+
+Even numbers (0.70, 0.72, ...) are stable releases.
+Odd numbers  (0.71, 0.73, ...) are development releases.
+
+CVS releases are tagged using the following scheme:
+
+release-0-70	: stable releases
+patch-0-70-1	: minor upgrade, also considered stable
+devel-0-71-1	: development release, see notes above
+rc-0-71-1       : release candidate, may still be unstable

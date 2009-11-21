@@ -1,0 +1,37 @@
+Please read these notes carefully if you plan to modify dvdisaster.
+-------------------------------------------------------------------
+
+When publishing a modified version of dvdisaster you are kindly
+asked not to misrepresent your work as the original. 
+
+The original authors have undertaken great efforts for putting the
+project into shape and earning their reputation. So if you hack and 
+publish your own version of dvdisaster, please RESPECT the original 
+authors vision of what the project should be like.
+
+Document your changes as explained below so that users can tell
+the modified version from the original. 
+
+
+How to document your changes.
+-----------------------------
+
+Document the changes you made in the source code, NOT in a
+separate file which might get unbundled from the changed source.
+
+New files start with your copyright notice; modified files 
+get an additional entry under the original copyright notice. 
+See the file md5.c for an example.
+
+But this is not enough; most people will not read the source
+code as they are using binary distributions. Give them a way
+to find out about your modifications in the "About" dialog.
+
+The build process will prepare a suitable message template 
+for you if it finds that you have modified the sources.
+Feel free to further customize this message, and even
+change the project name if you deem that appropriate.
+
+
+Thank you for your cooperation. 
+

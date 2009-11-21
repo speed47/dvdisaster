@@ -1,0 +1,154 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos34.html"></a> 
+        
+       <a href="../ru/howtos34.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos31.html">Decision help</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos32.html">Basic settings</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos33.html">Creating the medium</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Advanced settings</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Augmenting images with error correction data</b></font></td>
+<td rowspan="2" align="right"><img src="images/create-icon.png"></td></tr>
+<tr><td><i>Advanced settings</i></td></tr>
+</table><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Choosing the image size</b>. dvdisaster has a table of standard sizes
+for CD, DVD and BD media. Any media should meet these size requirements.
+Some vendors produce slightly higher capacity media. If you have
+such media, insert a blank one into the currently selected drive and click the
+"query medium" button (marked green) to the right of the proper medium type.
+dvdisaster will determine the medium size and update the table accordingly.<p>
+<b>Note:</b> The medium size can only be determined in drives which
+are capable of writing the respective media type.
+<pre> </pre>
+<b>Arbitrary image sizes.</b> You can set a specific image size which
+will not be exceeded after augmenting it with error correction data.
+To do so activate the button beneath "Use at most ... sectors" and enter
+the maximum image size in units of sectors (1 sector = 2KB).
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">"Error correction" tab.</font></td></tr>
+        <tr><td><a href="howtos34_expand=1.html#snap1"><img src="thumbnails/create-prefs-ecc2-adv.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

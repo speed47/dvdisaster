@@ -1,0 +1,188 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos.html"></a> 
+        
+       <a href="../ru/howtos.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1">Howtos</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Typical applications</h3>
+
+dvdisaster is a complex tool which would require a whole book to cover
+all of its features. Since we are currently lacking the resources for
+doing a book (and you might be short on reading time also) we will take a
+different approach here.
+First we will demonstrate how the <a href="howtos60.html">different
+functions of dvdisaster work together</a>.
+Then we will describe common tasks and provide step by step instructions 
+for solving them. In most cases following these 
+steps will be all you need to do. At the end of
+each instruction set a discussion of
+further configuration options is included for advanced users.<p>
+
+<h3>Symbols used in this document</h3>
+
+Working with dvdisaster requires certain combinations of optical media,
+media images and error correction data. Check out the following symbols
+to find out what you will need for the respective tasks:<p>
+
+<b>Medium</b> (a CD for example)
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-cd.png"></td>
+<td align="center" width="15%"><img src="../images/bad-cd.png"></td>
+<td width="55%">These symbols indicate whether processing a medium
+is part of the respective task, and if the medium
+needs be completely error free or may already be damaged.
+</td>
+</tr>
+<tr  valign="top">
+<td>good medium (<b>no</b> read errors)</td>
+<td>bad medium (<b>with</b> read errors)</td>
+<td></td>
+</tr>
+</table><p>
+
+<b>Medium image</b> (ISO image of a medium stored on the hard disk)
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-image.png"></td>
+<td align="center" width="15%"><img src="../images/bad-image.png"></td>
+<td width="55%">Some functions do not work directly with the medium, but
+with an ISO image on hard disk instead. Depending on the condition of the
+respective medium the image may be complete or incomplete.</td>
+</tr>
+<tr valign="top">
+<td>complete image (made from good medium)</td>
+<td>incomplete image (made from bad medium)</td>
+</tr>
+</table><p>
+
+<b>Error correction data</b>
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-cd-ecc.png"></td>
+<td align="center" width="15%"><img src="../images/ecc.png"></td>
+<td width="55%">Recovering media images by using error correction data
+is the key feature of dvdisaster. This symbol shows whether error correction
+data is required.
+</td>
+</tr>
+<tr  valign="top">
+<td>Medium containing error correction data</td>
+<td>Separate error correction file</td>
+<td></td>
+</tr>
+</table><p>
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

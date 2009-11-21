@@ -1,0 +1,160 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos90.html"></a> 
+        
+       <a href="../ru/howtos90.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Testing image compatibility</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos91.html">with error correction files</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos92.html">when augmenting images with error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Testing image compatibility</h3>
+
+<b>Why dvdisaster uses ISO images.</b> 
+Some dvdisaster functions work on image files stored on hard disk.
+CD/DVD/BD drives are too slow for carrying out the required access
+patterns, and they would wear out quickly. However hard disks are designed
+for this type of access, and they do them quickly and without wear.<p>
+
+<b>Testing image compatibility is important.</b> 
+During the work with dvdisaster you can (and sometimes must) use ISO images
+which have been created by third-party software. Unfortunately ISO images
+are only informally standardized. Typically all programs will produce
+the same images when advised to use the ".iso" file format, but it is
+better to make sure that a usable ISO image has been created:
+Processing a non-iso image with dvdisaster will result in
+unusable error correction data. Especially, formats like 
+<b>.nrg are not suitable</b> for processing with dvdisaster.
+<p>
+
+<b>Possible scenarios.</b> The following situations require exchanging
+ISO images between dvdisaster and a third party software:<p>
+
+<b>a) Creating error correction files from ISO images made by a CD authoring software</b><p>
+
+A CD/DVD/BD authoring software is used to create an ISO image.
+This image is used for writing the medium and for creating the
+error correction file. When using the authoring software for the first time
+with dvdisaster, make sure that 
+the <a href="howtos91.html">image was written to the medium without 
+modifications</a>.<p>
+
+
+<b>b) Augmenting ISO images with error correction data</b><p>
+
+dvdisaster adds "invisible" error correction data to the medium in order to
+minimize interference with other applications.
+Therefore it is possible that some CD/DVD/BD writing software will not properly 
+write the error correction data to the medium. Make sure that your writing
+software does <a href="howtos92.html">correctly transfer the error correction data</a> when using it with augmented images for the first time.
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

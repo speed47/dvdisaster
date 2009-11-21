@@ -1,0 +1,285 @@
+#!/usr/bin/env bash
+
+# Load the shell functions needed for the rest of this script.
+
+BASH_BASED_CONFIGURE=./scripts/bash-based-configure
+REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I." 
+RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall"
+DEBUG_CFLAGS="-ggdb -Wall"
+
+CFG_USE_CYGWIN="no"   # do not change
+
+if test -e $BASH_BASED_CONFIGURE; then
+   source $BASH_BASED_CONFIGURE
+else
+   echo "Could not find $BASH_BASED_CONFIGURE"
+   echo "You're probably not in the right directory."
+   exit 1
+fi
+
+# Set the package name and version
+
+PACKAGE dvdisaster 0.72
+
+#REL_MICRO=1
+#REL_STATUS=patch
+#REL_STATUS=devel
+#REL_STATUS=rc
+
+REL_MICRO=0
+REL_STATUS="-"  # requires MICRO=0
+
+DEFINE_STRING RELEASE_MICRO $REL_MICRO
+DEFINE_STRING RELEASE_STATUS $REL_STATUS
+
+case "$REL_STATUS" in
+  -) DEFINE_VAR FULL_VERSION "$VERSION" ;;
+  patch) DEFINE_VAR FULL_VERSION "\"$VERSION (pl${REL_MICRO})\"" ;;
+  *) DEFINE_VAR FULL_VERSION "\"$VERSION (${REL_STATUS}-${REL_MICRO})\"" ;;
+esac
+
+# Check for some essential tools.
+
+REQUIRE_GMAKE
+REQUIRE_GCC
+
+# Find out and verify the basedir of the source installation,
+# and where to install the binary.
+
+GET_SRCDIR GNUmakefile.template
+GET_PKGNAME
+GET_PREFIX /usr/local
+GET_BINDIR
+GET_MANDIR
+GET_DOCDIR /usr/share/doc
+GET_DIR "$PKGNAME" docsub "Documentation sub"\
+        "       put documentation into this subdirectory\n                        under \$DOCDIR "
+GET_LOCALEDIR /usr/share/locale
+GET_DIR "/var/www/dvdisaster" phpmount "PHP bind mount"\
+        "     place to bind mount our PHP based documentation so that\n                        a local web server can access it\n                        "
+
+GET_BUILDROOT
+
+# Look for required libraries
+
+PRINT_MESSAGE "\nLooking for includes and libraries:"
+
+REQUIRE_GTK2 2 6 0 WITH_THREADS
+echo
+
+if ! CHECK_INCLUDE locale.h locale || ! CHECK_INCLUDE libintl.h intl ; then
+  echo " [previous test forces -with-nls=no]"
+  cfg_force_with_nls=no
+fi
+
+if CHECK_INCLUDE cpuid.h cpuid; then
+  CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_CPUID"
+fi
+CHECK_LIBRARY intl gettext intl
+CHECK_LIBRARY cam cam_open_device cam
+
+# Look for required functions
+
+PRINT_MESSAGE "\nChecking for functions and symbols..."
+
+if ! CHECK_FUNCTION getopt_long ; then
+  if ! test -e getopt.h || ! test -e getopt.c ; then
+    echo " * getopt_long is missing. You can provide one by simply"
+    echo " * copying getopt.c, getopt1.c and getopt.h from the GNU"
+    echo " * C library into this directory."
+    exit 1
+  fi
+fi
+
+if ! CHECK_FUNCTION gettext ; then
+  echo " [previous test forces -with-nls=no]"
+  cfg_force_with_nls=no
+fi
+
+CHECK_FUNCTION round
+
+SAVE_CFLAGS=$CFG_CFLAGS
+CFG_CFLAGS="$CFG_CFLAGS -D_LARGEFILE64_SOURCE"
+CHECK_SYMBOL fcntl.h O_LARGEFILE
+CFG_CFLAGS=$SAVE_CFLAGS
+
+# Machine specific
+
+echo
+CHECK_ENDIAN
+CHECK_SSE2
+
+# Look for required tools
+
+PRINT_MESSAGE "\nChecking for additional tools..."
+
+if ! EXECUTE_PROGRAM "xgettext --help" xgettext \
+ ||! EXECUTE_PROGRAM "msgmerge --help" msgmerge \
+ ||! EXECUTE_PROGRAM "msgfmt --help" msgfmt ; then
+  echo "* You need to install the GNU gettext tools"
+  echo "* for localization support."
+  echo " [previous test forces -with-nls=no]"
+  cfg_force_with_nls=no
+fi
+
+if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
+  echo "* gdk-pixbuf not installed"
+  echo "* or path to gdk-pixbuf-csource is missing."
+  exit 1
+fi
+
+if test $CFG_SYS_OPTIONS == -DSYS_MINGW; then
+  if ! EXECUTE_PROGRAM "dllwrap -version" dllwrap ; then
+    echo "* dllwrap not installed or path to it is missing."
+    echo "* You can build dvdisaster, but not the windows installer."
+  fi
+fi
+
+# Evaluate the --with* customization options
+
+PRINT_MESSAGE "\nAdditional configuration options:"
+
+WITH_OPTION nls yes "[yes | no]"
+WITH_OPTION memdebug no "[no | yes]"
+WITH_OPTION efence no "[no | yes]"
+WITH_OPTION embedded-src-path yes "[yes | no]"
+
+if test "$cfg_with_efence" == "yes"; then
+  if ! CHECK_LIBRARY efence malloc efence; then
+    exit 1;
+  fi
+fi
+
+# -------------- end of manual configuration --------------------
+
+# Do not proceed further if in --help mode
+
+if test -n "$cfg_help_mode"; then
+     FINALIZE_HELP
+     exit 0
+fi
+
+# Fetch the source files and build the CFILES/OFILES list
+
+PRINT_MESSAGE "\nCollecting source files:"
+
+rm -f conftest.c method-link.c
+cfiles="method-link.c"
+ofiles="method-link.o"
+
+for cfile in *.c; do
+  cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
+  cfiles="$cfiles $cfile"
+  ofiles="$ofiles $cfile_prefix.o"
+  echo -n " $cfile_prefix"
+done
+
+echo
+echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
+echo "CFG_OFILES = $ofiles" >> Makefile.config
+
+# Create the method wrapper
+
+PRINT_MESSAGE "\nCollecting methods:"
+
+cat >> method-link.c <<EOF
+/* Automatically generated wrapper for registering the methods */
+ 
+void BindMethods(void)
+{
+EOF
+
+for method in ecc-*.c; do
+  method_name=`echo $method | sed -e 's/\.c//' -e 's/ecc-//'`
+  method_prefix="$method_prefix $method_name"
+  echo -n " $method_name"
+done
+
+for method in $method_prefix; do
+  echo "   void register_${method}(void);" >> method-link.c
+done
+
+echo >> method-link.c
+
+for method in $method_prefix; do
+  echo "   register_${method}();" >> method-link.c
+done
+
+echo "}" >> method-link.c
+echo 
+
+# Temporary fix for missing rs03 sources
+
+if test -e rs03-includes.h; then
+  CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_RS03"
+fi
+
+# Okay, hopefully we've got everything together now.
+
+(cd locale; bash create-makefile)
+CREATE_MAKEFILES GNUmakefile 
+
+# Now configure the tools directory
+
+echo
+echo -n "Configuring the tools ... "
+if (cd tools; bash configure $@ >tools-configure); then
+  echo "OK"
+else
+  echo "Failed"
+  echo "Problem encountered configuring the tools:"
+  cat tools/tools-configure
+  echo
+  echo "The above output describes a problem doing ./configure"
+  echo "in the tools directory. Please cd into that directory"
+  echo "and ./configure it manually."
+  exit 1
+fi
+rm tools/tools-configure
+
+# Okay, tell the user we're done and how to proceed.
+
+echo
+echo "Configuration is complete."
+echo "Type 'make show' to verify the settings,"
+echo "or enter 'make' to start the build immediately."
+echo 
+
+if test -n "$CFLAGS"; then
+  echo "* Note that your \$CFLAGS=$CFLAGS"
+  echo "* have been included into the configuration."
+  echo "* It is recommended not to specify additional \$CFLAGS,"
+  echo "* but feel free to continue at your own risk."
+  echo
+fi
+
+if test -n "$LDFLAGS"; then
+  echo "* Note that your \$LDFLAGS=$LDFLAGS"
+  echo "* have been included into the configuration."
+  echo "* It is recommended not to specify additional \$LDFLAGS,"
+  echo "* but feel free to continue at your own risk."
+  echo
+fi
+
+if test -n "$BUILDROOT"; then
+  echo "* Note that installation will be done relative to"
+  echo "* \$BUILDROOT=$BUILDROOT."
+  echo "* This is okay if you want to create packages like rpm or"
+  echo "* debian archives."
+  echo "* Normal installs will be broken by setting --buildroot." 
+  echo
+fi
+
+if test $cfg_system == "solaris"; then
+  id_binary="/usr/xpg4/bin/id"
+else
+  id_binary="id"
+fi
+
+if test `$id_binary -u` -eq 0; then
+  echo "* WARNING: Compiling the project as ROOT USER is not recommended"
+  echo "*          and may cause unexpected problems. If compilation fails"
+  echo "*          please delete the source archive, unpack it anew and"
+  echo "*          try again as ordinary user."
+  echo "*          Installing the package as root is okay, of course."
+fi

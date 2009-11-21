@@ -1,0 +1,364 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/howtos91.html"></a> 
+       <a href="../en/howtos91.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howto's</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">Общая картина</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Поиск ошибок на носителях</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Размещение данных для исправления ошибок в отдельном файле</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Размещение данных для исправления ошибок на носителе</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Восстановление образов носителей</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Получение информации об образах и данных для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Проверка совместимости образов</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">с файлами для исправления ошибок</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos92.html">при дополнении образов данными для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Диалоги и кнопки</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Проверка совместимости между файлами для исправления ошибок и ISO-образами</h3>
+
+
+<b>Обоснование:</b> Вы хотите записать данные на носитель и создать для них файл для
+исправления ошибок. Для того, чтобы сэкономить время, вы делаете следующее:
+
+<ol>
+<li>Вы создаете ISO-образ, используя свое ПО для записи CD/DVD/BD.</li>
+<li>Вы записываете образ на носитель.</li>
+<li>Вы создаете файл для исправления ошибок с того же образа.</li>
+</ol>
+
+<b>Возможная несовместимость:</b> ПО для записи создает носитель, 
+который в точности не соответствует образу. Это может не дать алгоритму исправления
+ошибок восстановить содержимое носителя, когда он станет поврежденным. 
+<p>
+
+<b>Как проверить совместимость:</b><p>
+
+Имейте в виду, что некоторые шаги здесь намечены лишь в общих чертах;
+для получения подробных инструкций и примеров смотрите ссылки в соответствующих разделах.<p>
+
+<table>
+<tr>
+<td width="200px" align="center"><img src="../images/good-image.png">
+<p><img src="../images/down-fork-arrow.png"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Создайте ISO-образ данных,</b> которые нужно
+записать на носитель. Если вам нужна справка по созданию ISO-образов,
+обратитесь к 
+<a href="howtos33_way=1.html">примеру создания ISO-образов</a>.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="100px" align="center">
+<img src="../images/good-cd.png" border="0" align="center"><p>
+<img src="../images/down-arrow.png" border="0">
+</td>
+<td width="100px" align="center" valign="top">
+<img src="../images/ecc.png" border="0" align="center">
+</td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Запишите носитель и создайте файл для исправления ошибок.</b>
+Используйте только что созданный образ для
+<a href="howtos33_way=3.html#c">записи носителя</a>. 
+Потом проведите эти <a href="howtos22.html#ecc">основные настройки</a> и
+<a href="howtos23_way=2.html">создайте файл для исправления данных</a>
+с этого образа.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="100px" align="center">
+<img src="../images/good-image2.png" border="0"><p>
+<img src="../images/down-arrow.png" border="0">
+</td>
+<td width="100px" align="center"> </td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Создайте <i>второй</i> образ из <i>записанного</i> 
+носителя.
+</b> Используйте эти <a href="howtos22.html#read">настройки</a>
+и прочитайте носитель, как описано
+в <a href="howtos23_way=1.html">создании образа</a> 
+для построения файла для исправления ошибок. Но вы можете остановить это пошаговое прохождение,
+когда чтение закончится, так как не требуется опять создавать файл для исправления ошибок.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa2.html">
+<img src="../images/select-image.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Введите имя <i>второго</i> ISO-образа,</b>
+который вы только что считали с носителя. Имейте в виду, что следующая
+проверка бесполезна, когда приходится работать с образом, первоначально созданным с помощью
+ПО для записи CD/DVD/BD.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa3.html">
+<img src="../images/select-ecc.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top">
+<b>Введите имя файла для исправления ошибок</b>
+в случае, если оно еще не введено в предыдущих действиях.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Запустите проверку,</b> нажав кнопку
+"Проверить".</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap1"></a>
+<b>Взгляните на результаты проверки.</b>
+Если вы получите зеленые сообщения "Хороший образ." и "Хороший файл для исправления ошибок.",
+ваше ПО для записи дисков и dvdisaster совместимы. Можно по-прежнему
+создавать файлы для исправления ошибок непосредственно с ISO-образов, созданных
+ПО для записи.
+  </td></tr>
+  <tr><td align="center">
+    <a href="howtos91_expand=0.html#snap1">
+      <img src="images/compat-okay-rs01.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Снимок с экрана: Показать информацию.</td></tr>
+</table><!--- end of screen shot --->
+
+<hr>
+
+<a name="err"> </a>
+<b>Возможные причины возникновения ошибок и способы исправления:</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap2"></a>
+      <a href="howtos91_expand=2.html#snap2">       <img src="thumbnails/compat-150-rs01.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Типичная проблема: неправильный размер образа.</b>
+В результате проверки может оказаться, что образ больше, чем ожидалось.
+Обычно разница составляет 150 или 300 секторов для CD-носителей и
+1-15 секторов для DVD/BD. Это могут быть просто нулевые заполняющие секторы, добавляемые
+записывающим программным обеспечением. Чтобы выяснить, действительно ли это так, сделайте следующее:
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/fix-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Запустите процесс восстановления.</b>
+</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap3"></a>
+      <a href="howtos91_expand=3.html#snap3">       <img src="thumbnails/compat-dialog-rs01.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Введите подтверждение в диалоговом окне.</b>
+Появится диалоговое окно с вопросом, можно ли удалить из образа лишние секторы. Ответьте "OK".
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/stop-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Остановите процесс восстановления,</b>
+так как после усечения образа больше нечего делать.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Опять запустите проверку,</b>
+нажав кнопку "Проверить".</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap4"></a>
+      <a href="howtos91_expand=4.html#snap4">       <img src="thumbnails/compat-okay-rs01.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Рассмотрите новые результаты.</b>
+Если вы теперь получите зеленые сообщения "Хороший образ." и "Хороший файл для исправления ошибок.", то остается чисто косметическая проблема: действительно, записывающее программное обеспечение добавило нулевые заполняющие секторы при записи носителя.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<font color="#800000">Если проблема остается после выполнения вышеописанных шагов, то уже <i>нельзя</i> считать, что dvdisaster и записывающее ПО совместимы. Созданные файлы для исправления ошибок будут непригодными.</font> <p> 
+Вместо этого для создания файлов для исправления ошибок используйте следующий метод:
+
+<hr>
+
+<pre> </pre>
+
+<b>Альтернативный метод, позволяющий избежать несовместимости:</b>
+
+<ol>
+<li>Сначала запишите данные на носитель.</li>
+<li>Используйте dvdisaster для создания ISO-образов с записанного носителя.</li>
+<li>Используйте этот образ для создания файла для исправления ошибок.</li>
+</ol>
+Этот метод требует больше времени из-за дополнительного процесса чтения,
+но у него есть и преимущество в виде проверки на читаемость вновь созданного носителя. 
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

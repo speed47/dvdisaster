@@ -1,0 +1,388 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos33.html"></a> 
+        
+       <a href="../ru/howtos33.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos31.html">Decision help</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos32.html">Basic settings</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Creating the medium</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos34.html">Advanced settings</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Augmenting images with error correction data</b></font></td>
+<td rowspan="2" align="right"><img src="images/create-icon.png"></td></tr>
+<tr><td><i>Walkthrough</i></td></tr>
+</table><p>
+
+dvdisaster is specialized in working with error correction data and reading
+of defective media. Creating ISO or UDF images and writing them to a medium
+is a totally different business, and also bears high complexity. 
+We do not want to re-invent medium writing in dvdisaster. Instead we 
+continue using the CD/DVD/BD writing software which you have got when
+purchasing your drive.<p>
+
+<pre> </pre>
+
+<a name="a"></a>
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtos33_way=3.html">
+<img src="thumbnails/make-iso1.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>First create an ISO image</b> using your CD/DVD/BD
+writing software. Select the files you want to write to medium,
+but do not start the writing process yet. Instead, create an ISO
+image on your hard disk. Click on the image to the left to see a 
+<a href="howtos33_way=3.html">
+detailed walk-thorugh</a>.
+</td>
+</tr>
+</table>
+
+
+<a name="b"></a>
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="../images/good-image.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top">When you have prepared the image
+<b>switch over to dvdisaster</b>. Make sure that it
+has been configured as described in 
+the <a href="howtos32.html">basic settings</a>.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa2.html">
+<img src="../images/select-image2.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Select the directory and file name</b> 
+of the ISO image which you have just created.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/create-icon.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Augment the image with error correction data</b> by
+clicking on the "Create" button.</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap1"></a>
+      <a href="howtos33_way=2&amp;expand=1.html#snap1">       <img src="thumbnails/make-ecc1.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Please wait while the error correction data is created.</b>
+This may take a while depending on the image size and the 
+available free  space on the medium. Processing a DVD image with about
+20-30% free space should take about 5-10 minutes on recent hardware.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap2"></a>
+      <a href="howtos33_way=2&amp;expand=2.html#snap2">       <img src="thumbnails/make-ecc2.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Please note:</b> dvdisaster does not create a new image, but will rather
+augment the existing one. Look at the image in the file manager before
+and after processing it with dvdisaster and note how its size increases.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<a name="c"></a>
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtos33_way=0.html">
+<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Write the augmented ISO image</b> on the medium.
+Select the augmented image in your writing software and
+start the writing process. Click on the screen shot to the left for
+<a href="howtos33_way=0.html">
+a detailed example</a>.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"></td>
+</tr>
+</table>
+
+<hr>
+
+<b>Detailed example: Writing the ISO image on the medium</b>.<p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Select writing of the image.</b>
+Now open your media writing software again. Invoke the mode for writing
+pre-existing .iso images on the medium.<p>
+
+Using K3b: <i>Click on the highlighted field
+("Burn CD image") in the main window.</i>
+    </td>
+    <td>
+      <a name="snap3"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Select image writing</font></td></tr>
+        <tr><td><a href="howtos33_way=2&amp;expand=3.html#snap3"><img src="thumbnails/write-iso1.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Image selection.</b>
+Select the image you have just created and augmented with dvdisaster.
+<p>
+
+Using K3b: <i>Use the field marked in green to select the image file or
+enter its name directly.</i>
+    </td>
+    <td>
+      <a name="snap4"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Image selection</font></td></tr>
+        <tr><td><a href="howtos33_way=2&amp;expand=4.html#snap4"><img src="thumbnails/write-iso2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>More settings.</b>
+Select the "DAO" ("disk at once") writing mode if supported by your drive.
+This improves the compatibility between the medium and the error correction.
+In addition this prevents you from accidentally adding more sessions 
+to the disc which would destroy the error correction data.
+<p>
+
+Using K3b: <i>Choose "DAO" in the field marked yellow.</i>
+    </td>
+    <td>
+      <a name="snap5"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">More settings</font></td></tr>
+        <tr><td><a href="howtos33_way=2&amp;expand=5.html#snap5"><img src="thumbnails/write-iso2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Writing the medium.</b>
+Now start the writing process.
+<p>
+
+Using K3b: <i>Click on the "Start" button in the window from the previous
+screen shot.</i>
+    </td>
+    <td>
+      <a name="snap6"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Writing the medium</font></td></tr>
+        <tr><td><a href="howtos33_way=2&amp;expand=6.html#snap6"><img src="thumbnails/write-iso3.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="../images/good-cd-ecc.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Finished!</b> You have now created a CD which is
+protected by error correction code.</td>
+</tr>
+</table>
+
+<pre> </pre>
+
+<b>Related information</b>
+
+<ul>
+<li><a href="howtos90.html">Check whether the writing process has affected 
+the error correction data.</a><p>
+It is recommended to perform this test once every time you change to a new
+version (or vendor) of your media writing software to make sure that it
+interoperates well with dvdisaster.
+</li>
+</ul>
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

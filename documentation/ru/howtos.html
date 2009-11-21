@@ -1,0 +1,191 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/howtos.html"></a> 
+       <a href="../en/howtos.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1">Howto's</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">Общая картина</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Поиск ошибок на носителях</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Размещение данных для исправления ошибок в отдельном файле</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Размещение данных для исправления ошибок на носителе</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Восстановление образов носителей</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Получение информации об образах и данных для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Проверка совместимости образов</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Диалоги и кнопки</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Типичные приложения</h3>
+
+dvdisaster - это сложный инструмент, для описания всех свойств которого потребовалась бы
+целая книга. Поскольку в настоящее время у нас нет ресурсов для
+того, чтобы сделать книгу (и у вас, должно быть, тоже мало времени), мы здесь 
+используем другой подход.
+Сначала мы покажем, как <a href="howtos60.html">различные
+функции dvdisaster работают вместе</a>.
+Затем мы опишем задачи общего назначения и дадим пошаговые инструкции 
+для их решения. В большинстве случаев будет достаточно
+следования этим шагам. В конце каждого
+набора инструкций добавлено для опытных пользователей
+обсуждение дополнительных параметров конфигурации.<p>
+
+<h3>Обозначения, используемые в этом документе</h3>
+
+Работа с dvdisaster требует определенного сочетания оптических носителей,
+образов носителей и данных для исправления ошибок. Просмотрите следующие обозначения,
+чтобы знать, что вам потребуется для соответствующих задач:<p>
+
+<b>Носитель</b> (например, CD)
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-cd.png"></td>
+<td align="center" width="15%"><img src="../images/bad-cd.png"></td>
+<td width="55%">Эти обозначения показывают, является ли обработка носителя
+частью соответствующей задачи, и должен ли носитель
+быть полностью без ошибок или уже может быть поврежден.
+</td>
+</tr>
+<tr  valign="top">
+<td>хороший носитель (<b>нет</b> ошибок чтения)</td>
+<td>плохой носитель (<b>с</b> ошибками чтения)</td>
+<td></td>
+</tr>
+</table><p>
+
+<b>Образ носителя</b> (ISO-образ носителя, хранащийся на жестком диске)
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-image.png"></td>
+<td align="center" width="15%"><img src="../images/bad-image.png"></td>
+<td width="55%">Некоторые функции работают не напрямую с носителем, а
+с ISO-образом на жестком диске. В зависимости от состояния соответствующего
+носителя образ может быть полным или неполным.</td>
+</tr>
+<tr valign="top">
+<td>полный образ (получен с хорошего носителя)</td>
+<td>неполный образ (получен с плохого носителя)</td>
+</tr>
+</table><p>
+
+<b>Данные для исправления ошибок</b>
+
+<table cellspacing="10">
+<tr>
+<td align="center" width="15%"><img src="../images/good-cd-ecc.png"></td>
+<td align="center" width="15%"><img src="../images/ecc.png"></td>
+<td width="55%">Восстановление образов носителей с помощью данных для исправления ошибок
+является главной особенностью dvdisaster. Это обозначение показывает, требуются ли
+данные для исправления ошибок.
+</td>
+</tr>
+<tr  valign="top">
+<td>Носитель, содержащий данные для исправления ошибок</td>
+<td>Отдельный файл с данными для исправления ошибок</td>
+<td></td>
+</tr>
+</table><p>
+
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

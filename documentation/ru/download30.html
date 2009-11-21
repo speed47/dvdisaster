@@ -1,0 +1,158 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/download30.html"></a> 
+       <a href="../en/download30.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howto's</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download10.html">Системные требования</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download20.html">Цифровая подпись</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Установка</font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Установка из исходных текстов</h3>
+
+dvdisaster использует обычный механизм: <tt>./configure; make; make install</tt>,- 
+для установки из исходных текстов. Более подробно смотрите в файле <tt>INSTALL</tt> в
+дистрибутиве исходных текстов.
+<pre> </pre>
+
+<a name="mac"></a>
+<h3>Установка двоичных файлов для Mac OS X</h3>
+В ZIP-архиве содержится пакет приложения, сделанный для Mac OS X 10.5
+на процессорах x86. Распакуйте архив в нужное место и нажмите кнопку мыши на
+"dvdisaster.app" для запуска программы.
+dvdisaster может работать под Mac OS X 10.4 и на процессорах PowerPC;
+однако в таком случае вам потребуется собрать свою собственную версию из
+исходных текстов.<p>
+
+<i>Имейте в виду, что графический интерфейс пользователя еще немного 
+шероховат.</i> Набор средств для построения интерфейсов GTK+ еще находится в ранней
+стадии развития для Mac OS X. Интерфейс пользователя может выглядеть неаккуратно или
+замирать на небольшое время. В графическом выводе могут быть сбои.
+Вы можете минимизировать эти эффекты, не трогая окно dvdisaster,
+когда что-либо происходит в окне. В особенности избегайте изменения размеров окна
+и сворачивания его.<p>
+
+Во время цикла разработки версии 0.73 могут быть реализованы некоторые обходные пути
+для этих эффектов; в противном случает планируется подождать улучшенной версии
+GTK+.<p>
+
+Не планируется разработка версии dvdisaster, независимой от GTK+,
+поскольку это означает полное переписывание программы для Quartz.
+Между прочим, аналогичные соображения относятся к версии для Windows ;-)
+<pre> </pre>
+
+<a name="win"> </a>
+<h3>Установка двоичных версий для Windows</h3>
+
+Для установки Windows-версии, запускайте на выполнение двоичный файл
+(например,  dvdisaster-0.72-setup.exe) и следуйте диалогу в процессе установки. <p>
+
+<b>Предупреждение:</b> dvdisaster НЕ устанавливается путем ручной
+распаковки программы setup.exe или путем копирования его из уже
+существующего установленного варианта. Это может привести к появлению
+странных ошибок, которые будут казаться совсем не связанными с неправильной установкой.
+
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

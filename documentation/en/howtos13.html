@@ -1,0 +1,313 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos13.html"></a> 
+        
+       <a href="../ru/howtos13.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos11.html">Basic settings</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos12.html">Performing the test</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Interpreting the results</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos14.html">Advanced settings</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Scanning media for errors</b></font></td>
+<td rowspan="2" align="right"><img src="images/scan-icon.png"></td></tr>
+<tr><td><i>Interpreting results</i></td></tr>
+</table><p>
+
+<!--- Insert actual page content below --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Overview.</b> dvdisaster provides several information about the scanning results:
+<ul>
+<li>The spiral under "<b>Medium State</b>" (to the right).<p>
+The spiral provides information about the medium readability. The medium is
+fully readable when all segments of the spiral are colored green. Yellow or red
+blocks mark places where data could not be correctly read from the medium.
+The total number of unreadable sectors is printed
+in the <i>"Scanning finished:"</i> message 
+at the window bottom.<p>
+</li>
+<li>"<b>Speed</b>" - The reading speed curve (upper left).<p>
+The reading speed is not an absolute gauge of the medium health,
+but it is usable as a rule of thumb: 
+The more regular the curve, the better the medium.
+You will find examples of good and bad reading speed curves further down this
+page.<p></li>
+<li>"<b>C2 errors</b>" - A medium state gauge provided by the drive (down left).<p>
+This kind of analysis 
+is <a href="qa_pipo.html">currently only available for CD media</a>.
+CD drives have a built-in error correction which can eliminate small data losses
+caused by minor defects on the medium. The number of C2 errors is a measurement
+of how often the drive needed to employ its  internal error correction during
+the read - this value should be zero on good media.</li>
+</ul>
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Overview</font></td></tr>
+        <tr><td><a href="howtos13_expand=1.html#snap1"><img src="thumbnails/defective-cd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<b>Examples for good media</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Good CD</b>: This screen shot shows a perfect CD:
+All blocks under "Medium state" are green, no C2 errors have been reported
+and the reading curve runs smoothly. A rising reading speed is normal for most
+media (see the next screen shot for a counter example). The small spikes
+at the beginning and at the end of the curve are normal; minor glitches like
+the one shown at 250M are also harmless.
+    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Good CD</font></td></tr>
+        <tr><td><a href="howtos13_expand=2.html#snap2"><img src="thumbnails/good-cd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Sometimes the reading curve won't rise steadily</b>: Multi-layered media
+might yield reading curves which are rising and dropping in a symmetric pattern.
+Not shown but also possible are flat curves without any change in reading speed
+(most typically seen with DVD-RAM).
+    </td>
+    <td>
+      <a name="snap3"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Good two layered DVD</font></td></tr>
+        <tr><td><a href="howtos13_expand=3.html#snap3"><img src="thumbnails/good-dvd9.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+<p>
+
+<b>An example for a weak medium</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+This medium is still readable as indicated by the green spiral shown under
+"Medium state". However there are clear signs of serious trouble ahead:
+The drive must slow down significantly towards the end of the medium in order
+to read from it. Note the steep fall of reading speed after the 600M mark.
+This comes along with C2 error rates rising to the 100 mark; this is another
+warning that the medium is decaying in the outer region.
+If you have not created <a href="howtos20.html">error correction</a>  data
+this is probably the last opportunity to do so as the medium will develop
+the first read errors soon.
+    </td>
+    <td>
+      <a name="snap4"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Weak CD</font></td></tr>
+        <tr><td><a href="howtos13_expand=4.html#snap4"><img src="thumbnails/weak-cd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+<p>
+
+<b>Examples of defective media</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Defective CD.</b> 
+The red sectors in the spiral visualize large unreadable sections
+in the outer region of the medium. At the bottom of the window you will find
+the information that the medium contains 28752 unreadable sectors.
+This sums up to about 8.2% defective sectors (of 352486 sectors total) and
+is well within the 
+<a href="howtos40.html">recovery</a> bounds by 
+<a href="howtos20.html">error correction (ecc) data</a> made 
+with default settings - if you have made the ecc data in time! 
+Otherwise the contents of the red
+sectors are lost since ecc data cannot be created from already defective media.
+    </td>
+    <td>
+      <a name="snap5"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Defective CD</font></td></tr>
+        <tr><td><a href="howtos13_expand=5.html#snap5"><img src="thumbnails/defective-cd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+<p>
+
+<a name="crc"></a>
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Checksum errors.</b> Yellow spots in the spiral depict places
+where the medium was fully readable, but the data read did not match
+checksums in the error correction data. There are two main causes:
+<p>
+
+<ul><li>
+<b>The image has been manipulated</b> after the creation 
+of error correction data and before writing it to the medium.
+This can happen on Unix systems when the image is mounted with write access
+after ecc data has been created. Typical signs are CRC errors in sector 64
+and in sectors 200 to 400 as the system updates the file access times there.
+Performing a data recovery using dvdisaster is typically harmless in this
+situation.<p>
+
+However if you have modified files in the image after creating the ecc data,
+the error correction data will be both worthless and dangerous.
+Applying a recovery to the medium will restore the image state
+at the time the ecc data has been created, and this will obviously not 
+represent the most recent contents of the medium.<p></li>
+
+<li><b>There are technical problems with the computer system,</b>
+especially in mass storage communication. Perform the scan again
+and observe the CRC error locations.
+If CRC errors disappear or surface at different locations your system
+might have defective RAM, bad drive cabling/controllers or incorrect clock
+speeds.</li></ul>
+    </td>
+    <td>
+      <a name="snap6"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Checksum errors</font></td></tr>
+        <tr><td><a href="howtos13_expand=6.html#snap6"><img src="thumbnails/crc-cd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+<p>
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

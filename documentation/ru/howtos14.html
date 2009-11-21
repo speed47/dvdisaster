@@ -1,0 +1,181 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/howtos14.html"></a> 
+       <a href="../en/howtos14.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howto's</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">Общая картина</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Поиск ошибок на носителях</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos11.html">Основные настройки</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos12.html">Выполнение проверки</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos13.html">Объяснение результатов</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Дополнительные настройки</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Размещение данных для исправления ошибок в отдельном файле</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Размещение данных для исправления ошибок на носителе</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Восстановление образов носителей</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Получение информации об образах и данных для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Проверка совместимости образов</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Диалоги и кнопки</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Поиск ошибок на носителях</b></font></td>
+<td rowspan="2" align="right"><img src="images/scan-icon.png"></td></tr>
+<tr><td><i>Дополнительные настройки</i></td></tr>
+</table><p>
+
+<!--- Insert actual page content below --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Игнорирование неисправимых ошибок.</b>
+Обычно dvdisaster прерывает проверку, когда привод сообщает
+о таких неисправимых внутренних ошибках, как проблемы с механикой. Это делается
+для того, чтобы избежать повреждения привода. Но некоторые приводы ошибочно сообщают
+о таких проблемах, когда их сбивают с толку поврежденные носители. Если у вас такой
+привод, то вы можете использовать этот параметр для принудительного продолжения проверки.<p>
+<b>Извлекать носитель после успешного чтения.</b>
+Если этот параметр включен, dvdisaster попытается извлечь носитель после успешной проверки. 
+Однако извлечению носителя может препятствовать операционная система, поэтому это не обязательно сработает. Например,
+ если после вставления носителей открывается окно для выполнения содержимого, то 
+автоматическое извлечение носителя может быть невозможным.
+<p>
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Вкладка "Привод".</font></td></tr>
+        <tr><td><a href="howtos14_expand=1.html#snap1"><img src="thumbnails/scan-prefs-drive-adv.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<pre> </pre>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Пропуск секторов после ошибки чтения.</b>
+Попытки прочитать поврежденные сектора требуют много времени.
+Поскольку после нахождения ошибки чтения есть вероятность встретить еще один поврежденный сектор,  
+пропуск нескольких секторов после ошибки чтения сэкономит время 
+и уменьшит износ привода.
+Если вы хотите лишь быстро проверить поврежденный носитель, то хорошо установить значение этого параметра
+в 1024. Но имейте в виду, что все пропущенные секторы считаются поврежденными,
+поэтому число сообщаемых ошибок становится выше и менее точным.<p>
+    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Вкладка "Попытки чтения".</font></td></tr>
+        <tr><td><a href="howtos14_expand=2.html#snap2"><img src="thumbnails/scan-prefs-read-attempts-adv.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

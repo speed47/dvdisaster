@@ -1,0 +1,78 @@
+This directory tree contains dvdisaster,
+a tool providing additional ECC protection for optical media.
+
+This version of dvdisaster supports the following platforms:
+Linux, FreeBSD, NetBSD on x86, PowerPC, Sparc;
+Mac OSX on x86 and PowerPC;
+Windows 98, ME, 2000, 2003, XP on x86 compatible hardware. 
+
+
+Roadmap of contained files
+--------------------------
+
+INSTALL
+	See the file INSTALL on bringing up dvdisaster.
+
+README.CVS
+	If you got this archive from CVS, make sure to read README.CVS also.
+
+README.MODIFYING
+	Please read these notes carefully if you plan to modify dvdisaster.
+
+COPYING
+	This software is distributed under the GNU General Public License,
+	which is contained in the file COPYING.
+
+CHANGELOG
+	See CHANGELOG for a description of recent changes in this software.
+
+CREDITS.*
+	Even a relatively small project like dvdisaster could not come to life
+	without the help of other people. See the files CREDITS.* for details.
+
+TODO
+	Some open tasks and notes about future work are contained in TODO.
+
+TRANSLATION.HOWTO
+	See TRANSLATION.HOWTO if you want to help translating dvdisaster 
+	into your native language.
+
+md5.*
+	The md5.* files come from the 2.4.20 Linux kernel distribution and
+	have been adapted to the needed functionality for this project.
+	See the notes in md5.c for more information.
+
+There are other files contained in the top-level directory whose
+use is limited to the build process.
+
+
+Roadmap of contained subdirectories
+-----------------------------------
+
+contrib
+	A few skeleton files for desktop integration and package maintenance
+	are contained in the directory "contrib".
+
+documentation
+	The directory "documentation" contains a copy of the project
+	home page, which doubles as user manual and project documentation. 
+
+icons
+	Icons used in the graphical interface are located in the respective
+	directory.
+
+locale
+	Translations of the programs on-screen texts are in "locale".
+
+scripts
+	Scripts needed for configuring and building dvdisaster are 
+	located in the "scripts" directory.
+
+tools
+	Auxiliary programs for the build and packaging process reside
+	in "tools".
+
+wininst
+	Additional files needed for building the Windows distribution.
+
+

@@ -1,0 +1,44 @@
+Vielen Dank an die folgenden Personen (in alphabetischer Reihenfolge):
+
+Harald Bögeholz (hwb@heise.de)
+   für viele tiefgehende Diskussionen über CD/DVD-Datenrettung
+   und Reed-Solomon-Fehlerkorrektur.
+   Die "angepaßte Lese-Strategie" in dvdisaster geht auf seine
+   Anregungen und Ideen zurück; er hatte zuvor schon eine ähnliche
+   Strategie entwickelt und in Ausgabe 16/2005 der c't veröffentlicht.
+
+Julian Einwag (julian@einwag.de)
+   erstellt und pflegt die Mac OS X / Darwin - spezifischen Anpassungen.
+
+Igor Gorbounov (igorbounov@topazelectro.ru)
+   erstellt und pflegt die russische Übersetzung.
+
+Andrei Grecu (andrei.grecu@aon.at)
+   hat den Algorithmus zum Wiederherstellen von defekten CD-Sektoren
+   aus mehreren Leseversuchen entwickelt.
+
+Phil Karn
+   hat eine hervorragende Bibliothek zum Erzeugen und Dekodieren
+   von Reed-Solomon-Kodes geschrieben. Dieses Projekt verdankt seiner
+   Bibliothek viel Inspiration - und auch einigen Programmcode.
+
+   Weil der Programmkode für dvdisaster angepaßt und optimiert worden
+   ist, sollten Sie sich unter http://www.ka9q.net/code/fec/ die
+   Originalversion von Phils Bibliothek herunterladen, wenn Sie
+   Reed-Solomon-Kode in Ihren eigenen Programmen verwenden möchten.
+
+Daniel Nylander (info@danielnylander.se)
+   erstellt und pflegt die schwedische Übersetzung.
+
+Andrea Polverini (polve@polve.com) 
+   erstellt und pflegt die italienische Übersetzung.
+
+Luboš Staněk (lubek@users.sourceforge.net)
+   erstellt und pflegt die tschechische Übersetzung.
+
+Sergey Svishchev (svs@ropnet.ru)
+   hat die NetBSD-spezifischen Anpassungen vorgenommen.
+
+Viele andere Personen haben weitere Anregungen und Fehlerberichte
+geliefert; schauen Sie auch in den Änderungsbericht für weitere
+Einzelheiten darüber.

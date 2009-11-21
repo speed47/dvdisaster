@@ -1,0 +1,1859 @@
+#  Bash based configure - library of test functions
+#  Copyright (C) 2004-2009 Carsten Gnörlich
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
+#  or direct your browser at http://www.gnu.org.
+
+
+# Command overview:
+# 
+# PACKAGE               Define package name and version
+# DEFINE_STRING str foo adds -Dstr=foo to CFG_OTHER_OPTIONS
+# DEFINE_VAR str foo	adds CFG_str = foo to Makefile
+#
+# PRINT_MSG		Prints a message to the console and log file 
+#
+# GET_SRCDIR		Determine and verify root dir of this distribution
+# GET_PKGNAME		Retrieves name of package directory
+# GET_PREFIX default	Where to install our stuff. The --prefix option will
+#			override the default setting.
+# GET_BINDIR [default]	Where to install our binaries. The --bindir option will
+#			override the default setting; the default parameter is optional.
+# GET_DOCDIR default	Where to install our documentation. The --docdir option will
+#			override the default setting.
+# GET_LOCALEDIR default	Where to install our local. The --localedir option will
+#			override the default setting.
+# GET_MANDIR default	Where to install our man pages. The --mandir option will
+#			override the default setting.
+# GET_BUILDROOT		Temporary build directory for creating packages
+# GET_DIR default name ... Creates a --namedir option for querying misc directories 
+# REQUIRE_X11 with-Xt	Require the X11 library and friends, if with-Xt is given.
+# REQUIRE_XPM		Require the Xpm library
+# REQUIRE_MOTIF n m o	Require the Motif library version >= n.m.o
+# REQUIRE_OPENGL	Require the OpenGL library
+# REQUIRE_GLIB2 n m o	Require GLIB2.x and accompanying components >= n.m.o
+# REQUIRE_GTK2 n m o	Require GTK2.x and accompanying components 
+#
+# REQUIRE_LIBRARY	Require specified library
+#
+# CHECK_INCLUDE		Check for include file, but don't exit on negative test
+# CHECK_LIBRARY		Check for library, but don't exit on negative test
+# CHECK_FUNCTION	Check for a specific function, but don't exit on neg. test
+# CHECK_SYMBOL		Check for a specific symbol, but don't exit on neg. test
+# EXECUTE_SOURCE	Execute a test program to test a specific function
+# EXECUTE_PROGRAM	Invoke a command to see if a certain program is available
+#
+# CHECK_ENDIAN		Test whether system is little or big endian
+# CHECK_SSE2		Test whether when can compile for SSE2 extensions
+# FINALIZE_HELP		Finish --help output (optional, but user friendly)
+#
+# WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
+#			    to CFG_WITH_OPTIONS,
+
+CONFIGURE_VERSION="0.55"
+
+echo "Bash based configure V$CONFIGURE_VERSION"
+echo
+
+# sed command to transform pipe contents into upcase
+
+SED_UPCASE="y%abcdefghijklmnopqrstuvwxyz%ABCDEFGHIJKLMNOPQRSTUVWXYZ%"
+
+# Cleanup from older runs
+
+rm -f Makefile.config config.log
+
+# Determine the build environment
+# and set some system-dependent shell functions.
+
+cfg_uname=`uname`
+cfg_system=unknown-system
+echo -n "Build environment: $cfg_uname, "
+
+case "$cfg_uname" in
+  CYGWIN*) CFG_EXE_SUFFIX=".exe" 
+        if test $CFG_USE_CYGWIN = "no"; then
+	     cfg_system=cygwin-mingw 
+             CFG_SYS_CFLAGS="-mms-bitfields -mno-cygwin"
+	else cfg_system=cygwin-std 
+             CFG_SYS_OPTIONS="-DSYS_CYGWIN"
+        fi
+
+	function add_linker_flags()
+	{  lflags_return="-L$1 $2"
+	}
+	;;
+
+  MINGW*) cfg_system=mingw-std 
+        CFG_SYS_OPTIONS="-DSYS_MINGW"
+        CFG_EXE_SUFFIX=".exe"
+        CFG_SYS_CFLAGS="-mms-bitfields"
+#	CFG_SYS_LDFLAGS="-mwindows"
+	function add_linker_flags()
+	{  lflags_return="-L$1 $2"
+	}
+	;;
+
+  Linux*) cfg_system=linux-std 
+        CFG_SYS_OPTIONS="-DSYS_LINUX"
+        CFG_EXE_SUFFIX=""
+	function add_linker_flags()
+        {  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+        } 
+	;;
+
+  FreeBSD*) cfg_system=freebsd-std
+        CFG_SYS_OPTIONS="-DSYS_FREEBSD"
+        CFG_EXE_SUFFIX=""
+	function add_linker_flags()
+	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+	}
+	;;
+
+  Darwin*) cfg_system=darwin
+        CFG_SYS_OPTIONS="-DSYS_DARWIN"
+        CFG_EXE_SUFFIX=""
+	CFG_SYS_LDFLAGS="-framework IOKit -framework CoreFoundation"
+	function add_linker_flags()
+	{  lflags_return="-L$1 $2"
+	}
+	;;
+
+  NetBSD*) cfg_system=netbsd
+        CFG_SYS_OPTIONS="-DSYS_NETBSD"
+        CFG_EXE_SUFFIX=""
+	CFG_SYS_LDFLAGS="-lutil"
+	function add_linker_flags()
+	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+	}
+	;;
+
+  SunOS*) cfg_system=solaris
+        CFG_SYS_OPTIONS="-DSYS_SOLARIS"
+        CFG_EXE_SUFFIX=""
+	# Even a Sparc V9 is a tight fit for us...
+	if test `uname -m` == "sun4u"; then
+	   CFG_SYS_CFLAGS="-mcpu=v9"
+	fi
+
+	function add_linker_flags()
+	{  lflags_return="-L$1 $2"
+	}
+	;;
+
+  *) cfg_system=unknown-system
+        CFG_SYS_OPTIONS="-DSYS_UNKNOWN"
+        CFG_EXE_SUFFIX=""
+	function add_linker_flags()
+	{  lflags_return="-L$1 $2"
+	}
+
+	;;
+esac
+echo "using settings: $cfg_system"
+echo 
+
+# Sort in the arguments.
+# Draws a lot of inspiration from autoconf, 
+# and tries to use the same names for common features.
+# However, only "[-]-foo=bar" argument style is allowed;
+# and not "-foo bar" which would also be accepted by autoconf-generated scripts.
+
+for cfg_opt
+do
+
+  # get the "bar" part in "-foo=bar" style arguments 
+
+  case "$cfg_opt" in
+  -*=*) cfg_optarg=`echo "$cfg_opt" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) cfg_optarg= ;;
+  esac
+
+  # process the command line options
+
+  case "$cfg_opt" in
+  -help | --help)
+    echo "Usage: bash configure [options]"
+    echo
+    echo "Options:"
+    echo " --help                 print this message"
+    echo " --version              just print the version number of configure" 
+    echo " --debug                overrides \$CFLAGS with canned options for debugging"
+    cfg_help_mode=1 ;;
+
+  -prefix=* | --prefix=*)
+    cfg_user_prefix=1
+    cfg_prefix=$cfg_optarg ;;
+
+  -bindir=* | --bindir=*)
+    cfg_bindir=$cfg_optarg ;;
+
+  -mandir=* | --mandir=*)
+    cfg_mandir=$cfg_optarg ;;
+
+  -docdir=* | --docdir=*)
+    cfg_docdir=$cfg_optarg ;;
+
+  -localedir=* | --localedir=*)
+    cfg_localedir=$cfg_optarg ;;
+  
+  -buildroot=* | --buildroot=*)
+    cfg_buildroot=$cfg_optarg ;;
+
+  # process the -with-foo=bar into $cfg_with_foo=bar
+
+  -with-*=* | --with-*=*)
+    eval `echo "$cfg_opt" | sed -e 's/[-]*with-/cfg_with_/' -e 'y/-/_/'` ;;
+
+  # process -with-foo into $cfg_with_foo=yes
+
+  -with-* | --with-*)
+    cfg_eval=`echo "$cfg_opt" | sed -e 's/[-]*with-/cfg_with_/' -e 'y/-/_/'`
+    cfg_eval="$cfg_eval=yes"
+    eval "$cfg_eval" ;;
+
+  -*dir=* | --*dir=*)
+    eval `echo "$cfg_opt" | sed -e 's/[-]*/cfg_/' ` ;;
+
+  # process the -foolib-includes=/path/bar into $cfg_foolib_incl=/path/bar
+
+  -*-includes=*)
+    eval `echo "$cfg_opt" | sed -e 's/[-]*/cfg_/' -e 's/-includes/_incl/'` ;;
+
+  # process the -foolib-libraries=/path/bar into $cfg_foolib_lib=/path/bar
+
+  -*-libraries=*)
+    eval `echo "$cfg_opt" | sed -e 's/[-]*/cfg_/' -e 's/-libraries/_lib/'` ;;
+
+  -version | --version)
+    exit 0 ;;
+
+  -debug | --debug)
+    cfg_debug=1
+    CFG_CFLAGS="$DEBUG_CFLAGS $REQUIRED_CFLAGS $CFG_SYS_CFLAGS"
+    echo "CFLAGS = $CFG_CFLAGS" >>Makefile.config ;;
+
+  *)
+    echo "* configure warning: unknown option $cfg_opt" ;;
+
+  esac
+done
+
+# See if we should add our default $CFLAGS and $LDFLAGS
+
+if test -z $cfg_debug; then
+  if test -n "$CFLAGS"; then
+     CFG_CFLAGS="$CFLAGS $REQUIRED_CFLAGS $CFG_SYS_CFLAGS"
+  else
+     CFG_CFLAGS="$RECOMMENDED_CFLAGS $REQUIRED_CFLAGS $CFG_SYS_CFLAGS"
+  fi
+  if test -n "$LDFLAGS"; then
+     CFG_LDFLAGS="$LDFLAGS $REQUIRED_LDFLAGS $CFG_SYS_LDFLAGS"
+  else
+     CFG_LDFLAGS="$RECOMMENDED_LDFLAGS $REQUIRED_LDFLAGS $CFG_SYS_LDFLAGS"
+  fi
+fi
+
+# Find out where bash resides
+
+echo "SHELL = `which bash`" >>Makefile.config
+
+# Setup the log file
+
+LOGFILE=configure.log
+rm -f $LOGFILE
+
+#
+# Finalize the --help output 
+#
+
+function FINALIZE_HELP()
+{
+  echo -e "\nSome influential environment variables:\n"
+  echo "CFLAGS   C compiler flags, e.g. -I<include dir>"
+  echo "         if you have include files in nonstandard places" 
+  echo "LDFLAGS  linker flags, e.g. -L<lib dir>"
+  echo "         if you have libraries in nonstandard places" 
+  echo 
+}
+
+#
+# Message printing
+#
+
+function PRINT_MESSAGE()
+{  local message="$1"
+
+   if test -n "$cfg_help_mode"; then
+      return 0
+   fi
+
+   echo -e "$message"
+   echo -e "$message" >>$LOGFILE
+}
+
+#
+# Check for tools
+#
+
+function REQUIRE_GMAKE()
+{ 
+   if test -n "$cfg_help_mode"; then
+      return 0
+   fi
+
+   echo -n "Checking for gmake: "
+
+   if (gmake -v | grep "GNU Make") > /dev/null 2>&1 ;
+     then echo "yes"
+	  echo "MAKE = `which gmake`" >>Makefile.config
+	  return 0
+   fi;
+
+   if (make -v | grep "GNU Make") > /dev/null 2>&1 ;
+     then echo "yes"
+	  echo "MAKE = `which make`" >>Makefile.config
+	  return 0
+   fi;
+
+   echo "no"
+   echo "This package requires GNU make (gmake)."
+   exit 1;
+}
+
+function REQUIRE_GCC()
+{
+   if test -n "$cfg_help_mode"; then
+      return 0
+   fi
+
+   echo -n "Checking for gcc: "
+
+   if gcc -v >/dev/null 2>&1; then
+     if (gcc -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
+       then echo "yes"
+	    echo "CC = `which gcc`" >>Makefile.config
+	    CC=gcc
+	    return 0
+     fi;
+   fi;
+
+   echo "no"
+   echo "This package requires the GNU C compiler (gcc)."
+   exit 1;
+}
+
+#
+# General configuration options
+#
+
+# Pass -with-option=value args to the CFG_WITH_OPTION variable
+# Note that the upcase conversion is not done here, but rather
+# in one sweep at the Makefile.config generation.
+
+function WITH_OPTION()
+{  local option_name=$1
+   local cooked_name=`echo $1 | sed -e 'y/-/_/'`
+   local default="$2"
+   local description="$3"
+
+   # first check number of arguments and deal with help mode
+
+   if test -z "$cooked_name" || test -z "$default"; then 
+      echo "WITH_OPTION needs at last two arguments"
+      return cooked_name
+   fi
+
+   if test -n "$cfg_help_mode"; then
+      echo " --with-$option_name=$description"
+      return 0
+   fi
+
+   # see if some other test forces us to stick with a certain value
+
+   echo -n " with $option_name: "
+
+   eval "cfg_forced_arg=\$cfg_force_with_$cooked_name"
+   if test -n "$cfg_forced_arg"; then
+      echo "$cfg_forced_arg (forced by previous tests)"
+      CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_${cooked_name}_$cfg_forced_arg"
+      eval "cfg_with_$cooked_name=\$cfg_forced_arg"
+      export "cfg_with_$cooked_name"
+      return 0
+   fi
+
+   # now start the real processing
+   # if $cfg_with_$cooked_name is unset, we set it to the default value
+   # so that the programmer can write custom shell functions depending on it.
+
+   eval "cfg_user_arg=\$cfg_with_$cooked_name"
+
+   if test -z "$cfg_user_arg"; then
+	echo "$default"
+	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_${cooked_name}_$default"
+	eval "cfg_with_$cooked_name=\$default"
+   else
+	echo "$cfg_user_arg (user supplied)"
+	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_${cooked_name}_$cfg_user_arg"
+   fi
+
+   export "cfg_with_$cooked_name"
+   return 0
+}
+
+# Define the package name and version
+
+function PACKAGE() 
+{  
+   export PACKAGE=$1
+   export VERSION=$2
+
+   if test -n "$cfg_help_mode"; then return 0; fi
+
+   echo "Configuring package $PACKAGE, version $VERSION."
+   echo
+   echo "CFG_PACKAGE = $PACKAGE" >> Makefile.config
+   echo "CFG_VERSION = $VERSION" >> Makefile.config
+}
+
+# Add -D$1=$2 to CFG_OTHER_OPTIONS
+
+function DEFINE_STRING()
+{  
+   if test -z "$1" || test -z "$2"; then
+     echo "DEFINE_STRING $1 $2:"
+     echo "  needs two arguments"
+     exit 1;
+   fi
+
+   CFG_OTHER_OPTIONS="$CFG_OTHER_OPTIONS -D$1=\\\"$2\\\""
+}
+
+# Add CFG_$1 = $2 to makefile
+
+function DEFINE_VAR()
+{  
+   if test -z "$1" || test -z "$2"; then
+     echo "DEFINE_VAR $1 $2:"
+     echo "  needs two arguments"
+     exit 1;
+   fi
+
+   echo "CFG_$1 = $2" >> Makefile.config
+}
+
+# Find out the basedir of source installation,
+# and verify that it contains the given sample file.
+
+function GET_SRCDIR() 
+{  if test -n "$cfg_help_mode"; then return 0; fi
+
+   if ! test -e $1; then
+     echo "Configure: Please cd into the root directory"
+     echo "           of your software distribution"
+     exit 1
+   fi
+
+   export SRCDIR=`pwd`
+   echo "Source directory: " $SRCDIR
+   echo "CFG_SRCDIR = $SRCDIR" >> Makefile.config
+}
+
+# Retrieve the package name (which is the name of the
+# source directory).
+
+function GET_PKGNAME() 
+{  
+   PKGNAME=`pwd`
+   PKGNAME=`basename $PKGNAME`
+
+   if test -n "$cfg_help_mode"; then return 0; fi
+
+   echo "Package name: " $PKGNAME
+   echo "CFG_PKGNAME = $PKGNAME" >> Makefile.config
+}
+
+# Preset the general installation directory
+
+function GET_PREFIX() 
+{  local default="$1"
+
+   if test -n "$cfg_prefix"; then
+        PREFIX=$cfg_prefix
+   else PREFIX=$default
+   fi
+
+   if test -n "$cfg_help_mode"; then
+     echo " --prefix=PREFIX        general installation directory"
+     echo "                        [$PREFIX]"
+     return 0
+   fi
+
+   echo "Installation prefix: " $PREFIX
+   echo "CFG_PREFIX = $PREFIX" >> Makefile.config
+}
+
+# Determine path from defaults
+# - default is given by the functions below (e.g. "bin")
+# - conf_default is the default value given in the configure skript (e.g. "/opt/bin")
+# - user_value is the value "bar" given by the user via --foodir=bar
+
+function path_from_default()
+{  local default="$1"
+   local conf_default="$2"
+   local user_value="$3"
+
+   ret_path=$default
+
+   # value from configure script overrides built-in default
+   # unless the user has changed the -prefix
+
+   if test ! $cfg_user_prefix && test -n "$conf_default"; then
+     ret_path="$conf_default"
+   fi
+
+   # value from user overrides configure script default
+
+   if test -n "$user_value"; then
+     ret_path="$user_value"
+   fi
+
+   # paths without a leading slash are appended to $prefix
+
+   if test ${ret_path:0:1} != '/'; then
+     ret_path="$PREFIX/$ret_path"
+   fi
+}
+
+# Preset the installation (binary) directory
+
+function GET_BINDIR() 
+{  local default="$1"
+
+   path_from_default "bin" "$default" $cfg_bindir
+   BINDIR=$ret_path
+
+   if test -n "$cfg_help_mode"; then
+     echo " --bindir=BINDIR        install binary files in BINDIR"
+     echo "                        [$BINDIR]"
+     return 0
+   fi
+
+   echo "Binary directory: " $BINDIR
+   echo "CFG_BINDIR = $BINDIR" >> Makefile.config
+}
+
+# Preset the installation (documentation) directory
+
+function GET_DOCDIR() 
+{  local default="$1"
+
+   path_from_default "doc" "$default" $cfg_docdir
+   DOCDIR=$ret_path
+
+   if test -n "$cfg_help_mode"; then
+     echo " --docdir=DOCDIR        install documentation in DOCDIR"
+     echo "                        [$DOCDIR]"
+     return 0
+   fi
+
+   echo "Documentation directory: " $DOCDIR
+   echo "CFG_DOCDIR = $DOCDIR" >> Makefile.config
+}
+
+# Preset the locale directory
+
+function GET_LOCALEDIR() 
+{  local default="$1"
+
+   path_from_default "locale" "$default" $cfg_localedir
+   LOCALEDIR=$ret_path
+
+   if test -n "$cfg_help_mode"; then
+     echo " --localedir=LPREFIX    install locale file in LPREFIX"
+     echo "                        [$LOCALEDIR]"
+     return 0
+   fi
+
+   echo "Locale directory: " $LOCALEDIR
+   echo "CFG_LOCALEDIR = $LOCALEDIR" >> Makefile.config
+}
+
+# Preset the man page directory
+
+function GET_MANDIR() 
+{  local default="$1"
+
+   path_from_default "man" "$default" $cfg_mandir
+   MANDIR=$ret_path
+
+   if test -n "$cfg_help_mode"; then
+     echo " --mandir=MPREFIX       install manual pages in MPREFIX"
+     echo "                        [$MANDIR]"
+     return 0
+   fi
+
+   echo "Man page directory: " $MANDIR
+   echo "CFG_MANDIR = $MANDIR" >> Makefile.config
+}
+
+# Preset the build root directory
+
+function GET_BUILDROOT() 
+{  local default="$1"
+
+   if test -n "$cfg_help_mode"; then
+     echo " --buildroot=DIR        install everything relative to given directory"
+     echo "                        ONLY for creating packages, NOT for direct installation!"
+     return 0
+   fi
+
+   BUILDROOT="$cfg_buildroot"
+   if test -z "$BUILDROOT"; then
+        echo "Build root: none (this is what you normally want)"
+   else echo "Build root: " $BUILDROOT
+   fi
+   echo "CFG_BUILDROOT = $BUILDROOT" >> Makefile.config
+}
+
+# Query a misc directory.
+# name is used for the --namedir command;
+# explanation is printed in --help mode.
+
+function GET_DIR()
+{  local default="$1"
+   local name="$2"
+   local longname="$3"
+   local explanation="$4"
+   local upcase=`echo $name | sed -e "$SED_UPCASE"`
+
+   eval "DIRRESULT=\$cfg_${name}dir"
+   if test -z "$DIRRESULT"; then
+      DIRRESULT=$default
+   fi
+
+   if test -n "$cfg_help_mode"; then
+     echo -e " --${name}dir=DIR $explanation[$DIRRESULT]"
+     return 0
+   fi
+
+   echo "$longname directory: " $DIRRESULT
+   echo "CFG_${upcase}DIR = $DIRRESULT" >> Makefile.config
+}
+
+#
+# General compilation test functions
+#
+
+# Try to compile conftest.c
+
+function try_compile()
+{ echo "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest" >>$LOGFILE
+  cat conftest.c >>$LOGFILE
+  { (eval "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest") 2>>$LOGFILE; } && test -s conftest
+}
+
+# Try to compile a main() with a given function
+
+function try_function()
+{  local check_function=$1
+
+   rm -f conftest.c conftest conftest.exe
+   echo "char ${check_function}();" >>conftest.c 
+   echo "int main() { ${check_function}(); return 0;}" >>conftest.c
+   try_compile
+}
+
+# Look for a library in common places
+
+function try_common_library_locations
+{  local library=$1
+   local check_function=$2
+   local lib_a=lib${library}.a
+   local lib_so=lib${library}.so
+
+   for test_dir in \
+    /usr/X11*/lib \
+    /usr/lib/X11* \
+    /usr/local/X11*/lib \
+    /usr/local/lib/X11* \
+    /usr/?386/lib \
+    /usr/XFree86/lib/X11 \
+    /usr/lib \
+    /usr/local/lib \
+    /usr/openwin/lib \
+    /usr/openwin/share/lib \
+    ; \
+  do
+    if test -r "$test_dir/$lib_a" || test -r "$test_dir/$lib_so"; then
+	local lflags_save=$CFG_LDFLAGS
+	add_linker_flags "$test_dir" "$CFG_LDFLAGS"
+	CFG_LDFLAGS="$lflags_return"
+	if try_function $check_function; then
+	   libdir_return=$test_dir
+           return 0
+        fi
+        CFG_LDFLAGS=$lflags_save
+    fi
+  done
+  return 1
+}
+
+# Try to locate a library
+
+function get_library
+{  local wanted_lib=$1
+   local check_function=$2
+   eval "cfg_user_arg=\$cfg_$3_lib"
+   echo -n " lib${wanted_lib}: "
+
+   local libs_save=$CFG_LIBS
+   CFG_LIBS="-l$wanted_lib $CFG_LIBS"
+
+   # If the user specified a path, only try that and report back
+
+   if test -n "$cfg_user_arg"; then
+      local lflags_save=$CFG_LDFLAGS
+      add_linker_flags "$cfg_user_arg" "$CFG_LDFLAGS"
+      CFG_LDFLAGS="$lflags_return"
+      if try_function $check_function; then
+	 echo "$cfg_user_arg (user supplied)"
+	 add_linker_flags "$cfg_user_arg"  #only return new flags!
+         libs_return=-l$wanted_lib
+	 return 0;
+      else
+	 echo "$cfg_user_arg (user supplied, but seems not to work)"
+	 lflags_return=
+	 libs_return=
+	 CFG_LDFLAGS=lflags_save
+	 CFG_LIBS=libs_save
+	 return 1
+      fi
+   fi
+
+   # See if it is in the linker paths assembled so far
+
+   if try_function $check_function; then
+      echo "yes"
+      lflags_return=
+      libs_return=-l$wanted_lib
+      return 0
+   fi
+
+   # Test some common locations
+
+   if try_common_library_locations $wanted_lib $check_function; then
+      echo $libdir_return
+      add_linker_flags "$libdir_return"
+      libs_return=-l$wanted_lib
+      return 0
+   fi
+
+   echo no
+   CFG_LIBS=$libs_save
+   return 1
+}
+
+# See if the given header file can be included
+
+function try_header()
+{  local header=$1
+
+   rm -f conftest.c conftest conftest.exe
+   if test -e conftest.pre; then 
+      cat conftest.pre >>conftest.c
+      rm conftest.pre
+   fi
+   echo "#include <$header>" >>conftest.c
+   echo "int main() { return 0; }" >>conftest.c
+   try_compile
+}
+
+# Look for a header file in common places
+# $1 = wanted include file
+
+function try_common_header_locations()
+{  local header=$1
+
+   for test_dir in \
+    /usr/X11*/include \
+    /usr/X11*/include/X11 \
+    /usr/include/X11* \
+    /usr/local/X11*/include \
+    /usr/local/include/X11* \
+    /usr/?386/include \
+    /usr/XFree86/include/X11 \
+    /usr/include \
+    /usr/local/include \
+    /usr/openwin/include \
+    /usr/openwin/share/include \
+    ; \
+  do
+    test_header=$test_dir/$header
+    if test -r $test_header; then
+	local cflags_save=$CFG_CFLAGS
+	CFG_CFLAGS="-I$test_dir $CFG_CFLAGS"
+	if try_header $header; then
+	   header_return=$test_dir
+	   return 0
+	fi
+	CFG_CFLAGS=$cflags_save
+    fi
+  done
+  return 1
+}
+
+# Try to locate a header file
+
+function get_header()
+{  wanted_header=$1
+   eval "cfg_user_arg=\$cfg_$2_incl"
+   echo -n " ${wanted_header}: "
+
+   # If the user specified a path, only try that and report back
+
+   if test -n "$cfg_user_arg"; then
+      test_header=$cfg_user_arg/$wanted_header
+      if test -r $test_header; then
+	 local cflags_save=$CFG_CFLAGS
+	 CFG_CFLAGS="-I$cfg_user_arg $CFG_CFLAGS"
+	 if try_header $wanted_header; then
+             echo "$cfg_user_arg (user supplied)"
+	     header_return=-I$cfg_user_arg
+             return 0
+         fi
+      fi
+      CFG_CFLAGS=$cflags_save
+      echo "$cfg_user_arg (user supplied, but seems not to work)"
+      return 1
+   fi
+
+   # See if it is in the standard include path first
+
+   if try_header $wanted_header; then
+   	echo "yes"
+	header_return=
+	return 0
+   fi
+
+   # Test some common locations
+
+   if try_common_header_locations $wanted_header; then
+	echo $header_return
+	header_return=-I$header_return
+	return 0
+   fi
+
+   # Failure, didn't find anything suitable
+
+   echo no
+   return 1
+}
+
+#
+# Check whether the version string given in $5
+# is lower than $2 $3 $4
+
+function check_version()
+{  echo -n " Checking for $1 version >= $2.$3.$4. Found version $5. "
+
+   version_major=`echo $5 | sed -e 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\1/'`
+   version_minor=`echo $5 | sed -e 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\2/'`
+   version_micro=`echo $5 | sed -e 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\3/'`
+
+   if test $2 -lt $version_major; then 
+      echo "Okay."
+      return 0
+   fi
+
+   if test $2 -eq $version_major; then
+      if test $3 -lt $version_minor; then
+	 echo "Okay."
+         return 0
+      fi
+      if test $3 -eq $version_minor; then
+         if test $4 -le $version_micro; then
+	    echo "Okay."
+	    return 0
+         fi
+      fi
+   fi
+
+   echo "Bad."
+   return 1
+}
+
+#
+# Check for the X11 headers and libraries
+#
+# Cygwin lays out a landmine by keeping a copy of Xlib.h in /usr/include,
+# so we must do an additional check for Shell.h in order to find the real
+# location of the X includes.
+
+function get_xincl()
+{  local real_includes=
+   local header_found=
+
+   case "$cfg_system" in
+     cygwin-std)  
+	if get_header X11/Shell.h x; then
+           real_includes=$header_return
+	   if get_header X11/Xlib.h x; then
+	     header_return="$real_includes $header_return"
+	     header_found=yes
+	   fi
+        fi ;;
+
+     *)
+        if get_header X11/Xlib.h x; then
+	   header_found=yes
+	fi ;;
+   esac
+
+   if test -n "$header_found"; then
+      echo "CFG_X_INCL = $header_return" >> Makefile.config
+   else
+      echo
+      echo "Header file X11/Xlib.h not found."
+      echo "Please specify the header location using the following option:"
+      echo "--x-includes=DIR"
+      exit 1
+   fi
+}
+
+function get_xlib()
+{  local xt_arg="$1"
+
+   if get_library X11 XOpenDisplay x; then
+      CFG_X_LFLAGS=$lflags_return
+      CFG_X_LIBS=$libs_return
+      if test "$xt_arg" = "with-Xt"; then
+	 if get_library ICE IceConnectionNumber ice; then
+	    CFG_X_LFLAGS="$lflags_return $CFG_X_LFLAGS"
+	    CFG_X_LIBS="$libs_return $CFG_X_LIBS"
+	 else 
+	    echo "libICE not found. Use --ice-libraries=DIR."
+	    exit 1
+	 fi
+	 if get_library SM SmFreeReasons sm; then
+	    CFG_X_LFLAGS="$lflags_return $CFG_X_LFLAGS"
+	    CFG_X_LIBS="$libs_return $CFG_X_LIBS"
+	 else 
+	    echo "libSM not found. Use --sm-libraries=DIR."
+	    exit 1
+	 fi
+	 if get_library Xt XtToolkitInitialize xt; then
+	    CFG_X_LFLAGS="$lflags_return $CFG_X_LFLAGS"
+	    CFG_X_LIBS="$libs_return $CFG_X_LIBS"
+	 else 
+	    echo "libXt not found. Use --xt-libraries=DIR."
+	    exit 1
+	 fi
+      fi
+      echo "CFG_X_LFLAGS = $CFG_X_LFLAGS" >> Makefile.config
+      echo "CFG_X_LIBS = $CFG_X_LIBS" >> Makefile.config
+   else
+      echo "libX11 not found."
+      echo "Please specify the library location using the following option:"
+      echo "--x-libraries=DIR"
+      exit 1
+  fi
+}
+
+function REQUIRE_X11()
+{  local xt_arg="$1"
+
+   if test -n "$cfg_help_mode"; then
+     echo " --x-includes=DIR       X include files are in DIR"
+     echo " --x-libraries=DIR      X library files are in DIR"
+     return 0
+   fi
+
+   echo -e "\n/* *** REQUIRE_X11 $xt_arg */\n" >>$LOGFILE
+
+   echo -n "X11 is required"
+   if test "$xt_arg" = "with-Xt"; then
+      echo " (with Xt)..." 
+      else  echo "..." 
+   fi
+
+   get_xincl
+   get_xlib "$xt_arg"
+}
+
+#
+# Check for Xpm headers and libraries
+#
+
+function get_xpm_incl()
+{  if get_header xpm.h xpm; then
+      echo "CFG_XPM_INCL = $header_return" >> Makefile.config
+   else
+      echo
+      echo "Header file xpm.h not found."
+      echo "Please specify the header location using the following option:"
+      echo "--xpm-includes=DIR"
+      exit 1
+   fi
+}
+
+function get_xpm_lib()
+{  if get_library Xpm XpmCreatePixmapFromData xpm; then
+      CFG_XPM_LFLAGS=$lflags_return
+      CFG_XPM_LIBS=$libs_return
+      echo "CFG_XPM_LFLAGS = $CFG_XPM_LFLAGS" >> Makefile.config
+      echo "CFG_XPM_LIBS = $CFG_XPM_LIBS" >> Makefile.config
+   else
+      echo "libXpm not found."
+      echo "Please specify the library location using the following option:"
+      echo "--xpm-libraries=DIR"
+      exit 1
+  fi
+}
+
+function REQUIRE_XPM()
+{  if test -n "$cfg_help_mode"; then
+     echo " --xpm-includes=DIR     xpm include files are in DIR"
+     echo " --xpm-libraries=DIR    xpm library files are in DIR"
+     return 0
+   fi
+
+   echo -e "\n/* *** REQUIRE_XPM */\n" >>$LOGFILE
+
+   echo "Xpm is required..."
+   get_xpm_incl
+   get_xpm_lib
+}
+
+#
+# Check for the Motif headers and libraries
+#
+
+function get_motif_incl()
+{  if get_header Xm/Xm.h motif; then
+
+      echo "CFG_MOTIF_INCL = $header_return" >> Makefile.config
+   else
+      echo
+      echo "Header file Xm/Xm.h not found."
+      echo "Please specify the header location using the following option:"
+      echo "--motif-includes=DIR"
+      exit 1
+   fi
+}
+
+function get_motif_libs()
+{  if get_library Xext XShapeCombineMask xext; then
+      CFG_MOTIF_LFLAGS="$lflags_return $CFG_MOTIF_LFLAGS"
+      CFG_MOTIF_LIBS="$libs_return $CFG_MOTIF_LIBS"
+   else
+      echo "libXext not found (required by libXmu)."
+      echo "Please specify the library location using the following option:"
+      echo "--xext-libraries=DIR"
+      exit 1
+   fi
+   if get_library Xmu XmuInternAtom xmu; then
+      CFG_MOTIF_LFLAGS="$lflags_return $CFG_MOTIF_LFLAGS"
+      CFG_MOTIF_LIBS="$libs_return $CFG_MOTIF_LIBS"
+   else
+      echo "libXmu not found (required by Motif)."
+      echo "Please specify the library location using the following option:"
+      echo "--xmu-libraries=DIR"
+      exit 1
+   fi
+
+   if test $cfg_motif_major -eq 2 && test $cfg_motif_minor -gt 0; then
+     if get_library Xp XpCreateContext xp; then
+        CFG_MOTIF_LFLAGS="$lflags_return $CFG_MOTIF_LFLAGS"
+        CFG_MOTIF_LIBS="$libs_return $CFG_MOTIF_LIBS"
+     else
+	if test -z "$cfg_lesstif"; then
+           echo "libXp not found (required by Motif 2.1 and higher)."
+           echo "Please specify the library location using the following option:"
+           echo "--xp-libraries=DIR"
+           exit 1
+        fi
+     fi
+   fi
+
+   if get_library Xm XmStringGenerate motif; then
+      CFG_MOTIF_LFLAGS="$lflags_return $CFG_MOTIF_LFLAGS"
+      CFG_MOTIF_LIBS="$libs_return $CFG_MOTIF_LIBS"
+   else
+      echo
+      echo "libXm not found (Version 2.0 or higher needed)."
+      echo "Please specify the library location using the following option:"
+      echo "--motif-libraries=DIR"
+      exit 1
+   fi
+
+   echo "CFG_MOTIF_LFLAGS = $CFG_MOTIF_LFLAGS" >> Makefile.config
+   echo "CFG_MOTIF_LIBS = $CFG_MOTIF_LIBS" >> Makefile.config
+   CFG_MOTIF=yes
+}
+
+function REQUIRE_MOTIF()
+{  if test -n "$cfg_help_mode"; then
+     echo " --motif-includes=DIR   Motif include files are in DIR"
+     echo " --motif-libraries=DIR  Motif library files are in DIR"
+     return 0
+   fi
+
+   echo -e "\n/* *** REQUIRE_MOTIF */\n" >>$LOGFILE
+
+   echo "Motif is required..."
+   get_motif_incl
+
+   # Query and store version information.
+   # We can't "sed" the Xm.h include file since its location is not known
+   # if it is already in the standard compiler include path,
+   # so we invoke a small test program to extract the version information.
+
+   cat >conftest.c <<EOF
+#include <Xm/Xm.h>
+int main()
+{  printf("%d.%d.%d\n",XmVERSION,XmREVISION,XmUPDATE_LEVEL);
+}
+EOF
+
+   found_version="0.0.0"
+   if try_compile; then found_version=`./conftest`; fi
+
+   if ! check_version "Motif" $1 $2 $3 "$found_version"; then
+     echo -e "\n Did not find a suitable version of Motif."
+     exit 1
+   fi
+   cfg_motif_major=$version_major
+   cfg_motif_minor=$version_minor
+   cfg_motif_micro=$version_micro
+
+   # OpenMotif 2.2 seems to be a bit flawed
+
+   if test $cfg_motif_major -eq 2 && test $cfg_motif_minor -eq 2; then
+     echo "* Warning: Use of Motif 2.2.x is not recommended;"
+     echo "*          Read the installation notes for more info." 
+   fi
+
+   # LessTif is a bit unstable yet. Report its internal version.
+
+   cat >conftest.c <<EOF
+#include <Xm/Xm.h>
+int main()
+{  printf("%s\n",LesstifVERSION_STRING);
+}
+EOF
+
+   if try_compile; then 
+      lesstif_version=`./conftest`;
+      echo " Actually, it's $lesstif_version."
+      cfg_lesstif=1
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_LESSTIF"
+   fi
+
+   # finally check for the libs and return
+
+   get_motif_libs
+}
+
+#
+# Check for the OpenGL headers and libraries
+#
+
+function get_opengl_incl()
+{  if get_header GL/gl.h opengl; then
+      CFG_OPENGL_INCL=$header_return
+   else
+      echo
+      echo "Header file GL/gl.h not found."
+      echo "Please specify the header location using the following option:"
+      echo "--opengl-includes=DIR"
+      exit 1
+   fi
+
+   if [ $CFG_MOTIF==yes ]; then
+     echo "#include <Xm/Xm.h>" >> conftest.pre
+     if get_header GL/GLwMDrawA.h glwm; then
+	CFG_OPENGL_INCL="$header_return $CFG_OPENGL_INCL"
+     else
+       echo
+       echo "Header file GL/GLwMDrawA.h not found."
+       echo "Please specify the header location using the following option:"
+       echo "--glwm-includes=DIR"
+       exit 1
+     fi
+   fi
+
+   echo "CFG_OPENGL_INCL = $CFG_OPENGL_INCL" >> Makefile.config	
+}
+
+function get_opengl_libs()
+{  if get_library GL glOrtho opengl; then
+      CFG_OPENGL_LFLAGS=$lflags_return
+      CFG_OPENGL_LIBS=$libs_return
+   else
+      echo "libGL not found."
+      echo "Please specify the library location using the following option:"
+      echo "--opengl-libraries=DIR"
+      exit 1
+   fi
+
+   if [ $CFG_MOTIF==yes ]; then
+      if get_library GLwM glXMakeCurrent glwm; then
+        CFG_OPENGL_LFLAGS="$lflags_return $CFG_OPENGL_LFLAGS"
+  	CFG_OPENGL_LIBS="$libs_return $CFG_OPENGL_LIBS"
+# MesaGLwM is broken
+#      elif get_library MesaGLwM glXMakeCurrent glwm; then
+#        CFG_OPENGL_LFLAGS="$lflags_return $CFG_OPENGL_LFLAGS"
+#  	CFG_OPENGL_LIBS="$libs_return $CFG_OPENGL_LIBS"
+      elif get_library GLw glXMakeCurrent glwm; then
+        CFG_OPENGL_LFLAGS="$lflags_return $CFG_OPENGL_LFLAGS"
+  	CFG_OPENGL_LIBS="$libs_return $CFG_OPENGL_LIBS"
+      else
+        echo "No suitable Motif drawing area for OpenGL found."
+	echo "Please specify the library location using the following option:"
+	echo "--glwm-libraries=DIR"
+	echo "Read INSTALL for hints about this error."
+        exit 1
+      fi
+   fi
+
+   echo "CFG_OPENGL_LFLAGS = $CFG_OPENGL_LFLAGS" >> Makefile.config
+   echo "CFG_OPENGL_LIBS = $CFG_OPENGL_LIBS" >> Makefile.config
+}
+
+function REQUIRE_OPENGL()
+{  if test -n "$cfg_help_mode"; then
+     echo " --opengl-includes=DIR  OpenGL include files are in DIR"
+     echo " --opengl-libraries=DIR OpenGL library files are in DIR"
+     return 0
+   fi
+
+   echo -e "\n/* *** REQUIRE_OPENGL */\n" >>$LOGFILE
+
+   echo "OpenGL is required..."
+   get_opengl_incl
+   get_opengl_libs
+}
+
+#
+# Require the GLIB2 includes and libraries.
+# Unlike with the other packages, we don't have to find out about the includes
+# and libraries by ourselves, but just query pkg-config about them.
+
+function REQUIRE_GLIB2()
+{  local want_major="$1"
+   local want_minor="$2"
+   local want_micro="$3"
+   local want_threads="$4"
+   local found_version="0.0.0"
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if test "$want_threads" == "WITH_THREADS"; then threads="--libs gthread-2.0"; fi
+
+   echo -e "\n/* *** REQUIRE_GLIB2 */\n" >>$LOGFILE
+
+   echo "GLib ${want_major}.${want_minor}.${want_micro} is required... "
+
+   # See if pkgconfig returns something
+
+   echo -n " pkg-config... "
+   if pkg-config --cflags glib-2.0 >>config.tmp 2>&1 && pkg-config $threads --libs glib-2.0 >>config.tmp 2>&1 ; then
+        echo "works"
+        rm config.tmp
+   else 
+	echo "failed"
+	echo -e "\nError message(s) from pkg-config were:"
+	cat config.tmp
+	rm config.tmp
+cat <<EOF
+
+Make sure you have the following packages installed:
+- pkg-config (sometimes, the obvious is overlooked ;-)
+- glib2
+
+Some Linux distributions distinguish between
+end-user packages of the libraries (e.g. 'glib2') and
+versions suitable for building programs (e.g. 'glib2-devel').
+You might have to install the development versions explicitly
+even if you have already GTK+ or Gnome applications running
+on your system.
+
+EOF
+	  exit 1
+   fi
+
+
+   # Do a test compile to make sure they did not return some junk
+
+   CFG_GLIB2_CFLAGS=`pkg-config --cflags glib-2.0`
+   CFG_GLIB2_LIBS=`pkg-config --libs glib-2.0`
+
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_GLIB2_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_GLIB2_LIBS"
+
+   cat >conftest.c <<EOF
+#include <glib.h>
+int main(int argc, char *argv[])
+{ g_malloc(1024); 
+
+  printf("%d.%d.%d\n",GLIB_MAJOR_VERSION,GLIB_MINOR_VERSION,GLIB_MICRO_VERSION);
+  return 0;
+}
+EOF
+
+   echo -n " test compile... "
+
+   if try_compile; then
+        echo "works"
+	rm -f conftest.c
+ 	found_version=`./conftest`
+        if ! check_version "GLIB" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
+          echo -e "\n Did not find a suitable version of GLIB."
+          exit 1
+        fi
+   else
+	echo "failed"
+	echo -e "\nThe tail of configure.log might contain hints\nabout the compilation problem."
+	rm -f conftest.c
+	exit 1
+   fi
+
+   # Successfully finished
+
+   echo "CFG_GLIB2_CFLAGS = $CFG_GLIB2_CFLAGS" >> Makefile.config
+   echo "CFG_GLIB2_LIBS = $CFG_GLIB2_LIBS" >> Makefile.config
+   bindir=`pkg-config --libs-only-L glib-2.0 | sed -e 's/-L//' -e 's/lib */bin/'`
+   echo "CFG_GLIB2_BINDIR = $bindir" >> Makefile.config
+
+   return 1
+}
+
+#
+# Require the GTK2 includes and libraries.
+# Unlike with the other packages, we don't have to fid out about the includes
+# and libraries by ourselves, but just query pkg-config about them.
+# It seems that people have more trouble with getting GTK+ to work
+# than with other toolkits, so we try a bit harder to diagnose them here.
+
+function REQUIRE_GTK2()
+{  local want_major="$1"
+   local want_minor="$2"
+   local want_micro="$3"
+   local want_threads="$4"
+   local found_version="0.0.0"
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if test "$want_threads" == "WITH_THREADS"; then threads="--libs gthread-2.0"; fi
+
+   echo -e "\n/* *** REQUIRE_GTK2 */\n" >>$LOGFILE
+
+   echo "Gtk+ ${want_major}.${want_minor}.${want_micro} is required..."
+
+   # See if pkgconfig returns something
+
+   echo -n " pkg-config... "
+   if pkg-config --cflags gtk+-2.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-2.0 >>config.tmp 2>&1 ; then
+	if test $cfg_system == "solaris"; then
+	   CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
+	   if (echo $CFG_GTK2_LIBS | grep "mt") > /dev/null 2>&1; then
+	     echo "broken, Solaris fix will be applied"
+	     broken_solaris="yes"
+	   else
+	     broken_solaris="no"
+             echo "works"
+	   fi
+	else
+          echo "works"
+	fi
+	rm config.tmp
+   else 
+	echo "failed"
+	echo -e "\nError message(s) from pkg-config were:"
+	cat config.tmp
+	rm config.tmp
+cat <<EOF
+
+Make sure you have the following packages installed:
+- pkg-config (sometimes, the obvious is overlooked ;-)
+- glib2
+- pango
+- atk
+- gtk2
+
+Some Linux distributions (e.g. SuSE) distinguish between
+end-user packages of the libraries (e.g. 'gtk2') and
+versions suitable for building programs (e.g. 'gtk2-devel').
+You might have to install the development versions explicitly
+even if you have already GTK+ or Gnome applications running
+on your system.
+
+EOF
+	  exit 1
+   fi
+
+   # Do a test compile to make sure they did not return some junk
+
+   CFG_GTK2_CFLAGS=`pkg-config --cflags gtk+-2.0`
+   CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
+
+   if test "$broken_solaris" == "yes"; then
+	CFG_GTK2_LIBS=`echo $CFG_GTK2_LIBS | sed -e 's/-mt//'`
+   fi
+
+   CFG_GTK2_BINDIR=`which pkg-config`
+   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/\/pkg-config//'`
+
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK2_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"
+
+   cat >conftest.c <<EOF
+#include <gtk/gtk.h>
+int main(int argc, char *argv[])
+{  GtkWidget *window;
+    
+   printf("%d.%d.%d\n",GTK_MAJOR_VERSION,GTK_MINOR_VERSION,GTK_MICRO_VERSION);
+   return 0;
+}
+EOF
+
+   echo -n " test compile... "
+
+   if try_compile; then
+	echo "works"
+	rm -f conftest.c
+ 	found_version=`./conftest`
+        if ! check_version "GTK+" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
+          echo -e "\n Did not find a suitable version of GTK+."
+          exit 1
+        fi
+   else
+	echo "failed"
+	echo -e "\nThe tail of configure.log might contain hints\nabout the compilation problem."
+	rm -f conftest.c
+	exit 1
+   fi
+
+   # Successfully finished
+
+   echo "CFG_GTK2_CFLAGS = $CFG_GTK2_CFLAGS" >> Makefile.config
+   echo "CFG_GTK2_LIBS = $CFG_GTK2_LIBS" >> Makefile.config
+   echo "CFG_GTK2_BINDIR = $CFG_GTK2_BINDIR" >> Makefile.config
+   return 1
+}
+
+# Check for a generic header.
+# First arg is the #include file to test for,
+# Second arg is a short name to be used in --name-includes=DIR.
+
+function CHECK_INCLUDE()
+{  local file_name=$1
+   local short_name=$2
+   local upcase=`echo $short_name | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     echo " --${short_name}-includes=DIR   $short_name include file is in DIR"
+     return 0
+   fi;
+
+   echo -e "\n/* *** CHECK_INCLUDE $file_name $short_name */\n" >>$LOGFILE
+
+   echo -n "Checking for"
+
+   if get_header $file_name $short_name; then
+      echo "CFG_${upcase}_INCL = $header_return" >> Makefile.config
+      return 0
+   fi
+
+   echo "CFG_${upcase}_INCL = " >> Makefile.config
+   return 1
+}
+
+function REQUIRE_INCLUDE
+{
+   if ! CHECK_INCLUDE $1 $2 ; then
+      echo "$1 not found."
+      echo "Please specify the include file location using the following option:"
+      echo "--$2-includes=DIR"
+      exit 1
+   fi
+}
+
+# Check for a generic library.
+# First arg is the library to test for,
+# Second arg is a function to look for in the library,
+# Third arg is a short name to be used in --name-libraries=DIR.
+
+function CHECK_LIBRARY()
+{  local test_lib=$1
+   local test_fun=$2
+   local short_name=$3
+   local upcase=`echo $short_name | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     echo " --${short_name}-libraries=DIR   ${short_name} library is in DIR"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_LIBRARY $test_lib $test_fun $short_name */\n" >>$LOGFILE
+
+   echo -n "Checking for"
+
+   if get_library $test_lib $test_fun $short_name; then
+      eval "CFG_${upcase}_LFLAGS=\$lflags_return"
+      eval "CFG_${upcase}_LIBS=\$libs_return"
+      echo "CFG_${upcase}_LFLAGS = $lflags_return" >> Makefile.config
+      echo "CFG_${upcase}_LIBS = $libs_return" >> Makefile.config
+      return 0
+  fi
+
+  echo "CFG_${upcase}_LFLAGS = " >> Makefile.config
+  echo "CFG_${upcase}_LIBS = " >> Makefile.config
+  return 1
+}
+
+function REQUIRE_LIBRARY
+{
+   if ! CHECK_LIBRARY $1 $2 $3 ; then
+      echo "lib$1 not found."
+      echo "Please specify the library location using the following option:"
+      echo "--$3-libraries=DIR"
+      exit 1
+   fi
+}
+
+# Check for a specific function,
+# assuming that the corresponding library has already been specified
+# by the preceeding configuration commands.
+
+function CHECK_FUNCTION()
+{  local fname=$1 
+   local answer="none"
+   local fname_upcase=`echo "$fname" | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_FUNCTION $1 */\n" >>$LOGFILE
+
+   if try_function $fname; then
+     answer="yes"
+     CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$fname_upcase"
+     echo " $fname: $answer"
+     return 0
+   else
+     answer="no"
+     echo " $fname: $answer"
+     return 1
+   fi
+}
+
+# Check for a specific symbol in an include file.
+# assuming that the corresponding library has already been specified
+# by the preceeding configuration commands.
+
+function CHECK_SYMBOL()
+{  local incl_name=$1
+   local symb_name=$2 
+   local answer="none"
+   local symb_upcase=`echo "$symb_name" | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_SYMBOL $1 $2 */\n" >>$LOGFILE
+
+   rm -f conftest.c conftest conftest.exe
+   cat > conftest.c <<EOF
+#include <$incl_name>
+int main(){
+#ifdef $symb_name
+   return 0; }
+#else
+   return 1; }
+#endif
+EOF
+
+   if try_compile && ./conftest; then
+     answer="yes"
+     CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$symb_upcase"
+     echo " $symb_name in $incl_name: $answer"
+     return 0
+   else
+     answer="no"
+     echo " $symb_name in $incl_name: $answer"
+     return 1
+   fi
+}
+
+# Compile and execute a test program (usually to find out if a function
+# provides a certain feature). Previous tests should already have made
+# sure that the program compiles correctly.
+# The test program is assumed to be supplied in the file conftest.c
+
+function EXECUTE_SOURCE()
+{  local feature=$1	# natural language description of the feature
+   local flag=$2	# how it's called in the HAVE defines
+   local answer="none"
+   local flag_upcase=`echo "$flag" | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if try_compile; then
+     if ./conftest; then
+       answer="works"
+       CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$flag_upcase"
+       echo " $feature: $answer"
+       return 0
+     else
+       answer="failed"
+       echo " $feature: $answer"
+       return 1
+     fi
+   else
+     answer="didn't compile"
+     echo " $feature: $answer"
+     return 1
+   fi
+}
+
+# Execute a test program (usually to find out if a certain tool exists).
+
+function EXECUTE_PROGRAM()
+{  local command=$1	# How to invoke the program
+   local flag=$2	# how it's called in the HAVE defines
+   local answer="none"
+   local flag_upcase=`echo "$flag" | sed -e "$SED_UPCASE"`
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if eval $command > /dev/null 2>&1; then
+     CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$flag_upcase"
+     echo " $flag: present"
+     return 0
+   else
+     echo " $flag: missing"
+     return 1
+   fi
+}
+
+#
+# Figure out endianess of system (not all have <endian.h>)
+#
+
+function CHECK_ENDIAN()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-byte-order=[little | big]"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_ENDIAN */\n" >>$LOGFILE
+   echo -n "Checking byte order..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_byte_order"; then
+      case "$cfg_with_byte_order" in
+	little) echo " little endian (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_LITTLE_ENDIAN"
+	        ;;
+	big) echo " big endian (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_BIG_ENDIAN"
+	        ;;
+        *) echo -e " $cfg_with_byte_order (illegal value)\n"
+	   echo "Please use one of the following values:"
+	   echo "--with-byte-order=[little | big]"
+	   exit 1
+	   ;;
+      esac
+      return 0;
+   fi
+
+   # Try automatic detection
+
+   cat > conftest.c <<EOF
+int main()
+{  if(sizeof(int)==4)
+   {  char *c = "1234";
+      switch(*(int*)c)
+      {  case 0x34333231:  printf("little\n"); break;
+         case 0x31323334:  printf("big\n"); break;
+         default: printf("failure"); break;
+      }
+   }
+   else printf("failure");
+}
+EOF
+
+   if try_compile; then
+      endian=`./conftest`
+      case "$endian" in
+	little) echo " little endian"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_LITTLE_ENDIAN"
+	        ;;
+	big) echo " big endian"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_BIG_ENDIAN"
+	        ;;
+        *) echo -e " error\n"
+	   echo "Byte order could not be determined."
+	   echo "Please specify one using the following option:"
+	   echo "--with-byte-order=[little|big]"
+	   exit 1
+	   ;;
+      esac
+  fi
+
+}
+
+#
+# Check for SSE2.
+#
+
+function CHECK_SSE2()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-sse2=[yes | no]"
+     return 0
+   fi
+
+   CHECK_SSE2_INVOKED=1
+
+   echo -e "\n/* *** CHECK_SSE2 */\n" >>$LOGFILE
+   echo -n "Checking for SSE2..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_sse2"; then
+      case "$cfg_with_sse2" in
+	no)  echo " no (user supplied)"
+	        ;;
+	yes) echo " yes (user supplied)"
+	        CFG_SSE2_OPTIONS="-msse2 -DHAVE_SSE2"
+	        ;;
+        *) echo -e " $cfg_with_sse2 (illegal value)\n"
+	   echo "Please use one of the following values:"
+	   echo "--with-sse2=[yes | no]"
+	   exit 1
+	   ;;
+      esac
+      return 0;
+   fi
+
+   # Do automatic detection
+
+   cat > conftest.c <<EOF
+#include <emmintrin.h>
+
+int main()
+{ __m128i a, b, c;
+
+  c = _mm_xor_si128(a, b);
+}
+EOF
+
+   local cflags_save=$CFG_CFLAGS
+   CFG_CFLAGS="-msse2 $CFG_CFLAGS"
+   if try_compile; then
+      echo " yes"
+      CFG_SSE2_OPTIONS="-msse2 -DHAVE_SSE2"
+   else
+      echo " no"
+   fi
+   CFG_CFLAGS=$cflags_save
+}
+
+#
+# Check whether a certain program is there and executable.
+#
+
+function CHECK_PROGRAM()
+{  local name=$1
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if (which $name) > /dev/null 2>&1; 
+   then
+     echo " $name: yes"
+     return 0
+   else
+     echo " $name: no"
+     return 1
+   fi
+}
+
+#
+# Clean up and build the Makefile.
+#
+
+function CREATE_MAKEFILES()
+{  if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   echo -e "\n/* *** CREATE_MAKEFILES */" >>$LOGFILE
+
+   rm -f conftest.c conftest conftest.exe
+   echo >> Makefile.config
+   echo "CFLAGS = $CFG_CFLAGS" >>Makefile.config
+   echo "LDFLAGS = $CFG_LDFLAGS" >>Makefile.config
+   echo "CFG_SYS_OPTIONS  = $CFG_SYS_OPTIONS" >> Makefile.config
+   echo "CFG_EXE_SUFFIX   = $CFG_EXE_SUFFIX" >> Makefile.config
+   echo "CFG_HAVE_OPTIONS = $CFG_HAVE_OPTIONS" >> Makefile.config
+   echo "CFG_WITH_OPTIONS = $CFG_WITH_OPTIONS" | sed -e "$SED_UPCASE" >> Makefile.config
+   echo "CFG_OTHER_OPTIONS = $CFG_OTHER_OPTIONS" >> Makefile.config
+   if test -n "$CHECK_SSE2_INVOKED"; then
+     echo "CFG_SSE2_OPTIONS = $CFG_SSE2_OPTIONS" >> Makefile.config
+   fi
+   echo >> Makefile.config
+
+   for i in $@; do 
+     rm -f $i
+     cat >> $i <<EOF
+#############################################################################
+#
+# The settings below have been inserted by the configure command.
+#
+# If they do not work, you can either
+#
+# - try to specify the right settings to configure via the "configure" 
+#   command line options
+# - or edit Makefile.template directly. E.g., if CFG_MOTIF_LIBS seems
+#   to hold the wrong values, search for CFG_MOTIF_LIBS in Makefile.template,
+#   read the comments in the respective section, and specify the right value 
+#   for MOTIF_LIBS there.
+#
+#   DO NOT EDIT THIS FILE OR ANY OF THE CFG_* VALUES, as they will be deleted
+#   or overridden by certain make options (such as 'make distclean')
+#
+#############################################################################
+
+EOF
+     cat Makefile.config $i.template >> $i
+  done
+}

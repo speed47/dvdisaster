@@ -1,0 +1,322 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos92.html"></a> 
+        
+       <a href="../ru/howtos92.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos91.html">with error correction files</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">when augmenting images with error correction data</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Checking compatibility for images augmented with error correction data</h3>
+
+<b>Motivation:</b> dvdisaster can put error correction data
+<a href="howtos30.html">together with the user data on the medium</a>.
+The error correction data is appended to the ISO image in a way invisible
+to most applications in order to not interfere with them.<p>
+
+<b>Possible incompatibility:</b> The CD/DVD/BD writing software may also
+be unable to see the error correction data. While being unlikely it is
+possible that the writing software will truncate or damage the error 
+correction data while creating the medium. In that case the error correction
+will not work.<p>
+
+
+<b>How to test compatibility:</b><p>
+
+Please note that some steps are only sketched out here;
+follow the links to the respective sections to find detailed instructions
+and examples.<p>
+
+<table>
+<tr>
+<td width="200px" align="center"><img src="../images/good-cd-ecc.png">
+<p><img src="../images/down-arrow.png"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>First create a medium which was augmented with
+error correction data</b>. Do not forget
+to use the proper <a href="howtos32.html">settings</a> and follow the 
+<a href="howtos33.html">step by step</a> instructions. <br>
+Do not use rewriteable DVD or BD media as they may influence the test
+under some circumstances (see <a href="qa20.html#rw">item 3.4 in the
+questions and answers</a>).
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="../images/good-image2.png" border="0"><p>
+<img src="../images/down-arrow.png" border="0">
+</td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Create a <i>second</i> image from the <i>written</i> 
+medium</b>.
+Use the same <a href="howtos22.html">settings</a> and steps as in
+<a href="howtos23_way=1.html">reading a medium</a> for creating an error
+correction file; however you can stop after the reading has finished as
+we do not need the error correction file.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa2.html">
+<img src="../images/select-image.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Enter the name of the <i>second</i> ISO image</b>
+which you have just read from the medium. Please note that the following
+test is useless when working with the image which was initially created
+using the CD/DVD/BD authoring software and augmented with dvdisaster.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Start the evaluation</b> by clicking
+on the "Verify" button.</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap1"></a>
+      <a href="howtos92_expand=1.html#snap1">       <img src="thumbnails/compat-okay-rs02.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Look at the verification results.</b>
+If you get the green messages "Good image." and "Good error correction data."
+your authoring software and dvdisaster are compatible with respect to
+the augmented images.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+<a name="err"> </a>
+<b>Possible error causes and remedy:</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap2"></a>
+      <a href="howtos92_expand=2.html#snap2">       <img src="thumbnails/compat-150-rs02.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Typical problem: wrong image size.</b>
+The verification may find out that the image is larger as expected.
+Typically the difference is 150 or 300 sectors for CD media and
+1-15 sectors for DVD/BD media. These might simply be zero padding sectors
+appended by the writing software. To find out if this really is the case
+do the following:
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/fix-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Start a recovery process.</b>
+</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap3"></a>
+      <a href="howtos92_expand=3.html#snap3">       <img src="thumbnails/compat-dialog-rs02.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Confirm the dialog.</b>
+A dialog will appear asking you if it is okay to remove the superflous
+sectors from the image. Answer "OK".
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/stop-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Stop the recovery process,</b>
+as after truncating the image there is nothing more to do.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Start the verification again</b>
+by clicking on the "Verify" button.</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap4"></a>
+      <a href="howtos92_expand=4.html#snap4">       <img src="thumbnails/compat-okay-rs02.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Consider the new results.</b>
+If you now get the green messages "Good image." and "Good error correction 
+data." your problem is purely cosmetic: The writing software has indeed
+added zero padding sectors while writing the medium.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<font color="#800000">If the problem persists after carrying out the above
+steps you can <i>not</i> use the CD/DVD/BD writing software
+for creating media from augmented images.
+Perform the test again using a software from a different vendor.
+</font> <p> 
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

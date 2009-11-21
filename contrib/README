@@ -1,0 +1,30 @@
+This directory contains skeleton files which you might
+find useful for integrating dvdisaster into your desktop
+environment and for creating binary packages.
+
+Please note that most of these files have been contributed
+and may be out of date. They may need further customization
+before being used.
+
+Roadmap of contained files
+--------------------------
+
+dvdisaster16.png
+dvdisaster24.png
+dvdisaster32.png
+dvdisaster48.png
+dvdisaster64.png
+dvdisaster16.xpm
+dvdisaster24.xpm
+dvdisaster32.xpm
+dvdisaster48.xpm
+dvdisaster64.xpm
+	The dvdisaster desktop icon in several common sizes
+	and formats.
+
+dvdisaster.desktop
+	meant to be a starting point for Gnome or KDE desktop integration.
+
+dvdisaster.spec
+	meant to be a starting point for .rpm building
+	

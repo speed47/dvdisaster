@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=dvdisaster
+GenericName=data archival
+GenericName[de]=Daten-Archivierung
+Comment=Additional error protection for CD/DVD media
+Comment[cs]=Přídavná ochrana pro média CD/DVD
+Comment[de]=Zusätzliche Fehlerkorrektur für CD/DVD
+Exec=dvdisaster
+Icon=dvdisaster48.png
+Terminal=false
+Type=Application
+Categories=Application;System;
+Encoding=UTF-8

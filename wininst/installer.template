@@ -1,0 +1,99 @@
+; -- installer.iss --
+; Inno Setup script template for creating the dvdisaster setup.exe
+
+[Setup]
+AppName=dvdisaster
+AppCopyright=GNU Public License
+AppMutex=dvdisaster
+AppPublisher=dvdisaster project
+AppPublisherURL=http://www.dvdisaster.org
+AppVerName=dvdisaster-%version%
+DefaultDirName={pf}\dvdisaster
+DefaultGroupName=dvdisaster
+UninstallDisplayIcon={app}\dvdisaster.exe
+Compression=lzma
+SolidCompression=yes
+SourceDir=..\win-build-dir
+OutputDir=.
+OutputManifestFile=manifest.txt
+OutputBaseFilename=dvdisaster-%version%-setup
+PrivilegesRequired=poweruser
+AllowNoIcons=yes
+;SetupIconFile=install.ico
+WizardImageFile=installwiz.bmp
+WizardSmallImageFile=installwiz-small.bmp
+
+[Languages]
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "cs"; MessagesFile: "compiler:Languages/Czech.isl"
+Name: "de"; MessagesFile: "compiler:Languages/German.isl"
+Name: "ru"; MessagesFile: "compiler:Languages/Russian.isl"
+
+[Dirs]
+Name: "{app}\documentation\images"
+Name: "{app}\documentation\local\images"
+Name: "{app}\documentation\local\include"
+Name: "{app}\documentation\local\thumbnails"
+
+[Files]
+Source: "CHANGELOG"; DestDir: "{app}"
+Source: "COPYING"; DestDir: "{app}"
+Source: "CREDITS.*"; DestDir: "{app}"
+Source: "README.MODIFYING"; DestDir: "{app}"
+Source: "TODO"; DestDir: "{app}"
+Source: "signature"; DestDir: "{app}"
+Source: "*.exe"; DestDir: "{app}"
+Source: "*.dll"; DestDir: "{app}"
+Source: "lib\locale\cs\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\cs\LC_MESSAGES"
+Source: "lib\locale\de\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\de\LC_MESSAGES"
+Source: "lib\locale\it\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\it\LC_MESSAGES"
+Source: "lib\locale\ru\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ru\LC_MESSAGES"
+Source: "lib\locale\sv\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sv\LC_MESSAGES"
+Source: "etc\gtk-2.0\*"; DestDir: "{app}\etc\gtk-2.0"
+Source: "etc\pango\*"; DestDir: "{app}\etc\pango"
+Source: "locale\cs\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\cs\LC_MESSAGES"
+Source: "locale\de\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\de\LC_MESSAGES"
+Source: "locale\it\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\it\LC_MESSAGES"
+Source: "locale\ru\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\ru\LC_MESSAGES"
+Source: "locale\sv\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\sv\LC_MESSAGES"
+Source: "documentation\images-common.pngpack"; DestDir: "{app}\documentation"
+Source: "documentation\pngpack.exe"; DestDir: "{app}\documentation"
+Source: "documentation\pubkey.asc"; DestDir: "{app}\documentation"
+;Source: "documentation\images\*"; DestDir: "{app}\documentation\images"
+Source: "documentation\include\*"; DestDir: "{app}\documentation\include"
+Source: "documentation\images-de.pngpack"; DestDir: "{app}\documentation"; Languages: de
+Source: "documentation\de\*"; DestDir: "{app}\documentation\local"; Languages: de
+Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; Languages: en
+Source: "documentation\en\*"; DestDir: "{app}\documentation\local"; Languages: en
+Source: "documentation\images-ru.pngpack"; DestDir: "{app}\documentation"; Languages: ru
+Source: "documentation\ru\*"; DestDir: "{app}\documentation\local"; Languages: ru
+
+[Icons]
+Name: "{group}\dvdisaster"; Filename: "{app}\dvdisaster-win.exe"; WorkingDir: "{app}"
+Name: "{group}\U�ivatelsk� p��ru�ka"; Filename: "{app}\documentation\local\index.html"; Languages: cs
+Name: "{group}\Handbuch"; Filename: "{app}\documentation\local\index.html"; Languages: de
+Name: "{group}\Manual"; Filename: "{app}\documentation\local\index.html"; Languages: en
+Name: "{group}\Manual"; Filename: "{app}\documentation\local\index.html"; Languages: ru
+Name: "{group}\Uninstall"; Filename: "{uninstallexe}"
+Name: "{userdesktop}\dvdisaster"; Filename: "{app}\dvdisaster-win.exe"; WorkingDir: "{app}"
+
+[Run]
+Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-common.pngpack"""; WorkingDir: "{app}\documentation\images"; Flags: runhidden 
+Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-de.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: de
+Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-en.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: en
+Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-ru.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: ru
+Filename: "{app}\dvdisaster.exe"; Parameters: "--debug --sign"; WorkingDir: "{app}"; Flags: runhidden 
+
+[UninstallDelete]
+Type: files; Name:"{app}\.dvdisaster"
+;Type: filesandordirs; Name:"{userappdata}\dvdisaster"
+Type: filesandordirs; Name:"{app}\documentation\images"
+Type: filesandordirs; Name:"{app}\documentation\local\images"
+Type: filesandordirs; Name:"{app}\documentation\local\include"
+Type: filesandordirs; Name:"{app}\documentation\local\thumbnails"
+Type: files; Name:"{app}\signature"
+Type: files; Name:"{app}\medium.iso"
+Type: files; Name:"{app}\medium.ecc"
+Type: files; Name:"{app}\medium.img"
+
+

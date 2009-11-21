@@ -1,0 +1,248 @@
+Installation of the dvdisaster source code distribution
+=======================================================
+[don't edit - generated from documentation/install.template]
+
+Contents
+
+1. Required tools and libraries
+1.1 C compiler, make and other build tools
+1.2 Gtk+ and localozation support
+
+2. Operating system specific issues
+2.1 Windows
+2.1.1 Getting the GNU environment for Windows
+2.2 Mac OS X / Darwin
+2.3 FreeBSD
+2.3.1 Loading the atapicam kernel module by hand
+2.3.2 (Optionally) loading the atapicam kernel module permanently
+2.3.3 (Optionally) recompiling the kernel
+
+3. Compiling the source code
+3.1 Unpacking the source code archive
+3.2 Configuring the package
+3.3 Compiling the package
+
+4. Installation
+4.1 Installation of the program
+4.2 Removing an installation
+
+5. Program documentation
+
+=======================================================
+
+1. Required tools and libraries
+===============================
+
+1.1 C compiler, make and other build tools
+------------------------------------------
+
+dvdisaster requires the usual GNU development tools for compiling 
+C programs. You must have gcc, GNU make, the bash shell and the
+GNU fileutils and textutils packages installed. Other versions
+of these tools will not work and patches for them will not be accepted.
+
+FreeBSD, Linux and NetBSD typically come with suitable packages on 
+their installation media. Sometimes these packages are not installed
+completely by default; you may need to install their development versions
+also. The additional packages are usually suffixed with "-devel" or "-dev".
+
+1.2 Gtk+ and localization support
+---------------------------------
+
+Depending on your operating system you will also need:
+
+- The gettext library			http://www.gnu.org/software/gettext/
+- The iconv library (only for Windows)	http://www.gnu.org/software/libiconv/
+- The pkgconfig tool			http://www.freedesktop.org/software/pkgconfig/releases
+- The GTK+ library version 2.2 or better,    http://www.gtk.org
+  including all auxiliary libraries.
+
+Again, the freeware Unices should have suitable packages on their distribution media.
+
+
+2. Operating system specific issues
+===================================
+
+2.1 Windows
+-----------
+
+2.1.1 Getting the GNU environment for Windows
+
+For Windows the GNU tools are available in the MingW framework: 
+See http://www.mingw.org.
+Building under Cygwin is not supported.
+
+The Gtk+ project offers pre-compiled Windows versions of their libraries;
+see http://www.gimp.org/~tml/gimp/win32/downloads.html for details.
+You'll need both the normal and "-devel" versions of the libraries. 
+
+
+2.2 Mac OS X / Darwin
+---------------------
+
+dvdisaster was ported by Julian Einwag to Darwin, 
+the Unix foundation of Mac OS X. 
+
+Currently dvdisaster needs to be built and run as an X11 application under Mac OS X;
+see http://developer.apple.com/opensource/tools/runningX11.html for more information.
+
+An Aqua compatible version of the Gtk+ library is under development, but not
+yet stable. As soon as this changes, dvdisaster will be able to run under
+Mac OS X without using X11.
+
+
+2.3 FreeBSD
+-----------
+
+2.3.1 Loading the atapicam kernel module by hand (tested on FreeBSD 7.1)
+
+FreeBSD does not pre-install an uniform CD-ROM driver for SCSI and ATAPI drives 
+(as is the case in Linux and Windows). Therefore dvdisaster can not
+use any ATAPI drives in an out-of-the-box FreeBSD installation. 
+
+To manually load the required kernel module, do:
+
+root@freebsd# kldload atapicam
+
+Use the follwing command to see if any CD/DVD/BD drives became
+available:
+
+root@freebsd# camcontrol devlist
+<NAME OF YOUR DRIVE>                at scbus1 target 0 lun 0 (pass0,cd0)
+
+
+2.3.2 (Optionally) loading the atapicam kernel module permanently
+
+If the above step works you can load the kernel module at boot 
+time by adding the line
+
+atapicam_load="YES"
+
+at the end of /boot/loader.conf.local
+
+
+
+2.3.3 (Optionally) recompiling the kernel
+
+If the atapicam kernel module is not available (check the contents
+of /boot/kernel) you will need to recompile the kernel with the following 
+additional device line in the kernel configuration:
+
+device atapicam
+
+The devices ata, scbus, cd, and pass are also required, 
+but are included by default in FreeBSD 6.0 and later.
+
+
+3. Compiling the source code
+============================
+
+It is recommended to compile the source code as a normal
+user, not root. In the following instructions, user@host>
+denotes the shell prompt.
+
+3.1 Unpacking the source code archive
+-------------------------------------
+
+Please change into a directory which is writeable
+for you and unpack the source code archive:
+
+user@host> cd /var/tmp
+user@host> tar xjf dvdisaster-0.72.rc2.tar.bz2
+
+Then change into the newly created directory:
+
+user@host> cd /var/tmp/dvdisaster-0.72.rc2
+
+3.2. Configuring the package
+----------------------------
+
+Please note that the dvdisaster configure script is not 
+generated by GNU autoconf, but should behave in a similar way.
+
+Call the configuration script in the usual way:
+
+user@host> ./configure
+
+The script will possibly print some errors about missing libraries.
+Type "configure --help" to learn about pointing configure 
+to the correct path of already installed libraries.
+
+The "--help" option will also give information about some
+options which are useful if you plan to install the package
+to a certain location.
+
+Please note that the ==buildroot=DIR option is mainly useful for
+package maintainers, but will mess up things when trying a direct
+install via "make install".
+
+
+3.3 Compiling the package
+-------------------------
+
+When the configuration script finishes without error messages,
+compile the source code into the executable program:
+
+user@host> gmake
+
+On some systems, GNU make must be invoked as "make".
+
+Invoke the program for a quick test:
+
+user@linux> ./dvdisaster
+user@windows>./dvdisaster-win
+
+After a short moment the main window should open an the program
+is ready for use. Working with the program from the current 
+directory (e.g. without installation) is okay.
+
+On windows two program version are provided as it is not possible
+to have the same binary operate in command line and window mode
+there. dvdisaster.exe is the command line version, while
+dvdisaster-win.exe provides the graphical user interface.
+
+
+4. Installation
+===============
+
+4.1 Installation of the program
+===============================
+
+To install the program and documentation permanently
+on your system, become root and do:
+
+root@host# gmake install
+
+Before doing the install, please review the output of the "configure" script
+or type "gmake show" to learn about the target directories of the installation.
+Enter "bash configure --help" to get information on changing the installation
+paths.
+
+4.2. Removing an installation
+=============================
+
+During the installation process a shell script is created
+which can be used to remove dvdisaster from your system:
+
+root@host# dvdisaster-uninstall.sh
+
+In order to remove the source code distribution,
+please remove the directory you have created as described
+in section 3.1:
+
+user@host> cd /var/tmp
+user@host> rm -rf dvdisaster-0.72.rc2
+
+
+5. Program documentation
+========================
+
+The online documentation is located in the
+sub directory documentation/en. 
+You can also press the respective toolbar button 
+in dvdisaster to view the online docs.
+
+
+Enjoy using dvdisaster!
+
+

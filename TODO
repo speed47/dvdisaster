@@ -1,0 +1,30 @@
+
+To do/ Release schedule
+
+Version 0.73/0.74: 
+- update tool chain for Windows version
+- find workarounds for the GTK+/Mac OS glitches
+- clean up source code in some places
+- add pause/resume button
+- optionally pause after n read errors for drives which
+  need to cool down 
+- add function for stripping RS02 data from image
+- don't create unusable images when RS02 encoding is aborted
+- add quiet option for command line mode
+- display estimated finishing time for encoding/decoding
+- catch up with many other queued up suggestions
+
+Version 0.79/0.80: new RS03 codec
+ - lots of speed optimizations in error correction data encoding
+ - multithreaded / multicore processor support
+
+Unspecified / later releases
+
+- provide a function for searching directories for suitable .ecc files 
+  for the current image
+
+- add real UDF parsing to udf.c 
+  (currently only the backward compatibility ISO structures are used)
+
+- provide a command line only version (without linkage against GTK+);
+  this is non-trivial.

@@ -1,0 +1,42 @@
+Many thanks to the following people (in alphabetical order):
+
+Harald Bögeholz (hwb@heise.de)
+   provided a lot of insightful discussions on CD/DVD data
+   recovery and Reed-Solomon error correction.
+   The "adaptive read strategy" in dvdisaster is based upon his
+   suggestions and ideas; he had implemented a similar strategy 
+   before and published in issue 16/2005 of the german periodical "c't".
+
+Julian Einwag (julian@einwag.de).
+   provides and maintains the Mac OS X / Darwin port.
+
+Igor Gorbounov (igorbounov@topazelectro.ru)
+   provides and maintains the Russian translation.
+
+Andrei Grecu (andrei.grecu@aon.at)
+   provided an algorithm for recovering defective CD sectors
+   from multiple incomplete RAW reading attempts.
+
+Phil Karn 
+   wrote an excellent library for creating and decoding Reed-Solomon 
+   codes. This project draws a lot of inspiration - and even code - 
+   from his library which can be found at http://www.ka9q.net/code/fec/
+
+   Since the code was optimized and trimmed down for dvdisaster´s 
+   special needs, you should get the original thing if you're 
+   interested in incorporating RS codes into your application.
+
+Daniel Nylander (info@danielnylander.se)
+   provides and maintains the Swedish translation.
+
+Andrea Polverini (polve@polve.com) 
+   provides and maintains the Italian translation.
+
+Luboš Staněk (lubek@users.sourceforge.net)
+   provides and maintains the Czech translation.
+
+Sergey Svishchev (svs@ropnet.ru)
+   provided the NetBSD port.
+
+A lot of other people provided additional suggestions and bug reports;
+see the CHANGELOG file for details.

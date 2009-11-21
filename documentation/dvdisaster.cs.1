@@ -1,0 +1,131 @@
+.\" Czech man page for dvdisaster
+.\"
+.\" Copyright (C) 2004-2006 THE dvdisaster'S COPYRIGHT HOLDER
+.\" This file is distributed under the same license as the dvdisaster package.
+.\"
+.\" Překlad (C) 2006 Luboš Staněk (lubek@users.sourceforge.net)
+.\"
+.TH DVDISASTER 1 "2006-01-04" "0.65" "ochrana pro média CD/DVD"
+
+.SH NÁZEV
+DVDISASTER \- ochrana proti ztrátě dat poškrábáním/stárnutím média CD/DVD
+
+.SH SYNTAXE
+.B dvdisaster
+.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t \||\| \-u \|]
+.RB [\| \-d
+.IR zařízení \|]
+.RB [\| \-p
+.IR prefix \|]
+.RB [\| \-i
+.IR obraz \|]
+.RB [\| \-e
+.IR soubor ecc \|]
+.RB [\| \-j
+.IR n \|]
+.RB [\| -n
+.IR n% \|]
+.RB [\| \-\-adaptive-read \|]
+.RB [\| \-\-auto-suffix \|]
+.RB [\| \-\-cache-size
+.IR n \|]
+.RB [\| \-\-dao \|]
+.RB [\| \-\-fill-unreadable
+.IR n \|]
+.RB [\| \-\-speed-warning
+.IR n \|]
+.RB [\| \-\-spinup\-dalay
+.IR n \|]
+.RB [\| \-\-split\-files \|]
+
+.SH POPIS
+.B DVDISASTER
+poskytuje dodatečné zabezpečení proti ztrátě dat na CD a DVD médiích
+způsobené stárnutím nebo poškrábáním. Vytváří data oprav chyb, která
+jsou použita k obnově nečitelných sektorů, pokud se disk později poškodí.
+.PP
+
+.SH MOŽNOSTI
+Obecné příklady použití:
+.TP
+.B \-r, \-\-read
+Načte obraz média na pevný disk. Použijte -rn-m k načtení určitého rozsahu sektorů,
+t.j. -r100-200.
+.TP
+.B \-c, \-\-create
+Vytvoří informaci .ecc pro obraz média.
+.TP
+.B \-f, \-\-fix
+Pokusí se opravit obraz média s použitím informací .ecc.
+.TP
+.B \-s, \-\-scan
+Skenuje médium na chyby čtení.
+.TP
+.B \-t, \-\-test
+Testuje integritu souborů .img a .ecc.
+.TP
+.B \-u, \-\-unlink
+Smaže soubor .img (byla-li předcházející akce úspěšně dokončena).
+.PP
+
+Specifikace mechaniky a souboru:
+.TP
+.B \-d, \-\-device zařízení
+čte z daného zařízení (výchozí: /dev/cdrom).
+.TP
+.B \-p, \-\-prefix prefix
+prefix souborů .img/.ecc (výchozí: medium.* ).
+.TP
+.B \-i, \-\-image soubor obrazu
+název souboru obrazu (výchozí: medium.img).
+.TP
+.B \-e, \-\-ecc soubor oprav chyb
+název souboru oprav chyb (výchozí: medium.ecc).
+.PP
+
+Vylepšovací možnosti (čtěte dokumentaci před použitím!):
+.TP
+.B \-j, \-\-jump n
+přeskočí n sektorů po chybě čtení (výchozí: 16).
+.TP
+.B \-n, \-\-redundancy n%
+nastaví redundanci pro opravu chyb (výchozí: 14.3%).
+.TP
+.B \-\-adaptive-read
+použije optimalizovanou strategii čtení poškozených médií.
+.TP
+.B \-\-auto-suffix
+automaticky přidá souborové přípony .img a .ecc.
+.TP
+.B \-\-cache-size n
+velikost varovnávací paměti v MB v průběhu akce -c (výchozí: 32 MB).
+.TP
+.B \-\-dao
+předpokládá disk DAO; neořezávat konec obrazu.
+.TP
+.B \-\-fill-unreadable n
+vyplní nečitelné sektory bajtem n
+.TP
+.B \-\-speed-warning n
+vypíše upozornění při změnách rychlosti o více než n procent.
+.TP
+.B \-\-spinup-delay n
+čeká n sekund na roztočení disku.
+.TP
+.B \-\-split-files
+rozdělí soubory na segmenty <= 2 GB.
+.PP
+
+.SH VIZ TÉŽ
+.B Dokumentace
+DVDISASTER je dokumentován svým vlastním manuálem, nainstalovaným v
+.IR %docdir%.
+
+.SH AUTOR
+DVDISASTER napsal Carsten Gnoerlich <carsten@dvdisaster.com>.
+.PP
+Tuto manuálovou stránku napsal Daniel Baumann,
+<daniel.baumann@panthera-systems.net>, pro projekt Debian (ale může být
+užita dalšími).
+.PP
+Do češtiny přeložil Luboš Staněk <lubek@users.sourceforge.net>.

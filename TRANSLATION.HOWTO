@@ -1,0 +1,141 @@
+
+This document describes the process of adding a new translation
+to dvdisaster. It is work in progress and not yet complete.
+
+1) General information
+----------------------
+
+dvdisaster uses GNU gettext for internationalization. 
+
+The following languages are currently maintained:
+
+Czech		- Luboš Staněk (lubek@users.sourceforge.net)
+English 	- Carsten Gnörlich (program author)
+German 		- Carsten Gnörlich (program author)
+Italian		- Andrea Polverini (polve@polve.com)
+Russian		- Igor Gorbounov (igorbounov@topazelectro.ru)
+Swedish		- Daniel Nylander (info@danielnylander.se)
+
+2) Requirements for translating dvdisaster
+------------------------------------------
+
+a) You MUST have a text editor capable of processing UTF-8.
+
+b) Having a complete development environment (e.g. to
+   compile dvdisaster from source) is recommended.
+
+c) Some familiarity with GNU gettext is helpful, too.
+
+
+It is possible to translate dvdisaster without fulfilling
+b) and c). In that case you will simply be translating
+entries in a text file without immediately seeing your 
+translations in the actual dvdisaster application.
+This is NOT recommended and can be _very_ tedious.
+
+Contact carsten@dvdisaster.de for more information.
+
+Appendix A) contains instructions for setting up a new
+language by yourself if you just want to play around
+with translating. 
+
+Appendix B) is a memo for myself to properly set up
+a locale. It is not strictly necessary for playing with
+a new translation.
+
+
+A) Maintainers tasks for adding a new language
+----------------------------------------------
+
+a) It is recommended that you start with a freshly unpacked
+   source distribution. Otherwise, do at least:
+
+   > make clean; make distclean
+
+b) Make sure that your shell environment has the right settings
+   for your locale (e.g. the language you want to translate into):
+
+   > printenv | grep LANG
+   LANG=de_DE.UTF-8
+
+   The example above shows that the current locale is german.
+   We will assume that your locale is xx_XX.
+
+c) Create the initial translation file in the locale directory.
+ 
+   > xgettext *.c -k_ -o locale/xx.po
+
+   Then do:
+
+   > msginit --locale=xx_XX -i locale/xx.po -o locale/xx.po
+
+   Now invoke configure to have the new translation file 
+   recognized by the build process:
+
+   > ./configure
+   > make
+
+d) Start translating by looking for the following lines in locale/xx.po:
+
+#: dvdisaster.c:<some line number>
+msgid "test phrase for verifying the locale installation"
+msgstr ""
+
+#: dvdisaster.c:<some line number>
+#, c-format
+msgid ""
+"This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
+"is free software and you are welcome to redistribute it\n"
+"under the conditions of the GNU GENERAL PUBLIC LICENSE.\n"
+"See the file \"COPYING\" for further information.\n"
+msgstr ""
+
+The idea of GNU gettext is to give the original message following
+the "msgid" tag, and that you supply a translation after the "msgstr" tag.
+Do NOT overwrite the original english message!
+
+For example:
+
+#: dvdisaster.c:<some line number>
+msgid "test phrase for verifying the locale installation"
+msgstr "ok"
+
+#: dvdisaster.c:<some line number>
+#, c-format
+msgid ""
+"This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
+"is free software and you are welcome to redistribute it\n"
+"under the conditions of the GNU GENERAL PUBLIC LICENSE.\n"
+"See the file \"COPYING\" for further information.\n"
+msgstr ""
+"My new translation\n"
+
+dvdisaster should now show the translated greeting message.
+
+Now you can start translating the other strings in locale/xx.po.
+Do a 'make locale' everytime you have edited the xx.po file.
+
+e) When a new version of dvdisaster comes out,
+   compile the package and then do
+
+msgattrib --untranslated locale/de.po
+
+to find out about new untranslated strings.
+
+
+B) Things to edit at the source level for a language
+----------------------------------------------------
+
+This should be fully automated, but alas, it isn't.
+
+- Add translator to General information section in this file
+- Add translator to CREDITS* files
+- Edit GNUmakefile.template (PO_LOCALES)
+- Double check that the translator gets credits in the about dialog
+  text for his language
+- Add localization information in the HTML documentation
+
+- Add Windows codepage to dvdisaster.c
+- Edit installer.template
+
+

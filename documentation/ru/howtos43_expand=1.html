@@ -1,0 +1,288 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Версия 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../de/howtos43.html"></a> 
+       <a href="../en/howtos43.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Содержание</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Новости</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Обзор</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howto's</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">Общая картина</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Поиск ошибок на носителях</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Размещение данных для исправления ошибок в отдельном файле</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Размещение данных для исправления ошибок на носителе</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Восстановление образов носителей</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos41.html">Основные параметры</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos42.html">Восстановление образа</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Дополнительные параметры</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Получение информации об образах и данных для исправления ошибок</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Проверка совместимости образов</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Диалоги и кнопки</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Скачать</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Вопросы и ответы</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Сообщения об ошибках</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Восстановление образов носителей</b></font></td>
+<td rowspan="2" align="right"><img src="images/create-icon.png"></td></tr>
+<tr><td><i>Дополнительные параметры</i></td></tr>
+</table><p>
+
+Первая попытка <a href="howtos42.html">чтения поврежденного носителя</a> 
+обычно дает достаточно данных для исправления ошибок. Если это оне так,
+попробуйте следующее:<p>
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap1"></a>
+<b>Оценивание вероятности восстановления</b><p>
+Изучите результат процесса чтения. В разделе "Обработанные сектора" 
+приводится фактический процент читаемых секторов и сколько процентов
+потребуется для полного восстановления. Используя разность этих двух значений
+(85.6% - 81.3% = 4.3% в примере), можно оценить шансы собрать достаточно секторов для успешного восстановления:<p>
+  </td></tr>
+  <tr><td align="center">
+    <a href="howtos43.html#snap1">
+      <img src="images/adaptive-failure.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Снимок с экрана: Оценивание вероятности восстановления</td></tr>
+</table><pre> </pre>
+<!--- end of screen shot --->
+
+<table cellspacing="0" cellpadding="10px">
+<tr bgcolor="#c0ffc0">
+<td width="10%" align="center" valign="top">&lt; 5%</td>
+<td> Высока вероятность того, что будет получено достаточно данных за счет использования большего числа попыток чтения.
+</td></tr>
+<tr bgcolor="#ffffc0">
+<td width="10%" align="center" valign="top">5%-10%</td>
+<td> Если у вас есть несколько приводов с разными характеристиками чтения, 
+можно получить требуемые данные, если быть настойчивым и терпеливым.
+</td></tr>
+<tr bgcolor="#ffe0c0">
+<td width="10%" align="center" valign="top">10%-20%</td>
+<td> У вас проблема. Если число недостающих секторов не уменьшится значительно 
+ниже 10% за следующие 2-3 попытки чтения, то носитель, вероятно, не удастся восстановить. 
+</td></tr>
+<tr bgcolor="#ffc0c0">
+<td width="10%" align="center" valign="top">&gt; 20%</td>
+<td>Слишком много потеряно данных; этот носитель можно списать как невосстановимый.
+Чтобы этого больше не случалось, используйте данные для исправления ошибок
+с большей избыточностью и сократите интервалы для проверки дефектов.
+</td></tr>
+</table><p>
+
+Попробуйте следующие параметры один за другим в дальнейших попытках чтения.
+Выполняйте полный проход чтения для каждого параметра, чтобы можно было 
+узнать, как он влияет на результат (иногда результаты отличаются еще и из-за привода, используемого для чтения). Когда вы пройдете весь список параметров, вы можете сочетать их в
+более действенных конфигурациях.
+
+<hr>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Выполнение еще одной попытки чтения</b><p>
+Не меняйте никаких значений, кроме установления меньшего значения для завершения 
+процесса чтения. Рекомендуемые значения: 32 для BD, 16 для DVD и 0 для CD (используйте ползунок, 
+помеченный зеленым). Выполните еще одну попытку чтения с использованием этой настройки.
+Можно повторять чтение носителя, пока каждый проход 
+дает дополнительное число новых секторов.<p>
+<b>Совет:</b> Дайте приводу остыть между проходами чтения. Извлекайте и вставляйте
+носитель перед каждым проходом; иногда носитель фиксируется на месте лучше
+и число читаемых секторов увеличивается.
+<p>
+    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Выполнение еще одной попытки чтения</font></td></tr>
+        <tr><td><a href="howtos43_expand=2.html#snap2"><img src="thumbnails/fix-prefs-read-attempts1.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+<b>Завершение образа за счет использования разных приводов</b><p>
+Проведите дополнительные попытки чтения с использованием различных приводов. Перенесите
+образ на другие компьютеры и проверьте, могут ли их приводы добавить читаемые сектора.</b><p>
+
+<hr>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Увеличение числа попыток чтения</b><p>
+<i>Для всех типов носителей (CD, DVD, BD):</i><p>
+Установите число попыток чтения на сектор минимум 5 и максимум 9
+(помечено зеленым).<p>
+<i>Только для CD:</i><p>
+Некоторые приводы могут частично считывать поврежденные секторы с CD.
+Активируйте параметр "Хранение необработанных секторов" и укажите каталог, где
+должны храниться поврежденные сектора (помечено желтым).
+Если будет собрано достачное число фрагментов поврежденного сектора, то будет возможно
+полностью реконструировать его по этой информации.
+    </td>
+    <td>
+      <a name="snap3"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Увеличение числа попыток чтения</font></td></tr>
+        <tr><td><a href="howtos43_expand=3.html#snap3"><img src="thumbnails/fix-prefs-read-attempts2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+
+<i>Изучение результатов нескольких попыток чтения (CD, DVD, BD):</i><br>
+Не все приводы дают улучшение после увеличения числа попыток чтения.
+Наблюдайте за сообщениями вида "Сектор ..., попытка x: успешно" (выделено желтым).
+Это показывает, что 
+привод смог прочитать сектор после нескольких попыток чтения. Если таких сообщений нет, увеличение числа попыток чтения не оправдывает себя для соответствующего привода.
+    </td>
+    <td>
+      <a name="snap4"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Несколько попыток чтения</font></td></tr>
+        <tr><td><a href="howtos43_expand=4.html#snap4"><img src="thumbnails/fix-reread-dvd.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<a name="21h"></a>
+<i>Изучение частичного чтения поврежденных секторов CD:</i><br>
+Когда весь носитель будет обработан, загляните в каталог, введенный выше
+(в этом примере /var/tmp/raw). Если здесь никаких файлов не создано, то
+привод, вероятно, не поддерживает требуемый режим чтения.
+Однако если у вас есть несколько приводов, которые создают файлы с необработанными секторами, тогда пусть они все работают в том же каталоге. Сбор фрагментов необработанных секторов от разных приводов повышает шанс восстановления поврежденных секторов.
+<p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<i>Использование другого режима низкоуровневого чтения для CD-носителей:</i><br>
+На некоторых приводах использование предустановленного режима низкоуровневого чтения "20h" может не работать.
+Выполните еще одну попытку чтения, используя режим низкоуровневого чтения "21h" (смотрите снимок с экрана).
+Проверьте вновь, не создались ли файлы с необработанными секторами.
+    </td>
+    <td>
+      <a name="snap5"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Использование другого режима низкоуровневого чтения</font></td></tr>
+        <tr><td><a href="howtos43_expand=5.html#snap5"><img src="thumbnails/fix-prefs-drive2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

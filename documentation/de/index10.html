@@ -1,0 +1,176 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
+        
+       <a href="../en/index10.html"></a> 
+       <a href="../ru/index10.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Inhalt</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Neuigkeiten</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Überblick</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Beispiele für die Fehlerkorrektur</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="index20.html">dvdisaster ergänzt Qualitäts-Analysen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="index30.html">Vor- und  Nachteile von dvdisaster</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Typische Anwendungen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Herunterladen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Fragen und Antworten</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Fehler berichten</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Beispiele für die Fehlerkorrektur</h3>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+   <b>Einlesen beschädigter Datenträger.</b> Der hier bearbeitete Datenträger
+   ist in den äußeren Bereichen verfärbt und teilweise unlesbar geworden. Eine
+   Oberflächenanalyse ergibt rund 23.000 unlesbare Sektoren (von insgesamt ca. 342.000
+   Sektoren, also  7,2% defekte Sektoren).
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Einlesen eines beschädigten Datenträgers.</font></td></tr>
+        <tr><td><a href="index10_expand=1.html#snap1"><img src="thumbnails/recover-linear.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+   <b>Wiederherstellung des Abbilds.</b> Das eingelesene Abbild ist unvollständig,
+   da rund 23.000 Sektoren nicht gelesen werden konnten. Diese Sektoren werden nun
+   mit Hilfe der Fehlerkorrektur-Daten
+   von dvdisaster wiederhergestellt.
+   Bei der Wiederherstellung enthielt der schlechteste
+   Fehlerkorrektur-Bereich 20 Fehler. Dies entspricht
+   einer maximal 63%-igen Auslastung der Fehlerkorrektur und bedeutet, daß der
+   vorliegende Grad an Beschädigung ohne Schwierigkeiten durch die Fehlerkorrektur
+   mit den gewählten Grundeinstellungen bewältigt werden kann. 
+    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Wiederherstellung des Abbilds.</font></td></tr>
+        <tr><td><a href="index10_expand=2.html#snap2"><img src="thumbnails/fix-image.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<b>Die Wiederherstellung benötigt Fehlerkorrektur-Daten:</b> 
+Der gerade beschriebene Wiederherstellungsprozeß benötigte
+Fehlerkorrektur-Daten. Stellen Sie sich diese
+Daten als eine spezielle Form des Anlegens einer Sicherungskopie vor (der Speicherbedarf 
+ist allerdings geringer als bei einer vollständigen Sicherung).
+Wie bei einer normalen Datensicherung müssen die Fehlerkorrektur-Daten angelegt werden,
+<i>bevor</i> der Datenträger beschädigt wird.<p>
+
+Oder anderes herum gesagt, wenn Sie einen beschädigten Datenträger besitzen, aber keine
+Fehlerkorrektur-Daten dafür angelegt haben, dann sind Ihre Daten sehr wahrscheinlich
+verloren.<p>
+
+
+<a href="index20.html">Warum Qualitäts-Analysen nicht ausreichen...</a>
+
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1">Alte Dokumentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

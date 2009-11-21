@@ -1,0 +1,31 @@
+pngpack: lossless image compression for a series of screen shots
+Copyright (C) 2005-2009 Carsten Gnoerlich.
+
+pngpack is a specialized archival format for distributing screen
+shots (which are typically shipped with on-line documentation).
+
+pngpack provides lossless compression which exploits redundancy 
+in a series of images. For example, if you have a collection of 
+screen shots which all contain a "Quit" button, the image of the 
+"Quit" button is stored once and will then be re-used in all other 
+images. 
+
+In a typical scenario, a single image compresses about
+30-40% better than PNG, and a series of 10 similar images
+can save upto 90% of the storage if PNG had been used.
+
+However, no offense is intended against PNG - PNG is a great
+general purpose format and it is actually used as input and
+output format for pngpack.
+
+In order to get the best compression out of pngpack, 
+use images with a regular structure and very few colors.
+
+pngpack works best with screen shots of user interfaces 
+and simple computer generated charts and slides.
+Avoid including color gradients, background patterns and
+photorealistic backgrounds. For screen shots, do not use
+theming and use a single color for your window and desktop
+background.
+
+

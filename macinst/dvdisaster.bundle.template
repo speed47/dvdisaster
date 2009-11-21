@@ -1,0 +1,96 @@
+<?xml version="1.0"?> <!--*- mode: xml -*-->
+<app-bundle>
+  <meta>
+    <prefix>${env:JHBUILD_PREFIX}</prefix>
+    <prefix name="src">%srcdir%</prefix>
+  </meta>
+
+  <plist>${project}/Info.plist</plist>
+
+  <!-- Builtin launcher messes up LANG settings.  -->
+  <launcher-script>${project}/launcher.sh</launcher-script>
+
+  <!-- The executable for the application -->
+  <main-binary>${prefix:src}/dvdisaster</main-binary>
+
+  <!-- Modules for GTK+ (image loaders, etc) -->
+  <binary>${prefix}/lib/gtk-2.0</binary>
+
+  <!-- Application icons -->
+  <data dest="${bundle}/Contents/Resources/dvdisaster.icns">
+    ${project}/dvdisaster.icns
+  </data>
+
+  <!-- Plain text documentation -->
+  <data dest="${bundle}/Contents/Resources/doc/CHANGELOG">
+    ${prefix:src}/CHANGELOG
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/COPYING">
+    ${prefix:src}/COPYING
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/CREDITS*">
+    ${prefix:src}/CREDITS*
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/README.MODIFYING">
+    ${prefix:src}/README.MODIFYING
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/TODO">
+    ${prefix:src}/TODO
+  </data>
+
+  <!-- Locales -->
+  <data dest="${bundle}/Contents/Resources/locale/cs/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/cs/LC_MESSAGES/dvdisaster.mo
+  </data>
+  <data dest="${bundle}/Contents/Resources/locale/de/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/de/LC_MESSAGES/dvdisaster.mo
+  </data>
+  <data dest="${bundle}/Contents/Resources/locale/it/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/it/LC_MESSAGES/dvdisaster.mo
+  </data>
+  <data dest="${bundle}/Contents/Resources/locale/ru/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/ru/LC_MESSAGES/dvdisaster.mo
+  </data>
+  <data dest="${bundle}/Contents/Resources/locale/sv/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/sv/LC_MESSAGES/dvdisaster.mo
+  </data>
+
+  <!-- User manuals-->
+  <data dest="${bundle}/Contents/Resources/doc/include/dvdisaster.css">
+    ${prefix:src}/documentation/include/dvdisaster.css
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/images/*.png">
+    ${prefix:src}/documentation/images/*.png
+  </data>
+
+  <data dest="${bundle}/Contents/Resources/doc/de/images/*.png">
+    ${prefix:src}/documentation/de/images/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/de/thumbnails/*.png">
+    ${prefix:src}/documentation/de/thumbnails/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/de/*.html">
+    ${prefix:src}/documentation/de/*.html
+  </data>
+
+  <data dest="${bundle}/Contents/Resources/doc/en/images/*.png">
+    ${prefix:src}/documentation/en/images/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/en/thumbnails/*.png">
+    ${prefix:src}/documentation/en/thumbnails/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/en/*.html">
+    ${prefix:src}/documentation/en/*.html
+  </data>
+
+  <data dest="${bundle}/Contents/Resources/doc/ru/images/*.png">
+    ${prefix:src}/documentation/ru/images/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/ru/thumbnails/*.png">
+    ${prefix:src}/documentation/ru/thumbnails/*.png
+  </data>
+  <data dest="${bundle}/Contents/Resources/doc/ru/*.html">
+    ${prefix:src}/documentation/ru/*.html
+  </data>
+
+</app-bundle>

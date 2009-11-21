@@ -1,0 +1,295 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos43.html"></a> 
+        
+       <a href="../ru/howtos43.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos41.html">Basic settings</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos42.html">Recovering the image</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Advanced settings</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+<table width="100%" bgcolor="#f0f0f0">
+<tr><td><font size="+1"><b>Recovering media images</b></font></td>
+<td rowspan="2" align="right"><img src="images/create-icon.png"></td></tr>
+<tr><td><i>Advanced settings</i></td></tr>
+</table><p>
+
+The first attempt of <a href="howtos42.html">reading the defective medium</a> 
+will usually provide enough data for the error correction. If it did not,
+try the following:<p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Estimating the chance of recovery</b><p>
+Examine the output of the reading process. Under the "Sectors processed" section
+you will find the actual percentage of readable sectors and how many percent will
+be needed for a full recovery. Using the difference between the two values
+(85.6% - 81.3% = 4.3% in the example) you can estimate the likelyhood of being able
+to collect enough sectors for a successful recovery:<p>
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Estimating the chance of recovery</font></td></tr>
+        <tr><td><a href="howtos43_expand=1.html#snap1"><img src="thumbnails/adaptive-failure.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<table cellspacing="0" cellpadding="10px">
+<tr bgcolor="#c0ffc0">
+<td width="10%" align="center" valign="top">&lt; 5%</td>
+<td>Chances are good that you will get enough data using more reading attempts.
+</td></tr>
+<tr bgcolor="#ffffc0">
+<td width="10%" align="center" valign="top">5%-10%</td>
+<td> If you have several drives with different reading characteristics 
+you may get the required data by being persistent and patient.
+</td></tr>
+<tr bgcolor="#ffe0c0">
+<td width="10%" align="center" valign="top">10%-20%</td>
+<td> You are in trouble. If the missing sectors do not drop significantly
+below 10% during the next 2-3 reading attempts the medium is probably unrecoverable. 
+</td></tr>
+<tr bgcolor="#ffc0c0">
+<td width="10%" align="center" valign="top">&gt; 20%</td>
+<td>Too much data loss; you can write this medium off as unrecoverable.
+To prevent this from happening again, use error correction data with
+higher redundancies and shorten the intervals for defect scanning.
+</td></tr>
+</table><p>
+
+Try the following settings one by one in further read attempts.
+Please perform a complete reading pass for each setting so that you 
+learn how it affects the outcome (sometimes the results also differ
+depending on the drive used for reading). When you have gone through the list
+you may combine them into more powerful configurations.
+
+<hr>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Perform another reading attempt</b><p>
+Do not alter any values except for setting a smaller value for terminating the
+reading process. Recommended values are: 32 for BD, 16 for DVD and 0 for CD (use
+the slider marked green). Perform another reading attempt using this setting.
+You can repeatedly read the medium as long as any pass
+provides a significant number of new sectors.<p>
+<b>Hint:</b> Let the drive cool down between the reading passes. Eject and load
+the medium before each pass; sometimes the medium comes to rest in a better
+position and the number of readable sectors improves.
+<p>
+    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Perform another reading attempt</font></td></tr>
+        <tr><td><a href="howtos43_expand=2.html#snap2"><img src="thumbnails/fix-prefs-read-attempts1.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+<b>Complete the image using different drives</b><p>
+Perform additional reading attempts using different drives. Transfer the
+image to other computers to see if their drives can contribute more readable
+sectors.</b><p>
+
+<hr>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<b>Increase the number of reading attempts</b><p>
+<i>For all media types (CD, DVD, BD):</i><p>
+Set the number of reading attempts per sector to a minimum of 5 and a maximum of 9
+(green markings).<p>
+<i>Only for CD media:</i><p>
+Some drives are capable of partially reading defective sectors on CD media.
+Activate the "Raw sector caching" option and specify a directory where
+fragments of defective sectors should be stored (yellow markings).
+If enough fragments of a defective sector have been collected it may be possible
+to fully reconstruct it from that information.
+    </td>
+    <td>
+      <a name="snap3"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Increase the number of reading attempts</font></td></tr>
+        <tr><td><a href="howtos43_expand=3.html#snap3"><img src="thumbnails/fix-prefs-read-attempts2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap4"></a>
+
+<i>Examining results of multiple reading attempts (CD, DVD, BD):</i><br>
+Not all drives show an improvement after increasing the number of reading attempts.
+Watch for messages of the form "Sector ..., try x: success" (highlighted in yellow).
+These indicate that
+the drive could read a sector after several reading attempts. If you never see such
+messages, increasing the number of reading attempts does not pay off for the
+respective drive.
+  </td></tr>
+  <tr><td align="center">
+    <a href="howtos43.html#snap4">
+      <img src="images/fix-reread-dvd.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Screen shot: Multiple reading attempts</td></tr>
+</table><pre> </pre>
+<!--- end of screen shot --->
+
+<a name="21h"></a>
+<i>Examining partial reading of defective CD sectors:</i><br>
+When the whole medium has been processed, look into the directory you entered
+above (/var/tmp/raw in the example). If no raw files have been created
+the drive may not support the required reading mode.
+However if you have several drives which do create raw files, then let them all
+work in the same raw file directory. Collecting raw sector fragments from
+different drives hightens the chance of reconstructing the defective sectors.
+<p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td valign="top">
+<i>Use a different raw reading mode for CD media:</i><br>
+Using the preset "20h" raw reading mode might not work on some drives.
+Perform another reading attempt using raw reading mode "21h" (see the screenshot).
+Check again whether some raw files have been created.
+    </td>
+    <td>
+      <a name="snap5"></a>
+      <table class="thumbnail" width="160px">
+        <tr><td><font size="-1">Use different raw reading mode</font></td></tr>
+        <tr><td><a href="howtos43_expand=5.html#snap5"><img src="thumbnails/fix-prefs-drive2.png"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

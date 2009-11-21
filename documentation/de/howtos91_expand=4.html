@@ -1,0 +1,372 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
+        
+       <a href="../en/howtos91.html"></a> 
+       <a href="../ru/howtos91.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Inhalt</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Neuigkeiten</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Überblick</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Typische Anwendungen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">Das große Bild</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Datenträger auf Lesefehler prüfen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Fehlerkorrektur-Daten als Datei erzeugen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Fehlerkorrektur-Daten auf dem Datenträger ablegen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Datenträger-Abbild rekonstruieren</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Informationen über Abbilder und Fehlerkorrektur-Daten anzeigen</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Abbild-Kompatibilität überprüfen</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">bei Fehlerkorrektur-Dateien</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos92.html">beim Ablegen von Fehlerkorrektur-Daten auf dem Datenträger</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Bedienelemente</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Herunterladen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Fragen und Antworten</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Fehler berichten</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Kompatibilität zwischen Fehlerkorrektur-Dateien und ISO-Abbildern prüfen</h3>
+
+
+<b>Motivation:</b> Sie möchten einen Datenträger brennen und gleich
+dazu eine Fehlerkorrektur-Datei erstellen.  Aus Gründen der Zeitersparnis gehen
+Sie wie folgt vor:
+
+<ol>
+<li>Sie erstellen ein ISO-Abbild mit Ihrer Brennsoftware.</li>
+<li>Sie brennen daraus den Datenträger.</li>
+<li>Sie erzeugen aus diesem Abbild die Fehlerkorrektur-Datei.</li>
+</ol>
+
+<b>Mögliche Inkompatibilität:</b> Die Brennsoftware erzeugt einen Datenträger,
+der dem ISO-Abbild nicht genau entspricht. Dies kann dazu führen, 
+daß die Fehlerkorrektur später nicht in der Lage ist, den Inhalt des defekten
+Datenträger wiederherzustellen.<p>
+
+<b>So überprüfen Sie die Kompatibilität:</b><p>
+
+Bitte beachten Sie daß einige Schritte hier nur skizziert werden;
+folgen Sie den Querverweisen zu ausführlichen Beschreibungen und Beispielen
+in den jeweiligen Unterkapiteln dieser Dokumentation. <p>
+
+<table>
+<tr>
+<td width="200px" align="center"><img src="../images/good-image.png">
+<p><img src="../images/down-fork-arrow.png"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Erzeugen Sie ein ISO-Abbild der Daten</b>, die Sie auf einen
+Datenträger brennen möchten. Falls Sie nicht wissen, wie Sie mit Ihrer Brennsoftware
+ein ISO-Abbild erzeugen können, schauen Sie in das
+<a href="howtos33_way=1.html">Beispiel zum Erzeugen von ISO-Abbildern</a>.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="100px" align="center">
+<img src="../images/good-cd.png" border="0" align="center"><p>
+<img src="../images/down-arrow.png" border="0">
+</td>
+<td width="100px" align="center" valign="top">
+<img src="../images/ecc.png" border="0" align="center">
+</td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Datenträger brennen und Fehlerkorrektur-Datei erzeugen.</b>
+Verwenden Sie das gerade erzeugte ISO-Abbild, um 
+den <a href="howtos33_way=3.html#c">Datenträger zu brennen</a>. Nehmen Sie
+anschließend <a href="howtos22.html#ecc">diese Grundeinstellungen</a> vor und
+<a href="howtos23_way=2.html">erzeugen Sie eine Fehlerkorrektur-Datei</a>
+aus dem Abbild.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="100px" align="center">
+<img src="../images/good-image2.png" border="0"><p>
+<img src="../images/down-arrow.png" border="0">
+</td>
+<td width="100px" align="center"> </td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Erstellen Sie ein <i>zweites</i> Abbild aus dem <i>gebrannten</i> Datenträger.</b> Verwenden Sie die gleichen <a href="howtos22.html#read">Grundeinstellungen</a>
+und das gleiche Vorgehen wie beim <a href="howtos23_way=1.html">Einlesen eines Datenträgers</a> zum Erstellen einer Fehlerkorrektur-Datei. Allerdings brauchen Sie die
+Fehlerkorrektur-Datei nicht noch einmal zu erzeugen.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa2.html">
+<img src="../images/select-image.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Geben Sie den Dateinamen des <i>zweiten</i> ISO-Abbilds</b> an, 
+das Sie eben von dem Datenträger eingelesen haben. Beachten Sie daß der folgende
+Test nutzlos ist wenn Sie mit dem ersten Abbild arbeiten, das Sie mit der 
+Brennsoftware erstellt haben.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa3.html">
+<img src="../images/select-ecc.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top">
+<b>Geben Sie außerdem den Namen der Fehlerkorrektur-Datei</b> an,
+sofern dieser nicht ohnehin noch voreingestellt ist.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Beginnen Sie die Auswertung</b> durch
+Klicken auf den "Vergleichen"-Knopf.</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap1"></a>
+      <a href="howtos91_expand=1.html#snap1">       <img src="thumbnails/compat-okay-rs01.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Betrachten Sie das Ergebnis des Vergleichs.</b>
+Wenn Sie die grünen Meldungen "Gutes Abbild" und "Gute Fehlerkorrektur-Datei"
+erhalten, sind die Brennsoftware und dvdisaster bezüglich der ISO-Abbilder
+kompatibel. Sie können in Zukunft Ihre Fehlerkorrektur-Dateien direkt aus
+den ISO-Abbildern der Brennsoftware erzeugen.
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<hr>
+
+<a name="err"> </a>
+<b>Mögliche Fehlerursachen und -behebungen:</b><p>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap2"></a>
+      <a href="howtos91_expand=2.html#snap2">       <img src="thumbnails/compat-150-rs01.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Typisches Problem: Falsche Abbildgröße.</b>
+Der Vergleich wird möglicherweise herausfinden daß das Abbild länger als erwartet
+ist. Typisch sind Werte von 150 oder 300 Sektoren bei CD oder 1-15 Sektoren
+bei DVD. Es ist möglich, daß die Brennsoftware aus technischen Gründen einfach
+einige leere Sektoren an das Abbild angehängt hat. Führen Sie die folgenden
+Schritte aus um herauszufinden ob dies der Fall ist:
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/fix-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Beginnen Sie einen Reparaturvorgang.</b>
+</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table>
+  <tr>
+    <td width="200px" align="center">
+      <a name="snap3"></a>
+      <a href="howtos91_expand=3.html#snap3">       <img src="thumbnails/compat-dialog-rs01.png" border="0">
+       <br><img src="../images/down-arrow.png" border="0">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td valign="top">
+<b>Bestätigen Sie den Dialog.</b>
+Es wird ein Dialog erscheinen, in denen Sie gefragt werden ob das Abbild
+um die überzähligen Sektoren verkürzt werden soll. Bestätigen Sie mit "OK".
+    </td>
+  </tr>
+</table><p>
+<!--- end of screen shot --->
+
+
+<table>
+<tr>
+<td width="200px" align="center">
+<img src="images/stop-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Brechen Sie den Reparaturvorgang ab,</b>
+da es außer der Verkürzung des Abbilds nichts weiter zu tun gibt.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="200px" align="center">
+<a href="howtosa4.html">
+<img src="images/compare-icon.png" border="0">
+<p><img src="../images/down-arrow.png" border="0"></a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top"><b>Beginnen Sie die Auswertung</b> erneut durch
+Klicken auf den "Vergleichen"-Knopf.</td>
+</tr>
+</table>
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap4"></a>
+<b>Betrachten Sie das Ergebnis des erneuten Vergleichs.</b>
+Wenn Sie jetzt die grünen Meldungen "Gutes Abbild" und "Gute Fehlerkorrektur-Datei"
+erhalten, haben Sie tatsächlich nur ein kosmetisches Problem: Die Brennsoftware
+hat einige leere Sektoren am Ende des Abbilds beim Brennen hinzugefügt.
+  </td></tr>
+  <tr><td align="center">
+    <a href="howtos91_expand=0.html#snap4">
+      <img src="images/compat-okay-rs01.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Bildschirmfoto: Informationen anzeigen.</td></tr>
+</table><!--- end of screen shot --->
+
+<font color="#800000">Wenn das Problem trotz der obigen Schritte bestehen bleibt,
+können Sie <i>nicht</i> davon ausgehen, daß dvdisaster und die Brennsoftware
+kompatibel sind. Die erzeugten Fehlerkorrektur-Dateien werden voraussichtlich
+unbrauchbar sein.</font> <p> 
+Erzeugen Sie im Fall der Inkompatibilität Ihre Fehlerkorrektur-Dateien mit der
+nachfolgend beschriebenen Methode:
+
+<hr>
+
+<pre> </pre>
+
+<b>Alternative: So vermeiden Sie mögliche Inkompatibilitäten:</b>
+
+<ol>
+<li>Brennen Sie erst den Datenträger.</li>
+<li>Erstellen das ISO-Abbild mit dvdisaster von dem gebrannten Datenträger.</li>
+<li> Erzeugen Sie aus diesem Abbild die Fehlerkorrektur-Datei.</li>
+</ol>
+Dieses Vorgehen ist durch den zusätzlichen Lesevorgang langsamer, hat allerdings
+auch den Vorteil daß der gebrannte Datenträger einmal komplett auf Lesbarkeit
+überprüft wird.
+
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1">Alte Dokumentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
+        
+       <a href="../en/qa10.html"></a> 
+       <a href="../ru/qa10.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Inhalt</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">Neuigkeiten</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Überblick</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Typische Anwendungen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Herunterladen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Fragen und Antworten</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Technische Fragen</font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="qa20.html">Fehlermeldungen</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Fehler berichten</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3><a name="top">Technische Fragen</a></h3>
+
+<a href="qa10.html#nls">2.1 In welchen Übersetzungen ist das Programm verfügbar?</a><p>
+<a href="qa10.html#media">2.2 Welche Datenträger-Typen werden unterstützt?</a><p>
+<a href="qa10.html#filesystem">2.3 Welche Dateisysteme werden unterstützt?</a><p>
+<a href="qa10.html#aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a><p>
+
+<hr><p>
+
+<b><a name="nls">2.1 In welchen Übersetzungen ist das Programm verfügbar?</a></b><p>
+
+dvdisaster beinhaltet Bildschirmtexte in den folgenden Sprachen:<p>
+
+<table>
+<tr><td>&nbsp;&nbsp;&nbsp;</td><td>Deutsch</td><td>--</td><td>vollständig</td></tr>
+<tr><td></td><td>Englisch</td><td>--</td><td>vollständig</td></tr>
+<tr><td></td><td>Italienisch</td><td>--</td><td>bis Version 0.65</td></tr>
+<tr><td></td><td>Russisch</td><td>--</td><td>vollständig</td></tr>
+<tr><td></td><td>Schwedisch</td><td>--</td><td>vollständig</td></tr>
+<tr><td></td><td>Tschechisch</td><td>--</td><td>bis Version 0.66</td></tr>
+</table><p>
+
+Übersetzer/-innen für andere Sprachen sind willkommen!<p>
+
+dvdisaster übernimmt die Spracheinstellungen des Betriebssystems
+automatisch. Falls die lokale Sprache noch nicht unterstützt wird,
+werden englische Texte verwendet. Eine andere Sprache kann mit Hilfe
+von Umgebungsvariablen eingestellt werden.<p>
+
+Zum Beispiel für die bash-Kommandozeile und deutsche Sprache:
+
+<pre>export LANG=de_DE</pre>
+
+Wenn Umlaute nicht richtig oder als "a,"o,"u usw. dargestellt werden,
+fehlt eventuell noch: <p>
+
+<tt>export OUTPUT_CHARSET=iso-8859-1</tt> (X11, XTerm)
+
+<div align=right><a href="qa10.html#top">&uarr;</a></div>
+
+
+
+<b><a name="media">2.2 Welche Datenträger-Typen werden unterstützt?</a></b><p>
+
+dvdisaster unterstützt einmal oder mehrmals beschreibbare 
+CD-, DVD- und BD-Datenträger.
+Datenträger mit Mehrfachsitzungen (engl.: multisession)
+oder einem Kopierschutz können <i>nicht</i> verwendet werden.<p>
+
+Unterstützte Datenträger nach Typ:<p>
+
+<b>CD-R, CD-RW</b><p>
+
+<ul>
+ <li>nur Daten-CDs werden unterstützt.</li>
+</ul>
+
+<b>DVD-R, DVD+R</b><p>
+
+<ul>
+<li>Keine weiteren Einschränkungen bekannt.</li>
+</ul>
+
+<b>DVD-R DL, DVD+R DL (zweischichtig)</b>
+<ul>
+<li>
+Das Laufwerk muß die <a href="qa20.html#dvdrom">Erkennung
+des Datenträger-Typs</a> ermöglichen. Dies erfordert typischerweise 
+Laufwerke, die auch zweischichtige Medien beschreiben können.
+</li>
+</ul>
+
+<b>DVD-RW, DVD+RW</b><p>
+
+<ul>
+<li>Einige Laufwerke liefern eine <a href="qa20.html#rw">falsche Abbild-Größe</a>.<br>
+Abhilfe: Abbildgröße aus dem ISO/UDF- oder ECC/RS02-Dateisystem ermitteln.
+</li>
+</ul>
+
+<b>DVD-RAM</b><p>
+<ul>
+<li>Müssen wie DVD-R/-RW mit einem ISO/UDF-Abbild beschrieben sein.</li>
+<li>Keine Unterstützung bei Einsatz als Wechselspeichermedium / packet writing.</li>
+<li>Ähnliche Probleme mit der Erkennung der <a href="qa20.html#rw">Abbild-Größe</a>
+wie oben beschrieben möglich.</li>
+</ul>
+
+<b>BD-R, BD-RW</b><p>
+
+<ul>
+<li>Momentan sind keine Einschränkungen bekannt, aber mit
+zweischichtigen Typen (die 50GB-Versionen) liegen noch kaum
+Erfahrungen vor.</li>
+</ul>
+
+<b>Nicht verwendbare Typen</b> (kein Einlesen des Abbildes möglich):<p> 
+BD-ROM (gepreßte BDs), DVD-ROM (gepreßte DVDs) sowie Audio-CD und Video-CD.
+
+<div align=right><a href="qa10.html#top">&uarr;</a></div><p>
+
+
+<b><a name="filesystem">2.3 Welche Dateisysteme werden unterstützt?</a></b><p>
+
+dvdisaster arbeitet ausschließlich auf der Ebene von Datenträger-Abbildern,
+auf die es sektorweise zugreift. 
+Daher ist es unerheblich, mit welchem Dateisystem der Datenträger formatiert wurde. <p>
+Weil dvdisaster die Struktur der Dateisysteme nicht kennt bzw. nutzt,
+kann es keine logischen Fehler darin beheben und insbesondere keine
+verlorengegangenen oder gelöschten Dateien wiederherstellen.
+<div align=right><a href="qa10.html#top">&uarr;</a></div><p>
+
+
+<b><a name="aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a></b><p>
+
+Windows 98 und ME verwenden ASPI als Treiber, um CD/DVD-Laufwerke 
+anzusprechen. Windows NT und seine Nachfolger
+sind hingegen mit der Schnittstelle SPTI ausgerüstet, erlauben
+jedoch auch noch die zusätzliche Installation von ASPI-Treibern.<p>
+
+<i>&gt;&nbsp; Vor- und Nachteile von ASPI unter Windows NT/2000/XP?</i><p>
+
+<table>
+<tr valign=top><td>+</td><td>Es werden keine Systemverwalterrechte für den Zugriff
+auf die Laufwerke benötigt.</td></tr>
+<tr valign=top><td>-</td><td>ASPI erlaubt manchmal keine eindeutige Zuordnung von Laufwerksbuchstaben.</td></tr>
+<tr valign=top><td>-</td><td>Einige Brennprogramme installieren ihre 
+eigenen ASPI-Versionen.
+Die zusätzliche Installation eines fremden ASPI-Treibers kann die Funktion
+der vorhandenen Brennsoftware stören.</td></tr>
+</table><p>
+
+<i>&gt;&nbsp; Welche ASPI-Version wird für die Benutzung mit dvdisaster empfohlen?</i><p>
+
+Adaptec stellt seine ASPI-Treiber zum kostenlosen Herunterladen bereit.
+Unter Windows 2000/XP erkennen die Versionen 4.72.* manchmal keine
+Laufwerke. In diesem Fall hilft typischerweise die Installation der
+älteren Version 4.60.<p>
+
+<i>&gt;&nbsp; Die Laufwerksbuchstaben stimmen unter ASPI nicht!</i><p>
+
+Die ASPI-Treiber verwenden ein eigenes System von Laufwerkskennungen,
+das nicht zu den Laufwerksbuchstaben von Windows kompatibel ist.<br>
+Um eine einheitliche Benutzerschnittstelle für SPTI und ASPI zu bieten, 
+versucht dvdisaster zu erraten, wie die Laufwerke unter ASPI zugeordnet sind.
+Diese Zuordnung gelingt nicht in allen Konfigurationen.<p>
+
+Mit Hilfe der --list -Funktion kann man 
+die aktuelle Zuordnung von Laufwerksbuchstaben herausfinden.<p>
+
+<i>&gt;&nbsp; Wie kann man zwischen SPTI und ASPI auswählen?</i><p>
+
+In der Grundeinstellung wählt dvdisaster automatisch zwischen SPTI und
+ASPI aus, wobei SPTI bevorzugt wird.
+Die Benutzung von ASPI kann allerdings erzwungen werden; 
+näheres dazu steht in der Beschreibung
+der --list -Funktion.
+
+<div align=right><a href="qa10.html#top">&uarr;</a></div><p>
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1">Alte Dokumentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

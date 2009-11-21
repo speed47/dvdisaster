@@ -1,0 +1,250 @@
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Overview</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!--- Title header --->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <font size="+3"><b>dvdisaster</b></font>
+       <i>Version 0.72</i>
+  </td>
+  <td align="right">
+     <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../de/howtos52.html"></a> 
+        
+       <a href="../ru/howtos52.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!--- Language chooser or separator --->
+<table width="100%" cellpadding="0" border="0">
+  <tr bgcolor="#000000">
+    <td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+  </tr>
+  <tr><td colspan="2" width="100%" height="10">
+     <img width=1 height=1 alt="">
+  </td></tr>
+</table>
+  
+<!--- Main body (Navigation, actual page content, optional news column) ---> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!--- Navigation --->
+  <td bgcolor="#f0f0f0" valign="top" width="20%">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <font size="-1"><b>Contents</b></font>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr bgcolor="#000000">
+	      <td width="100%"><img width=1 height=1 alt=""></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+
+            <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="howtos.html">Howtos</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos60.html">The big picture</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos10.html">Scanning media for errors</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos20.html">Putting error correction data on a separate file</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos30.html">Putting error correction data on the medium</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos40.html">Recovering media images</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos50.html">Getting information about images and error correction data</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos51.html">Show information</a></font></td></tr>
+            <tr><td valign="top"></td><td>-</td><td><font size="-1">Results for error correction files</font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos53.html">Results für augmented images</a></font></td></tr>
+        <tr><td valign="top"></td><td>-</td><td><font size="-1"><a href="howtos59.html">Examples</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtos90.html">Testing image compatibility</a></font></td></tr>
+            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="howtosa0.html">Dialogs and buttons</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="download.html">Download</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="qa.html">Questions and Answers</a></font></td></tr>
+            <tr><td></td><td></td><td height="10"></td></tr>
+            <tr><td colspan=3><font size="-1"><a href="feedback.html">Bug reporting</a></font></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!--- Actual page contents --->
+  <td valign="top" width="77%" rowspan="2">
+
+<!--- Insert actual page content below --->
+
+<h3>Results for error correction files</h3>
+
+<!--- begin of screen shot --->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap1"></a>
+
+Comparing an image against its error correction file produces information
+in two output fields; each related to one of the files:
+  </td></tr>
+  <tr><td align="center">
+    <a href="howtos52_expand=0.html#snap1">
+      <img src="images/compat-okay-rs01.png">
+    </a>
+  </td></tr>
+  <tr><td align="center">Screen shot: Image and error correction file.</td></tr>
+</table><!--- end of screen shot --->
+
+<table>
+<tr><td colspan="2">Output field <b>"Image file summary":</b><br><hr></td><td></td></tr>
+<tr>
+<td valign="top">Medium sectors:</td>
+<td>The number of sectors in the ISO image (one sector = 2KB).</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<td valign="top">Checksum errors:</td>
+<td>The error correction file contains CRC32 checksums for each image
+sector. If this value is greater than zero some sectors were readable
+but their contents do not match the checksum. The error correction will
+try to recalculate the contents of these sectors.
+</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Missing sectors:</td>
+<td>This is the number of sectors which could not be read from the medium.
+The error correction will try to recover the contents of these sectors.
+</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Image checksum:</td>
+<td>A MD5 checksum is calculated for the complete ISO image.
+You can reproduce this value using the command line of GNU/Linux:<br>
+<tt>md5sum medium2.iso</tt></td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr><td colspan="2">
+If all values in this output field are okay the message
+"<font color="#008000">Good image.</font>" appears.
+Otherwise the most important error will be explained there.
+</td>
+</tr>
+
+<tr><td>&nbsp;</td><td></td></tr>
+<tr>
+<td colspan="2">Output field <b>"Error correction file summary"</b>:<br><hr></td><td></td>
+</tr>
+<tr>
+<td valign="top">Created by:</td>
+<td>Prints the dvdisaster version which was used for creating the
+error correction data. Alpha/developer versions are highlighted in red.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Method:</td>
+<td>The method and redundancy used for creating the error correction file.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Requires:</td>
+<td>Processing the error correction data requires at least the shown
+version of dvdisaster.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Medium sectors:</td>
+<td>The expected number of sectors in the image file.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Image checksum:</td>
+<td>The expected MD5 sum of the image file.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Fingerprint:</td>
+<td>dvdisaster uses the checksum of a special sector to determine whether
+the error correction file was made for a given image.</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Ecc blocks:</td>
+<td>The error correction divides the image into small blocks which can
+be processed independently. This information is mostly useless as long
+as the number of ecc blocks is correct ;-) 
+</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr>
+<td valign="top">Ecc checksum:</td>
+<td>A MD5 checkum is calculated over the error correction file,
+not taking into account the first 4KB. You can reproduce this value
+using the command line of GNU/Linux:<br>
+<tt>tail -c +4097 medium.ecc | md5sum</tt>
+</td>
+</tr>
+<tr><td>&nbsp;</td><td></td></tr>
+
+<tr><td colspan="2">
+If all values in this output field are okay the message
+"<font color="#008000">Good error correction file.</font>" appears.
+Otherwise the most important error will be explained there.
+</td>
+</tr>
+</table>
+
+<!--- do not change below --->
+
+  </td> <!--- end of page contents --->
+
+ </tr>
+ <tr valign="bottom">
+   <td bgcolor="#f0f0f0">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+
+ </tr>
+</table> <!--- end of main body table --->
+
+
+<!--- Page footer --->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" width="100%" height="10"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <font size="-1">
+     <i> Copyright 2004-2009 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </font>
+  </td>
+ </tr>
+ <tr bgcolor="#000000"><td colspan="2" width="100%"><img width=1 height=1 alt=""></td>
+ </tr>
+</table>
+</body>
+</html>

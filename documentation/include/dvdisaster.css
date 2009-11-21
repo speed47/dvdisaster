@@ -1,0 +1,15 @@
+body { font-family:Helvetica,Arial,sans-serif,Verdana }
+
+a:link { font-weight:normal; color:#0000ff; text-decoration:none }
+a:visited { font-weight:normal; color:#0000ff; text-decoration:none }
+a:hover { font-weight:normal; background-color:#e0e0e0; color:#0000FF; text-decoration:none }
+a:active { font-weight:normal; background-color:#e0e0e0; color:#0000FF; text-decoration:none }
+a:focus { font-weight:normal; background-color:#e0e0e0; color:#0000FF; text-decoration:none }
+
+table.download   {width:100%; background-color:#f0f0f0}
+table.thumbnail  {border-width:1px; border-style:solid; border-color:#000000; background-color:#e0e0ff}
+table.screenshot {width:100%; border-width:0px; background-color:#e0e0ff}
+
+a.active  {color:#0000ff; text-decoration:none }
+a.passive {color:#808080; text-decoration:none }
+
