@@ -14,7 +14,7 @@ f7142797e03aae72c789f07fb6cd6296 *crcbuf.c
 3dd4fd1fd22354f4af218a326a7bbb4f *curve.c
 ad57f7aec0d5a0314034e1d8e26527dc *debug.c
 389356b6352841edeb3b8e86e0eb3ce7 *ds-marker.c
-fca52dd24c08f7ff8e7a86b290e3e2d5 *dvdisaster.c
+58d41d5abcb234ef7a9ba768bb9ffd30 *dvdisaster.c
 414c4bcd1056c52794ac5baf8ed0df57 *ecc-rs01.c
 a361c1485ab823d2983f51397e2bdf06 *ecc-rs02.c
 b6b80b74d756872cd18d7625520c1b12 *endian.c
@@ -59,7 +59,7 @@ cd55d1406e3f2119581c03db75bed54d *rs02-common.c
 4f60db5b21f4cbcd16dbd1b83e0b5492 *rs-encoder-sse2.c
 4ccd9f251e9b6b52bf9a79c65ec2b762 *scsi-darwin.c
 45d8b52ab8c03d661baf4c404c94115a *scsi-freebsd.c
-c025695f27d61f27b97f11d995b7b230 *scsi-layer.c
+2da068586abb78b2f4409c86805e257e *scsi-layer.c
 d873aa8fa7936bc22e2e94c015c27979 *scsi-linux.c
 a86f62372f2dea89f208ceafefaa1f97 *scsi-netbsd.c
 38d4cab513130a40e22b956df0c588a7 *scsi-solaris.c

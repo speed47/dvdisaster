@@ -32,7 +32,7 @@ function start_html()
 {  echo "<html>\n";
    echo "<head>\n";
    echo " <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-   echo " <title>Overview</title>\n";
+   echo " <title>dvdisaster</title>\n";
    echo " <link rel=\"stylesheet\" type=\"text/css\" href=\"../include/dvdisaster.css\">\n";
 
    echo "</head>\n";
@@ -241,7 +241,7 @@ function news_item($date, $headline, $body)
    {  
       echo "    <table width=\"90%\">\n";
       echo "      <tr>\n";
-      echo "        <td><a href=\"#item$news_counter\"></a><b>${headline}</b></td>\n";
+      echo "        <td><a name=\"item$news_counter\"></a><b>${headline}</b></td>\n";
       echo "        <td align=\"right\">$date</td>\n";
       echo "      </tr>\n";
       echo "    </table>\n";

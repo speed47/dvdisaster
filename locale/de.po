@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-14 20:29+0200\n"
+"POT-Creation-Date: 2009-08-06 12:32+0200\n"
 "PO-Revision-Date: 2004-11-30 19:48+0100\n"
 "Last-Translator: Carsten Gnörlich <carsten@dvdisaster.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -397,32 +397,32 @@ msgstr "RS01-Methode zum Überprüfen der Dateien nicht verfügbar."
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:267 dvdisaster.c:279 dvdisaster.c:295
+#: dvdisaster.c:281 dvdisaster.c:293 dvdisaster.c:309
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:458
+#: dvdisaster.c:472
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--threads muß zwischen 1..%d liegen\n"
 
-#: dvdisaster.c:472
+#: dvdisaster.c:486
 msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
 msgstr "--cache-size muß mindestens 8MB sein; 16MB oder mehr werden empfohlen."
 
-#: dvdisaster.c:474
+#: dvdisaster.c:488
 msgid "--cache-size maximum is 8192MB."
 msgstr "--cache-size darf höchsten 8192MB sein."
 
-#: dvdisaster.c:490
+#: dvdisaster.c:504
 msgid "Valid args for --driver: sg"
 msgstr "Gültige Argumente für --driver: sg"
 
-#: dvdisaster.c:492
+#: dvdisaster.c:506
 msgid "--driver is only supported on GNU/Linux"
 msgstr "--driver wird nur unter GNU/Linux unterstützt"
 
-#: dvdisaster.c:600
+#: dvdisaster.c:614
 #, c-format
 msgid ""
 "\n"
@@ -432,12 +432,12 @@ msgstr ""
 "\n"
 "dvdisaster version %s build %d\n"
 
-#: dvdisaster.c:664
+#: dvdisaster.c:678
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? ungültiger Rückgabewert von getopt: %d\n"
 
-#: dvdisaster.c:698
+#: dvdisaster.c:712
 #, c-format
 msgid ""
 "dvdisaster is not properly installed.\n"
@@ -449,7 +449,7 @@ msgstr ""
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:862
+#: dvdisaster.c:876
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -473,7 +473,7 @@ msgstr ""
 "  dvdisaster -u,--unlink # Löscht .iso - Dateien nach Beenden der vorherigen Aktionen.\n"
 "\n"
 
-#: dvdisaster.c:871
+#: dvdisaster.c:885
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -488,7 +488,7 @@ msgstr ""
 "  -i,--image  Name       - Name der Abbild - Datei        (Standard: medium.iso)\n"
 "  -e,--ecc    Name       - Name der Fehlerkorrektur-Datei (Standard: medium.ecc)\n"
 
-#: dvdisaster.c:879
+#: dvdisaster.c:893
 msgid ""
 "  -l,--list              - list drives available under ASPI manager\n"
 "\n"
@@ -496,7 +496,7 @@ msgstr ""
 "  -l,--list              - zeigt unter ASPI verfügbare Laufwerke\n"
 "\n"
 
-#: dvdisaster.c:884
+#: dvdisaster.c:898
 #, c-format
 msgid ""
 "Tweaking options (see manual before using!)\n"
@@ -549,7 +549,7 @@ msgstr ""
 "  --split-files          - Abbild in mehrere Dateien <= 2GB aufteilen\n"
 "\n"
 
-#: dvdisaster.c:910
+#: dvdisaster.c:924
 #, c-format
 msgid ""
 "Debugging options (purposefully undocumented and possibly harmful)\n"
@@ -598,7 +598,7 @@ msgstr ""
 "  --zero-unreadable - Ersetzt die \"unlesbare Sektoren\"-Markierungen durch Nullen\n"
 "\n"
 
-#: dvdisaster.c:934
+#: dvdisaster.c:948
 msgid ""
 "NOTE: This is the Windows console version of dvdisaster.\n"
 "The version providing a graphical user interface is called\n"
@@ -610,7 +610,7 @@ msgstr ""
 "dvdisaster-win.exe bereitgestellt (ebenfalls in dieser Installation enthalten).\n"
 "\n"
 
-#: dvdisaster.c:955
+#: dvdisaster.c:969
 msgid "Optical drive 52X FW 1.02"
 msgstr "Optisches LW 52X FW 1.02"
 
@@ -1060,7 +1060,7 @@ msgstr "Datenträger-Typ:"
 msgid "Book type:"
 msgstr "\"Book type\":"
 
-#: medium-info.c:308 scsi-layer.c:2643
+#: medium-info.c:308 scsi-layer.c:2645
 msgid "Manuf.-ID:"
 msgstr "Herst.-ID:"
 
@@ -2805,12 +2805,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "Prüfsummen-Fehler in Sektor %lld\n"
 
-#: read-adaptive.c:1543 scsi-layer.c:1714
+#: read-adaptive.c:1543 scsi-layer.c:1716
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Sektoren %lld-%lld: %s\n"
 
-#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1713
+#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1715
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Sektor %lld: %s\n"
@@ -2863,7 +2863,7 @@ msgstr "Angepaßtes Leseverfahren:"
 msgid "Sectors processed"
 msgstr "Bearbeitete Sektoren"
 
-#: read-adaptive-window.c:110 scsi-layer.c:1695
+#: read-adaptive-window.c:110 scsi-layer.c:1697
 msgid "readable"
 msgstr "lesbar"
 
@@ -2956,7 +2956,7 @@ msgstr "Lese Prüfsummen aus Fehlerkorrektur-Daten"
 msgid "done.\n"
 msgstr "fertig.\n"
 
-#: read-linear.c:528 scsi-layer.c:2036
+#: read-linear.c:528 scsi-layer.c:2038
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Warte %d Sekunden auf das Hochdrehen des Laufwerks...\n"
@@ -4723,7 +4723,7 @@ msgstr ""
 msgid "TOC info too short, length %d.\n"
 msgstr "Inhaltsverzeichnis zu kurz, Länge %d.\n"
 
-#: scsi-layer.c:549
+#: scsi-layer.c:551
 #, c-format
 msgid ""
 "%s\n"
@@ -4732,7 +4732,7 @@ msgstr ""
 "%s\n"
 "Konnte erweitertes Inhaltsverzeichnis nicht lesen.\n"
 
-#: scsi-layer.c:558
+#: scsi-layer.c:560
 #, c-format
 msgid ""
 "\n"
@@ -4741,11 +4741,11 @@ msgstr ""
 "\n"
 "Unerwartetes Inhaltsverzeichnis-Format (Länge %d):\n"
 
-#: scsi-layer.c:566
+#: scsi-layer.c:568
 msgid "Consider sending a bug report.\n"
 msgstr "Erwägen Sie eine Fehlerbeschreibung einzusenden.\n"
 
-#: scsi-layer.c:619
+#: scsi-layer.c:621
 #, c-format
 msgid ""
 "%s\n"
@@ -4754,14 +4754,14 @@ msgstr ""
 "%s\n"
 "Konnte Länge der DVD-Strukturbeschreibung nicht ermitteln.\n"
 
-#: scsi-layer.c:630
+#: scsi-layer.c:632
 #, c-format
 msgid "Could not query dvd physical structure - implausible packet length %d\n"
 msgstr ""
 "Konnte technische DVD-Strukturbeschreibung nicht ermitteln\n"
 "- ungültige Datenpaket-Größe %d\n"
 
-#: scsi-layer.c:648
+#: scsi-layer.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -4770,12 +4770,12 @@ msgstr ""
 "%s\n"
 "Konnte technische DVD-Strukturbeschreibung nicht ermitteln.\n"
 
-#: scsi-layer.c:677 scsi-layer.c:687
+#: scsi-layer.c:679 scsi-layer.c:689
 #, c-format
 msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
 msgstr "READ DVD STRUCTURE: ungültige Datenträger-Größe, %lld-%lld=%lld Sektoren\n"
 
-#: scsi-layer.c:945
+#: scsi-layer.c:947
 #, c-format
 msgid ""
 "%s\n"
@@ -4784,7 +4784,7 @@ msgstr ""
 "%s\n"
 "Konnte Länge der BD-Strukturbeschreibung nicht ermitteln.\n"
 
-#: scsi-layer.c:968
+#: scsi-layer.c:970
 #, c-format
 msgid ""
 "%s\n"
@@ -4793,7 +4793,7 @@ msgstr ""
 "%s\n"
 "Konnte technische DVD-Strukturbeschreibung nicht ermitteln.\n"
 
-#: scsi-layer.c:1644
+#: scsi-layer.c:1646
 #, c-format
 msgid ""
 "%s\n"
@@ -4803,14 +4803,14 @@ msgstr ""
 "Konnte Länge der DVD-Strukturbeschreibung f�r Formatkode 1\n"
 "nicht ermitteln.\n"
 
-#: scsi-layer.c:1654
+#: scsi-layer.c:1656
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr ""
 "Konnte DVD-Copyright-Information nicht ermitteln\n"
 "- ungültige Datenpaket-Größe %d\n"
 
-#: scsi-layer.c:1669
+#: scsi-layer.c:1671
 #, c-format
 msgid ""
 "%s\n"
@@ -4819,23 +4819,23 @@ msgstr ""
 "%s\n"
 "Konnte DVD-Copyright-Information nicht ermitteln.\n"
 
-#: scsi-layer.c:1729
+#: scsi-layer.c:1731
 msgid "is undecideable because of read error"
 msgstr "ist aufgrund von Lesefehlern unbestimmbar"
 
-#: scsi-layer.c:1735
+#: scsi-layer.c:1737
 msgid "looks GOOD"
 msgstr "erscheint KORREKT"
 
-#: scsi-layer.c:1741
+#: scsi-layer.c:1743
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "ist die unformatierte Größe (UNBRAUCHBAR)"
 
-#: scsi-layer.c:1746
+#: scsi-layer.c:1748
 msgid "is UNUSABLE"
 msgstr "ist UNBRAUCHBAR"
 
-#: scsi-layer.c:1768
+#: scsi-layer.c:1770
 #, c-format
 msgid ""
 "%s\n"
@@ -4844,12 +4844,12 @@ msgstr ""
 "%s\n"
 "Konnte Datenträger-Größe nicht ermitteln.\n"
 
-#: scsi-layer.c:1788
+#: scsi-layer.c:1790
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "READ CAPACITY: ungültige Datenträger-Größe, %lld Sektoren\n"
 
-#: scsi-layer.c:1867
+#: scsi-layer.c:1869
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -4862,7 +4862,7 @@ msgstr ""
 "READ DVD STRUCTURE: %lld Sektoren\n"
 "\n"
 
-#: scsi-layer.c:1872
+#: scsi-layer.c:1874
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -4870,15 +4870,15 @@ msgstr ""
 "Untersuchung der beiden Angaben:\n"
 "\n"
 
-#: scsi-layer.c:1927
+#: scsi-layer.c:1929
 msgid "Using value from READ CAPACITY"
 msgstr "Verwende den Wert von READ CAPACITY."
 
-#: scsi-layer.c:1931
+#: scsi-layer.c:1933
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Verwende den Wert von READ DVD STRUCTURE."
 
-#: scsi-layer.c:1941
+#: scsi-layer.c:1943
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -4889,7 +4889,7 @@ msgstr ""
 "Verwende den kleineren Wert (funktioniert bei 90%% aller Laufwerke).\n"
 "Weitermachen auf EIGENE GEFAHR: das Abbild kann unvollständig/unbrauchbar sein."
 
-#: scsi-layer.c:1946
+#: scsi-layer.c:1948
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -4898,7 +4898,7 @@ msgstr ""
 "Abschließende Entscheidung: %s\n"
 "\n"
 
-#: scsi-layer.c:1954
+#: scsi-layer.c:1956
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -4906,7 +4906,7 @@ msgstr ""
 "Größe des Datenträger-Inhaltes ist unbestimmbar.\n"
 "Probieren Sie ein anderes Laufwerk."
 
-#: scsi-layer.c:2079 scsi-layer.c:2105
+#: scsi-layer.c:2081 scsi-layer.c:2107
 #, c-format
 msgid ""
 "%s\n"
@@ -4915,7 +4915,7 @@ msgstr ""
 "%s\n"
 "Der Datenträger konnte nicht geladen/ausgeworfen werden.\n"
 
-#: scsi-layer.c:2095
+#: scsi-layer.c:2097
 #, c-format
 msgid ""
 "%s\n"
@@ -4924,37 +4924,37 @@ msgstr ""
 "%s\n"
 "Der Datenträger konnte nicht freigegeben werden.\n"
 
-#: scsi-layer.c:2158
+#: scsi-layer.c:2160
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Warte 10 Sekunden auf das Laufwerk: %d\n"
 
-#: scsi-layer.c:2441
+#: scsi-layer.c:2443
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Sektoren %lld - %lld: %s\n"
 
-#: scsi-layer.c:2455
+#: scsi-layer.c:2457
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Sektor %lld, Versuch %d: %s Zurückgegebener Sektor: %d.\n"
 
-#: scsi-layer.c:2461
+#: scsi-layer.c:2463
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Sektor %lld, Versuch %d: %s\n"
 
-#: scsi-layer.c:2472
+#: scsi-layer.c:2474
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Sektor %lld, Versuch %d: erfolgreich\n"
 
-#: scsi-layer.c:2539 scsi-layer.c:2692
+#: scsi-layer.c:2541 scsi-layer.c:2694
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Laufwerk %s: kein Datenträger eingelegt\n"
 
-#: scsi-layer.c:2540 scsi-layer.c:2693
+#: scsi-layer.c:2542 scsi-layer.c:2695
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -4965,7 +4965,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: scsi-layer.c:2545
+#: scsi-layer.c:2547
 #, c-format
 msgid ""
 "\n"
@@ -4974,7 +4974,7 @@ msgstr ""
 "\n"
 "Laufwerk: %s, %s\n"
 
-#: scsi-layer.c:2549
+#: scsi-layer.c:2551
 #, c-format
 msgid ""
 "\n"
@@ -4983,54 +4983,54 @@ msgstr ""
 "\n"
 "Laufwerk: %s (%s), %s\n"
 
-#: scsi-layer.c:2557
+#: scsi-layer.c:2559
 msgid "Drive failed to report media type."
 msgstr "Laufwerk erkennt den Datenträger-Typ nicht."
 
-#: scsi-layer.c:2568 scsi-layer.c:2655
+#: scsi-layer.c:2570 scsi-layer.c:2657
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Dieses Programm unterstützt keine Datenträger vom Typ \"%s\"."
 
-#: scsi-layer.c:2576
+#: scsi-layer.c:2578
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr ""
 "Dieses Programm unterstützt keine Mehrfach-Sitzungen (%d Sitzungen).\n"
 "(für Anglophile: Multisession-CDs sind gemeint ;-)"
 
-#: scsi-layer.c:2599 scsi-layer.c:2608
+#: scsi-layer.c:2601 scsi-layer.c:2610
 msgid "Using READ CD"
 msgstr "Verwende READ CD"
 
-#: scsi-layer.c:2600
+#: scsi-layer.c:2602
 msgid ", RAW reading"
 msgstr ", \"RAW\"-Lesen"
 
-#: scsi-layer.c:2603
+#: scsi-layer.c:2605
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", Mode page 1 ERP = %02xh"
 
-#: scsi-layer.c:2606
+#: scsi-layer.c:2608
 msgid ", C2 scanning"
 msgstr ", C2-Überprüfung"
 
-#: scsi-layer.c:2613
+#: scsi-layer.c:2615
 msgid "Using READ(10).\n"
 msgstr "Verwende READ(10).\n"
 
-#: scsi-layer.c:2632
+#: scsi-layer.c:2634
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Datenträger: %s, %lld Sektoren%s"
 
-#: scsi-layer.c:2636
+#: scsi-layer.c:2638
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Datenträger \"%s\": %s, %lld Sektoren%s erzeugt %s"
 
-#: scsi-layer.c:2662
+#: scsi-layer.c:2664
 msgid "This software does not support encrypted media.\n"
 msgstr "Dieses Programm unterstützt keine verschlüsselten Datenträger.\n"
 

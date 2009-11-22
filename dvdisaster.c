@@ -200,6 +200,9 @@ int main(int argc, char *argv[])
 	  and set the respective environment variables. */
 
        lang_id = GetUserDefaultLangID(); 
+       PrintLog("GetUserDefaultLangID = %x; Primary: %d, Sub: %d\n",
+		lang_id, PRIMARYLANGID(lang_id), SUBLANGID(lang_id));
+
        switch(PRIMARYLANGID(lang_id))
        {  case LANG_CZECH:
 	     g_setenv("LANG", "cs_CZ", 1);
@@ -227,6 +230,17 @@ int main(int argc, char *argv[])
 	     g_setenv("OUTPUT_CHARSET", "CP1252", 1);
 #endif
 	     break;
+
+          case LANG_PORTUGUESE:
+	    if(SUBLANGID(lang_id) == SUBLANG_PORTUGUESE_BRAZILIAN)
+	    {  g_setenv("LANG", "pt_BR", 1);
+#ifdef WIN_CONSOLE
+	       g_setenv("OUTPUT_CHARSET", "CP860", 1);
+#else
+	       g_setenv("OUTPUT_CHARSET", "CP1251", 1);
+#endif
+	    }
+            break;
 
           case LANG_RUSSIAN:
 	     g_setenv("LANG", "ru_RU", 1);

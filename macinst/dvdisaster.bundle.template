@@ -48,6 +48,9 @@
   <data dest="${bundle}/Contents/Resources/locale/it/LC_MESSAGES/dvdisaster.mo">
     ${prefix:src}/locale/it/LC_MESSAGES/dvdisaster.mo
   </data>
+  <data dest="${bundle}/Contents/Resources/locale/pt_BR/LC_MESSAGES/dvdisaster.mo">
+    ${prefix:src}/locale/pt_BR/LC_MESSAGES/dvdisaster.mo
+  </data>
   <data dest="${bundle}/Contents/Resources/locale/ru/LC_MESSAGES/dvdisaster.mo">
     ${prefix:src}/locale/ru/LC_MESSAGES/dvdisaster.mo
   </data>

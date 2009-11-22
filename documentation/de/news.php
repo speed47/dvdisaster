@@ -21,6 +21,12 @@ $news_counter = 0;
 
 news_headline("Neues über dvdisaster");
 
+news_item("08.08.2009", "dvdisaster 0.72.1 veröffentlicht", "
+Pablo Almeida hat die Bildschirmtexte ins Portugiesische übersetzt.
+Es wurde ein Workaround eingebaut um Win XP vom Einfrieren 
+bei bestimmten CD-RW/Laufwerks-Kominationen abzuhalten.<p>
+");
+
 news_item("04.07.2009", "dvdisaster 0.72 veröffentlicht", "
 Dies ist die erste stabile Version des 0.72er-Zweiges.
 Igor Gorbounov hat die russische online-Dokumentation vervollständigt
