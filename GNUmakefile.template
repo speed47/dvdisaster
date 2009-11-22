@@ -4,7 +4,7 @@
 
 # Currently supported locales
 
-PO_LOCALES = br_PT cs de it ru sv
+PO_LOCALES = pt_BR cs de it ru sv
 MAN_LOCALES = cs de it
 DOC_LOCALES = de en ru
 
@@ -132,7 +132,7 @@ simple-md5sum: md5.c
 	@$(CC) $(COPTS) -DSIMPLE_MD5SUM md5.c -o simple-md5sum
 
 # Stuff needed to generate or prepare the documentation
-# TAG: online-doc
+# TAG: online-docs
 
 .PHONY : images pack-images lock-images mount-php html localhtml thumbnails thumbails-lazy
 
@@ -349,7 +349,7 @@ install: dvdisaster images
 	  rm dvdisaster.updated
 	if echo $(WITH_OPTIONS) | grep "NLS_YES" >/dev/null; then \
 	  cd locale; \
-	  for i in ??; do\
+	  for i in ?? ??_??; do\
 	    install -d $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
 	    install -m 644 $$i/LC_MESSAGES/dvdisaster.mo $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
 	  done \
@@ -390,7 +390,7 @@ archclean: distclean
 distclean: clean
 	@echo "Removing configuration files"
 	@rm -f configure.log Makefile.config GNUmakefile locale/Makefile
-	@for i in locale/??; do rm -rf $$i; done
+	@for i in locale/?? locale/??_??; do rm -rf $$i; done
 	@echo "all:" >>GNUmakefile
 	@echo -e "\t@echo" >>GNUmakefile
 	@echo -e "\t@echo \"Please create a Makefile by entering \\\"bash configure\\\" first\"" >>GNUmakefile
@@ -474,6 +474,7 @@ prepare-dist:
 	@cp $(GTK_BINDIR)/libgtk-win*.dll win-build-dir
 	@mkdir win-build-dir/locale
 	@cp -r locale/?? win-build-dir/locale
+	@cp -r locale/??_?? win-build-dir/locale
 
 	@mkdir -p win-build-dir/etc/gtk-2.0
 	@echo "# GdkPixbuf Image Loader Modules file" >  win-build-dir/etc/gtk-2.0/gdk-pixbuf.loaders

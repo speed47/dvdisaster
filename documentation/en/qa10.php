@@ -32,6 +32,7 @@ The current version of dvdisaster contains screen texts in the following languag
 <tr><td></td><td>English</td><td>--</td><td>complete</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>German</td><td>--</td><td>complete</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Italian</td><td>--</td><td>upto version 0.65</td></tr>
+<tr><td></td><td>Portuguese</td><td>--</td><td>complete</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Russian</td><td>--</td><td>complete</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Swedish</td><td>--</td><td>upto version 0.70</td></tr>
 </table><p>

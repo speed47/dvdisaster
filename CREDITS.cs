@@ -1,5 +1,8 @@
 Mnoho poděkování patří následujícím lidem (v alfabetickém pořadí):
 
+Pablo Almeida (pabloalmeidaff9@gmail.com)	
+   provides and maintains the Portuguese translation.
+
 Harald Bögeholz (hwb@heise.de)
    poskytl řadu podstatných diskuzí o obnově dat na CD/DVD
    a opravě chyb Reed-Solomon.

@@ -534,6 +534,8 @@ static int query_cd(DeviceHandle *dh, int probe_only)
       return FALSE;
    }
 
+   length = 16;  /* Works around Windows (and possibly other OS) driver issues */
+
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x43;  /* READ TOC/PMA/ATIP */
    cmd[1] = 0x02;  /* TIME bit required for this format */

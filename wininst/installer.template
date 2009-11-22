@@ -27,7 +27,9 @@ WizardSmallImageFile=installwiz-small.bmp
 Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "cs"; MessagesFile: "compiler:Languages/Czech.isl"
 Name: "de"; MessagesFile: "compiler:Languages/German.isl"
+Name: "it"; MessagesFile: "compiler:Languages/Italian.isl"
 Name: "ru"; MessagesFile: "compiler:Languages/Russian.isl"
+Name: "pt_BR"; MessagesFile: "compiler:Languages/BrazilianPortuguese.isl"
 
 [Dirs]
 Name: "{app}\documentation\images"
@@ -47,6 +49,7 @@ Source: "*.dll"; DestDir: "{app}"
 Source: "lib\locale\cs\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\cs\LC_MESSAGES"
 Source: "lib\locale\de\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\de\LC_MESSAGES"
 Source: "lib\locale\it\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\it\LC_MESSAGES"
+Source: "lib\locale\pt_BR\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pt_BR\LC_MESSAGES"
 Source: "lib\locale\ru\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ru\LC_MESSAGES"
 Source: "lib\locale\sv\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sv\LC_MESSAGES"
 Source: "etc\gtk-2.0\*"; DestDir: "{app}\etc\gtk-2.0"
@@ -54,6 +57,7 @@ Source: "etc\pango\*"; DestDir: "{app}\etc\pango"
 Source: "locale\cs\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\cs\LC_MESSAGES"
 Source: "locale\de\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\de\LC_MESSAGES"
 Source: "locale\it\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\it\LC_MESSAGES"
+Source: "locale\pt_BR\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\pt_BR\LC_MESSAGES"
 Source: "locale\ru\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\ru\LC_MESSAGES"
 Source: "locale\sv\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\sv\LC_MESSAGES"
 Source: "documentation\images-common.pngpack"; DestDir: "{app}\documentation"
@@ -61,12 +65,18 @@ Source: "documentation\pngpack.exe"; DestDir: "{app}\documentation"
 Source: "documentation\pubkey.asc"; DestDir: "{app}\documentation"
 ;Source: "documentation\images\*"; DestDir: "{app}\documentation\images"
 Source: "documentation\include\*"; DestDir: "{app}\documentation\include"
-Source: "documentation\images-de.pngpack"; DestDir: "{app}\documentation"; Languages: de
+Source: "documentation\images-de.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: de
 Source: "documentation\de\*"; DestDir: "{app}\documentation\local"; Languages: de
-Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; Languages: en
+Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: en
 Source: "documentation\en\*"; DestDir: "{app}\documentation\local"; Languages: en
-Source: "documentation\images-ru.pngpack"; DestDir: "{app}\documentation"; Languages: ru
+Source: "documentation\images-ru.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: ru
 Source: "documentation\ru\*"; DestDir: "{app}\documentation\local"; Languages: ru
+Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: cs
+Source: "documentation\en\*"; DestDir: "{app}\documentation\local"; Languages: cs
+Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: it
+Source: "documentation\en\*"; DestDir: "{app}\documentation\local"; Languages: it
+Source: "documentation\images-en.pngpack"; DestDir: "{app}\documentation"; DestName: "images.pngpack"; Languages: pt_BR
+Source: "documentation\en\*"; DestDir: "{app}\documentation\local"; Languages: pt_BR
 
 [Icons]
 Name: "{group}\dvdisaster"; Filename: "{app}\dvdisaster-win.exe"; WorkingDir: "{app}"
@@ -79,9 +89,7 @@ Name: "{userdesktop}\dvdisaster"; Filename: "{app}\dvdisaster-win.exe"; WorkingD
 
 [Run]
 Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-common.pngpack"""; WorkingDir: "{app}\documentation\images"; Flags: runhidden 
-Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-de.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: de
-Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-en.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: en
-Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images-ru.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden; Languages: ru
+Filename: "{app}\documentation\pngpack.exe"; Parameters: """-u{app}\documentation\images.pngpack"" ""-t160,{app}\documentation\local\thumbnails"""; WorkingDir: "{app}\documentation\local\images"; Flags: runhidden
 Filename: "{app}\dvdisaster.exe"; Parameters: "--debug --sign"; WorkingDir: "{app}"; Flags: runhidden 
 
 [UninstallDelete]

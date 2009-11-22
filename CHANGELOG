@@ -1,3 +1,8 @@
+0.72 (pl-1) 08-08-2009
+	- Pablo Almeida provided a Portuguese translation
+	  for the screen text.
+	- workaround for freeze on Win XP for certain drive/CD-RW pairs
+
 0.72 04-07-2009
 	- Igor Gorbounov completed the Russian translation
 	- fixed lockups in the spiral under Mac OS X

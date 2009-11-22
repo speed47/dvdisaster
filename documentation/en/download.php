@@ -50,22 +50,22 @@ The current unstable release is
 <b>Stable version</b> - recommended for getting started.<p>
 
 <table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.72</b></td><td align="right">04-Jul-2009</td></tr>
+<tr><td><b>dvdisaster-0.72</b></td><td align="right">08-Aug-2009</td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
 <tr><td colspan="2">
   <table>
     <tr><td align="right">&nbsp;&nbsp;Source code for all operating systems:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2?download">dvdisaster-0.72.tar.bz2</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2?download">dvdisaster-0.72.1.tar.bz2</a></td></tr>
     <tr><td align="right">Digital signature:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2.gpg?download">dvdisaster-0.72.tar.bz2.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2.gpg?download">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
     <tr><td align="right">Binary for Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip?download">dvdisaster-0.72.app.zip</a>&nbsp;--&nbsp;please read these <a href="download30.php#mac">hints</a> first</td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip?download">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;please read these <a href="download30.php#mac">hints</a> first</td></tr>
     <tr><td align="right">Digital signature:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip.gpg?download">dvdisaster-0.72.app.zip.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip.gpg?download">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
     <tr><td align="right">Binary for Windows:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe?download">dvdisaster-0.72-setup.exe</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe?download">dvdisaster-0.72.1-setup.exe</a></td></tr>
     <tr><td align="right">Digital signature:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe.gpg?download">dvdisaster-0.72-setup.exe.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe.gpg?download">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
   </table>
 </td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
@@ -85,12 +85,17 @@ Most important changes in this version:<p>
 <li>... and many more small changes and fixes.</li>
 </ul>
 
+<b>Patches</b> (small changes after version 0.72; files above have been updated):<p>
+
+<b>0.72 pl1</b> Pablo Almeida provided Portuguese translations of the screen texts.
+Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.(08-Aug-2009)<p>
+
 <b>0.72</b> This is the first stable version of the 0.72 branch.
 Igor Gorbounov has completed the russian online documentation.
 Some minor bugs from the first release candidate have been removed.<p>
 Newer Windows versions may not display the proper screen language
 under certain language settings. This problem is rather complex
-and will be addressed in the upcoming 0.73.x releases.
+and will be addressed in the upcoming 0.73.x releases. (04-Jul-2009)
 <p>
  
 <b>0.72-rc1</b> First release candidate. (11-Apr-2009)

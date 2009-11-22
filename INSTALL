@@ -148,11 +148,11 @@ Please change into a directory which is writeable
 for you and unpack the source code archive:
 
 user@host> cd /var/tmp
-user@host> tar xjf dvdisaster-0.72.rc2.tar.bz2
+user@host> tar xjf dvdisaster-0.72.1.tar.bz2
 
 Then change into the newly created directory:
 
-user@host> cd /var/tmp/dvdisaster-0.72.rc2
+user@host> cd /var/tmp/dvdisaster-0.72.1
 
 3.2. Configuring the package
 ----------------------------
@@ -231,7 +231,7 @@ please remove the directory you have created as described
 in section 3.1:
 
 user@host> cd /var/tmp
-user@host> rm -rf dvdisaster-0.72.rc2
+user@host> rm -rf dvdisaster-0.72.1
 
 
 5. Program documentation

@@ -31,6 +31,7 @@ dvdisaster beinhaltet Bildschirmtexte in den folgenden Sprachen:<p>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Deutsch</td><td>--</td><td>vollständig</td></tr>
 <tr><td></td><td>Englisch</td><td>--</td><td>vollständig</td></tr>
 <tr><td></td><td>Italienisch</td><td>--</td><td>bis Version 0.65</td></tr>
+<tr><td></td><td>Portugiesisch</td><td>--</td><td>vollständig</td></tr>
 <tr><td></td><td>Russisch</td><td>--</td><td>vollständig</td></tr>
 <tr><td></td><td>Schwedisch</td><td>--</td><td>vollständig</td></tr>
 <tr><td></td><td>Tschechisch</td><td>--</td><td>bis Version 0.66</td></tr>

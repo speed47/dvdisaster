@@ -21,6 +21,11 @@ $news_counter = 0;
 
 news_headline("dvdisaster News");
 
+news_item("08.08.2009", "dvdisaster 0.72.1 released", "
+Pablo Almeida provided a Portuguese translation for the screen text.
+Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.<p>
+");
+
 news_item("04.07.2009", "dvdisaster 0.72 released", "
 This is the first stable version of the 0.72 branch.
 Igor Gorbounov has completed the russian online documentation.

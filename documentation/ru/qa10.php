@@ -33,6 +33,7 @@ begin_page();
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Немецкий</td><td>--</td><td>полный</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Итальянский</td><td>--</td><td>до версии 0.65</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Русский</td><td>--</td><td>полный</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;</td><td>Португальский</td><td>--</td><td>полный<td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;</td><td>Шведский</td><td>--</td><td>до версии 0.70</td></tr>
 </table><p>
 

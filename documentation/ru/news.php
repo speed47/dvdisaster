@@ -21,6 +21,11 @@ $news_counter = 0;
 
 news_headline("Новости dvdisaster");
 
+news_item("08.08.2009", "dvdisaster 0.72.1 released", "
+Pablo Almeida provided a Portuguese translation for the screen text.
+Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.<p>
+");
+
 news_item("04.07.2009", "выпущен dvdisaster 0.72", "
 Это первая стабильная версия ветки 0.72.
 Игорь Горбунов завершил перевод онлайн-документации на русский язык.

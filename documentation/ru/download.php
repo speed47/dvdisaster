@@ -55,17 +55,17 @@ dvdisaster имеется для <a href="download10.php">последних в�
 <tr><td colspan="2">
   <table>
     <tr><td align="right">&nbsp;&nbsp;Исходные тексты для всех операционных систем:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2?download">dvdisaster-0.72.tar.bz2</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2?download">dvdisaster-0.72.1.tar.bz2</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2.gpg?download">dvdisaster-0.72.tar.bz2.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2.gpg?download">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
     <tr><td align="right">Двоичная версия для Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip?download">dvdisaster-0.72.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip?download">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip.gpg?download">dvdisaster-0.72.app.zip.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip.gpg?download">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
     <tr><td align="right">Двоичная версия для Windows:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe?download">dvdisaster-0.72-setup.exe</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe?download">dvdisaster-0.72.1-setup.exe</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe.gpg?download">dvdisaster-0.72-setup.exe.gpg</a></td></tr>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe.gpg?download">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
   </table>
 </td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
@@ -85,12 +85,17 @@ dvdisaster имеется для <a href="download10.php">последних в�
 <li>... и еще много небольших изменений и исправлений.</li>
 </ul>
 
+<b>Исправления</b> (небольшие изменения после версии 0.72; вышеприведенные файлы были обновлены):<p>
+
+<b>0.72 pl1</b> Pablo Almeida provided Portuguese translations of the screen texts.
+Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.(08-Aug-2009)<p>
+
 <b>0.72</b> Это первая стабильная версия ветки 0.72.
 Игорь Горбунов завершил перевод онлайн-документации на русский язык.
 Устранены некоторые незначительные ошибки в первом кандидате на выпуск.<p>
 В более новых версиях Windows при некоторых языковых настройках может быть неправильный вывод
 на экран. Это довольно сложная проблема и она будет решаться
-в предстоящих версиях 0.73.x.
+в предстоящих версиях 0.73.x. (04-Jul-2009)
 <p>
 
 <b>0.72-rc1</b> Первый кандидат на выпуск. (11 апреля 2009)
