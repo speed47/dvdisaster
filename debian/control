@@ -8,7 +8,7 @@ DM-Upload-Allowed: yes
 Build-Depends: debhelper (>= 7), quilt, gettext, libbz2-dev, libgtk2.0-dev, libpng12-dev, pkg-config
 Standards-Version: 3.8.3
 Vcs-Browser: http://git.debian.org/?p=pkg-opt-media/dvdisaster.git 
-Vcs-Svn: git://git.debian.org/pkg-opt-media/dvdisaster.git
+Vcs-Git: git://git.debian.org/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
 
 Package: dvdisaster
