@@ -4,8 +4,9 @@ dvdisaster (0.72.1-1) unstable; urgency=low
   * new upstream version.
   * debian/control: update Homepage:
   * debian/README.source: create 
+  * debian/control: add Vcs-*.
 
- -- TANIGUCHI Takaki <takaki@debian.org>  Sun, 22 Nov 2009 18:09:15 +0900
+ -- TANIGUCHI Takaki <takaki@debian.org>  Mon, 23 Nov 2009 10:29:09 +0900
 
 dvdisaster (0.72-2) unstable; urgency=low
 
