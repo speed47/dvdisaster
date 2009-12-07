@@ -1,10 +1,9 @@
 Author: Corey Wright <undefined@pobox.com>
 Description: Adds support for DVD-ROM medium-type.
 
-diff -Naurp dvdisaster.orig/scsi-layer.c dvdisaster/scsi-layer.c
---- dvdisaster.orig/scsi-layer.c	2008-03-30 09:10:52.000000000 +0000
-+++ dvdisaster/scsi-layer.c	2008-05-03 08:32:22.000000000 +0000
-@@ -719,6 +719,11 @@ static int query_dvd(DeviceHandle *dh, i
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -890,6 +890,11 @@
  	    break;
  	 }
  

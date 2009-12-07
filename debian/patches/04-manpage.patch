@@ -1,9 +1,8 @@
 Author: Daniel Baumann <daniel@debian.org>
 Description: Fixes typo in manpages.
 
-diff -Naurp dvdisaster.orig/documentation/dvdisaster.cs.1 dvdisaster/documentation/dvdisaster.cs.1
---- dvdisaster.orig/documentation/dvdisaster.cs.1	2009-01-19 20:53:35.000000000 +0000
-+++ dvdisaster/documentation/dvdisaster.cs.1	2009-01-25 12:53:36.000000000 +0000
+--- a/documentation/dvdisaster.cs.1
++++ b/documentation/dvdisaster.cs.1
 @@ -7,7 +7,7 @@
  .\"
  .TH DVDISASTER 1 "2006-01-04" "0.65" "ochrana pro média CD/DVD"

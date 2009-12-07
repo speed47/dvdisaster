@@ -1,10 +1,9 @@
 Author: Daniel Baumann <daniel@debian.org>
 Description: Customizes the help-dialog according to README.MODIFYING.
 
-diff -Naurp dvdisaster.orig/help-dialogs.c dvdisaster/help-dialogs.c
---- dvdisaster.orig/help-dialogs.c	2009-01-19 20:53:35.000000000 +0000
-+++ dvdisaster/help-dialogs.c	2009-01-25 12:49:22.000000000 +0000
-@@ -385,7 +385,7 @@ void ShowGPL()
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -402,7 +402,7 @@
    ShowTextfile(_("windowtitle|GNU General Public License"), 
  	       _("<big>GNU General Public License</big>\n"
  		 "<i>The license terms of dvdisaster.</i>"),
@@ -13,7 +12,7 @@ diff -Naurp dvdisaster.orig/help-dialogs.c dvdisaster/help-dialogs.c
  }
  
  /*
-@@ -541,7 +541,7 @@ static void show_modifying(void)
+@@ -549,7 +549,7 @@
  {  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
  	       _("<big>Modifying dvdisaster</big>\n"
  		 "<i>Your changes are not ours.</i>"),
@@ -22,7 +21,7 @@ diff -Naurp dvdisaster.orig/help-dialogs.c dvdisaster/help-dialogs.c
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -698,9 +698,9 @@ void AboutDialog()
+@@ -706,9 +706,9 @@
  
  #ifdef MODIFIED_SOURCE
     AboutTextWithLink(vbox, 
@@ -35,7 +34,7 @@ diff -Naurp dvdisaster.orig/help-dialogs.c dvdisaster/help-dialogs.c
  #else
     AboutText(vbox, _("Copyright 2004-2009 Carsten Gnoerlich"));
  #endif
-@@ -717,14 +717,14 @@ void AboutDialog()
+@@ -725,14 +725,14 @@
     AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
  				"This is free software and you are welcome to redistribute it\n"
  				"under the conditions of the [GNU General Public License].\n"), 
