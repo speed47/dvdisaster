@@ -1,4 +1,0 @@
-The source package uses quilt for the modifications of the upstream source. 
-If you want to change something it is best to use the quilt approach as
-documented in 
-        /usr/share/doc/quilt/README.source
