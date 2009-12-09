@@ -43,7 +43,8 @@ install: build
 		DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc \
 		DOCSUBDIR=$(CURDIR)/debian/tmp/usr/share/doc/dvdisaster-doc/html \
 		LOCALEDIR=$(CURDIR)/debian/tmp/usr/share/locale \
-		MANDIR=$(CURDIR)/debian/tmp/usr/share/man install
+		MANDIR=$(CURDIR)/debian/tmp/usr/share/man \
+		install
 
 	# Installing desktop file
 	install -D -m 0644 contrib/dvdisaster.desktop debian/dvdisaster/usr/share/applications/dvdisaster.desktop
