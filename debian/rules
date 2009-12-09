@@ -15,7 +15,13 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 
-	./configure --prefix=/usr --bindir=\$${prefix}/bin --docdir=\$${prefix}share/doc --docsubdir=dvdisaster-doc/html --localedir=\$${prefix}/share/locale --mandir=\$${prefix}/share/man
+	./configure \
+		--prefix=/usr \
+		--bindir=\$${prefix}/bin \
+		--docdir=\$${prefix}share/doc \
+		--docsubdir=dvdisaster-doc/html \
+		--localedir=\$${prefix}/share/locale \
+		--mandir=\$${prefix}/share/man
 
 	touch configure-stamp
 
@@ -32,7 +38,12 @@ install: build
 	dh_testroot
 	dh_prep
 
-	$(MAKE) BINDIR=$(CURDIR)/debian/tmp/usr/bin DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc DOCSUBDIR=$(CURDIR)/debian/tmp/usr/share/doc/dvdisaster-doc/html LOCALEDIR=$(CURDIR)/debian/tmp/usr/share/locale MANDIR=$(CURDIR)/debian/tmp/usr/share/man install
+	$(MAKE) \
+		BINDIR=$(CURDIR)/debian/tmp/usr/bin \
+		DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc \
+		DOCSUBDIR=$(CURDIR)/debian/tmp/usr/share/doc/dvdisaster-doc/html \
+		LOCALEDIR=$(CURDIR)/debian/tmp/usr/share/locale \
+		MANDIR=$(CURDIR)/debian/tmp/usr/share/man install
 
 	# Installing desktop file
 	install -D -m 0644 contrib/dvdisaster.desktop debian/dvdisaster/usr/share/applications/dvdisaster.desktop
