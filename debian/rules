@@ -39,11 +39,7 @@ install: build
 	dh_prep
 
 	$(MAKE) \
-		BINDIR=$(CURDIR)/debian/tmp/usr/bin \
-		DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc \
-		DOCSUBDIR=$(CURDIR)/debian/tmp/usr/share/doc/dvdisaster-doc/html \
-		LOCALEDIR=$(CURDIR)/debian/tmp/usr/share/locale \
-		MANDIR=$(CURDIR)/debian/tmp/usr/share/man \
+		BUILDROOT=$(CURDIR)/debian/tmp \
 		install
 
 	# Installing desktop file
