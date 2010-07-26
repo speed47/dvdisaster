@@ -29,7 +29,8 @@ Description: data loss/scratch/aging protection for CD/DVD media
 Package: dvdisaster-doc
 Section: doc
 Architecture: all
-Suggests: dvdisaster, ${misc:Depends}
+Depends: ${misc:Depends}
+Suggests: dvdisaster
 Description: data loss/scratch/aging protection for CD/DVD media (documentation)
  dvdisaster provides a margin of safety against data loss on CD and DVD media
  caused by scratches or aging media. It creates error correction data which is
