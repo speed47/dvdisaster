@@ -3,3 +3,4 @@
 04-manpage.patch
 05-help-dialog.patch
 06-remove-encoding-from-desktop-file.patch
+07-fix-spelling-errors-in-binaries.patch
