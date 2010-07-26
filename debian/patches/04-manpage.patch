@@ -72,6 +72,15 @@ Description: Fixes typo in manpages.
  .RE
  .TP
  .B \-\-query-size n
+@@ -196,7 +196,7 @@
+ selects raw reading mode for CD media (default: 20)
+ .RS
+ The recommended mode is 20, which makes the drive apply its built-in error 
+-correction to the best possible extent before transfering a defective sector.
++correction to the best possible extent before transferring a defective sector.
+ However some drives can only read defective sectors using mode 21, skipping
+ the last stage of the internal error correction and returning 
+ the uncorrected sector instead.
 --- a/documentation/dvdisaster.de.1
 +++ b/documentation/dvdisaster.de.1
 @@ -110,8 +110,8 @@
