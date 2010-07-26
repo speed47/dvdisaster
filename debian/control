@@ -17,7 +17,6 @@ Vcs-Git: git://git.debian.org/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
 
 Package: dvdisaster
-Section: otherosfs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, xdg-utils
 Recommends: dvdisaster-doc
