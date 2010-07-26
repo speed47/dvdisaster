@@ -1,3 +1,6 @@
+Author: Rogério Theodoro de Brito <rbrito@ime.usp.br>
+Description: Remove unneeded Encoding-key from desktop file
+
 --- a/contrib/dvdisaster.desktop
 +++ b/contrib/dvdisaster.desktop
 @@ -10,4 +10,3 @@
