@@ -2,3 +2,4 @@
 03-dvdrom.patch
 04-manpage.patch
 05-help-dialog.patch
+06-remove-encoding-from-desktop-file.patch

@@ -1,0 +1,7 @@
+--- a/contrib/dvdisaster.desktop
++++ b/contrib/dvdisaster.desktop
+@@ -10,4 +10,3 @@
+ Terminal=false
+ Type=Application
+ Categories=Application;System;
+-Encoding=UTF-8
