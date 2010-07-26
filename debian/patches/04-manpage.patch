@@ -1,5 +1,7 @@
-Author: Daniel Baumann <daniel@debian.org>
+Authors: Daniel Baumann <daniel@debian.org>
+	 Rogério Theodoro de Brito <rbrito@ime.usp.br>
 Description: Fixes typo in manpages.
+ The patch also deals with hyphens used as minus signs.
 
 --- a/documentation/dvdisaster.cs.1
 +++ b/documentation/dvdisaster.cs.1
@@ -12,3 +14,130 @@ Description: Fixes typo in manpages.
  DVDISASTER \- ochrana proti ztrátě dat poškrábáním/stárnutím média CD/DVD
  
  .SH SYNTAXE
+@@ -49,8 +49,8 @@
+ Obecné příklady použití:
+ .TP
+ .B \-r, \-\-read
+-Načte obraz média na pevný disk. Použijte -rn-m k načtení určitého rozsahu sektorů,
+-t.j. -r100-200.
++Načte obraz média na pevný disk. Použijte \-rn-m k načtení určitého rozsahu sektorů,
++t.j. \-r100-200.
+ .TP
+ .B \-c, \-\-create
+ Vytvoří informaci .ecc pro obraz média.
+@@ -98,7 +98,7 @@
+ automaticky přidá souborové přípony .img a .ecc.
+ .TP
+ .B \-\-cache-size n
+-velikost varovnávací paměti v MB v průběhu akce -c (výchozí: 32 MB).
++velikost varovnávací paměti v MB v průběhu akce \-c (výchozí: 32 MB).
+ .TP
+ .B \-\-dao
+ předpokládá disk DAO; neořezávat konec obrazu.
+--- a/documentation/dvdisaster.en.1
++++ b/documentation/dvdisaster.en.1
+@@ -102,8 +102,8 @@
+ Action selection (at least one action must be specified):
+ .TP
+ .B \-r, \-\-read
+-Read the medium image to hard disc. Use -rn-m to read a certain sector range,
+-e.g. -r100-200.
++Read the medium image to hard disc. Use \-rn-m to read a certain sector range,
++e.g. \-r100-200.
+ .TP
+ .B \-c, \-\-create
+ Create .ecc information for the medium image.
+@@ -163,7 +163,7 @@
+ automatically add .iso and .ecc file suffixes.
+ .TP
+ .B \-\-cache-size n
+-image cache size in MB during -c mode (default: 32MB).
++image cache size in MB during \-c mode (default: 32MB).
+ .TP
+ .B \-\-dao
+ assume DAO disc; do not trim image end.
+@@ -178,12 +178,12 @@
+ continue reading after potentially fatal error condition.
+ .TP
+ .B \-\-internal-rereads n
+-internal read attempts for defective CD media sectors (default: -1)
++internal read attempts for defective CD media sectors (default: \-1)
+ .RS
+ The drive firmware usually retries unreadable sectors a few times before
+ giving up and returning a read error. It is more efficient to set this to 0 or 1
+-and manage read attempts through the --read-attempts parameter. Most drives ignore
+-this setting anyways. Use -1 to leave the drive at its default setting.
++and manage read attempts through the \-\-read-attempts parameter. Most drives ignore
++this setting anyways. Use \-1 to leave the drive at its default setting.
+ .RE
+ .TP
+ .B \-\-query-size n
+--- a/documentation/dvdisaster.de.1
++++ b/documentation/dvdisaster.de.1
+@@ -110,8 +110,8 @@
+ Aktions-Auswahl (mindestens eine Aktion muss gew\[:a]hlt werden):
+ .TP
+ .B \-r, \-\-read
+-Datentr\[:a]ger-Abbild auf Festplatte einlesen. -rn-m liest einen Bereich von
+-Sektoren, z.B. -r100-200.
++Datentr\[:a]ger-Abbild auf Festplatte einlesen. \-rn-m liest einen Bereich von
++Sektoren, z.B. \-r100-200.
+ .TP
+ .B \-c, \-\-create
+ Erzeugt Fehlerkorrektur-Daten f\[:u]r das Abbild.
+@@ -186,12 +186,12 @@
+ Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
+ .TP
+ .B \-\-internal-rereads n
+-Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: -1)
++Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: \-1)
+ .RS
+ Laufwerke unternehmen normalerweise mehrere Versuche um einen besch\[:a]digten Sektor 
+ zu lesen. Es ist typischerweise g\[:u]nstiger diesen Wert auf 0 oder 1 zu setzen
+-und die Anzahl der Leseversuche \[:u]ber den Parameter --read-attempts zu steuern.
+-Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert -1 um 
++und die Anzahl der Leseversuche \[:u]ber den Parameter \-\-read-attempts zu steuern.
++Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 um
+ die Standardeinstellungen des Laufwerks zu verwenden.
+ .RE
+ .TP
+@@ -203,7 +203,7 @@
+ .RE
+ .TP
+ .B \-\-raw-mode n
+-"Raw"-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
++"Raw"\-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
+ .RS
+ Das empfohlene Verfahren ist 20, bei dem das Laufwerk die eingebaute Fehlerkorrektur
+ so weit wie m\[:o]glich anwendet, bevor es einen besch\[:a]digten Sektor 
+@@ -220,7 +220,7 @@
+ liest den gesamten Datentr\[:a]ger bis zu n-mal.
+ .TP
+ .B \-\-read-raw
+-liest in der "raw"-Betriebsart sofern m\[:o]glich.
++liest in der "raw"\-Betriebsart sofern m\[:o]glich.
+ .TP
+ .B \-\-speed-warning n
+ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
+--- a/documentation/dvdisaster.it.1
++++ b/documentation/dvdisaster.it.1
+@@ -43,8 +43,8 @@
+ Tipici esempi di utilizzo:
+ .TP
+ .B \-r, \-\-read
+-Estrae l'immagine del supporto sull'hard disc. Usare -rn-m per leggere un
+-determinato intervallo di settori, ad es. -r100-200.
++Estrae l'immagine del supporto sull'hard disc. Usare \-rn-m per leggere un
++determinato intervallo di settori, ad es. \-r100-200.
+ .TP
+ .B \-c, \-\-create
+ Crea l'informazione .ecc per l'immagine del supporto.
+@@ -92,7 +92,7 @@
+ aggiungi automaticamente i suffissi .img e .ecc.
+ .TP
+ .B \-\-cache-size n
+-Dimensione della cache in MB con la modalit\[`a] -c (Standard: 32MB).
++Dimensione della cache in MB con la modalit\[`a] \-c (Standard: 32MB).
+ .TP
+ .B \-\-dao
+ Utilizza la modalit\[`a] DAO; Il disco non sar\[`a] finalizzato.
