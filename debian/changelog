@@ -1,3 +1,26 @@
+dvdisaster (0.72.1-2) unstable; urgency=low
+
+  * [da276c7] Refresh patches to avoid potential problems with the
+    buildds.
+  * [3ee8b47] Initial migration to format "3.0 (quilt)".
+  * [af26379] Wrap some long lines for legibility.
+  * [2372076] Wrap one extra line.
+  * [00e1968] Don't patch the documentation directly.
+  * [fac6933] Add missing misc-depends on dvdisaster
+  * [70a6efd] Rewrap the build-depends line, for diff-friendliness.
+  * [9fe0db4] Fix incorrect place of misc:depends.
+  * [6576482] Remove unneeded patch
+  * [7771474] Remove duplicate section field for dvdisaster
+  * [f51c51a] Add debian/watch file to more closely follow upstream
+  * [2194941] Remove UTF-8 encoding from desktop file
+  * [57e4fab] Update patch to deal with hyphens used as minus signs
+  * [80e291c] Add description for the patch
+  * [cea78c3] Add patch to fix spelling errors in the binaries
+  * [96b581b] Fix for another typo in the manpage
+  * [b8f0e62] Update standards version with no changes needed
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Tue, 24 Aug 2010 12:10:21 -0300
+
 dvdisaster (0.72.1-1) unstable; urgency=low
 
   * New maintainer (Closes: 543876)
