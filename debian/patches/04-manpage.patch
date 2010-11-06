@@ -85,6 +85,15 @@ Description: Fixes typo in manpages.
  .TP
  .B \-c, \-\-create
  Erzeugt Fehlerkorrektur-Daten f\[:u]r das Abbild.
+@@ -132,7 +132,7 @@
+ Untersucht den Datentr\[:a]ger auf Lesefehler.
+ .TP
+ .B \-t, \-\-test, \-tq, \-test=q
+-Pr\[:u]ft die Struktur der .iso und .ecc - Dateien.
++Pr\[:u]ft die Struktur der .iso und .ecc \- Dateien.
+ Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
+ die ohne vollständiges Lesen der Dateien ermittelt werden k\[:o]nnen.
+ .TP
 @@ -225,12 +225,12 @@
  Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
  .TP
