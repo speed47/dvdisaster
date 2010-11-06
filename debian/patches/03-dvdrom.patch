@@ -3,7 +3,7 @@ Description: Adds support for DVD-ROM medium-type.
 
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
-@@ -890,6 +890,11 @@
+@@ -911,6 +911,11 @@
  	    break;
  	 }
  

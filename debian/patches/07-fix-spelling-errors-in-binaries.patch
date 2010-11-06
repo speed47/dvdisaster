@@ -3,7 +3,7 @@ Description: Fix spelling errors in binaries
 
 --- a/preferences.c
 +++ b/preferences.c
-@@ -1627,7 +1627,7 @@
+@@ -1532,7 +1532,7 @@
  			 "The values include the borders: 0-100 will read 101 sectors.\n\n"
  
  			 "<b>Note:</b> Limiting the reading range is not recommended for <i>adaptive reading</i> since it might "
@@ -11,8 +11,8 @@ Description: Fix spelling errors in binaries
 +			 "prevent sectors from being read which are required for a successful error correction.\n\n"
  			 "These settings are only effective for the current session and will not be saved."));
  
-       /** Image properties */
-@@ -1911,7 +1911,7 @@
+       /*** Image recognization */
+@@ -1902,7 +1902,7 @@
  			 "<b>0x20</b> This is the <i>recommended</i> mode. "
  			 "The drive tries to apply "
  			 "the built-in error correction to the best possible extent "
@@ -21,17 +21,6 @@ Description: Fix spelling errors in binaries
  			 "<b>0x21</b> In this mode the drive skips the last stage "
  			 "of its internal error correction and returns the "
  			 "uncorrected sector instead. This may result in sectors "
---- a/rs01-create.c
-+++ b/rs01-create.c
-@@ -216,7 +216,7 @@
- 
-    /*** Test the image file and create the CRC sums */
- 
--   /* Explicitly unlinking the ecc file removes superflous segments
-+   /* Explicitly unlinking the ecc file removes superfluous segments
-       in FAT mode if the ecc file already existed. */
- 
-    LargeUnlink(Closure->eccName); 
 --- a/rs01-fix.c
 +++ b/rs01-fix.c
 @@ -246,7 +246,7 @@

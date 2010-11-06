@@ -25,14 +25,14 @@ Description: Customizes the help-dialog according to README.MODIFYING.
  
  #ifdef MODIFIED_SOURCE
     AboutTextWithLink(vbox, 
--		     _("Modified version Copyright 2009 (please fill in - [directions])\n"
--		       "Copyright 2004-2009 Carsten Gnoerlich"),
+-		     _("Modified version Copyright 2010 (please fill in - [directions])\n"
+-		       "Copyright 2004-2010 Carsten Gnoerlich"),
 -		     "MODIFYING");
 +		     _("Modified version for [Debian GNU/Linux]\n"
-+		       "Original Copyright 2004-2009 Carsten Gnoerlich"),
++		       "Original Copyright 2004-2010 Carsten Gnoerlich"),
 +		     "http://www.debian.org/");
  #else
-    AboutText(vbox, _("Copyright 2004-2009 Carsten Gnoerlich"));
+    AboutText(vbox, _("Copyright 2004-2010 Carsten Gnoerlich"));
  #endif
 @@ -725,14 +725,14 @@
     AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
