@@ -1,3 +1,10 @@
+dvdisaster (0.79.2-1) UNRELEASED; urgency=low
+
+  * Imported Upstream version 0.79.2
+  * debian/patches/*: refresh and adapt every patch
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sat, 06 Nov 2010 21:02:26 -0200
+
 dvdisaster (0.72.1-2) unstable; urgency=low
 
   * [da276c7] Refresh patches to avoid potential problems with the
