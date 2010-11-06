@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -192,36 +192,6 @@ static void register_reader(read_closure *rc)
    }
 }
 
-/* 
- * If ecc file exists and automatic ecc creation is enabled,
- * ask user if we may remove the existing one. 
- */
-
-static void confirm_ecc_file_deletion(read_closure *rc)
-{
-   if(Closure->readAndCreate && !rc->scanMode)
-   {  gint64 ignore;
-
-      if(LargeStat(Closure->eccName, &ignore))
-      {  if(Closure->guiMode)
-	 {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				    _("Automatic error correction file creation is enabled,\n"
-				      "and \"%s\" already exists.\n"
-				      "Overwrite it?\n"),
-				    Closure->eccName);
-
-	    if(!answer)
-	    {  SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
-				    _("<span %s>Aborted by user request!</span>"), 
-				    Closure->redMarkup); 
-	       rc->unreportedError = FALSE;
-	       cleanup((gpointer)rc);
-	    }
-	 }
-      }
-   }
-}
-
 /*
  * See if we have ecc data which belongs to the medium 
  */
@@ -370,9 +340,7 @@ reopen_image:
       if(!Closure->guiMode)
 	 Stop(_("Image file does not match the CD/DVD."));
       else
-      {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				  _("Image file already exists and does not match the CD/DVD.\n"
-				    "The existing image file will be deleted."));
+      {  int answer = ConfirmImageDeletion(Closure->imageName);
 	   
 	 if(!answer)
 	 {  rc->unreportedError = FALSE;
@@ -828,11 +796,6 @@ void ReadMediumLinear(gpointer data)
    /* Register with different labels depending on rc->scanMode */
 
    register_reader(rc);
-
-   /* If ecc file exists and automatic ecc creation is enabled,
-      ask user if we may remove the existing one. */
-
-   confirm_ecc_file_deletion(rc);
 
    /*** Timer setup */
 

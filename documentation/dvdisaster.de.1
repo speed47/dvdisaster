@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2009-07-04" "0.72" "Schutz f\[:u]r CD/DVD Medien"
+.TH DVDISASTER 1 "2010-02-07" "0.80" "Schutz f\[:u]r CD/DVD Medien"
 
 .SH NAME
 DVDISASTER \- Schutz f\[:u]r CD/DVD Medien gegen Datenverlust durch Alterung
@@ -6,7 +6,7 @@ oder Kratzer
 
 .SH SYNTAX
 .B dvdisaster
-.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t \||\| \-u \|]
+.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t[q] \||\| \-u \|]
 .RB [\| \-d
 .IR device \|]
 .RB [\| \-p
@@ -15,7 +15,10 @@ oder Kratzer
 .IR image \|]
 .RB [\| \-e
 .IR eccfile \|]
-.RB [\| \-\-list \|]
+.RB [\| \-o
+.IR file|image \|]
+.RB [\| \-a
+.IR codec-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
@@ -23,18 +26,25 @@ oder Kratzer
 .RB [\| -m
 .IR n \|]
 .RB [\| -v \|]
+.RB [\| -x
+.IR n \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| \-\-defective-dump \|
+.IR d \|]
+.RB [\| \-\-driver \|
+.IR d \|]
 .RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
 .RB [\| \-\-ignore-fatal-sense \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
-.RB [\| \-\-query-size
+.RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
 .IR n \|]
@@ -45,9 +55,8 @@ oder Kratzer
 .RB [\| \-\-read-raw \|]
 .RB [\| \-\-speed-warning
 .IR n \|]
-.RB [\| \-\-spinup\-dalay
+.RB [\| \-\-spinup\-delay
 .IR n \|]
-.RB [\| \-\-split\-files \|]
 
 .SH BESCHREIBUNG
 .B DVDISASTER
@@ -122,8 +131,10 @@ Versucht das Abbild mit Hilfe der Fehlerkorrektur-Daten zu reparieren.
 .B \-s, \-\-scan
 Untersucht den Datentr\[:a]ger auf Lesefehler.
 .TP
-.B \-t, \-\-test
+.B \-t, \-\-test, \-tq, \-test=q
 Pr\[:u]ft die Struktur der .iso und .ecc - Dateien.
+Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
+die ohne vollständiges Lesen der Dateien ermittelt werden k\[:o]nnen.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
@@ -142,12 +153,24 @@ Name der Abbild - Datei (Standard: medium.iso).
 .TP
 .B \-e, \-\-ecc eccfile
 Name der Fehlerkorrektur-Datei (Standard: medium.ecc).
-.PP
-.B \-\-list
-Zeigt verf\[:u]gbare Laufwerke unter dem ASPI-Treiber (nur f\[:u]r Windows).
+.TP
+.B \-o, \-\-ecc-target file|image
+Gibt an ob mit RS03 Fehlerkorrektur-Dateien oder erweiterte
+Abbilder erzeugt werden sollen (Standard: erweiterte Abbilder).
 .PP
 
 Feineinstellung (Beachten Sie die Hinweise in der Dokumentation!):
+.TP
+.B \-a, \-\-assume codec1,codec2,...
+Nimmt an daß das Abbild mit einem der angegebenen Kodierer erweitert
+wurde. Dies bewirkt eine erschöpfende Suche nach den Datenstrukturen
+der Kodierer und ist hilfreich, um in beschädigten Datenträgern enthaltene
+Fehlerkorrektur-Daten wiederzufinden. Wenn das Abbild allerdings keine
+der angegebenen Fehlerkorrektur-Daten enthält, verschwendet diese Option
+eine große Menge Rechenzeit und Ein-/Ausgabeoperationen.
+.RS
+M\[:o]gliche Werte sind RS02 und RS03.
+.RE
 .TP
 .B \-j, \-\-jump n
 \[:u]berspringe n Sektoren nach einem Lesefehler (Standard: 16).
@@ -164,6 +187,12 @@ M\[:o]gliche Werte sind RS01 und RS02.
 .B \-v, \-\-verbose n%
 mehr erl\[:a]uternde Ausgaben
 .TP
+.B \-x, \-\-threads n
+Verwende n Kontrollfäden für den RS03-Kodierer/Dekodierer. Empfohlen
+sind 2 bzw. 4 Kontrollfäden für 2- bzw. 4-Kern-Prozessoren. Lassen Sie
+auf größeren Systemen einen Kontrollfaden für Verwaltungszwecke frei,
+d.h. benutzen Sie 7 Kontrollfäden auf einem 8-Kern-System.
+.TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
 .TP
@@ -175,6 +204,16 @@ Zwischenspeicher in MB bei .ecc-Datei-Erzeugung - (Standard: 32MB).
 .TP
 .B \-\-dao
 unterstelle DAO; Abbild am Ende nicht k\[:u]rzen.
+.TP
+.B \-\-defective-dump d
+Gibt das Unterverzeichnis zum Sammeln von unvollständigen
+Roh-Sektoren an.
+.TP
+.B \-\-driver d  (nur für Linux)
+dvdisaster verwendet unter Linux normalerweise den Treiber für optische
+Laufwerke. Einige sehr alte SCSI-Kontroller erzeugen dabei Systemabstürze. 
+Probieren Sie in diesem Fall mit
+\-\-driver=sg das Laufwerk über den alternativen SCSI-Treiber anzusteuern.
 .TP
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.
@@ -195,11 +234,23 @@ Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert -1 u
 die Standardeinstellungen des Laufwerks zu verwenden.
 .RE
 .TP
-.B \-\-query-size n
-Ermittelt die Abbildgr\[:o]sse durch das Laufwerk oder das Dateisystem auf dem Datentr\[:a]ger
-(Standard: ecc)
+.B \-\-old-ds-marker
+Markiert fehlende Sektoren in einer Weise, die mit dvdisaster
+0.70 oder noch früheren Versionen kompatibel ist.
 .RS
-M\[:o]gliche Werte: drive udf ecc 
+Das voreingestellte Markierungsverfahren ist ab dvdisaster
+0.72 die bessere Wahl. Allerdings können Sie mit diesem Verfahren
+markierte Abbilder nicht mit früheren dvdisaster-Versionen verwenden,
+da diese keine fehlenden Sektoren in den Abbildern erkennen würden.
+
+Bearbeiten Sie ein Abbild nicht mit wechselnden Einstellungen für
+diese Option.
+.RE
+.TP
+.B \-\-prefetch-sectors n
+n Sektoren für die RS03-(De)kodierung im Voraus laden (Standard: 32)
+.RS
+Ein Wert von n verbraucht ungefähr n MB Arbeitsspeicher.
 .RE
 .TP
 .B \-\-raw-mode n
@@ -227,9 +278,6 @@ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 .TP
 .B \-\-spinup-delay n
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
-.TP
-.B \-\-split-files
-Abbild in mehrere Dateien <= 2GB aufteilen.
 .PP
 
 .SH SIEHE AUCH
@@ -243,4 +291,4 @@ DVDISASTER wurde von Carsten Gnoerlich <carsten@dvdisaster.com> geschrieben.
 .PP
 Diese Hilfeseite wurde von Daniel Baumann <daniel.baumann@panthera-systems.net>
 f\[:u]r das Debian Projekt geschrieben (kann aber auch von Anderen verwendet
-werden). Sie wurde f\[:u]r Version 0.70/0.72 von Carsten Gn\[:o]rlich erweitert.
+werden). Sie wird seit Version 0.70 von Carsten Gn\[:o]rlich gepflegt.

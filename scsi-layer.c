@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -53,6 +53,20 @@ AlignedBuffer* CreateAlignedBuffer(int size)
 void FreeAlignedBuffer(AlignedBuffer *ab)
 {  g_free(ab->base);
    g_free(ab);
+}
+
+/*
+ * Align a length to a multiple of 4. 
+ * Some broken chipsets fail on DMA otherways.
+ */
+
+static void length_align(unsigned int *length)
+{
+   if(*length & 3)
+   {  Verbose("# Warning: Realigning length from %d to %d\n",
+	      *length, *length & ~3);
+      *length &= ~3;
+   }
 }
 
 /***
@@ -159,12 +173,12 @@ static int try_fallback_type_check(DeviceHandle *dh)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0;        /* We want DI (disc information) */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    /*** Only a BD should respond positively here */
    
    Verbose("# BD: trying READ DVD with BD subcommand for size\n");
-   if(SendPacket(dh, cmd, 12, ab->buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 12, ab->buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  
       Verbose("# failed -> not a BD type medium.\n");
       goto try_dvd;
@@ -200,7 +214,7 @@ try_dvd:
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0;        /* We want PHYSICAL info */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    /* Different drives react with different error codes on this request;
       especially CDROMs seem to react very indeterministic here 
@@ -208,7 +222,7 @@ try_dvd:
       So we do not look for specific error and regard any failure as a sign
       that the medium is not a DVD. */
 
-   if(SendPacket(dh, cmd, 12, ab->buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 12, ab->buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  
       Verbose("# failed -> not a DVD type medium\n");
       goto assume_cd;
@@ -444,10 +458,10 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    cmd[2] = 0;     /* format; we want the TOC */
    cmd[6] = 1;     /* track/session number */
    cmd[7] = 0;     /* allocation length */
-   cmd[8] = 2;
+   cmd[8] = MIN_TRANSFER_LEN;
 
    Verbose("#CD: querying size of READ TOC/PMA/ATIP (for TOC)\n");
-   if(SendPacket(dh, cmd, 10, buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  
       FreeAlignedBuffer(ab);
       if(!probe_only)
@@ -462,6 +476,7 @@ static int query_cd(DeviceHandle *dh, int probe_only)
 
    length = buf[0]<<8 | buf[1];
    length += 2  ;  /* MMC3: "Disc information length excludes itself" */
+   length_align(&length);
    Verbose("#CD: size returned is %d\n", length);
 
    if(length>1024) /* don't let the drive hack us using a buffer overflow ;-) */
@@ -506,10 +521,10 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    cmd[2] = 2;     /* format; we want the full TOC */
    cmd[6] = 1;     /* track/session number */
    cmd[7] = 0;     /* allocation length */
-   cmd[8] = 2;
+   cmd[8] = MIN_TRANSFER_LEN;
 
    Verbose("#CD: querying size of READ TOC/PMA/ATIP (for full TOC)\n");
-   if(SendPacket(dh, cmd, 10, buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  FreeAlignedBuffer(ab);
       if(!probe_only)
 	 Stop(_("%s\nCould not query full TOC length.\n"),
@@ -519,6 +534,7 @@ static int query_cd(DeviceHandle *dh, int probe_only)
 
    length = buf[0]<<8 | buf[1];
    length += 2;    /* MMC3: "Disc information length excludes itself" */
+   length_align(&length);
    Verbose("#CD: size returned is %d\n", length);
 
    if(length < 15)
@@ -534,7 +550,9 @@ static int query_cd(DeviceHandle *dh, int probe_only)
       return FALSE;
    }
 
+#if 0
    length = 16;  /* Works around Windows (and possibly other OS) driver issues */
+#endif
 
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x43;  /* READ TOC/PMA/ATIP */
@@ -612,10 +630,10 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0;        /* We want PHYSICAL info */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    Verbose("#DVD: trying READ DVD for size of PHYSICAL info\n");
-   if(SendPacket(dh, cmd, 12, buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 12, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  FreeAlignedBuffer(ab);
       if(!probe_only)
 	 Stop(_("%s\nCould not query dvd structure length.\n"), 
@@ -625,6 +643,7 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 
    length = buf[0]<<8 | buf[1];
    length += 2;
+   length_align(&length);
 
    if(length>4096) /* don't let the drive hack us using a buffer overflow ;-) */
    {  FreeAlignedBuffer(ab);
@@ -735,12 +754,13 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0x11;     /* We want the ADIP */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    Verbose("#DVD: trying READ DVD for size of ADIP\n");
-   if(SendPacket(dh, cmd, 12, buf, 2, sense, DATA_READ) == 0)
+   if(SendPacket(dh, cmd, 12, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
       length += 2;
+      length_align(&length);
 
       Verbose("#DVD: size returned is %d\n", length);
 
@@ -784,12 +804,13 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0x0E;     /* We want the lead-in info */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    Verbose("#DVD: trying READ DVD for size of lead-in\n");
-   if(SendPacket(dh, cmd, 12, buf, 2, sense, DATA_READ) == 0)
+   if(SendPacket(dh, cmd, 12, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
       length += 2;
+      length_align(&length);
 
       Verbose("#DVD: size returned is %d\n", length);
       if(length < 4096)
@@ -938,10 +959,10 @@ static int query_bd(DeviceHandle *dh, int probe_only)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 0;        /* We want DI (disc information) */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
    Verbose("#BD: trying READ DISC STRUCTURE for size\n");
-   if(SendPacket(dh, cmd, 12, buf, 2, sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 12, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
    {  	FreeAlignedBuffer(ab);
         if(!probe_only)
 	  Stop(_("%s\nCould not query BD disc structure length.\n"), 
@@ -951,6 +972,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
 
    length = buf[0]<<8 | buf[1];
    length += 2;
+   length_align(&length);
    Verbose("#BD: disc structure query succeeded, length %d bytes\n", length);
 
    /* Do the real query */
@@ -1052,11 +1074,12 @@ static int query_type(DeviceHandle *dh, int probe_only)
    cmd[0] = 0x51;     /* READ DISC INFORMATION */
    cmd[1] = 0;        /* standard disc info */
    cmd[7] = 0;        /* Allocation length */
-   cmd[8] = 2;
+   cmd[8] = MIN_TRANSFER_LEN;
 
    Verbose("# trying READ DISC INFORMATION for size\n");
-   if(SendPacket(dh, cmd, 10, buf, 2, sense, DATA_READ) == 0)
+   if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
+      length_align(&length);
 
       Verbose("# size returned is %d\n", length);
 
@@ -1158,16 +1181,17 @@ static int query_blank(DeviceHandle *dh)
       cmd[2] = 4;     /* format; we want the ATIP */
       cmd[6] = 0;     /* track/session number */
       cmd[7] = 0;     /* allocation length */
-      cmd[8] = 2;
+      cmd[8] = MIN_TRANSFER_LEN;
 
       Verbose("#CD: querying size of READ TOC/PMA/ATIP (for ATIP)\n");
-      if(SendPacket(dh, cmd, 10, buf, 2, sense, DATA_READ)<0)
+      if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
       {  FreeAlignedBuffer(ab);
 	 return FALSE;
       }
 
       length = buf[0]<<8 | buf[1];
       length += 2;    /* MMC3: "Disc information length excludes itself" */
+      length_align(&length);
       Verbose("#CD: size returned is %d\n", length);
 
       if(length < 15 || length > 1024)  /* implausible */
@@ -1212,16 +1236,17 @@ static int query_blank(DeviceHandle *dh)
 	    cmd[1] = 0x01;  /* TCDB (track number) addressing) */
 	    cmd[5] = 1;     /* we want the first track info */
 	    cmd[7] = 0;     /* allocation length */
-	    cmd[8] = 2;
+	    cmd[8] = MIN_TRANSFER_LEN;
 
 	    Verbose("#DVD: querying size of READ TRACK INFORMATION\n");
-	    if(SendPacket(dh, cmd, 10, buf, 2, sense, DATA_READ)<0)
+	    if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ)<0)
 	    {  FreeAlignedBuffer(ab);
 	       return FALSE;
 	    }
 
 	    length = buf[0]<<8 | buf[1];
 	    length += 2;    /* MMC3: "Disc information length excludes itself" */
+	    length_align(&length);
 	    Verbose("#DVD: size returned is %d\n", length);
 
 	    memset(cmd, 0, MAX_CDB_SIZE);
@@ -1267,6 +1292,7 @@ static int query_blank(DeviceHandle *dh)
 	    }
 
 	    length = 4+buf[3];
+	    length_align(&length);
 	    Verbose("#DVD: size returned is %d\n", length);
 
 	    memset(cmd, 0, MAX_CDB_SIZE);
@@ -1350,6 +1376,7 @@ static int query_blank(DeviceHandle *dh)
       }
 
       length = 4+buf[3];
+      length_align(&length);
       Verbose("#BD: size returned is %d\n", length);
 
       memset(cmd, 0, MAX_CDB_SIZE);
@@ -1483,8 +1510,8 @@ static int read_mode_page(DeviceHandle *dh, AlignedBuffer *ab, int *parameter_li
    memset(cdb, 0, MAX_CDB_SIZE);
    cdb[0] = 0x5a;         /* MODE SENSE(10) */
    cdb[2] = 1;            /* Page code */
-   cdb[8] = 255;          /* Allocation length */
-   ret  = SendPacket(dh, cdb, 10, buf, 255, &sense, DATA_READ);
+   cdb[8] = 252;          /* Allocation length */
+   ret  = SendPacket(dh, cdb, 10, buf, 252, &sense, DATA_READ);
 
    if(ret<0) 
    {  FreeAlignedBuffer(ab);
@@ -1639,9 +1666,9 @@ static int query_copyright(DeviceHandle *dh)
    cmd[6] = 0;        /* First layer */
    cmd[7] = 1;        /* We want copyright info */
    cmd[8] = 0;        /* Allocation length */
-   cmd[9] = 2;
+   cmd[9] = MIN_TRANSFER_LEN;
 
-   if(SendPacket(dh, cmd, 12, buf, 2, &sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 12, buf, MIN_TRANSFER_LEN, &sense, DATA_READ)<0)
    {  FreeAlignedBuffer(ab);
       Stop(_("%s\nCould not query dvd structure length for format code 1.\n"),
 	   GetSenseString(sense.sense_key, sense.asc, sense.ascq, TRUE));
@@ -1650,6 +1677,7 @@ static int query_copyright(DeviceHandle *dh)
 
    length = buf[0]<<8 | buf[1];
    length += 2;
+   length_align(&length);
 
    if(length>4096) /* don't let the drive hack us using a buffer overflow ;-) */
    {  FreeAlignedBuffer(ab);
@@ -1795,7 +1823,7 @@ static unsigned int query_size(DeviceHandle *dh)
    /*** If RS02 header search is enabled and we can find an appropriate header,
 	use it as an authoritative source for the medium size. */
 
-   if(Closure->querySize >= 2)
+   if(Closure->examineRS02)
    {  if(dh->rs02Size <= 0)
       {  gint64 last_sector = MAX(dh->readCapacity, dh->userAreaSize);
       
@@ -1818,16 +1846,14 @@ static unsigned int query_size(DeviceHandle *dh)
       Verbose("Skipping medium size determination from ECC header.\n");
    }
 
-   /*** If ISO/UDF filesystem parsing is enabled try this next. */
+   /*** Try getting the size from the ISO/UDF filesystem. */
 
-   if(Closure->querySize >= 1)
-   {  if(dh->isoInfo)
-      {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
-		 dh->isoInfo->volumeSize);  
-	 return dh->isoInfo->volumeSize;
-      }
-      else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
-   } else Verbose("Skipping medium size determination from ISO/UDF filesystem.\n");
+   if(dh->isoInfo)
+   {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
+	      dh->isoInfo->volumeSize);  
+      return dh->isoInfo->volumeSize;
+   }
+   else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
 
    /*** If everything else fails, query the drive. */
    
@@ -2006,8 +2032,7 @@ gint64 CurrentMediumSize(int get_blank_size)
       size = dh->blankCapacity;
    }
    else
-   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
-	 ExamineUDF(dh);
+   {  ExamineUDF(dh, NULL);
       size = query_size(dh);
    }
 
@@ -2543,14 +2568,7 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 		GetSenseString(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq, FALSE));
    }
 
-#ifdef SYS_LINUX
    PrintLog(_("\nDevice: %s, %s\n"),device, dh->devinfo);
-#endif
-
-#ifdef SYS_MINGW
-   PrintLog(_("\nDevice: %s (%s), %s\n"),
-	    device, dh->aspiUsed ? "ASPI" : "SPTI", dh->devinfo);
-#endif
 
    /* Query the type and fail immediately if incompatible medium is found
       so that the later tests are not derailed by the wrong medium type */
@@ -2618,8 +2636,7 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 
    /* Examine medium type */
 
-   if(Closure->querySize >= 1)  /* parseUDF or better requested */
-     ExamineUDF(dh);
+   ExamineUDF(dh, NULL);
 
    Verbose("# Calling query_size()\n");
    dh->sectors = query_size(dh);
@@ -2705,9 +2722,7 @@ DeviceHandle* QueryMediumInfo(char *device)
    /* Examine medium size (only on known/handled formats) */
 
    if(dh->subType != UNSUPPORTED)
-   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
-	 ExamineUDF(dh);
-
+   {  ExamineUDF(dh, NULL);
       dh->sectors = query_size(dh);
    }
 

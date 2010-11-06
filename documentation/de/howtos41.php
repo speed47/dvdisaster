@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -61,13 +61,6 @@ Sie das Aufbewahren von Roh-Sektoren zunächst abgewählt.
 Erst wenn diese Einstellungen nicht genügend Daten liefern können Sie weitere 
 <a href="howtos43.php">Anpassungen</a> vornehmen.
 <p>
-<?php end_screen_shot(); ?>
-
-<?php begin_screen_shot("Reiterkarte \"Dateien\".","create-prefs-file.png"); ?>
-<b>Reiterkarte "Dateien".</b> Wenn Ihr Betriebssystem keine Dateien erzeugen kann, die größer als 2GB sind,
-müssen Sie die grün markierte Einstellung auswählen. Anstelle einer einzigen Datei "abbild.iso" 
-werden dann bis zu 100 Segmente "abbild00.iso", "abbild01.iso" usw. verwendet; dies kostet etwas Geschwindigkeit.
-Sie brauchen diese Option hauptsächlich unter Windows wenn Sie dort noch mit dem alten Dateisystem FAT32 arbeiten.
 <?php end_screen_shot(); ?>
 
 <pre> </pre>

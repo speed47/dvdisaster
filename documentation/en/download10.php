@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -24,16 +24,18 @@ begin_page();
 </ul>
 
 <h3>Operating systems</h3>
+The dvdisaster project recommends GNU/Linux.
+
 <ul>
+ <li><b>GNU/Linux</b> with kernel <b>2.6.7</b> or later (2.6.26 recommended).<p>
+ </li>
  <li><a name="#freebsd"></a><b>FreeBSD</b> version <b>6.0</b> or later<br>
      (using ATAPI drives requires loading the <i>atapicam</i> kernel module -- see INSTALL doc)<p>
  </li>
- <li><b>GNU/Linux</b> with kernel <b>2.6.7</b> or later.<p>
- </li>
+ <li><b>NetBSD</b> version 3.1 or later.<p></li> 
  <li><b>Mac OS X</b> version 10.4 (Tiger) or later,<br> 
       on x86 and PowerPC hardware.<p>
- <li><b>NetBSD</b> version 3.1 or later.<p></li> 
- <li><b>Windows 2000</b>, <b>Windows XP</b> oder <b>Windows Vista (R).</b></li>
+ <li><b>Windows 2000 SP4</b> or newer.</li>
  </ul>
 
 <!--- do not change below --->

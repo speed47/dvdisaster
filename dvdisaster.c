@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -50,9 +50,9 @@ void CreateEcc(void)
 void FixEcc(void)
 {  Method *method; 
    
-   /* Error handling is done within EccFileMethod() */
+   /* Error handling is done within EccMethod() */
 
-   method = EccFileMethod(TRUE);
+   method = EccMethod(TRUE);
  
    /* Dispatch to the proper method */
   
@@ -60,7 +60,7 @@ void FixEcc(void)
 }
 
 /*
- * Verfiy the image against ecc data 
+ * Verifiy the image against ecc data 
  */
 
 void Verify(void)
@@ -70,13 +70,13 @@ void Verify(void)
      we fall back to the RS01 method for comparing 
      since it is robust against missing files. */
 
-  if(!(method = EccFileMethod(FALSE)))
+  if(!(method = EccMethod(FALSE)))
     if(!(method = FindMethod("RS01")))
       Stop(_("RS01 method not available for comparing files."));
  
    /* Dispatch to the proper method */
 
-   method->verify(method);
+  method->verify(method);
 }
 
 /*
@@ -99,7 +99,6 @@ typedef enum
    MODE_CMP_IMAGES,
    MODE_DEBUG_MAINT1,
    MODE_ERASE, 
-   MODE_LIST_ASPI,
    MODE_MARKED_IMAGE,
    MODE_MERGE_IMAGES,
    MODE_RANDOM_ERR, 
@@ -126,8 +125,8 @@ typedef enum
    MODIFIER_FILL_UNREADABLE,
    MODIFIER_IGNORE_FATAL_SENSE,
    MODIFIER_INTERNAL_REREADS,
-   MODIFIER_QUERY_SIZE,
-   MODIFIER_NEW_DS_MARKER,
+   MODIFIER_OLD_DS_MARKER,
+   MODIFIER_PREFETCH_SECTORS,
    MODIFIER_RANDOM_SEED,
    MODIFIER_READ_ATTEMPTS,
    MODIFIER_READ_MEDIUM,
@@ -137,7 +136,6 @@ typedef enum
    MODIFIER_SIMULATE_DEFECTS,
    MODIFIER_SPEED_WARNING, 
    MODIFIER_SPINUP_DELAY, 
-   MODIFIER_SPLIT_FILES,
    MODIFIER_TRUNCATE,
    MODIFIER_VERSION,
 } run_mode;
@@ -192,6 +190,34 @@ int main(int argc, char *argv[])
          _independent_ of the actual locale! */
 
 #ifdef WITH_NLS_YES
+
+#if 0 //WIN_CONSOLE
+    /* We need to manually set the code page when running
+       in the console */
+
+    if(!g_getenv("OUTPUT_CHARSET"))  /* User may override this */
+    {  gchar *unix_locale = g_win32_getlocale();
+
+      if(!strncmp(unix_locale, "cs", 2))
+	g_setenv("OUTPUT_CHARSET", "CP852", 1);
+
+      if(!strncmp(unix_locale, "de", 2))
+	g_setenv("OUTPUT_CHARSET", "CP850", 1);
+
+      if(!strncmp(unix_locale, "it", 2))
+	g_setenv("OUTPUT_CHARSET", "CP850", 1);
+
+      if(!strncmp(unix_locale, "pt_BR", 4))
+	g_setenv("OUTPUT_CHARSET", "CP850", 1);
+
+      if(!strncmp(unix_locale, "ru", 2))
+	g_setenv("OUTPUT_CHARSET", "CP855", 1);
+
+      if(!strncmp(unix_locale, "sv", 2))
+	g_setenv("OUTPUT_CHARSET", "CP850", 1);
+    }
+#endif /* WIN_CONSOLE */
+
 #ifdef SYS_MINGW
     if(!g_getenv("LANG"))  /* Unix style setting has precedence */
     {  LANGID lang_id;
@@ -237,7 +263,7 @@ int main(int argc, char *argv[])
 #ifdef WIN_CONSOLE
 	       g_setenv("OUTPUT_CHARSET", "CP860", 1);
 #else
-	       g_setenv("OUTPUT_CHARSET", "CP1251", 1);
+	       g_setenv("OUTPUT_CHARSET", "CP1252", 1);
 #endif
 	    }
             break;
@@ -263,6 +289,7 @@ int main(int argc, char *argv[])
     }
 #endif /* SYS_MINGW */
 
+    /* This is necessary, but feels broken */
     setlocale(LC_CTYPE, "");
     setlocale(LC_MESSAGES, "");
     textdomain("dvdisaster");
@@ -337,6 +364,7 @@ int main(int argc, char *argv[])
       static struct option long_options[] =
       { {"adaptive-read", 0, 0, MODIFIER_ADAPTIVE_READ},
 	{"auto-suffix", 0, 0,  MODIFIER_AUTO_SUFFIX},
+	{"assume", 1, 0, 'a'},
 	{"byteset", 1, 0, MODE_BYTESET },
 	{"copy-sector", 1, 0, MODE_COPY_SECTOR },
 	{"compare-images", 1, 0, MODE_CMP_IMAGES },
@@ -352,6 +380,7 @@ int main(int argc, char *argv[])
 	{"device", 0, 0, 'd'},
 	{"driver", 1, 0, MODIFIER_DRIVER },
         {"ecc", 1, 0, 'e'},
+	{"ecc-target", 1, 0, 'o'},
 	{"eject", 0, 0, MODIFIER_EJECT },
 	{"erase", 1, 0, MODE_ERASE },
 	{"fill-unreadable", 1, 0, MODIFIER_FILL_UNREADABLE },
@@ -367,9 +396,9 @@ int main(int argc, char *argv[])
 	{"marked-image", 1, 0, MODE_MARKED_IMAGE },
 	{"merge-images", 1, 0, MODE_MERGE_IMAGES },
 	{"method", 2, 0, 'm' },
-	{"new-ds-marker", 0, 0, MODIFIER_NEW_DS_MARKER },
+	{"old-ds-marker", 0, 0, MODIFIER_OLD_DS_MARKER },
+	{"prefetch-sectors", 1, 0, MODIFIER_PREFETCH_SECTORS },
         {"prefix", 1, 0, 'p'},
-	{"query-size", 1, 0, MODIFIER_QUERY_SIZE },
 	{"random-errors", 1, 0, MODE_RANDOM_ERR },
 	{"random-image", 1, 0, MODE_RANDOM_IMAGE },
 	{"random-seed", 1, 0, MODIFIER_RANDOM_SEED },
@@ -389,8 +418,7 @@ int main(int argc, char *argv[])
 	{"sim-defects", 1, 0, MODIFIER_SIMULATE_DEFECTS},
 	{"speed-warning", 2, 0, MODIFIER_SPEED_WARNING},
 	{"spinup-delay", 1, 0, MODIFIER_SPINUP_DELAY},
-	{"split-files", 0, 0, MODIFIER_SPLIT_FILES},
-	{"test", 0, 0, 't'},
+	{"test", 2, 0, 't'},
         {"threads", 1, 0, 'x'},
 	{"truncate", 2, 0, MODIFIER_TRUNCATE},
 	{"unlink", 0, 0, 'u'},
@@ -401,23 +429,30 @@ int main(int argc, char *argv[])
       };
 
       c = getopt_long(argc, argv, 
-		      "cd:e:fhi:j:lm::n:p:r::s::tuvx:",
+		      "a:cd:e:fhi:j:lm::n:o:p:r::s::t::uvx:",
 		      long_options, &option_index);
 
       if(c == -1) break;
 
       switch(c)
-      {  case 'r': mode = MODE_SEQUENCE; sequence |= 1<<MODE_READ; 
-	           if(optarg) read_range = g_strdup(optarg);
-		   break;
-
-         case 's': mode = MODE_SEQUENCE; sequence |= 1<<MODE_SCAN; 
-	           if(optarg) read_range = g_strdup(optarg); 
-		   break;
+      {            /* Mingw has not strcasestr() */
+	 case 'a': if(strstr(optarg, "rs02") || strstr(optarg, "RS02"))
+		      Closure->examineRS02 = TRUE; 
+	           if(strstr(optarg, "rs03") || strstr(optarg, "RS03"))
+		      Closure->examineRS03 = TRUE; 
+		   break;	       
          case 'c': mode = MODE_SEQUENCE; sequence |= 1<<MODE_CREATE; break;
+         case 'd': if(optarg) 
+	           {  g_free(Closure->device);
+	              Closure->device = g_strdup(optarg); 
+	              break;
+                   }
+         case 'e': if(optarg) 
+	           {  g_free(Closure->eccName);
+		      Closure->eccName = g_strdup(optarg);
+		   }
+	           break;
          case 'f': mode = MODE_SEQUENCE; sequence |= 1<<MODE_FIX; break;
-         case 't': mode = MODE_SEQUENCE; sequence |= 1<<MODE_VERIFY; break;
-         case 'u': Closure->unlinkImage = TRUE; break;
          case 'h': mode = MODE_HELP; break;
          case 'i': if(optarg) 
 	           {  g_free(Closure->imageName);
@@ -427,7 +462,6 @@ int main(int argc, char *argv[])
          case 'j': if(optarg) Closure->sectorSkip = atoi(optarg) & ~0xf;
 	           if(Closure->sectorSkip<0) Closure->sectorSkip = 0;
 		   break;
-	 case 'l': mode = MODE_LIST_ASPI; break;
          case 'm': if(optarg && strlen(optarg) == 4) 
 	           {  g_free(Closure->methodName);
 	              Closure->methodName = g_strdup(optarg); 
@@ -445,10 +479,11 @@ int main(int argc, char *argv[])
 		      else Closure->mediumSize = (gint64)atoll(optarg);
 		      break;
 		   }
-         case 'e': if(optarg) 
-	           {  g_free(Closure->eccName);
-		      Closure->eccName = g_strdup(optarg);
-		   }
+         case 'o': if(!strcmp(optarg, "file"))
+		     Closure->eccTarget = ECC_FILE;
+	           else if(!strcmp(optarg, "image"))
+		     Closure->eccTarget = ECC_IMAGE;
+	           else Stop(_("-o/--ecc-target expects 'file' or 'image'"));
 	           break;
          case 'p': if(optarg) 
 		   {  g_free(Closure->imageName);
@@ -459,14 +494,19 @@ int main(int argc, char *argv[])
 		      g_sprintf(Closure->imageName,"%s.iso",optarg);
 		   }
 	           break;
-         case 'd': if(optarg) 
-	           {  g_free(Closure->device);
-	              Closure->device = g_strdup(optarg); 
-	              break;
-                   }
-         case 'v': Closure->verbose = TRUE;
-	           break;
+         case 'r': mode = MODE_SEQUENCE; sequence |= 1<<MODE_READ; 
+	           if(optarg) read_range = g_strdup(optarg);
+		   break;
 
+         case 's': mode = MODE_SEQUENCE; sequence |= 1<<MODE_SCAN; 
+	           if(optarg) read_range = g_strdup(optarg); 
+		   break;
+                  case 'v': Closure->verbose = TRUE;
+	           break;
+         case 't': mode = MODE_SEQUENCE; sequence |= 1<<MODE_VERIFY; 
+	           if(optarg) Closure->quickVerify = TRUE;
+	           break;
+         case 'u': Closure->unlinkImage = TRUE; break;
          case 'x': Closure->codecThreads = atoi(optarg);
                    if(Closure->codecThreads < 1 || Closure->codecThreads > MAX_CODEC_THREADS)
                      Stop(_("--threads must be 1..%d\n"), MAX_CODEC_THREADS);
@@ -543,15 +583,16 @@ int main(int argc, char *argv[])
 	    }
 	 }
 	   break;
-	 case MODIFIER_NEW_DS_MARKER:
-	    Closure->dsmVersion = 1;
+	 case MODIFIER_OLD_DS_MARKER:
+	    Closure->dsmVersion = 0;
 	    break;
-         case MODIFIER_QUERY_SIZE:
-	        if(!strcmp(optarg, "drive")) Closure->querySize = 0;
-	   else if(!strcmp(optarg, "udf"))   Closure->querySize = 1;
-	   else if(!strcmp(optarg, "ecc"))   Closure->querySize = 2;
-           else Stop("--query-size requires one of these arguments: drive udf ecc\n");
-	   break;
+         case MODIFIER_PREFETCH_SECTORS:
+ 	    Closure->prefetchSectors = atoi(optarg);
+	    if(   Closure->prefetchSectors < 32
+	       || Closure->prefetchSectors > 8096)
+	      Stop(_("--prefetch-sectors must be in range 32...8096"));
+	    break;
+
          case MODIFIER_RANDOM_SEED:
 	   if(optarg) Closure->randomSeed = atoi(optarg);
 	   break;
@@ -600,9 +641,6 @@ int main(int argc, char *argv[])
          case MODIFIER_SPEED_WARNING:
 	   if(optarg) Closure->speedWarning = atoi(optarg);
 	   else Closure->speedWarning=10;
-	   break;
-         case MODIFIER_SPLIT_FILES:
-	   Closure->splitFiles = 1;
 	   break;
          case MODIFIER_CLV_SPEED:
 	   Closure->driveSpeed = atoi(optarg);
@@ -848,10 +886,6 @@ int main(int argc, char *argv[])
 	 break;
 
 #ifdef SYS_MINGW
-      case MODE_LIST_ASPI:
-	 ListAspiDrives();
-	 break;
-
       case MODE_SIGN:
 	 WriteSignature();
 	 exit(0);
@@ -886,62 +920,64 @@ int main(int argc, char *argv[])
 	     "  -d,--device device     - read from given device   (default: %s)\n"
 	     "  -p,--prefix prefix     - prefix of .iso/.ecc file (default: medium.*  )\n"
 	     "  -i,--image  imagefile  - name of image file       (default: medium.iso)\n"
-	     "  -e,--ecc    eccfile    - name of parity file      (default: medium.ecc)\n"),
-	     Closure->device);
+	     "  -e,--ecc    eccfile    - name of parity file      (default: medium.ecc)\n"
+	     "  -o,--ecc-target [file image] - where to put ecc data in RS03\n"),
+	       Closure->device);
 
-#ifdef SYS_MINGW
-      PrintCLI(_("  -l,--list              - list drives available under ASPI manager\n\n"));
-#else
       PrintCLI("\n");
-#endif
 
-      PrintCLI(_("Tweaking options (see manual before using!)\n"
-	     "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
-	     "  -m n                   - list/select error correction methods (default: RS01)\n" 
-	     "  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
-	     "                           maximum error correction image size (in sectors)\n"
-	     "  -v,--verbose           - more diagnostic messages\n"
-//             "  -x, --threads n        - use n threads for en-/decoding (if supported by codec)\n"
-	     "  --adaptive-read        - use optimized strategy for reading damaged media\n"
-	     "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
-	     "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
-	     "  --dao                  - assume DAO disc; do not trim image end\n"
-	     "  --defective-dump d     - directory for saving incomplete raw sectors\n"
-	     "  --eject                - eject medium after successful read\n"
-	     "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
-	     "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
-	     "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
-      	     "  --query-size n         - query drive/udf/ecc for image size (default: ecc)\n"   
-	     "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
-	     "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
-	     "  --read-medium n        - read the whole medium up to n times\n"
-	     "  --read-raw             - performs read in raw mode if possible\n"
-	     "  --speed-warning n      - print warning if speed changes by more than n percent\n"
-	     "  --spinup-delay n       - wait n seconds for drive to spin up\n"
-	     "  --split-files          - split image into files <= 2GB\n\n"));
+      PrintCLI(_("Tweaking options (see manual before using!)\n"));
+      PrintCLI(_("  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"));
+      PrintCLI(_("  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"));
+      PrintCLI(_("  -m n                   - list/select error correction methods (default: RS01)\n"));
+      PrintCLI(_("  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
+		 "                           maximum error correction image size (in sectors)\n"));
+      PrintCLI(_("  -v,--verbose           - more diagnostic messages\n"));
+      PrintCLI(_("  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"));
+      PrintCLI(_("  --adaptive-read        - use optimized strategy for reading damaged media\n"));
+      PrintCLI(_("  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"));
+      PrintCLI(_("  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"));
+      PrintCLI(_("  --dao                  - assume DAO disc; do not trim image end\n"));
+      PrintCLI(_("  --defective-dump d     - directory for saving incomplete raw sectors\n"));
+#ifdef SYS_LINUX
+      PrintCLI(_("  --driver=sg            - use alternative sg driver (see man page!)\n"));
+#endif
+      PrintCLI(_("  --eject                - eject medium after successful read\n"));
+      PrintCLI(_("  --fill-unreadable n    - fill unreadable sectors with byte n\n"));
+      PrintCLI(_("  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"));
+      PrintCLI(_("  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"));
+      PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
+      PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMB)\n"));
+      PrintCLI(_("  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"));
+      PrintCLI(_("  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"));
+      PrintCLI(_("  --read-medium n        - read the whole medium up to n times\n"));
+      PrintCLI(_("  --read-raw             - performs read in raw mode if possible\n"));
+      PrintCLI(_("  --speed-warning n      - print warning if speed changes by more than n percent\n"));
+      PrintCLI(_("  --spinup-delay n       - wait n seconds for drive to spin up\n"));
 
       if(Closure->debugMode)
-      { PrintCLI(_("Debugging options (purposefully undocumented and possibly harmful)\n"
-	     "  --debug           - enables the following options\n"
-	     "  --byteset s,i,b   - set byte i in sector s to b\n"
-             "  --cdump           - creates C #include file dumps instead of hexdumps\n" 
-	     "  --compare-images a,b  - compare sectors in images a and b\n"
-	     "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
-	     "  --erase sector    - erase the given sector\n"
-	     "  --erase n-m       - erase sectors n - m, inclusively\n"
-	     "  --marked-image n  - create image with n marked random sectors\n"
-	     "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
-	     "  --random-errors r,e seed image with (correctable) random errors\n"
-	     "  --random-image n  - create image with n sectors of random numbers\n"
-	     "  --random-seed n   - random seed for built-in random number generator\n"
-	     "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
-	     "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
-	     "  --screen-shot     - useful for generating screen shots\n"
-	     "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
-	     "  --show-sector n   - shows hexdump of the given sector in an image file\n"
-	     "  --sim-defects n   - simulate n%% defective sectors on medium\n"
-	     "  --truncate n      - truncates image to n sectors\n"
-	     "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n\n"));
+      { PrintCLI("\n");
+	PrintCLI(_("Debugging options (purposefully undocumented and possibly harmful)\n"));
+	PrintCLI(_("  --debug           - enables the following options\n"));
+	PrintCLI(_("  --byteset s,i,b   - set byte i in sector s to b\n"));
+	PrintCLI(_("  --cdump           - creates C #include file dumps instead of hexdumps\n")); 
+	PrintCLI(_("  --compare-images a,b  - compare sectors in images a and b\n"));
+	PrintCLI(_("  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"));
+	PrintCLI(_("  --erase sector    - erase the given sector\n"));
+	PrintCLI(_("  --erase n-m       - erase sectors n - m, inclusively\n"));
+	PrintCLI(_("  --marked-image n  - create image with n marked random sectors\n"));
+	PrintCLI(_("  --merge-images a,b  merge image a with b (a receives sectors from b)\n"));
+	PrintCLI(_("  --random-errors r,e seed image with (correctable) random errors\n"));
+	PrintCLI(_("  --random-image n  - create image with n sectors of random numbers\n"));
+	PrintCLI(_("  --random-seed n   - random seed for built-in random number generator\n"));
+	PrintCLI(_("  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"));
+	PrintCLI(_("  --read-sector n   - shows hexdump of the given sector from medium in drive\n"));
+	PrintCLI(_("  --screen-shot     - useful for generating screen shots\n"));
+	PrintCLI(_("  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"));
+	PrintCLI(_("  --show-sector n   - shows hexdump of the given sector in an image file\n"));
+	PrintCLI(_("  --sim-defects n   - simulate n%% defective sectors on medium\n"));
+	PrintCLI(_("  --truncate n      - truncates image to n sectors\n")); 
+	PrintCLI(_("  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n\n"));
       }
 
 #ifdef WIN_CONSOLE

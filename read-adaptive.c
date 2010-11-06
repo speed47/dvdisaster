@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -617,10 +617,8 @@ int check_image_fingerprint(read_closure *rc)
      if(!Closure->guiMode)
        Stop(_("Image file does not match the CD/DVD."));
      else
-     {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				 _("Image file already exists and does not match the CD/DVD.\n"
-				   "The existing image file will be deleted."));
-	   
+     {  int answer = ConfirmImageDeletion(Closure->imageName);
+
         if(!answer)
 	{  rc->earlyTermination = FALSE;
 	   SetAdaptiveReadFootline(_("Reading aborted. Please select a different image file."), 

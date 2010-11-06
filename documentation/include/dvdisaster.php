@@ -1,13 +1,15 @@
 <?php
 
-# dvdisaster: Homepage layout funtions
-# Copyright (C) 2007-2009 Carsten Gnörlich
+# dvdisaster: Homepage layout functions
+# Copyright (C) 2007-2010 Carsten Gnörlich
 
 require("version.php");
 
 # Preset some global variables
 
 $project_at_hoster="http://sourceforge.net/projects/dvdisaster";
+$max_news_flash_items = 7;
+$create_feed = 0;
 
 # Find out from where we have been called;
 # the file name is important for creation of the index.
@@ -20,20 +22,63 @@ $script_name = basename($script_path, ".php");
 $script_dir  = dirname($script_path);
 $script_lang = substr($script_dir, strlen($script_dir)-2, 2);
 
+# Needed to exatract some meaningful title text from the toc.php
+
+$toc_title_mode = 0;
+$toc_title_content = "RBG";
+
 # Load the appropriate localization file
 
 require("dict_" . $script_lang . ".php");
+
+# Locale wrappers for toc.php stubs
+
+function de($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "de"); 
+   else                     toc_link($msg, "de"); 
+};
+
+function en($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "en"); 
+   else                     toc_link($msg, "en");
+};
+
+function ru($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "ru"); 
+   else                     toc_link($msg, "ru");
+};
 
 #
 # Create the HTML header ----------------------------------------------------------
 #
 
 function start_html()
-{  echo "<html>\n";
+{  global $toc_title_mode;
+   global $toc_title_content;
+   global $script_name;
+   global $script_lang;
+   global $create_feed;
+   global $trans_atom_title;
+
+   echo "<html>\n";
    echo "<head>\n";
    echo " <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-   echo " <title>dvdisaster</title>\n";
+   $toc_title_mode = 1;
+   $toc_title_content = "dvdisaster";
+   require("toc.php");
+   echo " <title>$toc_title_content</title>\n";
+   $toc_title_mode = 0;
    echo " <link rel=\"stylesheet\" type=\"text/css\" href=\"../include/dvdisaster.css\">\n";
+   if(!strcmp($script_name, "index"))
+   {  echo "<link rel=\"alternate\" type=\"application/atom+xml\" href=\"http://dvdisaster.net/$script_lang/feed/atom.xml\" title=\"$trans_atom_title\" />\n";
+      $create_feed=1;
+   }
 
    echo "</head>\n";
    echo "<body>\n";
@@ -60,6 +105,8 @@ function lang_link($lang_name, $lang, $spacing)
 
 function begin_page()
 {  global $cooked_version;
+   global $have_experimental;
+   global $stable_version;
    global $trans_to_hoster;
    global $trans_to_internet;
    global $trans_version;
@@ -78,8 +125,10 @@ function begin_page()
    echo "  <tr>\n";
    echo "     <td align=\"left\">\n";
    echo "       <font size=\"+3\"><b>dvdisaster</b></font>\n";
-   echo "       <i>$trans_version $cooked_version</i>\n";
-
+   if(!strcmp($have_experimental, "no"))
+      echo "       <i>$trans_version $cooked_version</i>\n";
+   else
+      echo "       <i>$trans_version $stable_version / $cooked_version</i>\n";
    if(!strcmp($mode, "local"))
    {  echo "  </td>\n";
       echo "  <td align=\"right\">\n";
@@ -161,6 +210,27 @@ function subsubsection($subsubsection_name)
    $toc_mode = "subsubsection";
 }
 
+function toc_title($msg, $lang)
+{  global $script_lang;
+   global $script_name;
+   global $toc_mode;
+   global $toc_section;
+   global $toc_subsection;
+   global $toc_subsubsection;
+   global $toc_title_content;
+
+   if(strcmp($lang, $script_lang)) return; # wrong locale
+
+   if(!strcmp($toc_mode, "section") && !strcmp($toc_section, $script_name))
+     $toc_title_content = $msg;
+
+   if(!strcmp($toc_mode, "subsection") && !strcmp($toc_subsection, $script_name))
+     $toc_title_content = $msg;
+
+   if(!strcmp($toc_mode, "subsubsection") && !strcmp($toc_subsubsection, $script_name))
+     $toc_title_content = $msg;
+}
+
 function toc_link($msg, $lang)
 {  static $separator=0;
    global $script_lang;
@@ -172,7 +242,7 @@ function toc_link($msg, $lang)
 
    if(strcmp($lang, $script_lang)) return; # wrong locale
 
-   # Decide whether this is the currently unfolded (sub)section
+   # Decide whether this is the currently unfolded section
    # and render it accordingly
 
    if(!strcmp($toc_mode, "section"))
@@ -211,37 +281,93 @@ function toc_link($msg, $lang)
 
 }
 
-function de($msg) {toc_link($msg, "de"); };
-function en($msg) {toc_link($msg, "en"); };
-function ru($msg) {toc_link($msg, "ru"); };
-
 #
 # Helper functions for creating the news pages and -flash
 #
 
 function news_headline($headline)
 {  global $news_flash;
+   global $atom_handle;
+   global $create_feed;
+   global $script_lang;
+   global $doc_dir;
+   global $trans_atom_title;
 
    if(!$news_flash) echo "    <h3>$headline</h3>\n";
+
+   if($create_feed != 1) return;
+
+   # Prodoce atom feed xml file
+
+   $atom_name="atom.xml";
+   $atom_handle=fopen("$doc_dir/$script_lang/feed/$atom_name","w");
+   
+   fwrite($atom_handle, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
+   fwrite($atom_handle, "<feed xmlns=\"http://www.w3.org/2005/Atom\">\n");
+   fwrite($atom_handle, "<id>tag:dvdisaster.net,2009-10-02:/$script_lang/feeds/$atom_name</id>\n");
+   fwrite($atom_handle, "<title>$trans_atom_title</title>\n");
+   $updated=date(DATE_ATOM);
+   fwrite($atom_handle, "<updated>$updated</updated>\n");
+   fwrite($atom_handle, "<link rel=\"self\" href=\"http://dvdisaster.net/$script_lang/feed/$atom_name\" type=\"application/atom+xml\" />\n");
+   fwrite($atom_handle, "<author>\n");
+   fwrite($atom_handle, " <name>Carsten Gnörlich</name>\n");
+   fwrite($atom_handle, " <uri>http://www.dvdisaster.org</uri>\n");
+   fwrite($atom_handle, "</author>\n");
 }
 
-function news_item($date, $headline, $body)
+function news_finalize()
+{  global $atom_handle;
+   global $create_feed;
+
+   if($create_feed != 1)
+     return;
+
+   fwrite($atom_handle, "</feed>\n");
+   fclose($atom_handle);
+}
+
+function news_item($date, $headline, $body, $atom_tag, $atom_created, $atom_updated)
 {  global $news_flash;
    global $news_counter;
+   global $max_news_flash_items;
+   global $atom_handle;
+   global $create_feed;
+   global $script_lang;
 
    $news_counter++;
 
+   if($create_feed == 1)
+   {  $stripped=strtr(strip_tags($body),"\n"," ");
+      $summary=substr($stripped, 0, 240);
+      $cutpos=240-strlen(strrchr($summary, " "));
+      $summary=substr($stripped, 0, $cutpos)." [...]";      
+
+      fwrite($atom_handle,"<entry>\n");
+      fwrite($atom_handle,"<title>$headline</title>\n");
+      fwrite($atom_handle,"<category term=\"News\"/>\n"); 
+      $created=substr($atom_created,0,10);
+      fwrite($atom_handle,"<id>tag:dvdisaster.net,$created:/$script_lang/news.html/$atom_tag</id>\n");
+      fwrite($atom_handle,"<published>$atom_created</published>\n");
+      fwrite($atom_handle,"<updated>$atom_updated</updated>\n");
+      fwrite($atom_handle,"<link href=\"http://dvdisaster.net/$script_lang/news.html#item$atom_tag\"/>\n");
+      fwrite($atom_handle,"<summary>$summary</summary>\n");
+      fwrite($atom_handle,"</entry>\n");
+   }
+
    if($news_flash)
-   {  echo "          <font size=\"-1\">$date</font> <br>\n";
+   {  if($news_counter > $max_news_flash_items)
+        return;
+
+      echo "          <font size=\"-1\">$date</font> <br>\n";
       echo "          <font size=\"-1\">\n";
-      echo "            <a href=\"news.php#item$news_counter\">$headline</a>\n";
+      echo "            <a href=\"news.php#item$atom_tag\">$headline</a>\n";
       echo "          </font><p>\n";
    }
    else
    {  
       echo "    <table width=\"90%\">\n";
       echo "      <tr>\n";
-      echo "        <td><a name=\"item$news_counter\"></a><b>${headline}</b></td>\n";
+      echo "        <td><a name=\"item$atom_tag\"></a><b>${headline}</b></td>\n";
       echo "        <td align=\"right\">$date</td>\n";
       echo "      </tr>\n";
       echo "    </table>\n";
@@ -329,8 +455,8 @@ function end_page()
    global $trans_hosting;
    global $modified_source;
    global $news_flash;
-   global $script_lang;  /* for old version link */
-   global $trans_old_version;
+   global $news_counter;
+   global $script_lang;
 
 # Close the body table
 
@@ -348,6 +474,7 @@ function end_page()
     <table width="100%" cellpadding="10"><tr><td>
 <?php
   echo "      <font size=\"-1\"><b>$trans_news</b></font>\n";
+  echo "      <a href=\"http://dvdisaster.net/$script_lang/feed/atom.xml\"><img src=\"../images/atom16.png\" border=></a>\n";
 ?>
       <table width="100%" cellpadding="0" cellspacing="0">
          <tr bgcolor="#000000">
@@ -381,6 +508,8 @@ function end_page()
 ?>
 
  </tr>
+
+<!---
  <tr valign="bottom">
    <td bgcolor="#f0f0f0">
 <?php 
@@ -390,8 +519,8 @@ function end_page()
    </td>
    <td></td>
    <td></td>
-
  </tr>
+--->
 </table> <!--- end of main body table --->
 
 <?php

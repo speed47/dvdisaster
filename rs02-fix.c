@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -751,7 +751,7 @@ void RS02Fix(Method *self)
 	     Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
 		  sec, "FW", strerror(errno));
 
-	   if(sec < lay->dataSectors-1) length = 2048;
+	   if(sec < lay->dataSectors-1) length = 2048; //FIXME: sec != ...
 	   else length = ii->inLast;  /* error: use inLast calculated from eh->sectors */
 
 	   n = LargeWrite(ii->file, cache_offset+fc->imgBlock[i], length);
