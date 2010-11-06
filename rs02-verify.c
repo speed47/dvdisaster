@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -551,9 +551,14 @@ void RS02Verify(Method *self)
    int last_percent = 0;
    unsigned char buf[2048];
    gint64 first_missing, last_missing;
-   gint64 total_missing,data_missing,crc_missing,ecc_missing,hdr_missing;
-   gint64 new_missing = 0, new_crc_errors = 0;
-   gint64 data_crc_errors,hdr_crc_errors;
+   gint64 total_missing = 0;
+   gint64 data_missing = 0;
+   gint64 crc_missing = 0;
+   gint64 ecc_missing = 0;
+   gint64 new_missing = 0;
+   gint64 new_crc_errors = 0;
+   gint64 data_crc_errors = 0;
+   gint64 hdr_missing, hdr_crc_errors;
    gint64 hdr_ok,hdr_pos,hdr_correctable;
    gint64 ecc_sector,expected_sectors;
    int ecc_md5_failure = FALSE;
@@ -674,6 +679,13 @@ void RS02Verify(Method *self)
       }
    }
 
+   /* take shortcut in quick mode */
+
+   if(Closure->quickVerify)
+   {  PrintLog(_("* quick mode        : image NOT scanned\n"));
+      goto continue_with_ecc;
+   }
+
    /*** Read the CRC portion */ 
 
    read_crc(cc, lay);
@@ -689,8 +701,6 @@ void RS02Verify(Method *self)
    MD5Init(&meta_md5);
 
    first_missing = last_missing = -1;
-   total_missing = data_missing = crc_missing = ecc_missing = 0;
-   data_crc_errors = 0;
    crc_idx = 0;
 
    ecc_sector = 0;
@@ -890,7 +900,7 @@ void RS02Verify(Method *self)
    }
 
    /*** Print some information on the ecc portion */
-
+continue_with_ecc:
    PrintLog(_("\nError correction data: "));
 
    major = eh->creatorVersion/10000; 
@@ -1004,6 +1014,9 @@ void RS02Verify(Method *self)
 	    ecc_advice = g_strdup_printf(_("<span %s>Image size does not match recorded size.</span>"), Closure->redMarkup);
       }
    }
+
+   if(Closure->quickVerify)  /* take shortcut again */
+     goto terminate;
 
    /* image md5sum as stored in the ecc header */
 

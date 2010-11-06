@@ -1,5 +1,5 @@
 #  Bash based configure - library of test functions
-#  Copyright (C) 2004-2009 Carsten Gnörlich
+#  Copyright (C) 2004-2010 Carsten Gnörlich
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -56,13 +56,14 @@
 # EXECUTE_PROGRAM	Invoke a command to see if a certain program is available
 #
 # CHECK_ENDIAN		Test whether system is little or big endian
+# CHECK_BITNESS		Test whether system is 32bit or 64bit
 # CHECK_SSE2		Test whether when can compile for SSE2 extensions
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
 #			    to CFG_WITH_OPTIONS,
 
-CONFIGURE_VERSION="0.55"
+CONFIGURE_VERSION="0.56"
 
 echo "Bash based configure V$CONFIGURE_VERSION"
 echo
@@ -663,6 +664,12 @@ function try_compile()
 { echo "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest" >>$LOGFILE
   cat conftest.c >>$LOGFILE
   { (eval "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest") 2>>$LOGFILE; } && test -s conftest
+}
+
+function try_preprocess()
+{ echo "$CC $CFG_CFLAGS -E conftest.c -o conftest.out" >>$LOGFILE
+  cat conftest.c >>$LOGFILE
+  { (eval "$CC $CFG_CFLAGS -E conftest.c -o conftest.out") 2>>$LOGFILE; } && test -s conftest.out
 }
 
 # Try to compile a main() with a given function
@@ -1419,27 +1426,24 @@ EOF
    fi
 
    CFG_GTK2_BINDIR=`which pkg-config`
-   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/\/pkg-config//'`
+   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
 
    CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK2_CFLAGS"
    CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"
 
    cat >conftest.c <<EOF
-#include <gtk/gtk.h>
-int main(int argc, char *argv[])
-{  GtkWidget *window;
-    
-   printf("%d.%d.%d\n",GTK_MAJOR_VERSION,GTK_MINOR_VERSION,GTK_MICRO_VERSION);
-   return 0;
-}
+#include <gtk/gtkversion.h>
+
+CPPABUSE GTK_MAJOR_VERSION.GTK_MINOR_VERSION.GTK_MICRO_VERSION
 EOF
 
-   echo -n " test compile... "
+   echo -n " test preprocessing... "
 
-   if try_compile; then
+   if try_preprocess; then
 	echo "works"
 	rm -f conftest.c
- 	found_version=`./conftest`
+ 	found_version=$(grep CPPABUSE ./conftest.out | tr -d "CPABUSE ()")
+	rm -f conftest.out
         if ! check_version "GTK+" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
           echo -e "\n Did not find a suitable version of GTK+."
           exit 1
@@ -1589,11 +1593,11 @@ int main(){
 #ifdef $symb_name
    return 0; }
 #else
-   return 1; }
+ #error no symbol }
 #endif
 EOF
 
-   if try_compile && ./conftest; then
+   if try_compile ; then
      answer="yes"
      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$symb_upcase"
      echo " $symb_name in $incl_name: $answer"
@@ -1726,7 +1730,70 @@ EOF
 	   ;;
       esac
   fi
+}
 
+#
+# Figure out bitness of system
+#
+
+function CHECK_BITNESS()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-bitness=[32 | 64]"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_BITNESS */\n" >>$LOGFILE
+   echo -n "Checking bitness..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_bitness"; then
+      case "$cfg_with_bitness" in
+	32) echo " 32bit (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_32BIT"
+	        ;;
+	64) echo " 64bit (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_64BIT"
+	        ;;
+        *) echo -e " $cfg_with_bitness (illegal value)\n"
+	   echo "Please use one of the following values:"
+	   echo "--with-bitness=[32 | 64]"
+	   exit 1
+	   ;;
+      esac
+      return 0;
+   fi
+
+   # Try automatic detection
+
+   cat > conftest.c <<EOF
+int main()
+{  switch(sizeof(char*))
+   {  case 4: printf("32\n"); break;
+      case 8: printf("64\n"); break;
+      default: printf("failure\n"); break;
+   }
+}
+EOF
+
+   if try_compile; then
+      bitness=`./conftest`
+      case "$bitness" in
+	32) echo " 32bit"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_32BIT"
+	        ;;
+	64) echo " 64bit"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_64BIT"
+	        ;;
+        *) echo -e " error\n"
+	   echo "System bitness could not be determined."
+	   echo "Please specify one using the following option:"
+	   echo "--with-bitness=[32|64]"
+	   exit 1
+	   ;;
+      esac
+  fi
 }
 
 #

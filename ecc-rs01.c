@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -43,6 +43,10 @@ void register_rs01(void)
    method->create  = RS01Create;
    method->fix     = RS01Fix;
    method->verify  = RS01Verify;
+
+   /*** Linkage to rs01-common.c */
+
+   method->recognizeEccFile = RS01Recognize;
 
    /*** Linkage to rs01-window.c */
 

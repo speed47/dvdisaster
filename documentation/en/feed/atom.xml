@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>tag:dvdisaster.net,2009-10-02:/en/feeds/atom.xml</id>
+<title>dvdisaster news</title>
+<updated>2010-02-28T19:15:30+01:00</updated>
+<link rel="self" href="http://dvdisaster.net/en/feed/atom.xml" type="application/atom+xml" />
+<author>
+ <name>Carsten Gnörlich</name>
+ <uri>http://www.dvdisaster.org</uri>
+</author>
+<entry>
+<title>dvdisaster 0.79.2 released</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2010-02-28:/en/news.html/15</id>
+<published>2010-02-28T00:00:00Z</published>
+<updated>2010-02-28T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item15"/>
+<summary>  Mac OS X binaries are available again as the Mac OS X development environment   has been updated for this version.  RS03 codec development progresses, but is still far from being finished.  [...]</summary>
+</entry>
+<entry>
+<title>Started new development branch 0.79</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2010-02-07:/en/news.html/14</id>
+<published>2010-02-07T00:00:00Z</published>
+<updated>2010-02-07T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item14"/>
+<summary> The first version of the new development branch (0.79.1) has just been released. This release is meant for testing new functions; it is not recommended for doing productive work. See the download page for information on what has been [...]</summary>
+</entry>
+<entry>
+<title>Assessment of potential vulnerabilities in the windows version
+of the GTK library</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2009-10-01:/en/news.html/13</id>
+<published>2009-10-01T00:00:00Z</published>
+<updated>2009-10-01T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item13"/>
+<summary> The Windows versions of dvdisaster 0.70.x/0.72.x are shipped with an outdated GTK library containing vulnerabilities in its image processing routines. To exploit the vulnerability, manipulated images need to be loaded from an external [...]</summary>
+</entry>
+<entry>
+<title>Project represention on SourceForge may be outdated</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2009-08-10:/en/news.html/12</id>
+<published>2009-08-10T00:00:00Z</published>
+<updated>2009-08-10T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item12"/>
+<summary> Due to the recent functionality changes on SourceForge we are unable to upload the News, Downloads and CVS contents in time. Please refer to the respective sections on this site (http://dvdisaster.net) instead.  [...]</summary>
+</entry>
+<entry>
+<title>dvdisaster 0.72.1 released</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2009-08-08:/en/news.html/11</id>
+<published>2009-08-08T00:00:00Z</published>
+<updated>2010-02-06T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item11"/>
+<summary> Pablo Almeida provided a Portuguese translation for the screen text. Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs. Update: The workaround is not complete. If the problem persists please try version 0.79.x.  [...]</summary>
+</entry>
+<entry>
+<title>dvdisaster 0.72 released</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2009-07-04:/en/news.html/10</id>
+<published>2009-07-04T00:00:00Z</published>
+<updated>2009-07-04T00:00:00Z</updated>
+<link href="http://dvdisaster.net/en/news.html#item10"/>
+<summary> This is the first stable version of the 0.72 branch. Igor Gorbounov has completed the russian online documentation. Some minor bugs from the first release candidate have been removed.  [...]</summary>
+</entry>
+</feed>
