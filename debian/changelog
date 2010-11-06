@@ -1,9 +1,11 @@
-dvdisaster (0.79.2-1) UNRELEASED; urgency=low
+dvdisaster (0.79.2-1) experimental; urgency=low
 
   * Imported Upstream version 0.79.2
-  * debian/patches/*: refresh and adapt every patch
+  * debian/patches/*:
+    + refresh and adapt every patch
+    + 04-manpage.patch: escape one hyphen
 
- -- Rogério Brito <rbrito@ime.usp.br>  Sat, 06 Nov 2010 21:02:26 -0200
+ -- Rogério Brito <rbrito@ime.usp.br>  Sat, 06 Nov 2010 21:55:05 -0200
 
 dvdisaster (0.72.1-2) unstable; urgency=low
 
