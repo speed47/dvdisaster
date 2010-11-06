@@ -14,6 +14,7 @@ UninstallDisplayIcon={app}\dvdisaster.exe
 Compression=lzma
 SolidCompression=yes
 SourceDir=..\win-build-dir
+MinVersion=5.0,5.0
 OutputDir=.
 OutputManifestFile=manifest.txt
 OutputBaseFilename=dvdisaster-%version%-setup
@@ -46,14 +47,14 @@ Source: "TODO"; DestDir: "{app}"
 Source: "signature"; DestDir: "{app}"
 Source: "*.exe"; DestDir: "{app}"
 Source: "*.dll"; DestDir: "{app}"
-Source: "lib\locale\cs\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\cs\LC_MESSAGES"
-Source: "lib\locale\de\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\de\LC_MESSAGES"
-Source: "lib\locale\it\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\it\LC_MESSAGES"
-Source: "lib\locale\pt_BR\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pt_BR\LC_MESSAGES"
-Source: "lib\locale\ru\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ru\LC_MESSAGES"
-Source: "lib\locale\sv\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sv\LC_MESSAGES"
+Source: "share\locale\cs\LC_MESSAGES\*"; DestDir: "{app}\share\locale\cs\LC_MESSAGES"
+Source: "share\locale\de\LC_MESSAGES\*"; DestDir: "{app}\share\locale\de\LC_MESSAGES"
+Source: "share\locale\it\LC_MESSAGES\*"; DestDir: "{app}\share\locale\it\LC_MESSAGES"
+Source: "share\locale\pt_BR\LC_MESSAGES\*"; DestDir: "{app}\share\locale\pt_BR\LC_MESSAGES"
+Source: "share\locale\ru\LC_MESSAGES\*"; DestDir: "{app}\share\locale\ru\LC_MESSAGES"
+Source: "share\locale\sv\LC_MESSAGES\*"; DestDir: "{app}\share\locale\sv\LC_MESSAGES"
 Source: "etc\gtk-2.0\*"; DestDir: "{app}\etc\gtk-2.0"
-Source: "etc\pango\*"; DestDir: "{app}\etc\pango"
+;Source: "etc\pango\*"; DestDir: "{app}\etc\pango"
 Source: "locale\cs\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\cs\LC_MESSAGES"
 Source: "locale\de\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\de\LC_MESSAGES"
 Source: "locale\it\LC_MESSAGES\dvdisaster.mo"; DestDir: "{app}\locale\it\LC_MESSAGES"

@@ -1,5 +1,5 @@
 /*  pngpack: lossless image compression for a series of screen shots
- *  Copyright (C) 2005-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2005-2010 Carsten Gnoerlich.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

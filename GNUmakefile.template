@@ -188,7 +188,10 @@ version.php:
 	@echo "<?php" >$(SRCDIR)/documentation/include/version.php
 	@echo "\$$version=\"$(VERSION)\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "\$$pkgname=\"$(PKGNAME)\";" >>$(SRCDIR)/documentation/include/version.php
+	@echo "\$$doc_dir=\"$(SRCDIR)/documentation\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "\$$cooked_version=\""$(CFG_FULL_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
+	@echo "\$$have_experimental=\""$(CFG_HAVE_EXPERIMENTAL)"\";" >>$(SRCDIR)/documentation/include/version.php
+	@echo "\$$stable_version=\""$(CFG_STABLE_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
 	@if test -e help-dialogs.h && grep UNMODIFIED help-dialogs.h >/dev/null; \
 	then echo "\$$modified_source=0;" >>$(SRCDIR)/documentation/include/version.php; \
 	else echo "\$$modified_source=1;" >>$(SRCDIR)/documentation/include/version.php; \
@@ -203,13 +206,17 @@ mount-php:
 	  echo "* HTML document directory (as specified by configure --phpmountdir).";\
 	  echo "* You need sudo priviledges to execute the command below:";\
 	  echo ;\
-	fi
-	if ! test -e $(PHPMOUNTDIR)/dvdisaster.de.1; then\
 	  if ! test -e $(PHPMOUNTDIR); then sudo mkdir -p $(PHPMOUNTDIR); fi;\
 	  sudo mount -o bind $(SRCDIR)/documentation $(PHPMOUNTDIR) ;\
 	fi
 	make version.php
-	make thumbnails
+	if ! test -e $(SRCDIR)/documentation/de/thumbnails/good-cd.png; \
+	  then make thumbnails; \
+	fi
+	for i in $(DOC_LOCALES); do \
+	  chmod 777 $(SRCDIR)/documentation/$$i/feed $(SRCDIR)/documentation/$$i/feed/atom.xml; \
+	  echo chmod 777 $(SRCDIR)/documentation/$$i/feed $(SRCDIR)/documentation/$$i/feed/atom.xml; \
+	done
 
 html: mount-php version.php
 	@echo -n "Producing html documentation... "
@@ -246,8 +253,8 @@ help:
 	@echo
 	@echo "Documentation related:"
 	@echo "mount-php - mount documentation sub directory"
-	@echo "www-images- create package of .php and .png files"
-	@echo "www       - create package of .php files only"
+	@echo "www-images- create package of .html and .png files"
+	@echo "www       - create package of .html files only"
 	@echo "html      - create html version of internet documentation"
 	@echo "localhtml - create html version for local documentation"
 	@echo "thumbnails- unconditionally recreate all thumbnails"
@@ -306,7 +313,7 @@ show:
 ######################################################################
 
 .PHONY : install uninstall clean distclean arch
-.PHONY : www www-images 
+.PHONY : www www-images php php-images
 .PHONY : srcdist macdist windist
 
 install: dvdisaster images
@@ -427,13 +434,13 @@ arch:	archclean time-stamp
 	@cd .. ; tar -c -z -f $(PKGNAME)-$(BUILD).tgz $(PKGNAME)
 
 # TAG: online-docs
-www:   version.php
+www: html
 	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css include/*.php de/*.php en/*.php ru/*.php
+	tar cjf ../../www.tar.bz2 pubkey.asc include/dvdisaster.css de/*.html en/*.html ru/*.html de/feed en/feed ru/feed
 
-www-images: thumbnails version.php
+www-images: html
 	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css include/*.php de/*.php en/*.php ru/*.php images/*.png de/images/*.png de/thumbnails/*.png en/images/*.png en/thumbnails/*.png ru/images/*.png ru/thumbnails/*.png
+	tar cjf ../../www.tar.bz2 pubkey.asc include/dvdisaster.css de/*.html en/*.html ru/*.html images/*.png de/images/*.png de/thumbnails/*.png en/images/*.png en/thumbnails/*.png ru/images/*.png ru/thumbnails/*.png de/feed en/feed ru/feed
 
 INSTALL: documentation/install.template
 	@sed "s/@@PKGNAME/$(PKGNAME)/" <documentation/install.template >INSTALL
@@ -462,16 +469,23 @@ prepare-dist:
 	@cp tools/pngpack.exe win-build-dir/documentation
 	@mv documentation/images-*.pngpack win-build-dir/documentation
 	@cp $(GTK_BINDIR)/libglib*.dll win-build-dir
-	@cp $(GTK_BINDIR)/iconv.dll win-build-dir
+	#@cp $(GTK_BINDIR)/iconv.dll win-build-dir
 	@cp $(GTK_BINDIR)/intl.dll win-build-dir
 	@cp $(GTK_BINDIR)/libatk*.dll win-build-dir
+	@cp $(GTK_BINDIR)/libcairo*.dll win-build-dir
+	@cp $(GTK_BINDIR)/libexpat*.dll win-build-dir
+	@cp $(GTK_BINDIR)/libfontconfig*.dll win-build-dir
+	@cp $(GTK_BINDIR)/freetype6*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libpango*.dll win-build-dir
+	@cp $(GTK_BINDIR)/libpng12*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgmodule*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgobject*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgthread*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgdk_pixbuf*.dll win-build-dir
+	@cp $(GTK_BINDIR)/libgio*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgdk-win*.dll win-build-dir
 	@cp $(GTK_BINDIR)/libgtk-win*.dll win-build-dir
+	@cp $(GTK_BINDIR)/zlib1*.dll win-build-dir
 	@mkdir win-build-dir/locale
 	@cp -r locale/?? win-build-dir/locale
 	@cp -r locale/??_?? win-build-dir/locale
@@ -479,19 +493,19 @@ prepare-dist:
 	@mkdir -p win-build-dir/etc/gtk-2.0
 	@echo "# GdkPixbuf Image Loader Modules file" >  win-build-dir/etc/gtk-2.0/gdk-pixbuf.loaders
 
-	@mkdir -p win-build-dir/etc/pango
-	@cp $(GTK_BINDIR)/../etc/pango/pango.aliases win-build-dir/etc/pango
-	@echo "# Pango Modules file" > win-build-dir/etc/pango/pango.modules
-	@echo "#" >> win-build-dir/etc/pango/pango.modules
-	@echo "pango-basic-win32.dll BasicScriptEngineWin32 PangoEngineShape PangoRenderWin32 common:" >> win-build-dir/etc/pango/pango.modules
-	@cp $(GTK_BINDIR)/../lib/pango/1.?.?/modules/pango-basic-win32.dll win-build-dir
+	#@mkdir -p win-build-dir/etc/pango
+	#@cp $(GTK_BINDIR)/../etc/pango/pango.aliases win-build-dir/etc/pango
+	#@echo "# Pango Modules file" > win-build-dir/etc/pango/pango.modules
+	#@echo "#" >> win-build-dir/etc/pango/pango.modules
+	#@echo "pango-basic-win32.dll BasicScriptEngineWin32 PangoEngineShape PangoRenderWin32 common:" >> win-build-dir/etc/pango/pango.modules
+	#@cp $(GTK_BINDIR)/../lib/pango/1.?.?/modules/pango-basic-win32.dll win-build-dir
 
-	@mkdir -p win-build-dir/lib/locale
+	@mkdir -p win-build-dir/share/locale
 	@for i in $(PO_LOCALES); do \
-	  mkdir -p win-build-dir/lib/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../lib/locale/$$i/LC_MESSAGES/atk*.mo win-build-dir/lib/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../lib/locale/$$i/LC_MESSAGES/glib*.mo win-build-dir/lib/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../lib/locale/$$i/LC_MESSAGES/gtk*.mo win-build-dir/lib/locale/$$i/LC_MESSAGES; \
+	  mkdir -p win-build-dir/share/locale/$$i/LC_MESSAGES; \
+	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/atk*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
+	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/glib*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
+	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/gtk*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
 	done
 
 windist: dvdisaster pack-images prepare-dist

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -110,6 +110,11 @@
 
 #define MAX_CODEC_THREADS 32             /* not including IO and GUI */
 
+/* Definitions for Closure->eccTarget */
+
+#define ECC_FILE  0
+#define ECC_IMAGE 1
+
 /***
  *** Our global closure (encapsulation of global variables)
  ***/
@@ -139,9 +144,11 @@ typedef struct _GlobalClosure
    gint64 savedBDSize2;
    gint64 mediumSize;   /* Maximum medium size (for augmented images) */
    int cacheMB;         /* Cache setting for the parity codec, in megabytes */
+   int prefetchSectors; /* Prefetch setting per encoder thread */
    int codecThreads;    /* Number of threads to use for RS encoders */
    int sectorSkip;      /* Number of sectors to skip after read error occurs */
    char *redundancy;    /* Error correction code redundancy */
+   int eccTarget;       /* 0=file; 1=augmented image */
    int readRaw;         /* Read CD sectors raw + verify them */
    int rawMode;         /* mode for mode page */
    int minReadAttempts; /* minimum reading attempts */
@@ -155,14 +162,16 @@ typedef struct _GlobalClosure
    int noTruncate;      /* do not truncate image at the end */
    int dsmVersion;      /* 1 means new style dead sector marker */
    int unlinkImage;     /* delete image after ecc file creation */
+   int confirmDeletion; /* do not ask whether files should be deleted */
    int driveSpeed;      /* currently unused */
    int debugMode;       /* may activate additional features */
    int debugCDump;      /* dump as #include file instead of hexdump */
    int verbose;         /* may activate additional messages */
+   int quickVerify;     /* do only non time-consuming verify actions */
    int screenShotMode;  /* screen shot mode */
-   int splitFiles;      /* limit image files to 2GB */
    int autoSuffix;      /* automatically extend files with suffices .iso/.ecc */
-   int querySize;       /* what sources are used for image size queries */
+   int examineRS02;     /* perform deep search for RS02 structures */
+   int examineRS03;     /* perform deep search for RS03 structures */
    int readAndCreate;   /* automatically create .ecc file after reading an image */
    int enableCurveSwitch; /* TRUE in readAndCreateMode after reading is complete */
    int welcomeMessage;  /* just print dvdisaster logo if FALSE */
@@ -192,20 +201,14 @@ typedef struct _GlobalClosure
    char *browser;       /* Name of preferred WEB browser */
 
    char bs[256];        /* A string of 255 backspace characters */
+   char sp[256];        /* A string of 255 space characters */
+   int progressLength;  /* Length of last progress msg printed */
 
    GThread *mainThread; /* Thread of the main() routine */
    void (*cleanupProc)(gpointer);  /* Procedure to cleanup running threads after an error condition */
    gpointer cleanupData;
    char *errorTitle;    /* Title to show in error dialogs */
    gint32 randomSeed;   /* for the random number generator */
-
-#ifdef SYS_MINGW
-   /*** Hooks into the ASPI library */
-
-   void *aspiLib;
-   unsigned long (*GetASPI32SupportInfo)(void);
-   unsigned long (*SendASPI32Command)(void*);
-#endif
 
    guint32 *crcCache;              /* sectorwise CRC32 for last image read */
    char    *crcImageName;          /* file name of cached image */
@@ -317,14 +320,9 @@ extern int exitCode;            /* value to use on exit() */
 #define MAX_FILE_SEGMENTS 100
 
 typedef struct _LargeFile
-{  int fileSegment[MAX_FILE_SEGMENTS];
-   int flags;
-   mode_t mode;
-   int segment;
+{  int fileHandle;
    gint64 offset;
-   char *basename;
-   char *suffix;
-   int namelen;
+   char *path;
    gint64 size;
 } LargeFile;
 
@@ -358,6 +356,15 @@ typedef struct _EccInfo
 } EccInfo;
 
 /***
+ *** Aligned 64bit data types
+ ***
+ * Needed to prevent 4 byte packing on 32bit systems.
+ */
+
+#define aligned_gint64 gint64 __attribute__((aligned(8)))
+#define aligned_guint64 guint64 __attribute__((aligned(8)))
+
+/***
  *** The .ecc file header
  ***/
 
@@ -370,7 +377,8 @@ typedef struct _EccInfo
 #define MFLAG_DEVEL (1<<0)    /* for methodFlags[3] */
 #define MFLAG_RC    (1<<1)                      
 
-#define MFLAG_DATA_MD5 (1<<0)  /* specific to RS03 */
+#define MFLAG_DATA_MD5 (1<<0)  /* RS03: md5sum for data part available */
+#define MFLAG_ECC_FILE (1<<1)  /* RS03: This is a ecc file */
 
 typedef struct _EccHeader
 {  gint8 cookie[12];           /* "*dvdisaster*" */
@@ -385,14 +393,39 @@ typedef struct _EccHeader
    gint32 creatorVersion;      /* which dvdisaster version created this */
    gint32 neededVersion;       /* oldest version which can decode this file */
    gint32 fpSector;            /* sector used to calculate mediumFP */
-   guint32 selfCRC;            /* CRC32 of EccHeader (currently RS02 only) -- since V0.66 --*/
+   guint32 selfCRC;            /* CRC32 of EccHeader -- since V0.66 --*/
    guint8 crcSum[16];          /* md5sum of crc code section of RS02 .iso file  */
    gint32 inLast;              /* bytes contained in last sector */
-   gint8 padding[3976];        /* pad to 4096 bytes: room for future expansion */
+   aligned_guint64 sectorsPerLayer;    /* layer size for RS03 */
+   gint8 padding[3968];        /* pad to 4096 bytes: room for future expansion */
 
   /* Note: Bytes 2048 and up are currently used by the RS02/RS03 codec
            for a copy of the first ecc blocks CRC sums. */
 } EccHeader;
+
+/***
+ *** The CRC block data structure
+ ***
+ * RS03 uses this data structure in its CRC layer.
+ */
+
+typedef struct _CrcBlock
+{  guint32 crc[256];           /* Checksum for the data sectors */
+   gint8 cookie[12];           /* "*dvdisaster*" */
+   gint8 method[4];            /* e.g. "RS03" */
+   gint8 methodFlags[4];       /* 0-2 for free use by the respective methods; 3 see above */
+   gint32 creatorVersion;      /* which dvdisaster version created this */
+   gint32 neededVersion;       /* oldest version which can decode this file */
+   gint32 fpSector;            /* sector used to calculate mediumFP */
+   guint8 mediumFP[16];        /* fingerprint of FINGERPRINT SECTOR */ 
+   guint8 mediumSum[16];       /* complete md5sum of whole medium */
+   aligned_guint64 dataSectors;/* number of sectors of the payload (e.g. iso file sys) */
+   gint32 inLast;              /* bytes contained in last sector */
+   gint32 dataBytes;           /* data bytes per ecc block */
+   gint32 eccBytes;            /* ecc bytes per ecc block */
+   aligned_guint64 sectorsPerLayer; /* for recalculation of layout */
+   guint32 selfCRC;            /* CRC32 of ourself, zero padded to 2048 bytes */
+} CrcBlock;
 
 /***
  *** forward declarations
@@ -524,6 +557,7 @@ void RedrawCurve(Curve*, int);
  ***/
 
 void HexDump(unsigned char*, int, int);
+void LaTeXify(gint32*, int, int);
 void CopySector(char*);
 void Byteset(char*);
 void Erase(char*);
@@ -551,7 +585,10 @@ enum
 
 void CreateMissingSector(unsigned char*, gint64, unsigned char*, gint64, char*);
 int CheckForMissingSector(unsigned char*, gint64, unsigned char*, gint64);
+int CheckForMissingSectors(unsigned char*, gint64, unsigned char*, gint64, int, gint64*);
 void ExplainMissingSector(unsigned char*, gint64, int, int);
+
+void CreatePaddingSector(unsigned char*, gint64, unsigned char*, gint64);
 
 /***
  *** endian.c
@@ -561,6 +598,7 @@ guint32 SwapBytes32(guint32);
 guint64 SwapBytes64(guint64);
 void    SwapEccHeaderBytes(EccHeader*);
 void    SwapDefectiveHeaderBytes(struct _DefectiveSectorHeader*);
+void    SwapCrcBlockBytes(CrcBlock*);
 
 /***
  *** file.c
@@ -635,7 +673,8 @@ typedef struct _ReedSolomonTables
    gint32 ndata;         /* data bytes per ecc block */
    gint32 shiftInit;     /* starting value for iteratively processing parity */
 
-   guint8 *bLut[GF_FIELDSIZE];  /* experimental 8bit lookup table */
+   guint8 *bLut[GF_FIELDSIZE];   /* 8bit encoder lookup table */
+   guint8 *synLut;       /* Syndrome calculation speedup */
 } ReedSolomonTables;
 
 GaloisTables* CreateGaloisTables(gint32);
@@ -868,11 +907,14 @@ GtkWidget* CreateToolBar(GtkWidget*);
 
 typedef struct _Method
 {  char name[4];                     /* Method name tag */
+   guint32 properties;               /* see definition above */
    char *description;                /* Fulltext description */
    char *menuEntry;                  /* Text for use in preferences menu */
    void (*create)(struct _Method*);  /* Creates an error correction file */
    void (*fix)(struct _Method*);     /* Fixes a damaged image */
    void (*verify)(struct _Method*);  /* Verifies image with ecc data */
+   int  (*recognizeEccFile)(struct _Method*, LargeFile*);  /* checks whether we can handle this ecc file */
+   int  (*recognizeEccImage)(struct _Method*, LargeFile*); /* checks whether we can handle this augmented image */
    void (*createVerifyWindow)(struct _Method*, GtkWidget*);
    void (*createCreateWindow)(struct _Method*, GtkWidget*);
    void (*createFixWindow)(struct _Method*, GtkWidget*);
@@ -885,7 +927,7 @@ typedef struct _Method
    void (*destroy)(struct _Method*);
    int  tabWindowIndex;              /* our position in the (invisible) notebook */
    void *widgetList;                 /* linkage to window system */
-   EccHeader *lastEh;                /* copy of EccHeader from last EccFileMethod() call */
+   EccHeader *lastEh;                /* copy of EccHeader from last EccMethod() call */
 } Method;
 
 void BindMethods(void);        /* created by configure in method-link.c */
@@ -894,8 +936,7 @@ void CollectMethods(void);
 void RegisterMethod(Method*);
 void ListMethods(void);
 Method* FindMethod(char*);
-EccHeader* FindHeaderInImage(char*);
-Method *EccFileMethod(int);
+Method *EccMethod(int);
 void CallMethodDestructors(void);
 
 /***
@@ -915,6 +956,7 @@ void PrintLog(char*, ...);
 void Verbose(char*, ...);
 void PrintTimeToLog(GTimer*, char*, ...);
 void PrintProgress(char*, ...);
+void ClearProgress(void);
 void PrintCLIorLabel(GtkLabel*, char*, ...);
 
 void LogWarning(char*, ...);
@@ -943,6 +985,9 @@ void TimedInsensitive(GtkWidget*, int);
 int GetLabelWidth(GtkLabel*, char*, ...);
 void LockLabelSize(GtkLabel*, char*, ...);
 
+int ConfirmImageDeletion(char *);
+int ConfirmEccDeletion(char *);
+
 /***
  *** preferences.c
  ***/
@@ -952,7 +997,8 @@ void UpdateMethodPreferences(void);
 void HidePreferences(void);
 void FreePreferences(void*);
 
-void UpdatePrefsQuerySize(void);
+void UpdatePrefsExhaustiveSearch(void);
+void UpdatePrefsConfirmDeletion(void);
 void RegisterPreferencesHelpWindow(LabelWithOnlineHelp*);
 
 /***
@@ -1150,15 +1196,17 @@ typedef struct _AlignedBuffer
 AlignedBuffer *CreateAlignedBuffer(int);
 void FreeAlignedBuffer(AlignedBuffer*);
 
-void OpenAspi(void);
-void CloseAspi(void);
-void ListAspiDrives(void);
-
 char* DefaultDevice(void);
 gint64 CurrentImageSize(void);
 gint64 CurrentImageCapacity(void);
 
 int SendReadCDB(char*, unsigned char*, unsigned char*, int, int);
+
+/***
+ *** rs-decoder.c
+ ***/
+
+int TestErrorSyndromes(ReedSolomonTables*, unsigned char*);
 
 /***
  *** rs-encoder.c and friends

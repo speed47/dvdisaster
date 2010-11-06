@@ -1,3 +1,54 @@
+0.79.2  28-02-2010
+	Semantic Changes
+	The new missing sector marking method is now the default.
+	When interchanging images with dvdisaster 0.70 or older,
+	use --old-ds-marker or the respective setting under
+	Image/Image format in the preferences setting.
+	
+	Changes
+	- RS03 encoding will check for defective sectors now
+	- fixed crash when aborting RS03 encoding
+	- made the new missing sector marking method the default
+	- confirmation dialogues for overwriting images and ecc files
+	  are now configurable via preferences
+
+0.79.1 07-02-2010	
+       A word of caution: This version is still evolving and some parts
+       are not yet implemented. It may contain severe bugs and fail in 
+       non-obvious ways, even in functions which worked in previous versions. 
+       Do not process important data with this version and do
+       not keep images and error correction data for archival purposes;
+       that's what the stable version 0.72 is for.
+
+	Semantic Changes
+	- query-size option replaced with -a/--assume option.
+	  command line default is now NOT to do exhaustive search
+	  for RS02 information; add -a RS02 to enable it
+	  (old behaviour: exhaustive check was on; required
+	   --query-size=udf to disable it)
+	- same changes in the preferences dialogues: 
+	  "Image size" field replaced with 
+	  "Error correction data recognization" options.
+
+	Changes
+	- added MIN_TRANSFER_LEN and length sanity check as workaround 
+	  for buggy drive chipsets (thanks to R.G. for reporting this
+	  and helping with debugging output)
+	- added -tq command line option as suggested by Mikhail Arefiev
+	- fixed alignment brokeness between 32bit and 64bit systems
+	  in ecc header and crc sectors
+	- added RS03 encoding (GUI)
+	- added RS03 verifying (CLI and GUI)
+	- fixed RS02/RS03 crash when encoding invoked without image file
+	- added commandline RS03 encoding (singlethreaded/multithreaded)
+	- added RS03 decoding and verifying (CLI and GUI)
+	- fixed "typical uses" links in welcome screen (Thanks to C. Steigies)
+	- added warning when same files are selected for .iso
+	  and error correction data (Thanks to A. Postkutscher
+	  for suggesting this!)
+	- removed ASPI driver and ASPI/SPTI splitting logic
+	- removed 2GB file splitting
+
 0.72 (pl-1) 08-08-2009
 	- Pablo Almeida provided a Portuguese translation
 	  for the screen text.
@@ -5,6 +56,11 @@
 
 0.72 04-07-2009
 	- Igor Gorbounov completed the Russian translation
+	- fixed lockups in the spiral under Mac OS X
+	- fixed crash when calling dvdisaster on command line without
+	  specifying a file name on Mac OS X
+
+0.72 (rc-2)
 	- fixed lockups in the spiral under Mac OS X
 	- fixed crash when calling dvdisaster on command line without
 	  specifying a file name on Mac OS X

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -706,11 +706,11 @@ void AboutDialog()
 
 #ifdef MODIFIED_SOURCE
    AboutTextWithLink(vbox, 
-		     _("Modified version Copyright 2009 (please fill in - [directions])\n"
-		       "Copyright 2004-2009 Carsten Gnoerlich"),
+		     _("Modified version Copyright 2010 (please fill in - [directions])\n"
+		       "Copyright 2004-2010 Carsten Gnoerlich"),
 		     "MODIFYING");
 #else
-   AboutText(vbox, _("Copyright 2004-2009 Carsten Gnoerlich"));
+   AboutText(vbox, _("Copyright 2004-2010 Carsten Gnoerlich"));
 #endif
 
    sep = gtk_hseparator_new();

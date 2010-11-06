@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -357,9 +357,13 @@ enum
    PREF_ECC_SIZE = 2
 };
 
+#ifdef HAVE_32BIT
+static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
+			    1024, 1536 };
+#else
 static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
 			    1024, 1536, 2048, 2560, 3072, 4096, 5120, 6144, 7168, 8192 };
-//			    11264, 15360, 23552, 31744, 48128, 64512 };
+#endif
 
 static gchar* format_cb(GtkScale *scale, gdouble value, gpointer data)
 {  int nroots = value;
@@ -649,9 +653,11 @@ void ResetRS02PrefsPage(Method *method)
    for(index = 0; index < sizeof(cache_size)/sizeof(int); index++)
      if(cache_size[index] > Closure->cacheMB)
        break;
-
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
+   
+   if(wl->cacheScaleA)
+     gtk_range_set_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
+   if(wl->cacheScaleB)
+     gtk_range_set_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
 }
 
 /*

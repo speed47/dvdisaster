@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -92,10 +92,35 @@ void print_ecc_header(EccHeader *eh)
    PrintCLI("selfCRC          %8x\n", eh->selfCRC);
    print_hex("crcSum           ", eh->crcSum, 16);
    PrintCLI("inLast           %8x\n", eh->inLast);
+   PrintCLI("sectorsPerLayer  %lld\n", eh->sectorsPerLayer);
 
    PrintCLI("\n");
 }
 
+void print_crc_block(CrcBlock *cb)
+{  char buf[16]; 
+
+   PrintCLI("\nContents of CrcBlock:\n\n");
+
+   strncpy(buf, (char*)cb->cookie, 12); buf[12] = 0;
+   PrintCLI("cookie           %s\n",buf);
+   strncpy(buf, (char*)cb->method, 4);  buf[4] = 0;
+   PrintCLI("method           %s\n",buf);
+   print_hex("methodFlags      ", (guint8*)cb->methodFlags, 4);
+   PrintCLI("creatorVersion   %8x\n", cb->creatorVersion);
+   PrintCLI("neededVersion    %8x\n", cb->neededVersion);
+   PrintCLI("fpSector         %8x\n", cb->fpSector);
+   print_hex("mediumFP         ", cb->mediumFP, 16);
+   print_hex("mediumSum        ", cb->mediumSum, 16);
+   PrintCLI("dataSectors     %ll16x\n ",cb->dataSectors);
+   PrintCLI("inLast           %8x\n", cb->inLast);
+   PrintCLI("dataBytes        %8x\n", cb->dataBytes);
+   PrintCLI("eccBytes         %8x\n", cb->eccBytes);
+   PrintCLI("sectorsPerLayer  %lld\n", cb->sectorsPerLayer);
+   PrintCLI("selfCRC          %8x\n", cb->selfCRC);
+
+   PrintCLI("\n");
+}
 /*
  * This is the most annoying part of the endian conversions.
  */
@@ -115,9 +140,31 @@ void SwapEccHeaderBytes(EccHeader *eh)
   eh->neededVersion = SwapBytes32(eh->neededVersion);
   eh->fpSector = SwapBytes32(eh->fpSector);
   eh->inLast = SwapBytes32(eh->inLast);
+  eh->sectorsPerLayer = SwapBytes64(eh->sectorsPerLayer);
 #ifdef VERBOSE
   printf("after swap:\n");
   print_ecc_header(eh);
+#endif
+}
+
+void SwapCrcBlockBytes(CrcBlock *cb)
+{
+#ifdef VERBOSE
+  printf("before swap:\n");
+  print_crc_block(cb);
+#endif
+
+  cb->creatorVersion = SwapBytes32(cb->creatorVersion);
+  cb->neededVersion = SwapBytes32(cb->neededVersion);
+  cb->fpSector = SwapBytes32(cb->fpSector);
+  cb->dataSectors = SwapBytes64(cb->dataSectors);
+  cb->inLast = SwapBytes32(cb->inLast);
+  cb->dataBytes = SwapBytes32(cb->dataBytes);
+  cb->eccBytes = SwapBytes32(cb->eccBytes);
+  cb->sectorsPerLayer = SwapBytes64(cb->sectorsPerLayer);
+#ifdef VERBOSE
+  printf("after swap:\n");
+  print_crc_block(cb);
 #endif
 }
 

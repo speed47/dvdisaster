@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -157,6 +157,11 @@ void RS02Create(Method*);
 /* rs02-fix.c */
 
 void RS02Fix(Method*);
+
+/* rs02-recognize.c */
+
+EccHeader* FindRS02HeaderInImage(LargeFile*);
+int  RS02Recognize(Method*, LargeFile*);
 
 /* rs02-window.c */
 

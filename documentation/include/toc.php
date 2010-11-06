@@ -1,16 +1,22 @@
-
 <?php
 # dvdisaster: Online doc table of contents (all languages)
-# Copyright (C) 2007-2009 The dvdisaster translation team
+# Copyright (C) 2007-2010 The dvdisaster translation team
 #
 # UTF-8 trigger: äöüß 
 
 # News
 
+global $have_experimental;
+
 section("news");
   de("Neuigkeiten");
   en("News");
   ru("Новости");
+
+subsection("news2009");
+  de("2009");
+  en("2009");
+  ru("2009");
 
 subsection("news2008");
   de("2008");
@@ -235,6 +241,7 @@ subsubsection("howtosa4");
   de("Aktionen beginnen");
   en("Starting actions");
   ru("Начало действий");
+
 # Download
 
 section("download");
@@ -257,10 +264,18 @@ subsection("download30");
   en("Installation");
   ru("Установка");
 
-#subsection("download40");
-#  de("Alpha-/Entwicklerversionen");
-#  en("Alpha (unstable) versions");
-#  ru("Альфа (нестабильные) версии");
+if(!strcmp($have_experimental, "yes"))
+{
+subsection("download40");
+  de("Alpha-/Entwicklerversionen");
+  en("Alpha (unstable) versions");
+  ru("Альфа (нестабильные) версии");
+}
+
+subsection("download50");
+  de("Zusätzliche Papiere");
+  en("Additional resources");
+  ru("Аdditional resources");
 
 # Questions and Answers
 

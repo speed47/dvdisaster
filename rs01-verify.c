@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -423,7 +423,8 @@ void RS01Verify(Method *self)
 			ii->sectors-1, ii->inLast);
       }
 
-      RS01ScanImage(self, ii, ei, PRINT_MODE);
+      if(!Closure->quickVerify)
+	 RS01ScanImage(self, ii, ei, PRINT_MODE);
 
       if(Closure->stopActions)   
       {  SetLabelText(GTK_LABEL(wl->cmpImageResult), 
@@ -474,6 +475,9 @@ void RS01Verify(Method *self)
 			  Closure->redMarkup);
 	 }
       } 
+      else if(Closure->quickVerify)
+      {  PrintLog(_("* quick mode        : image NOT scanned\n"));
+      }
       else
       {  if(!ii->sectorsMissing)
          {  
@@ -702,23 +706,25 @@ void RS01Verify(Method *self)
 
       /*** Verify md5sums against image and map (if present) */
 
-      AsciiDigest(edigest, eh->mediumSum);
-      if(ii && !ii->sectorsMissing && !excess_sectors)
-      {  n = !memcmp(eh->mediumSum, ii->mediumSum, 16);
-         if(n) PrintLog(_("- image md5sum     : %s (good)\n"),edigest);
-	 else  PrintLog(_("* image md5sum     : %s (BAD)\n"),edigest);
-	 if(Closure->guiMode)
-	 {  if(n) SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
-	    else  
-	    {  SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "<span %s>%s</span>", Closure->redMarkup, edigest);
-	       SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "<span %s>%s</span>", Closure->redMarkup, idigest);
+      if(!Closure->quickVerify)
+      {  AsciiDigest(edigest, eh->mediumSum);
+	 if(ii && !ii->sectorsMissing && !excess_sectors)
+	 {  n = !memcmp(eh->mediumSum, ii->mediumSum, 16);
+	    if(n) PrintLog(_("- image md5sum     : %s (good)\n"),edigest);
+	    else  PrintLog(_("* image md5sum     : %s (BAD)\n"),edigest);
+	    if(Closure->guiMode)
+	    {  if(n) SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
+	       else  
+	       {  SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "<span %s>%s</span>", Closure->redMarkup, edigest);
+		  SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "<span %s>%s</span>", Closure->redMarkup, idigest);
+	       }
 	    }
 	 }
-      }
-      else 
-      {  PrintLog(_("- image md5sum     : %s\n"),edigest);
-         if(Closure->guiMode)
-	   SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
+	 else 
+	 {  PrintLog(_("- image md5sum     : %s\n"),edigest);
+	    if(Closure->guiMode)
+	       SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
+	 }
       }
 
       if(ii)
@@ -745,20 +751,25 @@ void RS01Verify(Method *self)
 	 }
       }
 
+      if(Closure->quickVerify)  /* terminate early */
+      {  PrintLog(_("* quick mode        : ecc file NOT scanned\n"));
+	 goto terminate;
+      }
+
       ecc_expected = 2048*((eh_sectors+eh->dataBytes-1)/eh->dataBytes);
       ecc_blocks = (ecc_file_size-eh_sectors*sizeof(guint32)-sizeof(EccHeader))/eh->eccBytes;
 
       if(ecc_expected == ecc_blocks)
       {    PrintLog(_("- ecc blocks       : %lld (good)\n"),ecc_blocks);
 	   if(Closure->guiMode)
-	     SetLabelText(GTK_LABEL(wl->cmpEccBlocks), "%lld", ecc_blocks);
+	      SetLabelText(GTK_LABEL(wl->cmpEccBlocks), "%lld", ecc_blocks);
       }
       else
       {    PrintLog(_("* ecc blocks       : %lld (BAD, expected %lld)\n"),ecc_blocks,ecc_expected);
 	   if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEccBlocks), _("<span %s>%lld (bad, expected %lld)</span>"),Closure->redMarkup,ecc_blocks,ecc_expected);
       }
-
+   
       /*** Test ecc file against its own md5sum */
 
       MD5Init(&md5ctxt);
