@@ -88,7 +88,7 @@ EccHeader* ValidHeader(unsigned char *buf, gint64 hdr_pos)
 {  EccHeader *eh = (EccHeader*)buf;
    guint32 recorded_crc, real_crc;
    //   unsigned char fingerprint[16];
-
+   
    /* Medium read error in ecc header? */
 
    if(   (CheckForMissingSector(buf, hdr_pos, NULL, 0) != SECTOR_PRESENT)

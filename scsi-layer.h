@@ -77,7 +77,7 @@
 #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
 #endif
 
-#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD) || defined(SYS_SOLARIS) || defined(SYS_DARWIN)
+#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD) || defined(SYS_DARWIN)
 #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
 #endif
 

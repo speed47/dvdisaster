@@ -254,6 +254,11 @@ subsection("download10");
   en("System requirements");
   ru("Системные требования");
 
+subsection("download60");
+  de("(Keine) Bedingungen zum Herunterladen");
+  en("(No) download terms");
+  ru("(No) download terms");
+
 subsection("download20");
   de("Digitale Unterschrift");
   en("Digital signature");
@@ -275,7 +280,7 @@ subsection("download40");
 subsection("download50");
   de("Zusätzliche Papiere");
   en("Additional resources");
-  ru("Аdditional resources");
+  ru("Additional resources");
 
 # Questions and Answers
 

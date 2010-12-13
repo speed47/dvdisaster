@@ -476,7 +476,15 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = DVD_SL_SIZE;
 		      else if(!strcmp(optarg, "DVD9") || !strcmp(optarg, "dvd9"))
 			   Closure->mediumSize = DVD_DL_SIZE;
-		      else Closure->mediumSize = (gint64)atoll(optarg);
+		      else if(!strcmp(optarg, "BD") || !strcmp(optarg, "bd"))
+			   Closure->mediumSize = BD_SL_SIZE;
+		      else if(!strcmp(optarg, "BD2") || !strcmp(optarg, "bd2"))
+			   Closure->mediumSize = BD_DL_SIZE;
+		      else 
+		      {  int len = strlen(optarg);
+			 if(strchr("0123456789", optarg[len-1]))
+			    Closure->mediumSize = (gint64)atoll(optarg);
+		      }
 		      break;
 		   }
          case 'o': if(!strcmp(optarg, "file"))
@@ -536,12 +544,15 @@ int main(int argc, char *argv[])
          case MODIFIER_EJECT: 
 	   Closure->eject = 1; 
 	   break;
-	 case MODIFIER_DRIVER: /* currently undocumented feature */
+	 case MODIFIER_DRIVER:
 #if defined(SYS_LINUX)
 	   if(optarg && !strcmp(optarg,"sg"))
-	      Closure->useSGioctl = TRUE;
+	      Closure->useSCSIDriver = DRIVER_SG;
+	   else 
+	   if(optarg && !strcmp(optarg,"cdrom"))
+	      Closure->useSCSIDriver = DRIVER_CDROM;
 	   else
-	      Stop(_("Valid args for --driver: sg"));
+	      Stop(_("Valid args for --driver: sg,cdrom"));
 #else
 	   Stop(_("--driver is only supported on GNU/Linux"));
 #endif
@@ -755,6 +766,7 @@ int main(int argc, char *argv[])
    /*** CPU type detection. */
 
    Closure->useSSE2 = ProbeSSE2();
+   Closure->useAltiVec = ProbeAltiVec();
 
    /*** Parse the sector ranges for --read and --scan */
 
@@ -782,10 +794,16 @@ int main(int argc, char *argv[])
       Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
    }
 
-   /*** Determine the default device (OS dependent!) if none
-        has been specified on the command line. */
+   /*** Determine the default device (OS dependent!) if 
+	- none has been specified on the command line
+        - and one if actually required in command line mode.
 
-   if(!Closure->device)
+	GUI mode will unconditionally query devices later anyways
+	in order to build the menu so we don't have to care about
+	that now. */
+
+   if(!Closure->device && mode == MODE_SEQUENCE 
+      && (sequence & (1<<MODE_READ | 1<<MODE_SCAN))) 
    {  Closure->device = DefaultDevice();
       devices_queried = TRUE;
    }
@@ -846,14 +864,17 @@ int main(int argc, char *argv[])
 	 break;
 
       case MODE_SEND_CDB:
+         if(!Closure->device) Closure->device = DefaultDevice();
 	 SendCDB(debug_arg);
 	 break;
 
       case MODE_RAW_SECTOR:
+         if(!Closure->device) Closure->device = DefaultDevice();
 	 RawSector(debug_arg);
 	 break;
 
       case MODE_READ_SECTOR:
+         if(!Closure->device) Closure->device = DefaultDevice();
 	 ReadSector(debug_arg);
 	 break;
 
@@ -930,8 +951,8 @@ int main(int argc, char *argv[])
       PrintCLI(_("  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"));
       PrintCLI(_("  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"));
       PrintCLI(_("  -m n                   - list/select error correction methods (default: RS01)\n"));
-      PrintCLI(_("  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
-		 "                           maximum error correction image size (in sectors)\n"));
+      PrintCLI(_("  -n,--redundancy n%%     - error correction data redundancy\n"
+		 "                           allowed values depend on codec (see manual)\n"));
       PrintCLI(_("  -v,--verbose           - more diagnostic messages\n"));
       PrintCLI(_("  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --adaptive-read        - use optimized strategy for reading damaged media\n"));
@@ -940,7 +961,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --dao                  - assume DAO disc; do not trim image end\n"));
       PrintCLI(_("  --defective-dump d     - directory for saving incomplete raw sectors\n"));
 #ifdef SYS_LINUX
-      PrintCLI(_("  --driver=sg            - use alternative sg driver (see man page!)\n"));
+      PrintCLI(_("  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"));
 #endif
       PrintCLI(_("  --eject                - eject medium after successful read\n"));
       PrintCLI(_("  --fill-unreadable n    - fill unreadable sectors with byte n\n"));

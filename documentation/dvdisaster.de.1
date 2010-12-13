@@ -119,8 +119,8 @@ wenn Sie mit erweiterten Abbildern arbeiten.
 Aktions-Auswahl (mindestens eine Aktion muss gew\[:a]hlt werden):
 .TP
 .B \-r, \-\-read
-Datentr\[:a]ger-Abbild auf Festplatte einlesen. -rn-m liest einen Bereich von
-Sektoren, z.B. -r100-200.
+Datentr\[:a]ger-Abbild auf Festplatte einlesen. \-rn-m liest einen Bereich von
+Sektoren, z.B. \-r100-200.
 .TP
 .B \-c, \-\-create
 Erzeugt Fehlerkorrektur-Daten f\[:u]r das Abbild.
@@ -132,7 +132,7 @@ Versucht das Abbild mit Hilfe der Fehlerkorrektur-Daten zu reparieren.
 Untersucht den Datentr\[:a]ger auf Lesefehler.
 .TP
 .B \-t, \-\-test, \-tq, \-test=q
-Pr\[:u]ft die Struktur der .iso und .ecc - Dateien.
+Pr\[:u]ft die Struktur der .iso und .ecc \- Dateien.
 Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
 die ohne vollständiges Lesen der Dateien ermittelt werden k\[:o]nnen.
 .TP
@@ -175,8 +175,56 @@ M\[:o]gliche Werte sind RS02 und RS03.
 .B \-j, \-\-jump n
 \[:u]berspringe n Sektoren nach einem Lesefehler (Standard: 16).
 .TP
-.B \-n, \-\-redundancy n%
-Redundanz der Fehlerkorrektur (Standard: 14.3%).
+.B \-n, \-\-redundancy n[unit]
+Redundanz der Fehlerkorrektur-Daten. Die zulässigen Werte sind vom
+verwendeten Kodierer abhängig:
+
+.RS
+RS01- und RS03-Fehlerkorrektur-Dateien:
+.RS
+\-n x\ \ erzeugt Fehlerkorrektur-Datei mit x Nullstellen.
+.RE
+.RS
+\-n x% erzeugt Fehlerkorrektur-Datei mit x Prozent Redundanz.
+.RE
+.RS
+\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MB Größe.
+.RE
+.RS 
+\-n normal - optimierter Kodierer für 14.3% Redundanz/32 Nullstellen.
+.RE
+.RS
+\-n high\ \ \ - optimierter Kodierer für 33.5% Redundanz/64 Nullstellen.
+.RE
+.RE
+
+.RS
+RS02-Abbilder:
+.RS
+\-n CD\ \ \ erweitert Abbild auf CD-Größe.
+.RE
+.RS
+\-n DVD\ \ erweitert Abbild auf DVD-Größe.
+.RE
+.RS
+\-n DVD9 erweitert Abbild auf DVD9-Größe.
+.RE
+.RS
+\-n BD\ \ \ erweitert Abbild auf BD-Größe.
+.RE
+.RS
+\-n BD2\  erweitert Abbild auf zweilagige BD-Größe.
+.RE
+.RS
+\-n x\ \ \ \ erweitert Abbild auf ca. x Sektoren Länge.
+.RE
+.RS
+\-n x%\ \ \ erweitert Abbild mit ca. x% Redundanz. 
+.RE
+.RS
+\-n xr\ \ \ erweitert Abbild mit x Nullstellen Fehlerkorrektur-Daten.
+.RE
+.RE
 .TP
 .B \-m, \-\-method n
 Fehlerkorrektur-Methoden anzeigen/ausw\[:a]hlen (Standard: RS01).
@@ -210,10 +258,13 @@ Gibt das Unterverzeichnis zum Sammeln von unvollständigen
 Roh-Sektoren an.
 .TP
 .B \-\-driver d  (nur für Linux)
-dvdisaster verwendet unter Linux normalerweise den Treiber für optische
-Laufwerke. Einige sehr alte SCSI-Kontroller erzeugen dabei Systemabstürze. 
-Probieren Sie in diesem Fall mit
-\-\-driver=sg das Laufwerk über den alternativen SCSI-Treiber anzusteuern.
+W\[:a]hlt zwischen dem sg (SG_IO)-Treiber (voreingestellt) und dem
+älteren cdrom (CDROM_SEND_PACKET)-Treiber zum Zugriff auf die Laufwerke aus.
+Beide Treiber sollten gleich gut funktionieren; der 
+cdrom-Treiber hat allerdings mit alten SCSI-Kontrollern Probleme.
+Bis einschließlich dvdisaster 0.72.x war der cdrom-Treiber allerdings die
+Voreinstellung; wenn sich jetzt etwas zum Schlechteren verändert hat
+wählen Sie bitte wieder mit \-\-driver=cdrom den älteren Treiber aus.
 .TP
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.
@@ -225,12 +276,12 @@ f\[:u]lle unlesbare Sektoren mit Byte n.
 Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
 .TP
 .B \-\-internal-rereads n
-Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: -1)
+Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: \-1)
 .RS
 Laufwerke unternehmen normalerweise mehrere Versuche um einen besch\[:a]digten Sektor 
 zu lesen. Es ist typischerweise g\[:u]nstiger diesen Wert auf 0 oder 1 zu setzen
-und die Anzahl der Leseversuche \[:u]ber den Parameter --read-attempts zu steuern.
-Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert -1 um 
+und die Anzahl der Leseversuche \[:u]ber den Parameter \-\-read-attempts zu steuern.
+Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 um
 die Standardeinstellungen des Laufwerks zu verwenden.
 .RE
 .TP
@@ -254,7 +305,7 @@ Ein Wert von n verbraucht ungefähr n MB Arbeitsspeicher.
 .RE
 .TP
 .B \-\-raw-mode n
-"Raw"-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
+"Raw"\-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
 .RS
 Das empfohlene Verfahren ist 20, bei dem das Laufwerk die eingebaute Fehlerkorrektur
 so weit wie m\[:o]glich anwendet, bevor es einen besch\[:a]digten Sektor 
@@ -271,7 +322,7 @@ versucht einen besch\[:a]digten Sektor n bis m-mal zu lesen.
 liest den gesamten Datentr\[:a]ger bis zu n-mal.
 .TP
 .B \-\-read-raw
-liest in der "raw"-Betriebsart sofern m\[:o]glich.
+liest in der "raw"\-Betriebsart sofern m\[:o]glich.
 .TP
 .B \-\-speed-warning n
 warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.

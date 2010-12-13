@@ -2047,7 +2047,7 @@ gint64 CurrentMediumSize(int get_blank_size)
 
 /*
  * Spin up drive.
- * Most drive give a *beep* about sending the START STOP CDB,
+ * Most drives give a *beep* about sending the START STOP CDB,
  * so we simply nudge them with reading request until the spin up
  * time is over. Pathetic ;-)
  */
@@ -2100,7 +2100,7 @@ void LoadMedium(DeviceHandle *dh, int load)
    cmd[0] = 0x1b;                /* START STOP */
    cmd[4] = load ? 0x03 : 0x02;  /* LOEJ=1; START=load/eject */
 
-   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_READ)<0
+   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_NONE)<0
       && (sense.asc != 0x53 || sense.ascq != 0x02))
    {
       PrintLog(_("%s\nCould not load/unload the medium.\n"), 
@@ -2118,7 +2118,7 @@ void LoadMedium(DeviceHandle *dh, int load)
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x1e;                /* PREVENT ALLOW MEDIUM REMOVAL */
 
-   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_NONE)<0)
       PrintLog(_("%s\nCould not unlock the medium.\n"), 
 	       GetSenseString(sense.sense_key, sense.asc, sense.ascq, TRUE));
 
@@ -2128,7 +2128,7 @@ void LoadMedium(DeviceHandle *dh, int load)
    cmd[0] = 0x1b;                /* START STOP */
    cmd[4] = 0x02;                /* LOEJ=1; START=eject */
 
-   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_READ)<0)
+   if(SendPacket(dh, cmd, 6, NULL, 0, &sense, DATA_NONE)<0)
       PrintLog(_("%s\nCould not load/unload the medium.\n"), 
 	       GetSenseString(sense.sense_key, sense.asc, sense.ascq, TRUE));
 }
@@ -2146,7 +2146,7 @@ int TestUnitReady(DeviceHandle *dh)
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x00;     /* TEST UNIT READY */
 
-   if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_READ) != -1)
+   if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_NONE) != -1)
       return TRUE;
 
    /*** If no medium present, try closing the tray. */
@@ -2164,7 +2164,7 @@ int TestUnitReady(DeviceHandle *dh)
       memset(cmd, 0, MAX_CDB_SIZE);
       cmd[0] = 0x00;     /* TEST UNIT READY */
 
-      if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_READ) != -1)
+      if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_NONE) != -1)
       {  if(Closure->guiMode)
 	    SetLabelText(Closure->status, "");
 	 return TRUE;

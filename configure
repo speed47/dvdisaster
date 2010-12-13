@@ -21,7 +21,7 @@ fi
 
 PACKAGE dvdisaster 0.79
 
-REL_MICRO=2
+REL_MICRO=3
 #REL_STATUS=patch
 REL_STATUS=devel
 #REL_STATUS=rc
@@ -41,7 +41,7 @@ esac
 # Last stable version (used only in WWW pages)
 
 DEFINE_VAR HAVE_EXPERIMENTAL "yes"
-DEFINE_VAR STABLE_VERSION "0.72.1"
+DEFINE_VAR STABLE_VERSION "0.72.2"
 
 # Check for some essential tools.
 
@@ -114,6 +114,7 @@ echo
 CHECK_ENDIAN
 CHECK_BITNESS
 CHECK_SSE2
+CHECK_ALTIVEC
 
 # Look for required tools
 
@@ -263,12 +264,7 @@ if test -n "$BUILDROOT"; then
   echo
 fi
 
-if test $cfg_system == "solaris"; then
-  id_binary="/usr/xpg4/bin/id"
-else
-  id_binary="id"
-fi
-
+id_binary="id"
 if test `$id_binary -u` -eq 0; then
   echo "* WARNING: Compiling the project as ROOT USER is not recommended"
   echo "*          and may cause unexpected problems. If compilation fails"
