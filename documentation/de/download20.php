@@ -37,6 +37,15 @@ den Entwicklern erhalten, indem Sie eine E-Mail
 an <img src="../images/email.png" align="top"> schreiben. Bitte verwenden Sie
 den Betreff "GPG finger print".
 
+<h3>MD5-Prüfsummen</h3>
+
+MD5-Prüfsummen sind im Gegensatz zu der digitalen Unterschrift
+kryptographisch schwach: Es ist möglich, ein
+manipuliertes Softwarepaket zu erzeugen, das die gleiche Prüfsumme
+wie das Original hat. Die Prüfsummen reichen jedoch aus, um schnell
+zu testen ob das Softwarepaket vollständig und korrekt heruntergeladen
+worden ist.
+
 <!--- do not change below --->
 
 <?php

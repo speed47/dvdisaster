@@ -58,6 +58,7 @@
 # CHECK_ENDIAN		Test whether system is little or big endian
 # CHECK_BITNESS		Test whether system is 32bit or 64bit
 # CHECK_SSE2		Test whether when can compile for SSE2 extensions
+# CHECK_ALTIVEC		Test whether when can compile for AltiVec extensions
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
@@ -138,19 +139,6 @@ case "$cfg_uname" in
 	CFG_SYS_LDFLAGS="-lutil"
 	function add_linker_flags()
 	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
-	}
-	;;
-
-  SunOS*) cfg_system=solaris
-        CFG_SYS_OPTIONS="-DSYS_SOLARIS"
-        CFG_EXE_SUFFIX=""
-	# Even a Sparc V9 is a tight fit for us...
-	if test `uname -m` == "sun4u"; then
-	   CFG_SYS_CFLAGS="-mcpu=v9"
-	fi
-
-	function add_linker_flags()
-	{  lflags_return="-L$1 $2"
 	}
 	;;
 
@@ -700,8 +688,7 @@ function try_common_library_locations
     /usr/XFree86/lib/X11 \
     /usr/lib \
     /usr/local/lib \
-    /usr/openwin/lib \
-    /usr/openwin/share/lib \
+    /usr/pkg/lib \
     ; \
   do
     if test -r "$test_dir/$lib_a" || test -r "$test_dir/$lib_so"; then
@@ -804,8 +791,7 @@ function try_common_header_locations()
     /usr/XFree86/include/X11 \
     /usr/include \
     /usr/local/include \
-    /usr/openwin/include \
-    /usr/openwin/share/include \
+    /usr/pkg/include \
     ; \
   do
     test_header=$test_dir/$header
@@ -1378,18 +1364,7 @@ function REQUIRE_GTK2()
 
    echo -n " pkg-config... "
    if pkg-config --cflags gtk+-2.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-2.0 >>config.tmp 2>&1 ; then
-	if test $cfg_system == "solaris"; then
-	   CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
-	   if (echo $CFG_GTK2_LIBS | grep "mt") > /dev/null 2>&1; then
-	     echo "broken, Solaris fix will be applied"
-	     broken_solaris="yes"
-	   else
-	     broken_solaris="no"
-             echo "works"
-	   fi
-	else
-          echo "works"
-	fi
+        echo "works"
 	rm config.tmp
    else 
 	echo "failed"
@@ -1420,10 +1395,6 @@ EOF
 
    CFG_GTK2_CFLAGS=`pkg-config --cflags gtk+-2.0`
    CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
-
-   if test "$broken_solaris" == "yes"; then
-	CFG_GTK2_LIBS=`echo $CFG_GTK2_LIBS | sed -e 's/-mt//'`
-   fi
 
    CFG_GTK2_BINDIR=`which pkg-config`
    CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
@@ -1854,6 +1825,64 @@ EOF
 }
 
 #
+# Check for AltiVec.
+#
+
+function CHECK_ALTIVEC()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-altivec=[yes | no]"
+     return 0
+   fi
+
+   CHECK_ALTIVEC_INVOKED=1
+
+   echo -e "\n/* *** CHECK_ALTIVEC */\n" >>$LOGFILE
+   echo -n "Checking for AltiVec..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_altivec"; then
+      case "$cfg_with_altivec" in
+       no)  echo " no (user supplied)"
+               ;;
+       yes) echo " yes (user supplied)"
+               CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+               ;;
+        *) echo -e " $cfg_with_altivec (illegal value)\n"
+          echo "Please use one of the following values:"
+          echo "--with-altivec=[yes | no]"
+          exit 1
+          ;;
+      esac
+      return 0;
+   fi
+
+   # Do automatic detection
+
+   cat > conftest.c <<EOF
+#include <altivec.h>
+
+int main()
+{ vector unsigned char a, b, c;
+
+  c = vec_or(a, b);
+}
+EOF
+
+   local cflags_save=$CFG_CFLAGS
+   CFG_CFLAGS="-maltivec $CFG_CFLAGS"
+   if try_compile; then
+      echo " yes"
+      CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+   else
+      echo " no"
+   fi
+   CFG_CFLAGS=$cflags_save
+}
+
+
+#
 # Check whether a certain program is there and executable.
 #
 
@@ -1896,6 +1925,9 @@ function CREATE_MAKEFILES()
    echo "CFG_OTHER_OPTIONS = $CFG_OTHER_OPTIONS" >> Makefile.config
    if test -n "$CHECK_SSE2_INVOKED"; then
      echo "CFG_SSE2_OPTIONS = $CFG_SSE2_OPTIONS" >> Makefile.config
+   fi
+   if test -n "$CHECK_ALTIVEC_INVOKED"; then
+     echo "CFG_ALTIVEC_OPTIONS = $CFG_ALTIVEC_OPTIONS" >> Makefile.config
    fi
    echo >> Makefile.config
 

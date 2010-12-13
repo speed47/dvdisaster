@@ -9,6 +9,7 @@
 # navigation and news if appropriate.
 
 require("../include/dvdisaster.php");
+require("../include/download.php");
 begin_page();
 $show_all=$_GET["showall"];
 ?>
@@ -72,49 +73,24 @@ Die Alpha-Versionen verwenden das gleiche Paketformat wie die normalen
 Versionen.<p>
 
 <table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.79</b></td><td align="right">28-Feb-2010</td></tr>
+<tr><td><b>dvdisaster-0.79</b></td><td align="right">21-Nov-2010</td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
 <tr><td colspan="2">
   <table>
-    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2.tar.bz2">dvdisaster-0.79.2.tar.bz2</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2.tar.bz2.gpg">dvdisaster-0.79.2.tar.bz2.gpg</a></td></tr>
-    <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2.app.zip">dvdisaster-0.79.2.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2.app.zip.gpg">dvdisaster-0.79.2.app.zip.gpg</a></td></tr>
-    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2-setup.exe">dvdisaster-0.79.2-setup.exe</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.2-setup.exe.gpg">dvdisaster-0.79.2-setup.exe.gpg</a></td></tr>
-    <tr><td colspan="2"> </td></tr>
-<?php
-  if($show_all == 0) {
-?>
-    <tr><td colspan="2"><a href="download40.php?showall=1#download">Ältere Veröffentlichungen des 0.79er-Versionszweiges anzeigen</a></td></tr>
-<?php
-  }
-  else {
-?> 
-   <tr><td colspan="2"><a href="download40.php?showall=0#download">Ältere Veröffentlichungen des 0.79er-Versionszweiges verbergen</a></td></tr>
-   <tr><td colspan="2"> </td></tr>
-    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1.tar.bz2">dvdisaster-0.79.1.tar.bz2</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1.tar.bz2.gpg">dvdisaster-0.79.1.tar.bz2.gpg</a></td></tr>
-<!---
-    <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1.app.zip">dvdisaster-0.79.1.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1.app.zip.gpg">dvdisaster-0.79.1.app.zip.gpg</a></td></tr>
---->
-    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1-setup.exe">dvdisaster-0.79.1-setup.exe</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.79.1-setup.exe.gpg">dvdisaster-0.79.1-setup.exe.gpg</a></td></tr>
-<?php
-  }
+<?php    
+    download_version("0.79.3", 0, "hidden", "hidden", "hidden");
+
+    if($show_all == 0)
+    {  echo "    <tr><td colspan=\"2\"><a href=\"download40.php?showall=1#download\">Ältere Veröffentlichungen des 0.79er-Versionszweiges anzeigen</a></td></tr>\n";
+    }
+    else 
+    {  echo "    <tr><td colspan=\"2\"><a href=\"download40.php?showall=0#download\">Ältere Veröffentlichungen des 0.79er-Versionszweiges verbergen</a></td></tr>\n";
+       echo "    <tr><td colspan=\"2\"> </td></tr>\n";
+
+       download_version("0.79.2", 1, "378ed135c2faf0eaf643125d1f7726c6", "f673e41b5ddc31a6ecb48a5f053de885", "0b4c0b46e827c7f796416473511ab036");
+
+       download_version("0.79.1", 1, "ba6d0178dc03119080e07ef0a2967c38", "none", "b4c62833a2447097950b563e4a7b2065");
+    }
 ?>
   </table>
 </td></tr>
@@ -124,6 +100,18 @@ Versionen.<p>
 <b>Alle Plattformen:</b> Diese Versionen enthalten umfangreiche Änderungen an
 den inneren Strukturen im Vergleich zu Version 0.72.x. Bitte verwenden Sie sie
 mit Vorsicht.<p>
+
+<b>0.79.3</b> (21-Nov-2010)<br>
+<ul>
+<li>Unter Linux wird ab dieser Version als Voreinstellung 
+der SG_IO-Treiber zum Zugriff auf die optischen Laufwerke verwendet; der
+bisher benutzte CDROM_SEND_PACKET-Treiber kann optional ausgewählt werden.
+In den vorherigen dvdisaster-Versionen war es genau anders herum; in 
+den  gegenwärtigen Linux-Kerneln hat der SG_IO-Treiber aber die 
+bessere Kompatibilität.</li>
+<li>Michael Klein hat eine Altivec-Optimierung für den RS03-Kodierer
+beigesteuert.</li>
+</ul>
 
 <b>0.79.2</b> (28-Feb-2010)<br>
 <ul>
