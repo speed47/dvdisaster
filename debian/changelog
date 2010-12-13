@@ -1,3 +1,14 @@
+dvdisaster (0.79.3-1) experimental; urgency=low
+
+  * New upstream version.
+    + Make SG_IO ioctl the default in dvdisaster. Closes: #598275.
+  * debian/patches:
+    + remove 04-manpage.patch, 06-remove-encoding-from-desktop-file.patch,
+      and 07-fix-spelling-errors-in-binaries.patch, as they are applied
+      upstream.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Mon, 13 Dec 2010 14:22:32 -0200
+
 dvdisaster (0.79.2-1) experimental; urgency=low
 
   * Imported Upstream version 0.79.2
