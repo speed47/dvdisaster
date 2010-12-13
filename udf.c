@@ -54,7 +54,7 @@ static int try_sector(DeviceHandle *dh, gint64 pos, EccHeader **ehptr, unsigned 
       data behind the image. So finding an invalid sector
       does not imply there is not RS02 data present. */
 
-   if(strncmp((char*)eh->cookie, "*dvdisaster*", 12))
+   if(strncmp((char*)eh->cookie, "*dvdisaster*RS02", 16))
    {  if(dh->rewriteable)
       {   Verbose("udf/try_sector: no cookie but rewriteable medium: skipping header\n");
 	  return TRY_NEXT_HEADER;
@@ -65,7 +65,7 @@ static int try_sector(DeviceHandle *dh, gint64 pos, EccHeader **ehptr, unsigned 
       }
    }
    else Verbose("udf/try_sector: header at %lld: magic cookie found\n", (long long int)pos);
-
+ 
    /* Calculate CRC */
 
    recorded_crc = eh->selfCRC;

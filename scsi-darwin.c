@@ -283,6 +283,7 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
     break;
   case DATA_NONE:
     flags = kSCSIDataTransfer_NoDataTransfer;
+    break;
   default:
     Stop("illegal data_mode: %d",data_mode);
   }

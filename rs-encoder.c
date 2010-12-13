@@ -110,10 +110,14 @@ static void encode_next_layer_portable(ReedSolomonTables *rt, unsigned char *dat
  */
 
 void encode_next_layer_sse2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
+void encode_next_layer_altivec(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 
 void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
 {
    if(Closure->useSSE2)
         encode_next_layer_sse2(rt, data, parity, layer_size, shift);
-   else encode_next_layer_portable(rt, data, parity, layer_size, shift);
+    else if(Closure->useAltiVec)
+        encode_next_layer_altivec(rt, data, parity, layer_size, shift);
+    else
+        encode_next_layer_portable(rt, data, parity, layer_size, shift);
 }

@@ -2,12 +2,39 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 <id>tag:dvdisaster.net,2009-10-02:/de/feeds/atom.xml</id>
 <title>Neues von dvdisaster</title>
-<updated>2010-02-28T19:15:30+01:00</updated>
+<updated>2010-11-20T22:12:52+01:00</updated>
 <link rel="self" href="http://dvdisaster.net/de/feed/atom.xml" type="application/atom+xml" />
 <author>
  <name>Carsten Gnörlich</name>
  <uri>http://www.dvdisaster.org</uri>
 </author>
+<entry>
+<title>dvdisaster 0.79.3 veröffentlicht</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2010-11-21:/de/news.html/18</id>
+<published>2010-11-21T00:00:00Z</published>
+<updated>2010-11-21T00:00:00Z</updated>
+<link href="http://dvdisaster.net/de/news.html#item18"/>
+<summary> Ab dieser Version wird unter Linux per Voreinstellung der SG_IO-Treiber zum Zugriff auf die optischen Laufwerke verwendet. Damit liegt jetzt auch im Entwicklungszweig eine Lösung für hängende parallele SCSI-Kontroller unter Linux vor, [...]</summary>
+</entry>
+<entry>
+<title>Windows- und Mac OS X-Versionen für 0.72.2 nachgelegt</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2010-11-07:/de/news.html/17</id>
+<published>2010-11-07T00:00:00Z</published>
+<updated>2010-11-07T00:00:00Z</updated>
+<link href="http://dvdisaster.net/de/news.html#item17"/>
+<summary> Die Windows- und Mac OS X-Versionen von 0.72.2 sind jetzt verfügbar. Sie wurden mit der Entwicklungsumgebung von 0.79.x erzeugt. Daher sind die mitgelieferten Bibliotheken von GTK+ jetzt in neueren Versionen als in 0.72.1 enthalten und [...]</summary>
+</entry>
+<entry>
+<title>dvdisaster 0.72.2 veröffentlicht</title>
+<category term="News"/>
+<id>tag:dvdisaster.net,2010-10-31:/de/news.html/16</id>
+<published>2010-10-31T00:00:00Z</published>
+<updated>2010-10-31T00:00:00Z</updated>
+<link href="http://dvdisaster.net/de/news.html#item16"/>
+<summary> Diese Version führt einen Workaround ein um zu verhindern daß parallele SCSI-Kontroller unter Linux nicht mehr reagieren.  Die Aufwärtskompatibilität mit dvdisaster 0.79.x wurde verbessert.  [...]</summary>
+</entry>
 <entry>
 <title>dvdisaster 0.79.2 veröffentlicht</title>
 <category term="News"/>

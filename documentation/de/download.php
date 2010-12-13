@@ -57,23 +57,42 @@ ist <a href="download40.php"><?php echo $cooked_version ?></a>.
 <a name="download"></a>
 
 <table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.72</b></td><td align="right">08-Aug-2009</td></tr>
+<tr><td><b>dvdisaster-0.72</b></td><td align="right">07-Nov-2010</td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
 <tr><td colspan="2">
   <table>
     <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2">dvdisaster-0.72.2.tar.bz2</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2.gpg">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2.gpg">dvdisaster-0.72.2.tar.bz2.gpg</a></td></tr>
+
+<?php
+if($mode == "www");
+    echo "<tr><td align=\"right\">MD5-Prüfsumme:&nbsp;</td><td>312bceef3bf9c0754cf633ed3b12eb71</td></tr>";
+?>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
     <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip">dvdisaster-0.72.2.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip.gpg">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip.gpg">dvdisaster-0.72.2.app.zip.gpg</a></td></tr>
+
+<?php
+if($mode == "www");
+    echo "<tr><td align=\"right\">MD5-Prüfsumme:&nbsp;</td><td>52243c1fafb9d2e496b6eb318c3e534f</td></tr>";
+?>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
     <tr><td align="right">Binärversion für Windows:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe">dvdisaster-0.72.1-setup.exe</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe">dvdisaster-0.72.2-setup.exe</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe.gpg">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe.gpg">dvdisaster-0.72.2-setup.exe.gpg</a></td></tr>
+<?php
+if($mode == "www");
+    echo "<tr><td align=\"right\">MD5-Prüfsumme:&nbsp;</td><td>f80258d27354061fd9e28850ec4701a6</td></tr>";
+?>
     <tr><td colspan="2"> </td></tr>
+
 <?php
   if($show_all == 0) {
 ?>
@@ -83,19 +102,56 @@ ist <a href="download40.php"><?php echo $cooked_version ?></a>.
   else {
 ?> 
    <tr><td colspan="2"><a href="download.php?showall=0#download">Ältere Veröffentlichungen des 0.72er-Versionszweiges verbergen</a></td></tr>
+
    <tr><td colspan="2"> </td></tr>
+   <tr><td></td><td>Version 0.72.1</td></tr>
+    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2.gpg">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>4da96566bc003be93d9dfb0109b4aa1d</td></tr>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
+    <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip.gpg">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>924b5677f69473b6b87991e01779a541</td></tr>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
+    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe">dvdisaster-0.72.1-setup.exe</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe.gpg">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>34d062ddebe1a648e808d29ca4e9879f</td></tr>
+
+   <tr><td colspan="2"> </td></tr>
+   <tr><td></td><td>Version 0.72</td></tr>
     <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.tar.bz2">dvdisaster-0.72.tar.bz2</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.tar.bz2.gpg">dvdisaster-0.72.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>efa35607d91412a7ff185722f270fb8a</td></tr>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
     <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.app.zip">dvdisaster-0.72.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.app.zip.gpg">dvdisaster-0.72.app.zip.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>1f28385b2b6d64b664fd416eb4c85e80</td></tr>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
     <tr><td align="right">Binärversion für Windows:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72-setup.exe">dvdisaster-0.72-setup.exe</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72-setup.exe.gpg">dvdisaster-0.72-setup.exe.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>cc8eb2af384917db8d6d983e1d4aac69</td></tr>
 <?php
   }
 ?>
@@ -119,6 +175,21 @@ Grundlegende Neuerungen in dieser Version:<p>
 </ul>
 
 <b>Patches</b> (kleine Änderungen nach Version 0.72; die obigen Dateien wurden erneuert):<p>
+
+<b>0.72 pl2</b> 
+Diese Version führt einen Workaround ein
+um zu verhindern daß parallele SCSI-Adapter unter Linux
+nicht mehr reagieren.
+Die Aufwärtskompatibilität mit Version 0.79.x wurde verbessert.<br>
+Die Windows- und Mac OS X-Versionen werden nun mit der aktuellen
+Entwicklungsumgebung von dvdisaster 0.79.x erzeugt und mit neueren
+Versionen der GTK+-Benutzeroberflächenbibliothek ausgeliefert. 
+Für diesen Update wurden noch kleinere Änderungen an einigen Skripten
+ erforderlich so daß sich die Prüfsumme des Quellkode-Pakets geändert hat 
+(das Paket vom 31.10. hatte die md5-Prüfsumme 
+86110e212aa1bf336a52ba89d3daa93d und kann selbstverständlich für
+Linux, FreeBSD und NetBSD weiter verwendet
+werden). (07-11-2010)<p>
 
 <b>0.72 pl1</b> Pablo Almeida hat die Bildschirmtexte ins Portugiesische übersetzt.
 Es wurde eine Umgehungslösung eingebaut um das Einfrieren von Windows XP bei bestimmten Kombinationen
@@ -155,10 +226,16 @@ zu bekommen.
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.70.6.tar.bz2">dvdisaster-0.70.6.tar.bz2</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.70.6.tar.bz2.gpg">dvdisaster-0.70.6.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>c6d2215d7dd582475b19593dfa4fbdc2</td></tr>
+    <tr><td colspan="2"><img width=1 height=3</td></tr>
+
     <tr><td align="right">Binärversion für Windows:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.70.6-setup.exe">dvdisaster-0.70.6-setup.exe</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
         <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.70.6-setup.exe.gpg">dvdisaster-0.70.6-setup.exe.gpg</a></td></tr>
+    <tr><td align="right">MD5-Prüfsumme:&nbsp;</td>
+        <td>82f74bebd08ab7ae783ddc5dd0bba731</td></tr>
   </table>
 </td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>

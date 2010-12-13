@@ -110,6 +110,12 @@
 
 #define MAX_CODEC_THREADS 32             /* not including IO and GUI */
 
+/* SCSI driver selection on Linux */
+
+#define DRIVER_NONE 0
+#define DRIVER_CDROM 1
+#define DRIVER_SG 3
+
 /* Definitions for Closure->eccTarget */
 
 #define ECC_FILE  0
@@ -188,7 +194,8 @@ typedef struct _GlobalClosure
    int pauseEject;      /* Eject medium during pause */
    int ignoreFatalSense;/* Continue reading after potential fatal sense errors */
    int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
-   int useSGioctl;      /* Use the generic SCSI ioctl instead of CDROM one on Liux */
+   int useAltiVec;      /* TRUE means to use AltiVec version of the codec. */
+   int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
   
    char *homeDir;       /* path to users home dir */
    char *dotFile;       /* path to .dvdisaster file */
@@ -1214,6 +1221,7 @@ int TestErrorSyndromes(ReedSolomonTables*, unsigned char*);
 
 void EncodeNextLayer(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 int ProbeSSE2(void);
+int ProbeAltiVec(void);
 
 /***
  *** show-manual.c

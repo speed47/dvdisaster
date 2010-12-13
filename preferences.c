@@ -1532,7 +1532,7 @@ void CreatePreferencesWindow(void)
 			 "The values include the borders: 0-100 will read 101 sectors.\n\n"
 
 			 "<b>Note:</b> Limiting the reading range is not recommended for <i>adaptive reading</i> since it might "
-			 "prevent sectors from being read which are required for a succesful error correction.\n\n"
+			 "prevent sectors from being read which are required for a successful error correction.\n\n"
 			 "These settings are only effective for the current session and will not be saved."));
 
       /*** Image recognization */
@@ -1902,7 +1902,7 @@ void CreatePreferencesWindow(void)
 			 "<b>0x20</b> This is the <i>recommended</i> mode. "
 			 "The drive tries to apply "
 			 "the built-in error correction to the best possible extent "
-			 "before transfering a defective sector.\n\n"
+			 "before transferring a defective sector.\n\n"
 			 "<b>0x21</b> In this mode the drive skips the last stage "
 			 "of its internal error correction and returns the "
 			 "uncorrected sector instead. This may result in sectors "

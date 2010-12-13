@@ -22,4 +22,10 @@ $trans_hosting="Diese Seiten liegen auf";
 $trans_fdl="Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.";
 $trans_copyright="Copyright 2004-2010 Carsten Gnörlich.";
 $trans_modified="Die Informationen in diesem Handbuch beziehen sich auf die Originalversion von dvdisaster und sind möglicherweise nicht zutreffend.";
+
+$trans_sourcecode="Quellkode für alle Betriebssysteme:";
+$trans_signature="Digitale Unterschrift:";
+$trans_md5="MD5-Prüfsumme:";
+$trans_macbinary="Binärversion für Mac OS X 10.5 / x86:";
+$trans_winbinary="Binärversion für Windows:";
 ?>
