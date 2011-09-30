@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2009 Igor Gorbounov
+# Copyright (C) 2007-2010 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -11,6 +11,7 @@
 require("../include/dvdisaster.php");
 require("../include/footnote.php");
 begin_page();
+$show_all=$_GET["showall"];
 ?>
 
 <!--- Insert actual page content below --->
@@ -50,22 +51,60 @@ dvdisaster имеется для <a href="download10.php">последних в�
 <b>Стабильная версия</b> - рекомендуется для начала.<p>
 
 <table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.72</b></td><td align="right">4 июля 2009</td></tr>
+<tr><td><b>dvdisaster-0.72</b></td><td align="right">31-Oct-2010</td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
 <tr><td colspan="2">
   <table>
     <tr><td align="right">&nbsp;&nbsp;Исходные тексты для всех операционных систем:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2?download">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2">dvdisaster-0.72.2.tar.bz2</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2.gpg?download">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2.gpg">dvdisaster-0.72.2.tar.bz2.gpg</a></td></tr>
     <tr><td align="right">Двоичная версия для Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip?download">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip">dvdisaster-0.72.2.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip.gpg?download">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip.gpg">dvdisaster-0.72.2.app.zip.gpg</a></td></tr>
     <tr><td align="right">Двоичная версия для Windows:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe?download">dvdisaster-0.72.1-setup.exe</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe">dvdisaster-0.72.2-setup.exe</a></td></tr>
     <tr><td align="right">Цифровая подпись:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe.gpg?download">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe.gpg">dvdisaster-0.72.2-setup.exe.gpg</a></td></tr>
+    <tr><td colspan="2"> </td></tr>
+<?php
+  if($show_all == 0) {
+?>
+    <tr><td colspan="2"><a href="download.php?showall=1">Show older releases in the 0.72 version branch</a></td></tr>
+<?php
+  }
+  else {
+?> 
+    <tr><td colspan="2"><a href="download.php?showall=0">Hide older releases in the 0.72 version branch</a></td></tr>
+    <tr><td align="right">&nbsp;&nbsp;Исходные тексты для всех операционных систем:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2.gpg">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">Двоичная версия для Mac OS X 10.5 / x86:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip.gpg">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+    <tr><td align="right">Двоичная версия для Windows:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe">dvdisaster-0.72.1-setup.exe</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe.gpg">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+    <tr><td colspan="2"> </td></tr>
+    <tr><td align="right">&nbsp;&nbsp;Исходные тексты для всех операционных систем:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2?download">dvdisaster-0.72.tar.bz2</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2.gpg?download">dvdisaster-0.72.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">Двоичная версия для Mac OS X 10.5 / x86:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip?download">dvdisaster-0.72.app.zip</a>&nbsp;--&nbsp;сначала прочитайте эти <a href="download30.php#mac">советы</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip.gpg?download">dvdisaster-0.72.app.zip.gpg</a></td></tr>
+    <tr><td align="right">Двоичная версия для Windows:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe?download">dvdisaster-0.72-setup.exe</a></td></tr>
+    <tr><td align="right">Цифровая подпись:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe.gpg?download">dvdisaster-0.72-setup.exe.gpg</a></td></tr>
+<?php
+  }
+?>
   </table>
 </td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
@@ -86,6 +125,11 @@ dvdisaster имеется для <a href="download10.php">последних в�
 </ul>
 
 <b>Исправления</b> (небольшие изменения после версии 0.72; вышеприведенные файлы были обновлены):<p>
+
+<b>0.72 pl2</b> 
+This version introduces a workaround which prevents parallel SCSI
+adapters from freezing under Linux. 
+Improved compatibility with the new version branch 0.79.x. (31-Oct-2010)<p>
 
 <b>0.72 pl1</b> Pablo Almeida provided Portuguese translations of the screen texts.
 Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.(08-Aug-2009)<p>

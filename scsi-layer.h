@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -52,6 +52,11 @@
 /***
  *** Define the Sense data structure.
  ***/
+
+/* Theretically not needed, but using less causes DMA breakage 
+   on some chipsets. */
+
+#define MIN_TRANSFER_LEN 4  
 
 /* 
  * Linux already has one 
@@ -109,6 +114,7 @@ typedef struct _DeviceHandle
     */
 #if defined(SYS_LINUX) || defined(SYS_NETBSD) || defined(SYS_SOLARIS)
    int fd;                    /* device file descriptor */
+   int forceSG_IO;            /* CDROM_SEND_PACKET broken on this target */
 #endif
 #ifdef SYS_FREEBSD
    struct cam_device *camdev; /* camlib device handle */

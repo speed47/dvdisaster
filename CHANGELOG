@@ -1,3 +1,20 @@
+0.72 (pl-2) 31-10-2010
+        - fixed and documented -n command line options for RS02.
+	  Thanks to Jack Giles for noting this.
+        - changed sources for clean compile on gcc 4.4.3
+        - Using the CDROM_SEND_PACKET ioctl() will hang parallel
+	  SCSI adapters. Added tests to determine the SCSI bus type,
+	  and switch to the SG_IO ioctl() when in doubt.
+	  Thanks to S. Seidl and R. Manfredi for the respective bug reports.<
+	- backported MIN_TRANSFER_LEN and length sanity check from 0.79.1
+	  as a workaround for buggy drive chipsets (thanks to R.G. 
+	  for reporting this and helping with debugging output)
+	- backported "typical uses" link fix in welcome screen 
+	  (Thanks to C. Steigies)
+        - fixed recognition of dvdisaster 0.79 RS03-augmented image 
+	- minor cosmetic changes for regression test compatibility
+	  with 0.79
+
 0.72 (pl-1) 08-08-2009
 	- Pablo Almeida provided a Portuguese translation
 	  for the screen text.

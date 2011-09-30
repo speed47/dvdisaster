@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -20,6 +20,18 @@ $news_counter = 0;
 # Do not insert plain HTML!
 
 news_headline("Neues über dvdisaster");
+
+news_item("31.10.2010", "dvdisaster 0.72.2 veröffentlicht", "
+Diese Version führt einen Workaround ein um zu verhindern
+daß parallele SCSI-Kontroller unter Linux nicht
+mehr reagieren. Mit Version 0.79.x erzeugte RS03-Abbilder
+führen nicht mehr zu überflüssigen Fehlermeldungen.");
+
+news_item("10.08.2009", "Projektseiten auf SourceForge nicht aktuell", "
+Aufgrund von Änderungen in der Funktionalität von SourceForge
+können die Inhalte der News, Downloads und des CVS nicht zeitnah
+hochgeladen werden. Bitte nutzen Sie stattdessen die entsprechenden
+Rubriken auf diesen Seiten (http://dvdisaster.net).");
 
 news_item("08.08.2009", "dvdisaster 0.72.1 veröffentlicht", "
 Pablo Almeida hat die Bildschirmtexte ins Portugiesische übersetzt.

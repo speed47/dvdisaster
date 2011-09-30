@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -11,6 +11,7 @@
 require("../include/dvdisaster.php");
 require("../include/footnote.php");
 begin_page();
+$show_all=$_GET["showall"];
 ?>
 
 <!--- Insert actual page content below --->
@@ -52,22 +53,62 @@ ist <a href="download40.php"><?php echo $cooked_version ?></a>.
 <b>Stabile Version</b> - zum Einstieg empfohlen<p> 
 
 <table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.72</b></td><td align="right">08-Aug-2009</td></tr>
+<tr><td><b>dvdisaster-0.72</b></td><td align="right">31-Okt-2010</td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
 <tr><td colspan="2">
   <table>
     <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2?download">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2">dvdisaster-0.72.2.tar.bz2</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.tar.bz2.gpg?download">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.tar.bz2.gpg">dvdisaster-0.72.2.tar.bz2.gpg</a></td></tr>
     <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip?download">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip">dvdisaster-0.72.2.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1.app.zip.gpg?download">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2.app.zip.gpg">dvdisaster-0.72.2.app.zip.gpg</a></td></tr>
     <tr><td align="right">Binärversion für Windows:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe?download">dvdisaster-0.72.1-setup.exe</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe">dvdisaster-0.72.2-setup.exe</a></td></tr>
     <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.1-setup.exe.gpg?download">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.2-setup.exe.gpg">dvdisaster-0.72.2-setup.exe.gpg</a></td></tr>
+    <tr><td colspan="2"> </td></tr>
+<?php
+  if($show_all == 0) {
+?>
+    <tr><td colspan="2"><a href="download.php?showall=1">Ältere Veröffentlichungen des 0.72er-Versionszweiges anzeigen</a></td></tr>
+<?php
+  }
+  else {
+?> 
+   <tr><td colspan="2"><a href="download.php?showall=0">Ältere Veröffentlichungen des 0.72er-Versionszweiges verbergen</a></td></tr>
+
+
+    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2">dvdisaster-0.72.1.tar.bz2</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.tar.bz2.gpg">dvdisaster-0.72.1.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip">dvdisaster-0.72.1.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1.app.zip.gpg">dvdisaster-0.72.1.app.zip.gpg</a></td></tr>
+    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe">dvdisaster-0.72.1-setup.exe</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://dvdisaster.net/downloads/dvdisaster-0.72.1-setup.exe.gpg">dvdisaster-0.72.1-setup.exe.gpg</a></td></tr>
+   <tr><td colspan="2"> </td></tr>
+    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2?download">dvdisaster-0.72.tar.bz2</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.tar.bz2.gpg?download">dvdisaster-0.72.tar.bz2.gpg</a></td></tr>
+    <tr><td align="right">Binärversion für Mac OS X 10.5 / x86:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip?download">dvdisaster-0.72.app.zip</a>&nbsp;--&nbsp;bitte erst den <a href="download30.php#mac">Hinweis</a> lesen</td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72.app.zip.gpg?download">dvdisaster-0.72.app.zip.gpg</a></td></tr>
+    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe?download">dvdisaster-0.72-setup.exe</a></td></tr>
+    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
+        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.72-setup.exe.gpg?download">dvdisaster-0.72-setup.exe.gpg</a></td></tr>
+<?php
+  }
+?>
   </table>
 </td></tr>
 <tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
@@ -88,6 +129,11 @@ Grundlegende Neuerungen in dieser Version:<p>
 </ul>
 
 <b>Patches</b> (kleine Änderungen nach Version 0.72; die obigen Dateien wurden erneuert):<p>
+
+<b>0.72 pl2</b> Diese Version führt einen Workaround ein
+um zu verhindern daß parallele SCSI-Adapter unter Linux
+nicht mehr reagieren. Die Kompatibilität mit dem
+neuen Versionszweig 0.79.x wurde verbessert. (31-Okt-2010)<P>
 
 <b>0.72 pl1</b> Pablo Almeida hat die Bildschirmtexte ins Portugiesische übersetzt.
 Es wurde ein Workaround eingebaut um das Einfrieren von Windows XP bei bestimmten Kombinationen

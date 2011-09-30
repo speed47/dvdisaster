@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -170,6 +170,8 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
 	break;
       case DATA_WRITE:
 	ucmd.uscsi_flags |= USCSI_WRITE;
+	break;
+      case DATA_NONE:
 	break;
       default:
 	Stop("illegal data_mode: %d", data_mode);

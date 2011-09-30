@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -26,35 +26,14 @@ sollten nicht zum Bearbeiten von wichtigen Daten
 verwendet werden.<p>
 
 Verwenden Sie im Zweifelsfall die <a href="download.php">stabile Version 0.72</a>
-und warten Sie auf die Veröffentlichung von Version 0.74.
+und warten Sie auf die Veröffentlichung von Version 0.80.
 
 <hr>
 
 <h3>Herunterladen</h3>
 
-Die Alpha-Versionen verwenden das gleiche Paketformat wie die normalen
-Versionen.<p>
-
-<table class="download" cellpadding="0" cellspacing="5">
-<tr><td><b>dvdisaster-0.73 (devel1)</b></td><td align="right">xx-XXX-2009</td></tr>
-<tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
-<tr><td colspan="2">
-  <table>
-    <tr><td align="right">&nbsp;&nbsp;Quellkode für alle Betriebssysteme:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.73.1.tar.bz2?download">dvdisaster-0.73.1.tar.bz2</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.73.1.tar.bz2.gpg?download">dvdisaster-0.73.1.tar.bz2.gpg</a></td></tr>
-    <tr><td align="right">Binärversion für Windows:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.73.1-setup.exe?download">dvdisaster-0.73.1-setup.exe</a></td></tr>
-    <tr><td align="right">Digitale Unterschrift:&nbsp;</td>
-        <td><a href="http://prdownloads.sourceforge.net/dvdisaster/dvdisaster-0.73.1-setup.exe.gpg?download">dvdisaster-0.73.1-setup.exe.gpg</a></td></tr>
-
-  </table>
-</td></tr>
-<tr bgcolor="#000000"><td colspan="2"><img width=1 height=1 alt=""></td></tr>
-<tr><td colspan="2">
-Not yet released.
-</td></tr></table><p>
+Einen aktuellen Überblick über verfügbare Alpha-Versionen finden
+Sie in der <a href="http://dvdisaster.net/de/download40.php">Online-Version dieser Seiten</a>.
 
 <!--- do not change below --->
 

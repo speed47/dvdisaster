@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -1029,7 +1029,7 @@ void fill_gap(read_closure *rc)
      {  int seq = (j/2000)%10;
 
 	if(!Closure->guiMode)
-        {  g_printf(anim[seq]);
+	{  g_printf("%s", anim[seq]);
 	   fflush(stdout);   /* at least needed for Windows */
 	}
      }

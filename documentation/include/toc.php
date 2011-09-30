@@ -1,7 +1,7 @@
 
 <?php
 # dvdisaster: Online doc table of contents (all languages)
-# Copyright (C) 2007-2009 The dvdisaster translation team
+# Copyright (C) 2007-2010 The dvdisaster translation team
 #
 # UTF-8 trigger: äöüß 
 

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -470,6 +470,9 @@ static int send_aspi_packet(DeviceHandle *dh, unsigned char *cmd, int cdb_size, 
 	break;
       case DATA_READ:
 	srb.Flags = SRB_DIR_IN | SRB_EVENT_NOTIFY;
+	break;
+      case DATA_NONE:
+	srb.Flags = SRB_EVENT_NOTIFY;
 	break;
       default:
 	Stop("illegal data_mode for ASPI: %d", data_mode);

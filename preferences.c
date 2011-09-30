@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -1323,7 +1323,7 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 						    GTK_DIALOG_DESTROY_WITH_PARENT,
 						    GTK_MESSAGE_QUESTION,
 						    GTK_BUTTONS_OK_CANCEL,
-						    _utf("Delete the log file?"));
+						    "%s", _utf("Delete the log file?"));
 	 int answer;
 	   
 	 ReverseCancelOK(GTK_DIALOG(dialog));

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -240,6 +240,39 @@ RS02Layout *CalcRS02Layout(gint64 data_sectors, int requested_roots)
    lay->firstEccHeader   = lay->dataSectors;
    lay->crcSectors       = (sizeof(guint32)*lay->dataSectors+2047)/2048;
    lay->protectedSectors = lay->dataSectors + 2 + lay->crcSectors; /* two sectors for header */
+
+   /* See if user wants to pick a certain redundancy */
+
+   if(!Closure->guiMode && !requested_roots && Closure->redundancy)
+   {  int len = strlen(Closure->redundancy);
+
+      switch(Closure->redundancy[len-1])
+      {  case 'r':   /* pick number of roots */
+	 {  char buf[len];
+ 
+            strncpy(buf, Closure->redundancy, len-1);
+	    requested_roots = atoi(buf);
+	    break;
+	 }
+	 case '%':  /* pick redundancy directly */
+	 {  char buf[len];
+	    int percent;
+ 
+            strncpy(buf, Closure->redundancy, len-1);
+	    percent = atoi(buf);
+
+	    for(requested_roots = 7; requested_roots < 171; requested_roots++)
+	    {  double redundancy = ((double)requested_roots*100.0)/((double)(GF_FIELDMAX-requested_roots));
+	       if(redundancy >= percent)
+		  break;
+	    }
+	    if(requested_roots >170)
+	       requested_roots = 0;
+	       
+	    break;
+	 }
+      }
+   }
 
    /* Calculate starting value for the redundancy */
 

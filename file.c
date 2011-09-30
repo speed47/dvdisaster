@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2010 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -44,21 +44,23 @@ ImageInfo* OpenImageFile(EccHeader *eh, int mode)
 	 return NULL;
       }
 
-      PrintLog(_(": not present.\n"));
+      PrintLog(": %s.\n", strerror(errno));
       g_free(ii);
-      Stop(_("Image file %s not present."),Closure->imageName);
+      Stop(_("Image file %s: %s."), Closure->imageName, strerror(errno));
       return NULL;
    }
 
    file_flags = mode & WRITEABLE_IMAGE ? O_RDWR : O_RDONLY;
 
    if(!(ii->file = LargeOpen(Closure->imageName, file_flags, IMG_PERMS)))
-   {  if(Closure->guiMode)
+   {  if(!(mode & PRINT_MODE))
+	 PrintLog(": %s.\n", strerror(errno));
+  
+      if(Closure->guiMode)
       {  g_free(ii);
-	 PrintLog(": %s", strerror(errno));
 	 Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
       }
-      else Stop(": %s", strerror(errno));
+      else Stop(_("Image file %s: %s."), Closure->imageName, strerror(errno));
       return NULL;
    }
 

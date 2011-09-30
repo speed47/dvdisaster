@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2009-07-04" "0.72" "Schutz f\[:u]r CD/DVD Medien"
+.TH DVDISASTER 1 "2010-10-31" "0.72" "Schutz f\[:u]r CD/DVD Medien"
 
 .SH NAME
 DVDISASTER \- Schutz f\[:u]r CD/DVD Medien gegen Datenverlust durch Alterung
@@ -28,6 +28,8 @@ oder Kratzer
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| \-\-driver
+.IR d \|]
 .RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
@@ -152,8 +154,56 @@ Feineinstellung (Beachten Sie die Hinweise in der Dokumentation!):
 .B \-j, \-\-jump n
 \[:u]berspringe n Sektoren nach einem Lesefehler (Standard: 16).
 .TP
-.B \-n, \-\-redundancy n%
-Redundanz der Fehlerkorrektur (Standard: 14.3%).
+.B \-n, \-\-redundancy n[unit]
+Redundanz der Fehlerkorrektur-Daten. Die zulässigen Werte sind vom
+verwendeten Kodierer abhängig:
+
+.RS
+RS01-Fehlerkorrektur-Dateien:
+.RS
+\-n x\ \ erzeugt Fehlerkorrektur-Datei mit x Nullstellen.
+.RE
+.RS
+\-n x% erzeugt Fehlerkorrektur-Datei mit x Prozent Redundanz.
+.RE
+.RS
+\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MB Größe.
+.RE
+.RS 
+\-n normal - optimierter Kodierer für 14.3% Redundanz/32 Nullstellen.
+.RE
+.RS
+\-n high\ \ \ - optimierter Kodierer für 33.5% Redundanz/64 Nullstellen.
+.RE
+.RE
+
+.RS
+RS02-Abbilder:
+.RS
+\-n CD\ \ \ erweitert Abbild auf CD-Größe.
+.RE
+.RS
+\-n DVD\ \ erweitert Abbild auf DVD-Größe.
+.RE
+.RS
+\-n DVD9 erweitert Abbild auf DVD9-Größe.
+.RE
+.RS
+\-n BD\ \ \ erweitert Abbild auf BD-Größe.
+.RE
+.RS
+\-n BD2\  erweitert Abbild auf zweilagige BD-Größe.
+.RE
+.RS
+\-n x\ \ \ \ erweitert Abbild auf ca. x Sektoren Länge.
+.RE
+.RS
+\-n x%\ \ \ erweitert Abbild mit ca. x% Redundanz. 
+.RE
+.RS
+\-n xr\ \ \ erweitert Abbild mit x Nullstellen Fehlerkorrektur-Daten.
+.RE
+.RE
 .TP
 .B \-m, \-\-method n
 Fehlerkorrektur-Methoden anzeigen/ausw\[:a]hlen (Standard: RS01).
@@ -175,6 +225,13 @@ Zwischenspeicher in MB bei .ecc-Datei-Erzeugung - (Standard: 32MB).
 .TP
 .B \-\-dao
 unterstelle DAO; Abbild am Ende nicht k\[:u]rzen.
+.TP
+.B \-\-driver d (nur Linux)
+W\[:a]hlt zwischen dem cdrom (CDROM_SEND_PACKET)-Treiber und dem
+sg (SG_IO)-Treiber für die Laufwerke aus. Zur Zeit wird noch
+der \[:a]ltere cdrom-Treiber als Voreinstellung verwendet; ab
+dvdisaster 0.80 wird der neuere sg-Treiber die Standardauswahl.
+Beide Treiber sollten gleich gut funktionieren.
 .TP
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.

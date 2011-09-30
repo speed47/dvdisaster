@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2009 Igor Gorbounov
+# Copyright (C) 2007-2010 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -20,6 +20,17 @@ $news_counter = 0;
 # Do not insert plain HTML!
 
 news_headline("Новости dvdisaster");
+
+news_item("31.10.2010", "dvdisaster 0.72.2 released", "
+This version introduces a workaround which prevents parallel SCSI
+adapters from freezing under Linux. RS03 images from 0.79.x
+versions will no longer cause spurious error messages.");
+
+news_item("10.08.2009", "Project represention on SourceForge may be outdated", "
+Due to the recent functionality changes on SourceForge we are unable
+to upload the News, Downloads and CVS contents in time. Please refer
+to the respective sections on this site (http://dvdisaster.net) instead.
+");
 
 news_item("08.08.2009", "dvdisaster 0.72.1 released", "
 Pablo Almeida provided a Portuguese translation for the screen text.

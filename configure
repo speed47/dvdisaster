@@ -21,7 +21,7 @@ fi
 
 PACKAGE dvdisaster 0.72
 
-REL_MICRO=1
+REL_MICRO=2
 REL_STATUS=patch
 #REL_STATUS=devel
 #REL_STATUS=rc
