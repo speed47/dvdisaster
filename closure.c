@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -431,12 +431,12 @@ void ReadDotfile()
    while(TRUE)
    {  int n;
       char symbol[41];
-      char *value;
+      char *value, *ignore;
 
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      fgets(line, MAX_LINE_LEN, dotfile);
+      ignore = fgets(line, MAX_LINE_LEN, dotfile);
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -707,6 +707,7 @@ void InitClosure()
    Closure->querySize   = 2;
    Closure->fillUnreadable = -1;
    Closure->welcomeMessage = 1;
+   Closure->useSCSIDriver = DRIVER_CDROM_DEFAULT;
 
    /* default sizes for typical CD and DVD media */
 

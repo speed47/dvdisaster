@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -1339,19 +1339,19 @@ step_counter:
 	       else if(   rc->readOK == rc->sectors  /* no user limited range */  
 		       && rc->pass == 1              /* md5sum invalid after first pass */
 		       && memcmp(rc->ei->eh->mediumSum, Closure->md5Cache, 16))
-		  t = g_strdup_printf(_("All sectors successfully read, but wrong image checksum."));
-	       else t = g_strdup_printf(_("All sectors successfully read. Checksums match."));
+		    t = g_strdup(_("All sectors successfully read, but wrong image checksum."));
+	       else t = g_strdup(_("All sectors successfully read. Checksums match."));
 	       break;
 	    case ECC_RS02:
 	       if(!md5_failure)
-		    t = g_strdup_printf(_("All sectors successfully read. Checksums match."));
+		    t = g_strdup(_("All sectors successfully read. Checksums match."));
 	       else
 	       {    t = g_strdup_printf(_("All sectors successfully read, %s!"), md5_failure);
 		    g_free(md5_failure); md5_failure=NULL;
 	       }
 	       break;
 	    default:
-	       t = g_strdup_printf(_("All sectors successfully read."));
+	       t = g_strdup(_("All sectors successfully read."));
 	       break;
 	 }
       }

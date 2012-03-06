@@ -1,7 +1,7 @@
 <?php
 
 # dvdisaster: Homepage layout funtions
-# Copyright (C) 2007-2009 Carsten Gnörlich
+# Copyright (C) 2007-2010 Carsten Gnörlich
 
 require("version.php");
 
@@ -20,19 +20,54 @@ $script_name = basename($script_path, ".php");
 $script_dir  = dirname($script_path);
 $script_lang = substr($script_dir, strlen($script_dir)-2, 2);
 
+# Needed to exatract some meaningful title text from the toc.php
+
+$toc_title_mode = 0;
+$toc_title_content = "RBG";
+
 # Load the appropriate localization file
 
 require("dict_" . $script_lang . ".php");
+
+# Locale wrappers for toc.php stubs
+
+function de($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "de"); 
+   else                     toc_link($msg, "de"); 
+};
+
+function en($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "en"); 
+   else                     toc_link($msg, "en");
+};
+
+function ru($msg) 
+{  global $toc_title_mode; 
+
+   if($toc_title_mode == 1) toc_title($msg, "ru"); 
+   else                     toc_link($msg, "ru");
+};
 
 #
 # Create the HTML header ----------------------------------------------------------
 #
 
 function start_html()
-{  echo "<html>\n";
+{  global $toc_title_mode;
+   global $toc_title_content;
+
+   echo "<html>\n";
    echo "<head>\n";
    echo " <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
-   echo " <title>dvdisaster</title>\n";
+   $toc_title_mode = 1;
+   $toc_title_content = "dvdisaster";
+   require("toc.php");
+   echo " <title>$toc_title_content</title>\n";
+   $toc_title_mode = 0;
    echo " <link rel=\"stylesheet\" type=\"text/css\" href=\"../include/dvdisaster.css\">\n";
 
    echo "</head>\n";
@@ -161,6 +196,27 @@ function subsubsection($subsubsection_name)
    $toc_mode = "subsubsection";
 }
 
+function toc_title($msg, $lang)
+{  global $script_lang;
+   global $script_name;
+   global $toc_mode;
+   global $toc_section;
+   global $toc_subsection;
+   global $toc_subsubsection;
+   global $toc_title_content;
+
+   if(strcmp($lang, $script_lang)) return; # wrong locale
+
+   if(!strcmp($toc_mode, "section") && !strcmp($toc_section, $script_name))
+     $toc_title_content = $msg;
+
+   if(!strcmp($toc_mode, "subsection") && !strcmp($toc_subsection, $script_name))
+     $toc_title_content = $msg;
+
+   if(!strcmp($toc_mode, "subsubsection") && !strcmp($toc_subsubsection, $script_name))
+     $toc_title_content = $msg;
+}
+
 function toc_link($msg, $lang)
 {  static $separator=0;
    global $script_lang;
@@ -210,10 +266,6 @@ function toc_link($msg, $lang)
    }
 
 }
-
-function de($msg) {toc_link($msg, "de"); };
-function en($msg) {toc_link($msg, "en"); };
-function ru($msg) {toc_link($msg, "ru"); };
 
 #
 # Helper functions for creating the news pages and -flash

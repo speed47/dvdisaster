@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -31,7 +31,7 @@ begin_page();
  </li>
  <li><b>GNU/Linux</b> ab Kernel <b>2.6.7</b><p>
  </li>
- <li><b>Mac OS X</b> ab Version 10.4 (Tiger),<br> 
+ <li><b>Mac OS X</b> ab Version 10.6,<br> 
       auf x86 und PowerPC-Hardware.<p>
  </li>
  <li><b>NetBSD</b> ab Version 3.1.<p></li>

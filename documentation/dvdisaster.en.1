@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2009-07-04" "0.72" "protection for CD/DVD media"
+.TH DVDISASTER 1 "2010-10-30" "0.72" "protection for CD/DVD media"
 
 .SH NAME
 DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
@@ -27,6 +27,8 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| --driver
+.IR d \|]
 .RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
@@ -144,8 +146,56 @@ Tweaking options (see manual before using!):
 .B \-j, \-\-jump n
 jump n sectors forward after a read error (default: 16).
 .TP
-.B \-n, \-\-redundancy n%
-sets redundancy for error correction (default: 14.3%).
+.B \-n, \-\-redundancy n[unit]
+Error correction data redundancy. Allowed values depend
+on the codec:
+
+.RS
+RS01 error correction files
+.RS
+\-n x\ \ creates error correction file with x roots.
+.RE
+.RS
+\-n x% creates error correction file with x percent redundancy.
+.RE
+.RS
+\-n xm creates error correction file of approx. x MB size.
+.RE
+.RS 
+\-n normal - optimized codec for 14.3% redundancy/32 roots.
+.RE
+.RS
+\-n high\ \ \ - optimized codec for 33.5% redundancy/64 roots.
+.RE
+.RE
+
+.RS
+RS02 images:
+.RS
+\-n CD\ \ \ augments image suitable for CD media.
+.RE
+.RS
+\-n DVD\ \ augments image suitable for DVD media.
+.RE
+.RS
+\-n DVD9 augments image suitable for DVD9 media.
+.RE
+.RS
+\-n BD\ \ \ augments image suitable for BD media.
+.RE
+.RS
+\-n BD2\  augments image suitable for two layered BD media.
+.RE
+.RS
+\-n x\ \ \ \ augments image using approx. x sectors in total.
+.RE
+.RS
+\-n x%\ \ \ augments image with approx. x% redundancy. 
+.RE
+.RS
+\-n xr\ \ \ augments image with x roots error correction data.
+.RE
+.RE
 .TP
 .B \-m, \-\-method n
 lists/selects error correction methods (default: RS01).
@@ -167,6 +217,13 @@ image cache size in MB during -c mode (default: 32MB).
 .TP
 .B \-\-dao
 assume DAO disc; do not trim image end.
+.TP
+.B \-\-driver d (Linux only)
+Chooses between the cdrom (CDROM_SEND_PACKET) driver and the
+sg (SG_IO) driver for optical drives. Currently the older cdrom
+driver is pre-selected; starting with dvdisaster V0.80 the newer
+sg driver will be the default. Both drivers should work equally
+well, anyways.
 .TP
 .B \-\-eject
 eject medium after successful read.

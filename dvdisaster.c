@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -60,7 +60,7 @@ void FixEcc(void)
 }
 
 /*
- * Verfiy the image against ecc data 
+ * Verify the image against ecc data 
  */
 
 void Verify(void)
@@ -194,72 +194,30 @@ int main(int argc, char *argv[])
 #ifdef WITH_NLS_YES
 #ifdef SYS_MINGW
     if(!g_getenv("LANG"))  /* Unix style setting has precedence */
-    {  LANGID lang_id;
+    {  OSVERSIONINFO os_version_info;
+       gchar *unix_locale = g_win32_getlocale();
+       int os_major = 0;
+       int codepage = 0;
+       char codepage_name[32];
 
-       /* Try to get locale from Windows
-	  and set the respective environment variables. */
+       memset(&os_version_info, 0, sizeof(OSVERSIONINFO));
+       os_version_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-       lang_id = GetUserDefaultLangID(); 
-       PrintLog("GetUserDefaultLangID = %x; Primary: %d, Sub: %d\n",
-		lang_id, PRIMARYLANGID(lang_id), SUBLANGID(lang_id));
+       if(!GetVersionEx(&os_version_info))
+	  os_major = 0;
 
-       switch(PRIMARYLANGID(lang_id))
-       {  case LANG_CZECH:
-	     g_setenv("LANG", "cs_CZ", 1);
+       os_major = os_version_info.dwMajorVersion;
 #ifdef WIN_CONSOLE
-	     g_setenv("OUTPUT_CHARSET", "CP852", 1);
+       if(os_major >= 6) /* Vista or newer */
+	  codepage   = GetACP();
+       else codepage = GetOEMCP(); 
 #else
-	     g_setenv("OUTPUT_CHARSET", "CP1250", 1);
+       codepage = GetACP();
 #endif
-	     break;
-
-          case LANG_GERMAN:
-	     g_setenv("LANG", "de_DE", 1);
-#ifdef WIN_CONSOLE
-	     g_setenv("OUTPUT_CHARSET", "CP850", 1);
-#else
-	     g_setenv("OUTPUT_CHARSET", "CP1252", 1);
-#endif
-	     break;
-
-          case LANG_ITALIAN:
-	     g_setenv("LANG", "it_IT", 1);
-#ifdef WIN_CONSOLE
-	     g_setenv("OUTPUT_CHARSET", "CP850", 1);
-#else
-	     g_setenv("OUTPUT_CHARSET", "CP1252", 1);
-#endif
-	     break;
-
-          case LANG_PORTUGUESE:
-	    if(SUBLANGID(lang_id) == SUBLANG_PORTUGUESE_BRAZILIAN)
-	    {  g_setenv("LANG", "pt_BR", 1);
-#ifdef WIN_CONSOLE
-	       g_setenv("OUTPUT_CHARSET", "CP860", 1);
-#else
-	       g_setenv("OUTPUT_CHARSET", "CP1251", 1);
-#endif
-	    }
-            break;
-
-          case LANG_RUSSIAN:
-	     g_setenv("LANG", "ru_RU", 1);
-#ifdef WIN_CONSOLE
-	     g_setenv("OUTPUT_CHARSET", "CP855", 1);
-#else
-	     g_setenv("OUTPUT_CHARSET", "CP1251", 1);
-#endif
-	     break;
-
-          case LANG_SWEDISH:
-	     g_setenv("LANG", "sv_SV", 1);
-#ifdef WIN_CONSOLE
-	     g_setenv("OUTPUT_CHARSET", "CP850", 1);
-#else
-	     g_setenv("OUTPUT_CHARSET", "CP1252", 1);
-#endif
-	     break;
-       }
+       snprintf(codepage_name, 32, "CP%d", codepage);
+       g_setenv("OUTPUT_CHARSET", codepage_name, 1);
+       g_setenv("LANG", unix_locale, 1);
+       PrintLog("WinOSmajor %d, codepage %s, unix_locale %s\n", os_major, codepage_name, unix_locale); 
     }
 #endif /* SYS_MINGW */
 
@@ -442,7 +400,15 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = DVD_SL_SIZE;
 		      else if(!strcmp(optarg, "DVD9") || !strcmp(optarg, "dvd9"))
 			   Closure->mediumSize = DVD_DL_SIZE;
-		      else Closure->mediumSize = (gint64)atoll(optarg);
+		      else if(!strcmp(optarg, "BD") || !strcmp(optarg, "bd"))
+			   Closure->mediumSize = BD_SL_SIZE;
+		      else if(!strcmp(optarg, "BD2") || !strcmp(optarg, "bd2"))
+			   Closure->mediumSize = BD_DL_SIZE;
+		      else 
+		      {  int len = strlen(optarg);
+			 if(strchr("0123456789", optarg[len-1]))
+			    Closure->mediumSize = (gint64)atoll(optarg);
+		      }
 		      break;
 		   }
          case 'e': if(optarg) 
@@ -499,9 +465,12 @@ int main(int argc, char *argv[])
 	 case MODIFIER_DRIVER: /* currently undocumented feature */
 #if defined(SYS_LINUX)
 	   if(optarg && !strcmp(optarg,"sg"))
-	      Closure->useSGioctl = TRUE;
+	      Closure->useSCSIDriver = DRIVER_SG;
+	   else 
+	   if(optarg && !strcmp(optarg,"cdrom"))
+	      Closure->useSCSIDriver = DRIVER_CDROM_FORCED;
 	   else
-	      Stop(_("Valid args for --driver: sg"));
+	      Stop(_("Valid args for --driver: sg,cdrom"));
 #else
 	   Stop(_("--driver is only supported on GNU/Linux"));
 #endif
@@ -744,10 +713,16 @@ int main(int argc, char *argv[])
       Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
    }
 
-   /*** Determine the default device (OS dependent!) if none
-        has been specified on the command line. */
+   /*** Determine the default device (OS dependent!) if 
+	- none has been specified on the command line
+        - and one if actually required in command line mode.
 
-   if(!Closure->device)
+	GUI mode will unconditionally query devices later anyways
+	in order to build the menu so we don't have to care about
+	that now. */
+
+   if(!Closure->device && mode == MODE_SEQUENCE 
+      && (sequence & (1<<MODE_READ | 1<<MODE_SCAN))) 
    {  Closure->device = DefaultDevice();
       devices_queried = TRUE;
    }
@@ -898,16 +873,19 @@ int main(int argc, char *argv[])
       PrintCLI(_("Tweaking options (see manual before using!)\n"
 	     "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 	     "  -m n                   - list/select error correction methods (default: RS01)\n" 
-	     "  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
-	     "                           maximum error correction image size (in sectors)\n"
+	     "  -n,--redundancy n%%     - error correction data redundancy\n"
+	     "                           allowed values depend on codec (see manual)\n"
 	     "  -v,--verbose           - more diagnostic messages\n"
 //             "  -x, --threads n        - use n threads for en-/decoding (if supported by codec)\n"
 	     "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 	     "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 	     "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
 	     "  --dao                  - assume DAO disc; do not trim image end\n"
-	     "  --defective-dump d     - directory for saving incomplete raw sectors\n"
-	     "  --eject                - eject medium after successful read\n"
+		 "  --defective-dump d     - directory for saving incomplete raw sectors\n"));
+#ifdef SYS_LINUX
+      PrintCLI(_("  --driver=sg/cdrom      - use cdrom (default) or alternative sg SCSI driver\n"));
+#endif
+      PrintCLI(_("  --eject                - eject medium after successful read\n"
 	     "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 	     "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
 	     "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"

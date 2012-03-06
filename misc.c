@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -202,13 +202,14 @@ static void print_greetings(FILE *where)
    if(greetings_shown) return;
 
    greetings_shown = 1;
-   g_fprintf(where, _("dvdisaster-%s%sCopyright 2004-2009 Carsten Gnoerlich.\n"),
+   g_fprintf(where, _("dvdisaster-%s%sCopyright 2004-2011 Carsten Gnoerlich.\n"),
 	     VERSION, strstr(VERSION,"pl") ? " " : "  ");
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE
       in the source code." Avoid making any legal statements by your own.*/
-   g_fprintf(where, _("This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
+   g_fprintf(where, "%s",
+	            _("This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
 		      "is free software and you are welcome to redistribute it\n"
 		      "under the conditions of the GNU GENERAL PUBLIC LICENSE.\n"  
 		      "See the file \"COPYING\" for further information.\n"));
@@ -374,7 +375,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
       log_window_append(tmp2);
    }
    else
-   {  g_fprintf(stderr, tmp2);
+   {  g_fprintf(stderr, "%s", tmp2);
 
       fflush(stderr);   /* at least needed for Windows */
    }
@@ -498,7 +499,7 @@ void Stop(char *format, ...)
    }
 
    if(!Closure->guiMode) 
-   {  g_fprintf(stderr, _("\n*\n* dvdisaster - can not continue:\n*\n"));
+   {  g_fprintf(stderr, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
       g_vfprintf(stderr, format, argp);
       va_end(argp);
@@ -758,6 +759,8 @@ void SetLabelText(GtkLabel *label, char *format, ...)
    va_start(argp, format);
    if(format)
    {  char *tmp  = g_strdup_vprintf(format, argp);
+
+      if(!tmp) tmp=g_strdup_printf("SetLabelText(%s) failed",format);
       li->text = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
       g_free(tmp);
    }
@@ -830,7 +833,7 @@ static gboolean modal_idle_func(gpointer data)
 				   GTK_DIALOG_DESTROY_WITH_PARENT,
 				   mi->message_type,
 				   mi->button_type,
-				   mi->msg);
+				   "%s", mi->msg);
    gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
 
    if(mi->button_fn)

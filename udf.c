@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -52,9 +52,10 @@ static int try_sector(DeviceHandle *dh, gint64 pos, EccHeader **ehptr, unsigned 
       this modulo makes no sense for write-once media.
       However if the medium is rewriteable, there might be trash
       data behind the image. So finding an invalid sector
-      does not imply there is not RS02 data present. */
+      does not imply there is no RS02 data present. 
+      Added workaround: Avoid misrecognizing RS03 images */
 
-   if(strncmp((char*)eh->cookie, "*dvdisaster*", 12))
+   if(strncmp((char*)eh->cookie, "*dvdisaster*RS02", 16))
    {  if(dh->rewriteable)
       {   Verbose("udf/try_sector: no cookie but rewriteable medium: skipping header\n");
 	  return TRY_NEXT_HEADER;

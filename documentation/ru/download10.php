@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2009 Igor Gorbounov
+# Copyright (C) 2007-2010 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -30,7 +30,7 @@ begin_page();
  </li>
  <li><b>Linux</b> с ядром <b>2.6.7</b> или новее.<p>
  </li>
- <li><b>Mac OS X</b> версия 10.4 (Tiger) или новее,<br> 
+ <li><b>Mac OS X</b> версия 10.6 или новее,<br> 
       на платформах x86 и PowerPC.<p>
  <li><b>NetBSD</b> версия 3.1 или новее.<p></li> 
  <li><b>Windows 2000</b>, <b>Windows XP</b>, <b>Windows Vista (R).</b></li>

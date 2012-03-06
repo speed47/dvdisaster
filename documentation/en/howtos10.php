@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2009 Carsten Gnörlich
+# Copyright (C) 2004-2010 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -57,8 +57,8 @@ However scanning will also work without error correction data.</td>
 
 <tr valign="top">
  <td><b>Related functions:<p></td>
- <td><a href="howtos42.html#a">Reading of damaged media</a> and<br>
-     <a href="howtos40.html">Recovering images</a>.</td>
+ <td><a href="howtos42.php#a">Reading of damaged media</a> and<br>
+     <a href="howtos40.php">Recovering images</a>.</td>
  </tr>
 </table><p>
 

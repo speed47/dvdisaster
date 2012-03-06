@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -110,6 +110,13 @@
 
 #define MAX_CODEC_THREADS 32             /* not including IO and GUI */
 
+/* SCSI driver selection on Linux */
+
+#define DRIVER_NONE 0
+#define DRIVER_CDROM_DEFAULT 1
+#define DRIVER_CDROM_FORCED  2
+#define DRIVER_SG 3
+
 /***
  *** Our global closure (encapsulation of global variables)
  ***/
@@ -179,7 +186,7 @@ typedef struct _GlobalClosure
    int pauseEject;      /* Eject medium during pause */
    int ignoreFatalSense;/* Continue reading after potential fatal sense errors */
    int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
-   int useSGioctl;      /* Use the generic SCSI ioctl instead of CDROM one on Liux */
+   int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
   
    char *homeDir;       /* path to users home dir */
    char *dotFile;       /* path to .dvdisaster file */

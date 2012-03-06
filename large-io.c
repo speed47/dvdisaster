@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -334,7 +334,7 @@ int LargeSeek(LargeFile *lf, gint64 pos)
  */
 
 int LargeEOF(LargeFile *lf)
-{  int filepos;
+{  gint64 filepos;
 
    if(!Closure->splitFiles)
         filepos = lf->offset;

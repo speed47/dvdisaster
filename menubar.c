@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -396,7 +396,8 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
  */
 
 void set_path(GtkWidget *entry, char *path)
-{
+{ char *ignore;
+
   if(path[0] == '/' || path[0] == '\\' || path[1] == ':' || strlen(path) < 1)
    {  gtk_entry_set_text(GTK_ENTRY(entry), path);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
@@ -405,10 +406,10 @@ void set_path(GtkWidget *entry, char *path)
    {  char buf[PATH_MAX + strlen(path) + 2];
 
 #ifdef SYS_MINGW
-      getcwd(buf, PATH_MAX);
+      ignore = getcwd(buf, PATH_MAX);
       strcat(buf,"\\");
 #else
-      getcwd(buf, PATH_MAX);
+      ignore = getcwd(buf, PATH_MAX);
       strcat(buf,"/");
 #endif
       strcat(buf,path);

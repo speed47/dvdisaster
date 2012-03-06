@@ -1419,7 +1419,7 @@ EOF
    fi
 
    CFG_GTK2_BINDIR=`which pkg-config`
-   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/\/pkg-config//'`
+   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
 
    CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK2_CFLAGS"
    CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"

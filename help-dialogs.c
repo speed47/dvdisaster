@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2009 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -478,12 +478,29 @@ GtkWidget* ShowTextfile(char *title, char *explanation, char *file,
 	 size = strlen(buf);
       }
       else
-      {  FILE *file = portable_fopen(path, "rb");
+      {  FILE *fptr = portable_fopen(path, "rb");
+	 size_t bytes_read;
 
-	 buf = g_malloc(size);
-	 fread(buf, size, 1, file);
-	 fclose(file);
-	 g_free(path);
+	 if(!fptr)
+	 {  char *trans = _utf("File\n%s\nnot accessible");
+
+	    buf = g_strdup_printf(trans, file);
+	    size = strlen(buf);
+	 }
+	 else
+	 {  buf = g_malloc(size);
+	    bytes_read = fread(buf, 1, size, fptr);
+	    fclose(fptr);
+	    g_free(path);
+
+	    if(bytes_read < size)
+	    {  char *trans = _utf("\n<- Error: Text file truncated here");
+
+ 	       size = bytes_read + strlen(trans);
+	       buf = realloc(buf, size+1);
+	       strcpy(&buf[bytes_read], trans);
+	    }
+	 }
       }
    }
    else 
@@ -706,11 +723,11 @@ void AboutDialog()
 
 #ifdef MODIFIED_SOURCE
    AboutTextWithLink(vbox, 
-		     _("Modified version Copyright 2009 (please fill in - [directions])\n"
-		       "Copyright 2004-2009 Carsten Gnoerlich"),
+		     _("Modified version Copyright 2011 (please fill in - [directions])\n"
+		       "Copyright 2004-2011 Carsten Gnoerlich"),
 		     "MODIFYING");
 #else
-   AboutText(vbox, _("Copyright 2004-2009 Carsten Gnoerlich"));
+   AboutText(vbox, _("Copyright 2004-2011 Carsten Gnoerlich"));
 #endif
 
    sep = gtk_hseparator_new();
