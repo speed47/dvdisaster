@@ -22,7 +22,7 @@ news_item("28.10.2007", "Überarbeitung der Dokumentation", "
    Version 0.72 überarbeitet. Bitte haben Sie ein wenig Geduld; die neue Dokumentation
    wird hoffentlich hilfreicher als die alte sein, aber es wird ein paar Wochen dauern
    bis alle Lücken wieder gefüllt sind.
-", 1, "2007-10-28T00:00:00Z", "2007-10-28T00:00:00Z");
+"); # end of news_item
 
 if($news_flash == 0) 
    end_page();

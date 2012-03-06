@@ -1,6 +1,7 @@
 <html>
 <head>
  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
  <title>Systemvoraussetzungen</title>
  <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
 </head>
@@ -11,7 +12,7 @@
   <tr>
      <td align="left">
        <font size="+3"><b>dvdisaster</b></font>
-       <i>Version 0.72.2 / 0.79 (devel-3)</i>
+       <i>Version 0.72 (pl3)</i>
   </td>
   <td align="right">
      <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
@@ -48,6 +49,7 @@
 	  </table><p>
 
           <table width="100%">
+
             <tr><td colspan=3><font size="-1"><a href="news.html">Neuigkeiten</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
             <tr><td colspan=3><font size="-1"><a href="index.html">Überblick</a></font></td></tr>
@@ -56,11 +58,8 @@
             <tr><td></td><td></td><td height="10"></td></tr>
             <tr><td colspan=3><font size="-1"><a href="download.html">Herunterladen</a></font></td></tr>
             <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1">Systemvoraussetzungen</font></td></tr>
-            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download60.html">(Keine) Bedingungen zum Herunterladen</a></font></td></tr>
             <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download20.html">Digitale Unterschrift</a></font></td></tr>
             <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download30.html">Installation</a></font></td></tr>
-            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download40.html">Alpha-/Entwicklerversionen</a></font></td></tr>
-            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="download50.html">Zusätzliche Papiere</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
             <tr><td colspan=3><font size="-1"><a href="qa.html">Fragen und Antworten</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
@@ -80,84 +79,42 @@
 <h3>Systemanforderungen</h3>
 
 <ul>
- <li>x86-, PowerPC- oder Sparc-Prozessor;</li>
- <li>ein aktuelles CD-/DVD-/BD-Laufwerk mit ATAPI-, SATA- oder SCSI-Schnittstelle;</li>
+ <li>Prozessoren: x86, PowerPC oder Sparc;<p></li>
+ <li>Rechenleistung vergleichbar mit oder besser als P4 mit 2Ghz;<p>
+ <li>ein aktuelles CD-/DVD-/BD-Laufwerk mit ATAPI- oder SCSI-Schnittstelle;<p></li>
  <li>ausreichend Festplattenplatz zum Abspeichern eines ISO-Abbildes der bearbeiteten Datenträger.</li>
 </ul>
 
-<h3>Unterstützte Betriebssysteme</h3>
+<h3>Betriebssysteme</h3>
 
-Die folgende Tabelle enthält Informationen zu den unterstützten
-Betriebssystemen. Die angegebenen Versionen wurde zum Entwickeln
-und Testen der momentanen dvdisaster-Version verwendet. 
-Es ist wahrscheinlich, daß etwas ältere oder neuere Betriebssystem-Versionen
-ebenfalls verwendet werden können.<p>
+<ul>
+ <li><a name="#freebsd"></a><b>FreeBSD</b> ab Version <b>6.0</b><br> 
+     (für ATAPI-Laufwerke muß das Kernelmodul <i>atapicam</i> geladen werden - siehe INSTALL-Dokument)<p>
+ </li>
+ <li><b>GNU/Linux</b> ab Kernel <b>2.6.7</b><p>
+ </li>
+ <li><b>Mac OS X</b> ab Version 10.6,<br> 
+      auf x86 und PowerPC-Hardware.<p>
+ </li>
+ <li><b>NetBSD</b> ab Version 3.1.<p></li>
 
-Das dvdisaster-Projekt empfiehlt GNU/Linux.<p>
-
-<table border="1">
-<tr>
-<td>Betriebssystem</td>
-<td>Version</td>
-<td>32bit-Version</td>
-<td>64bit-Version</td>
-</tr>
-<tr>
-<td>GNU/Linux</td>
-<td>Debian Lenny (5.0.3)<br>Kernel 2.6.26</td>
-<td align="center">ja</td>
-<td align="center">ja</td>
-</tr>
-<tr>
-<td>FreeBSD<sup>1)</sup></td>
-<td>8.0</td>
-<td align="center">ja</td>
-<td align="center">ja</td>
-</tr>
-<tr>
-<td>NetBSD</td>
-<td>5.02</td>
-<td align="center">ja</td>
-<td align="center">ja</td>
-</tr>
-<tr>
-<td>Mac OS X</td>
-<td>10.5 (Leopard)</td>
-<td align="center">ja</td>
-<td align="center">nein<sup>2)</sup></td>
-</tr>
-<tr>
-<td>Windows<sup>4)</sup></td>
-<td>Windows 2000 SP4<sup>3)</sup></td>
-<td align="center">ja</td>
-<td align="center">nein<sup>2)</sup></td>
-</tr>
-</table><p>
-
-<sup>1)</sup>FreeBSD: für ATAPI-Laufwerke muß das Kernelmodul <i>atapicam</i> geladen sein -- siehe das INSTALL-Dokument<br>
-<sup>2)</sup>Aufgrund von Problemen mit der Entwicklungsumgebung. Allerdings bietet
-die 64bit-Unterstützung momentan auch keine großen Vorteile gegenüber der 32bit-Version.<br>
-<sup>3)</sup>Nutzer haben positive Rückmeldungen über den Einsatz mit
-späteren Versionen bis einschließlich Windows 7 gegeben.<br>
-<sup>4)</sup>Die Unterstützung von Mehrkernprozessoren hängt von der jeweiligen
-Windows-"Edition" ab. Bei einigen ergeben zusätzliche Prozessorkerne mit
-dvdisaster keine Verbesserung der Gechwindigkeit.
+ <li><b>Windows 2000</b>, <b>Windows XP</b> oder <b>Windows Vista (R).</b>
+ </li>
+</ul>
 
 <!--- do not change below --->
 
   </td> <!--- end of page contents --->
 
  </tr>
-
-<!---
  <tr valign="bottom">
    <td bgcolor="#f0f0f0">
-      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1"></font></a></td></tr></table>
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1">Alte Dokumentation (V0.70)</font></a></td></tr></table>
    </td>
    <td></td>
    <td></td>
+
  </tr>
---->
 </table> <!--- end of main body table --->
 
 
@@ -170,7 +127,7 @@ dvdisaster keine Verbesserung der Gechwindigkeit.
  <tr>
   <td align="center">
    <font size="-1">
-     <i> Copyright 2004-2010 Carsten Gnörlich.<br>
+     <i> Copyright 2004-2011 Carsten Gnörlich.<br>
          Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
     </i>
    </font>

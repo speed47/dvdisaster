@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -246,7 +246,7 @@ void RS01Fix(Method *method)
       if(Closure->guiMode)
       {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("The image file is %d bytes longer than noted\n"
-				    "in the ecc file. Shall the superfluous bytes\n"
+				    "in the ecc file. Shall the superflous bytes\n"
 				    "be removed from the image file?\n"),
 				    difference);
 

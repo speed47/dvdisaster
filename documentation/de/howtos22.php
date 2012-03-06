@@ -93,8 +93,11 @@ schnell überlastet werden könnte.
 <?php end_screen_shot(); ?>
 
 <?php begin_screen_shot("Reiterkarte \"Dateien\".","create-prefs-file.png"); ?>
-<b>Reiterkarte "Dateien".</b> Lassen Sie die Optionen auf dieser Reiterkarte
-zunächst ausgeschaltet; Hinweise auf <a href="howtos25.php">Optimierungen</a>
+<b>Reiterkarte "Dateien".</b> Wenn Ihr Betriebssystem keine Dateien erzeugen kann, die größer als 2GB sind,
+müssen Sie die grün markierte Einstellung auswählen. Anstelle einer einzigen Datei "abbild.iso" 
+werden dann bis zu 100 Segmente "abbild00.iso", "abbild01.iso" usw. verwendet; dies kostet etwas Geschwindigkeit.
+Sie brauchen diese Option hauptsächlich unter Windows, wenn Sie dort noch mit dem alten Dateisystem FAT32 arbeiten.
+Die übrigen Einstellungen sollten Sie zunächst ausgeschaltet lassen; Hinweise auf <a href="howtos25.php">Optimierungen</a>
 mit Hilfe dieser Werte folgen später.
 <?php end_screen_shot(); ?>
 

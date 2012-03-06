@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -84,7 +84,7 @@ void FreeGaloisTables(GaloisTables *gt)
 }
 
 /***
- *** Create the Reed-Solomon generator polynomial
+ *** Create the the Reed-Solomon generator polynomial
  *** and some auxiliary data structures.
  */
 
@@ -95,7 +95,6 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
 {  ReedSolomonTables *rt = g_malloc0(sizeof(ReedSolomonTables));
    int lut_size, feedback;
    gint32 i,j,root;
-   guint8 *lut;
 
    rt->gfTables = gt;
    rt->fcr      = first_consecutive_root;
@@ -152,9 +151,7 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
      rt->shiftInit = 0;
 
    /*
-    * Initialize lookup tables for both encoder types.
-    * The 32bit portable encoder will shift them to word boundaries,
-    * while the SSE2 encoder does direct unaligned reads.
+    * Initialize lookup tables for the 8bit encoder 
     */
 
    lut_size = (rt->nroots+15)&~15;
@@ -173,15 +170,6 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
       }
    }
 
-   /*
-    * Prepare lookup table for syndrome calculation.
-    */
-
-   lut = rt->synLut = g_malloc(rt->nroots * GF_FIELDSIZE * sizeof(int));
-   for(i=0; i<rt->nroots; i++)
-     for(j=0; j<GF_FIELDSIZE; j++)
-       *lut++ = gt->alphaTo[mod_fieldmax(gt->indexOf[j] + (rt->fcr+i)*rt->primElem)];
-
    return rt;
 }
 
@@ -193,7 +181,6 @@ void FreeReedSolomonTables(ReedSolomonTables *rt)
   for(i=0; i<GF_FIELDSIZE; i++)
   {  g_free(rt->bLut[i]);
   }
-  g_free(rt->synLut);
 
   g_free(rt);
 }

@@ -35,14 +35,6 @@ Feel free to send an email to <img src="../images/email.png" align="top"> to obt
 the fingerprint directly from the developers. 
 Please include "GPG finger print" in the subject line.
 
-<h3>MD5 checksum</h3>
-
-Contrary to the digital signature, MD5 checksums are cryptographically weak:
-It is possible to create a manipulated package which still has the same
-checksum as the original. However MD5 checksums are sufficient for a quick
-check whether the download has finished completely and without transmission
-errors.
-
 <!--- do not change below --->
 
 <?php

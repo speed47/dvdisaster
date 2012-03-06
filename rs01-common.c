@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -25,29 +25,6 @@
 #include "dvdisaster.h"
 
 #include "rs01-includes.h"
-
-/***
- *** Recognize a RS01 error correction file
- ***/
-
-int RS01Recognize(Method *self, LargeFile *ecc_file)
-{  EccHeader eh;
-   int n;
-
-   LargeSeek(ecc_file, 0);
-   n = LargeRead(ecc_file, &eh, sizeof(EccHeader));
-
-   if(n != sizeof(EccHeader))
-     return FALSE;
-
-   if(strncmp((char*)eh.cookie, "*dvdisaster*", 12))
-     return FALSE;
-
-   if(!strncmp((char*)eh.method, "RS01", 4))
-     return TRUE;
-
-   return FALSE;
-}
 
 /***
  *** Read an image sector from the .iso file.

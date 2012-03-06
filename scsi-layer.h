@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -41,7 +41,7 @@
 #undef VERSION
 #include <CoreFoundation/CoreFoundation.h>
 #include <IOKit/IOKitLib.h>
-#include <IOKit/scsi-commands/SCSITaskLib.h>
+#include <IOKit/scsi/SCSITaskLib.h>
 #include <IOKit/storage/IODVDTypes.h>
 #include <mach/mach.h>
 #include <string.h>
@@ -50,17 +50,13 @@
 #endif
 
 /***
- *** Global settings
+ *** Define the Sense data structure.
  ***/
 
 /* Theretically not needed, but using less causes DMA breakage 
    on some chipsets. */
 
 #define MIN_TRANSFER_LEN 4  
-
-/***
- *** Define the Sense data structure.
- ***/
 
 /* 
  * Linux already has one 
@@ -77,7 +73,7 @@
 #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
 #endif
 
-#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD) || defined(SYS_DARWIN)
+#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD) || defined(SYS_SOLARIS) || defined(SYS_DARWIN)
 #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
 #endif
 
@@ -118,13 +114,16 @@ typedef struct _DeviceHandle
     */
 #if defined(SYS_LINUX) || defined(SYS_NETBSD) || defined(SYS_SOLARIS)
    int fd;                    /* device file descriptor */
+   int forceSG_IO;            /* CDROM_SEND_PACKET broken on this target */
 #endif
 #ifdef SYS_FREEBSD
    struct cam_device *camdev; /* camlib device handle */
    union ccb *ccb;
 #endif
 #ifdef SYS_MINGW
-   HANDLE fd;                 /* Windows SPTI file handle for the device */
+   HANDLE fd;                 /* Windows file handle for the device (SPTI case) */
+   int aspiUsed;	      /* TRUE is device is accessed via ASPI */
+   int ha,target,lun;         /* ASPI way of describing drives */ 
 #endif
 #ifdef SYS_DARWIN
    IOCFPlugInInterface **plugInInterface;
@@ -257,6 +256,7 @@ typedef struct _DeviceHandle
 DeviceHandle* OpenDevice(char*);
 
 #ifdef SYS_MINGW
+DeviceHandle* open_aspi_device(char*, int);
 DeviceHandle* open_spti_device(char*);
 #endif
 

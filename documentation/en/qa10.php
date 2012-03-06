@@ -19,6 +19,7 @@ begin_page();
 <a href="#nls">2.1 Which translations of the program are available?</a><p>
 <a href="#media">2.2 Which media types are supported?</a><p>
 <a href="#filesystem">2.3 Which file systems are supported?</a><p>
+<a href="#aspi">2.4 What does "SPTI" and "ASPI" mean?</a><p>
 
 <hr><p>
 
@@ -117,6 +118,51 @@ That means it does not matter with which file system the medium has been formatt
 Since dvdisaster neither knows nor uses the file system structure,
 it can not repair logical errors at the file system level.
 It can not recover lost or deleted files.
+<div align=right><a href="#top">&uarr;</a></div><p>
+
+
+<b><a name="aspi">2.4 What does "SPTI" and "ASPI" mean?</a></b><p>
+
+Windows 98 and ME use drivers called "ASPI" to access CD/DVD drives.
+Windows NT and its successors provide similar functionality
+through an interface named "SPTI", but do still allow the installation
+of additional ASPI drivers.<p>
+
+<i>&gt;&nbsp; Pro and Con of installing ASPI under Windows NT/2000/XP:</i><p>
+
+<table>
+<tr valign=top><td>+</td><td>No administrator priviledges needed for accessing the drives.</td></tr>
+<tr valign=top><td>-</td><td>ASPI does not map well onto the Windows drive letters.</td></tr>
+<tr valign=top><td>-</td><td>Some CD/DVD writing programs install
+their own ASPI drivers. Installing another ASPI driver may interfere 
+with the existing software.</td></tr>
+</table><p>
+
+<i>&gt;&nbsp; Which ASPI versions are recommended for use with dvdisaster?</i><p>
+
+Adaptec provides their ASPI drivers free of charge for download.
+Sometimes versions 4.72.* have difficulties recognizing drives under
+Windows 2000/XP. Downgrading to version 4.60 usually helps in such
+cases.<p>
+
+<i>&gt;&nbsp; Drive letters are wrong under ASPI!</i><p>
+
+ASPI drivers use their own system of identifying drives, which does
+not support the drive letter scheme of Windows.<br>
+In order to provide a unified access to SPTI and ASPI,
+dvdisaster tries to guess the mapping of ASPI drives to drive letters.
+However this does not work under all configurations.<p>
+
+The --list function prints out
+the current mapping of drive letters.<p>
+
+<i>&gt;&nbsp; How to select between SPTI and ASPI?</i><p>
+
+dvdisaster will automatically choose between SPTI and ASPI, 
+deciding in favor of SPTI if both are available. 
+Usage of ASPI can be forced; see the description of the
+--list function for details.
+
 <div align=right><a href="#top">&uarr;</a></div><p>
 
 <!--- do not change below --->

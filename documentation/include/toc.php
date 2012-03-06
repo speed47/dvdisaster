@@ -1,3 +1,4 @@
+
 <?php
 # dvdisaster: Online doc table of contents (all languages)
 # Copyright (C) 2007-2010 The dvdisaster translation team
@@ -6,17 +7,10 @@
 
 # News
 
-global $have_experimental;
-
 section("news");
   de("Neuigkeiten");
   en("News");
   ru("Новости");
-
-subsection("news2009");
-  de("2009");
-  en("2009");
-  ru("2009");
 
 subsection("news2008");
   de("2008");
@@ -241,7 +235,6 @@ subsubsection("howtosa4");
   de("Aktionen beginnen");
   en("Starting actions");
   ru("Начало действий");
-
 # Download
 
 section("download");
@@ -254,11 +247,6 @@ subsection("download10");
   en("System requirements");
   ru("Системные требования");
 
-subsection("download60");
-  de("(Keine) Bedingungen zum Herunterladen");
-  en("(No) download terms");
-  ru("(No) download terms");
-
 subsection("download20");
   de("Digitale Unterschrift");
   en("Digital signature");
@@ -269,18 +257,10 @@ subsection("download30");
   en("Installation");
   ru("Установка");
 
-if(!strcmp($have_experimental, "yes"))
-{
-subsection("download40");
-  de("Alpha-/Entwicklerversionen");
-  en("Alpha (unstable) versions");
-  ru("Альфа (нестабильные) версии");
-}
-
-subsection("download50");
-  de("Zusätzliche Papiere");
-  en("Additional resources");
-  ru("Additional resources");
+#subsection("download40");
+#  de("Alpha-/Entwicklerversionen");
+#  en("Alpha (unstable) versions");
+#  ru("Альфа (нестабильные) версии");
 
 # Questions and Answers
 

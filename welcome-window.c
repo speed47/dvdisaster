@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -76,17 +76,11 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
-	 AboutText(box, _("- Development frameworks for Windows and OS X updated.\n"
-			  "- Experimental multithreaded codec (RS03).\n\n"
-			  "<span %s>"
-			  "<b>Warning:</b>\n"
-			  "This version is experimental and for testing only.\n"
-			  "It may contain bugs even in functions which worked\n"
-			  "in previous versions.\n\n"
-			  "RS03 has not reached full recovery capacity yet and\n"
-			  "is not recognized by linear and adaptive reading.</span>"),
-		   Closure->redMarkup
-		   );
+	 AboutText(box, _("- New raw reading mode for CD media.\n"
+			  "- Number of reading attempts can be selected\n"
+			  "%s per sector and for the whole medium.\n"
+			  "- Redesigned preferences dialog."),
+		   Closure->invisibleDash);
 
 	 gtk_box_pack_start(GTK_BOX(box), gtk_hseparator_new(), FALSE, FALSE, 10);
 

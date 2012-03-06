@@ -1,6 +1,7 @@
 <html>
 <head>
  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
  <title>Новости</title>
  <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
 </head>
@@ -11,7 +12,7 @@
   <tr>
      <td align="left">
        <font size="+3"><b>dvdisaster</b></font>
-       <i>Версия 0.72.2 / 0.79 (devel-3)</i>
+       <i>Версия 0.72 (pl3)</i>
   </td>
   <td align="right">
      <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
@@ -48,8 +49,8 @@
 	  </table><p>
 
           <table width="100%">
+
             <tr><td colspan=3><font size="-1">Новости</font></td></tr>
-            <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="news2009.html">2009</a></font></td></tr>
             <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="news2008.html">2008</a></font></td></tr>
             <tr><td valign="top" width="1%">&middot;</td><td colspan=2><font size="-1"><a href="news2007.html">2007</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
@@ -74,8 +75,8 @@
     <h3>Новости dvdisaster</h3>
     <table width="90%">
       <tr>
-        <td><a name="item18"></a><b>dvdisaster 0.79.3 released</b></td>
-        <td align="right">21.11.2010</td>
+        <td><a name="item1"></a><b>dvdisaster 0.72.3 released</b></td>
+        <td align="right">03.10.2011</td>
       </tr>
     </table>
     <table width="90%" cellpadding="0" cellspacing="0">
@@ -91,46 +92,17 @@
     <table width="90%">
       <tr><td>
 
-For GNU/Linux, the SG_IO driver is used by default
-for accessing optical drives. This resolves the problem
-with system freezes on parallel SCSI adapters which were
-caused by the old CDROM_SEND_PACKET driver.
-The RS03 codec now contains Altivec optimizations
-on PowerPC platforms.
-
+The "Verify" function hangs when working on RS01 error
+correction files which are larger than 2GB (the error correction
+files are correctly generated though).
+Volodymyr Bychkoviak discovered the problem and sent in
+a bug fix.
       </td></tr>
     </table>
     <pre> </pre>
     <table width="90%">
       <tr>
-        <td><a name="item17"></a><b>Added Windows and Mac OS X versions for 0.72.2</b></td>
-        <td align="right">07.11.2010</td>
-      </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#000000" height=1>
-	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#ffffff" height=5>
-         <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%">
-      <tr><td>
-
-Windows and Mac OS X versions of 0.72.2 are now available.
-They were built using the updated development environment of 0.79.x.
-This results in shipping with newer versions of the GTK+ libraries
-and might yield slightly different visuals and behaviour.
-
-      </td></tr>
-    </table>
-    <pre> </pre>
-    <table width="90%">
-      <tr>
-        <td><a name="item16"></a><b>dvdisaster 0.72.2 released</b></td>
+        <td><a name="item2"></a><b>dvdisaster 0.72.2 released</b></td>
         <td align="right">31.10.2010</td>
       </tr>
     </table>
@@ -148,108 +120,14 @@ and might yield slightly different visuals and behaviour.
       <tr><td>
 
 This version introduces a workaround which prevents parallel SCSI
-adapters from freezing under Linux. 
-Improved upward compatibility with dvdisaster 0.79.x.
-
+adapters from freezing under Linux. RS03 images from 0.79.x
+versions will no longer cause spurious error messages.
       </td></tr>
     </table>
     <pre> </pre>
     <table width="90%">
       <tr>
-        <td><a name="item15"></a><b>dvdisaster 0.79.2 released</b></td>
-        <td align="right">28.02.2010</td>
-      </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#000000" height=1>
-	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#ffffff" height=5>
-         <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%">
-      <tr><td>
-
- Mac OS X binaries are available again as the Mac OS X development environment 
- has been updated for this version.
- RS03 codec development progresses,
-but is still far from being finished.
-
-      </td></tr>
-    </table>
-    <pre> </pre>
-    <table width="90%">
-      <tr>
-        <td><a name="item14"></a><b>Started new development branch 0.79</b></td>
-        <td align="right">07.02.2010</td>
-      </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#000000" height=1>
-	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#ffffff" height=5>
-         <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%">
-      <tr><td>
-
-The first version of the new development branch (0.79.1) has just
-been released. This release is meant for testing new functions;
-it is not recommended for doing productive work. See the
-<a href="download40.html">download page</a> for information on
-what has been changed and how you can participate in testing.
-
-      </td></tr>
-    </table>
-    <pre> </pre>
-    <table width="90%">
-      <tr>
-        <td><a name="item13"></a><b>Assessment of potential vulnerabilities in the windows version
-of the GTK library</b></td>
-        <td align="right">01.10.2009</td>
-      </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#000000" height=1>
-	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%" cellpadding="0" cellspacing="0">
-       <tr bgcolor="#ffffff" height=5>
-         <td width="100%" height=1><img width=1 height=1 alt=""></td>
-       </tr>
-    </table>
-    <table width="90%">
-      <tr><td>
-
-The Windows versions of dvdisaster 0.70.x/0.72.x are shipped with an outdated
-GTK library containing vulnerabilities in its image processing routines.
-To exploit the vulnerability, manipulated images need to be loaded from
-an external source. Since dvdisaster does not contain/use such functions,
-these vulnerabilities are not considered to be a threat.<p>
-
-It is not recommended to replace GTK in the 0.70.x/0.72.x versions of
-dvdisaster as some interfaces have been changed in newer GTK versions.
-Replacing GTK will likely cause severe malfunction.<p>
-
-The windows version of dvdisaster 0.73.1 will have updated interfaces
-and will be shipped with a current version of GTK.<p>
-
-Many thanks to all users who brought this issue to my attention.
-
-      </td></tr>
-    </table>
-    <pre> </pre>
-    <table width="90%">
-      <tr>
-        <td><a name="item12"></a><b>Project represention on SourceForge may be outdated</b></td>
+        <td><a name="item3"></a><b>Project represention on SourceForge may be outdated</b></td>
         <td align="right">10.08.2009</td>
       </tr>
     </table>
@@ -275,7 +153,7 @@ to the respective sections on this site (http://dvdisaster.net) instead.
     <pre> </pre>
     <table width="90%">
       <tr>
-        <td><a name="item11"></a><b>dvdisaster 0.72.1 released</b></td>
+        <td><a name="item4"></a><b>dvdisaster 0.72.1 released</b></td>
         <td align="right">08.08.2009</td>
       </tr>
     </table>
@@ -294,15 +172,13 @@ to the respective sections on this site (http://dvdisaster.net) instead.
 
 Pablo Almeida provided a Portuguese translation for the screen text.
 Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.<p>
-<i>Update: The workaround is not complete. If the problem persists please
-try version 0.79.x.</i>
 
       </td></tr>
     </table>
     <pre> </pre>
     <table width="90%">
       <tr>
-        <td><a name="item10"></a><b>выпущен dvdisaster 0.72</b></td>
+        <td><a name="item5"></a><b>выпущен dvdisaster 0.72</b></td>
         <td align="right">04.07.2009</td>
       </tr>
     </table>
@@ -326,19 +202,97 @@ try version 0.79.x.</i>
       </td></tr>
     </table>
     <pre> </pre>
+    <table width="90%">
+      <tr>
+        <td><a name="item6"></a><b>выпущен dvdisaster 0.72.rc1</b></td>
+        <td align="right">11.04.2009</td>
+      </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#000000" height=1>
+	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#ffffff" height=5>
+         <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%">
+      <tr><td>
+
+  Теперь доступен первый кандидат на выпуск из стабильной ветви 0.72.
+  Среди новых возможностей - поддержка носителей Blu-Ray, низкоуровневое чтение и проверки на C2
+  для CD, а также "родная" версия для Mac OS X.
+  Дополнительную информацию см. здесь <a href="download.html">download page</a>.
+
+      </td></tr>
+    </table>
+    <pre> </pre>
+    <table width="90%">
+      <tr>
+        <td><a name="item7"></a><b>выпущен dvdisaster 0.71.28</b></td>
+        <td align="right">08.03.2009</td>
+      </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#000000" height=1>
+	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#ffffff" height=5>
+         <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%">
+      <tr><td>
+
+  В этой версии исправляются падения из-за "illegal instruction" на x86-машинах,
+  которые не поддерживают SSE2. Много незначительных исправлений перед кандидатом
+  на выпуск.
+
+      </td></tr>
+    </table>
+    <pre> </pre>
+    <table width="90%">
+      <tr>
+        <td><a name="item8"></a><b>выпущен dvdisaster 0.71.27</b></td>
+        <td align="right">18.01.2009</td>
+      </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#000000" height=1>
+	 <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%" cellpadding="0" cellspacing="0">
+       <tr bgcolor="#ffffff" height=5>
+         <td width="100%" height=1><img width=1 height=1 alt=""></td>
+       </tr>
+    </table>
+    <table width="90%">
+      <tr><td>
+
+  Эта документация, наконец, завершена. Исправлены некоторые падения и несовместимости
+  с необычными носителями и приводами. В этой версии произведен
+  последний большой внутренний пересмотр, планировавшийся для версий 0.71.x, поэтому, если
+  все будет хорошо, то следующей версией будет стабильный кандидат на выпуск.
+
+      </td></tr>
+    </table>
+    <pre> </pre>
   </td> <!--- end of page contents --->
 
  </tr>
-
-<!---
  <tr valign="bottom">
    <td bgcolor="#f0f0f0">
-      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1"></font></a></td></tr></table>
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Старая документация (V0.70)</font></a></td></tr></table>
    </td>
    <td></td>
    <td></td>
+
  </tr>
---->
 </table> <!--- end of main body table --->
 
 
