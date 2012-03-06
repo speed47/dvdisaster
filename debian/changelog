@@ -1,4 +1,4 @@
-dvdisaster (0.72.3-1~2.gbp71e851) UNRELEASED; urgency=low
+dvdisaster (0.72.3-1) unstable; urgency=low
 
   [ Rogério Brito ]
   * debian/patches/*: refresh and adapt every patch
@@ -9,8 +9,9 @@ dvdisaster (0.72.3-1~2.gbp71e851) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.3
   * debian/patches/*: Refreshed.
   * Depend unversion libpng-dev (Closes: #662306)
+  * debian/rules: Rewrite in dh7 style
 
- -- Rogério Brito <rbrito@ime.usp.br>  Tue, 06 Mar 2012 11:08:23 +0900
+ -- TANIGUCHI Takaki <takaki@debian.org>  Tue, 06 Mar 2012 12:44:08 +0900
 
 dvdisaster (0.72.1-2) unstable; urgency=low
 
