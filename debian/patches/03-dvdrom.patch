@@ -1,9 +1,11 @@
 Author: Corey Wright <undefined@pobox.com>
 Description: Adds support for DVD-ROM medium-type.
 
---- a/scsi-layer.c
-+++ b/scsi-layer.c
-@@ -911,6 +911,11 @@
+Index: dvdisaster/scsi-layer.c
+===================================================================
+--- dvdisaster.orig/scsi-layer.c	2012-03-06 11:10:17.147044691 +0900
++++ dvdisaster/scsi-layer.c	2012-03-06 11:10:30.927044292 +0900
+@@ -913,6 +913,11 @@
  	    break;
  	 }
  

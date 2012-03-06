@@ -3,8 +3,10 @@ Authors: Daniel Baumann <daniel@debian.org>
 Description: Fixes typo in manpages.
  The patch also deals with hyphens used as minus signs.
 
---- a/documentation/dvdisaster.cs.1
-+++ b/documentation/dvdisaster.cs.1
+Index: dvdisaster/documentation/dvdisaster.cs.1
+===================================================================
+--- dvdisaster.orig/documentation/dvdisaster.cs.1	2012-03-06 11:06:06.000000000 +0900
++++ dvdisaster/documentation/dvdisaster.cs.1	2012-03-06 11:12:03.263041664 +0900
 @@ -49,8 +49,8 @@
  Obecné příklady použití:
  .TP
@@ -25,9 +27,11 @@ Description: Fixes typo in manpages.
  .TP
  .B \-\-dao
  předpokládá disk DAO; neořezávat konec obrazu.
---- a/documentation/dvdisaster.en.1
-+++ b/documentation/dvdisaster.en.1
-@@ -111,8 +111,8 @@
+Index: dvdisaster/documentation/dvdisaster.en.1
+===================================================================
+--- dvdisaster.orig/documentation/dvdisaster.en.1	2012-03-06 11:08:20.000000000 +0900
++++ dvdisaster/documentation/dvdisaster.en.1	2012-03-06 11:12:03.263041664 +0900
+@@ -104,8 +104,8 @@
  Action selection (at least one action must be specified):
  .TP
  .B \-r, \-\-read
@@ -38,7 +42,7 @@ Description: Fixes typo in manpages.
  .TP
  .B \-c, \-\-create
  Create .ecc information for the medium image.
-@@ -192,7 +192,7 @@
+@@ -213,7 +213,7 @@
  automatically add .iso and .ecc file suffixes.
  .TP
  .B \-\-cache-size n
@@ -47,7 +51,7 @@ Description: Fixes typo in manpages.
  .TP
  .B \-\-dao
  assume DAO disc; do not trim image end.
-@@ -215,12 +215,12 @@
+@@ -235,12 +235,12 @@
  continue reading after potentially fatal error condition.
  .TP
  .B \-\-internal-rereads n
@@ -62,8 +66,8 @@ Description: Fixes typo in manpages.
 +this setting anyways. Use \-1 to leave the drive at its default setting.
  .RE
  .TP
- .B \-\-old-ds-marker
-@@ -245,7 +245,7 @@
+ .B \-\-query-size n
+@@ -253,7 +253,7 @@
  selects raw reading mode for CD media (default: 20)
  .RS
  The recommended mode is 20, which makes the drive apply its built-in error 
@@ -72,9 +76,11 @@ Description: Fixes typo in manpages.
  However some drives can only read defective sectors using mode 21, skipping
  the last stage of the internal error correction and returning 
  the uncorrected sector instead.
---- a/documentation/dvdisaster.de.1
-+++ b/documentation/dvdisaster.de.1
-@@ -119,8 +119,8 @@
+Index: dvdisaster/documentation/dvdisaster.de.1
+===================================================================
+--- dvdisaster.orig/documentation/dvdisaster.de.1	2012-03-06 11:08:20.000000000 +0900
++++ dvdisaster/documentation/dvdisaster.de.1	2012-03-06 11:12:03.263041664 +0900
+@@ -112,8 +112,8 @@
  Aktions-Auswahl (mindestens eine Aktion muss gew\[:a]hlt werden):
  .TP
  .B \-r, \-\-read
@@ -85,16 +91,7 @@ Description: Fixes typo in manpages.
  .TP
  .B \-c, \-\-create
  Erzeugt Fehlerkorrektur-Daten f\[:u]r das Abbild.
-@@ -132,7 +132,7 @@
- Untersucht den Datentr\[:a]ger auf Lesefehler.
- .TP
- .B \-t, \-\-test, \-tq, \-test=q
--Pr\[:u]ft die Struktur der .iso und .ecc - Dateien.
-+Pr\[:u]ft die Struktur der .iso und .ecc \- Dateien.
- Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
- die ohne vollständiges Lesen der Dateien ermittelt werden k\[:o]nnen.
- .TP
-@@ -225,12 +225,12 @@
+@@ -243,12 +243,12 @@
  Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
  .TP
  .B \-\-internal-rereads n
@@ -110,7 +107,7 @@ Description: Fixes typo in manpages.
  die Standardeinstellungen des Laufwerks zu verwenden.
  .RE
  .TP
-@@ -254,7 +254,7 @@
+@@ -260,7 +260,7 @@
  .RE
  .TP
  .B \-\-raw-mode n
@@ -119,7 +116,7 @@ Description: Fixes typo in manpages.
  .RS
  Das empfohlene Verfahren ist 20, bei dem das Laufwerk die eingebaute Fehlerkorrektur
  so weit wie m\[:o]glich anwendet, bevor es einen besch\[:a]digten Sektor 
-@@ -271,7 +271,7 @@
+@@ -277,7 +277,7 @@
  liest den gesamten Datentr\[:a]ger bis zu n-mal.
  .TP
  .B \-\-read-raw
@@ -128,8 +125,10 @@ Description: Fixes typo in manpages.
  .TP
  .B \-\-speed-warning n
  warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
---- a/documentation/dvdisaster.it.1
-+++ b/documentation/dvdisaster.it.1
+Index: dvdisaster/documentation/dvdisaster.it.1
+===================================================================
+--- dvdisaster.orig/documentation/dvdisaster.it.1	2012-03-06 11:06:06.000000000 +0900
++++ dvdisaster/documentation/dvdisaster.it.1	2012-03-06 11:12:03.267041662 +0900
 @@ -43,8 +43,8 @@
  Tipici esempi di utilizzo:
  .TP
