@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
    /*** Perform the action */
    
    if(mode != MODE_NONE && mode != MODE_HELP)
-      fprintf(stdout, "pngpack-0.20 *** Copyright 2005-2010 Carsten Gnoerlich.\n"
+      fprintf(stdout, "pngpack-0.20 *** Copyright 2005-2009 Carsten Gnoerlich.\n"
 	      "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
 	      "is free software and you are welcome to redistribute it\n"
 	      "under the conditions of the GNU GENERAL PUBLIC LICENSE.\n"  

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -22,7 +22,6 @@
 #include "dvdisaster.h"
 
 #define DSM_VERSION "1.00"
-#define PSM_VERSION "1.00"
 
 /***
  *** Create an unique marker for missing sectors
@@ -60,7 +59,7 @@ void CreateMissingSector(unsigned char *out, gint64 sector,
    if(!Closure->dsmVersion)
       return;
 
-   /* Yes, add the missing sector attributes */
+   /* make dsm marker unique for this sector and medium */
 
    g_sprintf(buf+0x100,"Dead sector marker version");
    g_sprintf(buf+0x120,"%s",DSM_VERSION);
@@ -73,38 +72,6 @@ void CreateMissingSector(unsigned char *out, gint64 sector,
    g_sprintf(buf+0x1e0,"%lld", (long long)fingerprint_sector);
    g_sprintf(buf+0x200,"Volume label (if any)");
    g_sprintf(buf+0x220,"%s", volume_label ? volume_label : "none");
-}
-
-/***
- *** Create an unique padding sector
- ***/
-
-void CreatePaddingSector(unsigned char *out, gint64 sector, 
-			 unsigned char *fingerprint, gint64 fingerprint_sector)
-{  char *buf = (char*)out;
-   char *end_marker;
-   int end_length; 
-
-   memset(buf, 0, 2048);
-
-   g_sprintf(buf,
- 	     "dvdisaster padding sector       "
-	     "This is a padding sector needed for augmenting the image "
-	     "with error correction data.");
-
-   end_marker = "dvdisaster padding sector end marker";
-   end_length = strlen(end_marker);
-   memcpy(buf+2047-end_length, end_marker, end_length); 
-
-   g_sprintf(buf+0x100,"Padding sector marker version");
-   g_sprintf(buf+0x120,"%s",DSM_VERSION);
-   g_sprintf(buf+0x140,"Padding sector number");
-   g_sprintf(buf+0x160,"%lld", (long long)sector);
-   g_sprintf(buf+0x180,"Medium fingerprint");
-   if(fingerprint) memcpy(buf+0x1a0, fingerprint, 16);
-   else            memcpy(buf+0x1b0, "none", 4);
-   g_sprintf(buf+0x1c0,"Medium fingerprint sector");
-   g_sprintf(buf+0x1e0,"%lld", (long long)fingerprint_sector);
 }
 
 /***
@@ -193,26 +160,6 @@ int CheckForMissingSector(unsigned char *buf, gint64 sector,
    }
 
    return SECTOR_MISSING;
-}
-
-int CheckForMissingSectors(unsigned char *buf, gint64 sector, 
-			   unsigned char *fingerprint, gint64 fingerprint_sector,
-			   int n_sectors, gint64 *first_defect)
-{  int i,result;
-
-   for(i=0; i<n_sectors; i++)
-   {  result = CheckForMissingSector(buf, sector, fingerprint, fingerprint_sector);
-
-      if(result != SECTOR_PRESENT)
-      {  *first_defect = sector;
-	 return result;
-      }
-
-      buf += 2048;
-      sector++;
-   }
-
-   return SECTOR_PRESENT;
 }
 
 /***

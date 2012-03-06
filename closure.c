@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -197,7 +197,7 @@ static void get_base_dirs()
         but tricky when app bundles are used. In that case we
         use GTK_PATH to find out our location. */
 
-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN) || defined(SYS_SOLARIS)
    if(DirStat(BINDIR))
      Closure->binDir = g_strdup(BINDIR);
 
@@ -431,12 +431,12 @@ void ReadDotfile()
    while(TRUE)
    {  int n;
       char symbol[41];
-      char *value;
+      char *value, *ignore;
 
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      fgets(line, MAX_LINE_LEN, dotfile);
+      ignore = fgets(line, MAX_LINE_LEN, dotfile);
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -482,7 +482,6 @@ void ReadDotfile()
       if(!strcmp(symbol, "cache-size"))      { Closure->cacheMB     = atoi(value); continue; }
       if(!strcmp(symbol, "cd-size"))         { Closure->cdSize = Closure->savedCDSize = atoll(value); continue; }
       if(!strcmp(symbol, "codec-threads"))   { Closure->codecThreads = atoi(value); continue; }
-      if(!strcmp(symbol, "confirm-deletion")){ Closure->confirmDeletion = atoi(value); continue; }
       if(!strcmp(symbol, "dao"))             { Closure->noTruncate  = atoi(value); continue; }
       if(!strcmp(symbol, "defective-dump"))  { Closure->defectiveDump = atoi(value); continue; }
       if(!strcmp(symbol, "defective-dir"))   { if(Closure->dDumpDir) g_free(Closure->dDumpDir);
@@ -492,10 +491,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "dotfile-version")) { Closure->dotFileVersion = atoi(value); continue; }
       if(!strcmp(symbol, "dvd-size1"))       { Closure->dvdSize1 = Closure->savedDVDSize1 = atoll(value); continue; }
       if(!strcmp(symbol, "dvd-size2"))       { Closure->dvdSize2 = Closure->savedDVDSize2 = atoll(value); continue; }
-      if(!strcmp(symbol, "ecc-target"))      { Closure->eccTarget  = atoi(value); continue; }
       if(!strcmp(symbol, "eject"))           { Closure->eject  = atoi(value); continue; }
-      if(!strcmp(symbol, "examine-rs02"))    { Closure->examineRS02  = atoi(value); continue; }
-      if(!strcmp(symbol, "examine-rs03"))    { Closure->examineRS03  = atoi(value); continue; }
       if(!strcmp(symbol, "fill-unreadable")) { Closure->fillUnreadable = atoi(value); continue; }
       if(!strcmp(symbol, "ignore-fatal-sense")) { Closure->ignoreFatalSense  = atoi(value); continue; }
       if(!strcmp(symbol, "internal-attempts"))  { Closure->internalAttempts = atoi(value); continue; }
@@ -509,7 +505,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "missing-sector-marker"))  { Closure->dsmVersion  = atoi(value); continue; }
-      if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = atoi(value); continue; }
+      if(!strcmp(symbol, "query-size"))      { Closure->querySize  = atoi(value); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
       if(!strcmp(symbol, "read-medium"))     { Closure->readingPasses = atoi(value); continue; }
@@ -518,6 +514,7 @@ void ReadDotfile()
                                                Closure->redundancy  = g_strdup(value); continue; }
       if(!strcmp(symbol, "reverse-cancel-ok")) { Closure->reverseCancelOK = atoi(value); continue; }
       if(!strcmp(symbol, "spinup-delay"))    { Closure->spinupDelay = atoi(value); continue; }
+      if(!strcmp(symbol, "split-files"))     { Closure->splitFiles  = atoi(value); continue; }
       if(!strcmp(symbol, "unlink"))          { Closure->unlinkImage = atoi(value); continue; }
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
       if(!strcmp(symbol, "welcome-msg"))     { Closure->welcomeMessage = atoi(value); continue; }
@@ -585,7 +582,6 @@ static void update_dotfile()
    g_fprintf(dotfile, "cache-size:        %d\n", Closure->cacheMB);
    g_fprintf(dotfile, "cd-size:           %lld\n", (long long int)Closure->cdSize);
    g_fprintf(dotfile, "codec-threads:     %d\n", Closure->codecThreads);
-   g_fprintf(dotfile, "confirm-deletion:  %d\n", Closure->confirmDeletion);
    g_fprintf(dotfile, "dao:               %d\n", Closure->noTruncate);
    g_fprintf(dotfile, "defective-dump:    %d\n", Closure->defectiveDump);
    g_fprintf(dotfile, "defective-dir:     %s\n", Closure->dDumpDir);
@@ -593,10 +589,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "dotfile-version:   %d\n", Closure->dotFileVersion);
    g_fprintf(dotfile, "dvd-size1:         %lld\n", (long long int)Closure->dvdSize1);
    g_fprintf(dotfile, "dvd-size2:         %lld\n", (long long int)Closure->dvdSize2);
-   g_fprintf(dotfile, "ecc-target:        %d\n", Closure->eccTarget);
    g_fprintf(dotfile, "eject:             %d\n", Closure->eject);
-   g_fprintf(dotfile, "examine-rs02:      %d\n", Closure->examineRS02);
-   g_fprintf(dotfile, "examine-rs03:      %d\n", Closure->examineRS03);
    g_fprintf(dotfile, "fill-unreadable:   %d\n", Closure->fillUnreadable);
    g_fprintf(dotfile, "ignore-fatal-sense: %d\n", Closure->ignoreFatalSense);
    g_fprintf(dotfile, "internal-attempts: %d\n", Closure->internalAttempts);
@@ -608,7 +601,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "max-read-attempts: %d\n", Closure->maxReadAttempts);
    g_fprintf(dotfile, "min-read-attempts: %d\n", Closure->minReadAttempts);
    g_fprintf(dotfile, "missing-sector-marker: %d\n", Closure->dsmVersion);
-   g_fprintf(dotfile, "prefetch-sectors:  %d\n", Closure->prefetchSectors);
+   g_fprintf(dotfile, "query-size:        %d\n", Closure->querySize);
    g_fprintf(dotfile, "raw-mode:          %d\n", Closure->rawMode);
    g_fprintf(dotfile, "read-and-create:   %d\n", Closure->readAndCreate);
    g_fprintf(dotfile, "read-medium:       %d\n", Closure->readingPasses);
@@ -617,6 +610,7 @@ static void update_dotfile()
      g_fprintf(dotfile, "redundancy:        %s\n", Closure->redundancy);
    g_fprintf(dotfile, "reverse-cancel-ok: %d\n", Closure->reverseCancelOK);
    g_fprintf(dotfile, "spinup-delay:      %d\n", Closure->spinupDelay);
+   g_fprintf(dotfile, "split-files:       %d\n", Closure->splitFiles);
    g_fprintf(dotfile, "unlink:            %d\n", Closure->unlinkImage);
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);
    g_fprintf(dotfile, "welcome-msg:       %d\n\n", Closure->welcomeMessage);
@@ -703,19 +697,17 @@ void InitClosure()
    Closure->methodName  = g_strdup("RS01");
    Closure->dDumpDir    = g_strdup(Closure->homeDir);
    Closure->cacheMB     = 32;
-   Closure->prefetchSectors = 128;
    Closure->codecThreads = 1;
-   Closure->eccTarget = 1;
    Closure->minReadAttempts = 1;
    Closure->maxReadAttempts = 1;
    Closure->rawMode     = 0x20;
    Closure->internalAttempts = -1;
    Closure->sectorSkip  = 16;
    Closure->spinupDelay = 5;
+   Closure->querySize   = 2;
    Closure->fillUnreadable = -1;
    Closure->welcomeMessage = 1;
-   Closure->useSCSIDriver = DRIVER_SG;
-   Closure->dsmVersion = 1;
+   Closure->useSCSIDriver = DRIVER_CDROM_DEFAULT;
 
    /* default sizes for typical CD and DVD media */
 
@@ -747,9 +739,12 @@ void InitClosure()
    DefaultColors();
 
    memset(Closure->bs, '\b', 255);
-   memset(Closure->sp, ' ', 255);
 
    DefaultLogFile();
+
+#ifdef SYS_MINGW
+   OpenAspi();
+#endif
 }
 
 /*
@@ -909,4 +904,8 @@ void FreeClosure()
      g_free(Closure->readAdaptiveErrorMsg);
 
    g_free(Closure);
+
+#ifdef SYS_MINGW
+   CloseAspi();
+#endif
 }

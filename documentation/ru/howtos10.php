@@ -57,8 +57,8 @@ howto_headline("Поиск ошибок на носителях", "Обзор", 
 
 <tr valign="top">
  <td><b>Соответствующие функции:<p></td>
- <td><a href="howtos30.html">Чтение поврежденных носителей</a> и<br>
-     <a href="howtos40.html">Восстановление образов</a>.</td>
+ <td><a href="howtos30.php">Чтение поврежденных носителей</a> и<br>
+     <a href="howtos40.php">Восстановление образов</a>.</td>
  </tr>
 </table><p>
 

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -157,7 +157,7 @@ static int try_fallback_type_check(DeviceHandle *dh)
 {  AlignedBuffer *ab;
    Sense *sense = &dh->sense;
    unsigned char cmd[MAX_CDB_SIZE];
-   int length;
+   unsigned int length;
 
    Verbose("# *** try_fallback_type_check(%s) ***\n", dh->devinfo);
 
@@ -190,6 +190,8 @@ static int try_fallback_type_check(DeviceHandle *dh)
 
    length = ab->buf[0]<<8 | ab->buf[1];
    length += 2;
+   length_align(&length);
+
    if(length != 4100) /* not a BD */
    {  Verbose("# allocation length = %d != 4100 -> not a BD type medium.\n", length);
       goto try_dvd;
@@ -477,6 +479,7 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2  ;  /* MMC3: "Disc information length excludes itself" */
    length_align(&length);
+
    Verbose("#CD: size returned is %d\n", length);
 
    if(length>1024) /* don't let the drive hack us using a buffer overflow ;-) */
@@ -535,6 +538,7 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2;    /* MMC3: "Disc information length excludes itself" */
    length_align(&length);
+
    Verbose("#CD: size returned is %d\n", length);
 
    if(length < 15)
@@ -550,9 +554,7 @@ static int query_cd(DeviceHandle *dh, int probe_only)
       return FALSE;
    }
 
-#if 0
    length = 16;  /* Works around Windows (and possibly other OS) driver issues */
-#endif
 
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x43;  /* READ TOC/PMA/ATIP */
@@ -973,6 +975,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2;
    length_align(&length);
+
    Verbose("#BD: disc structure query succeeded, length %d bytes\n", length);
 
    /* Do the real query */
@@ -1079,7 +1082,6 @@ static int query_type(DeviceHandle *dh, int probe_only)
    Verbose("# trying READ DISC INFORMATION for size\n");
    if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
-      length_align(&length);
 
       Verbose("# size returned is %d\n", length);
 
@@ -1192,6 +1194,7 @@ static int query_blank(DeviceHandle *dh)
       length = buf[0]<<8 | buf[1];
       length += 2;    /* MMC3: "Disc information length excludes itself" */
       length_align(&length);
+
       Verbose("#CD: size returned is %d\n", length);
 
       if(length < 15 || length > 1024)  /* implausible */
@@ -1247,6 +1250,7 @@ static int query_blank(DeviceHandle *dh)
 	    length = buf[0]<<8 | buf[1];
 	    length += 2;    /* MMC3: "Disc information length excludes itself" */
 	    length_align(&length);
+
 	    Verbose("#DVD: size returned is %d\n", length);
 
 	    memset(cmd, 0, MAX_CDB_SIZE);
@@ -1510,8 +1514,8 @@ static int read_mode_page(DeviceHandle *dh, AlignedBuffer *ab, int *parameter_li
    memset(cdb, 0, MAX_CDB_SIZE);
    cdb[0] = 0x5a;         /* MODE SENSE(10) */
    cdb[2] = 1;            /* Page code */
-   cdb[8] = 252;          /* Allocation length */
-   ret  = SendPacket(dh, cdb, 10, buf, 252, &sense, DATA_READ);
+   cdb[8] = 255;          /* Allocation length */
+   ret  = SendPacket(dh, cdb, 10, buf, 255, &sense, DATA_READ);
 
    if(ret<0) 
    {  FreeAlignedBuffer(ab);
@@ -1823,7 +1827,7 @@ static unsigned int query_size(DeviceHandle *dh)
    /*** If RS02 header search is enabled and we can find an appropriate header,
 	use it as an authoritative source for the medium size. */
 
-   if(Closure->examineRS02)
+   if(Closure->querySize >= 2)
    {  if(dh->rs02Size <= 0)
       {  gint64 last_sector = MAX(dh->readCapacity, dh->userAreaSize);
       
@@ -1846,14 +1850,16 @@ static unsigned int query_size(DeviceHandle *dh)
       Verbose("Skipping medium size determination from ECC header.\n");
    }
 
-   /*** Try getting the size from the ISO/UDF filesystem. */
+   /*** If ISO/UDF filesystem parsing is enabled try this next. */
 
-   if(dh->isoInfo)
-   {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
-	      dh->isoInfo->volumeSize);  
-      return dh->isoInfo->volumeSize;
-   }
-   else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
+   if(Closure->querySize >= 1)
+   {  if(dh->isoInfo)
+      {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
+		 dh->isoInfo->volumeSize);  
+	 return dh->isoInfo->volumeSize;
+      }
+      else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
+   } else Verbose("Skipping medium size determination from ISO/UDF filesystem.\n");
 
    /*** If everything else fails, query the drive. */
    
@@ -1897,7 +1903,7 @@ static unsigned int query_size(DeviceHandle *dh)
 			"READ DVD STRUCTURE: %lld sectors\n\n"),
 		      dh->readCapacity+1, dh->userAreaSize+1);
 
-      g_string_append_printf(warning, _("Evaluation of returned medium sizes:\n\n"));
+      g_string_append(warning, _("Evaluation of returned medium sizes:\n\n"));
 
       /*** Look at READ CAPACITY results */
 
@@ -2032,7 +2038,8 @@ gint64 CurrentMediumSize(int get_blank_size)
       size = dh->blankCapacity;
    }
    else
-   {  ExamineUDF(dh, NULL);
+   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
+	 ExamineUDF(dh);
       size = query_size(dh);
    }
 
@@ -2568,7 +2575,14 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 		GetSenseString(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq, FALSE));
    }
 
+#ifdef SYS_LINUX
    PrintLog(_("\nDevice: %s, %s\n"),device, dh->devinfo);
+#endif
+
+#ifdef SYS_MINGW
+   PrintLog(_("\nDevice: %s (%s), %s\n"),
+	    device, dh->aspiUsed ? "ASPI" : "SPTI", dh->devinfo);
+#endif
 
    /* Query the type and fail immediately if incompatible medium is found
       so that the later tests are not derailed by the wrong medium type */
@@ -2636,7 +2650,8 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 
    /* Examine medium type */
 
-   ExamineUDF(dh, NULL);
+   if(Closure->querySize >= 1)  /* parseUDF or better requested */
+     ExamineUDF(dh);
 
    Verbose("# Calling query_size()\n");
    dh->sectors = query_size(dh);
@@ -2722,7 +2737,9 @@ DeviceHandle* QueryMediumInfo(char *device)
    /* Examine medium size (only on known/handled formats) */
 
    if(dh->subType != UNSUPPORTED)
-   {  ExamineUDF(dh, NULL);
+   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
+	 ExamineUDF(dh);
+
       dh->sectors = query_size(dh);
    }
 

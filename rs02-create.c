@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -125,16 +125,12 @@ static void abort_encoding(ecc_closure *ec, int truncate)
 
 static void remove_old_ecc(ecc_closure *ec)
 {  EccHeader *old_eh;
-   LargeFile *tmp;
 
-   tmp = LargeOpen(Closure->imageName, O_RDWR, IMG_PERMS);
-   if(!tmp)  
-     return; /* no image file at all */
-
-   old_eh = FindRS02HeaderInImage(tmp);
+   old_eh = FindHeaderInImage(Closure->imageName);
 
    if(old_eh)
    {  gint64 data_sectors = uchar_to_gint64(old_eh->sectors);
+      LargeFile *tmp;
       int answer;
 
       g_free(old_eh);
@@ -147,11 +143,11 @@ static void remove_old_ecc(ecc_closure *ec)
       if(!answer)
 	abort_encoding(ec, FALSE);
 
+      tmp = LargeOpen(Closure->imageName, O_RDWR, IMG_PERMS);
       if(!tmp || !LargeTruncate(tmp, (gint64)(2048*data_sectors)))
 	Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
+      LargeClose(tmp);
    }
-
-   LargeClose(tmp);
 }
 
 /*
@@ -1066,7 +1062,8 @@ void RS02Create(Method *method)
      Stop(_("Not enough space on medium left for error correction data.\n"
 	    "Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
 	    "If reducing the image size or using a larger medium is\n"
-	    "not an option, please create a separate error correction file."),
+	    "not an option, please create a separate error correction\n"
+	    "file using the RS01 method.\n"),
 	  lay->dataSectors, lay->mediumCapacity);
 
    if(lay->redundancy < 20)

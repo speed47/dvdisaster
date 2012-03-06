@@ -1,6 +1,7 @@
 <html>
 <head>
  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
  <title>Basic settings for reading</title>
  <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
 </head>
@@ -11,7 +12,7 @@
   <tr>
      <td align="left">
        <font size="+3"><b>dvdisaster</b></font>
-       <i>Version 0.72.2 / 0.79 (devel-3)</i>
+       <i>Version 0.72 (pl3)</i>
   </td>
   <td align="right">
      <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/en/">To the Internet version</a>
@@ -48,6 +49,7 @@
 	  </table><p>
 
           <table width="100%">
+
             <tr><td colspan=3><font size="-1"><a href="news.html">News</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
             <tr><td colspan=3><font size="-1"><a href="index.html">Overview</a></font></td></tr>
@@ -239,8 +241,13 @@ recommended as the error correction might be overloaded too quickly.
 <table class="screenshot">
   <tr><td>
     <a name="snap6"></a>
-<b>"Files" tab.</b> In this tab, leave the settings off for the moment; 
-suggestions for further 
+<b>"Files" tab.</b> If your operating system can not create files larger than 2GB
+then you must choose the "Split files " setting (marked green). 
+In that case dvdisaster will
+create up to 100 segments called "medium00.iso", "medium01.iso" etc. instead
+of a single "medium.iso" file. Using this option results in a small performance hit.
+This option is mostly useful under Windows if the old FAT32 file system is still used.
+Leave the other settings off for the moment; suggestions for further 
 <a href="howtos25.html">optimization</a> follow later.
   </td></tr>
   <tr><td align="center">
@@ -271,16 +278,14 @@ but these have no further effects on the error correction data creation.
   </td> <!--- end of page contents --->
 
  </tr>
-
-<!---
  <tr valign="bottom">
    <td bgcolor="#f0f0f0">
-      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1"></font></a></td></tr></table>
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><font size="-1">Old documentation (V0.70)</font></a></td></tr></table>
    </td>
    <td></td>
    <td></td>
+
  </tr>
---->
 </table> <!--- end of main body table --->
 
 
@@ -293,7 +298,7 @@ but these have no further effects on the error correction data creation.
  <tr>
   <td align="center">
    <font size="-1">
-     <i> Copyright 2004-2010 Carsten Gnörlich.<br>
+     <i> Copyright 2004-2011 Carsten Gnörlich.<br>
          Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
     </i>
    </font>

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -21,7 +21,7 @@
 
 #include "dvdisaster.h"
 
-#if 0
+#if 1
 void Maintenance1(char *debug_arg)
 {
   printf("\nMaintenance stub called with arg: %s\n\n", debug_arg);
@@ -31,24 +31,22 @@ void Maintenance1(char *debug_arg)
 #else
 
 void Maintenance1(char *debug_arg)
-{  GaloisTables *gt = CreateGaloisTables(RS_GENERATOR_POLY);
-   ReedSolomonTables *rt = CreateReedSolomonTables(gt, RS_FIRST_ROOT, RS_PRIM_ELEM, 32);
-   unsigned char data[2048], parity[32*2048];
+{  RawBuffer *rb = CreateRawBuffer(MAX_RAW_TRANSFER_SIZE);
    int i;
-		  
-   memset(parity, 0, 32*2048);
-		
-   for(i=0; i<223; i++)
-   {  int shift = (rt->shiftInit + i) % 32;
 
-      memset(data, i, 2048);
-      EncodeNextLayer(rt, data, parity, 2048, shift);
-   }
+   for(i=0; i<MAX_RAW_TRANSFER_SIZE; i+=8)
+     strncpy(&rb->rawBuf[0][i], "Raw-Buff", 8);
+   
+   strcpy(rb->rawBuf[0], debug_arg);
+   rb->lba = 250;
+   rb->samplesRead = 1;
 
-   for(i=0; i<32; i++)
-     printf("%02x ", parity[i]);
-   printf("\n");
+   if(Closure->dDumpDir) g_free(Closure->dDumpDir); Closure->dDumpDir = g_strdup("/tmp");
+   if(Closure->dDumpPrefix) g_free(Closure->dDumpPrefix); Closure->dDumpPrefix = g_strdup("raw");
 
+   SaveDefectiveSector(rb, 1);
+
+   exit(0);
 }
 
 #endif

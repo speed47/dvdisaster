@@ -19,6 +19,7 @@ begin_page();
 <a href="#nls">2.1 In welchen Übersetzungen ist das Programm verfügbar?</a><p>
 <a href="#media">2.2 Welche Datenträger-Typen werden unterstützt?</a><p>
 <a href="#filesystem">2.3 Welche Dateisysteme werden unterstützt?</a><p>
+<a href="#aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a><p>
 
 <hr><p>
 
@@ -124,6 +125,54 @@ Daher ist es unerheblich, mit welchem Dateisystem der Datenträger formatiert wu
 Weil dvdisaster die Struktur der Dateisysteme nicht kennt bzw. nutzt,
 kann es keine logischen Fehler darin beheben und insbesondere keine
 verlorengegangenen oder gelöschten Dateien wiederherstellen.
+<div align=right><a href="#top">&uarr;</a></div><p>
+
+
+<b><a name="aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a></b><p>
+
+Windows 98 und ME verwenden ASPI als Treiber, um CD/DVD-Laufwerke 
+anzusprechen. Windows NT und seine Nachfolger
+sind hingegen mit der Schnittstelle SPTI ausgerüstet, erlauben
+jedoch auch noch die zusätzliche Installation von ASPI-Treibern.<p>
+
+<i>&gt;&nbsp; Vor- und Nachteile von ASPI unter Windows NT/2000/XP?</i><p>
+
+<table>
+<tr valign=top><td>+</td><td>Es werden keine Systemverwalterrechte für den Zugriff
+auf die Laufwerke benötigt.</td></tr>
+<tr valign=top><td>-</td><td>ASPI erlaubt manchmal keine eindeutige Zuordnung von Laufwerksbuchstaben.</td></tr>
+<tr valign=top><td>-</td><td>Einige Brennprogramme installieren ihre 
+eigenen ASPI-Versionen.
+Die zusätzliche Installation eines fremden ASPI-Treibers kann die Funktion
+der vorhandenen Brennsoftware stören.</td></tr>
+</table><p>
+
+<i>&gt;&nbsp; Welche ASPI-Version wird für die Benutzung mit dvdisaster empfohlen?</i><p>
+
+Adaptec stellt seine ASPI-Treiber zum kostenlosen Herunterladen bereit.
+Unter Windows 2000/XP erkennen die Versionen 4.72.* manchmal keine
+Laufwerke. In diesem Fall hilft typischerweise die Installation der
+älteren Version 4.60.<p>
+
+<i>&gt;&nbsp; Die Laufwerksbuchstaben stimmen unter ASPI nicht!</i><p>
+
+Die ASPI-Treiber verwenden ein eigenes System von Laufwerkskennungen,
+das nicht zu den Laufwerksbuchstaben von Windows kompatibel ist.<br>
+Um eine einheitliche Benutzerschnittstelle für SPTI und ASPI zu bieten, 
+versucht dvdisaster zu erraten, wie die Laufwerke unter ASPI zugeordnet sind.
+Diese Zuordnung gelingt nicht in allen Konfigurationen.<p>
+
+Mit Hilfe der --list -Funktion kann man 
+die aktuelle Zuordnung von Laufwerksbuchstaben herausfinden.<p>
+
+<i>&gt;&nbsp; Wie kann man zwischen SPTI und ASPI auswählen?</i><p>
+
+In der Grundeinstellung wählt dvdisaster automatisch zwischen SPTI und
+ASPI aus, wobei SPTI bevorzugt wird.
+Die Benutzung von ASPI kann allerdings erzwungen werden; 
+näheres dazu steht in der Beschreibung
+der --list -Funktion.
+
 <div align=right><a href="#top">&uarr;</a></div><p>
 
 <!--- do not change below --->

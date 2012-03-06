@@ -23,7 +23,7 @@ eingelegten Datenträger (Menü Werkzeuge/Datenträger-Info);
 dazu wurde die Erkennung des Datenträger-Typs (CD/DVD/BD) verändert. 
 Falls dadurch vorher unterstützte Laufwerke nicht mehr funktionieren, bitte
 eine Rückmeldung geben. Die Unterstützung von BD-Datenträgern wurde verbessert.
-", 5, "2008-03-30T00:00:00Z", "2008-03-30T00:00:00Z");
+");
 
 news_item("05.03.2008", "Problem mit vorheriger Windows-Version behoben (0.70.6 / 0.71.25)", "
   Die Unterstützung für Dateinamen mit Umlauten wurde aus Version 0.70.6
@@ -31,14 +31,14 @@ news_item("05.03.2008", "Problem mit vorheriger Windows-Version behoben (0.70.6 
   unter Windows nicht mehr verarbeitet werden konnten.
   Eine korrekte Behandlung von Dateinamen mit Sonderzeichen wird jetzt
   erst in der experimentellen Version 0.71.25 erprobt.
-", 4, "2008-03-05T00:00:00Z", "2008-03-05T00:00:00Z");
+");
 
 news_item("03.03.2008", "Ups - Abbilder >2GB erzeugen Fehler in 0.70.5 and 0.71.24 unter Windows", "
    Die Behandlung von Umlauten in Dateinamen hat dazu geführt, daß unter Windows
    keine Abbilder >2GB mehr verarbeitet werden können. Betroffen sind nur die gerade
    veröffentlichten Versionen 0.70.5 and 0.71.24. Verbesserte Versionen kommen 
    in den nächsten Tagen.
-", 3, "2008-03-03T00:00:00Z", "2008-03-03T00:00:00Z");
+");
 
 news_item("24.02.2008", "dvdisaster 0.70.5 / 0.71.24 beheben Problem mit neuen Linux-Versionen", "
    Die neuen Versionen beheben ein Problem mit neueren Linux-Kernen, das unter
@@ -50,7 +50,7 @@ news_item("24.02.2008", "dvdisaster 0.70.5 / 0.71.24 beheben Problem mit neuen L
    Mit dieser Version beginnt außerdem die Überarbeitung
    der Online-Dokumentation, einschließlich einer russischen Übersetzung von Igor 
    Gorbounov. 
-", 2, "2008-02-24T00:00:00Z", "2008-02-24T00:00:00Z");
+"); # end of news_item
 
 if($news_flash == 0) 
    end_page();

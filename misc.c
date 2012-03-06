@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -202,13 +202,14 @@ static void print_greetings(FILE *where)
    if(greetings_shown) return;
 
    greetings_shown = 1;
-   g_fprintf(where, _("dvdisaster-%s%sCopyright 2004-2010 Carsten Gnoerlich.\n"),
+   g_fprintf(where, _("dvdisaster-%s%sCopyright 2004-2011 Carsten Gnoerlich.\n"),
 	     VERSION, strstr(VERSION,"pl") ? " " : "  ");
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE
       in the source code." Avoid making any legal statements by your own.*/
-   g_fprintf(where, _("This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
+   g_fprintf(where, "%s",
+	            _("This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
 		      "is free software and you are welcome to redistribute it\n"
 		      "under the conditions of the GNU GENERAL PUBLIC LICENSE.\n"  
 		      "See the file \"COPYING\" for further information.\n"));
@@ -275,7 +276,6 @@ void PrintProgress(char *format, ...)
    {  n = 255;
       msg[255] = 0;
    }
-   Closure->progressLength = n;
 
    if(strchr(msg, '\n'))
       g_fprintf(stderr, "%s", msg);
@@ -288,21 +288,6 @@ void PrintProgress(char *format, ...)
    }
 
    fflush(stderr);   /* at least needed for Windows */
-}
-
-/*
- * Clear last progress string
- */
-
-void ClearProgress(void)
-{  static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-   int n = Closure->progressLength;
-
-   Closure->bs[n] = Closure->sp[n] = 0;
-   g_fprintf(stderr, "%s%s", Closure->sp, Closure->bs);
-   Closure->bs[n] = '\b';
-   Closure->sp[n] = ' ';
-   g_static_mutex_unlock(&mutex);
 }
 
 /*
@@ -390,7 +375,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
       log_window_append(tmp2);
    }
    else
-   {  g_fprintf(stderr, tmp2);
+   {  g_fprintf(stderr, "%s", tmp2);
 
       fflush(stderr);   /* at least needed for Windows */
    }
@@ -514,7 +499,7 @@ void Stop(char *format, ...)
    }
 
    if(!Closure->guiMode) 
-   {  g_fprintf(stderr, _("\n*\n* dvdisaster - can not continue:\n*\n"));
+   {  g_fprintf(stderr, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
       g_vfprintf(stderr, format, argp);
       va_end(argp);
@@ -848,7 +833,7 @@ static gboolean modal_idle_func(gpointer data)
 				   GTK_DIALOG_DESTROY_WITH_PARENT,
 				   mi->message_type,
 				   mi->button_type,
-				   mi->msg);
+				   "%s", mi->msg);
    gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
 
    if(mi->button_fn)
@@ -1112,70 +1097,4 @@ void LockLabelSize(GtkLabel *label, char *format, ...)
    gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
 
    g_free(text);
-}
-
-/***
- *** Safety requesters before overwriting stuff
- ***/
-
-static void dont_ask_again_cb(GtkWidget *widget, gpointer data)
-{  int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  
-   Closure->confirmDeletion = !state;
-
-   UpdatePrefsConfirmDeletion();
-}
-
-static void insert_button(GtkDialog *dialog)
-{  GtkWidget *check,*align;
-
-   align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), align, FALSE, FALSE, 0);
-
-   check = gtk_check_button_new_with_label(_utf("Do not ask again"));
-   gtk_container_add(GTK_CONTAINER(align), check);
-   gtk_container_set_border_width(GTK_CONTAINER(align), 10);
-   g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
-
-   gtk_widget_show(align);
-   gtk_widget_show(check);
-   ReverseCancelOK(GTK_DIALOG(dialog));
-} 
-
-int ConfirmImageDeletion(char *file)
-{  int answer;
-
-   if(!Closure->guiMode)  /* Always delete it in command line mode */
-      return TRUE;
-
-   if(!Closure->confirmDeletion) /* I told you so... */
-      return TRUE;
-
-   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-			insert_button,
-			_("Image file already exists and does not match the medium:\n\n"
-			  "%s\n\n"
-			  "The existing image file will be deleted."),
-			file);
-
-   return answer == GTK_RESPONSE_OK;
-}
-
-int ConfirmEccDeletion(char *file)
-{  int answer;
-
-   if(!Closure->guiMode)  /* Always delete it in command line mode */
-      return TRUE;
-
-   if(!Closure->confirmDeletion) /* I told you so... */
-      return TRUE;
-
-   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-			insert_button,
-			_("The error correction file is already present:\n\n"
-			  "%s\n\n"
-			  "Overwrite it?"),
-			file);
-
-   return answer == GTK_RESPONSE_OK;
 }

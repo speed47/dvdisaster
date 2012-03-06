@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -169,7 +169,7 @@ static void print_ptr(memchunk *mc, int size)
 static void print_ptrs(char *msg)
 {  int bucket,i,n=0;
 
-   g_printf(msg);
+   g_printf("%s", msg);
 
    for(bucket=0; bucket<64; bucket++)
       for(i=0; i<phCnt[bucket]; i++)

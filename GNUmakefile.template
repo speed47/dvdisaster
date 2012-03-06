@@ -48,7 +48,6 @@ WITH_OPTIONS = $(CFG_WITH_OPTIONS)
 OTHER_OPTIONS = $(CFG_OTHER_OPTIONS) -DVERSION=\"$(VERSION)\"
 EXE_SUFFIX   = $(CFG_EXE_SUFFIX)
 SSE2_OPTIONS = $(CFG_SSE2_OPTIONS)
-ALTIVEC_OPTIONS = $(CFG_ALTIVEC_OPTIONS)
 
 LOCATIONS = -DSRCDIR=\"$(SRCDIR)\" -DBINDIR=\"$(BINDIR)\" -DDOCDIR=\"$(DOCSUBDIR)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
 COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS)
@@ -126,10 +125,6 @@ rs-encoder-sse2.o: rs-encoder-sse2.c
 	@echo "Compiling:" $*.c
 	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c $*.c
 
-rs-encoder-altivec.o: rs-encoder-altivec.c
-	@echo "Compiling:" $*.c
-	@$(CC) $(ALTIVEC_OPTIONS) $(COPTS) -c $*.c
-
 locale:
 	@$(MAKE) --no-print-directory -C locale
 
@@ -193,10 +188,7 @@ version.php:
 	@echo "<?php" >$(SRCDIR)/documentation/include/version.php
 	@echo "\$$version=\"$(VERSION)\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "\$$pkgname=\"$(PKGNAME)\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$doc_dir=\"$(SRCDIR)/documentation\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "\$$cooked_version=\""$(CFG_FULL_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$have_experimental=\""$(CFG_HAVE_EXPERIMENTAL)"\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$stable_version=\""$(CFG_STABLE_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
 	@if test -e help-dialogs.h && grep UNMODIFIED help-dialogs.h >/dev/null; \
 	then echo "\$$modified_source=0;" >>$(SRCDIR)/documentation/include/version.php; \
 	else echo "\$$modified_source=1;" >>$(SRCDIR)/documentation/include/version.php; \
@@ -211,17 +203,13 @@ mount-php:
 	  echo "* HTML document directory (as specified by configure --phpmountdir).";\
 	  echo "* You need sudo priviledges to execute the command below:";\
 	  echo ;\
+	fi
+	if ! test -e $(PHPMOUNTDIR)/dvdisaster.de.1; then\
 	  if ! test -e $(PHPMOUNTDIR); then sudo mkdir -p $(PHPMOUNTDIR); fi;\
 	  sudo mount -o bind $(SRCDIR)/documentation $(PHPMOUNTDIR) ;\
 	fi
 	make version.php
-	if ! test -e $(SRCDIR)/documentation/de/thumbnails/good-cd.png; \
-	  then make thumbnails; \
-	fi
-	for i in $(DOC_LOCALES); do \
-	  chmod 777 $(SRCDIR)/documentation/$$i/feed $(SRCDIR)/documentation/$$i/feed/atom.xml; \
-	  echo chmod 777 $(SRCDIR)/documentation/$$i/feed $(SRCDIR)/documentation/$$i/feed/atom.xml; \
-	done
+	make thumbnails
 
 html: mount-php version.php
 	@echo -n "Producing html documentation... "
@@ -258,8 +246,8 @@ help:
 	@echo
 	@echo "Documentation related:"
 	@echo "mount-php - mount documentation sub directory"
-	@echo "www-images- create package of .html and .png files"
-	@echo "www       - create package of .html files only"
+	@echo "www-images- create package of .php and .png files"
+	@echo "www       - create package of .php files only"
 	@echo "html      - create html version of internet documentation"
 	@echo "localhtml - create html version for local documentation"
 	@echo "thumbnails- unconditionally recreate all thumbnails"
@@ -307,7 +295,6 @@ show:
 	@echo "WITH_OPTIONS = " $(WITH_OPTIONS)
 	@echo "OTHER_OPTIONS= " $(OTHER_OPTIONS)
 	@echo "SSE2_OPTIONS = " $(SSE2_OPTIONS)
-	@echo "ALTIVEC_OPTIONS= " $(ALTIVEC_OPTIONS)
 	@echo
 	@echo "CFLAGS       = " $(CFLAGS)
 	@echo "COPTS        = " $(COPTS)
@@ -319,7 +306,7 @@ show:
 ######################################################################
 
 .PHONY : install uninstall clean distclean arch
-.PHONY : www www-images php php-images
+.PHONY : www www-images 
 .PHONY : srcdist macdist windist
 
 install: dvdisaster images
@@ -434,22 +421,19 @@ clean:
 	@if test -e $(SRCDIR)/papers; then \
 	  $(MAKE) --no-print-directory -C papers clean; \
 	fi
-	@if test -e $(SRCDIR)/regtest; then \
-	  $(MAKE) --no-print-directory -C regtest clean; \
-	fi
 
 BUILD=`grep BUILD $(SRCDIR)/build.h | cut -d ' ' -f 3`
 arch:	archclean time-stamp
 	@cd .. ; tar -c -z -f $(PKGNAME)-$(BUILD).tgz $(PKGNAME)
 
 # TAG: online-docs
-www: html
+www:   version.php
 	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc include/dvdisaster.css de/*.html en/*.html ru/*.html de/feed en/feed ru/feed
+	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css de/*.html en/*.html ru/*.html
 
-www-images: html
+www-images: thumbnails version.php
 	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc include/dvdisaster.css de/*.html en/*.html ru/*.html images/*.png de/images/*.png de/thumbnails/*.png en/images/*.png en/thumbnails/*.png ru/images/*.png ru/thumbnails/*.png de/feed en/feed ru/feed
+	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css  de/*.html en/*.html ru/*.html images/*.png de/images/*.png de/thumbnails/*.png en/images/*.png en/thumbnails/*.png ru/images/*.png ru/thumbnails/*.png
 
 INSTALL: documentation/install.template
 	@sed "s/@@PKGNAME/$(PKGNAME)/" <documentation/install.template >INSTALL

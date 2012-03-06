@@ -19,11 +19,11 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79
+PACKAGE dvdisaster 0.72
 
 REL_MICRO=3
-#REL_STATUS=patch
-REL_STATUS=devel
+REL_STATUS=patch
+#REL_STATUS=devel
 #REL_STATUS=rc
 
 #REL_MICRO=0
@@ -37,11 +37,6 @@ case "$REL_STATUS" in
   patch) DEFINE_VAR FULL_VERSION "\"$VERSION (pl${REL_MICRO})\"" ;;
   *) DEFINE_VAR FULL_VERSION "\"$VERSION (${REL_STATUS}-${REL_MICRO})\"" ;;
 esac
-
-# Last stable version (used only in WWW pages)
-
-DEFINE_VAR HAVE_EXPERIMENTAL "yes"
-DEFINE_VAR STABLE_VERSION "0.72.2"
 
 # Check for some essential tools.
 
@@ -112,9 +107,7 @@ CFG_CFLAGS=$SAVE_CFLAGS
 
 echo
 CHECK_ENDIAN
-CHECK_BITNESS
 CHECK_SSE2
-CHECK_ALTIVEC
 
 # Look for required tools
 
@@ -133,6 +126,13 @@ if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
   echo "* gdk-pixbuf not installed"
   echo "* or path to gdk-pixbuf-csource is missing."
   exit 1
+fi
+
+if test $CFG_SYS_OPTIONS == -DSYS_MINGW; then
+  if ! EXECUTE_PROGRAM "dllwrap -version" dllwrap ; then
+    echo "* dllwrap not installed or path to it is missing."
+    echo "* You can build dvdisaster, but not the windows installer."
+  fi
 fi
 
 # Evaluate the --with* customization options
@@ -208,6 +208,12 @@ done
 echo "}" >> method-link.c
 echo 
 
+# Temporary fix for missing rs03 sources
+
+if test -e rs03-includes.h; then
+  CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_RS03"
+fi
+
 # Okay, hopefully we've got everything together now.
 
 (cd locale; bash create-makefile)
@@ -264,7 +270,12 @@ if test -n "$BUILDROOT"; then
   echo
 fi
 
-id_binary="id"
+if test $cfg_system == "solaris"; then
+  id_binary="/usr/xpg4/bin/id"
+else
+  id_binary="id"
+fi
+
 if test `$id_binary -u` -eq 0; then
   echo "* WARNING: Compiling the project as ROOT USER is not recommended"
   echo "*          and may cause unexpected problems. If compilation fails"

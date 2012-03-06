@@ -61,6 +61,17 @@ recovery they can be
 <p>
 <?php end_screen_shot(); ?>
 
+<?php begin_screen_shot("\"Files\" tab.","create-prefs-file.png"); ?>
+<b>"Files" tab.</b> 
+If your operating system can not create files larger than 2GB then you
+must choose the "Split files " setting (marked green). In that case
+dvdisaster will create up to 100 segments called "medium00.iso",
+"medium01.iso" etc. instead of a single "medium.iso" file. Using this
+option results in a small performance hit. This option is mostly
+useful under Windows if the old FAT32 file system is still used. Leave
+the other settings off as shown in the screen shot.
+<?php end_screen_shot(); ?>
+
 <pre> </pre>
 
 <b>Not used tabs</b><p>

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -39,7 +39,7 @@ void FreeIsoInfo(IsoInfo*);
 EccHeader* FindHeaderInMedium(DeviceHandle*, gint64);
 gint64 MediumLengthFromRS02(DeviceHandle*, gint64);
 
-IsoInfo* ExamineUDF(DeviceHandle*, LargeFile*);
+int ExamineUDF(DeviceHandle*);
 
 /*
  * Structure and functions for creating an .iso image

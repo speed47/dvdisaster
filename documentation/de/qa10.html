@@ -1,6 +1,7 @@
 <html>
 <head>
  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
  <title>Technische Fragen</title>
  <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
 </head>
@@ -11,7 +12,7 @@
   <tr>
      <td align="left">
        <font size="+3"><b>dvdisaster</b></font>
-       <i>Version 0.72.2 / 0.79 (devel-3)</i>
+       <i>Version 0.72 (pl3)</i>
   </td>
   <td align="right">
      <font size="+3">&nbsp;</font><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
@@ -48,6 +49,7 @@
 	  </table><p>
 
           <table width="100%">
+
             <tr><td colspan=3><font size="-1"><a href="news.html">Neuigkeiten</a></font></td></tr>
             <tr><td></td><td></td><td height="10"></td></tr>
             <tr><td colspan=3><font size="-1"><a href="index.html">Überblick</a></font></td></tr>
@@ -78,6 +80,7 @@
 <a href="qa10.html#nls">2.1 In welchen Übersetzungen ist das Programm verfügbar?</a><p>
 <a href="qa10.html#media">2.2 Welche Datenträger-Typen werden unterstützt?</a><p>
 <a href="qa10.html#filesystem">2.3 Welche Dateisysteme werden unterstützt?</a><p>
+<a href="qa10.html#aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a><p>
 
 <hr><p>
 
@@ -185,21 +188,67 @@ kann es keine logischen Fehler darin beheben und insbesondere keine
 verlorengegangenen oder gelöschten Dateien wiederherstellen.
 <div align=right><a href="qa10.html#top">&uarr;</a></div><p>
 
+
+<b><a name="aspi">2.4 Was bedeuten "SPTI" und "ASPI"?</a></b><p>
+
+Windows 98 und ME verwenden ASPI als Treiber, um CD/DVD-Laufwerke 
+anzusprechen. Windows NT und seine Nachfolger
+sind hingegen mit der Schnittstelle SPTI ausgerüstet, erlauben
+jedoch auch noch die zusätzliche Installation von ASPI-Treibern.<p>
+
+<i>&gt;&nbsp; Vor- und Nachteile von ASPI unter Windows NT/2000/XP?</i><p>
+
+<table>
+<tr valign=top><td>+</td><td>Es werden keine Systemverwalterrechte für den Zugriff
+auf die Laufwerke benötigt.</td></tr>
+<tr valign=top><td>-</td><td>ASPI erlaubt manchmal keine eindeutige Zuordnung von Laufwerksbuchstaben.</td></tr>
+<tr valign=top><td>-</td><td>Einige Brennprogramme installieren ihre 
+eigenen ASPI-Versionen.
+Die zusätzliche Installation eines fremden ASPI-Treibers kann die Funktion
+der vorhandenen Brennsoftware stören.</td></tr>
+</table><p>
+
+<i>&gt;&nbsp; Welche ASPI-Version wird für die Benutzung mit dvdisaster empfohlen?</i><p>
+
+Adaptec stellt seine ASPI-Treiber zum kostenlosen Herunterladen bereit.
+Unter Windows 2000/XP erkennen die Versionen 4.72.* manchmal keine
+Laufwerke. In diesem Fall hilft typischerweise die Installation der
+älteren Version 4.60.<p>
+
+<i>&gt;&nbsp; Die Laufwerksbuchstaben stimmen unter ASPI nicht!</i><p>
+
+Die ASPI-Treiber verwenden ein eigenes System von Laufwerkskennungen,
+das nicht zu den Laufwerksbuchstaben von Windows kompatibel ist.<br>
+Um eine einheitliche Benutzerschnittstelle für SPTI und ASPI zu bieten, 
+versucht dvdisaster zu erraten, wie die Laufwerke unter ASPI zugeordnet sind.
+Diese Zuordnung gelingt nicht in allen Konfigurationen.<p>
+
+Mit Hilfe der --list -Funktion kann man 
+die aktuelle Zuordnung von Laufwerksbuchstaben herausfinden.<p>
+
+<i>&gt;&nbsp; Wie kann man zwischen SPTI und ASPI auswählen?</i><p>
+
+In der Grundeinstellung wählt dvdisaster automatisch zwischen SPTI und
+ASPI aus, wobei SPTI bevorzugt wird.
+Die Benutzung von ASPI kann allerdings erzwungen werden; 
+näheres dazu steht in der Beschreibung
+der --list -Funktion.
+
+<div align=right><a href="qa10.html#top">&uarr;</a></div><p>
+
 <!--- do not change below --->
 
   </td> <!--- end of page contents --->
 
  </tr>
-
-<!---
  <tr valign="bottom">
    <td bgcolor="#f0f0f0">
-      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1"></font></a></td></tr></table>
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><font size="-1">Alte Dokumentation (V0.70)</font></a></td></tr></table>
    </td>
    <td></td>
    <td></td>
+
  </tr>
---->
 </table> <!--- end of main body table --->
 
 
@@ -212,7 +261,7 @@ verlorengegangenen oder gelöschten Dateien wiederherstellen.
  <tr>
   <td align="center">
    <font size="-1">
-     <i> Copyright 2004-2010 Carsten Gnörlich.<br>
+     <i> Copyright 2004-2011 Carsten Gnörlich.<br>
          Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
     </i>
    </font>

@@ -58,8 +58,8 @@ howto_headline("Datenträger überprüfen", "Übersicht", "images/scan-icon.png"
 
 <tr valign="top">
  <td><b>Verwandte Funktionen:<p></td>
- <td><a href="howtos30.html">Einlesen von beschädigten Datenträgern</a> und
-     <a href="howtos40.html">Wiederherstellen von Abbildern</a>.</td>
+ <td><a href="howtos30.php">Einlesen von beschädigten Datenträgern</a> und
+     <a href="howtos40.php">Wiederherstellen von Abbildern</a>.</td>
  </tr>
 </table><p>
 

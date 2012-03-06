@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2010 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2011 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -91,6 +91,11 @@ char* DefaultDevice()
 
 DeviceHandle* OpenDevice(char *device)
 {  DeviceHandle *dh; 
+   AlignedBuffer *ab;
+   Sense *sense;
+   unsigned char cmd[MAX_CDB_SIZE];
+   int length;
+   int phy_int_std;
 
    dh = g_malloc0(sizeof(DeviceHandle));
    dh->fd = open(device, O_RDWR | O_NONBLOCK);
@@ -103,6 +108,66 @@ DeviceHandle* OpenDevice(char *device)
 
    dh->device = g_strdup(device);
 
+   /*** Probe for parallel SCSI.
+	We can't use the CDROM_SEND_PACKET ioctl with it. */
+
+   Verbose("# *** OpenDevice(%s) - GET CONFIGURATION ***\n", device);
+
+   length = 2048;
+   ab = CreateAlignedBuffer(length); 
+   sense = &dh->sense;
+
+   /* Query length of returned data */
+
+   memset(cmd, 0, MAX_CDB_SIZE);
+   cmd[0] = 0x46;     /* GET CONFIGURATION */
+   cmd[1] = 0x02;     /* only specified feature */
+   cmd[2] = 0;
+   cmd[3] = 1;        /* we want the core feature (0x0001) */
+   cmd[7] = length>>8;
+   cmd[8] = length&0xff;        /* Allocation length */
+
+   if(SendPacket(dh, cmd, 10, ab->buf, length, sense, DATA_READ)<0)
+   {  
+      FreeAlignedBuffer(ab);
+      Verbose("# failed -> could not get core feature: %s\n",
+	      GetSenseString(sense->sense_key, sense->asc, sense->ascq, 0));
+
+      if(Closure->useSCSIDriver == DRIVER_CDROM_FORCED)
+	Verbose("# Would like to play it safe, but CDROM_SEND_PACKET ioctl()\n"
+		"# forced via command line. Prepare for wreckage.\n");
+      else 
+      {  Verbose("# Playing it safe. Forcing use of SG_IO ioctl().\n");
+	 dh->forceSG_IO = TRUE;
+      }
+      return dh;
+   }
+
+   length = ab->buf[0]<<24 | ab->buf[1] | ab->buf[2] | ab->buf[3];
+   if(length < 12)
+   {  FreeAlignedBuffer(ab);
+      Verbose("# failed -> invalid length for core feature: %d\n", length);
+      return dh;
+   }
+
+   phy_int_std = ab->buf[12]<<24 | ab->buf[13]<<16 | ab->buf[14]<<8 | ab->buf[15];
+
+   Verbose("# physical interface standard: %d\n", phy_int_std);
+   
+   switch(phy_int_std)
+   { case 2: Verbose("# ATAPI. Hopefully not behind a bridge.\n");
+             break;
+     case 1: if(Closure->useSCSIDriver == DRIVER_CDROM_FORCED)
+	       Verbose("# SCSI, but CDROM_SEND_PACKET ioctl() forced via command line.\n"
+		       "#       Prepare for wreckage.\n");
+	     else 
+	     {  Verbose("# SCSI. Forcing use of SG_IO ioctl().\n");
+                dh->forceSG_IO = TRUE;
+	     }
+	     break;
+   }
+
+   FreeAlignedBuffer(ab);
    return dh;
 }
 
@@ -206,7 +271,7 @@ static void test_cdb(unsigned char *cdb, int cdb_size, int direction)
  * The CDROM ioctl() interface has been used since the first dvdisaster release.
  * However with recent 2.6 kernels it seems to become outdated - several parallel
  * SCSI cards are already exhibiting failures using this interface.
- * Starting with dvdisaster 0.79.3, the SG_IO interface has become
+ * Starting with dvdisaster 0.72.2 and 0.79.3, the SG_IO interface has become
  * the default now. You can revert back to old behaviour using --driver=cdrom.
  */
 
@@ -214,7 +279,7 @@ static int send_packet_cdrom(DeviceHandle *dh, unsigned char *cmd, int cdb_size,
 {  struct cdrom_generic_command cgc;
 
 #ifdef ASSERT_CDB_LENGTH
-   test_cdb(cmd, cdb_size, data_mode);
+  test_cdb(cmd, cdb_size, data_mode);
 #endif
 
    memset(&cgc, 0, sizeof(cgc));
@@ -253,7 +318,7 @@ static int send_packet_generic(DeviceHandle *dh, unsigned char *cmd, int cdb_siz
 {  struct sg_io_hdr sg_io;
 
 #ifdef ASSERT_CDB_LENGTH
-   test_cdb(cmd, cdb_size, data_mode);
+  test_cdb(cmd, cdb_size, data_mode);
 #endif
 
    memset(&sg_io, 0, sizeof(sg_io));
@@ -302,13 +367,26 @@ static int send_packet_generic(DeviceHandle *dh, unsigned char *cmd, int cdb_siz
 }
 
 int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char *buf, int size, Sense *sense, int data_mode)
-{
-   switch(Closure->useSCSIDriver)
+{  int driver = Closure->useSCSIDriver;
+
+   /* Using the CDROM_SEND_PACKET ioctl kills parallel SCSI adapters.
+      Redirect the necessary probing commands to the SG_IO driver. */
+
+   if( (cmd[0] == 0x46 || cmd[0] == 0x12) && driver != DRIVER_CDROM_FORCED)
+     driver = DRIVER_SG;
+
+   if(dh->forceSG_IO)
+     driver = DRIVER_SG;
+
+   /* dispatch to appropriate driver */
+
+   switch(driver)
    {
       case DRIVER_SG:
 	return send_packet_generic(dh, cmd, cdb_size, buf, size, sense, data_mode);
 	
-      case DRIVER_CDROM:
+      case DRIVER_CDROM_DEFAULT:
+      case DRIVER_CDROM_FORCED:
 	return send_packet_cdrom(dh, cmd, cdb_size, buf, size, sense, data_mode);
 
       default: 
