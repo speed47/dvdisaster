@@ -1,3 +1,18 @@
+dvdisaster (0.72.3-1~1.gbp71e851) UNRELEASED; urgency=low
+
+  ** SNAPSHOT build @71e85133ab37056a4ae351205f2114cf1e44ff14 **
+
+  [ Rogério Brito ]
+  * Imported Upstream version 0.79.2
+  * Imported Upstream version 0.79.3
+  * debian/patches/*: refresh and adapt every patch
+  * debian/patches/04-manpage.patch: escape one hyphen
+
+  [ TANIGUCHI Takaki ]
+  * Imported Upstream version 0.72.3
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Tue, 06 Mar 2012 11:08:23 +0900
+
 dvdisaster (0.72.1-2) unstable; urgency=low
 
   * [da276c7] Refresh patches to avoid potential problems with the
