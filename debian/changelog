@@ -1,3 +1,9 @@
+dvdisaster (0.72.3-2) unstable; urgency=low
+
+  * debian/patches/libpng15: Build with libpng15. (Closes: #649555) 
+
+ -- TANIGUCHI Takaki <takaki@debian.org>  Mon, 19 Mar 2012 11:08:53 +0900
+
 dvdisaster (0.72.3-1) unstable; urgency=low
 
   [ Rogério Brito ]
