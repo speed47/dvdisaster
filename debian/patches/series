@@ -1,3 +1,4 @@
+glib-single-include.patch
 libpng15
 02-encryption.patch
 03-dvdrom.patch
