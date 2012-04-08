@@ -1,3 +1,9 @@
+dvdisaster (0.72.4-1) UNRELEASED; urgency=low
+
+  * New upstream; debian/patches/glib-single-include.patch: Fix glib include. (Closes: #665522)
+
+ -- TANIGUCHI Takaki <takaki@asis.media-as.org>  Sun, 08 Apr 2012 21:49:37 +0900
+
 dvdisaster (0.72.3-2) unstable; urgency=low
 
   * debian/patches/libpng15: Build with libpng15. (Closes: #649555) 

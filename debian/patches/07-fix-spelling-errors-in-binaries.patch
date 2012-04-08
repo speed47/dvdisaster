@@ -3,8 +3,8 @@ Description: Fix spelling errors in binaries
 
 Index: dvdisaster/preferences.c
 ===================================================================
---- dvdisaster.orig/preferences.c	2012-03-06 11:16:16.451034441 +0900
-+++ dvdisaster/preferences.c	2012-03-06 11:18:09.563031210 +0900
+--- dvdisaster.orig/preferences.c	2012-04-08 21:55:06.732741250 +0900
++++ dvdisaster/preferences.c	2012-04-08 21:55:13.004771913 +0900
 @@ -1627,7 +1627,7 @@
  			 "The values include the borders: 0-100 will read 101 sectors.\n\n"
  
@@ -25,8 +25,8 @@ Index: dvdisaster/preferences.c
  			 "uncorrected sector instead. This may result in sectors "
 Index: dvdisaster/rs01-fix.c
 ===================================================================
---- dvdisaster.orig/rs01-fix.c	2012-03-06 11:16:16.451034441 +0900
-+++ dvdisaster/rs01-fix.c	2012-03-06 11:18:09.563031210 +0900
+--- dvdisaster.orig/rs01-fix.c	2012-04-08 21:55:06.732741250 +0900
++++ dvdisaster/rs01-fix.c	2012-04-08 21:55:13.004771913 +0900
 @@ -246,7 +246,7 @@
        if(Closure->guiMode)
        {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,

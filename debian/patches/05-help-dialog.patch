@@ -3,8 +3,8 @@ Description: Customizes the help-dialog according to README.MODIFYING.
 
 Index: dvdisaster/help-dialogs.c
 ===================================================================
---- dvdisaster.orig/help-dialogs.c	2012-03-06 11:08:21.000000000 +0900
-+++ dvdisaster/help-dialogs.c	2012-03-06 11:15:39.039035508 +0900
+--- dvdisaster.orig/help-dialogs.c	2012-04-08 21:41:14.000000000 +0900
++++ dvdisaster/help-dialogs.c	2012-04-08 21:53:29.300264928 +0900
 @@ -402,7 +402,7 @@
    ShowTextfile(_("windowtitle|GNU General Public License"), 
  	       _("<big>GNU General Public License</big>\n"
@@ -23,19 +23,6 @@ Index: dvdisaster/help-dialogs.c
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -723,9 +723,9 @@
- 
- #ifdef MODIFIED_SOURCE
-    AboutTextWithLink(vbox, 
--		     _("Modified version Copyright 2011 (please fill in - [directions])\n"
--		       "Copyright 2004-2011 Carsten Gnoerlich"),
--		     "MODIFYING");
-+                    _("Modified version for [Debian GNU/Linux]\n"
-+                      "Original Copyright 2004-2011 Carsten Gnoerlich"),
-+                    "http://www.debian.org/");
- #else
-    AboutText(vbox, _("Copyright 2004-2011 Carsten Gnoerlich"));
- #endif
 @@ -742,14 +742,14 @@
     AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
  				"This is free software and you are welcome to redistribute it\n"
