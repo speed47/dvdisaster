@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -27,23 +27,23 @@ howto_headline("Восстановление образов носителей",
 (85.6% - 81.3% = 4.3% в примере), можно оценить шансы собрать достаточно секторов для успешного восстановления:<p>
 <?php end_screen_shot(); ?>
 
-<table cellspacing="0" cellpadding="10px">
-<tr bgcolor="#c0ffc0">
-<td width="10%" align="center" valign="top">&lt; 5%</td>
+<table cellspacing="0" cellpadding="10">
+<tr style="background-color:#c0ffc0;">
+<td class="w10p" align="center" valign="top">&lt; 5%</td>
 <td> Высока вероятность того, что будет получено достаточно данных за счет использования большего числа попыток чтения.
 </td></tr>
-<tr bgcolor="#ffffc0">
-<td width="10%" align="center" valign="top">5%-10%</td>
+<tr style="background-color:#ffffc0;">
+<td class="w10p" align="center" valign="top">5%-10%</td>
 <td> Если у вас есть несколько приводов с разными характеристиками чтения, 
 можно получить требуемые данные, если быть настойчивым и терпеливым.
 </td></tr>
-<tr bgcolor="#ffe0c0">
-<td width="10%" align="center" valign="top">10%-20%</td>
+<tr style="background-color:#ffe0c0;">
+<td class="w10p" align="center" valign="top">10%-20%</td>
 <td> У вас проблема. Если число недостающих секторов не уменьшится значительно 
 ниже 10% за следующие 2-3 попытки чтения, то носитель, вероятно, не удастся восстановить. 
 </td></tr>
-<tr bgcolor="#ffc0c0">
-<td width="10%" align="center" valign="top">&gt; 20%</td>
+<tr style="background-color:#ffc0c0;">
+<td class="w10p" align="center" valign="top">&gt; 20%</td>
 <td>Слишком много потеряно данных; этот носитель можно списать как невосстановимый.
 Чтобы этого больше не случалось, используйте данные для исправления ошибок
 с большей избыточностью и сократите интервалы для проверки дефектов.
@@ -74,7 +74,7 @@ howto_headline("Восстановление образов носителей",
 
 <b>Завершение образа за счет использования разных приводов</b><p>
 Проведите дополнительные попытки чтения с использованием различных приводов. Перенесите
-образ на другие компьютеры и проверьте, могут ли их приводы добавить читаемые сектора.</b><p>
+образ на другие компьютеры и проверьте, могут ли их приводы добавить читаемые сектора.<p>
 
 <hr>
 
@@ -116,7 +116,7 @@ howto_headline("Восстановление образов носителей",
 Проверьте вновь, не создались ли файлы с необработанными секторами.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

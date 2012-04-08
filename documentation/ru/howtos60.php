@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Общая картина - сравнение dvdisaster с обычным резервированием</h3>
+<h3 class="top">Общая картина - сравнение dvdisaster с обычным резервированием</h3>
 
 dvdisaster хранит данные на CD/DVD/BD таким образом, что данные полностью восстановимы даже после
 того, как у носителя появились ошибки чтения. Метод, применяемый в dvdisaster, использует
@@ -26,24 +26,24 @@ dvdisaster хранит данные на CD/DVD/BD таким образом, �
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/backup1.png"></td>
-<td width="60px">Copy<br><img src="../images/right-arrow.png"></td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/backup1.png" alt="Icon: Original media"></td>
+<td class="w65x">Copy<br><img src="../images/right-arrow.png" alt="Icon: Arrow right"></td>
+<td class="w65x"><img src="../images/backup2.png" alt="Icon: Backup media"></td>
 <td> &nbsp; </td>
 <td>Существующий носитель (1) копируется на резервный носитель (2).</td>
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td width="60px"><img src="../images/bad-cd1.png"></td>
-<td width="60px"> </td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/bad-cd1.png" alt="Icon: Damaged media"></td>
+<td class="w65x"> </td>
+<td class="w65x"><img src="../images/backup2.png" alt="Icon: Backup media"></td>
 <td></td>
 <td>Если люой один из этих носителей будет поврежден после этого, 
 у нас все еще останется нетронутый носитель.</td>
@@ -68,9 +68,9 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/good-cd.png"></td>
-<td width="60px">Создание<br><img src="../images/right-arrow.png"><br>ECC</td>
-<td width="60px"><img src="../images/ecc.png"></td>
+<td class="w65x"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td class="w65x">Создание<br><img src="../images/right-arrow.png" alt="Icon: Arrow right"><br>ECC</td>
+<td class="w65x"><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td>
 В этот раз мы не делаем полное резервирование. dvdisaster используется для создания данных для исправления ошибок ("ECC"), которые могут восстановить до 20% испорченного носителя.
@@ -79,16 +79,16 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td>
 Когда носитель дает сбой через какое-то время,
@@ -98,9 +98,9 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Icon: Diagonal arrow right"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Icon: Diagonal arrow left">20%</td>
 <td> </td>
 <td>
 Для успешного восстановления не меньше 80% данных все еще должны быть читаемыми с носителя, а оставшиеся 20% рассчитываются по данным для исправления ошибок.</td>
@@ -108,7 +108,7 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td> </td>
 <td> </td>
 <td>Теперь полностью восстановленные данные имются в виде ISO-образа на жестком диске 
@@ -118,7 +118,7 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/down-arrow.png"></td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td> </td>
 <td> </td>
 <td>Запишите образ на чистый носитель с помощью своей любимой программы для 
@@ -127,7 +127,7 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/good-cd.png"></td>
+<td align="center"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td> </td>
 <td> </td>
 <td>Теперь у вас есть новый носитель без ошибок.</td>
@@ -163,7 +163,7 @@ CD/DVD/BD: один носитель может быть утерян, разр�
 Конечно, эти рассказы являются чистым вымыслом и любое сходство с существующими  людьми или ситуациями полностью случайное.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

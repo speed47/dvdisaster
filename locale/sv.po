@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 19:20+0200\n"
+"POT-Creation-Date: 2012-04-01 16:47+0200\n"
 "PO-Revision-Date: 2006-06-14 23:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
-"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: closure.c:568
+#: closure.c:539
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -30,15 +30,15 @@ msgstr ""
 "# som kommer att skrivas över varje gång dvdisaster körs.\n"
 "\n"
 
-#: closure.c:770 closure.c:778 closure.c:785
+#: closure.c:731
 msgid "medium.iso"
 msgstr ""
 
-#: closure.c:771 closure.c:779 closure.c:786
+#: closure.c:732
 msgid "medium.ecc"
 msgstr ""
 
-#: closure.c:772 closure.c:780 closure.c:787
+#: closure.c:733
 msgid "sector-"
 msgstr ""
 
@@ -355,32 +355,32 @@ msgstr "RS01-metoden inte tillgänglig för jämförelser av filer."
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:281 dvdisaster.c:293 dvdisaster.c:309
+#: dvdisaster.c:239 dvdisaster.c:251 dvdisaster.c:267
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:480
+#: dvdisaster.c:438
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr ""
 
-#: dvdisaster.c:494
+#: dvdisaster.c:452
 msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
 msgstr ""
 
-#: dvdisaster.c:496
+#: dvdisaster.c:454
 msgid "--cache-size maximum is 8192MB."
 msgstr ""
 
-#: dvdisaster.c:515
+#: dvdisaster.c:473
 msgid "Valid args for --driver: sg,cdrom"
 msgstr ""
 
-#: dvdisaster.c:517
+#: dvdisaster.c:475
 msgid "--driver is only supported on GNU/Linux"
 msgstr ""
 
-#: dvdisaster.c:625
+#: dvdisaster.c:583
 #, c-format
 msgid ""
 "\n"
@@ -388,12 +388,12 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:689
+#: dvdisaster.c:647
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? ogiltigt getopt-svarsvärde %d\n"
 
-#: dvdisaster.c:723
+#: dvdisaster.c:681
 #, c-format
 msgid ""
 "dvdisaster is not properly installed.\n"
@@ -402,7 +402,7 @@ msgstr ""
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:893
+#: dvdisaster.c:847
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -427,7 +427,7 @@ msgstr ""
 "  dvdisaster -u,--unlink # Ta bort .iso-filer (när andra operationer är färdiga)\n"
 "\n"
 
-#: dvdisaster.c:902
+#: dvdisaster.c:856
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -442,7 +442,7 @@ msgstr ""
 "  -i,--image  avbildsfil - namn på avbildsfil       (standard: medium.iso)\n"
 "  -e,--ecc    ecc-fil    - namn på paritetsfil      (standard: medium.ecc)\n"
 
-#: dvdisaster.c:910
+#: dvdisaster.c:864
 msgid ""
 "  -l,--list              - list drives available under ASPI manager\n"
 "\n"
@@ -450,7 +450,7 @@ msgstr ""
 "  -l,--list              - lista enheter tillgängliga under ASPI-hanteraren\n"
 "\n"
 
-#: dvdisaster.c:915
+#: dvdisaster.c:869
 #, c-format
 msgid ""
 "Tweaking options (see manual before using!)\n"
@@ -466,11 +466,11 @@ msgid ""
 "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr ""
 
-#: dvdisaster.c:928
+#: dvdisaster.c:882
 msgid "  --driver=sg/cdrom      - use cdrom (default) or alternative sg SCSI driver\n"
 msgstr ""
 
-#: dvdisaster.c:930
+#: dvdisaster.c:884
 msgid ""
 "  --eject                - eject medium after successful read\n"
 "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
@@ -487,7 +487,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:944
+#: dvdisaster.c:898
 #, c-format
 msgid ""
 "Debugging options (purposefully undocumented and possibly harmful)\n"
@@ -514,7 +514,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:968
+#: dvdisaster.c:922
 msgid ""
 "NOTE: This is the Windows console version of dvdisaster.\n"
 "The version providing a graphical user interface is called\n"
@@ -522,7 +522,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:989
+#: dvdisaster.c:943
 msgid "Optical drive 52X FW 1.02"
 msgstr ""
 
@@ -685,13 +685,13 @@ msgstr "Om dvdisaster"
 
 #: help-dialogs.c:726
 msgid ""
-"Modified version Copyright 2011 (please fill in - [directions])\n"
-"Copyright 2004-2011 Carsten Gnoerlich"
+"Modified version Copyright 2012 (please fill in - [directions])\n"
+"Copyright 2004-2012 Carsten Gnoerlich"
 msgstr ""
 
 #: help-dialogs.c:730
-msgid "Copyright 2004-2011 Carsten Gnoerlich"
-msgstr "Copyright 2004-2011 Carsten Gnörlich"
+msgid "Copyright 2004-2012 Carsten Gnoerlich"
+msgstr "Copyright 2004-2012 Carsten Gnörlich"
 
 #: help-dialogs.c:737
 msgid ""
@@ -733,13 +733,7 @@ msgid ""
 "e-mail: carsten@dvdisaster.org   -or-   cgnoerlich@fsfe.org"
 msgstr ""
 
-#: help-dialogs.c:766
-msgid ""
-"\n"
-"Darwin port (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
-msgstr ""
-
-#: help-dialogs.c:769
+#: help-dialogs.c:765
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -962,7 +956,7 @@ msgstr ""
 msgid "Book type:"
 msgstr ""
 
-#: medium-info.c:308 scsi-layer.c:2677
+#: medium-info.c:308 scsi-layer.c:2678
 msgid "Manuf.-ID:"
 msgstr ""
 
@@ -1216,8 +1210,8 @@ msgstr ""
 
 #: misc.c:205
 #, c-format
-msgid "dvdisaster-%s%sCopyright 2004-2011 Carsten Gnoerlich.\n"
-msgstr "dvdisaster-%s%sCopyright 2004-2011 Carsten Gnörlich.\n"
+msgid "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnoerlich.\n"
+msgstr "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnörlich.\n"
 
 #: misc.c:212
 msgid ""
@@ -2266,8 +2260,7 @@ msgid "button|Smart L-EC"
 msgstr ""
 
 #: raw-sector-cache.c:34 raw-sector-cache.c:201 raw-sector-cache.c:335
-#: rs01-verify.c:538 scsi-freebsd.c:113 scsi-linux.c:105 scsi-netbsd.c:111
-#: scsi-solaris.c:127
+#: rs01-verify.c:538 scsi-freebsd.c:120 scsi-linux.c:105 scsi-netbsd.c:112
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Kunde inte öppna %s: %s"
@@ -2307,6 +2300,36 @@ msgstr ""
 #, c-format
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
 msgstr ""
+
+#: read-adaptive-window.c:79
+msgid "Adaptive reading:"
+msgstr "Adaptiv läsning:"
+
+#: read-adaptive-window.c:107
+msgid "Sectors processed"
+msgstr "Sektorer behandlade"
+
+#: read-adaptive-window.c:110 scsi-layer.c:1730
+msgid "readable"
+msgstr "läsbar"
+
+#: read-adaptive-window.c:114
+msgid "correctable"
+msgstr "korrigerbar"
+
+#: read-adaptive-window.c:118
+msgid "missing"
+msgstr "saknas"
+
+#: read-adaptive-window.c:128
+#, c-format
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr ""
+
+#: read-adaptive-window.c:135
+#, c-format
+msgid "Total recoverable: %d.%d%%"
+msgstr "Totalt återhämtningsbara: %d.%d%%"
 
 #: read-adaptive.c:143 read-adaptive.c:1336
 msgid "Aborted by unrecoverable error."
@@ -2513,12 +2536,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "CRC-fel i sektor %lld\n"
 
-#: read-adaptive.c:1543 scsi-layer.c:1748
+#: read-adaptive.c:1543 scsi-layer.c:1749
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Sektorer %lld-%lld: %s\n"
 
-#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1747
+#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1748
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Sektor %lld: %s\n"
@@ -2563,35 +2586,44 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% av avbilden har lästs (%lld sektorer).\n"
 
-#: read-adaptive-window.c:79
-msgid "Adaptive reading:"
-msgstr "Adaptiv läsning:"
-
-#: read-adaptive-window.c:107
-msgid "Sectors processed"
-msgstr "Sektorer behandlade"
-
-#: read-adaptive-window.c:110 scsi-layer.c:1729
-msgid "readable"
-msgstr "läsbar"
-
-#: read-adaptive-window.c:114
-msgid "correctable"
-msgstr "korrigerbar"
-
-#: read-adaptive-window.c:118
-msgid "missing"
-msgstr "saknas"
-
-#: read-adaptive-window.c:128
+#: read-linear-window.c:94
 #, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr ""
+msgid "Current Speed: %d.%dx"
+msgstr "Aktuell hastighet: %d.%dx"
 
-#: read-adaptive-window.c:135
+#: read-linear-window.c:101 read-linear.c:550
 #, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Totalt återhämtningsbara: %d.%d%%"
+msgid "Unreadable / skipped sectors: %lld"
+msgstr "Oläsbara / överhoppade sektorer: %lld"
+
+#: read-linear-window.c:243 read-linear-window.c:312
+msgid "Already present"
+msgstr "Finns redan"
+
+#: read-linear-window.c:277 read-linear-window.c:319 rs01-verify.c:123
+#: rs02-verify.c:118
+msgid "Sectors with CRC errors"
+msgstr "Sektorer med CRC-fel"
+
+#: read-linear-window.c:300
+msgid "Medium state"
+msgstr "Mediastatus"
+
+#: read-linear-window.c:308
+msgid "Not touched this time"
+msgstr "Rörs inte denna gång"
+
+#: read-linear-window.c:315
+msgid "Successfully read"
+msgstr "Läsning lyckades"
+
+#: read-linear-window.c:322
+msgid "Unreadable / skipped"
+msgstr "Oläsbar / överhoppad"
+
+#: read-linear-window.c:404
+msgid "Speed"
+msgstr "Hastighet"
 
 #: read-linear.c:105
 #, c-format
@@ -2664,15 +2696,10 @@ msgstr ""
 msgid "done.\n"
 msgstr "klar.\n"
 
-#: read-linear.c:528 scsi-layer.c:2070
+#: read-linear.c:528 scsi-layer.c:2071
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Väntar %d sekunder på att enheten ska varva upp...\n"
-
-#: read-linear.c:550 read-linear-window.c:101
-#, c-format
-msgid "Unreadable / skipped sectors: %lld"
-msgstr "Oläsbara / överhoppade sektorer: %lld"
 
 #: read-linear.c:630
 #, c-format
@@ -2818,40 +2845,6 @@ msgstr ""
 "Detta är okej om cd-skivan skrevs i TAO-läget (track at once).\n"
 "Avbilden kommer att kapas enligt det. Se manualen för detaljer.\n"
 "Använd flaggan --dao för att inaktivera kapning av avbild.\n"
-
-#: read-linear-window.c:94
-#, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Aktuell hastighet: %d.%dx"
-
-#: read-linear-window.c:243 read-linear-window.c:312
-msgid "Already present"
-msgstr "Finns redan"
-
-#: read-linear-window.c:277 read-linear-window.c:319 rs01-verify.c:123
-#: rs02-verify.c:118
-msgid "Sectors with CRC errors"
-msgstr "Sektorer med CRC-fel"
-
-#: read-linear-window.c:300
-msgid "Medium state"
-msgstr "Mediastatus"
-
-#: read-linear-window.c:308
-msgid "Not touched this time"
-msgstr "Rörs inte denna gång"
-
-#: read-linear-window.c:315
-msgid "Successfully read"
-msgstr "Läsning lyckades"
-
-#: read-linear-window.c:322
-msgid "Unreadable / skipped"
-msgstr "Oläsbar / överhoppad"
-
-#: read-linear-window.c:404
-msgid "Speed"
-msgstr "Hastighet"
 
 #: recover-raw.c:63
 #, c-format
@@ -4235,11 +4228,7 @@ msgid ""
 "Even if this limit is not reached the augmented image may be a few sectors smaller than specified for technical reasons."
 msgstr ""
 
-#: scsi-darwin.c:159
-msgid "No CD/DVD drives found."
-msgstr "Inga cd/dvd-enheter hittades."
-
-#: scsi-freebsd.c:42 scsi-linux.c:44 scsi-solaris.c:61
+#: scsi-freebsd.c:42 scsi-linux.c:44
 msgid ""
 "Can not access /dev for devices\n"
 "No drives will be pre-selected.\n"
@@ -4247,7 +4236,7 @@ msgstr ""
 "Kan inte komma åt /dev efter enheter\n"
 "Inga enheter kommer att vara förvalda.\n"
 
-#: scsi-freebsd.c:97 scsi-linux.c:85 scsi-solaris.c:112
+#: scsi-freebsd.c:97 scsi-linux.c:85
 msgid ""
 "No CD/DVD drives found in /dev.\n"
 "No drives will be pre-selected.\n"
@@ -4393,7 +4382,7 @@ msgid ""
 "Could not query BD disc structure.\n"
 msgstr ""
 
-#: scsi-layer.c:1677
+#: scsi-layer.c:1678
 #, c-format
 msgid ""
 "%s\n"
@@ -4402,12 +4391,12 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter dvdstrukturlängd för formatkod 1.\n"
 
-#: scsi-layer.c:1688
+#: scsi-layer.c:1689
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Kunde inte fråga efter dvd:ns copyrightinformation - osannolik paketlängd %d\n"
 
-#: scsi-layer.c:1703
+#: scsi-layer.c:1704
 #, c-format
 msgid ""
 "%s\n"
@@ -4416,23 +4405,23 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter copyrightinformation.\n"
 
-#: scsi-layer.c:1763
+#: scsi-layer.c:1764
 msgid "is undecideable because of read error"
 msgstr "är inte bestämt på grund av läsfel"
 
-#: scsi-layer.c:1769
+#: scsi-layer.c:1770
 msgid "looks GOOD"
 msgstr "ser BRA UT"
 
-#: scsi-layer.c:1775
+#: scsi-layer.c:1776
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "ger oformaterad storlek (EJ ANVÄNDBAR)"
 
-#: scsi-layer.c:1780
+#: scsi-layer.c:1781
 msgid "is UNUSABLE"
 msgstr "är OANVÄNDBAR"
 
-#: scsi-layer.c:1802
+#: scsi-layer.c:1803
 #, c-format
 msgid ""
 "%s\n"
@@ -4441,12 +4430,12 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter mediumstorlek.\n"
 
-#: scsi-layer.c:1822
+#: scsi-layer.c:1823
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr ""
 
-#: scsi-layer.c:1901
+#: scsi-layer.c:1902
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -4455,7 +4444,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: scsi-layer.c:1906
+#: scsi-layer.c:1907
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -4463,15 +4452,15 @@ msgstr ""
 "Evaluering av returnerade mediumstorlekar:\n"
 "\n"
 
-#: scsi-layer.c:1961
+#: scsi-layer.c:1962
 msgid "Using value from READ CAPACITY"
 msgstr "Använder värde från LÄSKAPACITET"
 
-#: scsi-layer.c:1965
+#: scsi-layer.c:1966
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Använder värde från LÄS DVDSTRUKTUR"
 
-#: scsi-layer.c:1975
+#: scsi-layer.c:1976
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -4482,7 +4471,7 @@ msgstr ""
 "Använder ett mindre värde eftersom det passar för >90%% av alla enheter,\n"
 "men FORTSÄTT PÅ EGEN RISK (avbilden kan bli felaktig/oanvändbar)"
 
-#: scsi-layer.c:1980
+#: scsi-layer.c:1981
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -4491,7 +4480,7 @@ msgstr ""
 "Slutligt beslut: %s\n"
 "\n"
 
-#: scsi-layer.c:1988
+#: scsi-layer.c:1989
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -4499,51 +4488,51 @@ msgstr ""
 "Misslyckades med att fastställa avbildsstorlek.\n"
 "Försök använda en annan enhet."
 
-#: scsi-layer.c:2113 scsi-layer.c:2139
+#: scsi-layer.c:2114 scsi-layer.c:2140
 #, c-format
 msgid ""
 "%s\n"
 "Could not load/unload the medium.\n"
 msgstr ""
 
-#: scsi-layer.c:2129
+#: scsi-layer.c:2130
 #, c-format
 msgid ""
 "%s\n"
 "Could not unlock the medium.\n"
 msgstr ""
 
-#: scsi-layer.c:2192
+#: scsi-layer.c:2193
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr ""
 
-#: scsi-layer.c:2475
+#: scsi-layer.c:2476
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr ""
 
-#: scsi-layer.c:2489
+#: scsi-layer.c:2490
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr ""
 
-#: scsi-layer.c:2495
+#: scsi-layer.c:2496
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr ""
 
-#: scsi-layer.c:2506
+#: scsi-layer.c:2507
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr ""
 
-#: scsi-layer.c:2573 scsi-layer.c:2726
+#: scsi-layer.c:2574 scsi-layer.c:2727
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr ""
 
-#: scsi-layer.c:2574 scsi-layer.c:2727
+#: scsi-layer.c:2575 scsi-layer.c:2728
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -4551,7 +4540,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: scsi-layer.c:2579
+#: scsi-layer.c:2580
 #, c-format
 msgid ""
 "\n"
@@ -4560,7 +4549,7 @@ msgstr ""
 "\n"
 "Enhet: %s, %s\n"
 
-#: scsi-layer.c:2583
+#: scsi-layer.c:2584
 #, c-format
 msgid ""
 "\n"
@@ -4569,52 +4558,52 @@ msgstr ""
 "\n"
 "Enhet: %s (%s), %s\n"
 
-#: scsi-layer.c:2591
+#: scsi-layer.c:2592
 msgid "Drive failed to report media type."
 msgstr ""
 
-#: scsi-layer.c:2602 scsi-layer.c:2689
+#: scsi-layer.c:2603 scsi-layer.c:2690
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr ""
 
-#: scsi-layer.c:2610
+#: scsi-layer.c:2611
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr ""
 
-#: scsi-layer.c:2633 scsi-layer.c:2642
+#: scsi-layer.c:2634 scsi-layer.c:2643
 msgid "Using READ CD"
 msgstr ""
 
-#: scsi-layer.c:2634
+#: scsi-layer.c:2635
 msgid ", RAW reading"
 msgstr ""
 
-#: scsi-layer.c:2637
+#: scsi-layer.c:2638
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ""
 
-#: scsi-layer.c:2640
+#: scsi-layer.c:2641
 msgid ", C2 scanning"
 msgstr ""
 
-#: scsi-layer.c:2647
+#: scsi-layer.c:2648
 msgid "Using READ(10).\n"
 msgstr ""
 
-#: scsi-layer.c:2666
+#: scsi-layer.c:2667
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Medium: %s, %lld sektorer%s"
 
-#: scsi-layer.c:2670
+#: scsi-layer.c:2671
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Medium \"%s\": %s, %lld sektorer%s skapade %s"
 
-#: scsi-layer.c:2696
+#: scsi-layer.c:2697
 msgid "This software does not support encrypted media.\n"
 msgstr ""
 
@@ -4805,6 +4794,9 @@ msgstr ""
 #: welcome-window.c:137
 msgid "<i>New in this Version:</i>"
 msgstr ""
+
+#~ msgid "No CD/DVD drives found."
+#~ msgstr "Inga cd/dvd-enheter hittades."
 
 #~ msgid ": not present.\n"
 #~ msgstr ": inte tillgänglig.\n"

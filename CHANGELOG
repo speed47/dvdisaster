@@ -1,9 +1,20 @@
+0.72 (pl4)
+        - fixed crash in scsi layer for FreeBSD
+	- fixed double free when reading mode page 1 fails
+	- fixed DMA misalignment when reading mode page 1
+	- changed #includes for glibc for compatibility with 2.32
+	- dropped Darwin/Mac OS X support
+	- removed dependency on installed md5sum command
+	- changed libpng test in configure to utilize pkg-config
+	- fixed some minor flaws for NetBSD
+
 0.72 (pl3) 03-10-2011
         - Volodymyr Bychkoviak found a problem when verifying 
 	  RS01 files which are larger than 2GB and provided a bugfix.
 	- Backported improved Windows locale detection from 0.79 branch.
 	- made package compile under OS X 10.6; updated OS X toolchain
 	  to Gtk 2.24.
+
 
 0.72 (pl-2) 31-10-2010
         - fixed and documented -n command line options for RS02.

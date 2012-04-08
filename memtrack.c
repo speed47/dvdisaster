@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -21,7 +21,7 @@
 
 #define _GNU_SOURCE
 
-#if !defined(SYS_FREEBSD) && !defined(SYS_DARWIN)   /* FreeBSD declares malloc() in stdlib.h */
+#if !defined(SYS_FREEBSD)   /* FreeBSD declares malloc() in stdlib.h */
  #include <malloc.h>
 #endif
 #include <stdio.h>
@@ -30,7 +30,6 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
-#include <glib/gstrfuncs.h>
 
 /*
  * We're not pulling in dvdisaster.h on purpose...

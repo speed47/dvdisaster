@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Copyright (C) 2006 Andrei Grecu
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org

@@ -6,7 +6,7 @@
 
 PO_LOCALES = pt_BR cs de it ru sv
 MAN_LOCALES = cs de it
-DOC_LOCALES = de en ru
+DOC_LOCALES = cs de en ru
 
 # Search for TAGS: online-docs
 # Don't forget edit NODIST for new doc locales
@@ -193,6 +193,8 @@ version.php:
 	then echo "\$$modified_source=0;" >>$(SRCDIR)/documentation/include/version.php; \
 	else echo "\$$modified_source=1;" >>$(SRCDIR)/documentation/include/version.php; \
 	fi
+	@echo "\$$have_experimental=\""$(CFG_HAVE_EXPERIMENTAL)"\";" >>$(SRCDIR)/documentation/include/version.php
+	@echo "\$$stable_version=\""$(CFG_STABLE_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "\$$mode=\"www\";" >>$(SRCDIR)/documentation/include/version.php
 	@echo "?>" >>$(SRCDIR)/documentation/include/version.php
 
@@ -258,7 +260,6 @@ help:
 	@echo "archclean - remove all files which are rebuildable in an development setup"
 	@echo "arch      - distclean and tar the source directory (dirty)"
 	@echo "srcdist   - produce the source distribution tarball (polished)"
-	@echo "macdist   - produce application bundle for Mac OS X"
 	@echo "windist   - produce the binary setup.exe for Windows"
 
 # Build configuration printing
@@ -307,7 +308,7 @@ show:
 
 .PHONY : install uninstall clean distclean arch
 .PHONY : www www-images 
-.PHONY : srcdist macdist windist
+.PHONY : srcdist windist
 
 install: dvdisaster images
 	@echo "Installing package..."
@@ -397,13 +398,12 @@ distclean: clean
 	@echo -e "\t@echo" >>GNUmakefile
 	@if test -e tools/Makefile.config; then $(MAKE) --no-print-directory -C tools distclean; fi
 
-clean:
+clean: simple-md5sum
 	@echo "Removing rebuildable files"
-	@rm -rf *.o medium.* dvdisaster simple-md5sum *.exe *.zip .dvdisaster core core.* *.core *.stackdump
+	@rm -rf *.o medium.* dvdisaster *.exe *.zip .dvdisaster core core.* *.core *.stackdump
 	@rm -f inlined-icons.h help-dialogs.h
 	@rm -f wininst/installer.iss wininst/signature
 	@if test -e win-build-dir; then rm -rf win-build-dir; fi
-	@rm -rf macinst/.dvdisaster.app macinst/dvdisaster.app macinst/dvdisaster.app.zip macinst/dvdisaster.bundle
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;
@@ -415,9 +415,10 @@ clean:
 	@if test -e $(PKGNAME); then rm -rf $(PKGNAME); fi
 	@if test -e ~/.dvdisaster-original-author; then \
 	  mv build.h build.saved ;\
-	  md5sum -b *.h *.c >fingerprints.md5 ;\
+	  ./simple-md5sum -b *.h *.c >fingerprints.md5 ;\
 	  mv build.saved build.h; \
 	fi
+	@rm -f simple-md5sum
 	@if test -e $(SRCDIR)/papers; then \
 	  $(MAKE) --no-print-directory -C papers clean; \
 	fi
@@ -504,13 +505,3 @@ prepare-dist:
 windist: dvdisaster pack-images prepare-dist
 	@sed 's/dvdisaster-%version%/$(PKGNAME)/' <wininst/installer.template >wininst/installer.iss
 	@iscc wininst/installer.iss
-
-macdist: 
-	@if test $(JHBUILD_PREFIX)x == "x"; then \
-	  echo "Building the app bundle only works in a jhbuild shell."; \
-	  exit 1; \
-	fi
-	@rm -rf macinst/dvdisaster.app macinst/.dvdisaster.app
-	@sed 's!%srcdir%!$(SRCDIR)!' <macinst/dvdisaster.bundle.template >macinst/dvdisaster.bundle
-	@ige-mac-bundler macinst/dvdisaster.bundle
-	@(cd macinst; zip -r dvdisaster.app.zip dvdisaster.app) 

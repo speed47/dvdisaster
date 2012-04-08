@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Installation der Quellkode-Pakete</h3>
+<h3 class="top">Installation der Quellkode-Pakete</h3>
 
 dvdisaster verwendet den üblichen
 <tt>./configure; make; make install</tt>-Mechanismus für die Installation
@@ -67,7 +67,7 @@ so erscheinen seltsame Fehler(-meldungen),
 die nicht immer nachvollziehbar mit einer unvollständigen Installation
 zusammenhängen.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

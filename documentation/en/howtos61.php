@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,15 +12,15 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>The idea behind the error correction</h3>
+<h3 class="top">The idea behind the error correction</h3>
 
 <table width="100%">
 <tr valign="top">
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td rowspan="3">
 The example from the previous page told us how dvdisaster reconstructs
@@ -36,15 +36,15 @@ That'd really be a cheap shot ;-)
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Icon: Diagonal arrow right"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Icon: Diagonal arrow left">20%</td>
 <td> </td>
 </tr>
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td> </td>
 <td> </td>
 </tr>
@@ -57,18 +57,18 @@ the numbers "8 6 2 3" into a code lock. Since the drawers do not contain
 any sensitive information she decides to note down the numbers directly
 on the desktop:<p>
 
-<img src="../images/ecc-example1.png"><p>
+<img src="../images/ecc-example1.png" alt="8 6 2 3"><p>
 
 Anna is cautious and expects one of the numbers to become unreadable 
 by accidentally pouring ink over it. Therefore she also notes down
 the sum of the four numbers (the "+" and "=" signs have only be added for
 clarity):<p>
 
-<img src="../images/ecc-example2.png"><p>
+<img src="../images/ecc-example2.png" alt="8+6+2+3=19"><p>
 
 After a while one of the numbers indeed gets covered by an ink spot:<p>
 
-<img src="../images/ecc-example3.png"><p>
+<img src="../images/ecc-example3.png" alt="8+&nbsp;+6+2+3=19"><p>
 
 But this is not a problem as Anna can re-calculate the missing 
 number <i>x</i>
@@ -83,8 +83,8 @@ recovered from the remaining four. The example also demonstrates
 some important properties of the error correction:
 <p>
 
-<table><tr><td><img src="../images/ecc-example4.png"></td><td>&nbsp;&nbsp;</td>
-<td valign="top">
+<table><tr><td><img src="../images/ecc-example4.png" alt="8+6+2+3 (medium)=19 (ecc)"></td><td>&nbsp;&nbsp;</td>
+<td class="valignt">
 For a given set of data (e.g. the numbers "8 6 2 3")
 additional error correction data (e.g. the sum "19") can be created
 so that a lost datum can be re-calculated from the remaining data.<p>
@@ -122,7 +122,7 @@ which does have such properties; however the required math is not taught
 in school. Interested readers are therefore referred to the respective
 books in coding theory.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

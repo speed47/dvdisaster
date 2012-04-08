@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -29,24 +29,24 @@ Erfolgsaussichten abschätzen, noch genügend Sektoren für eine erfolgreiche
 Wiederherstellung zusammenzubekommen:<p>
 <?php end_screen_shot(); ?>
 
-<table cellspacing="0" cellpadding="10px">
-<tr bgcolor="#c0ffc0">
-<td width="10%" align="center" valign="top">&lt; 5%</td>
+<table cellspacing="0" cellpadding="10">
+<tr style="background-color:#c0ffc0;">
+<td class="w10p" align="center" valign="top">&lt; 5%</td>
 <td>Die Aussichten sind gut, daß Sie mit mehreren Leseversuchen genügend
 Daten erhalten.
 </td></tr>
-<tr bgcolor="#ffffc0">
-<td width="10%" align="center" valign="top">5%-10%</td>
+<tr style="background-color:#ffffc0;">
+<td class="w10p" align="center" valign="top">5%-10%</td>
 <td> Wenn Sie mehrere Laufwerke haben sind die Aussichten gut, daß Sie
 bei entsprechender Ausdauer noch genügend Daten zusammenbekommen.
 </td></tr>
-<tr bgcolor="#ffe0c0">
-<td width="10%" align="center" valign="top">10%-20%</td>
+<tr style="background-color:#ffe0c0;">
+<td class="w10p" align="center" valign="top">10%-20%</td>
 <td> Das wird knapp. Wenn Sie mit den nächsten 2 bis 3 Leseversuchen nicht deutlich 
 unter 10% kommen, ist der Inhalt des Datenträger vermutlich nicht mehr zu retten.
 </td></tr>
-<tr bgcolor="#ffc0c0">
-<td width="10%" align="center" valign="top">&gt; 20%</td>
+<tr style="background-color:#ffc0c0;">
+<td class="w10p" align="center" valign="top">&gt; 20%</td>
 <td>Der Datenverlust ist sehr wahrscheinlich zu groß,
 um den Inhalt noch wiederherstellen zu können.
 Verwenden Sie in Zukunft höhere Redundanzen für die Fehlerkorrektur-Daten
@@ -78,7 +78,7 @@ und die Anzahl der lesbaren Sektoren verbessert sich.
 <b>Vervollständigen Sie das Abbild mit mehreren Laufwerken</b><p>
 Unternehmen Sie weitere Leseversuche mit anderen Laufwerken. Übertragen
 Sie das Abbild bei Bedarf auf andere Computer, um es mit den dort eingebauten
-Laufwerken weiter zu vervollständigen.</b><p>
+Laufwerken weiter zu vervollständigen.<p>
 
 <hr>
 
@@ -125,7 +125,7 @@ Probieren Sie einen weiteren Lesedurchlauf mit der Einstellung "21h" (siehe
 Bildschirmfoto) und schauen Sie erneut nach, ob Raw-Dateien entstehen.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Проверка совместимости образов, дополненных данными для исправления ошибок</h3>
+<h3 class="top">Проверка совместимости образов, дополненных данными для исправления ошибок</h3>
 
 <b>Обоснование:</b> dvdisaster может поместить данные для исправления ошибок
 <a href="howtos30.php">вместе с пользовательскими данными на носитель</a>.
@@ -35,10 +35,10 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/good-cd-ecc.png">
-<p><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/good-cd-ecc.png" alt="Icon: Medium containing error correction data">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Сначала создайте носитель, к которому были добавлены данные для исправления ошибок</b>. Не забывайте использовать
+<td class="valignt"><b>Сначала создайте носитель, к которому были добавлены данные для исправления ошибок</b>. Не забывайте использовать
 надлежащие <a href="howtos32.php">настройки</a> и следуйте 
 <a href="howtos33.php">пошаговым</a> инструкциям. <br>
 Не используйте перезаписываемые DVD- или BD-носители, так как в некоторых обстоятельствах
@@ -50,12 +50,12 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image2.png" border="0"><p>
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x" align="center">
+<img src="../images/good-image2.png" alt="Icon: Complete image from the previously written medium" class="noborder"><p>
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Создайте <i>второй</i> образ с <i>записанного</i> 
+<td class="valignt"><b>Создайте <i>второй</i> образ с <i>записанного</i> 
 носителя</b>.
 Используйте те же <a href="howtos22.php">настройки</a> и шаги, как и в
 <a href="howtos23.php?way=1">чтении носителя</a> для создания файла для исправления 
@@ -67,12 +67,12 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Введите имя <i>второго</i> ISO-образа,</b>
+<td class="valignt"><b>Введите имя <i>второго</i> ISO-образа,</b>
 который был только что считан с носителя. Имейте в виду, что следующая проверка
 бесполезна, если работать с образом, который первоначально был создан
 с помощью ПО для записи CD/DVD/BD и дополнен dvdisaster'ом.
@@ -82,12 +82,12 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Запустите проверку,</b> нажав
+<td class="valignt"><b>Запустите проверку,</b> нажав
 кнопку "Проверить".</td>
 </tr>
 </table>
@@ -115,11 +115,11 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/fix-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/fix-icon.png" alt="dvdisaster UI: Fix (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Запустите процесс восстановления.</b>
+<td class="valignt"><b>Запустите процесс восстановления.</b>
 </td>
 </tr>
 </table>
@@ -133,11 +133,11 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/stop-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/stop-icon.png" alt="dvdisaster UI: Stop (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Остановите процесс восстановления,</b>
+<td class="valignt"><b>Остановите процесс восстановления,</b>
 так как после усечения образа больше  ничего делать не надо.
 </td>
 </tr>
@@ -145,12 +145,12 @@ begin_page();
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Опять запустите проверку,</b>
+<td class="valignt"><b>Опять запустите проверку,</b>
 нажав кнопку "Проверить".</td>
 </tr>
 </table>
@@ -161,15 +161,15 @@ begin_page();
 добавило заполняющие секторы при записи носителя.
 <?php end_howto_shot(); ?>
 
-<font color="#800000">Если после выполнения вышеописанных шагов проблема остается,
+<span class="red">Если после выполнения вышеописанных шагов проблема остается,
 <i>нельзя</i> использовать это записывающее ПО для создания носителей с
 дополненных образов.
 Выполните эту проверку снова, используя ПО другого производителя.
-</font> <p> 
+</span> <p> 
 
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Typical applications</h3>
+<h3 class="top">Typical applications</h3>
 
 dvdisaster is a complex tool which would require a whole book to cover
 all of its features. Since we are currently lacking the resources for
@@ -38,9 +38,9 @@ to find out what you will need for the respective tasks:<p>
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd.png"></td>
-<td align="center" width="15%"><img src="../images/bad-cd.png"></td>
-<td width="55%">These symbols indicate whether processing a medium
+<td align="center" class="w15p"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td align="center" class="w15p"><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
+<td class="w55p">These symbols indicate whether processing a medium
 is part of the respective task, and if the medium
 needs be completely error free or may already be damaged.
 </td>
@@ -56,9 +56,9 @@ needs be completely error free or may already be damaged.
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-image.png"></td>
-<td align="center" width="15%"><img src="../images/bad-image.png"></td>
-<td width="55%">Some functions do not work directly with the medium, but
+<td align="center" class="w15p"><img src="../images/good-image.png" alt="Icon: Complete image"></td>
+<td align="center" class="w15p"><img src="../images/bad-image.png" alt="Icon: Incomplete image (from a damaged medium)"></td>
+<td class="w55p">Some functions do not work directly with the medium, but
 with an ISO image on hard disk instead. Depending on the condition of the
 respective medium the image may be complete or incomplete.</td>
 </tr>
@@ -72,9 +72,9 @@ respective medium the image may be complete or incomplete.</td>
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd-ecc.png"></td>
-<td align="center" width="15%"><img src="../images/ecc.png"></td>
-<td width="55%">Recovering media images by using error correction data
+<td align="center" class="w15p"><img src="../images/good-cd-ecc.png" alt="Icon: Medium containing error correction data"></td>
+<td align="center" class="w15p"><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
+<td class="w55p">Recovering media images by using error correction data
 is the key feature of dvdisaster. This symbol shows whether error correction
 data is required.
 </td>

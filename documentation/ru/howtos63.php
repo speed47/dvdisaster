@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,47 +12,47 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Неправильное использование dvdisaster</h3>
+<h3 class="top">Неправильное использование dvdisaster</h3>
 
 Джо поспорил о том, что его носители сохранят свое содержимое
 без дополнительной защиты.<p>
 
 <table width="100%">
 <tr>
-<td width="15%">10 фев. 2004</td>
-<td width="60px"><img src="../images/good-cd.png"></td>
-<td width="60px"><img src="../images/good-cd.png"></td>
+<td class="w15p">10 фев. 2004</td>
+<td class="w65x"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td class="w65x"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>Джо создает два CD с важными данными. Но он не предпринимает
 никаких мер предосторожности против потери данных на этих носителях.</td>
 </tr>
 <tr><td colspan="4"> <hr> </td></tr>
 <tr>
 <td>14 мая 2005</td>
-<td><img align="top" src="../images/good-cd.png"></td>
-<td><img align="top" src="../images/good-cd.png"></td>
+<td><img class="valignt" src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td><img class="valignt" src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>Джо регулярно пользуется своими CD. Спустя год они по-прежнему 
 прекрасно читаются.</td>
 </tr>
 <tr><td colspan="4"> <hr> </td></tr>
 <tr>
 <td>19 авг. 2007</td>
-<td><img align="top" src="../images/bad-cd.png"></td>
-<td><img align="top" src="../images/good-cd.png"></td>
+<td><img class="valignt" src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
+<td><img class="valignt" src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>Еще через два года Джо замечает, что некоторые данные на одном CD больше
 не читаются.</td> 
 </tr>
 <tr>
  <td align="right"><a href="howtos10.php">поиск</a></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
  <td></td>
 </tr>
 <tr>
 <td>20 авг. 2007</td>
-<td><img align="top" src="../images/bad-cd.png"></td>
-<td><img align="top" src="../images/bad-cd.png"></td>
+<td><img class="valignt" src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
+<td><img class="valignt" src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td>Джо загружает dvdisaster и выполняет
 <a href="howtos10.php">поиск ошибок чтения</a>. 
 Он обнаруживает, что на этом CD 25000 нечитаемых секторов. Проверка
@@ -61,15 +61,15 @@ begin_page();
 </tr>
 <tr>
  <td align="right"><a href="howtos30.php">чтение</a></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
  <td></td>
 </tr>
 <tr><td colspan="4"> <p> </td></tr>
 <tr>
 <td>21 авг. 2007</td>
-<td><img align="top" src="../images/bad-image.png"></td>
-<td><img align="top" src="../images/bad-image.png"></td>
+<td><img class="valignt" src="../images/bad-image.png" alt="Icon: Partial image"></td>
+<td><img class="valignt" src="../images/bad-image.png" alt="Icon: Partial image"></td>
 <td>Джо использует dvdisaster, чтобы
 <a href="howtos30.php">считать как можно больше секторов</a> с поврежденного 
 носителя. Но поскольку у него нет данных для исправления ошибок, 
@@ -77,15 +77,15 @@ begin_page();
 </tr>
 <tr>
  <td align="right"><a href="howtos30.php">много попыток<br>чтения</a></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
  <td></td>
 </tr>
 <tr><td colspan="4"> <p> </td></tr>
 <tr>
 <td>05 сен. 2007</td>
-<td><img align="top" src="../images/bad-image.png"></td>
-<td><img align="top" src="../images/good-image.png"></td>
+<td><img class="valignt" src="../images/bad-image.png" alt="Icon: Partial image"></td>
+<td><img class="valignt" src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>Джо использует способность dvdisaster'а делать образы полными 
 с помощью многократных проходов чтения. Он переносит дефектные образы 
 на разные компьютеры, чтобы делать попытки чтения на разных дисководах.
@@ -95,15 +95,15 @@ begin_page();
 </tr>
 <tr>
  <td align="right">только один CD<br>восстановлен</td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
- <td align="center"><img align="top" src="../images/down-arrow.png"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
+ <td align="center"><img class="valignt" src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
  <td></td>
 </tr>
 <tr><td colspan="4"> <p> </td></tr>
 <tr>
 <td>06 сен. 2007</td>
-<td><img align="top" src="../images/bad-cd.png"></td>
-<td><img align="top" src="../images/good-cd.png"></td>
+<td><img class="valignt" src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
+<td><img class="valignt" src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>Джо выбрасывает первый CD, посчитав его невосстановимым, и думает, что ему
 повезло, что он получил полный образ второго CD и может записать его на новый носитель.
 Но если бы он своевременно создал данные для исправления ошибок, то, возможно<sup>1)</sup>,
@@ -117,7 +117,7 @@ begin_page();
 важных данных; принимайте дополнительные меры, например, создание  
 дополнительных копий на разных типах носителей.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

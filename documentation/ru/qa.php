@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3><a name="top">Вопросы и ответы общего характера</a></h3>
+<h3 class="top"><a name="top">Вопросы и ответы общего характера</a></h3>
 
 <a href="#pronounce">1.1 Как правильно произносить "dvdisaster"?</a><p>
 <a href="#pipo">1.2 Что такое проверка качества и почему бы вам не поддерживать больше возможностей?</a><p>
@@ -26,7 +26,7 @@ begin_page();
 Поскольку это слово берет начало из английского языка, просто произносите "dv" перед
 "disaster". Возможно, "ди-ви-дизастер" является подходящим
 фонетическим представлением слова.
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 <b><a name="pipo">1.2 Что такое проверка качества и почему бы вам не поддерживать больше возможностей?</a></b><p>
 Оптические носители имеют встроенный механизм коррекции ошибок, похожий на 
@@ -47,16 +47,16 @@ begin_page();
 не поймут, что если для привода будет больше ПО (и свободного), 
 то это приведет к продаже еще большего количества приводов. <p>
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 <b><a name="compat">1.3 dvdisaster совместим с будущими версиями?</a></b><p>
 Да, файлы dvdisaster предназначены для архивирования на многие годы.
 При обновлении dvdisaster до новой версии вы можете по-прежнему использовать
 существующий образ и файлы коррекции ошибок от предыдущих версий.
 <i>Нет</i> необходимости вновь пересоздавать их.
-<div align=right><a href="#top">&uarr;</a></div><p>
+<div class="talignr"><a href="#top">&uarr;</a></div><p>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

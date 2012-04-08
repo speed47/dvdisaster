@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Checking compatibility for images augmented with error correction data</h3>
+<h3 class="top">Checking compatibility for images augmented with error correction data</h3>
 
 <b>Motivation:</b> dvdisaster can put error correction data
 <a href="howtos30.php">together with the user data on the medium</a>.
@@ -37,10 +37,10 @@ and examples.<p>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/good-cd-ecc.png">
-<p><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/good-cd-ecc.png" alt="Icon: Medium containing error correction data">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>First create a medium which was augmented with
+<td class="valignt"><b>First create a medium which was augmented with
 error correction data</b>. Do not forget
 to use the proper <a href="howtos32.php">settings</a> and follow the 
 <a href="howtos33.php">step by step</a> instructions. <br>
@@ -53,12 +53,12 @@ questions and answers</a>).
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image2.png" border="0"><p>
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x" align="center">
+<img src="../images/good-image2.png" alt="Icon: Complete image from the previously written medium" class="noborder"><p>
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Create a <i>second</i> image from the <i>written</i> 
+<td class="valignt"><b>Create a <i>second</i> image from the <i>written</i> 
 medium</b>.
 Use the same <a href="howtos22.php">settings</a> and steps as in
 <a href="howtos23.php?way=1">reading a medium</a> for creating an error
@@ -70,12 +70,12 @@ we do not need the error correction file.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Enter the name of the <i>second</i> ISO image</b>
+<td class="valignt"><b>Enter the name of the <i>second</i> ISO image</b>
 which you have just read from the medium. Please note that the following
 test is useless when working with the image which was initially created
 using the CD/DVD/BD authoring software and augmented with dvdisaster.
@@ -85,17 +85,17 @@ using the CD/DVD/BD authoring software and augmented with dvdisaster.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start the evaluation</b> by clicking
+<td class="valignt"><b>Start the evaluation</b> by clicking
 on the "Verify" button.</td>
 </tr>
 </table>
 
-<?php begin_howto_shot("Show informationen.","compat-okay-rs02.png", ""); ?>
+<?php begin_howto_shot("Show information.","compat-okay-rs02.png", ""); ?>
 <b>Look at the verification results.</b>
 If you get the green messages "Good image." and "Good error correction data."
 your authoring software and dvdisaster are compatible with respect to
@@ -118,11 +118,11 @@ do the following:
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/fix-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/fix-icon.png" alt="dvdisaster UI: Fix (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start a recovery process.</b>
+<td class="valignt"><b>Start a recovery process.</b>
 </td>
 </tr>
 </table>
@@ -136,11 +136,11 @@ sectors from the image. Answer "OK".
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/stop-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/stop-icon.png" alt="dvdisaster UI: Stop (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Stop the recovery process,</b>
+<td class="valignt"><b>Stop the recovery process,</b>
 as after truncating the image there is nothing more to do.
 </td>
 </tr>
@@ -148,12 +148,12 @@ as after truncating the image there is nothing more to do.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start the verification again</b>
+<td class="valignt"><b>Start the verification again</b>
 by clicking on the "Verify" button.</td>
 </tr>
 </table>
@@ -165,13 +165,13 @@ data." your problem is purely cosmetic: The writing software has indeed
 added zero padding sectors while writing the medium.
 <?php end_howto_shot(); ?>
 
-<font color="#800000">If the problem persists after carrying out the above
+<span class="red">If the problem persists after carrying out the above
 steps you can <i>not</i> use the CD/DVD/BD writing software
 for creating media from augmented images.
 Perform the test again using a software from a different vendor.
-</font> <p> 
+</span> <p> 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

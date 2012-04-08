@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -17,9 +17,9 @@ $answer=$_GET["answer"];
 howto_headline("Creating error correction data", "Decision help", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Decision help</h3>
+<h3 class="top">Decision help</h3>
 
 Error correction data can be either created in form of a separate error
 correction file or it can be placed directly onto the medium.
@@ -83,11 +83,11 @@ provisions to <a href="howtos24.php">archive</a> your error
 correction files.<p>
 
 More information about the pro and con of these methods
-can be found in the <a href="http://dvdisaster.net/legacy/en/background30.html">old documentation</a>. 
+can be found in the <a href="qa33.php#table">background information</a> section. 
 
 <pre> </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 footnote("*","footnote","Let's repeat again for clarity: Error correction data must be created before the medium becomes defective. It is not possible to create error correction data from defective media; in that case unreadable sectors can not be recovered.");

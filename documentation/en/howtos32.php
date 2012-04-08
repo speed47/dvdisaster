@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Augmenting images with error correction data", "Basic settings", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Opening the configuration dialog.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>The following tabs are found in the configuration dialog.
 Open the dialog by selecting the symbol marked green in the screen shot
 (click the image to expand it). The symbol may look different
@@ -53,7 +53,7 @@ but these have no further effects on the error correction data creation.
 
 <a href="howtos33.php">Augmenting the image with error correction data...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

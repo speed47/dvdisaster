@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Advantages of using dvdisaster:</h3>
+<h3 class="top">Advantages of using dvdisaster:</h3>
 
 <ul>
 <li><b>Protects</b> against aging and accidental medium damage (within certain limits).<p></li>
@@ -39,11 +39,11 @@ storage space amounts to 15% of the original data size
 <li>no guaranteed protection against data loss.</li>
 </ul>
 
-See also the collection of <a href="http://dvdisaster.net/legacy/en/background.html">background information</a>  in the old documentation
+See also the collection of <a href="qa30.php">background information</a>
 to learn more about the functioning of dvdisaster.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

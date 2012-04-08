@@ -1,131 +1,350 @@
-.\" Czech man page for dvdisaster
-.\"
-.\" Copyright (C) 2004-2006 THE dvdisaster'S COPYRIGHT HOLDER
-.\" This file is distributed under the same license as the dvdisaster package.
-.\"
-.\" Překlad (C) 2006 Luboš Staněk (lubek@users.sourceforge.net)
-.\"
-.TH DVDISASTER 1 "2006-01-04" "0.65" "ochrana pro média CD/DVD"
+.TH DVDISASTER 1 "2010-02-06" "0.80" "ochrana pro CD/DVD/BD disky"
 
-.SH NÁZEV
-DVDISASTER \- ochrana proti ztrátě dat poškrábáním/stárnutím média CD/DVD
+.SH N\['A]ZEV
+DVDISASTER \- ochrana p\[r ah]ed ztr\['a]tou dat/\[vs]kr\['a]banci/st\['a]rnut\['i]m pro CD/DVD/BD disky
 
 .SH SYNTAXE
 .B dvdisaster
-.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t \||\| \-u \|]
+.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t[q] \||\| \-u \|]
 .RB [\| \-d
-.IR zařízení \|]
+.IR device \|]
 .RB [\| \-p
 .IR prefix \|]
 .RB [\| \-i
-.IR obraz \|]
+.IR image \|]
 .RB [\| \-e
-.IR soubor ecc \|]
+.IR eccfile \|]
+.RB [\| \-o
+.IR file|image \|]
+.RB [\| \-a
+.IR codec-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
 .IR n% \|]
+.RB [\| -m
+.IR n \|]
+.RB [\| -v \|]
+.RB [\| -x
+.IR n \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| \-\-defective-dump
+.IR d \|]
+.RB [\| \-\-driver
+.IR d \|]
+.RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
+.RB [\| \-\-ignore-fatal-sense \|]
+.RB [\| \-\-ignore-iso-size \|]
+.RB [\| \-\-internal-rereads
+.IR n \|]
+.RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-prefetch-sectors
+.IR n \|]
+.RB [\| \-\-raw-mode
+.IR n \|]
+.RB [\| \-\-read-attempts
+.IR n-m \|]
+.RB [\| \-\-read-medium
+.IR n \|]
+.RB [\| \-\-read-raw \|]
 .RB [\| \-\-speed-warning
 .IR n \|]
-.RB [\| \-\-spinup\-dalay
+.RB [\| \-\-spinup\-delay
 .IR n \|]
-.RB [\| \-\-split\-files \|]
 
 .SH POPIS
 .B DVDISASTER
-poskytuje dodatečné zabezpečení proti ztrátě dat na CD a DVD médiích
-způsobené stárnutím nebo poškrábáním. Vytváří data oprav chyb, která
-jsou použita k obnově nečitelných sektorů, pokud se disk později poškodí.
-.PP
+poskytuje pro CD/DVD/BD disky bezpe\[c ah]nostn\['i] pojistku proti ztr\['a]t\[e ah] dat zp\[u ao]soben\['e]
+\[vs]kr\['a]banci nebo st\['a]rnut\['i]m. Vytv\['a]\[r ah]\['i] data pro opravu chyb, kter\['a] mohou b\['y]t pou\[vz]ita
+k oprav\[e ah] ne\[c ah]iteln\['y]ch sektor\[u ao], pokud n\[e ah]kdy dojde k po\[vs]kozen\['i] disku.
 
-.SH MOŽNOSTI
-Obecné příklady použití:
+.SH P\[R ah]\['I]KLADY POU\[vZ]IT\['I]
+
+.TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-s\fP
+Zkontroluje, zda disk v mechanice \fI/dev/hdc\fP nen\['i] po\[vs]kozen\['y].
+.TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fIdisk.iso\fP \fB-r\fP
+Na\[c ah]te bitovou kopii disku v mechanice \fI/dev/hdc\fP a ulo\[vz]\['i] ji jako soubor \fIdisk.iso\fP.
+.TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fIdisk.iso\fP \fB--read-raw\fP \fB-r\fP
+Vytvo\[r ah]\['i] bitovou kopii jako u v\['y]\[vs]e uveden\['e]ho p\[r ah]\['i]kladu. Integrita ka\[vz]d\['e]ho sektoru
+je zkontrolov\['a]na s vyu\[vz]it\['i]m EDC a L-EC dat z\['i]skan\['y]ch p\[r ah]\['i]m\['y]m \[c ah]ten\['i]m. K dispozici
+pouze pro CD disky, parametr \fB--read-raw\fP je jinak ti\[vs]e ignorov\['a]n.
+.TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fIdisk.iso\fP \fB--read-attempts\fP \fIn-m\fP \fB-r\fP
+Vytvo\[r ah]\['i] bitovou kopii jako u v\['y]\[vs]e uveden\['e]ho p\[r ah]\['i]kladu. Po\[vs]kozen\['e] sektory jsou
+\[c ah]teny nejm\['e]n\[e ah] \fIn\fP kr\['a]t a nejv\['i]ce \fIm\fP kr\['a]t. Opravitelnost po\[vs]kozen\['e]ho CD disku se
+m\[u ao]\[vz]e zlep\[vs]it, pokud je tato volba pou\[vz]ita v kombinace s \fB--read-raw\fP. 
+.TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fIdisk.iso\fP \fB-e\fP \fIcorr.ecc\fP \fB-r\fP \fB--adaptive-read\fP
+P\[r ah]i vytv\['a]\[r ah]en\['i] bitov\['e] kopie z disku v mechanice \fI/dev/hdc\fP pou\[vz]ije adaptivn\['i]
+strategii \[c ah]ten\['i] a bitovou kopii ulo\[vz]\['i] jako soubor \fIdisk.iso\fP. \[C ah]ten\['i] bude
+p\[r ah]eru\[vs]eno, jakmile bude z\['i]sk\['a]n dostatek dat k oprav\[e ah] bitov\['e] kopie za pou\[vz]it\['i]
+souboru pro opravu chyb \fIcorr.ecc\fP.
+.TP
+\fBdvdisaster\fP \fB-i\fP \fIdisk.iso\fP \fB-e\fP \fIcorr.ecc\fP \fB-c\fP
+Pro bitovou kopii \fIdisk.iso\fP vytvo\[r ah]\['i] soubor pro opravu chyb \fIcorr.ecc\fP.
+.TP
+\fBdvdisaster\fP \fB-i\fP \fIdisk.iso\fP \fB-m\fIRS02\fP \fB-n\fP \fI350000\fP \fB-c\fP
+Roz\[vs]\['i]\[r ah]\['i] bitovou kopii \fIdisk.iso\fP o informace pro opravu chyb, p\[r ah]i\[c ah]em\[vz] velikost
+bitov\['e] kopie nezv\[e ah]t\[vs]\['i] na v\['i]ce ne\[vz] \fI350000\fP sektor\[u ao]. Pokud je \fB-n\fP vynech\['a]no, bude
+bitov\['a] kopie roz\[vs]\['i]\[r ah]ena na velikost nejbli\[vz]\[vs]\['i]ho nejmen\[vs]\['i]ho form\['a]tu disku (CD, DVD,
+DVD9). V\[vs]imn\[e ah]te si chyb\[e ah]j\['i]c\['i] mezery mezi \fB-m\fP a \fIRS02\fP.
+.TP
+\fBdvdisaster\fP \fB-i\fP \fIdisk.iso\fP \fB-e\fP \fIcorr.ecc\fP \fB-f\fP
+Oprav\['i] bitovou kopii \fIdisk.iso\fP za pou\[vz]it\['i] souboru pro opravu chyb \fIcorr.ecc\fP.
+.TP
+\fBdvdisaster\fP \fB-i\fP \fIdisk.iso\fP \fB-e\fP \fIcorr.ecc\fP \fB-t\fP
+Ov\[e ah]\[r ah]\['i] konzistenci bitov\['e] kopie \fIdisk.iso\fP za pomoci informac\['i] ze souboru pro
+opravu chyb \fIcorr.ecc\fP.
+.TP
+\fBPOZN\['A]MKA:\fP
+P\[r ah]i pr\['a]ci s bitov\['y]mi kopiemi roz\[vs]\['i]\[r ah]en\['y]mi o data pro opravu chyb vynechte u v\[vs]ech
+v\['y]\[vs]e uveden\['y]ch p\[r ah]\['i]klad\[u ao] volbu \fB-e corr.ecc\fP.
+
+.SH PARAMETRY
+V\['y]b\[e ah]r akce (mus\['i] b\['y]t zad\['a]na minim\['a]ln\[e ah] jedna akce):
 .TP
 .B \-r, \-\-read
-Načte obraz média na pevný disk. Použijte -rn-m k načtení určitého rozsahu sektorů,
-t.j. -r100-200.
+Na\[c ah]te a ulo\[vz]\['i] bitovou kopii disku na pevn\['y] disk. Pro na\[c ah]ten\['i] ur\[c ah]it\['e]ho rozsahu
+sektor\[u ao] pou\[vz]ijte parametr \-rn-m, nap\[r ah]\['i]klad \-r100-200.
 .TP
 .B \-c, \-\-create
-Vytvoří informaci .ecc pro obraz média.
+Vytvo\[r ah]\['i] pro bitovou kopii ECC informace.
 .TP
 .B \-f, \-\-fix
-Pokusí se opravit obraz média s použitím informací .ecc.
+Za pomoci ECC informac\['i] se pokus\['i] opravit bitovou kopii disku.
 .TP
 .B \-s, \-\-scan
-Skenuje médium na chyby čtení.
+Ov\[e ah]\[r ah]\['i] \[c ah]itelnost disku.
 .TP
-.B \-t, \-\-test
-Testuje integritu souborů .img a .ecc.
+.B \-t, \-\-test, \-tq, \-\-test=q
+Ov\[e ah]\[r ah]\['i] integritu soubor\[u ao] ISO a ECC. Pokud je pou\[vz]it parametr "q", jsou vyps\['a]ny
+pouze informace, kter\['e] je mo\[vz]n\['e] z\['i]skat bez kompletn\['i] anal\['y]zy soubor\[u ao].
 .TP
 .B \-u, \-\-unlink
-Smaže soubor .img (byla-li předcházející akce úspěšně dokončena).
+Sma\[vz]e soubory ISO (po dokon\[c ah]en\['i] ostatn\['i]ch akc\['i]).
 .PP
 
-Specifikace mechaniky a souboru:
+V\['y]b\[e ah]r mechaniky a soubor\[u ao]:
 .TP
-.B \-d, \-\-device zařízení
-čte z daného zařízení (výchozí: /dev/cdrom).
+.B \-d, \-\-device device
+Bude \[c ah]\['i]st ze zadan\['e]ho za\[r ah]\['i]zen\['i] (v\['y]choz\['i]: /dev/cdrom).
 .TP
 .B \-p, \-\-prefix prefix
-prefix souborů .img/.ecc (výchozí: medium.* ).
+P\[r ah]edpona ISO/ECC soubor\[u ao] (v\['y]choz\['i]: disk.* ).
 .TP
-.B \-i, \-\-image soubor obrazu
-název souboru obrazu (výchozí: medium.img).
+.B \-i, \-\-image imagefile
+N\['a]zev bitov\['e] kopie (v\['y]choz\['i]: disk.iso).
 .TP
-.B \-e, \-\-ecc soubor oprav chyb
-název souboru oprav chyb (výchozí: medium.ecc).
-.PP
+.B \-e, \-\-ecc eccfile
+N\['a]zev souboru pro opravu chyb (v\['y]choz\['i]: disk.ecc).
+.TP
+.B \-o, \-\-ecc-target file|image
+Ur\[c ah]uje, zda m\['a] RS03 vytvo\[r ah]it soubor pro opravu chyb [\fBfile\fP], nebo roz\[vs]\['i]\[r ah]enou
+bitovou kopii [\fBimage\fP] (v\['y]choz\['i]: image).
+.TP
 
-Vylepšovací možnosti (čtěte dokumentaci před použitím!):
+Mo\[vz]nosti lad\[e ah]n\['i] (p\[r ah]ed pou\[vz]it\['i]m si p\[r ah]e\[c ah]t\[e ah]te dokumentaci!):
+.TP
+.B \-a, \-\-assume codec1,codec2,...
+P\[r ah]edpokl\['a]d\['a], \[vz]e je bitov\['a] kopie roz\[vs]\['i]\[r ah]ena jedn\['i]m ze zadan\['y]ch kodek\[u ao]. To aktivuje
+d\[u ao]sledn\['e] hled\['a]n\['i] podpisu zadan\['y]ch kodek\[u ao] a m\[u ao]\[vz]e pomoci s vyhled\['a]n\['i]m informac\['i]
+pro opravu chyb na po\[vs]kozen\['y]ch disc\['i]ch. Pokud ov\[vs]em bitov\['a] kopie informace pro
+opravu chyb neobsahuje, bude m\['i]t aktivace t\['e]to volby za n\['a]sledek pouze zbyte\[c ah]n\['e]
+pl\['y]tv\['a]n\['i] syst\['e]mov\['y]mi prost\[r ah]edky a prodlou\[vz]en\['i] doby \[c ah]ten\['i].
+.RS
+Podporovan\['e] hodnoty jsou RS02 a RS03.
+.RE
 .TP
 .B \-j, \-\-jump n
-přeskočí n sektorů po chybě čtení (výchozí: 16).
+Po v\['y]skytu chyby \[c ah]ten\['i] p\[r ah]esko\[c ah]it n sektor\[u ao] (v\['y]choz\['i]: 16).
 .TP
-.B \-n, \-\-redundancy n%
-nastaví redundanci pro opravu chyb (výchozí: 14.3%).
+.B \-n, \-\-redundancy n[unit]
+Redundance dat pro opravu chyb. Povolen\['e] hodnoty jsou z\['a]visl\['e] na typu kodeku:
+
+.RS
+Soubory pro opravu chyb RS01 a RS03
+.RS
+\-n x\ \ \ - vytvo\[r ah]\['i] soubor pro opravu chyb s x b\['a]zemi.
+.RE
+.RS
+\-n x%\ - vytvo\[r ah]\['i] soubor pro opravu chyb s x procentn\['i] redundanc\['i].
+.RE
+.RS
+\-n xm\ - vytvo\[r ah]\['i] soubor pro opravu chyb s velikost\['i] p\[r ah]ibli\[vz]n\[e ah] x MB.
+.RE
+.RS 
+\-n normal\ - optimalizovan\['y] kodek pro 14.3% redundanci/32 b\['a]z\['i].
+.RE
+.RS
+\-n high\ \ \ - optimalizovan\['y] kodek pro 33.5% redundanci/64 b\['a]z\['i].
+.RE
+.RE
+
+.RS
+Bitov\['e] kopie RS02:
+.RS
+\-n CD\ \ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost disku CD.
+.RE
+.RS
+\-n DVD\ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost disku DVD.
+.RE
+.RS
+\-n DVD9 bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost disku DVD9.
+.RE
+.RS
+\-n BD\ \ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost disku BD.
+.RE
+.RS
+\-n BD2\ bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost dvouvrstv\['e]ho disku BD.
+.RE
+.RS
+\-n x\ \ \ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] na velikost p\[r ah]ibli\[vz]n\[e ah] x sektor\[u ao].
+.RE
+.RS
+\-n x%\ \ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] o data pro opravu chyb s x% redundanc\['i]. 
+.RE
+.RS
+\-n xr\ \ \ bitovou kopii roz\[vs]\['i]\[r ah]\['i] o data pro opravu chyb s x b\['a]zemi.
+.RE
+.RE
+.TP
+.B \-m, \-\-method n
+Vyp\['i]\[vs]e (p\[r ah]i zad\['a]n\['i] bez hodnoty) nebo zvol\['i] metodu opravy chyb (v\['y]choz\['i]: RS01).
+.RS
+Podporovan\['e] hodnoty jsou RS01 a RS02.
+.RE
+.TP
+.B \-v, \-\-verbose n%
+Aktivuje podrobn\[e ah]j\[vs]\['i] v\['y]pis diagnostick\['y]ch zpr\['a]v.
+.TP
+.B \-x, \-\-threads n
+Pro kodek RS03 pou\[vz]ije n vl\['a]ken. Pro 2 a\[vz] 4j\['a]drov\['e] procesory pou\[vz]ijte stejn\['y] 
+po\[c ah]et vl\['a]ken jako je po\[c ah]et jader. Pro procesory s vy\[vs]\[vs]\['i]m po\[c ah]tem jader pou\[vz]ijte
+o jedno vl\['a]kno m\['e]n\[e ah] ne\[vz] je po\[c ah]et jader; nap\[r ah]\['i]klad pro 8j\['a]drov\['y] procesor pou\[vz]ijte
+7 vl\['a]ken.
 .TP
 .B \-\-adaptive-read
-použije optimalizovanou strategii čtení poškozených médií.
+Pou\[vz]ije strategii \[c ah]ten\['i] optimalizovanou pro \[c ah]ten\['i] po\[vs]kozen\['y]ch disk\[u ao].
 .TP
 .B \-\-auto-suffix
-automaticky přidá souborové přípony .img a .ecc.
+Soubor\[u ao]m automaticky p\[r ah]id\['a] p\[r ah]\['i]pony ISO a ECC.
 .TP
 .B \-\-cache-size n
-velikost varovnávací paměti v MB v průběhu akce -c (výchozí: 32 MB).
+Nastav\['i] velikost mezipam\[e ah]ti (v MB) re\[vz]imu \-c (v\['y]choz\['i]: 32MB).
 .TP
 .B \-\-dao
-předpokládá disk DAO; neořezávat konec obrazu.
+Bude p\[r ah]edpokl\['a]dat \[vz]e disk byl zaps\['a]n v re\[vz]imu DAO, nedojde ke zkr\['a]cen\['i] konce
+bitov\['e] kopie.
+.TP
+.B \-\-defective-dump d
+Nastav\['i] podadres\['a]\[r ah] pro ukl\['a]d\['a]n\['i] nezpracovan\['y]ch neopraviteln\['y]ch sektor\[u ao].
+.TP
+.B \-\-driver d (pouze Linux)
+Umo\[vz]\[n ah]uje zvolit ovlada\[c ah] pro p\[r ah]\['i]stup k optick\['y]m mechanik\['a]m. Zvolit lze sg (SG_IO)
+(v\['y]choz\['i]) nebo star\[vs]\['i] cdrom (CDROM_SEND_PACKET). Oba ovlada\[c ah]e by m\[e ah]ly pracovat
+stejn\[e ah] dob\[r ah]e, u ovlada\[c ah]e cdrom ale doch\['a]z\['i] k probl\['e]m\[u ao]m se stabilitou pokud je
+pou\[vz]it v kombinaci s n\[e ah]kter\['y]mi star\[vs]\['i]mi SCSI \[r ah]adi\[c ah]i. A\[vz] do verze 0.72.x byl
+ovlada\[c ah] cdrom pou\[vz]\['i]v\['a]n jako v\['y]choz\['i]. Pokud p\[r ah]i pou\[vz]it\['i] sg ovlada\[c ah]e zaznamen\['a]te  
+na sv\['e]m syst\['e]mu n\[e ah]jak\['e] probl\['e]my, m\[u ao]\[vz]ete s vyu\[vz]it\['i]m parametru \-\-driver=cdrom
+pou\[vz]\['i]t star\[vs]\['i] ovlada\[c ah] cdrom.
+.TP
+.B \-\-eject
+Po \['u]sp\[e ah]\[vs]n\['e]m na\[c ah]ten\['i] vysune disk.
 .TP
 .B \-\-fill-unreadable n
-vyplní nečitelné sektory bajtem n
+Ne\[c ah]iteln\['e] sektory nahrad\['i] bajtem n
+.TP
+.B \-\-ignore-fatal-sense
+Vynut\['i] pokra\[c ah]ov\['a]n\['i] na\[c ah]\['i]t\['a]n\['i] i po potenci\['a]ln\[e ah] neopraviteln\['e] chyb\[e ah].
+.TP
+.B \-\-ignore-iso-size
+Bude ignorovat velikost bitov\['e] kopie uvedenou v syst\['e]mu soubor\[u ao] ISO/UDF. Tato
+volba nen\['i] doporu\[c ah]ena, proto\[vz]e v\[e ah]t\[vs]ina mechanik pod\['a]v\['a] o velikosti disku
+nep\[r ah]esn\['e] informace.
+.RS
+M\[u ao]\[vz]e se ale st\['a]t, \[vz]e je velikost uveden\['a] v syst\['e]mu soubor\[u ao] ISO/UDF chybn\['a]. 
+Tento probl\['e]m je \[c ah]ast\['y] u n\[e ah]kter\['y]ch Linuxov\['y]ch live disk\[u ao]. Pokud u takov\['e]ho 
+disku vytvo\[r ah]\['i]te jeho bitovou kopii a jej\['i] MD5 sou\[c ah]et neodpov\['i]d\['a] sou\[c ah]tu uv\['a]d\[e ah]n\['e]mu
+na str\['a]nk\['a]ch distribuce, zkuste bitovou kopii vytvo\[r ah]it znovu s pou\[vz]it\['i]m t\['e]to 
+volby.
+.RE
+.RS
+Nezap\['i]nejte tuto volbu bezd\[u ao]vodn\[e ah], p\[r ah]i jej\['i]m pou\[vz]it\['i] jsou v\[e ah]t\[vs]inou vytv\['a]\[r ah]eny
+chybn\['e] bitov\['e] kopie. Zvl\['a]\[vs]t\[e ah] to plat\['i], pokud chcete v\['y]slednou bitovou kopii 
+pou\[vz]\['i]t k vytvo\[r ah]en\['i] dat pro opravu chyb.
+.RE
+.TP
+.B \-\-internal-rereads n
+Stanov\['i] po\[c ah]et intern\['i]ch pokus\[u ao] o p\[r ah]e\[c ah]ten\['i] po\[vs]kozen\['y]ch sektor\[u ao] CD (v\['y]choz\['i]: \-1)
+.RS
+Firmware mechaniky u po\[vs]kozen\['y]ch sektor\[u ao] v\[e ah]t\[vs]inou p\[r ah]ed zobrazen\['i]m chyby \[c ah]ten\['i]
+provede n\[e ah]kolik pokus\[u ao] o p\[r ah]e\[c ah]ten\['i]. Pro zefektivn\[e ah]n\['i] procesu \[c ah]ten\['i] je lep\[vs]\['i]
+nastavit hodnotu tohoto parametru na 0 nebo 1 a spravovat po\[c ah]et pokus\[u ao] o
+p\[r ah]e\[c ah]ten\['i] pomoc\['i] parametru \-\-read-attempts. Pro pou\[vz]it\['i] v\['y]choz\['i]ho nastaven\['i]
+mechaniky pou\[vz]ijte \-1. V\[e ah]t\[vs]ina mechanik stejn\[e ah] tento parametr ignoruje.
+.RE
+.TP
+.B \-\-old-ds-marker
+Ozna\[c ah]\['i] chyb\[e ah]j\['i]c\['i] sektory zp\[u ao]sobem kompatibiln\['i]m s dvdisaster 0.70 a star\[vs]\['i]mi.
+.RS
+V\['y]choz\['i] metoda zna\[c ah]en\['i] je doporu\[c ah]ena pro dvdisaster 0.72 a nov\[e ah]j\[vs]\['i]. Bitov\['e] kopie
+ozna\[c ah]en\['e] touto metodou v\[vs]ak nen\['i] mo\[vz]n\['e] pou\[vz]\['i]t ve star\[vs]\['i]ch verz\['i]ch dvdisaster,
+proto\[vz]e by v bitov\['e] kopii nebyly rozpozn\['a]ny chyb\[e ah]j\['i]c\['i] sektory.
+
+Pou\[vz]\['i]vejte p\[r ah]i pr\['a]ci s bitovou kopi\['i] v\[vz]dy stejn\['e] nastaven\['i].
+.RE
+.TP
+.B \-\-prefetch-sectors n
+Ur\[c ah]\['i] po\[c ah]et sektor\[u ao], kter\['e] maj\['i] b\['y]t p\[r ah]edna\[c ah]teny p\[r ah]i pr\['a]ci s RS03 (v\['y]choz\['i]: 32)
+.RS
+Hodnota n zabere p\[r ah]ibli\[vz]n\[e ah] n MB RAM.
+.RE
+.TP
+.B \-\-raw-mode n
+Zvol\['i] pro \[c ah]ten\['i] CD disk\[u ao] re\[vz]im p\[r ah]\['i]m\['e]ho \[c ah]ten\['i] (v\['y]choz\['i]: 20)
+.RS
+Doporu\[c ah]en\['y] je re\[vz]im 20, kter\['y] aktivuje pou\[vz]it\['i] zabudovan\['e] opravy chyb mechaniky 
+pro opravu po\[vs]kozen\['y]ch sektor\[u ao] p\[r ah]edt\['i]m ne\[vz] jsou odesl\['a]ny jako po\[vs]kozen\['e]. N\[e ah]kter\['e]
+mechaniky ale um\['i] po\[vs]kozen\['e] sektory \[c ah]\['i]st pouze v re\[vz]imu 21, vynechaj\['i] tak
+posledn\['i] krok zabudovan\['e] opravy chyb a ode\[vs]lou neopraven\['y] sektor.
+.RE
+.TP
+.B \-\-read-attempts n-m
+Ur\[c ah]\['i] po\[c ah]et pokus\[u ao] o p\[r ah]e\[c ah]ten\['i] po\[vs]kozen\['e]ho sektoru v rozsahu n a\[vz] m.
+.TP
+.B \-\-read-medium n
+O p\[r ah]e\[c ah]ten\['i] disku se pokus\['i] maxim\['a]ln\[e ah] n kr\['a]t.
+.TP
+.B \-\-read-raw
+Pokud je to mo\[vz]n\['e], provede \[c ah]ten\['i] v re\[vz]imu p\[r ah]\['i]m\['e]ho \[c ah]ten\['i].
 .TP
 .B \-\-speed-warning n
-vypíše upozornění při změnách rychlosti o více než n procent.
+Vyp\['i]\[vs]e varov\['a]n\['i], pokud se rychlost \[c ah]ten\['i] zm\[e ah]n\['i] o v\['i]ce ne\[vz] n procent.
 .TP
 .B \-\-spinup-delay n
-čeká n sekund na roztočení disku.
-.TP
-.B \-\-split-files
-rozdělí soubory na segmenty <= 2 GB.
+Po\[c ah]k\['a] na rozto\[c ah]en\['i] mechaniky n sekund.
 .PP
 
-.SH VIZ TÉŽ
+.SH DAL\[vS]\['I] INFORMACE
 .B Dokumentace
-DVDISASTER je dokumentován svým vlastním manuálem, nainstalovaným v
-.IR %docdir%.
+DVDISASTER m\['a] k dispozici svou vlastn\['i] dokumentaci, kter\['a] je nainstalov\['a]na
+v adres\['a]\[r ah]i
+.IR %docdir%
 
 .SH AUTOR
-DVDISASTER napsal Carsten Gnoerlich <carsten@dvdisaster.com>.
+Autorem DVDISASTER je Carsten Gn\[:o]rlich <carsten@dvdisaster.com>.
 .PP
-Tuto manuálovou stránku napsal Daniel Baumann,
-<daniel.baumann@panthera-systems.net>, pro projekt Debian (ale může být
-užita dalšími).
+Autorem t\['e]to manu\['a]lnov\['e] str\['a]nky je Daniel Baumann 
+<daniel.baumann@panthera-systems.net>, kter\['y] ji vytvo\[r ah]il pro projekt Debian (ale m\[u ao]\[vz]e
+b\['y]t pou\[vz]ita i jin\['y]mi projekty). Od verze 0.70 je jej\['i]m spr\['a]vcem Carsten Gn\[:o]rlich.
 .PP
-Do češtiny přeložil Luboš Staněk <lubek@users.sourceforge.net>.
+Autorem \[c ah]esk\['e]ho p\[r ah]ekladu je Jind\[r ah]ich \[vS]est\['a]k

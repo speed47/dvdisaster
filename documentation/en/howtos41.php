@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Recovering media images", "Basic settings", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Opening the configuration dialog.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>The following tabs are found in the configuration dialog.
 Open the dialog by selecting the symbol marked green in the screen shot
 (click the image to expand it). The symbol may look different
@@ -48,6 +48,7 @@ Some drives might work better using the raw reading mode "21h". See the
 <a href="howtos43.php#21h">advanced settings</a> for more information.<p>
 <?php end_screen_shot(); ?>
 
+<a name="reading_attempts"></a>
 <?php begin_screen_shot("\"Reading attempts\" tab.","fix-prefs-read-attempts.png"); ?>
 <b>"Reading attempts" tab.</b> The strength of the adaptive reading strategy lies in
 finding the still readable sectors and avoiding the lengthy process of trying to read
@@ -59,17 +60,6 @@ If it turns out that these settings do not provide enough data for a successful
 recovery they can be 
 <a href="howtos43.php">optimized</a> later.
 <p>
-<?php end_screen_shot(); ?>
-
-<?php begin_screen_shot("\"Files\" tab.","create-prefs-file.png"); ?>
-<b>"Files" tab.</b> 
-If your operating system can not create files larger than 2GB then you
-must choose the "Split files " setting (marked green). In that case
-dvdisaster will create up to 100 segments called "medium00.iso",
-"medium01.iso" etc. instead of a single "medium.iso" file. Using this
-option results in a small performance hit. This option is mostly
-useful under Windows if the old FAT32 file system is still used. Leave
-the other settings off as shown in the screen shot.
 <?php end_screen_shot(); ?>
 
 <pre> </pre>
@@ -88,7 +78,7 @@ but these have no further effects on the reading process.
 
 <a href="howtos42.php">Reading the medium and recovering its contents...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

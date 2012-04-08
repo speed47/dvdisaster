@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -23,7 +23,7 @@ switch($way)
 howto_headline("Создание файлов для исправления ошибок", $action, "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Убедитесь, что dvdisaster настроен, как описано в разделе
 <a href="howtos22.php">основных настроек</a>, так как выбор некоторых параметров
@@ -39,9 +39,9 @@ howto_headline("Создание файлов для исправления ош
 <?php
 $expand=$_GET["expand"];
 if($expand=="") $expand=0;
-echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" alt=\"Icon: Good medium (without read errors)\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=1&expand=$expand\">Создать файл для исправления ошибок с CD/DVD/BD-носителя</a></td>\n";
-echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" alt=\"Icon: Complete image\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=2&expand=$expand\">Создать файл для исправления ошибок с ISO-образа</a></td>\n";
 ?>
 
@@ -55,10 +55,10 @@ if($way==1){
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Icon: Insert the medium into a drive">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Вставьте носитель, который нужно прочитать, в привод,</b>
+<td class="valignt"><b>Вставьте носитель, который нужно прочитать, в привод,</b>
 непосредственно подключенный к вашему компьютеру. 
 Нельзя использовать сетевые приводы, виртуальные приводы и приводы в виртуальных машинах.
 </td>
@@ -67,10 +67,10 @@ if($way==1){
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Icon: Close any windows opened by the Autoplay function">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Закройте все окна</b>, которые могут быть открыты вашей операционной системой 
+<td class="valignt"><b>Закройте все окна</b>, которые могут быть открыты вашей операционной системой 
 для просмотра или запуска содержимого носителя. 
 Подождите, пока привод не распознает носитель и вращение носителя не замедлится.
 </td>
@@ -79,35 +79,35 @@ if($way==1){
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="dvdisaster UI: Drive selection (dropdown menu)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите привод, содержащий носитель,</b>
+<td class="valignt"><b>Выберите привод, содержащий носитель,</b>
 в выпадающем меню dvdisaster.
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите каталог и имя файла</b> 
+<td class="valignt"><b>Выберите каталог и имя файла</b> 
 для хранения ISO-образа.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/read-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/read-icon.png" alt="dvdisaster UI: Read (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Создайте ISO-образ</b> носителя, нажав на
+<td class="valignt"><b>Создайте ISO-образ</b> носителя, нажав на
 кнопку "Читать".</td>
 </tr>
 </table>
@@ -125,12 +125,12 @@ if($way == 2) {
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите каталог и имя ISO-образа</b>,
+<td class="valignt"><b>Выберите каталог и имя ISO-образа</b>,
 для которого вы хотите создать данные для исправления ошибок.
 (Предполагается, что ISO-образ создан какими-либо другими средствами,
 например, с помощью вашей программы для создания CD/DVD/BD.)</td>
@@ -143,24 +143,24 @@ if($way != 0) {
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите каталог и имя</b> 
+<td class="valignt"><b>Выберите каталог и имя</b> 
 для сохранения файла с данными для исправления данных.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="dvdisaster UI: Create (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Создайте файл для исправления ошибок</b>,
+<td class="valignt"><b>Создайте файл для исправления ошибок</b>,
 нажав кнопку "Создать".</td>
 </tr>
 </table>
@@ -174,12 +174,12 @@ if($way != 0) {
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/old-image.png" border="0" align="center">
+<td class="w200x"align="center">
+<img src="../images/old-image.png" alt="Icon: Old image file" class="nobordervalignm">
 &nbsp;&nbsp;&nbsp;
-<img src="../images/ecc.png" border="0" align="center"></a></td>
+<img src="../images/ecc.png" alt="Icon: Separate file with error correction data" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Заключение.</b> Теперь можно удалить файл образа. Однако, необходимо 
+<td class="valignt"><b>Заключение.</b> Теперь можно удалить файл образа. Однако, необходимо 
 хранить файл для исправления ошибок и, что гораздо важнее, защищать его от повреждений. На следующей странице есть несколько предложений по
 <a href="howtos24.php">архивации файла для исправления ошибок</a>.
 </td>
@@ -191,7 +191,7 @@ if($way != 0) {
 <?php
 } /* end of if($way != 0) */
 ?>
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,11 +1,11 @@
-.TH DVDISASTER 1 "2010-10-30" "0.72" "protection for CD/DVD media"
+.TH DVDISASTER 1 "2010-02-06" "0.80" "protection for CD/DVD media"
 
 .SH NAME
 DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 
 .SH SYNOPSIS
 .B dvdisaster
-.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t \||\| \-u \|]
+.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t[q] \||\| \-u \|]
 .RB [\| \-d
 .IR device \|]
 .RB [\| \-p
@@ -14,7 +14,10 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .IR image \|]
 .RB [\| \-e
 .IR eccfile \|]
-.RB [\| \-\-list \|]
+.RB [\| \-o
+.IR file|image \|]
+.RB [\| \-a
+.IR codec-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
@@ -22,20 +25,26 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .RB [\| -m
 .IR n \|]
 .RB [\| -v \|]
+.RB [\| -x
+.IR n \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
-.RB [\| --driver
+.RB [\| \-\-defective-dump
+.IR d \|]
+.RB [\| \-\-driver
 .IR d \|]
 .RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
 .RB [\| \-\-ignore-fatal-sense \|]
+.RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
-.RB [\| \-\-query-size
+.RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
 .IR n \|]
@@ -48,7 +57,6 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .IR n \|]
 .RB [\| \-\-spinup\-delay
 .IR n \|]
-.RB [\| \-\-split\-files \|]
 
 .SH DESCRIPTION
 .B DVDISASTER
@@ -73,7 +81,7 @@ the \fB--read-raw\fP option is silently ignored.
 \fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fImedium.iso\fP \fB--read-attempts\fP \fIn-m\fP \fB-r\fP
 Creates an image as described above. Defective sectors are retried at least \fIn\fP
 times and at most \fIm\fP times. Recovery of defective CD media may improve when
-combined with \fB--read-raw\fI. 
+combined with \fB--read-raw\fP. 
 .TP
 \fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fImedium.iso\fP \fB-e\fP \fIcorr.ecc\fP \fB-r\fP \fB--adaptive-read\fP
 Uses the adaptive reading strategy to read an image from 
@@ -104,8 +112,8 @@ Omit the \fB-e corr.ecc\fP options when working with augmented images in the exa
 Action selection (at least one action must be specified):
 .TP
 .B \-r, \-\-read
-Read the medium image to hard disc. Use -rn-m to read a certain sector range,
-e.g. -r100-200.
+Read the medium image to hard disc. Use \-rn-m to read a certain sector range,
+e.g. \-r100-200.
 .TP
 .B \-c, \-\-create
 Create .ecc information for the medium image.
@@ -116,8 +124,10 @@ Try to fix medium image using .ecc information.
 .B \-s, \-\-scan
 Scan the medium for read errors.
 .TP
-.B \-t, \-\-test
-Test integrity of the .iso and .ecc files.
+.B \-t, \-\-test, \-tq, \-\-test=q
+Test integrity of the .iso and .ecc files. When the
+"q" option is given, only information is output
+which can be gathered without fully scanning the files.
 .TP
 .B \-u, \-\-unlink
 Delete .iso files (when other actions complete).
@@ -137,11 +147,23 @@ name of image file (default: medium.iso).
 .B \-e, \-\-ecc eccfile
 name of parity file (default: medium.ecc).
 .TP
-.B \-\-list
-lists available drives for the ASPI driver (Windows only).
-.PP
+.B \-o, \-\-ecc-target file|image
+Specifies whether RS03 should create error correction files
+or augmented images (default: image).
+.TP
 
 Tweaking options (see manual before using!):
+.TP
+.B \-a, \-\-assume codec1,codec2,...
+Assumes that the image is augmented with one of the given codecs.
+This enables an exhaustive search for codec signatures
+and might be helpful for detecting error correction information on
+damaged media. If the image does
+not contain the specified error correction information, a significant
+amount of CPU and I/O time may be wasted.
+.RS
+Possible values are RS02 and RS03.
+.RE
 .TP
 .B \-j, \-\-jump n
 jump n sectors forward after a read error (default: 16).
@@ -151,7 +173,7 @@ Error correction data redundancy. Allowed values depend
 on the codec:
 
 .RS
-RS01 error correction files
+RS01- and RS03-error correction files
 .RS
 \-n x\ \ creates error correction file with x roots.
 .RE
@@ -206,6 +228,12 @@ Possible values are RS01 and RS02.
 .B \-v, \-\-verbose n%
 more diagnostic messages
 .TP
+.B \-x, \-\-threads n
+Use n threads for the RS03 codec. Use 2 or 4 threads for 2 or 4 core 
+processors respectively.
+On larger machines save one core for housekeeping; e.g. use 7 threads
+on an eight core machine.
+.TP
 .B \-\-adaptive-read
 use optimized strategy for reading damaged media.
 .TP
@@ -213,17 +241,22 @@ use optimized strategy for reading damaged media.
 automatically add .iso and .ecc file suffixes.
 .TP
 .B \-\-cache-size n
-image cache size in MB during -c mode (default: 32MB).
+image cache size in MB during \-c mode (default: 32MB).
 .TP
 .B \-\-dao
 assume DAO disc; do not trim image end.
 .TP
+.B \-\-defective-dump d
+Specifies the sub directory for storing incomplete raw sectors.
+.TP
 .B \-\-driver d (Linux only)
-Chooses between the cdrom (CDROM_SEND_PACKET) driver and the
-sg (SG_IO) driver for optical drives. Currently the older cdrom
-driver is pre-selected; starting with dvdisaster V0.80 the newer
-sg driver will be the default. Both drivers should work equally
-well, anyways.
+Selects between the sg (SG_IO) driver (default setting) and the
+older cdrom (CDROM_SEND_PACKET) driver for accessing the optical drives.
+Both drivers should work equally well; however the cdrom driver is known
+to cause system failures on some ancient SCSI controllers. 
+The older cdrom driver was the default upto and including dvdisaster 0.72.x;
+if the now pre-selected sg driver changes something to the worse for you
+please switch back to the older driver using \-\-driver=cdrom.
 .TP
 .B \-\-eject
 eject medium after successful read.
@@ -234,26 +267,54 @@ fill unreadable sectors with byte n
 .B \-\-ignore-fatal-sense
 continue reading after potentially fatal error condition.
 .TP
+.B \-\-ignore-iso-size
+By default getting the image size from the ISO/UDF filesystem is preferred
+over querying the drive as most drives report unreliable values.
+.RS
+However in some rare cases the image size recorded in the ISO/UDF 
+filesystem is wrong. Some Linux live CDs may have this problem. 
+If you read back the ISO image from such CDs and its md5sum does 
+not match the advertised one, try re-reading the image with 
+this option turned on.
+.RE
+.RS
+Do not blindly turn this option on as it will most likely
+create sub optimal or corrupted ISO images, especially if you 
+plan to use the image for error correction data generation.
+.RE
+.TP
 .B \-\-internal-rereads n
-internal read attempts for defective CD media sectors (default: -1)
+internal read attempts for defective CD media sectors (default: \-1)
 .RS
 The drive firmware usually retries unreadable sectors a few times before
 giving up and returning a read error. It is more efficient to set this to 0 or 1
-and manage read attempts through the --read-attempts parameter. Most drives ignore
-this setting anyways. Use -1 to leave the drive at its default setting.
+and manage read attempts through the \-\-read-attempts parameter. Most drives ignore
+this setting anyways. Use \-1 to leave the drive at its default setting.
 .RE
 .TP
-.B \-\-query-size n
-queries drive or filesystem on medium for image size (default: ecc)
+.B \-\-old-ds-marker
+Marks missing sectors in a manner which is compatible with
+dvdisaster 0.70 or older.
 .RS
-Possible values are: drive udf ecc 
+The default marking method is recommended for dvdisaster 0.72 and later
+versions. However images marked with the current method can not
+be processed with older dvdisaster versions as missing sectors
+would not be recognized in the image. 
+
+Do not process the same image with different settings for this option.
+.RE
+.TP
+.B \-\-prefetch-sectors n
+number of sectors to preload during RS03 de-/encoding (default: 32)
+.RS
+Using a value of n uses approx. n MB of RAM.
 .RE
 .TP
 .B \-\-raw-mode n
 selects raw reading mode for CD media (default: 20)
 .RS
 The recommended mode is 20, which makes the drive apply its built-in error 
-correction to the best possible extent before transfering a defective sector.
+correction to the best possible extent before transferring a defective sector.
 However some drives can only read defective sectors using mode 21, skipping
 the last stage of the internal error correction and returning 
 the uncorrected sector instead.
@@ -273,9 +334,6 @@ print warning if speed changes by more than n percent.
 .TP
 .B \-\-spinup-delay n
 wait n seconds for drive to spin up.
-.TP
-.B \-\-split-files
-split image into files <= 2GB.
 .PP
 
 .SH SEE ALSO
@@ -288,4 +346,4 @@ DVDISASTER was written by Carsten Gnoerlich <carsten@dvdisaster.com>.
 .PP
 This manual page was written by Daniel Baumann
 <daniel.baumann@panthera-systems.net>, for the Debian project (but may be used
-by others). It was enhanced for V0.70/0.72 by Carsten Gnoerlich.
+by others). Since version 0.70 it is maintained by Carsten Gnoerlich.

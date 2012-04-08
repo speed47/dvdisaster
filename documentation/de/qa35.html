@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Angepaßtes Lese-Verfahren</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Version 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/de/">Zur Internet-Version</a>
+       <a href="../cs/qa35.html"></a> 
+        
+       <a href="../en/qa35.html"></a> 
+       <a href="../ru/qa35.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Inhalt</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Neuigkeiten</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Überblick</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Typische Anwendungen</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Herunterladen</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Fragen und Antworten</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa10.html">Technische Fragen</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa20.html">Fehlermeldungen</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa30.html">Hintergrundinformationen</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa31.html">Eigenschaften der Fehlerkorrektur</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa32.html">Datenrekonstruktion auf Abbild-Ebene</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa33.html">RS01, RS02 und RS03</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa34.html">Lineares Lese-Verfahren</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Angepaßtes Lese-Verfahren</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa36.html">Bemerkungen zu Lesefehlern</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa37.html">Fehlerkorrektur-Datei aufbewahren</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Fehler berichten</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Das angepaßte Lese-Verfahren</h3>
+<p>
+
+dvdisaster enthält zwei verschiedene Leseverfahren.<p>
+
+<b>Anwendungen für das angepaßte Leseverfahren:</b><p>
+<ul>
+<li> Inhalt von beschädigten Datenträgern <a href="howtos42.html">rekonstruieren</a>
+</li>
+</ul>
+
+<b>Anwendungen für das <a href="qa34.html">lineare Leseverfahren:</a></b><p>
+<ul>
+<li>Abbilder von unbeschädigten Datenträgern zum Erzeugen einer Fehlerkorrekturdatei <a href="howtos23.html">einlesen</a></li>
+<li><a href="howtos12.html">Lesegeschwindigkeitskurve</a> zum Prüfen des Datenträger-Zustandes ermitteln</li>
+</ul>
+
+<pre> </pre>
+
+<b>Eigenschaften des angepaßten Verfahrens.</b><p>
+
+Das angepaßte Verfahren setzt eine "Teile-und-Herrsche" ("divide-and-conquer") - Strategie ein,
+um möglichst schnell die noch lesbaren Stellen eines beschädigten Datenträgers zu ermitteln 
+und auszulesen.
+Die Strategie geht auf einen Artikel von Harald Bögeholz im c't-Magazin 16/2005 
+zurück, wo sie zusammen mit dem Programm <i>h2cdimage</i> veröffentlicht wurde:
+
+<ol>
+<li> 
+  Zu Anfang wird der Datenträger als ein einziger noch nicht gelesener Bereich betrachtet. 
+Das Lesen beginnt mit Sektor Null.<p>
+</li>
+<li>
+Der Lesevorgang wird solange linear fortgesetzt,
+bis entweder das Ende des momentanen Bereiches erreicht ist oder ein Lesefehler auftritt.<p>
+</li>
+<li>
+Der Lesevorgang wird entweder beendet, wenn (3a) genügend Sektoren für eine Fehlerkorrektur 
+gelesen wurden oder (3b) keine unlesbaren Bereiche oberhalb einer bestimmten Größe 
+mehr vorhanden sind.
+<p>
+</li>
+<li>Anderenfalls wird der größte noch nicht gelesene Bereich auf dem Datenträger bestimmt
+und in der Mitte aufgeteilt. Der Lesevorgang wird in der Mitte wie in Schritt 2 fortgesetzt.
+Die erste Hälfte des aufgeteilten Bereiches verbleibt hingegen als noch nicht gelesener Bereich
+für einen späteren Durchlauf.<p>
+</li>
+</ol>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+Das Abbruchkriterium (3a) ist besonders wirkungsvoll: Es beendet das Einlesen sofort,
+wenn die absolut notwendigen Sektoren zur Wiederherstellung des Abbildes mit Hilfe 
+der Fehlerkorrektur gelesen worden sind.
+Dies kann die Bearbeitungszeit  gegenüber einem vollständigen Einlese-Versuch um bis zu 90% verkürzen,
+erfordert aber natürlich, daß man die zugehörige Fehlerkorrektur-Datei zur Hand hat.
+    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Angepaßtes Lesen in Aktion</span></td></tr>
+        <tr><td><a href="qa35_expand=1.html#snap1"><img src="thumbnails/adaptive-progress.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<p>
+
+<pre> </pre>
+
+<a name="configure"></a>
+<b>Einstellmöglichkeiten</b><p>
+
+<b>Fehlerkorrekturdatei.</b> Angepaßtes Lesen funktioniert am besten, wenn die zum Abbild gehörenden
+Fehlerkorrektur-Daten vorhanden sind. 
+Das setzt natürlich voraus, daß man diese Daten
+zu einem Zeitpunkt <a href="howtos21.html">erzeugt</a> hat, 
+als der Datenträger noch vollständig lesbar war.
+
+Um eine Fehlerkorrektur-Datei zu nutzen, muß sie vor Beginn des Lesens 
+<a href="howtos42.html#select_eccfile">ausgewählt</a> werden.<p>
+
+<b>Einschränkung des adaptiven Lesebereiches.</b> Der Einlesevorgang 
+kann auf einen Teil des Datenträgers <a href="howtos11.html#image">eingeschränkt</a> werden. 
+
+Bei der Verwendung von Fehlerkorrektur-Daten ist das Einschränken 
+des Lesebereichs nicht sinnvoll, da es gegebenenfalls das Einlesen von Sektoren
+verhindert, die zur Fehlerkorrektur benötigt werden.
+Ohne Fehlerkorrektur-Daten kann es hingegen bei mehrfachen Einlese-Versuchen 
+von beschädigten Datenträgern hilfreich sein.<p>
+
+<b>Lesen vorzeitig beenden.</b>Wenn keine Fehlerkorrektur-Daten vorhanden sind, wird der Lesevorgang beendet, sobald keine
+unlesbaren Bereiche oberhalb 
+<a href="howtos41.html#reading_attempts">einer bestimmten Größe</a> mehr vorhanden sind.<p>
+
+Der Wert zum Beenden sollte nicht kleiner als 128 eingestellt werden.
+Anderenfalls werden in der Schlußphase des Einlesens sehr viele Neupositionierungen des
+Laserschlittens im Laufwerk durchgeführt. Darunter leidet sowohl die Lebensdauer als auch die
+Lesefähigkeit des Laufwerks. Günstiger ist es typischerweise, früher mit den adaptiven
+Lesen aufzuhören und die letzten Sektoren mit dem <a href="qa34.html">linearen Leseverfahren</a>
+zu vervollständigen.
+
+<!-- do not change below -->
+
+  </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/de/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Die unveränderte Wiedergabe und Verteilung dieses gesamten Textes in beliebiger Form ist gestattet, sofern dieser Hinweis erhalten bleibt.
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,20 +12,20 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Platzhalter-Seite</h3>
+<h3 class="top">Platzhalter-Seite</h3>
 
 Diese Seite wurde noch nicht ausformuliert.
 <pre> </pre>
 
 
-<font size="-1">
+<span class="fs">
 <i>Warum enthält diese Dokumentation leere Seiten?</i><p>
 Wir brauchen die Platzhalter-Seiten damit an anderen Stellen der
-Dokumentation bereits die passenden Querverweise gesetzt werden können. 
+Dokumentation bereits die passenden Querverweise gesetzt werden können.</span>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

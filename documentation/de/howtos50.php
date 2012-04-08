@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,11 +14,11 @@ begin_page();
 howto_headline("Informationen zu Abbildern/Fehlerkorrektur-Daten anzeigen", "Übersicht", "images/compare-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Aufgabe</b></td>
+<td class="w20p"><b>Aufgabe</b></td>
 <td>
 Zeigt Informationen über die Art und den Zustand von Abbildern 
 und Fehlerkorrektur-Dateien.
@@ -30,9 +30,9 @@ und Fehlerkorrektur-Dateien.
 <td colspan="2"><b>Benötigt werden:</b><p></td>
 </tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/good-image.png" align="top">
-   <img src="../images/ecc.png">
+ <td class="w150x" align="right">
+   <img src="../images/good-image.png" alt="Symbol: vollständiges Abbild" class="valignt">
+   <img src="../images/ecc.png" alt="Symbo: Eigenständige Fehlerkorrektur-Datei">
  </td>
 <td>
 Ein Datenträger-Abbild und gegebenenfalls die zugehörige
@@ -41,7 +41,7 @@ Fehlerkorrektur-Datei.
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Dies ist zu tun:<p></b></td>
+<td colspan="2"><b>Dies ist zu tun:</b><p></td>
 </tr>
 
 <tr>
@@ -60,7 +60,7 @@ Fehlerkorrektur-Datei.
 
 <a href="howtos51.php">Informationen anzeigen...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 <?php
 # end_page() adds the footer line and closes the HTML properly.
 end_page();

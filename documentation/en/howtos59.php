@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Examples</h3>
+<h3 class="top">Examples</h3>
 
 You  have already seen examples of
  <a href="howtos52.php?expand=1">good images and error correction files</a>
@@ -72,11 +72,11 @@ It may be possible to recover from this problem; see hints related to
 The error correction file was created for a different image.
 This causes lots of CRC errors since the sectors have different contents.
 However the most important hint is:<p>
-Fingerprint: <font color="red">mismatch</font><p>
+Fingerprint: <span class="red">mismatch</span><p>
 This tells you that the error correction file does not belong to the image.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

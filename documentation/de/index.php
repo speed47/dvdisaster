@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,12 +13,13 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Das dvdisaster-Projekt</h3>
+<h3 class="top">Das dvdisaster-Projekt</h3>
 
 
-CD-, DVD- und BD-Datenträger behalten ihre Daten nur eine endlich lange Zeit (normalerweise
+Optische Datenträger (also CD,DVD,BD) behalten ihre Daten nur 
+eine endlich lange Zeit (normalerweise
 viele Jahre). Danach beginnt typischerweise ein langsamer Datenverlust, 
 indem von außen nach innen immer mehr Lesefehler auftreten.<p>
 
@@ -42,7 +43,7 @@ Die maximale Kapazität der Fehlerkorrektur ist einstellbar.<p>
 <li>dvdisaster kann defekte Datenträger nicht wieder lesbar machen.
 Ohne Fehlerkorrektur-Daten kann ein beschädigter Datenträger <i>nicht</i> 
 wiederhergestellt werden.<p></li> 
-<li><img src="images/exclude_from_search_terms.png" align="middle"><br>
+<li><img src="images/exclude_from_search_terms.png" alt="" align="middle"><br>
 Solche Funktionen sind mit den Zielen und dem inneren Aufbau von dvdisaster nicht vereinbar.</li>
 </ul>
 

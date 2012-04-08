@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Поиск ошибок на носителях", "Объяснение результатов", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Обзор","defective-cd.png"); ?>
 <b>Обзор.</b> dvdisaster предоставляет информацию о результах проверки:
@@ -116,7 +116,7 @@ CD-приводы имеют встроенную коррекцию ошибо�
 может быть дефектное ОЗУ, плохие кабели или контроллеры или неправильные частоты генераторов.</li></ul>
 <?php end_screen_shot(); ?><p>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

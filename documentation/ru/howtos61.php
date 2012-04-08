@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,15 +12,15 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Идея, лежащая в основе исправления ошибок</h3>
+<h3 class="top">Идея, лежащая в основе исправления ошибок</h3>
 
 <table width="100%">
 <tr valign="top">
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td rowspan="3">
 Из примера на предыдущей странице мы знаем, как dvdisaster воссоздает
@@ -36,15 +36,15 @@ begin_page();
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Icon: Diagonal arrow right"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Icon: Diagonal arrow left">20%</td>
 <td> </td>
 </tr>
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td> </td>
 <td> </td>
 </tr>
@@ -56,17 +56,17 @@ begin_page();
 числа "8 6 2 3". Поскольку в этих ящиках нет какой-либо деликатной
 информации, она решает записать числа прямо на поверхности стола:<p>
 
-<img src="../images/ecc-example1.png"><p>
+<img src="../images/ecc-example1.png" alt="8 6 2 3"><p>
 
 Анна предусмотрительна и предполагает, что одно из чисел станет нечитаемым, 
 если на него случайно капнут чернила. Поэтому она записывает также и
 сумму этих четырех чисел ("+" и "=" - добавлены только для ясности):<p>
 
-<img src="../images/ecc-example2.png"><p>
+<img src="../images/ecc-example2.png" alt="8+6+2+3=19"><p>
 
 Через какое-то время на числа, действительно, попало чернильное пятно:<p>
 
-<img src="../images/ecc-example3.png"><p>
+<img src="../images/ecc-example3.png" alt="8+&nbsp;+6+2+3=19"><p>
 
 Но это не проблема, раз Анна может вновь вычислить недостающее число <i>x</i>,
 переписав все еще читаемые части уравнения:<p>
@@ -80,8 +80,8 @@ x = 19 - 8 - 2 - 3, и, следовательно, x = 6.<p>
 некоторые важные свойства исправления ошибок:
 <p>
 
-<table><tr><td><img src="../images/ecc-example4.png"></td><td>&nbsp;&nbsp;</td>
-<td valign="top">
+<table><tr><td><img src="../images/ecc-example4.png" alt="8+6+2+3 (medium)=19 (ecc)"></td><td>&nbsp;&nbsp;</td>
+<td class="valignt">
 Для данного набора данных (например, числа "8 6 2 3")
 дополнительные данные для исправления ошибок (например, сумма "19") могут быть созданы
 таким образом, что потерянное данное может быть вновь рассчитано по оставшимся данным.<p>
@@ -121,7 +121,7 @@ x = 19 - 8 - 2 - 3, и, следовательно, x = 6.<p>
 книгам по теории кодирования.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

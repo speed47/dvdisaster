@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Testing image compatibility</h3>
+<h3 class="top">Testing image compatibility</h3>
 
 <b>Why dvdisaster uses ISO images.</b> 
 Some dvdisaster functions work on image files stored on hard disk.
@@ -54,7 +54,7 @@ Therefore it is possible that some CD/DVD/BD writing software will not properly
 write the error correction data to the medium. Make sure that your writing
 software does <a href="howtos92.php">correctly transfer the error correction data</a> when using it with augmented images for the first time.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

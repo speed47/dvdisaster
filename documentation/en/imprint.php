@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Imprint</h3>
+<h3 class="top">Imprint</h3>
 
 Carsten Gnörlich <br>
 Beerenkamp 23 <br>
@@ -36,7 +36,7 @@ This imprint covers the web sites under the domains<br>
 <a href="http://dvdisaster.net">dvdisaster.net</a>, &nbsp;
 <a href="http://dvdisaster.org">dvdisaster.org</a>.<br>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

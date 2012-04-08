@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # Load the shell functions needed for the rest of this script.
 
@@ -40,8 +40,7 @@ PRINT_MESSAGE "\nLooking for includes and libraries:"
 REQUIRE_INCLUDE bzlib.h bz2
 REQUIRE_LIBRARY bz2 BZ2_bzReadOpen bz2
 
-REQUIRE_INCLUDE png.h png
-REQUIRE_LIBRARY png png_sig_cmp png
+REQUIRE_PNG
 
 # Byte order
 

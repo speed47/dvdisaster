@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Testing compatibility between error correction files and ISO images</h3>
+<h3 class="top">Testing compatibility between error correction files and ISO images</h3>
 
 
 <b>Motivation:</b> You want to write data to a medium and create an
@@ -40,10 +40,10 @@ and examples.<p>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/good-image.png">
-<p><img src="../images/down-fork-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/good-image.png" alt="Icon: Complete image">
+<p><img src="../images/down-fork-arrow.png" alt="Icon: Forked arrow"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Create an ISO image of the data</b> you want
+<td class="valignt"><b>Create an ISO image of the data</b> you want
 to write on the medium. If you need help on creating ISO images
 please refer to the
 <a href="howtos33.php?way=1">example of creating ISO images</a>.
@@ -53,15 +53,15 @@ please refer to the
 
 <table>
 <tr>
-<td width="100px" align="center">
-<img src="../images/good-cd.png" border="0" align="center"><p>
-<img src="../images/down-arrow.png" border="0">
+<td class="w100x" align="center">
+<img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)" class="nobordervalignm"><p>
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
-<td width="100px" align="center" valign="top">
-<img src="../images/ecc.png" border="0" align="center">
+<td class="w100x" align="center" valign="top">
+<img src="../images/ecc.png" alt="Icon: Separate file with error correction data" class="nobordervalignm">
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Write the medium and create the error correction file.</b>
+<td class="valignt"><b>Write the medium and create the error correction file.</b>
 Use the just created image to 
 <a href="howtos33.php?way=3#c">write the medium</a>. 
 Then perform these <a href="howtos22.php#ecc">basic settings</a> and
@@ -73,13 +73,13 @@ from the image.
 
 <table>
 <tr>
-<td width="100px" align="center">
-<img src="../images/good-image2.png" border="0"><p>
-<img src="../images/down-arrow.png" border="0">
+<td class="w100x" align="center">
+<img src="../images/good-image2.png" alt="Icon: Complete image from the previously written medium" class="noborder"><p>
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
-<td width="100px" align="center"> </td>
+<td class="w100x" align="center"> </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Create a <i>second</i> image from the <i>written</i> 
+<td class="valignt"><b>Create a <i>second</i> image from the <i>written</i> 
 medium.
 </b> Use these <a href="howtos22.php#read">settings</a>
 and read the medium as described 
@@ -93,12 +93,12 @@ correction file again.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Enter the name of the <i>second</i> ISO image</b>
+<td class="valignt"><b>Enter the name of the <i>second</i> ISO image</b>
 which you have just read from the medium. Please note that the following
 test is useless when working with the image which was initially created
 using the CD/DVD/BD authoring software.
@@ -108,12 +108,12 @@ using the CD/DVD/BD authoring software.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 <b>Enter the name of the error correction file</b>
 in case it is not already present from the previous actions.
 </td>
@@ -122,12 +122,12 @@ in case it is not already present from the previous actions.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start the evaluation</b> by clicking
+<td class="valignt"><b>Start the evaluation</b> by clicking
 on the "Verify" button.</td>
 </tr>
 </table>
@@ -156,11 +156,11 @@ do the following:
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/fix-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/fix-icon.png" alt="dvdisaster UI: Fix (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start a recovery process.</b>
+<td class="valignt"><b>Start a recovery process.</b>
 </td>
 </tr>
 </table>
@@ -174,11 +174,11 @@ sectors from the image. Answer "OK".
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/stop-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/stop-icon.png" alt="dvdisaster UI: Stop (button)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Stop the recovery process,</b>
+<td class="valignt"><b>Stop the recovery process,</b>
 as after truncating the image there is nothing more to do.
 </td>
 </tr>
@@ -186,12 +186,12 @@ as after truncating the image there is nothing more to do.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start the verification again</b>
+<td class="valignt"><b>Start the verification again</b>
 by clicking on the "Verify" button.</td>
 </tr>
 </table>
@@ -203,10 +203,10 @@ file." your problem is purely cosmetic: The writing software has indeed
 added zero padding sectors while writing the medium.
 <?php end_howto_shot(); ?>
 
-<font color="#800000">If the problem persists after carrying out the above
+<span class="red">If the problem persists after carrying out the above
 steps do <i>not</i> assume that dvdisaster and the writing software
 are compatible. The created error correction files will probably be
-unusable.</font> <p> 
+unusable.</span> <p> 
 Use the following method for creating the error correction files instead:
 
 <hr>
@@ -225,7 +225,7 @@ but it also has the advantage of testing the newly created
 medium for readability. 
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

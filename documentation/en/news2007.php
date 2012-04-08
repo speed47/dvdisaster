@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -21,7 +21,7 @@ news_item("28.10.2007", "New documentation started", "
    The dvdisaster documentation is currently being reworked for the upcoming
    V0.72 release. Please be patient; the new documentation will hopefully be more
    useful than the old one, but we will need a few weeks to fill in all parts.
-"); # end of news_item
+", 1, "2007-10-28T00:00:00Z", "2007-10-28T00:00:00Z");
 
 if($news_flash == 0) 
    end_page();

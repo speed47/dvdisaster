@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Installation of the source packages</h3>
+<h3 class="top">Installation of the source packages</h3>
 
 dvdisaster uses the common <tt>./configure; make; make install</tt> mechanism
 for installation from source. Please see the file <tt>INSTALL</tt> in the
@@ -59,7 +59,7 @@ manually unpacking the setup.exe program, or by copying it from
 an already existing installation. Doing so may result in strange
 errors which seem to be totally unrelated to an improper installation.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

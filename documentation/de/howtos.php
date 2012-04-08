@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Typische Anwendungen</h3>
+<h3 class="top">Typische Anwendungen</h3>
 
 dvdisaster ist ein komplexes Werkzeug, zu dessen vollständiger Beschreibung
 ein kleines Buch benötigt würde. Da uns dazu momentan die
@@ -38,8 +38,8 @@ welche Kombinationen davon benötigt werden:<p>
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd.png"></td>
-<td align="center" width="15%"><img src="../images/bad-cd.png"></td>
+<td align="center" width="15%"><img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)"></td>
+<td align="center" width="15%"><img src="../images/bad-cd.png" alt="Symbol: Beschädigter Datenträger (teilweise unlesbar)"></td>
 <td width="55%">Dieses Symbol gibt an, ob ein Datenträger für die beschriebene 
 Aufgabe benötigt wird, und ob dieser noch vollständig lesbar oder bereits 
 beschädigt sein darf.
@@ -56,8 +56,8 @@ beschädigt sein darf.
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-image.png"></td>
-<td align="center" width="15%"><img src="../images/bad-image.png"></td>
+<td align="center" width="15%"><img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
+<td align="center" width="15%"><img src="../images/bad-image.png" alt="Symbol: Unvollständiges Abbild (von einem beschädigten Datenträger)"></td>
 <td width="55%">Einige Funktionen arbeiten nicht direkt mit einem Datenträger, sondern
 auf einem ISO-Abbild davon auf der Festplatte. Entsprechend des Zustands des 
 Datenträgers sind die Abbilder vollständig oder unvollständig.</td>
@@ -72,8 +72,8 @@ Datenträgers sind die Abbilder vollständig oder unvollständig.</td>
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd-ecc.png"></td>
-<td align="center" width="15%"><img src="../images/ecc.png"></td>
+<td align="center" width="15%"><img src="../images/good-cd-ecc.png" alt="Symbol: Datenträger mit Fehlerkorrektur-Daten"></td>
+<td align="center" width="15%"><img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei"></td>
 <td width="55%">Die zentrale Anwendung von dvdisaster ist die Wiederherstellung
 von Abbildern durch Fehlerkorrektur-Daten. An diesem Symbol erkennen Sie, ob
 Fehlerkorrektur-Daten benötigt werden.

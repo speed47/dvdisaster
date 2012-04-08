@@ -1,6 +1,8 @@
 <?php
 #  dvdisaster homepage: Screen shot helper routines
-#  Copyright (C) 2007-2010 Carsten Gn�rlich
+#  Copyright (C) 2007-2012 Carsten Gnörlich
+#
+# UTF-8 trigger: äöüß 
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -36,7 +38,7 @@ function begin_screen_shot($caption, $image)
    $screen_shot_image = $image;
    $screen_shot_caption = $caption;
 
-   echo "<!--- begin of screen shot --->\n";
+   echo "<!-- begin of screen shot -->\n";
 
    # Screen version (large image)
 
@@ -51,7 +53,7 @@ function begin_screen_shot($caption, $image)
    else
    {  echo "<table>\n";
       echo "  <tr>\n";
-      echo "    <td valign=\"top\">\n";
+      echo "    <td class=\"valignt\">\n";
    }
 }
 
@@ -70,7 +72,7 @@ function end_screen_shot()
       if($screen_shot_way != "")
 	   echo "    <a href=\"${script_file}?way=$screen_shot_way&#snap${screen_shot_counter}\">\n";
       else echo "    <a href=\"${script_file}#snap${screen_shot_counter}\">\n";
-      echo "      <img src=\"images/$screen_shot_image\">\n";
+      echo "      <img src=\"images/$screen_shot_image\" alt=\"\" class=\"noborder\">\n";
       echo "    </a>\n";
       echo "  </td></tr>\n";
       echo "  <tr><td align=\"center\">$trans_screen_shot: $screen_shot_caption</td></tr>\n";
@@ -81,12 +83,12 @@ function end_screen_shot()
    {  echo "    </td>\n";
       echo "    <td>\n";
       echo "      <a name=\"snap${screen_shot_counter}\"></a>\n";
-      echo "      <table class=\"thumbnail\" width=\"160px\">\n";
-      echo "        <tr><td><font size=\"-1\">$screen_shot_caption</font></td></tr>\n";
+      echo "      <table class=\"thumbnail\" width=\"160\">\n";
+      echo "        <tr><td><span class=\"fs\">$screen_shot_caption</span></td></tr>\n";
       if($screen_shot_way != "")
 	   echo "        <tr><td><a href=\"${script_file}?way=$screen_shot_way&expand=${screen_shot_counter}#snap${screen_shot_counter}\">";
       else echo "        <tr><td><a href=\"${script_file}?expand=${screen_shot_counter}#snap${screen_shot_counter}\">";
-      echo "<img src=\"thumbnails/$screen_shot_image\"></a>";
+      echo "<img src=\"thumbnails/$screen_shot_image\" alt=\"\" class=\"noborder\"></a>";
       echo "</td></tr>\n";
       echo "      </table>\n";
       echo "    </td>\n";
@@ -94,7 +96,7 @@ function end_screen_shot()
       echo "</table><p>\n";
    }
 
-   echo "<!--- end of screen shot --->\n";
+   echo "<!-- end of screen shot -->\n";
 }
 
 
@@ -117,7 +119,7 @@ function begin_howto_shot($caption, $image, $arrow)
    $screen_shot_caption = $caption;
    $screen_shot_arrow = $arrow;
 
-   echo "<!--- begin of screen shot --->\n";
+   echo "<!-- begin of screen shot -->\n";
 
    # Screen version (large image)
 
@@ -132,17 +134,17 @@ function begin_howto_shot($caption, $image, $arrow)
    else
    {  echo "<table>\n";
       echo "  <tr>\n";
-      echo "    <td width=\"200px\" align=\"center\">\n";
+      echo "    <td class=\"w200x\" align=\"center\">\n";
       echo "      <a name=\"snap${screen_shot_counter}\"></a>\n";
       if($screen_shot_way != "")
 	   echo "      <a href=\"${script_file}?way=$screen_shot_way&expand=${screen_shot_counter}#snap${screen_shot_counter}\">";
       else echo "      <a href=\"${script_file}?expand=${screen_shot_counter}#snap${screen_shot_counter}\">";
-      echo "       <img src=\"thumbnails/$image\" border=\"0\">\n";
+      echo "       <img src=\"thumbnails/$image\" alt=\"\" class=\"noborder\">\n";
       if($screen_shot_arrow != "")
-	 echo "       <br><img src=\"../images/$arrow\" border=\"0\">\n";
+	 echo "       <br><img src=\"../images/$arrow\" alt=\"\" class=\"noborder\">\n";
       echo "      </a>\n";
       echo "    </td><td>&nbsp; &nbsp;</td>\n";
-      echo "    <td valign=\"top\">\n";
+      echo "    <td class=\"valignt\">\n";
    }
 }
 
@@ -162,7 +164,7 @@ function end_howto_shot()
       if($screen_shot_way != "")
 	   echo "    <a href=\"${script_file}?way=$screen_shot_way&expand=0#snap${screen_shot_counter}\">\n";
       else echo "    <a href=\"${script_file}?expand=0#snap${screen_shot_counter}\">\n";
-      echo "      <img src=\"images/$screen_shot_image\">\n";
+      echo "      <img src=\"images/$screen_shot_image\" alt=\"\" class=\"noborder\">\n";
       echo "    </a>\n";
       echo "  </td></tr>\n";
       echo "  <tr><td align=\"center\">$trans_screen_shot: $screen_shot_caption</td></tr>\n";
@@ -171,8 +173,8 @@ function end_howto_shot()
       if($screen_shot_arrow != "")
       {  	 echo "<table>\n";
 	 echo "  <tr>\n";
-	 echo "    <td width=\"200px\" align=\"center\">\n";
-	 echo "      <img src=\"../images/$screen_shot_arrow\" border=\"0\">\n";
+	 echo "    <td class=\"w200x\" align=\"center\">\n";
+	 echo "      <img src=\"../images/$screen_shot_arrow\" alt=\"\" class=\"noborder\">\n";
 	 echo "    </td>\n";
 	 echo "  </tr>\n";
 	 echo "</table>\n";
@@ -184,6 +186,6 @@ function end_howto_shot()
       echo "</table><p>\n";
    }
 
-   echo "<!--- end of screen shot --->\n";
+   echo "<!-- end of screen shot -->\n";
 }
 ?>

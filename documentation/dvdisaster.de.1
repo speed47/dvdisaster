@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2010-10-31" "0.72" "Schutz f\[:u]r CD/DVD Medien"
+.TH DVDISASTER 1 "2010-02-07" "0.80" "Schutz f\[:u]r CD/DVD Medien"
 
 .SH NAME
 DVDISASTER \- Schutz f\[:u]r CD/DVD Medien gegen Datenverlust durch Alterung
@@ -6,7 +6,7 @@ oder Kratzer
 
 .SH SYNTAX
 .B dvdisaster
-.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t \||\| \-u \|]
+.RB [\| \-r \||\| \-c \||\| \-f \||\| \-s \||\| \-t[q] \||\| \-u \|]
 .RB [\| \-d
 .IR device \|]
 .RB [\| \-p
@@ -15,7 +15,10 @@ oder Kratzer
 .IR image \|]
 .RB [\| \-e
 .IR eccfile \|]
-.RB [\| \-\-list \|]
+.RB [\| \-o
+.IR file|image \|]
+.RB [\| \-a
+.IR codec-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
@@ -23,20 +26,26 @@ oder Kratzer
 .RB [\| -m
 .IR n \|]
 .RB [\| -v \|]
+.RB [\| -x
+.IR n \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
-.RB [\| \-\-driver
+.RB [\| \-\-defective-dump \|
+.IR d \|]
+.RB [\| \-\-driver \|
 .IR d \|]
 .RB [\| \-\-eject \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
 .RB [\| \-\-ignore-fatal-sense \|]
+.RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
-.RB [\| \-\-query-size
+.RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
 .IR n \|]
@@ -47,9 +56,8 @@ oder Kratzer
 .RB [\| \-\-read-raw \|]
 .RB [\| \-\-speed-warning
 .IR n \|]
-.RB [\| \-\-spinup\-dalay
+.RB [\| \-\-spinup\-delay
 .IR n \|]
-.RB [\| \-\-split\-files \|]
 
 .SH BESCHREIBUNG
 .B DVDISASTER
@@ -112,8 +120,8 @@ wenn Sie mit erweiterten Abbildern arbeiten.
 Aktions-Auswahl (mindestens eine Aktion muss gew\[:a]hlt werden):
 .TP
 .B \-r, \-\-read
-Datentr\[:a]ger-Abbild auf Festplatte einlesen. -rn-m liest einen Bereich von
-Sektoren, z.B. -r100-200.
+Datentr\[:a]ger-Abbild auf Festplatte einlesen. \-rn-m liest einen Bereich von
+Sektoren, z.B. \-r100-200.
 .TP
 .B \-c, \-\-create
 Erzeugt Fehlerkorrektur-Daten f\[:u]r das Abbild.
@@ -124,8 +132,10 @@ Versucht das Abbild mit Hilfe der Fehlerkorrektur-Daten zu reparieren.
 .B \-s, \-\-scan
 Untersucht den Datentr\[:a]ger auf Lesefehler.
 .TP
-.B \-t, \-\-test
-Pr\[:u]ft die Struktur der .iso und .ecc - Dateien.
+.B \-t, \-\-test, \-tq, \-test=q
+Pr\[:u]ft die Struktur der .iso und .ecc \- Dateien.
+Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
+die ohne vollst\[:a]ndiges Lesen der Dateien ermittelt werden k\[:o]nnen.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
@@ -144,22 +154,34 @@ Name der Abbild - Datei (Standard: medium.iso).
 .TP
 .B \-e, \-\-ecc eccfile
 Name der Fehlerkorrektur-Datei (Standard: medium.ecc).
-.PP
-.B \-\-list
-Zeigt verf\[:u]gbare Laufwerke unter dem ASPI-Treiber (nur f\[:u]r Windows).
+.TP
+.B \-o, \-\-ecc-target file|image
+Gibt an ob mit RS03 Fehlerkorrektur-Dateien oder erweiterte
+Abbilder erzeugt werden sollen (Standard: erweiterte Abbilder).
 .PP
 
 Feineinstellung (Beachten Sie die Hinweise in der Dokumentation!):
+.TP
+.B \-a, \-\-assume codec1,codec2,...
+Nimmt an da\[ss] das Abbild mit einem der angegebenen Kodierer erweitert
+wurde. Dies bewirkt eine ersch\[:o]pfende Suche nach den Datenstrukturen
+der Kodierer und ist hilfreich, um in besch\[:a]digten Datentr\[:a]gern enthaltene
+Fehlerkorrektur-Daten wiederzufinden. Wenn das Abbild allerdings keine
+der angegebenen Fehlerkorrektur-Daten enth\[:a]lt, verschwendet diese Option
+eine gro\[ss]e Menge Rechenzeit und Ein-/Ausgabeoperationen.
+.RS
+M\[:o]gliche Werte sind RS02 und RS03.
+.RE
 .TP
 .B \-j, \-\-jump n
 \[:u]berspringe n Sektoren nach einem Lesefehler (Standard: 16).
 .TP
 .B \-n, \-\-redundancy n[unit]
-Redundanz der Fehlerkorrektur-Daten. Die zulässigen Werte sind vom
-verwendeten Kodierer abhängig:
+Redundanz der Fehlerkorrektur-Daten. Die zul\[:a]ssigen Werte sind vom
+verwendeten Kodierer abh\[:a]ngig:
 
 .RS
-RS01-Fehlerkorrektur-Dateien:
+RS01- und RS03-Fehlerkorrektur-Dateien:
 .RS
 \-n x\ \ erzeugt Fehlerkorrektur-Datei mit x Nullstellen.
 .RE
@@ -167,35 +189,35 @@ RS01-Fehlerkorrektur-Dateien:
 \-n x% erzeugt Fehlerkorrektur-Datei mit x Prozent Redundanz.
 .RE
 .RS
-\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MB Größe.
+\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MB Gr\[:u]\[ss]e.
 .RE
 .RS 
-\-n normal - optimierter Kodierer für 14.3% Redundanz/32 Nullstellen.
+\-n normal - optimierter Kodierer f\[:u]r 14.3% Redundanz/32 Nullstellen.
 .RE
 .RS
-\-n high\ \ \ - optimierter Kodierer für 33.5% Redundanz/64 Nullstellen.
+\-n high\ \ \ - optimierter Kodierer f\[:u]r 33.5% Redundanz/64 Nullstellen.
 .RE
 .RE
 
 .RS
 RS02-Abbilder:
 .RS
-\-n CD\ \ \ erweitert Abbild auf CD-Größe.
+\-n CD\ \ \ erweitert Abbild auf CD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n DVD\ \ erweitert Abbild auf DVD-Größe.
+\-n DVD\ \ erweitert Abbild auf DVD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n DVD9 erweitert Abbild auf DVD9-Größe.
+\-n DVD9 erweitert Abbild auf DVD9-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n BD\ \ \ erweitert Abbild auf BD-Größe.
+\-n BD\ \ \ erweitert Abbild auf BD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n BD2\  erweitert Abbild auf zweilagige BD-Größe.
+\-n BD2\  erweitert Abbild auf zweilagige BD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n x\ \ \ \ erweitert Abbild auf ca. x Sektoren Länge.
+\-n x\ \ \ \ erweitert Abbild auf ca. x Sektoren L\[:a]nge.
 .RE
 .RS
 \-n x%\ \ \ erweitert Abbild mit ca. x% Redundanz. 
@@ -214,6 +236,12 @@ M\[:o]gliche Werte sind RS01 und RS02.
 .B \-v, \-\-verbose n%
 mehr erl\[:a]uternde Ausgaben
 .TP
+.B \-x, \-\-threads n
+Verwende n Kontrollf\[:a]den f\[:u]r den RS03-Kodierer/Dekodierer. Empfohlen
+sind 2 bzw. 4 Kontrollf\[:a]den f\[:u]r 2- bzw. 4-Kern-Prozessoren. Lassen Sie
+auf gr\[:o]\[ss]eren Systemen einen Kontrollfaden f\[:u]r Verwaltungszwecke frei,
+d.h. benutzen Sie 7 Kontrollf\[:a]den auf einem 8-Kern-System.
+.TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
 .TP
@@ -226,12 +254,18 @@ Zwischenspeicher in MB bei .ecc-Datei-Erzeugung - (Standard: 32MB).
 .B \-\-dao
 unterstelle DAO; Abbild am Ende nicht k\[:u]rzen.
 .TP
-.B \-\-driver d (nur Linux)
-W\[:a]hlt zwischen dem cdrom (CDROM_SEND_PACKET)-Treiber und dem
-sg (SG_IO)-Treiber für die Laufwerke aus. Zur Zeit wird noch
-der \[:a]ltere cdrom-Treiber als Voreinstellung verwendet; ab
-dvdisaster 0.80 wird der neuere sg-Treiber die Standardauswahl.
-Beide Treiber sollten gleich gut funktionieren.
+.B \-\-defective-dump d
+Gibt das Unterverzeichnis zum Sammeln von unvollst\[:a]ndigen
+Roh-Sektoren an.
+.TP
+.B \-\-driver d  (nur f\[:u]r Linux)
+W\[:a]hlt zwischen dem sg (SG_IO)-Treiber (voreingestellt) und dem
+\[:a]lteren cdrom (CDROM_SEND_PACKET)-Treiber zum Zugriff auf die Laufwerke aus.
+Beide Treiber sollten gleich gut funktionieren; der 
+cdrom-Treiber hat allerdings mit alten SCSI-Kontrollern Probleme.
+Bis einschlie\[ss]lich dvdisaster 0.72.x war der cdrom-Treiber allerdings die
+Voreinstellung; wenn sich jetzt etwas zum Schlechteren ver\[:a]ndert hat
+w\[:a]hlen Sie bitte wieder mit \-\-driver=cdrom den \[:a]lteren Treiber aus.
 .TP
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.
@@ -242,25 +276,54 @@ f\[:u]lle unlesbare Sektoren mit Byte n.
 .B \-\-ignore-fatal-sense
 Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
 .TP
+.B \-\-ignore-iso-size
+dvdisaster nutzt bevorzugt die Gr\[:o]\[ss]eninformationen aus dem
+ISO/UDF-Dateisystem gegen\[:u]ber einer Abfrage der Datentr\[:a]gergr\[:o]\[ss]e
+von dem Laufwerk, da viele Laufwerke unzuverl\[:a]ssige Informationen liefern.
+.RS
+In einigen seltenen F\[:a]llen stimmt die Information in den ISO/UDF-Dateisystemen 
+allerdings nicht. Einige Linux-Live-CDs haben dieses Problem. Wenn Sie ein 
+Abbild von diesen CDs lesen und seine MD5-Pr\[:u]fsumme nicht mit der ver\[:o]ffentlichten 
+Pr\[:u]fsumme \[:u]bereinstimmt, versuchen Sie das Abbild noch einmal zu lesen 
+nachdem Sie diese Einstellung aktiviert haben.
+.RE
+.RS
+Schalten Sie diese Funktion nicht grundlos ein da sehr wahrscheinlich 
+nicht optimale oder besch\[:a]digte ISO-Abbilder das Ergebnis sein werden, 
+insbesondere wenn Sie vorhaben Fehlerkorrektur-Daten zu dem Abbild zu erzeugen.
+.RE
+.TP
 .B \-\-internal-rereads n
-Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: -1)
+Leseversuche innerhalb des Laufwerks f\[:u]r besch\[:a]digte CD-Sektoren (Standard: \-1)
 .RS
 Laufwerke unternehmen normalerweise mehrere Versuche um einen besch\[:a]digten Sektor 
 zu lesen. Es ist typischerweise g\[:u]nstiger diesen Wert auf 0 oder 1 zu setzen
-und die Anzahl der Leseversuche \[:u]ber den Parameter --read-attempts zu steuern.
-Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert -1 um 
+und die Anzahl der Leseversuche \[:u]ber den Parameter \-\-read-attempts zu steuern.
+Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 um
 die Standardeinstellungen des Laufwerks zu verwenden.
 .RE
 .TP
-.B \-\-query-size n
-Ermittelt die Abbildgr\[:o]sse durch das Laufwerk oder das Dateisystem auf dem Datentr\[:a]ger
-(Standard: ecc)
+.B \-\-old-ds-marker
+Markiert fehlende Sektoren in einer Weise, die mit dvdisaster
+0.70 oder noch fr\[:u]heren Versionen kompatibel ist.
 .RS
-M\[:o]gliche Werte: drive udf ecc 
+Das voreingestellte Markierungsverfahren ist ab dvdisaster
+0.72 die bessere Wahl. Allerdings k\[:o]nnen Sie mit diesem Verfahren
+markierte Abbilder nicht mit fr\[:u]heren dvdisaster-Versionen verwenden,
+da diese keine fehlenden Sektoren in den Abbildern erkennen w\[:u]rden.
+
+Bearbeiten Sie ein Abbild nicht mit wechselnden Einstellungen f\[:u]r
+diese Option.
+.RE
+.TP
+.B \-\-prefetch-sectors n
+n Sektoren f\[:u]r die RS03-(De)kodierung im Voraus laden (Standard: 32)
+.RS
+Ein Wert von n verbraucht ungef\[:a]hr n MB Arbeitsspeicher.
 .RE
 .TP
 .B \-\-raw-mode n
-"Raw"-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
+"Raw"\-Lese-Verfahren f\[:u]r besch\[:a]digte CD-Sektoren (default: 20)
 .RS
 Das empfohlene Verfahren ist 20, bei dem das Laufwerk die eingebaute Fehlerkorrektur
 so weit wie m\[:o]glich anwendet, bevor es einen besch\[:a]digten Sektor 
@@ -277,16 +340,13 @@ versucht einen besch\[:a]digten Sektor n bis m-mal zu lesen.
 liest den gesamten Datentr\[:a]ger bis zu n-mal.
 .TP
 .B \-\-read-raw
-liest in der "raw"-Betriebsart sofern m\[:o]glich.
+liest in der "raw"\-Betriebsart sofern m\[:o]glich.
 .TP
 .B \-\-speed-warning n
 warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 .TP
 .B \-\-spinup-delay n
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
-.TP
-.B \-\-split-files
-Abbild in mehrere Dateien <= 2GB aufteilen.
 .PP
 
 .SH SIEHE AUCH
@@ -300,4 +360,4 @@ DVDISASTER wurde von Carsten Gnoerlich <carsten@dvdisaster.com> geschrieben.
 .PP
 Diese Hilfeseite wurde von Daniel Baumann <daniel.baumann@panthera-systems.net>
 f\[:u]r das Debian Projekt geschrieben (kann aber auch von Anderen verwendet
-werden). Sie wurde f\[:u]r Version 0.70/0.72 von Carsten Gn\[:o]rlich erweitert.
+werden). Sie wird seit Version 0.70 von Carsten Gn\[:o]rlich gepflegt.

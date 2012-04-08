@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Error correction file selection</h3>
+<h3 class="top">Error correction file selection</h3>
 
 The error correction file contains information for reconstructing unreadable
 sectors from a defective medium. It can also be used to check a medium for
@@ -26,16 +26,16 @@ damaged or altered sectors. The default file extension is ".ecc".<p>
 There are two ways of choosing the error correction file:
 <ul>
 <li>using a <a href="#filechooser">file chooser dialog</a> (button marked green), or</li>
-<li>by directly entering the error correction file location (text entry field marked blue).</li><p>
-</ul>
+<li>by directly entering the error correction file location (text entry field marked blue).</li>
+</ul><p>
 The direct entry is helpful when you are going to create several error correction
 files in the same directory. In that case simply change the file name
 in the text field.<p>
 <?php end_screen_shot(); ?>
 
-<? require("howtos_winfile.php"); ?>
+<?php require("howtos_winfile.php"); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

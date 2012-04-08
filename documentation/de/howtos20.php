@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,11 +13,11 @@ require("../include/footnote.php");
 begin_page();
 howto_headline("Fehlerkorrektur-Daten als eigenständige Datei erzeugen", "Übersicht", "images/create-icon.png");?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Aufgabe</b></td>
+<td class="w20p"><b>Aufgabe</b></td>
 <td>
 Zu einem Datenträger wird eine Fehlerkorrektur-Datei erzeugt.
 </td>
@@ -36,7 +36,7 @@ Es gibt auch eine Möglichkeit, Fehlerkorrektur-Daten auf dem Datenträger selbs
 </tr>
 
 <tr>
-<td><img src="../images/good-cd.png"></td>
+<td><img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)"></td>
 <td>
 Ein guter, fehlerfreier<a href="#footnote"><sup>*)</sup></a> Datenträger,</td>
 </tr>
@@ -45,7 +45,7 @@ Ein guter, fehlerfreier<a href="#footnote"><sup>*)</sup></a> Datenträger,</td>
 
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
 <td>ein bereits vorhandenes und vollständiges<a href="#footnote"><sup>*)</sup></a> ISO-Abbild des Datenträgers (zum Beispiel vom Brennvorgang).
 </td>
 </tr>
@@ -53,7 +53,7 @@ Ein guter, fehlerfreier<a href="#footnote"><sup>*)</sup></a> Datenträger,</td>
 
 
 <tr>
-<td colspan="2"><b>Durchzuführende Schritte:<p></b></td>
+<td colspan="2"><b>Durchzuführende Schritte:</b><p></td>
 </tr>
 
 <tr>
@@ -79,7 +79,7 @@ Datenverlustes erzeugt werden: Von einem bereits defekten Datenträger können k
 mehr erstellt werden.");
 ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

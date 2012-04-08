@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -1478,7 +1478,8 @@ static void try_c2_scan(DeviceHandle *dh)
 
    ret = SendPacket(dh, cdb, 12, rb->workBuf->buf, CD_RAW_C2_SECTOR_SIZE, sense, DATA_READ);
 
-   Verbose("C2 scan probing: %s\n", 
+   Verbose("C2 scan probing: %d (%s); Sense: %s\n",
+	   ret, !ret ? "good" : "failed",
 	   GetSenseString(sense->sense_key, sense->asc, sense->ascq, 0));
 
    if(!ret || sense->sense_key != 5)  /* good status or error != illegal request means C2 works */
@@ -1514,12 +1515,12 @@ static int read_mode_page(DeviceHandle *dh, AlignedBuffer *ab, int *parameter_li
    memset(cdb, 0, MAX_CDB_SIZE);
    cdb[0] = 0x5a;         /* MODE SENSE(10) */
    cdb[2] = 1;            /* Page code */
-   cdb[8] = 255;          /* Allocation length */
-   ret  = SendPacket(dh, cdb, 10, buf, 255, &sense, DATA_READ);
+   cdb[8] = 252;          /* Allocation length */
+   ret  = SendPacket(dh, cdb, 10, buf, 252, &sense, DATA_READ);
 
    if(ret<0) 
-   {  FreeAlignedBuffer(ab);
-      Verbose("\nRead mode page 01h failed: %s\n", 
+   {  Verbose("\nRead mode page 01h failed: %d (%s); Sense: %s\n", 
+	      ret, !ret ? "good" : "failed",
 	      GetSenseString(sense.sense_key, sense.asc, sense.ascq, 0));
       return FALSE;
    }
@@ -2564,6 +2565,8 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 
    Verbose("# *** OpenAndQueryDevice(%s) ***\n", device);
    dh = OpenDevice(device);
+   if(!dh) return NULL;
+
    InquireDevice(dh, 0);
    Verbose("# InquireDevice returned: %s\n", dh->devinfo);
 
@@ -2718,6 +2721,8 @@ DeviceHandle* QueryMediumInfo(char *device)
 
    Verbose("# *** QueryMediumInfo(%s) ***\n", device);
    dh = OpenDevice(device);
+   if(!dh) return NULL;
+
    InquireDevice(dh, 0);
 
    if(!TestUnitReady(dh))
@@ -2802,6 +2807,8 @@ int SendReadCDB(char *device, unsigned char *buf, unsigned char *cdb, int cdb_le
    int i,status;
 
    dh = OpenDevice(device);
+   if(!dh) return 0;
+
    InquireDevice(dh, 0);
 
    PrintLog("Sending cdb to device: %s, %s\n", device, dh->devinfo);

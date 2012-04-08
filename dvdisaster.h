@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -37,11 +37,9 @@
 
 #define _GNU_SOURCE
 
-//#include <glib.h>
-
-#include <gtk/gtk.h>
+#include <glib.h>
 #include <glib/gprintf.h>
-#include <glib/gstrfuncs.h>
+#include <gtk/gtk.h>
 
 #include <ctype.h>
 #include <errno.h>
@@ -185,7 +183,6 @@ typedef struct _GlobalClosure
    int pauseDuration;   /* duration of pause in minutes */
    int pauseEject;      /* Eject medium during pause */
    int ignoreFatalSense;/* Continue reading after potential fatal sense errors */
-   int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
    int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
   
    char *homeDir;       /* path to users home dir */
@@ -1172,7 +1169,6 @@ int SendReadCDB(char*, unsigned char*, unsigned char*, int, int);
  ***/
 
 void EncodeNextLayer(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
-int ProbeSSE2(void);
 
 /***
  *** show-manual.c

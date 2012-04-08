@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
    char src_locale_path[strlen(SRCDIR)+10];
   #endif
  #endif /* WITH_EMBEDDED_SRC_PATH_YES */
-#if defined(SYS_MINGW) || defined(SYS_DARWIN)
+#if defined(SYS_MINGW)
    char *bin_locale_path = NULL;
  #endif
 #endif
@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
     }
 #endif
 
-#if defined(SYS_MINGW) || defined(SYS_DARWIN)
+#if defined(SYS_MINGW)
     /* Try the directory where our executable comes from.
        This is only possible under Windows and Mac OS, 
        and should cover all cases. */
@@ -682,10 +682,6 @@ int main(int argc, char *argv[])
 	     "Please execute the installer program (%s) again.\n"), version);
    }
 #endif
-
-   /*** CPU type detection. */
-
-   Closure->useSSE2 = ProbeSSE2();
 
    /*** Parse the sector ranges for --read and --scan */
 

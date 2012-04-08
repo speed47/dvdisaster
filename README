@@ -2,9 +2,7 @@ This directory tree contains dvdisaster,
 a tool providing additional ECC protection for optical media.
 
 This version of dvdisaster supports the following platforms:
-Linux, FreeBSD, NetBSD on x86, PowerPC, Sparc;
-Mac OSX on x86 and PowerPC;
-Windows 98, ME, 2000, 2003, XP on x86 compatible hardware. 
+Linux, FreeBSD, NetBSD on x86, PowerPC and Sparc.
 
 
 Roadmap of contained files

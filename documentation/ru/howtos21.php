@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -17,9 +17,9 @@ $answer=$_GET["answer"];
 howto_headline("Создание данных для исправления ошибок", "Помощь в принятии решения", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Помощь в принятии решения</h3>
+<h3 class="top">Помощь в принятии решения</h3>
 
 Данные для исправления ошибок могут быть созданы либо в виде отдельного файла,
 либо они могут быть помещены непосредственно на носитель.
@@ -87,7 +87,7 @@ dvdisaster помогает защищать ваши носители от по
 <pre> </pre>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

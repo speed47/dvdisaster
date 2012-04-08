@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Получение информации об образах и данных для исправления ошибок", "Вывод информации", "images/compare-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Для этой функции нет настроек; однако нужен файл образа
 и, возможно, 
@@ -26,12 +26,12 @@ howto_headline("Получение информации об образах и �
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Введите имя файла ISO-образа,</b>
+<td class="valignt"><b>Введите имя файла ISO-образа,</b>
 для которого нужно получить информацию. Образ уже должен присутствовать на
 жестком диске; в противном случае используйте функцию "Читать" для его получения с носителя. 
 </td>
@@ -40,12 +40,12 @@ howto_headline("Получение информации об образах и �
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 <b>Введите имя файла для исправления ошибок</b>
 от этого носителя. Оставьте это поле пустым, если образ
 был
@@ -56,12 +56,12 @@ howto_headline("Получение информации об образах и �
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Запустите получение информации,</b> нажав кнопку
+<td class="valignt"><b>Запустите получение информации,</b> нажав кнопку
 "Проверить".</td>
 </tr>
 </table>
@@ -82,7 +82,7 @@ howto_headline("Получение информации об образах и �
 </ul>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

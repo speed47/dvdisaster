@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Getting information on images and error correction data", "Showing it", "images/compare-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 The are no settings for this function; however you need an image file
 and optionally the
@@ -26,12 +26,12 @@ and optionally the
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Enter the file name of the ISO image</b>
+<td class="valignt"><b>Enter the file name of the ISO image</b>
 for which you want to get information. The image must already be present
 on hard disk; otherwise use the "Read" function to get it from a medium. 
 </td>
@@ -40,12 +40,12 @@ on hard disk; otherwise use the "Read" function to get it from a medium.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 <b>Enter the name of the error correction file</b>
 which belongs to this medium. Leave this entry blank when the image
 has been
@@ -56,12 +56,12 @@ has been
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="dvdisaster UI: Verify (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Start the evaluation</b> by clicking on the
+<td class="valignt"><b>Start the evaluation</b> by clicking on the
 "Verify" button.</td>
 </tr>
 </table>
@@ -83,7 +83,7 @@ must be fully read.
 </ul>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,13 +14,13 @@ begin_page();
 howto_headline("Fehlerkorrektur-Daten erstellen", "Übersicht", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Fehlerkorrektur-Daten auf dem Datenträger selbst unterbringen</h3>
+<h3 class="top">Fehlerkorrektur-Daten auf dem Datenträger selbst unterbringen</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Aufgabe</b></td>
+<td class="w20p"><b>Aufgabe</b></td>
 <td>
 Fehlerkorrektur-Daten werden zusammen mit den Nutzdaten auf dem gleichen Datenträger
 abgelegt.
@@ -42,7 +42,7 @@ zu erzeugen.
 </tr>
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
 <td>
 <ul>
 <li>eine (Brenn-)Software, die ISO-Abbilder erzeugen kann</li>
@@ -54,7 +54,7 @@ zu erzeugen.
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Durchzuführende Schritte:<p></b></td>
+<td colspan="2"><b>Durchzuführende Schritte:</b><p></td>
 </tr>
 
 <tr>
@@ -75,7 +75,7 @@ zu erzeugen.
 
 </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 footnote("*","footnote","Ein bereits geschriebener Datenträger kann nicht mehr nachträglich um

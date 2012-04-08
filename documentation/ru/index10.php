@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Примеры исправления ошибок</h3>
+<h3 class="top">Примеры исправления ошибок</h3>
 
 <?php begin_screen_shot("Чтение поврежденного носителя.","recover-linear.png"); ?>
    <b>Восстановление старого носителя.</b> Обработанный здесь носитель стал
@@ -50,7 +50,7 @@ begin_page();
 
 <a href="index20.php">Почему проверки качества носителя недостаточно...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>The big picture - a comparison of dvdisaster with conventional backup</h3>
+<h3 class="top">The big picture - a comparison of dvdisaster with conventional backup</h3>
 
 dvdisaster stores data on CD/DVD/BD in a way that the data is fully recoverable even after
 the medium has developed some read errors. The method employed in dvdisaster uses
@@ -26,24 +26,24 @@ Let's first consider how a conventional backup scheme works:<p>
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/backup1.png"></td>
-<td width="60px">Copy<br><img src="../images/right-arrow.png"></td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/backup1.png" alt="Icon: Original medium"></td>
+<td class="w65x">Copy<br><img src="../images/right-arrow.png" alt="Icon: Arrow right"></td>
+<td class="w65x"><img src="../images/backup2.png" alt="Icon: Backup medium"></td>
 <td> &nbsp; </td>
 <td>An existing medium (1) is copied onto a backup medium (2).</td>
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td width="60px"><img src="../images/bad-cd1.png"></td>
-<td width="60px"> </td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/bad-cd1.png" alt="Icon: Damaged medium"></td>
+<td class="w65x"> </td>
+<td class="w65x"><img src="../images/backup2.png" alt="Icon: Backup medium"></td>
 <td></td>
 <td>If any one of the two media is damaged afterwards, we still have
 an intact medium left.</td>
@@ -68,9 +68,9 @@ This is where dvdisaster comes into play. Consider this:<p>
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/good-cd.png"></td>
-<td width="60px">Create<br><img src="../images/right-arrow.png"><br>ECC</td>
-<td width="60px"><img src="../images/ecc.png"></td>
+<td class="w65x"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td class="w65x">Create<br><img src="../images/right-arrow.png" alt="Icon: Arrow right"><br>ECC</td>
+<td class="w65x"><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td>
 This time we do not make a full backup. dvdisaster is used to create error correction data
@@ -80,16 +80,16 @@ The value of 20% was chosen to have a safety margin over the expected data loss 
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td> &nbsp; </td>
 <td>
 Wenn the medium fails at a later time,
@@ -99,9 +99,9 @@ error correction data.
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Icon: Diagonal arrow right"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Icon: Diagonal arrow left">20%</td>
 <td> </td>
 <td>
 For a successful recovery at least 80% of the data must still be readable from the medium,
@@ -110,7 +110,7 @@ and the remaining 20% are recalculated from the error correction data.</td>
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td> </td>
 <td> </td>
 <td>The completely recovered data is now available as an ISO image on the hard drive
@@ -120,7 +120,7 @@ and the remaining 20% are recalculated from the error correction data.</td>
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/down-arrow.png"></td>
+<td align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td> </td>
 <td> </td>
 <td>Write the image to a blank medium using your favourite CD/DVD/BD authoring software.</td>
@@ -128,7 +128,7 @@ and the remaining 20% are recalculated from the error correction data.</td>
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/good-cd.png"></td>
+<td align="center"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td> </td>
 <td> </td>
 <td>You now have a new error-free medium.</td>
@@ -177,7 +177,7 @@ Of course these stories are purely fictional and any similarities with existing
 persons or situations are purely conincidental.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

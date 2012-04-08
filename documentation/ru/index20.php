@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>dvdisaster как дополнение к проверке качества носителя</h3>
+<h3 class="top">dvdisaster как дополнение к проверке качества носителя</h3>
 
 <a href="qa.php#pipo">Проверка качества носителя</a>, например, проверка на ошибки C2 или PI/PO, являются ценным  
 инструментом проверки результатов процесса записи носителей.<p>
@@ -44,7 +44,7 @@ begin_page();
 <p>
 <a href="index30.php">dvdisaster: за и против при беглом взгляде...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

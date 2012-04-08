@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,11 +14,11 @@ begin_page();
 howto_headline("Получение информации об образах и данных для исправления ошибок", "Обзор", "images/compare-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Задача</b></td>
+<td class="w20p"><b>Задача</b></td>
 <td>
 Выводит информацию о типах и состоянии образов и файлов для исправления ошибок.
 </td>
@@ -29,9 +29,9 @@ howto_headline("Получение информации об образах и �
 <td colspan="2"><b>Требуется:</b><p></td>
 </tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/good-image.png" align="top">
-   <img src="../images/ecc.png">
+ <td class="w150x" align="right">
+   <img src="../images/good-image.png" alt="Icon: Complete image" class="valignt">
+   <img src="../images/ecc.png" alt="Icon: Separate file with error correction data">
  </td>
 <td>
 Файл образа и, возможно, файл исправления ошибок для него.
@@ -39,7 +39,7 @@ howto_headline("Получение информации об образах и �
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Что делать:<p></b></td>
+<td colspan="2"><b>Что делать:</b><p></td>
 </tr>
 
 <tr>
@@ -58,7 +58,7 @@ howto_headline("Получение информации об образах и �
 
 <a href="howtos51.php">Показать информацию...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

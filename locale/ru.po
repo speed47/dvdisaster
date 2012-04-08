@@ -9,17 +9,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.70.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 19:20+0200\n"
+"POT-Creation-Date: 2012-04-01 16:47+0200\n"
 "PO-Revision-Date: 2010-07-23 08:11+0300\n"
 "Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
 "Language-Team: Russian\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: closure.c:568
+#: closure.c:539
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -32,15 +32,15 @@ msgstr ""
 "# он автоматически перезаписывается при каждом запуске программы.\n"
 "\n"
 
-#: closure.c:770 closure.c:778 closure.c:785
+#: closure.c:731
 msgid "medium.iso"
 msgstr "medium.iso"
 
-#: closure.c:771 closure.c:779 closure.c:786
+#: closure.c:732
 msgid "medium.ecc"
 msgstr "medium.ecc"
 
-#: closure.c:772 closure.c:780 closure.c:787
+#: closure.c:733
 msgid "sector-"
 msgstr "сектор-"
 
@@ -395,32 +395,32 @@ msgstr "Метод RS01 не применяется для сравнения ф
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:281 dvdisaster.c:293 dvdisaster.c:309
+#: dvdisaster.c:239 dvdisaster.c:251 dvdisaster.c:267
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:480
+#: dvdisaster.c:438
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--потоков должно быть 1..%d\n"
 
-#: dvdisaster.c:494
+#: dvdisaster.c:452
 msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
 msgstr "--cache-size должен быть не меньше 8МБ; рекомендуется 16МБ и больше."
 
-#: dvdisaster.c:496
+#: dvdisaster.c:454
 msgid "--cache-size maximum is 8192MB."
 msgstr "--cache-size максимальный размер буфера 8192МБ."
 
-#: dvdisaster.c:515
+#: dvdisaster.c:473
 msgid "Valid args for --driver: sg,cdrom"
 msgstr ""
 
-#: dvdisaster.c:517
+#: dvdisaster.c:475
 msgid "--driver is only supported on GNU/Linux"
 msgstr "только --driver поддерживается на GNU/Linux"
 
-#: dvdisaster.c:625
+#: dvdisaster.c:583
 #, c-format
 msgid ""
 "\n"
@@ -431,12 +431,12 @@ msgstr ""
 "dvdisaster версия %s сборка %d\n"
 "\n"
 
-#: dvdisaster.c:689
+#: dvdisaster.c:647
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? неправильное возвращаемое значение getopt: %d\n"
 
-#: dvdisaster.c:723
+#: dvdisaster.c:681
 #, c-format
 msgid ""
 "dvdisaster is not properly installed.\n"
@@ -448,7 +448,7 @@ msgstr ""
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:893
+#: dvdisaster.c:847
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -472,7 +472,7 @@ msgstr ""
 "  dvdisaster -u,--unlink # Удалить файлы .iso (по завершении других действий)\n"
 "\n"
 
-#: dvdisaster.c:902
+#: dvdisaster.c:856
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -487,7 +487,7 @@ msgstr ""
 "  -i,--image  файл образа - имя файла образа            (по умолчанию: medium.iso)\n"
 "  -e,--ecc    ecc-файл    - имя файла с ecc-данными     (по умолчанию: medium.ecc)\n"
 
-#: dvdisaster.c:910
+#: dvdisaster.c:864
 msgid ""
 "  -l,--list              - list drives available under ASPI manager\n"
 "\n"
@@ -495,7 +495,7 @@ msgstr ""
 "  -l,--list              - список ASPI-приводов\n"
 "\n"
 
-#: dvdisaster.c:915
+#: dvdisaster.c:869
 #, c-format
 msgid ""
 "Tweaking options (see manual before using!)\n"
@@ -511,11 +511,11 @@ msgid ""
 "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr ""
 
-#: dvdisaster.c:928
+#: dvdisaster.c:882
 msgid "  --driver=sg/cdrom      - use cdrom (default) or alternative sg SCSI driver\n"
 msgstr ""
 
-#: dvdisaster.c:930
+#: dvdisaster.c:884
 msgid ""
 "  --eject                - eject medium after successful read\n"
 "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
@@ -532,7 +532,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:944
+#: dvdisaster.c:898
 #, c-format
 msgid ""
 "Debugging options (purposefully undocumented and possibly harmful)\n"
@@ -581,7 +581,7 @@ msgstr ""
 "  --zero-unreadable - заменять маркеры \"нечитаемый сектор\" нулями\n"
 "\n"
 
-#: dvdisaster.c:968
+#: dvdisaster.c:922
 msgid ""
 "NOTE: This is the Windows console version of dvdisaster.\n"
 "The version providing a graphical user interface is called\n"
@@ -593,7 +593,7 @@ msgstr ""
 "(также содержится в этом установочном пакете).\n"
 "\n"
 
-#: dvdisaster.c:989
+#: dvdisaster.c:943
 msgid "Optical drive 52X FW 1.02"
 msgstr "Оптический привод 52X FW 1.02"
 
@@ -758,15 +758,15 @@ msgstr "О программе dvdisaster"
 
 #: help-dialogs.c:726
 msgid ""
-"Modified version Copyright 2011 (please fill in - [directions])\n"
-"Copyright 2004-2011 Carsten Gnoerlich"
+"Modified version Copyright 2012 (please fill in - [directions])\n"
+"Copyright 2004-2012 Carsten Gnoerlich"
 msgstr ""
-"Измененнная версия Copyright 2011 (пожалуйста, заполните - [инструкции])\n"
-"Copyright 2004-2011 Carsten Gnoerlich"
+"Измененнная версия Copyright 2012 (пожалуйста, заполните - [инструкции])\n"
+"Copyright 2004-2012 Carsten Gnoerlich"
 
 #: help-dialogs.c:730
-msgid "Copyright 2004-2011 Carsten Gnoerlich"
-msgstr "Copyright 2004-2011 Carsten Gnoerlich"
+msgid "Copyright 2004-2012 Carsten Gnoerlich"
+msgstr "Copyright 2004-2012 Carsten Gnoerlich"
 
 #: help-dialogs.c:737
 msgid ""
@@ -816,15 +816,7 @@ msgstr ""
 "\n"
 "e-mail: carsten@dvdisaster.org   -или-   cgnoerlich@fsfe.org"
 
-#: help-dialogs.c:766
-msgid ""
-"\n"
-"Darwin port (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
-msgstr ""
-"\n"
-"Порт для Darwin (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
-
-#: help-dialogs.c:769
+#: help-dialogs.c:765
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -1054,7 +1046,7 @@ msgstr "Тип носителя:"
 msgid "Book type:"
 msgstr "Формат (book type):"
 
-#: medium-info.c:308 scsi-layer.c:2677
+#: medium-info.c:308 scsi-layer.c:2678
 msgid "Manuf.-ID:"
 msgstr "Изгот.-ID:"
 
@@ -1308,8 +1300,8 @@ msgstr ""
 
 #: misc.c:205
 #, c-format
-msgid "dvdisaster-%s%sCopyright 2004-2011 Carsten Gnoerlich.\n"
-msgstr "dvdisaster-%s%sCopyright 2004-2011 Carsten Gnoerlich.\n"
+msgid "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnoerlich.\n"
+msgstr "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnoerlich.\n"
 
 #: misc.c:212
 msgid ""
@@ -2540,8 +2532,7 @@ msgid "button|Smart L-EC"
 msgstr "Интеллектуальный L-EC"
 
 #: raw-sector-cache.c:34 raw-sector-cache.c:201 raw-sector-cache.c:335
-#: rs01-verify.c:538 scsi-freebsd.c:113 scsi-linux.c:105 scsi-netbsd.c:111
-#: scsi-solaris.c:127
+#: rs01-verify.c:538 scsi-freebsd.c:120 scsi-linux.c:105 scsi-netbsd.c:112
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Не удалось открыть %s: %s"
@@ -2581,6 +2572,36 @@ msgstr " [Создание нового буферного файла %s]\n"
 #, c-format
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
 msgstr " [Добавлено %d/%d секторов к буферному файлу %s; LBA=%lld, размер с.=%d, %d секторов]\n"
+
+#: read-adaptive-window.c:79
+msgid "Adaptive reading:"
+msgstr "Адаптивное чтение:"
+
+#: read-adaptive-window.c:107
+msgid "Sectors processed"
+msgstr "Обработанные сектора"
+
+#: read-adaptive-window.c:110 scsi-layer.c:1730
+msgid "readable"
+msgstr "можно прочитать"
+
+#: read-adaptive-window.c:114
+msgid "correctable"
+msgstr "можно исправить"
+
+#: read-adaptive-window.c:118
+msgid "missing"
+msgstr "отсутствует"
+
+#: read-adaptive-window.c:128
+#, c-format
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr "Можно прочитать: %d.%d%% / %d.%d%% требуется"
+
+#: read-adaptive-window.c:135
+#, c-format
+msgid "Total recoverable: %d.%d%%"
+msgstr "Всего можно восстановить: %d.%d%%"
 
 #: read-adaptive.c:143 read-adaptive.c:1336
 msgid "Aborted by unrecoverable error."
@@ -2794,12 +2815,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "CRC-ошибка в секторе %lld\n"
 
-#: read-adaptive.c:1543 scsi-layer.c:1748
+#: read-adaptive.c:1543 scsi-layer.c:1749
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Сектора %lld-%lld: %s\n"
 
-#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1747
+#: read-adaptive.c:1546 read-linear.c:1244 scsi-layer.c:1748
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Сектор %lld: %s\n"
@@ -2844,35 +2865,44 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% образа прочитано (%lld секторов).\n"
 
-#: read-adaptive-window.c:79
-msgid "Adaptive reading:"
-msgstr "Адаптивное чтение:"
-
-#: read-adaptive-window.c:107
-msgid "Sectors processed"
-msgstr "Обработанные сектора"
-
-#: read-adaptive-window.c:110 scsi-layer.c:1729
-msgid "readable"
-msgstr "можно прочитать"
-
-#: read-adaptive-window.c:114
-msgid "correctable"
-msgstr "можно исправить"
-
-#: read-adaptive-window.c:118
-msgid "missing"
-msgstr "отсутствует"
-
-#: read-adaptive-window.c:128
+#: read-linear-window.c:94
 #, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr "Можно прочитать: %d.%d%% / %d.%d%% требуется"
+msgid "Current Speed: %d.%dx"
+msgstr "Текущая скорость: %d.%dx"
 
-#: read-adaptive-window.c:135
+#: read-linear-window.c:101 read-linear.c:550
 #, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Всего можно восстановить: %d.%d%%"
+msgid "Unreadable / skipped sectors: %lld"
+msgstr "Нечитаемые / пропущенные сектора: %lld"
+
+#: read-linear-window.c:243 read-linear-window.c:312
+msgid "Already present"
+msgstr "Уже есть"
+
+#: read-linear-window.c:277 read-linear-window.c:319 rs01-verify.c:123
+#: rs02-verify.c:118
+msgid "Sectors with CRC errors"
+msgstr "Сектора с CRC-ошибками"
+
+#: read-linear-window.c:300
+msgid "Medium state"
+msgstr "Состояние носителя"
+
+#: read-linear-window.c:308
+msgid "Not touched this time"
+msgstr "В этот раз не затронут"
+
+#: read-linear-window.c:315
+msgid "Successfully read"
+msgstr "Успешно прочитано"
+
+#: read-linear-window.c:322
+msgid "Unreadable / skipped"
+msgstr "Нечитаемый / пропущенный"
+
+#: read-linear-window.c:404
+msgid "Speed"
+msgstr "Скорость"
 
 #: read-linear.c:105
 #, c-format
@@ -2945,15 +2975,10 @@ msgstr "Чтение CRC-информации из ecc-данных"
 msgid "done.\n"
 msgstr "готово.\n"
 
-#: read-linear.c:528 scsi-layer.c:2070
+#: read-linear.c:528 scsi-layer.c:2071
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Задержка на %d секунд для раскручивания привода...\n"
-
-#: read-linear.c:550 read-linear-window.c:101
-#, c-format
-msgid "Unreadable / skipped sectors: %lld"
-msgstr "Нечитаемые / пропущенные сектора: %lld"
 
 #: read-linear.c:630
 #, c-format
@@ -3103,40 +3128,6 @@ msgstr ""
 "Это нормально, если CD записан в режиме TAO (track at once).\n"
 "Образ будет соответственно укорочен. Подробнее см. в руководстве.\n"
 "Используйте параметр --dao для отключения укорачивания образов.\n"
-
-#: read-linear-window.c:94
-#, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Текущая скорость: %d.%dx"
-
-#: read-linear-window.c:243 read-linear-window.c:312
-msgid "Already present"
-msgstr "Уже есть"
-
-#: read-linear-window.c:277 read-linear-window.c:319 rs01-verify.c:123
-#: rs02-verify.c:118
-msgid "Sectors with CRC errors"
-msgstr "Сектора с CRC-ошибками"
-
-#: read-linear-window.c:300
-msgid "Medium state"
-msgstr "Состояние носителя"
-
-#: read-linear-window.c:308
-msgid "Not touched this time"
-msgstr "В этот раз не затронут"
-
-#: read-linear-window.c:315
-msgid "Successfully read"
-msgstr "Успешно прочитано"
-
-#: read-linear-window.c:322
-msgid "Unreadable / skipped"
-msgstr "Нечитаемый / пропущенный"
-
-#: read-linear-window.c:404
-msgid "Speed"
-msgstr "Скорость"
 
 #: recover-raw.c:63
 #, c-format
@@ -4615,11 +4606,7 @@ msgstr ""
 "Обратите внимание, что расширенные образы самое большее утраиваются в размере, так как наибольшая возможная избыточность составляет 200%%.\n"
 "Даже если этот предел не достигается, расширенный образ по техническим причинам может быть на несколько секторов меньше, чем указано."
 
-#: scsi-darwin.c:159
-msgid "No CD/DVD drives found."
-msgstr "CD/DVD приводов не найдено."
-
-#: scsi-freebsd.c:42 scsi-linux.c:44 scsi-solaris.c:61
+#: scsi-freebsd.c:42 scsi-linux.c:44
 msgid ""
 "Can not access /dev for devices\n"
 "No drives will be pre-selected.\n"
@@ -4627,7 +4614,7 @@ msgstr ""
 "Не удается получить доступ к устройствам в /dev\n"
 "Не будет предустановленных приводов.\n"
 
-#: scsi-freebsd.c:97 scsi-linux.c:85 scsi-solaris.c:112
+#: scsi-freebsd.c:97 scsi-linux.c:85
 msgid ""
 "No CD/DVD drives found in /dev.\n"
 "No drives will be pre-selected.\n"
@@ -4777,7 +4764,7 @@ msgstr ""
 "%s\n"
 "Не удалось запросить структуру BD диска.\n"
 
-#: scsi-layer.c:1677
+#: scsi-layer.c:1678
 #, c-format
 msgid ""
 "%s\n"
@@ -4786,12 +4773,12 @@ msgstr ""
 "%s\n"
 "Не удалось запросить размер dvd-структуры для кода формата 1.\n"
 
-#: scsi-layer.c:1688
+#: scsi-layer.c:1689
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Не удалось запросить информацию об авторских правах dvd - неправдоподобный размер пакета %d\n"
 
-#: scsi-layer.c:1703
+#: scsi-layer.c:1704
 #, c-format
 msgid ""
 "%s\n"
@@ -4800,23 +4787,23 @@ msgstr ""
 "%s\n"
 "Не удалось запросить информацию об авторских правах.\n"
 
-#: scsi-layer.c:1763
+#: scsi-layer.c:1764
 msgid "is undecideable because of read error"
 msgstr "не ясно из-за ошибок чтения"
 
-#: scsi-layer.c:1769
+#: scsi-layer.c:1770
 msgid "looks GOOD"
 msgstr "выглядит ПРАВИЛЬНО"
 
-#: scsi-layer.c:1775
+#: scsi-layer.c:1776
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "дает неформатированный размер (НЕПРИГОДНО)"
 
-#: scsi-layer.c:1780
+#: scsi-layer.c:1781
 msgid "is UNUSABLE"
 msgstr "НЕПРИГОДНО"
 
-#: scsi-layer.c:1802
+#: scsi-layer.c:1803
 #, c-format
 msgid ""
 "%s\n"
@@ -4825,12 +4812,12 @@ msgstr ""
 "%s\n"
 "Не удалось запросить размер носителя.\n"
 
-#: scsi-layer.c:1822
+#: scsi-layer.c:1823
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "READ CAPACITY: неправильный размер носителя, %lld секторов\n"
 
-#: scsi-layer.c:1901
+#: scsi-layer.c:1902
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -4843,7 +4830,7 @@ msgstr ""
 "READ DVD STRUCTURE: %lld секторов\n"
 "\n"
 
-#: scsi-layer.c:1906
+#: scsi-layer.c:1907
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -4851,15 +4838,15 @@ msgstr ""
 "Оценка полученных размеров носителя:\n"
 "\n"
 
-#: scsi-layer.c:1961
+#: scsi-layer.c:1962
 msgid "Using value from READ CAPACITY"
 msgstr "Используется значение из READ CAPACITY"
 
-#: scsi-layer.c:1965
+#: scsi-layer.c:1966
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Используется значение из READ DVD STRUCTURE"
 
-#: scsi-layer.c:1975
+#: scsi-layer.c:1976
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -4870,7 +4857,7 @@ msgstr ""
 "Использование значения меньшего, чем это, работает на >90%% приводов,\n"
 "но ПРОДОЛЖАЙТЕ НА СВОЙ РИСК (образ может быть неполным/непригодным)"
 
-#: scsi-layer.c:1980
+#: scsi-layer.c:1981
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -4879,7 +4866,7 @@ msgstr ""
 "Окончательное решение: %s\n"
 "\n"
 
-#: scsi-layer.c:1988
+#: scsi-layer.c:1989
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -4887,7 +4874,7 @@ msgstr ""
 "Не удалось определить размер образа.\n"
 "Попробуйте другой привод."
 
-#: scsi-layer.c:2113 scsi-layer.c:2139
+#: scsi-layer.c:2114 scsi-layer.c:2140
 #, c-format
 msgid ""
 "%s\n"
@@ -4896,7 +4883,7 @@ msgstr ""
 "%s\n"
 "Не удалось загрузить/выгрузить носитель.\n"
 
-#: scsi-layer.c:2129
+#: scsi-layer.c:2130
 #, c-format
 msgid ""
 "%s\n"
@@ -4905,37 +4892,37 @@ msgstr ""
 "%s\n"
 "Не удалось разблокировать носитель.\n"
 
-#: scsi-layer.c:2192
+#: scsi-layer.c:2193
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Выжидание 10 секунд для привода: %d\n"
 
-#: scsi-layer.c:2475
+#: scsi-layer.c:2476
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Сектора %lld - %lld: %s\n"
 
-#: scsi-layer.c:2489
+#: scsi-layer.c:2490
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Сектор %lld, попытка %d: %s Возвращен сектор: %d.\n"
 
-#: scsi-layer.c:2495
+#: scsi-layer.c:2496
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Сектор %lld, попытка %d: %s\n"
 
-#: scsi-layer.c:2506
+#: scsi-layer.c:2507
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Сектор %lld, попытка %d: успешно\n"
 
-#: scsi-layer.c:2573 scsi-layer.c:2726
+#: scsi-layer.c:2574 scsi-layer.c:2727
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Устройство %s: нет носителя\n"
 
-#: scsi-layer.c:2574 scsi-layer.c:2727
+#: scsi-layer.c:2575 scsi-layer.c:2728
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -4946,7 +4933,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: scsi-layer.c:2579
+#: scsi-layer.c:2580
 #, c-format
 msgid ""
 "\n"
@@ -4955,7 +4942,7 @@ msgstr ""
 "\n"
 "Устройство: %s, %s\n"
 
-#: scsi-layer.c:2583
+#: scsi-layer.c:2584
 #, c-format
 msgid ""
 "\n"
@@ -4964,52 +4951,52 @@ msgstr ""
 "\n"
 "Устройство: %s (%s), %s\n"
 
-#: scsi-layer.c:2591
+#: scsi-layer.c:2592
 msgid "Drive failed to report media type."
 msgstr "Не удалось получить от привода сообщение о типе носителя."
 
-#: scsi-layer.c:2602 scsi-layer.c:2689
+#: scsi-layer.c:2603 scsi-layer.c:2690
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Эта программа не поддерживает \"%s\" тип носителя."
 
-#: scsi-layer.c:2610
+#: scsi-layer.c:2611
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Эта программа не поддерживает многосессионные (%d сессиий) носители."
 
-#: scsi-layer.c:2633 scsi-layer.c:2642
+#: scsi-layer.c:2634 scsi-layer.c:2643
 msgid "Using READ CD"
 msgstr "Используется READ CD"
 
-#: scsi-layer.c:2634
+#: scsi-layer.c:2635
 msgid ", RAW reading"
 msgstr ", чтение \"RAW\""
 
-#: scsi-layer.c:2637
+#: scsi-layer.c:2638
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", Mode page 1 ERP = %02xh"
 
-#: scsi-layer.c:2640
+#: scsi-layer.c:2641
 msgid ", C2 scanning"
 msgstr ", поиск ошибок C2"
 
-#: scsi-layer.c:2647
+#: scsi-layer.c:2648
 msgid "Using READ(10).\n"
 msgstr "Используется READ(10).\n"
 
-#: scsi-layer.c:2666
+#: scsi-layer.c:2667
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Носитель: %s, %lld секторов%s"
 
-#: scsi-layer.c:2670
+#: scsi-layer.c:2671
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Носитель \"%s\": %s, %lld секторов%s создан %s"
 
-#: scsi-layer.c:2696
+#: scsi-layer.c:2697
 msgid "This software does not support encrypted media.\n"
 msgstr "Эта программа не поддерживает шифрованные носители.\n"
 
@@ -5221,6 +5208,16 @@ msgstr ""
 #: welcome-window.c:137
 msgid "<i>New in this Version:</i>"
 msgstr "<i>Новое в этой версии:</i>"
+
+#~ msgid ""
+#~ "\n"
+#~ "Darwin port (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
+#~ msgstr ""
+#~ "\n"
+#~ "Порт для Darwin (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
+
+#~ msgid "No CD/DVD drives found."
+#~ msgstr "CD/DVD приводов не найдено."
 
 #~ msgid "Valid args for --driver: sg"
 #~ msgstr "Правильные аргументы для --driver: sg"

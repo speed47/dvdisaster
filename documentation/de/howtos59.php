@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Beispiele</h3>
+<h3 class="top">Beispiele</h3>
 
 Beispiele für <a href="howtos52.php?expand=1">gute Abbilder und
 Fehlerkorrektur-Dateien</a> und <a href="howtos53.php?expand=1">gute mit
@@ -75,11 +75,11 @@ und bei <a href="howtos92.php#err">erweiterten Abbildern</a>.
 Die verwendete Fehlerkorrektur-Datei wurde für ein anderes Abbild erzeugt.
 Dadurch gibt es natürlich massenhaft Prüfsummenfehler, da der Inhalt
 der Sektoren nicht stimmt. Der entscheidende Hinweis ist aber:<p>
-Fingerabdruck: <font color="red">paßt nicht</font><p>
+Fingerabdruck: <span class="red">paßt nicht</span><p>
 Daran sieht man daß die Fehlerkorrektur-Datei nicht zu dem Abbild gehört.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

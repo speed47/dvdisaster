@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -23,7 +23,7 @@ switch($way)
 howto_headline("Creating error correction files", $action, "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Please make sure that dvdisaster has been configured as described in the
 <a href="howtos22.php">basic settings</a> section as some selections might
@@ -39,9 +39,9 @@ these two ways:<p>
 <?php
 $expand=$_GET["expand"];
 if($expand=="") $expand=0;
-echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" alt=\"Icon: Good medium (without read errors)\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=1&expand=$expand\">Create error correction file from a CD/DVD/BD medium</a></td>\n";
-echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" alt=\"Icon: Complete image\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=2&expand=$expand\">Create error correction file from an ISO image</a></td>\n";
 ?>
 
@@ -55,10 +55,10 @@ if($way==1){
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Icon: Insert the medium into a drive">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Insert the medium you want to read into a drive</b>
+<td class="valignt"><b>Insert the medium you want to read into a drive</b>
 which is directly connected to your computer. 
 You can not use network drives, software drives and drives inside virtual machines.
 </td>
@@ -67,10 +67,10 @@ You can not use network drives, software drives and drives inside virtual machin
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Icon: Close any windows opened by the Autoplay function">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Close any windows</b> which may be opened by your operating system 
+<td class="valignt"><b>Close any windows</b> which may be opened by your operating system 
 for viewing or performing the medium contents. 
 Wait until the drive has recognized the medium and the medium has spun down.
 </td>
@@ -79,35 +79,35 @@ Wait until the drive has recognized the medium and the medium has spun down.
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="dvdisaster UI: Drive selection (dropdown menu)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select the drive containing the medium</b>
+<td class="valignt"><b>Select the drive containing the medium</b>
 in dvdisasters drop down menu.
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select a directory and file name</b> 
+<td class="valignt"><b>Select a directory and file name</b> 
 for storing the ISO image.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/read-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/read-icon.png" alt="dvdisaster UI: Read (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Create the ISO image</b> from the medium by clicking
+<td class="valignt"><b>Create the ISO image</b> from the medium by clicking
 the "Read" button.</td>
 </tr>
 </table>
@@ -125,12 +125,12 @@ if($way == 2) {
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select the directory and name of the ISO image</b>
+<td class="valignt"><b>Select the directory and name of the ISO image</b>
 for which you want to create the error correction data.
 (It is assumed that the ISO image has been created by some other means,
 e.g. by using your CD/DVD/BD authoring software.)</td>
@@ -143,24 +143,24 @@ if($way != 0) {
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select a directory and name</b> 
+<td class="valignt"><b>Select a directory and name</b> 
 for storing the error correction file.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="dvdisaster UI: Create (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Create the error correction file</b>
+<td class="valignt"><b>Create the error correction file</b>
 by clicking the "Create" button.</td>
 </tr>
 </table>
@@ -174,12 +174,12 @@ will take about 5 minutes for a 4GB sized DVD image and using standard hardware.
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/old-image.png" border="0" align="center">
+<td class="w200x"align="center">
+<img src="../images/old-image.png" alt="Icon: Old image file" class="nobordervalignm">
 &nbsp;&nbsp;&nbsp;
-<img src="../images/ecc.png" border="0" align="center"></a></td>
+<img src="../images/ecc.png" alt="Icon: Separate file with error correction data" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wrapping up.</b> You can delete the image file now. However you 
+<td class="valignt"><b>Wrapping up.</b> You can delete the image file now. However you 
 must keep the error correction file and, even more important, protect it from being
 damaged. Refer to the next page for some suggestions about
 <a href="howtos24.php">error correction file archival</a>.
@@ -192,7 +192,7 @@ damaged. Refer to the next page for some suggestions about
 <?php
 } /* end of if($way != 0) */
 ?>
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

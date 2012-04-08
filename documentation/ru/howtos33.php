@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -18,7 +18,7 @@ if($way & 2) $write_iso_action=$way&1;
 else	     $write_iso_action=$way|2;
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php
 howto_headline("Дополнение образов данными для исправления ошибок", "Прохождение", "images/create-icon.png");
@@ -35,14 +35,14 @@ dvdisaster специализируется на работе с данными 
 <a name="a"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$make_iso_action\">\n";
 ?>
-<img src="thumbnails/make-iso1.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="thumbnails/make-iso1.png" alt="Icon: Creating an image file" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Сначала создайте ISO-образ</b> с помощью своего ПО
+<td class="valignt"><b>Сначала создайте ISO-образ</b> с помощью своего ПО
 для записи CD/DVD/BD. Выберите файлы, которые нужно записать на носитель,
 но пока не начинайте процесс записи. Вместо этого создайте ISO-образ
 на жестком диске. Нажмите на картинку слева и увидите 
@@ -86,10 +86,10 @@ GNU/Linux программы <i>K3b</i>, взятой в качестве при
 Обычно есть диалог выбора файлов, в котором можно выбрать файлы
 или перетащить их в проект.<p>
 
-При использовании K3b: <i>Выберите нужные файлы в верхней половине окна.
+При использовании K3b: Выберите нужные файлы в верхней половине окна.
 В примере для записи на CD выбраны файлы <i>backup.tar.gz</i>,
 <i>win.zip</i> и <i>work.tar.gz</i>.
-Выбранные файлы показываются в нижней половине окна.</i><p>
+Выбранные файлы показываются в нижней половине окна.<p>
 
 <b>Важно:</b> Не заполняйте полностью весь носитель. Убедитесь, что остается
 не менее 20% места на носителе для данных для исправления ошибок.<p>
@@ -141,10 +141,10 @@ dvdisaster приведет к тому, что они будут считать
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -155,11 +155,11 @@ dvdisaster приведет к тому, что они будут считать
 <a name="b"></a>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center">
+<img src="../images/good-image.png" alt="Icon: Complete image (from an undamaged medium)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Когда образ будет готов,
+<td class="valignt">Когда образ будет готов,
 <b>переключитесь в dvdisaster</b>. Убедитесь, что он сконфигурирован,
 как описано в <a href="howtos32.php">основных параметрах</a>.
 </td>
@@ -168,24 +168,24 @@ dvdisaster приведет к тому, что они будут считать
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image2.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image2.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите каталог и имя файла</b> 
+<td class="valignt"><b>Выберите каталог и имя файла</b> 
 ISO-образа, который вы только что создали.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="dvdisaster UI: Create (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Дополните образ данными для исправления ошибок,</b> нажав
+<td class="valignt"><b>Дополните образ данными для исправления ошибок,</b> нажав
 на кнопку "Создать".</td>
 </tr>
 </table>
@@ -206,13 +206,13 @@ ISO-образа, который вы только что создали.</td>
 <a name="c"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$write_iso_action\">\n";
 ?>
-<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<img src="thumbnails/write-iso1.png" alt="Icon: Writing image to a medium" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Записать дополненный ISO-образ</b> на носитель.
+<td class="valignt"><b>Записать дополненный ISO-образ</b> на носитель.
 Выберите дополненный образ в своей программе для записи дисков и
 начните процесс записи. Нажмите на снимок с экрана слева для получения
 <?php
@@ -229,10 +229,10 @@ if($way&2)
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -287,19 +287,19 @@ if($way&2)
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-cd-ecc.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/good-cd-ecc.png" alt="Icon: Undamaged medium with error correction data" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Готово!</b> Вы только что создали CD, защищенный
+<td class="valignt"><b>Готово!</b> Вы только что создали CD, защищенный
 данными для исправления ошибок.</td>
 </tr>
 </table>
@@ -317,7 +317,7 @@ if($way&2)
 </ul>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

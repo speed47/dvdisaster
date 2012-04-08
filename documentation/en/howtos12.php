@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Scanning media for errors", "Walkthrough", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Please make sure that dvdisaster has been configured as described in the 
 <a href="howtos11.php">basic settings </a>section as some settings
@@ -27,10 +27,10 @@ might negatively affect the scanning results. Then perform the following steps:
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Icon: Insert the medium into a drive">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Insert the medium you want to scan into a drive</b>
+<td class="valignt"><b>Insert the medium you want to scan into a drive</b>
 which is directly connected to your computer. 
 You can not use network drives, software drives and drives inside virtual machines.
 </td>
@@ -39,10 +39,10 @@ You can not use network drives, software drives and drives inside virtual machin
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Icon: Close any windows opened by the Autoplay function">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Close any windows</b> which may be opened by your operating system 
+<td class="valignt"><b>Close any windows</b> which may be opened by your operating system 
 for viewing or performing the medium contents. 
 Wait until the drive has recognized the medium and the medium has spun down.
 </td>
@@ -51,11 +51,11 @@ Wait until the drive has recognized the medium and the medium has spun down.
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="dvdisaster UI: Drive selection (dropdown menu)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select the drive containing the medium</b>
+<td class="valignt"><b>Select the drive containing the medium</b>
 in dvdisasters drop down menu.
 </td>
 </tr>
@@ -63,12 +63,12 @@ in dvdisasters drop down menu.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select the error correction file for this medium</b>
+<td class="valignt"><b>Select the error correction file for this medium</b>
 if you have one available. Ecc data from RS02 augmented media is used
 automatically.</td>
 </tr>
@@ -76,12 +76,12 @@ automatically.</td>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/scan-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/scan-icon.png" alt="dvdisaster UI: Scan (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Start the scan by <b>clicking the "Scan" button</b>.</td>
+<td class="valignt">Start the scan by <b>clicking the "Scan" button</b>.</td>
 </tr>
 </table>
 
@@ -98,7 +98,7 @@ might affect the scanning results.
 <a href="howtos13.php">Interpreting the results...</a>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

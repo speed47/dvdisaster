@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Восстановление образов носителей", "Основные параметры", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Открывание диалога настроек.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>В диалоге настроек находятся следующие вкладки.
 Откройте диалог, выбрав значок, помеченный зеленым на снимке с экрана
 (для увеличения нажмите на картинку). Значок может выглядеть по-другому, в зависимости
@@ -79,7 +79,7 @@ dvdisaster будет создавать до 100 сегментов с имен
 
 <a href="howtos42.php">Чтение носителя и восстановление его содержимого...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

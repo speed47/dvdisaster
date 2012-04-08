@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Выбор привода</h3>
+<h3 class="top">Выбор привода</h3>
 
 <?php begin_screen_shot("Выбор привода","dialog-drive-full.png"); ?>
 Меню выбора привода находится в верхнем левом углу
@@ -40,16 +40,16 @@ begin_page();
 <b>Примеры:</b>
 <table width="100%">
 <tr>
-<td width="50%" align="center"><img src="images/select-drive-linux.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-linux.png" alt="dvdisaster GUI: drive selection in Linux"><br>
 Развернутый список выбора в GNU/Linux</td>
-<td width="50%" align="center"><img src="images/select-drive-win.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-win.png" alt="dvdisaster GUI: drive selection in Windows"><br>
 Развернутый список выбора в Windows</td>
 </tr>
 </table><p>
 
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

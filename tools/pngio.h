@@ -20,6 +20,7 @@
 #ifndef PNGIO_H
 #define PNGIO_H
 
+#include <zlib.h>
 #include <png.h>
 
 typedef struct
