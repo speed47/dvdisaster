@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Error correction properties</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Version 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/en/">To the Internet version</a>
+       <a href="../cs/qa31.html"></a> 
+       <a href="../de/qa31.html"></a> 
+        
+       <a href="../ru/qa31.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Contents</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">News</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Overview</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Howtos</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Download</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Questions and Answers</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa10.html">Technical Questions</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa20.html">Error messages</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa30.html">Background information</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Error correction properties</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa32.html">Image level data recovery</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa33.html">RS01, RS02 and RS03</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa34.html">Linear reading strategy</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa35.html">Adaptive reading strategy</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa36.html">Remarks on read errors</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa37.html">Hints for storing the error correction files</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Bug reporting</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Technical properties of the error correction</h3>
+
+This page outlines the basic ideas behind dvdisaster
+so that you can see for yourself whether
+it meets your demands on data safety.
+If in doubt, you should not use dvdisaster
+or deploy additional data backup strategies.<p>
+
+<b>Method of error correction.</b> &nbsp; dvdisaster uses a
+<a href="http://en.wikipedia.org/wiki/Reed-Solomon_error_correction">Reed-Solomon</a> code
+together with an error correction algorithm optimized for the treatment of erasures.
+The implementation draws a lot of inspiration and program code from the excellent
+<a href="http://www.ka9q.net/code/fec/">Reed-Solomon library</a> written by
+<a href="http://www.ka9q.net/">Phil Karn</a>.
+
+<p>
+
+Using the <a href="howtos22.html#ecc">standard settings</a> of an 
+<a href="howtos20.html">error correction file</a> 
+223 medium sectors are combined into one error correction code ("ECC") block.
+Medium read errors are regarded as "erasures"; therefore a maximum 
+of 32 bad medium sectors<sup><a href="qa31.html#footnote1">*)</a></sup>
+are correctable per ECC block. <p>
+
+The 223 sectors are selected so that they are evenly distributed over the medium surface.
+Therefore large contigous areas of defective sectors can be corrected before the threshold
+of 32 defects per ECC block<sup><a href="qa31.html#footnote1">*)</a></sup>
+is reached. This kind of error pattern is especially
+common for an aging medium where the outer area is starting to degenerate, 
+and for scratches along the data spiral. <p>
+
+On the other hand, radial or diagonal scratches are expected to be correctable in the
+CD/DVD drive itself. If not, the employed error correction strategy performs rather neutral
+in these cases (neither especially good nor extraordinary bad). <p>
+
+<b>Limits of error correction.</b> &nbsp; In the wost case, 
+33 defective sectors<sup><a href="qa31.html#footnote1">*)</a></sup> are sufficient
+to prevent a full data restoration. However to achieve this effect, the errors have to
+be distributed over the medium in such a way that they occur in the same ECC block - such a pattern
+is very unlikely.<br>
+Empirical tests have shown that on aging media about 10% of the overall sector count
+may become defective before
+the threshold of 33 defects per ECC block<sup><a href="qa31.html#footnote1">*)</a></sup>
+ is reached. <br>
+Scratches will cause the threshold to be reached earlier, 
+therefore it is recommended to visually check the media in regular intervals.
+Media with read errors caused by scratches should be replaced immediately.<p>
+
+<b>Hardware limits.</b> &nbsp; Most drives will not recognize media when the lead-in area
+before the first sector
+(near the center hole) is damaged. In such cases, dvdisaster will not be able to recover
+any content from the media. <p>
+
+It is <i>not feasible</i> to enhance the reliability of poor quality media by using
+dvdisaster. Cheap media can decay within a few days to an extent which will exceed
+the capabilities of the error correction code. <p>
+
+<pre> </pre>
+<table width="50%"><tr><td><hr></td></tr></table>
+
+<span class="fs">
+<a name="footnote1"><sup>*)</sup></a> 
+The given threshold of 32 correctable errors per ECC block is the standard setting.
+It is possible to <a href="howtos22.html#ecc">select other values</a>
+for higher or lower error correction capabilities. When 
+<a href="howtos30.html">error correction data is put directly on the medium</a>, the number of correctable
+errors depends on the free space on the medium.
+</span>
+
+<!-- do not change below -->
+
+  </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved.
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

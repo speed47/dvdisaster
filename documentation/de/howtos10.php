@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,7 +14,7 @@ begin_page();
 howto_headline("Datenträger überprüfen", "Übersicht", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr>
@@ -29,15 +29,15 @@ howto_headline("Datenträger überprüfen", "Übersicht", "images/scan-icon.png"
  <td colspan="2"><b>Benötigt werden:</b></td>
 </tr>
 <tr>
- <td width="150px"><img src="../images/good-cd.png" align="top">
-   &nbsp; <img src="../images/bad-cd.png" align="top"></td>
+ <td width="150px"><img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)" class="valignt">
+   &nbsp; <img src="../images/bad-cd.png" alt="Symbol: Beschädigter Datenträger (teilweise unlesbar)" class="valignt"></td>
 <td>
   Ein Datenträger in beliebigem Zustand (gut oder bereits mit Lesefehlern).
 </td>
 </tr>
 
 <tr>
- <td><img src="../images/ecc.png"></td>
+ <td><img src="../images/ecc.png" alt="Icon: Eigenständige Fehlerkorrektur-Datei"></td>
  <td>Wenn Sie Fehlerkorrektur-Daten haben, werden bei der Überprüfung einige zusätzliche
   Tests durchgeführt. Es geht aber auch ohne Fehlerkorrektur-Daten.
  </td>
@@ -57,7 +57,7 @@ howto_headline("Datenträger überprüfen", "Übersicht", "images/scan-icon.png"
 <tr><td> <pre> </pre> </td></tr>
 
 <tr valign="top">
- <td><b>Verwandte Funktionen:<p></td>
+ <td><b>Verwandte Funktionen:</b><p></td>
  <td><a href="howtos30.php">Einlesen von beschädigten Datenträgern</a> und
      <a href="howtos40.php">Wiederherstellen von Abbildern</a>.</td>
  </tr>
@@ -67,7 +67,7 @@ howto_headline("Datenträger überprüfen", "Übersicht", "images/scan-icon.png"
 
 <a href="howtos11.php">Grundeinstellungen vornehmen...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

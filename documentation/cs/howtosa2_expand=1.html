@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Výběr bitové kopie</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Verze 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/cs/">Online verze</a>
+        
+       <a href="../de/howtosa2.html"></a> 
+       <a href="../en/howtosa2.html"></a> 
+       <a href="../ru/howtosa2.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Obsah</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Novinky</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Přehled</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Běžné použití</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos60.html">Celkový přehled</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos10.html">Kontrola poškození disků</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos20.html">Vytvoření samostatného souboru pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos30.html">Rozšíření bitové kopie o&nbsp;data pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos40.html">Oprava bitových kopií</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos50.html">Zjištění informací o&nbsp;bitových kopiích a datech pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos90.html">Testování kompatibility bitové kopie</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtosa0.html">Dialogy a tlačítka</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtosa1.html">Výběr mechaniky</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Výběr bitové kopie</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtosa3.html">Výběr souboru pro opravu chyb</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtosa4.html">Spuštění akcí</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Ke&nbsp;stažení</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Otázky a odpovědi</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Hlášení chyb</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Výběr souboru bitové kopie</h3>Soubor bitové kopie obsahuje data všech sektorů disku, včetně informací o čitelnosti sektoru. dvdisaster pracuje s bitovými kopiemi, protože jsou uloženy na pevném disku, díky čemuž je provádění některých vzorců náhodného přístupu mnohem rychlejší. Použití podobného typu náhodného přístupu u CD/DVD/BD mechaniky by vedlo k výraznému zpomalení a k jejich rychlejšímu opotřebení (bitové kopie jsou vytvářeny pomocí sekvenčního čtení, které na rozdíl od náhodného čtení mechaniky zvládají dobře). Výchozí přípona pro soubory bitových kopií je ISO.<p><!-- begin of screen shot -->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap1"></a>
+Existují dva způsoby výběru souboru bitové kopie:<ul>
+<li>pomocí <a href="howtosa2_expand=1.html#filechooser">dialogu pro výběr souboru</a> (zeleně označené tlačítko), nebo</li>
+<li>přímé zadání umístění souboru (modře označená položka).</li>
+</ul><p>Přímý vstup je užitečný pokud zpracováváte několik souborů v jednom adresáři. V tomto případě stačí změnit pouze název souboru ve vstupním poli.<p>  </td></tr>
+  <tr><td align="center">
+    <a href="howtosa2.html#snap1">
+      <img src="images/dialog-iso-full.png" alt="" class="noborder">
+    </a>
+  </td></tr>
+  <tr><td align="center">Snímek obrazovky: Výběr souboru bitové kopie</td></tr>
+</table><pre> </pre>
+<!-- end of screen shot -->
+ <a name="filechooser"></a> <b>Poznámky k použití dialogu pro výběr souboru ve Windows a Mac OS X</b><p>dvdisaster používá uživatelské rozhraní sady nástrojů <a href="http://www.gtk.org">GTK+</a> díky kterému může být provozován ve více operačních systémech. Protože se dialog pro výběr souborů GTK+ chová jinak než jeho ekvivalenty ve Windows a Mac OS X (které nemůžeme použít), je na konci této stránky uveden jeho popis. Vytvoření verze pro Windows nebo Mac OS X bez použití GTK+ by vyžadovalo značné úsilí - zaměřili bychom se tak spíše jen na verzi pro GNU/Linux ;-)<p><!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+ <b>Výběr existujících souborů.</b> Oblasti označené <span class="green">zeleně</span> slouží pro výběr existujících souborů. Adresáře je možné vybírat a procházet v levé polovině dialogu; obsažené soubory jsou zobrazovány v pravé polovině.<p><b>Výběr názvu a umístění nových souborů.</b> Nejdříve pomocí <span class="green">zelené</span> oblasti v levé části dialogu zvolte adresář. Poté do <span class="blue">modře</span> označeného pole zadejte název nového souboru. Pro zkontrolování toho že soubor vytváříte ve správném umístění si prohlédněte titulek &quot;Výběr:&quot; nad <span class="blue">modrým</span> vstupním polem, ten uvádí písmeno mechaniky a cestu k umístění kde bude nový soubor vytvořen.<p><b>Přepínání mezi oddíly (&quot;písmeny disků&quot;).</b> Dostupné oddíly jsou zobrazeny ve <span class="yellow">žlutě</span> označené části. Pokud aktuálně vybraný disk obsahuje mnoho adresářů, budete muset pro přístup k písmenům disků odrolovat na konec seznamu.<p><b>Přechod do nadřazeného adresáře.</b> Pro přechod o jednu adresářovou úroveň zpět použijte <span class="red">červeně</span> označenou dvojitou tečku (..). Všechny adresáře vedoucí k aktuálnímu adresáři jsou obsaženy v rozevírací nabídce ve středu horní části dialogu (také označeno <span class="red">červeně</span>). Pozor, tato nabídka <i>neslouží</i> k přepínání mezi disky; pro to použijte <span class="yellow">žlutě</span> označenou část.    </td>
+    <td>
+      <a name="snap2"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Výběr souborů ve verzi pro Windows</span></td></tr>
+        <tr><td><a href="howtosa2_expand=2.html#snap2"><img src="thumbnails/filebrowser.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+ <!-- do not change below -->   </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/cs/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Kopírování a distribuce neupravené verze tohoto článku v libovolné formě je povolena za předpokladu, že bude zachována tato poznámka..
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

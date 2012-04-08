@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Сообщения об ошибках</h3>
+<h3 class="top">Сообщения об ошибках</h3>
 Как всякое сложное программное обеспечение, dvdisaster может содержать ошибки (ошибки программирования) и
 может быть несовместим с некоторыми настройками аппаратуры (приводов) и программного обеспечения.
 Пожалуйста, сообщайте нам о любых затруднениях с программой
@@ -49,7 +49,7 @@ begin_page();
 <h4>Как сообщать о проблемах с программой:</h4>
 
 Сообщайте о ваших находках электронной почтой на 
-<img src="../images/email.png" align="top">. Ваше сообщение должно содержать:<p>
+<img src="../images/email.png" alt="email shown as png image" class="valigntt">. Ваше сообщение должно содержать:<p>
 
 <ul>
 <li>Информацию об операционной системе и версии dvdisaster, которыми вы пользуетесь;</li>
@@ -73,7 +73,7 @@ begin_page();
 
 Спасибо за обратную связь!
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

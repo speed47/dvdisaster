@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,13 +13,13 @@ require("../include/footnote.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Восстановление образов носителей</h3>
+<h3 class="top">Восстановление образов носителей</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Задача</b></td>
+<td class="w20p"><b>Задача</b></td>
 <td>
 Восстановить содержимое поврежденного носителя.
 </td>
@@ -30,8 +30,8 @@ begin_page();
 <td colspan="2"><b>Требуется:</b><p></td>
 </tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd-ecc.png" align="top">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd-ecc.png" alt="Icon: Damaged medium with error correction data" class="valignt">
  </td>
 <td>
 Поврежденный носитель, содержащий <a href="howtos30.php">данные для исправления ошибок</a>,
@@ -39,9 +39,9 @@ begin_page();
 </tr>
 <tr><td></td><td>или</td></tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd.png">
-   <img src="../images/ecc.png">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)">
+   <img src="../images/ecc.png" alt="Icon: Separate file with error correction data">
  </td>
 <td>
 поврежденный носитель с соответствующим <a href="howtos20.php">файлом для исправления ошибок</a><a href="#footnote"><sup>*)</sup></a>.
@@ -50,7 +50,7 @@ begin_page();
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Что нужно сделать:<p></b></td>
+<td colspan="2"><b>Что нужно сделать:</b><p></td>
 </tr>
 
 <tr>
@@ -71,7 +71,7 @@ begin_page();
 </pre>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

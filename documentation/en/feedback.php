@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Bug reporting</h3>
+<h3 class="top">Bug reporting</h3>
 Like all complex software, dvdisaster may contain bugs (programming errors) and
 incompatibilities with certain (drive) hardware and software setups.
 You are invited to tell us about any difficulties you encounter with the program
@@ -50,7 +50,7 @@ machines.</li>
 <h4>How to report issues with the program:</h4>
 
 Please report your findings by sending an email to 
-<img src="../images/email.png" align="top">. Your report should contain:<p>
+<img src="../images/email.png" alt="email address shown as graphics image" class="valigntt">. Your report should contain:<p>
 
 <ul>
 <li>Information about the operating system and dvdisaster version you are using;</li>
@@ -74,7 +74,7 @@ and attach the log file to your bug report.
 
 Thanks for your feedback!
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

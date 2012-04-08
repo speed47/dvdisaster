@@ -17,7 +17,7 @@
  *  or direct your browser at http://www.gnu.org.
  */
 
-#if !defined(SYS_FREEBSD) && !defined(SYS_DARWIN)   /* FreeBSD declares malloc() in stdlib.h */
+#if !defined(SYS_FREEBSD)  /* FreeBSD declares malloc() in stdlib.h */
  #include <malloc.h>
 #endif
 

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Results for error correction files</h3>
+<h3 class="top">Results for error correction files</h3>
 
 <?php begin_howto_shot("Image and error correction file.","compat-okay-rs01.png", ""); ?>
 
@@ -27,12 +27,12 @@ in two output fields; each related to one of the files:
 <table>
 <tr><td colspan="2">Output field <b>"Image file summary":</b><br><hr></td><td></td></tr>
 <tr>
-<td valign="top">Medium sectors:</td>
+<td class="valignt">Medium sectors:</td>
 <td>The number of sectors in the ISO image (one sector = 2KB).</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
-
-<td valign="top">Checksum errors:</td>
+<tr>
+<td class="valignt">Checksum errors:</td>
 <td>The error correction file contains CRC32 checksums for each image
 sector. If this value is greater than zero some sectors were readable
 but their contents do not match the checksum. The error correction will
@@ -42,7 +42,7 @@ try to recalculate the contents of these sectors.
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Missing sectors:</td>
+<td class="valignt">Missing sectors:</td>
 <td>This is the number of sectors which could not be read from the medium.
 The error correction will try to recover the contents of these sectors.
 </td>
@@ -50,7 +50,7 @@ The error correction will try to recover the contents of these sectors.
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Image checksum:</td>
+<td class="valignt">Image checksum:</td>
 <td>A MD5 checksum is calculated for the complete ISO image.
 You can reproduce this value using the command line of GNU/Linux:<br>
 <tt>md5sum medium2.iso</tt></td>
@@ -59,7 +59,7 @@ You can reproduce this value using the command line of GNU/Linux:<br>
 
 <tr><td colspan="2">
 If all values in this output field are okay the message
-"<font color="#008000">Good image.</font>" appears.
+"<span class="green">Good image.</span>" appears.
 Otherwise the most important error will be explained there.
 </td>
 </tr>
@@ -69,46 +69,46 @@ Otherwise the most important error will be explained there.
 <td colspan="2">Output field <b>"Error correction file summary"</b>:<br><hr></td><td></td>
 </tr>
 <tr>
-<td valign="top">Created by:</td>
+<td class="valignt">Created by:</td>
 <td>Prints the dvdisaster version which was used for creating the
 error correction data. Alpha/developer versions are highlighted in red.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Method:</td>
+<td class="valignt">Method:</td>
 <td>The method and redundancy used for creating the error correction file.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Requires:</td>
+<td class="valignt">Requires:</td>
 <td>Processing the error correction data requires at least the shown
 version of dvdisaster.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Medium sectors:</td>
+<td class="valignt">Medium sectors:</td>
 <td>The expected number of sectors in the image file.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Image checksum:</td>
+<td class="valignt">Image checksum:</td>
 <td>The expected MD5 sum of the image file.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Fingerprint:</td>
+<td class="valignt">Fingerprint:</td>
 <td>dvdisaster uses the checksum of a special sector to determine whether
 the error correction file was made for a given image.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Ecc blocks:</td>
+<td class="valignt">Ecc blocks:</td>
 <td>The error correction divides the image into small blocks which can
 be processed independently. This information is mostly useless as long
 as the number of ecc blocks is correct ;-) 
@@ -117,7 +117,7 @@ as the number of ecc blocks is correct ;-)
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Ecc checksum:</td>
+<td class="valignt">Ecc checksum:</td>
 <td>A MD5 checkum is calculated over the error correction file,
 not taking into account the first 4KB. You can reproduce this value
 using the command line of GNU/Linux:<br>
@@ -128,13 +128,13 @@ using the command line of GNU/Linux:<br>
 
 <tr><td colspan="2">
 If all values in this output field are okay the message
-"<font color="#008000">Good error correction file.</font>" appears.
+"<span class="green">Good error correction file.</span>" appears.
 Otherwise the most important error will be explained there.
 </td>
 </tr>
 </table>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

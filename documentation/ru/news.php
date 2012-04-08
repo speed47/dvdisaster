@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -21,54 +21,61 @@ $news_counter = 0;
 
 news_headline("Новости dvdisaster");
 
-news_item("03.10.2011", "dvdisaster 0.72.3 released", "
+news_item("07.04.2012", "dvdisaster 0.72.4 released", "
+Updated to work with recent versions of GNU/Linux, FreeBSD and NetBSD.
+", 21, "2012-04-07T01:00:00Z", "2012-04-07T01:00:00Z");
+
+news_item("05.10.2011", "dvdisaster 0.72.3 released", "
 The \"Verify\" function hangs when working on RS01 error
 correction files which are larger than 2GB (the error correction
 files are correctly generated though).
 Volodymyr Bychkoviak discovered the problem and sent in
-a bug fix.");
+a bug fix.", 20, "2011-10-05T00:00:00Z", "2011-10-05T00:00:00Z");
+
+news_item("28.07.2011", "Documentation added", "
+The temporarily lost <a href=\"qa30.php\">background information</a> 
+from the 0.70 documentation has been updated and made online again.
+", 19, "2011-07-28T00:00:00Z", "2011-07-28T00:00:00Z");
+
+news_item("21.11.2010", "dvdisaster 0.79.3 released", "
+For GNU/Linux, the SG_IO driver is used by default
+for accessing optical drives. This resolves the problem
+with system freezes on parallel SCSI adapters which were
+caused by the old CDROM_SEND_PACKET driver.
+The RS03 codec now contains Altivec optimizations
+on PowerPC platforms.
+", 18, "2010-11-21T00:00:00Z", "2010-11-21T00:00:00Z");
+
+news_item("07.11.2010", "Added Windows and Mac OS X versions for 0.72.2", "
+Windows and Mac OS X versions of 0.72.2 are now available.
+They were built using the updated development environment of 0.79.x.
+This results in shipping with newer versions of the GTK+ libraries
+and might yield slightly different visuals and behaviour.
+", 17, "2010-11-07T00:00:00Z", "2010-11-07T00:00:00Z");
 
 news_item("31.10.2010", "dvdisaster 0.72.2 released", "
 This version introduces a workaround which prevents parallel SCSI
-adapters from freezing under Linux. RS03 images from 0.79.x
-versions will no longer cause spurious error messages.");
+adapters from freezing under Linux. 
+Improved upward compatibility with dvdisaster 0.79.x.
+", 16, "2010-10-31T00:00:00Z", "2010-10-31T00:00:00Z");
 
-news_item("10.08.2009", "Project represention on SourceForge may be outdated", "
-Due to the recent functionality changes on SourceForge we are unable
-to upload the News, Downloads and CVS contents in time. Please refer
-to the respective sections on this site (http://dvdisaster.net) instead.
-");
+news_item("28.02.2010", "dvdisaster 0.79.2 released", "
+ Mac OS X binaries are available again as the Mac OS X development environment 
+ has been updated for this version.
+ RS03 codec development progresses,
+but is still far from being finished.
+", 15, "2010-02-28T00:00:00Z", "2010-02-28T00:00:00Z");
 
-news_item("08.08.2009", "dvdisaster 0.72.1 released", "
-Pablo Almeida provided a Portuguese translation for the screen text.
-Added workaround to avoid Win XP freezing on certain CD-RW/drive pairs.<p>
-");
+news_item("07.02.2010", "Started new development branch 0.79", "
+The first version of the new development branch (0.79.1) has just
+been released. This release is meant for testing new functions;
+it is not recommended for doing productive work. See the
+<a href=\"download40.php\">download page</a> for information on
+what has been changed and how you can participate in testing.
+", 14, "2010-02-07T00:00:00Z", "2010-02-07T00:00:00Z");
 
-news_item("04.07.2009", "выпущен dvdisaster 0.72", "
-Это первая стабильная версия ветки 0.72.
-Игорь Горбунов завершил перевод онлайн-документации на русский язык.
-Устранены некоторые незначительные ошибки в первом кандидате на выпуск.<p>
-");
 
-news_item("11.04.2009", "выпущен dvdisaster 0.72.rc1", "
-  Теперь доступен первый кандидат на выпуск из стабильной ветви 0.72.
-  Среди новых возможностей - поддержка носителей Blu-Ray, низкоуровневое чтение и проверки на C2
-  для CD, а также \"родная\" версия для Mac OS X.
-  Дополнительную информацию см. здесь <a href=\"download.php\">download page</a>.
-");
-
-news_item("08.03.2009", "выпущен dvdisaster 0.71.28", "
-  В этой версии исправляются падения из-за \"illegal instruction\" на x86-машинах,
-  которые не поддерживают SSE2. Много незначительных исправлений перед кандидатом
-  на выпуск.
-");
-
-news_item("18.01.2009", "выпущен dvdisaster 0.71.27", "
-  Эта документация, наконец, завершена. Исправлены некоторые падения и несовместимости
-  с необычными носителями и приводами. В этой версии произведен
-  последний большой внутренний пересмотр, планировавшийся для версий 0.71.x, поэтому, если
-  все будет хорошо, то следующей версией будет стабильный кандидат на выпуск.
-");
+news_finalize();
 
 if($news_flash == 0) 
    end_page();

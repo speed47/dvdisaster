@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Creating error correction files", "Basic settings", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Opening the configuration dialog.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>The following tabs are found in the configuration dialog.
 Open the dialog by selecting the symbol marked green in the screen shot
 (click the image to expand it). The symbol may look different
@@ -32,7 +32,7 @@ due to the symbol theme you are using.</td>
 
 <table width="100%" cellspacing="5">
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>If you already have an ISO image available you can skip
 the next two tabs and proceed with the <a href="#ecc">error correction settings</a>.
 But make sure that you really have an ISO type image; other formats like ".nrg"
@@ -99,13 +99,8 @@ recommended as the error correction might be overloaded too quickly.
 <?php end_screen_shot(); ?>
 
 <?php begin_screen_shot("\"Files\" tab.","create-prefs-file.png"); ?>
-<b>"Files" tab.</b> If your operating system can not create files larger than 2GB
-then you must choose the "Split files " setting (marked green). 
-In that case dvdisaster will
-create up to 100 segments called "medium00.iso", "medium01.iso" etc. instead
-of a single "medium.iso" file. Using this option results in a small performance hit.
-This option is mostly useful under Windows if the old FAT32 file system is still used.
-Leave the other settings off for the moment; suggestions for further 
+<b>"Files" tab.</b> In this tab, leave the settings off for the moment; 
+suggestions for further 
 <a href="howtos25.php">optimization</a> follow later.
 <?php end_screen_shot(); ?>
 
@@ -123,7 +118,7 @@ but these have no further effects on the error correction data creation.
 
 <a href="howtos23.php">Creating the error correction data...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

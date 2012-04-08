@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -26,7 +26,7 @@ dvdisaster определит размер носителя и обновит с
 Чтобы это сделать, активируйте кнопку "Использовать не больше ... секторов" и введите максимальный размер образа в секторах (1 сектор = 2КБ).
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

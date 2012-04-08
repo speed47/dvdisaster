@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Informationen zu Abbildern/Fehlerkorrektur-Daten anzeigen", "Anzeigen", "images/compare-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Für diese Funktion werden keine Grundeinstellungen benötigt; allerdings müssen
 Sie bereits eine Abbild-Datei und gegebenenfalls die zugehörige 
@@ -26,12 +26,12 @@ Sie bereits eine Abbild-Datei und gegebenenfalls die zugehörige
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="Bedienelemente: Abbild-Datei auswählen (Eingabefeld und Knopf für Dialog" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Geben Sie den Dateinamen des ISO-Abbilds</b> an, 
+<td class="valignt"><b>Geben Sie den Dateinamen des ISO-Abbilds</b> an, 
 über das Sie Informationen erhalten möchten. Das Abbild muß sich bereits
 auf der Festplatte befinden; verwenden Sie bei Bedarf die "Lesen"-Funktion,
 um es von einem Datenträger zu lesen.
@@ -41,12 +41,12 @@ um es von einem Datenträger zu lesen.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="Bedienelemente: Fehlerkorrektur-Datei auswählen (Eingabefeld und Knopf für Dialog)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 <b>Geben Sie den Namen der zugehörigen Fehlerkorrektur-Datei</b> an.
 Lassen Sie dieses Feld frei falls der Datenträger
 <a href="howtos30.php">mit Fehlerkorrektur-Daten erweitert</a> wurde.
@@ -56,12 +56,12 @@ Lassen Sie dieses Feld frei falls der Datenträger
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="Bedienelement: Vergleichen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Beginnen Sie die Auswertung</b> durch
+<td class="valignt"><b>Beginnen Sie die Auswertung</b> durch
 Klicken auf den "Vergleichen"-Knopf.</td>
 </tr>
 </table>
@@ -83,7 +83,7 @@ Fehlerkorrektur-Datei vollständig gelesen werden.
 </ul>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

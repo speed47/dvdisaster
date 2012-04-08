@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Datenträger überprüfen", "Grundeinstellungen", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Einstellungsdialog aufrufen.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="Bedienelement: Einstellungen (Aufruf-Knopf)" class="valignb"></td>
 <td>Die nachfolgend besprochenen Reiterkarten finden Sie
 im Einstellungsdialog. Das zum Aufruf verwendete Symbol ist
 in dem Bildschirmfoto grün markiert (Anklicken vergrößert das Bild).
@@ -26,6 +26,7 @@ Das Symbol kann je nach verwendetem Symbol-Thema anders aussehen.</td>
 </tr></table>
 <?php end_screen_shot(); ?>
 
+<a name="image"></a>
 <?php begin_screen_shot("Reiterkarte \"Abbild\".","scan-prefs-image.png"); ?>
 <b>Reiterkarte "Abbild".</b> Es ist wichtig, die Methode zum Ermitteln der
 Abbild-Größe korrekt einzustellen. Die Einstellung "ISO/UDF" (grüne Markierung) ist
@@ -50,6 +51,7 @@ diese können Sie später noch <a href="howtos14.php">optimieren</a>.<p>
 
 <pre> </pre>
 
+<a name="read_attempts"></a>
 <?php begin_screen_shot("Reiterkarte \"Leseversuche\".","scan-prefs-read-attempts.png"); ?>
 <b>Reiterkarte "Leseversuche".</b> Es ist wichtig, daß Sie den Vorgaben für
 diese Reiterkarte folgen, da Sie sonst unnötig Zeit verschwenden, ohne die
@@ -91,7 +93,7 @@ keine Auswirkungen auf die Überprüfung von Datenträgern.
 
 <a href="howtos12.php">Überprüfung durchführen...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

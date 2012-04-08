@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,11 +13,11 @@ require("../include/footnote.php");
 begin_page();
 howto_headline("Creating error correction data as a separate file", "Overview", "images/create-icon.png");?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Task</b></td>
+<td class="w20p"><b>Task</b></td>
 <td>
 An error correction file is created for a CD/DVD/BD medium.
 </td>
@@ -38,7 +38,7 @@ directly onto the medium.
 </tr>
 
 <tr>
-<td><img src="../images/good-cd.png"></td>
+<td><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>
 A good, error free<a href="#footnote"><sup>*)</sup></a> medium,</td>
 </tr>
@@ -47,7 +47,7 @@ A good, error free<a href="#footnote"><sup>*)</sup></a> medium,</td>
 
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>an already existing and complete<a href="#footnote"><sup>*)</sup></a> 
 ISO image of the medium (e.g. the image used for writing the medium).
 </td>
@@ -56,7 +56,7 @@ ISO image of the medium (e.g. the image used for writing the medium).
 
 
 <tr>
-<td colspan="2"><b>What to do:<p></b></td>
+<td colspan="2"><b>What to do:</b><p></td>
 </tr>
 
 <tr>
@@ -82,7 +82,7 @@ data loss occurs: It is not possible to create error correction files
 from an already defective medium.");
 ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

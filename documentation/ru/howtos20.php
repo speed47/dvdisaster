@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,11 +13,11 @@ require("../include/footnote.php");
 begin_page();
 howto_headline("Создание данных для исправления ошибок в отдельном файле", "Обзор", "images/create-icon.png");?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Задача</b></td>
+<td class="w20p"><b>Задача</b></td>
 <td>
 Создается файл данных для исправления ошибок для носителя CD/DVD/BD.
 </td>
@@ -38,7 +38,7 @@ howto_headline("Создание данных для исправления ош
 </tr>
 
 <tr>
-<td><img src="../images/good-cd.png"></td>
+<td><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
 <td>
 Хороший, без ошибок, <a href="#footnote"><sup>*)</sup></a> носитель,</td>
 </tr>
@@ -47,7 +47,7 @@ howto_headline("Создание данных для исправления ош
 
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>уже существующий готовый<a href="#footnote"><sup>*)</sup></a> 
 ISO-образ носителя (например, образ, используемый для записи носителя).
 </td>
@@ -56,7 +56,7 @@ ISO-образ носителя (например, образ, использу�
 
 
 <tr>
-<td colspan="2"><b>Что делать:<p></b></td>
+<td colspan="2"><b>Что делать:</b><p></td>
 </tr>
 
 <tr>
@@ -83,7 +83,7 @@ footnote("*","footnote","Данные для исправления ошибок
 ?>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

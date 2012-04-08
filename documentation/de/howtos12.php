@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Datenträger überprüfen", "Durchführen", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Vergewissern Sie sich zunächst, daß dvdisaster wie in den 
 <a href="howtos11.php">Grundeinstellungen</a> beschrieben konfiguriert ist.
@@ -27,10 +27,10 @@ beeinflussen. Führen Sie dann die folgenden Schritte aus:<p>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Symbol: Datenträger in Laufwerk einlegen">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Legen Sie den zu prüfenden Datenträger in ein Laufwerk</b>, 
+<td class="valignt"><b>Legen Sie den zu prüfenden Datenträger in ein Laufwerk</b>, 
 das direkt mit 
 Ihrem Rechner verbunden ist. Sie können keine Netzwerklaufwerke und keine
 Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
@@ -39,10 +39,10 @@ Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Symbol: Alle automatisch geöffneten Fenster schließen">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
+<td class="valignt"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
 möglicherweise öffnet, um den Inhalt des Datenträgers anzuzeigen oder abzuspielen.
 Warten Sie mit dem Test, bis das Laufwerk den Datenträger erkannt hat und zur
 Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
@@ -51,36 +51,36 @@ Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="Bedienelement: Laufwerksauswahl (Ausklappbares Menü)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
+<td class="valignt"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
 in das Sie den Datenträger eingelegt haben.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="Bedienelement: Fehlerkorrektur-Datei auswählen (Eingabefeld und Knopf für Dialog)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie die Fehlerkorrektur-Datei zu dem Datenträger aus,</b>
+<td class="valignt"><b>Wählen Sie die Fehlerkorrektur-Datei zu dem Datenträger aus,</b>
 sofern Sie eine haben.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/scan-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/scan-icon.png" alt="Bedienelement: Prüfen (Aufruf-Knopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Führen Sie die Überprüfung durch Klicken 
-auf den "Prüfen"-Knopf durch.</td>
+<td class="valignt"><b>Führen Sie die Überprüfung durch Klicken 
+auf den "Prüfen"-Knopf durch.</b></td>
 </tr>
 </table>
 
@@ -97,7 +97,7 @@ Verschieben von Fenstern kann die Überprüfung beeinflussen.
 <a href="howtos13.php">Ergebnisse bewerten...</a>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

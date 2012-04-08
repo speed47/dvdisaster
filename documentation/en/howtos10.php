@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,7 +14,7 @@ begin_page();
 howto_headline("Scanning media for errors", "Overview", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <table width="100%" cellspacing="5">
 <tr>
@@ -29,15 +29,15 @@ howto_headline("Scanning media for errors", "Overview", "images/scan-icon.png");
  <td colspan="2"><b>Required:</b></td>
 </tr>
 <tr>
- <td width="150px"><img src="../images/good-cd.png" align="top">
-   &nbsp; <img src="../images/bad-cd.png" align="top"></td>
+ <td class="w150x"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)" class="valignt">
+   &nbsp; <img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)" class="valignt"></td>
 <td>
    A medium in any state (good or containing read errors).
 </td>
 </tr>
 
 <tr>
- <td><img src="../images/ecc.png"></td>
+ <td><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
  <td>If error correction data is available additional tests are carried out.
 However scanning will also work without error correction data.</td>
 </tr>
@@ -56,7 +56,7 @@ However scanning will also work without error correction data.</td>
 <tr><td> <pre> </pre> </td></tr>
 
 <tr valign="top">
- <td><b>Related functions:<p></td>
+ <td><b>Related functions:</b></td>
  <td><a href="howtos42.php#a">Reading of damaged media</a> and<br>
      <a href="howtos40.php">Recovering images</a>.</td>
  </tr>
@@ -66,7 +66,7 @@ However scanning will also work without error correction data.</td>
 
 <a href="howtos11.php">Configuring basic settings...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

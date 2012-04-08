@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Datenträger überprüfen", "fortgeschrittene Einstellungen", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Reiterkarte \"Laufwerk\".","scan-prefs-drive-adv.png"); ?>
 <b>Schwerwiegende Fehler nicht beachten.</b>
@@ -50,7 +50,7 @@ die Anzahl der gemeldeten Fehler wird höher und ungenauer.
 <p>
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

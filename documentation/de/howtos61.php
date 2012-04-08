@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,15 +12,15 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Die Idee der Fehlerkorrektur</h3>
+<h3 class="top">Die Idee der Fehlerkorrektur</h3>
 
 <table width="100%">
 <tr valign="top">
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Symbol: Beschädigter Datenträger (teilweise unlesbar)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei"></td>
 <td> &nbsp; </td>
 <td rowspan="3">
 In dem Beispiel auf der letzten Seite haben wir gesehen, daß dvdisaster 
@@ -36,15 +36,15 @@ So einfach geht es nun auch wieder nicht ;-)
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Symbol: Diagonaler Pfeil nach rechts"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Symbol: Diagonaler Pfeil nach links">20%</td>
 <td> </td>
 </tr>
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
 <td> </td>
 <td> </td>
 </tr>
@@ -56,19 +56,19 @@ Anna besitzt einen Schreibtisch, dessen Schubladen nur aufgehen, wenn man
 die Zahlenkombination "8 6 2 3" eingibt. Da die Schubladen keinen wertvollen Inhalt
 enthalten, beschließt Anna die Zahlenkombination auf dem Schreibtisch zu notieren:<p>
 
-<img src="../images/ecc-example1.png"><p>
+<img src="../images/ecc-example1.png" alt="Zahlenkombination 8 6 2 3"><p>
 
 Allerdings befürchtet sie, daß eine der Zahlen durch einen Tintenfleck
 unlesbar werden könnte. Daher schreibt sie zusätzlich noch die Summe
 der vier Zahlen dazu ("+" und "=" - Zeichen sind nur zur Verdeutlichung 
 dazugeschrieben):<p>
 
-<img src="../images/ecc-example2.png"><p>
+<img src="../images/ecc-example2.png" alt="8+6+2+3=19"><p>
 
 Nach einer Weile wird tatsächlich eine Zahl durch einen Tintenfleck
 verdeckt:<p>
 
-<img src="../images/ecc-example3.png"><p>
+<img src="../images/ecc-example3.png" alt="8+(unlesbar)+2+3=19"><p>
 
 Das ist aber kein Problem, da Anna sich die fehlende Zahl <i>x</i>
 durch Umstellen der Gleichung wieder ausrechnen kann:<p>
@@ -82,8 +82,8 @@ anderen vier Zahlen wieder berechnet werden kann. Das Rechenbeispiel
 verdeutlicht außerdem die grundlegenden Eigenschaften der Fehlerkorrektur:
 <p>
 
-<table><tr><td><img src="../images/ecc-example4.png"></td><td>&nbsp;&nbsp;</td>
-<td valign="top">
+<table><tr><td><img src="../images/ecc-example4.png" alt="8+6+2+3 (CD)=19 (ecc)"></td><td>&nbsp;&nbsp;</td>
+<td class="valignt">
 Zu einer gegebenen Menge von Daten (hier die Zahlenfolge "8 6 2 3") 
 kann man zusätzliche Fehlerkorrektur-Daten berechnen (hier die Summe "19"), 
 mit denen sich verlorengegangene Daten wieder errechnen lassen.<p>
@@ -119,12 +119,12 @@ Fehlerkorrektur verallgemeinern, die mehr als einen fehlenden Datenwert
 korrigieren kann. Dazu braucht man ein mächtigeres Gleichungssystem,
 das sich auch für mehrere fehlende Werte (= Variablen) eindeutig lösen
 läßt. Der in dvdisaster 
-verwendete <a hef="http://de.wikipedia.org/wiki/Reed-Solomon-Code">Reed-Solomon-Kode</a> hat diese Eigenschaften; er ist jedoch mit der üblichen Schulmathematik
+verwendete <a href="http://de.wikipedia.org/wiki/Reed-Solomon-Code">Reed-Solomon-Kode</a> hat diese Eigenschaften; er ist jedoch mit der üblichen Schulmathematik
 nicht anschaulich zu erklären. Daher mögen an weiterführenden
 Informationen interessierte Leser die entsprechende Literatur aus der
 Kodierungstheorie hinzuziehen.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

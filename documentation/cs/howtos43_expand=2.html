@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Pokročilá nastavení</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Verze 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/cs/">Online verze</a>
+        
+       <a href="../de/howtos43.html"></a> 
+       <a href="../en/howtos43.html"></a> 
+       <a href="../ru/howtos43.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Obsah</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Novinky</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Přehled</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Běžné použití</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos60.html">Celkový přehled</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos10.html">Kontrola poškození disků</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos20.html">Vytvoření samostatného souboru pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos30.html">Rozšíření bitové kopie o&nbsp;data pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos40.html">Oprava bitových kopií</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtos41.html">Základní nastavení</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtos42.html">Oprava bitové kopie</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Pokročilá nastavení</span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos50.html">Zjištění informací o&nbsp;bitových kopiích a datech pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos90.html">Testování kompatibility bitové kopie</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtosa0.html">Dialogy a tlačítka</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Ke&nbsp;stažení</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Otázky a odpovědi</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Hlášení chyb</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+<table width="100%" style="background-color:#f0f0f0;">
+<tr><td><span class="fl"><b>Oprava bitových kopií disků</b></span></td>
+<td rowspan="2" align="right"><img src="images/create-icon.png" alt=""></td></tr>
+<tr><td><i>Pokročilá nastavení</i></td></tr>
+</table><p>
+První pokus o <a href="howtos42.html">přečtení poškozeného disku</a> obvykle poskytne dostatek dat k provedení opravy. Pokud ale ne, zkuste následující:<p><!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+ <b>Odhadnutí šance na úspěšné provedení opravy</b><p>Prohlédněte si výstup procesu čtení. V sekci &quot;Zpracované sektory&quot; naleznete údaje o procentech čitelných sektorů a počtu sektorů nutných k opravě. Pomocí rozdílu těchto dvou hodnot (v případě tohoto příkladu 85.6% - 81.3% = 4.3%) můžete odhadnout pravděpodobnost získání dostatečného počtu sektorů pro provedení opravy:<p>    </td>
+    <td>
+      <a name="snap1"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Odhadnutí šance na úspěšné provedení opravy</span></td></tr>
+        <tr><td><a href="howtos43_expand=1.html#snap1"><img src="thumbnails/adaptive-failure.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<table cellspacing="0" cellpadding="10">
+<tr style="background-color:#c0ffc0;">
+<td class="w10p" align="center" valign="top">&lt; 5%</td>
+<td>Při použití dalších pokusů o přečtení máte velice dobrou šanci získat dostatek potřebných dat.</td></tr>
+<tr style="background-color:#ffffc0;">
+<td class="w10p" align="center" valign="top">5%-10%</td>
+<td>Pokud máte několik mechanik s rozdílnými charakteristikami čtení, můžete požadovaná data získat pokud budete důkladní a trpěliví.</td></tr>
+<tr style="background-color:#ffe0c0;">
+<td class="w10p" align="center" valign="top">10%-20%</td>
+<td>Máte problém. Pokud během následujících 2-3 pokusů o přečtení počet nečitelných sektorů výrazně nepoklesne pod 10%, je disk pravděpodobně neopravitelný.</td></tr>
+<tr style="background-color:#ffc0c0;">
+<td class="w10p" align="center" valign="top">> 20%</td>
+<td>Příliš velká ztráta dat, disk je neopravitelný. Opakování této situace můžete předejít používáním dat pro opravu chyb s vyšší redundancí a zkrácením intervalů mezi kontrolami disků.</td></tr>
+</table><p>Při provádění dodatečných pokusů o přečtení použijte jednotlivá níže uvedená nastavení jedno po druhém v uvedeném pořadí. Po každé změně nastavení proveďte jedno kompletní čtení, abyste zjistili, jak ovlivní výsledek (výsledky se také občas liší v závislosti na použité mechanice). Pokud už jste vyzkoušeli všechna jednotlivá nastavení, můžete zkusit jejich kombinace.<hr>
+
+<!-- begin of screen shot -->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap2"></a>
+<b>Provedení dalšího pokusu o přečtení</b><p>Neměňte žádná jiná nastavení kromě hodnoty nečitelných sektorů pro ukončení procesu čtení. Doporučené hodnoty jsou: 32 pro BD, 16 pro DVD a 0 pro CD (použijte zeleně označený posuvník). Proveďte další pokus o přečtení s tímto nastavením. Pokusy o přečtení můžete opakovat tak dlouho, dokud při nich přibývá významný počet nových sektorů.<p><b>Tip:</b> Mechaniku nechte mezi jednotlivými pokusy odpočinout. Před každým pokusem vysuňte a znovu zasuňte disk, je totiž možné, že pak disk skončí v lepší pozici a zlepší se jeho čitelnost.<p>  </td></tr>
+  <tr><td align="center">
+    <a href="howtos43.html#snap2">
+      <img src="images/fix-prefs-read-attempts1.png" alt="" class="noborder">
+    </a>
+  </td></tr>
+  <tr><td align="center">Snímek obrazovky: Provedení dalšího pokusu o přečtení</td></tr>
+</table><pre> </pre>
+<!-- end of screen shot -->
+<hr><b>Doplnění bitové kopie pomocí různých mechanik</b><p>Další pokusy proveďte pomocí jiné mechaniky. Přesuňte bitovou kopii na jiný počítač a zkuste, zda se vám na něm nepodaří přečíst více sektorů.<p><hr>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+<b>Zvýšení počtu pokusů o přečtení</b><p><i>Pro všechny typy disků (CD, DVD, BD):</i><p>Nastavte minimální počet pokusů o přečtení sektoru na 5 a maximální na 9 (označeno zeleně).<p><i>Pouze pro CD:</i><p>Některé mechaniky jsou schopné částečně přečíst poškozené sektory na CD. Aktivujte &quot;Ukládání nezpracovaných sektorů&quot; a zadejte složku do které mají být fragmenty poškozených sektorů ukládány (označeno žlutě). Pokud je získán dostatek fragmentů poškozeného sektoru, je možné ho díky těmto informacím opravit.     </td>
+    <td>
+      <a name="snap3"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Zvýšení počtu pokusů o přečtení</span></td></tr>
+        <tr><td><a href="howtos43_expand=3.html#snap3"><img src="thumbnails/fix-prefs-read-attempts2.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+ <!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+ <i>Kontrola výsledků vícenásobných pokusů o přečtení (CD, DVD, BD):</i><br>Ne u všech mechanik dojde po zvýšení pokusů o přečtení ke zlepšení čitelnosti. Sledujte hlášení typu &quot;Sektor ..., pokus x: úspěšný&quot; (označeno žlutě). Ty znamenají, že se mechanice podařilo po několika opakovaných čteních sektor přečíst. Pokud takové hlášení není nikdy zobrazeno, zvýšení počtu pokusů o přečtení se pro danou mechaniku nevyplatí.     </td>
+    <td>
+      <a name="snap4"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Opakované pokusy o přečtení</span></td></tr>
+        <tr><td><a href="howtos43_expand=4.html#snap4"><img src="thumbnails/fix-reread-dvd.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+ <a name="21h"></a> <i>Kontrola částečného čtení poškozených CD sektorů:</i><br>Po zpracování celého disku se podívejte do výše zadaného adresáře (v příkladu /var/tmp/raw). Pokud nebyly vytvořeny žádné soubory, mechanika pravděpodobně nepodporuje požadovaný režim čtení. Pokud ale máte několik mechanik schopných soubory fragmentů vytvářet, použijte pro všechny stejný pracovní adresář. Sběr fragmentů poškozených sektorů za pomoci různých mechanik zvyšuje pravděpodobnost jejich opravy.<p><!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="valignt">
+ <i>Použijte pro CD jiný režim přímého čtení:</i><br>Na některých mechanikách režim přímého čtení &quot;20h&quot; nefunguje. Proto proveďte další pokus o přečtení v režimu přímého čtení &quot;21h&quot; (viz snímek obrazovky). Znovu zkontrolujte zda byly vytvořeny nějaké soubory fragmentů sektorů.    </td>
+    <td>
+      <a name="snap5"></a>
+      <table class="thumbnail" width="160">
+        <tr><td><span class="fs">Použití jiného režimu přímého čtení</span></td></tr>
+        <tr><td><a href="howtos43_expand=5.html#snap5"><img src="thumbnails/fix-prefs-drive2.png" alt="" class="noborder"></a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+ <!-- do not change below -->   </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/cs/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Kopírování a distribuce neupravené verze tohoto článku v libovolné formě je povolena za předpokladu, že bude zachována tato poznámka..
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

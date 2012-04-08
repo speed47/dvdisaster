@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -21,67 +21,68 @@ $news_counter = 0;
 
 news_headline("Neues über dvdisaster");
 
+news_item("07.04.2012", "dvdisaster 0.72.4 veröffentlicht", "
+Anpassung an aktuelle Versionen von GNU/Linux, FreeBSD und NetBSD.
+", 21, "2012-04-07T01:00:00Z", "2012-04-07T01:00:00Z");
+
+
 news_item("05.10.2011", "dvdisaster 0.72.3 veröffentlicht", "
 Die \"Vergleichen\"-Funktion hing bei der Verarbeitung von 
 RS01-Fehlerkorrektur-Dateien, die größer als 2GB sind (die
 Fehlerkorrektur-Dateien selbst werden korrekt erzeugt).
 Volodymyr Bychkoviak fand das Problem und schickte eine
-Korrektur. ");
+Korrektur.
+", 20, "2011-10-05T01:00:00Z", "2011-10-05T01:00:00Z");
+
+news_item("28.07.2011", "Dokumentation ergänzt", "
+Die zwischenzeitlich verlorengegangenen <a href=\"qa30.php\">Hintergrundinformationen</a> aus der Dokumentation von Version 0.70 wurden überarbeitet und wieder
+online gestellt.
+", 19, "2011-07-28T00:00:00Z", "2011-07-28T00:00:00Z");
+
+news_item("21.11.2010", "dvdisaster 0.79.3 veröffentlicht", "
+Ab dieser Version wird unter Linux per Voreinstellung der
+SG_IO-Treiber zum Zugriff auf die optischen Laufwerke verwendet.
+Damit liegt jetzt auch im Entwicklungszweig eine Lösung für
+hängende parallele SCSI-Kontroller unter Linux vor, die durch den
+alten CDROM_SEND_PACKET-Treiber verursacht wurden.
+Für den RS03-Kodierer sind jetzt Optimierungen für 
+Altivec auf dem PowerPC verfügbar.
+", 18, "2010-11-21T00:00:00Z", "2010-11-21T00:00:00Z");
+
+news_item("07.11.2010", "Windows- und Mac OS X-Versionen für 0.72.2 nachgelegt", "
+Die Windows- und Mac OS X-Versionen von 0.72.2 sind jetzt verfügbar.
+Sie wurden mit der Entwicklungsumgebung von 0.79.x erzeugt.
+Daher sind die mitgelieferten Bibliotheken von GTK+
+jetzt in neueren Versionen als in 0.72.1 enthalten und es können sich
+leichte Änderungen im Aussehen und Verhalten ergeben.
+", 17, "2010-11-07T00:00:00Z", "2010-11-07T00:00:00Z");
+
 
 news_item("31.10.2010", "dvdisaster 0.72.2 veröffentlicht", "
 Diese Version führt einen Workaround ein um zu verhindern
 daß parallele SCSI-Kontroller unter Linux nicht
-mehr reagieren. Mit Version 0.79.x erzeugte RS03-Abbilder
-führen nicht mehr zu überflüssigen Fehlermeldungen.");
+mehr reagieren. 
+Die Aufwärtskompatibilität mit dvdisaster 0.79.x wurde verbessert.
+", 16, "2010-10-31T00:00:00Z", "2010-10-31T00:00:00Z");
 
-news_item("10.08.2009", "Projektseiten auf SourceForge nicht aktuell", "
-Aufgrund von Änderungen in der Funktionalität von SourceForge
-können die Inhalte der News, Downloads und des CVS nicht zeitnah
-hochgeladen werden. Bitte nutzen Sie stattdessen die entsprechenden
-Rubriken auf diesen Seiten (http://dvdisaster.net).");
+news_item("28.02.2010", "dvdisaster 0.79.2 veröffentlicht", "
+Binärpakete sind wieder für Mac OS X verfügbar nachdem die
+Entwicklungsumgebung auch für Mac OS X aktualisiert wurde.
+ Die Entwicklung
+von RS03 geht weiter, ist aber noch längst nicht abgeschlossen.
+", 15, "2010-02-28T00:00:00Z", "2010-02-28T00:00:00Z");
 
-news_item("08.08.2009", "dvdisaster 0.72.1 veröffentlicht", "
-Pablo Almeida hat die Bildschirmtexte ins Portugiesische übersetzt.
-Es wurde ein Workaround eingebaut um Win XP vom Einfrieren 
-bei bestimmten CD-RW/Laufwerks-Kominationen abzuhalten.<p>
-");
+news_item("07.02.2010", "Beginn des neuen Entwicklungszweiges 0.79", "
+Heute wird mit Version 0.79.1 die erste Version des neuen 
+Entwicklungszweiges veröffentlicht. Diese Version dient hauptsächlich
+zum Ausprobieren neuer Funktionen und wird nicht zum produktiven
+Einsatz empfohlen.
+Auf der <a href=\"download40.php\">Seite zum Herunterladen</a>
+finden Sie Informationen darüber, was gerade geändert wurde und wie
+Sie beim Testen mithelfen können.
+", 14, "2010-02-07T00:00:00Z", "2010-02-07T00:00:00Z");
 
-news_item("04.07.2009", "dvdisaster 0.72 veröffentlicht", "
-Dies ist die erste stabile Version des 0.72er-Zweiges.
-Igor Gorbounov hat die russische online-Dokumentation vervollständigt
-und es wurden noch einige kleine Fehler aus dem ersten 
-Veröffentlichungskandidaten behoben.<p>
-");
-
-news_item("14.04.2009", "Nachgelegt: dvdisaster 0.72.rc1 für Mac OS X", "
-Die native Version für Mac OS X ist im Bereich der
-Benutzeroberfläche <a href=\"download30.php#mac\">noch etwas hakelig</a>,
-da die Portierung der GTK+-Bibliothek in einem frühen Entwicklungsstadium ist.
-Doch mit der heute aktualisierten dvdisaster-Version läßt sich schon auf dem Mac arbeiten...
-");
-
-news_item("11.04.2009", "dvdisaster 0.72.rc1 veröffentlicht", "
-Der erste Veröffentlichungskandidat für den stabilen 0.72er Zweig 
-steht nun bereit. Unter anderem gibt es Unterstützung für Blu-Ray-Datenträger und
-\"Raw\"-Lesen sowie C2-Überprüfungen für CD. 
-Auf der <a href=\"download.php\">Herunterladen</a>-Seite
-finden Sie mehr Informationen.
-");
-
-news_item("08.03.2009", "dvdisaster 0.71.28 veröffentlicht", "
-Diese Version behebt Abstürze durch unzulässige Befehle 
-(\"illegal Instruction\") auf x86-Maschinen die SSE2 nicht unterstützen.
-Sie enthält weitere kleinere Änderungen auf dem Weg zum 
-Veröffentlichungskandidaten für den stabilen Zweig.
-");
-
-news_item("18.01.2009", "dvdisaster 0.71.27 veröffentlicht", "
-Die Dokumentation ist wieder komplett. Einige Crashes und
-Inkompatibilitäten mit ungewöhnlichen Laufwerken und Datenträgern wurden behoben.
-Diese Version enthält die letzte große interne Änderung, die für die 0.71.x-Serie
-geplant war. Wenn alles gut geht wird die nächste Version ein 
-Veröffentlichungskandidat für den stabilen Zweig (0.72).
-");
+news_finalize();
 
 if($news_flash == 0) 
    end_page();

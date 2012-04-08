@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,13 +14,13 @@ begin_page();
 howto_headline("Datenträger-Abbild rekonstruieren", "Übersicht", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Datenträger-Abbilder rekonstruieren</h3>
+<h3 class="top">Datenträger-Abbilder rekonstruieren</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Aufgabe</b></td>
+<td class="w20p"><b>Aufgabe</b></td>
 <td>
 Wiederherstellen des Inhalts eines defekten Datenträgers.
 </td>
@@ -31,8 +31,8 @@ Wiederherstellen des Inhalts eines defekten Datenträgers.
 <td colspan="2"><b>Benötigt werden:</b><p></td>
 </tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd-ecc.png" align="top">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd-ecc.png" alt="Symbol: Beschädigter Datenträger mit Fehlerkorrektur-Daten" class="valignt">
  </td>
 <td>
 Ein defekter Datenträger, der <a href="howtos30.php">Fehlerkorrektur-Daten enthält</a>,
@@ -40,9 +40,9 @@ Ein defekter Datenträger, der <a href="howtos30.php">Fehlerkorrektur-Daten enth
 </tr>
 <tr><td></td><td>oder</td></tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd.png">
-   <img src="../images/ecc.png">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd.png" alt="Symbol: Beschädigter Datenträger (teilweise unlesbar)">
+   <img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei">
  </td>
 <td>
 ein defekter Datenträger und eine zugehörige <a href="howtos20.php">Fehlerkorrektur-Datei</a><a href="#footnote"><sup>*)</sup></a>.
@@ -51,7 +51,7 @@ ein defekter Datenträger und eine zugehörige <a href="howtos20.php">Fehlerkorr
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Dies ist zu tun:<p></b></td>
+<td colspan="2"><b>Dies ist zu tun:</b><p></td>
 </tr>
 
 <tr>
@@ -71,7 +71,7 @@ ein defekter Datenträger und eine zugehörige <a href="howtos20.php">Fehlerkorr
 
 </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 <?php
 footnote("*","footnote",
 "Die Fehlerkorrektur-Datei muß erstellt worden sein als der Datenträger noch in Ordnung war: Von einem bereits defekten Datenträger können keine Fehlerkorrektur-Dateien mehr erstellt werden.");

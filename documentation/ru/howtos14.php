@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Поиск ошибок на носителях", "Дополнительные настройки", "images/scan-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Вкладка \"Привод\".","scan-prefs-drive-adv.png"); ?>
 <b>Игнорирование неисправимых ошибок.</b>
@@ -46,7 +46,7 @@ howto_headline("Поиск ошибок на носителях", "Дополн�
 поэтому число сообщаемых ошибок становится выше и менее точным.<p>
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

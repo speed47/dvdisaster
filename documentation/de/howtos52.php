@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Ausgaben für Fehlerkorrektur-Dateien</h3>
+<h3 class="top">Ausgaben für Fehlerkorrektur-Dateien</h3>
 
 <?php begin_howto_shot("Abbild und Fehlerkorrektur-Datei.","compat-okay-rs01.png", ""); ?>
 
@@ -28,12 +28,12 @@ Fehlerkorrektur-Datei in zwei getrennten Ausgabefeldern:
 <table>
 <tr><td colspan="2">Ausgabefeld <b>"Abbild-Datei":</b><br><hr></td><td></td></tr>
 <tr>
-<td valign="top">Datentr.-Sektoren:</td>
+<td class="valignt">Datentr.-Sektoren:</td>
 <td>Die Anzahl der Sektoren in dem ISO-Abbild (ein Sektor = 2KB).</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
-
-<td valign="top">Prüfsummen-Fehler:</td>
+<tr>
+<td class="valignt">Prüfsummen-Fehler:</td>
 <td>Die Fehlerkorrektur-Datei enthält eine CRC32-Prüfsumme für jeden
 Sektor im Abbild. Wenn dieser Wert größer als Null ist, sind die Daten
 in einigen Sektoren lesbar, aber nicht so wie es die Prüfsumme erwarten 
@@ -44,7 +44,7 @@ zu berechnen.
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Fehlende Sektoren:</td>
+<td class="valignt">Fehlende Sektoren:</td>
 <td>Dies ist die Anzahl der Sektoren, die nicht von dem Datenträger 
 gelesen worden konnten. Die Fehlerkorrektur wird versuchen, den Inhalt
 dieser Sektoren wiederherzustellen.</td>
@@ -52,7 +52,7 @@ dieser Sektoren wiederherzustellen.</td>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Abbild-Prüfsumme:</td>
+<td class="valignt">Abbild-Prüfsumme:</td>
 <td>Das komplette ISO-Abbild ist noch einmal mit einer MD5-Prüfsumme
 versehen. Sie können diesen Wert auch selbst (unter GNU/Linux) in
 der Kommandozeile berechnen:<br>
@@ -62,7 +62,7 @@ der Kommandozeile berechnen:<br>
 
 <tr><td colspan="2">
 Wenn alle Werte in diesem Ausgabefeld in Ordnung sind, erhalten Sie
-darunter die Ausgabe "<font color="#008000">Gutes Abbild.</font>".
+darunter die Ausgabe "<span class="green">Gutes Abbild.</span>".
 Anderenfalls wird dort der wichtigste aufgetretene Fehler näher erklärt.
 </td>
 </tr>
@@ -72,47 +72,47 @@ Anderenfalls wird dort der wichtigste aufgetretene Fehler näher erklärt.
 <td colspan="2">Ausgabefeld <b>"Fehlerkorrektur-Datei"</b>:<br><hr></td><td></td>
 </tr>
 <tr>
-<td valign="top">Erzeugt von:</td>
+<td class="valignt">Erzeugt von:</td>
 <td>Die dvdisaster-Version, mit der die Fehlerkorrektur-Datei erzeugt wurde.
 Alpha/Entwicklerversion werden rot hervorgehoben.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Methode:</td>
+<td class="valignt">Methode:</td>
 <td>Die Methode und Redundanz, mit der die Fehlerkorrektur-Datei erzeugt
 wurde.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Benötigt:</td>
+<td class="valignt">Benötigt:</td>
 <td>Zur Verwendung der Fehlerkorrektur-Daten wird mindestens die
 angegebene dvdisaster-Version benötigt.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Datentr.-Sektoren:</td>
+<td class="valignt">Datentr.-Sektoren:</td>
 <td>Die erwartete Anzahl der Sektoren in der zugehörigen Abbild-Datei.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Abbild-Prüfsumme:</td>
+<td class="valignt">Abbild-Prüfsumme:</td>
 <td>Die erwartete MD5-Prüfsumme der zugehörigen Abbild-Datei.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Fingerabdruck:</td>
+<td class="valignt">Fingerabdruck:</td>
 <td>dvdisaster verwendet die Prüfsumme eines bestimmten Sektors
 um festzustellen ob die Fehlerkorrektur-Datei und das Abbild zusammenpassen.</td>
 </tr>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Ecc-Bereiche:</td>
+<td class="valignt">Ecc-Bereiche:</td>
 <td>Die Fehlerkorrektur unterteilt das Abbild in kleine Bereiche, die
 unabhängig voneinander korrigiert werden können. Wichtig ist eigentlich nur,
 daß diese Zahl stimmt ;-)</td>
@@ -120,7 +120,7 @@ daß diese Zahl stimmt ;-)</td>
 <tr><td>&nbsp;</td><td></td></tr>
 
 <tr>
-<td valign="top">Ecc-Prüfsumme:</td>
+<td class="valignt">Ecc-Prüfsumme:</td>
 <td>Eine MD5-Prüfsumme über die Fehlerkorrektur-Datei, abzüglich der
 ersten 4KB. Sie können diesen Wert unter GNU/Linux mit der Kommandozeile
 wie folgt berechnen:<br>
@@ -131,13 +131,13 @@ wie folgt berechnen:<br>
 
 <tr><td colspan="2">
 Wenn alle Werte in diesem Ausgabefeld in Ordnung sind, erhalten Sie
-darunter die Ausgabe "<font color="#008000">Gute Fehlerkorrektur-Datei.</font>".
+darunter die Ausgabe "<span class="green">Gute Fehlerkorrektur-Datei.</span>".
 Anderenfalls wird dort der wichtigste aufgetretene Fehler näher erklärt.
 </td>
 </tr>
 </table>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

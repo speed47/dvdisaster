@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Abbild-Kompatibilität überprüfen</h3>
+<h3 class="top">Abbild-Kompatibilität überprüfen</h3>
 
 <b>Warum ISO-Abbilder verwendet werden.</b> Einige Funktionen von dvdisaster arbeiten mit 
 ISO-Abbilddateien, die
@@ -60,7 +60,7 @@ schreibt. <a href="howtos92.php">Prüfen Sie daher nach</a>, ob Ihre
 Brennsoftware die Fehlerkorrektur-Daten korrekt überträgt, wenn Sie sie
 zum ersten Mal zusammen mit dvdisaster einsetzen.
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

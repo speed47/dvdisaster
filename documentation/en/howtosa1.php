@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Drive selection</h3>
+<h3 class="top">Drive selection</h3>
 
 <?php begin_screen_shot("Drive selection","dialog-drive-full.png"); ?>
 The drive selection menu is located in the upper left corner of the
@@ -42,14 +42,14 @@ this identification is not very meaningful.<p></li>
 <b>Examples:</b>
 <table width="100%">
 <tr>
-<td width="50%" align="center"><img src="images/select-drive-linux.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-linux.png" alt="dvdisaster GUI: drive selection in Linux"><br>
 Unfolded selection using GNU/Linux</td>
-<td width="50%" align="center"><img src="images/select-drive-win.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-win.png" alt="dvdisaster GUI: drive selection in Windows"><br>
 Unfolded selection using Windows</td>
 </tr>
 </table><p>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

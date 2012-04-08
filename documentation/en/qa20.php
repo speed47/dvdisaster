@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Error messages</h3>
+<h3 class="top">Error messages</h3>
 
 <a href="#tao">3.1 "Warning: 2 sectors missing at the end of the disc".</a><p>
 <a href="#block">3.2 Program blocks right after invocation.</a><p>
@@ -41,7 +41,7 @@ the preferences tab for reading/scanning.<p>
 
 To avoid these problems, consider using the "DAO / Disc at once" (sometimes
 also called "SAO / Session at once") mode for writing single session media. 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="block">3.2  Program blocks right after invocation</a></b><p>
@@ -52,7 +52,7 @@ carried out. It can not be terminated using Ctrl-C or "kill -9".<p>
 Eject the medium to make the program terminate. Insert the medium again
 and wait until the drive recognizes the medium and spins down.
 Calling dvdisaster again should work now.
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 <b><a name="crc">3.3 What does "CRC error, sector: n" mean?</a></b><p>
 The respective sector could be read, but the checksum of its contents does
@@ -73,7 +73,7 @@ them again</a>.
 When the error disappears or surfaces at a different location,
 your computer may be suffering from defective memory, 
 broken drive cabling, or wrong CPU/system frequency settings.
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="rw">3.4 Read errors or wrong image size with -RW/+RW/-RAM media</a></b><p>
@@ -82,21 +82,21 @@ Some drives report incorrect image sizes when -RW/+RW/-RAM media are used. Two c
 cases are:<p>
 
 <table>
-<tr><td valign="top">Problem:</td>
+<tr><td class="valignt">Problem:</td>
 <td>The drive reports the size of the largest image ever written to the medium, not that
 of the actual image.
 </td></tr>
-<tr><td valign="top">Symptoms:</td>
+<tr><td class="valignt">Symptoms:</td>
 <td>After erasing a medium it is written with a file sized about 100MB.
 But the image read back is several GB long and contains the remainings
 of older images.
 </td></tr>
 <tr><td><pre> </pre></td><td></td></tr>
-<tr><td valign="top">Problem:</td>
+<tr><td class="valignt">Problem:</td>
 <td>The drive reports the maximum possible medium capacity (typically 2295104 sectors)
 instead of the number of actually used sectors.
 </td></tr>
-<tr><td valign="top">Symptoms:</td>
+<tr><td class="valignt">Symptoms:</td>
 <td>When reading beyond a certain point of the medium, only read errors occur,
 but all files on the medium are still readable and complete.
 </td></tr>
@@ -104,7 +104,7 @@ but all files on the medium are still readable and complete.
 
 Possible remedy:<p>
 
-<table width=100%><tr><td bgcolor=#000000 width=2><img width=1 height=1 alt=""></td><td>
+<table width="100%"><tr><td class="vsep"></td><td>
 Activate the option for determining the
 image size from the ISO/UDF file system or from the ECC/RS02 data.
 </td></tr></table><p>
@@ -124,7 +124,7 @@ answer "OK" when you are asked whether the image should be truncated.
 </li>
 </ul>
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 <b><a name="dvdrom">3.5 My self-written media is recognized as "DVD-ROM" and rejected.</a></b><p>
 
@@ -137,7 +137,7 @@ may only be accepted on a burner which can write such media.<p>
 
 Try another drive for reading images in these cases.
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="freebsd">3.6 No drives appear under FreeBSD.</a></b><p>
@@ -150,7 +150,7 @@ dvdisaster.
 (e.g. /dev/pass0).
 </ul>
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="v40error">3.7 "Ecc file has been created with version 0.40.7."</a></b><p>
@@ -160,10 +160,10 @@ of dvdisaster mark their ecc files with a special bit. This causes dvdisaster
 versions upto 0.65 to falsely display the above error message. Please use the
 CVS versions only together with dvdisaster 0.66 or newer versions.
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,20 +1,22 @@
 #  Bash based configure - library of test functions
-#  Copyright (C) 2004-2009 Carsten Gnörlich
+#  Copyright (C) 2004-2012 Carsten Gnörlich
 #
-#  This program is free software; you can redistribute it and/or modify
+#  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+#  Project homepage: http://www.dvdisaster.org
+#
+#  Bash based configure is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
+#  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  This program is distributed in the hope that it will be useful,
+#  Bash based configure is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
-#  or direct your browser at http://www.gnu.org.
+#  along with Bash based configure. If not, see <http://www.gnu.org/licenses/>.
+#/
 
 
 # Command overview:
@@ -45,7 +47,10 @@
 # REQUIRE_OPENGL	Require the OpenGL library
 # REQUIRE_GLIB2 n m o	Require GLIB2.x and accompanying components >= n.m.o
 # REQUIRE_GTK2 n m o	Require GTK2.x and accompanying components 
+# REQUIRE_SDL n m o	Require the SDL library
+# REQUIRE_PNG           Require the PNG library
 #
+# REQUIRE_INCLUDE	Require specified include file
 # REQUIRE_LIBRARY	Require specified library
 #
 # CHECK_INCLUDE		Check for include file, but don't exit on negative test
@@ -56,13 +61,16 @@
 # EXECUTE_PROGRAM	Invoke a command to see if a certain program is available
 #
 # CHECK_ENDIAN		Test whether system is little or big endian
+# CHECK_BITNESS		Test whether system is 32bit or 64bit
 # CHECK_SSE2		Test whether when can compile for SSE2 extensions
+# CHECK_ALTIVEC		Test whether when can compile for AltiVec extensions
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
-#			    to CFG_WITH_OPTIONS,
+#			    to CFG_WITH_OPTIONS
+# WITH_MUDFLAP [single|multi] uses libmudflap
 
-CONFIGURE_VERSION="0.55"
+CONFIGURE_VERSION="0.56"
 
 echo "Bash based configure V$CONFIGURE_VERSION"
 echo
@@ -87,8 +95,10 @@ case "$cfg_uname" in
         if test $CFG_USE_CYGWIN = "no"; then
 	     cfg_system=cygwin-mingw 
              CFG_SYS_CFLAGS="-mms-bitfields -mno-cygwin"
+	     CFG_SYS_NAME="-DSYS_NAME=\\\"Cygwin-Mingw \\\""
 	else cfg_system=cygwin-std 
              CFG_SYS_OPTIONS="-DSYS_CYGWIN"
+	     CFG_SYS_NAME="-DSYS_NAME=\\\"Cygwin\\\""
         fi
 
 	function add_linker_flags()
@@ -98,6 +108,7 @@ case "$cfg_uname" in
 
   MINGW*) cfg_system=mingw-std 
         CFG_SYS_OPTIONS="-DSYS_MINGW"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"Mingw\\\""
         CFG_EXE_SUFFIX=".exe"
         CFG_SYS_CFLAGS="-mms-bitfields"
 #	CFG_SYS_LDFLAGS="-mwindows"
@@ -108,6 +119,7 @@ case "$cfg_uname" in
 
   Linux*) cfg_system=linux-std 
         CFG_SYS_OPTIONS="-DSYS_LINUX"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"Linux\\\""
         CFG_EXE_SUFFIX=""
 	function add_linker_flags()
         {  lflags_return="-L$1 -Wl,-rpath,$1 $2"
@@ -116,23 +128,16 @@ case "$cfg_uname" in
 
   FreeBSD*) cfg_system=freebsd-std
         CFG_SYS_OPTIONS="-DSYS_FREEBSD"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"FreeBSD\\\""
         CFG_EXE_SUFFIX=""
 	function add_linker_flags()
 	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
 	}
 	;;
 
-  Darwin*) cfg_system=darwin
-        CFG_SYS_OPTIONS="-DSYS_DARWIN"
-        CFG_EXE_SUFFIX=""
-	CFG_SYS_LDFLAGS="-framework IOKit -framework CoreFoundation"
-	function add_linker_flags()
-	{  lflags_return="-L$1 $2"
-	}
-	;;
-
   NetBSD*) cfg_system=netbsd
         CFG_SYS_OPTIONS="-DSYS_NETBSD"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"NetBSD\\\""
         CFG_EXE_SUFFIX=""
 	CFG_SYS_LDFLAGS="-lutil"
 	function add_linker_flags()
@@ -140,21 +145,9 @@ case "$cfg_uname" in
 	}
 	;;
 
-  SunOS*) cfg_system=solaris
-        CFG_SYS_OPTIONS="-DSYS_SOLARIS"
-        CFG_EXE_SUFFIX=""
-	# Even a Sparc V9 is a tight fit for us...
-	if test `uname -m` == "sun4u"; then
-	   CFG_SYS_CFLAGS="-mcpu=v9"
-	fi
-
-	function add_linker_flags()
-	{  lflags_return="-L$1 $2"
-	}
-	;;
-
   *) cfg_system=unknown-system
         CFG_SYS_OPTIONS="-DSYS_UNKNOWN"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"Unknown\\\""
         CFG_EXE_SUFFIX=""
 	function add_linker_flags()
 	{  lflags_return="-L$1 $2"
@@ -372,8 +365,8 @@ function WITH_OPTION()
    # first check number of arguments and deal with help mode
 
    if test -z "$cooked_name" || test -z "$default"; then 
-      echo "WITH_OPTION needs at last two arguments"
-      return cooked_name
+      echo "WITH_OPTION $option_name needs at last two arguments"
+      exit 1
    fi
 
    if test -n "$cfg_help_mode"; then
@@ -407,6 +400,75 @@ function WITH_OPTION()
    else
 	echo "$cfg_user_arg (user supplied)"
 	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_${cooked_name}_$cfg_user_arg"
+   fi
+
+   export "cfg_with_$cooked_name"
+   return 0
+}
+
+# Special case for libmudflap
+
+function WITH_MUDFLAP()
+{  local thread_mode=$1
+
+   # first deal with help mode
+
+   if test -z "$thread_mode"; then 
+      echo "WITH_MUDFLAP needs one argument"
+      exit 1
+   fi
+
+   if test -n "$cfg_help_mode"; then
+      echo " --with-mudflap=[no | yes]"
+      return 0
+   fi
+
+   # now start the real processing
+   # if $cfg_with_$cooked_name is unset, we set it to "no".
+
+   echo -n " with mudflap: "
+
+   case $thread_mode in
+     single) LIBVER=mudflap;;
+     multi)  LIBVER=mudflapth;;
+   esac
+
+   eval "cfg_user_arg=\$cfg_with_mudflap"
+
+   if test -z "$cfg_user_arg" || test "$cfg_user_arg" == "no"; then
+	echo "no"
+	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_no"
+	eval "cfg_with_mudflap=no"
+   else
+        local cflags_save=$CFG_CFLAGS
+   	local lflags_save=$CFG_LDFLAGS
+   	local libs_save=$CFG_LIBS
+
+	CFG_CFLAGS="$CFG_CFLAGS -f$LIBVER"
+   	CFG_LDFLAGS="$CFG_LDFLAGS -f$LIBVER"
+   	CFG_LIBS="$CFG_LIBS -l$LIBVER"
+
+	echo "int main() { return 0; }" >conftest.c
+   	if ! try_compile; then
+ 	  echo "$cfg_user_arg (user supplied, but seems not to work)"
+	  CFG_CFLAGS=$cflags_save
+   	  CFG_LDFLAGS=$ldflags_save
+   	  CFG_LIBS=$libs_save
+	  CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_no"
+	  eval "cfg_with_mudflap=no"
+	  return 0
+	fi	
+
+	CFG_CFLAGS=$cflags_save
+   	CFG_LDFLAGS=$ldflags_save
+   	CFG_LIBS=$libs_save
+
+	echo "CFG_MUDFLAP_CFLAGS=-f$LIBVER"  >> Makefile.config 
+   	echo "CFG_MUDFLAP_LFLAGS=-f$LIBVER" >> Makefile.config
+   	echo "CFG_MUDFLAP_LIBS=-l$LIBVER" >> Makefile.config
+
+	echo "$cfg_user_arg (user supplied)"
+	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_$cfg_user_arg"
    fi
 
    export "cfg_with_$cooked_name"
@@ -665,6 +727,12 @@ function try_compile()
   { (eval "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest") 2>>$LOGFILE; } && test -s conftest
 }
 
+function try_preprocess()
+{ echo "$CC $CFG_CFLAGS -E conftest.c -o conftest.out" >>$LOGFILE
+  cat conftest.c >>$LOGFILE
+  { (eval "$CC $CFG_CFLAGS -E conftest.c -o conftest.out") 2>>$LOGFILE; } && test -s conftest.out
+}
+
 # Try to compile a main() with a given function
 
 function try_function()
@@ -693,8 +761,7 @@ function try_common_library_locations
     /usr/XFree86/lib/X11 \
     /usr/lib \
     /usr/local/lib \
-    /usr/openwin/lib \
-    /usr/openwin/share/lib \
+    /usr/pkg/lib \
     ; \
   do
     if test -r "$test_dir/$lib_a" || test -r "$test_dir/$lib_so"; then
@@ -797,8 +864,7 @@ function try_common_header_locations()
     /usr/XFree86/include/X11 \
     /usr/include \
     /usr/local/include \
-    /usr/openwin/include \
-    /usr/openwin/share/include \
+    /usr/pkg/include \
     ; \
   do
     test_header=$test_dir/$header
@@ -1371,25 +1437,14 @@ function REQUIRE_GTK2()
 
    echo -n " pkg-config... "
    if pkg-config --cflags gtk+-2.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-2.0 >>config.tmp 2>&1 ; then
-	if test $cfg_system == "solaris"; then
-	   CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
-	   if (echo $CFG_GTK2_LIBS | grep "mt") > /dev/null 2>&1; then
-	     echo "broken, Solaris fix will be applied"
-	     broken_solaris="yes"
-	   else
-	     broken_solaris="no"
-             echo "works"
-	   fi
-	else
-          echo "works"
-	fi
+        echo "works"
 	rm config.tmp
    else 
 	echo "failed"
 	echo -e "\nError message(s) from pkg-config were:"
 	cat config.tmp
 	rm config.tmp
-cat <<EOF
+ 	cat <<EOF
 
 Make sure you have the following packages installed:
 - pkg-config (sometimes, the obvious is overlooked ;-)
@@ -1414,10 +1469,6 @@ EOF
    CFG_GTK2_CFLAGS=`pkg-config --cflags gtk+-2.0`
    CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
 
-   if test "$broken_solaris" == "yes"; then
-	CFG_GTK2_LIBS=`echo $CFG_GTK2_LIBS | sed -e 's/-mt//'`
-   fi
-
    CFG_GTK2_BINDIR=`which pkg-config`
    CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
 
@@ -1425,21 +1476,18 @@ EOF
    CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"
 
    cat >conftest.c <<EOF
-#include <gtk/gtk.h>
-int main(int argc, char *argv[])
-{  GtkWidget *window;
-    
-   printf("%d.%d.%d\n",GTK_MAJOR_VERSION,GTK_MINOR_VERSION,GTK_MICRO_VERSION);
-   return 0;
-}
+#include <gtk/gtkversion.h>
+
+CPPABUSE GTK_MAJOR_VERSION.GTK_MINOR_VERSION.GTK_MICRO_VERSION
 EOF
 
-   echo -n " test compile... "
+   echo -n " test preprocessing... "
 
-   if try_compile; then
+   if try_preprocess; then
 	echo "works"
 	rm -f conftest.c
- 	found_version=`./conftest`
+ 	found_version=$(grep CPPABUSE ./conftest.out | tr -d "CPABUSE ()")
+	rm -f conftest.out
         if ! check_version "GTK+" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
           echo -e "\n Did not find a suitable version of GTK+."
           exit 1
@@ -1456,6 +1504,88 @@ EOF
    echo "CFG_GTK2_CFLAGS = $CFG_GTK2_CFLAGS" >> Makefile.config
    echo "CFG_GTK2_LIBS = $CFG_GTK2_LIBS" >> Makefile.config
    echo "CFG_GTK2_BINDIR = $CFG_GTK2_BINDIR" >> Makefile.config
+   return 1
+}
+
+#
+# Require the SDL includes and libraries.
+# Unlike with the other packages, we don't have to fid out about the includes
+# and libraries by ourselves, but just query sdl-config about them.
+
+function REQUIRE_SDL()
+{  local want_major="$1"
+   local want_minor="$2"
+   local want_micro="$3"
+   local found_version="0.0.0"
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   echo -e "\n/* *** REQUIRE_SDL */\n" >>$LOGFILE
+
+   echo "SDL ${want_major}.${want_minor}.${want_micro} is required..."
+
+   # See if sdl-config returns something
+
+   echo -n " sdl-config... "
+   if sdl-config --cflags >>config.tmp 2>&1 && sdl-config --libs >>config.tmp 2>&1 ; then
+        echo "works"
+	rm config.tmp
+   else 
+	echo "failed"
+	echo -e "\nError message(s) from sdl-config were:"
+	cat config.tmp
+	rm config.tmp
+cat <<EOF
+
+Make sure you have sdl installed.
+
+Some Linux distributions (e.g. Debian) distinguish between
+end-user packages of the libraries (e.g. 'libsdl1.2') and
+versions suitable for building programs (e.g. 'libsdl1.2-dev').
+You might have to install the development versions explicitly
+even if you have already SDL applications running on your system.
+EOF
+	  exit 1
+   fi
+
+   # Do a test compile to make sure they did not return some junk
+
+   CFG_SDL_CFLAGS=`sdl-config --cflags`
+   CFG_SDL_LIBS=`sdl-config --libs`
+
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_SDL_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_SDL_LIBS"
+
+   cat >conftest.c <<EOF
+#include <SDL.h>
+
+CPPABUSE SDL_MAJOR_VERSION.SDL_MINOR_VERSION.SDL_PATCHLEVEL
+EOF
+
+   echo -n " test preprocessing... "
+
+   if try_preprocess; then
+	echo "works"
+	rm -f conftest.c
+ 	found_version=$(grep CPPABUSE ./conftest.out | tr -d "CPABUSE ()")
+	rm -f conftest.out
+        if ! check_version "SDL" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
+          echo -e "\n Did not find a suitable version of SDL."
+          exit 1
+        fi
+   else
+	echo "failed"
+	echo -e "\nThe tail of configure.log might contain hints\nabout the compilation problem."
+	rm -f conftest.c
+	exit 1
+   fi
+
+   # Successfully finished
+
+   echo "CFG_SDL_CFLAGS = $CFG_SDL_CFLAGS" >> Makefile.config
+   echo "CFG_SDL_LIBS = $CFG_SDL_LIBS" >> Makefile.config
    return 1
 }
 
@@ -1539,6 +1669,55 @@ function REQUIRE_LIBRARY
    fi
 }
 
+# Require the libpng library
+# using the pkg-config mechanism
+
+function REQUIRE_PNG
+{ 
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   echo -n "libpng is required... "
+
+   echo -e "\n/* *** REQUIRE_PNG */\n" >>$LOGFILE
+
+   # See whether pkg-config works
+
+   if pkg-config --cflags libpng >>config.tmp 2>&1 && pkg-config --libs libpng >>config.tmp 2>&1 ; then
+	rm config.tmp
+   else 
+	echo "pkg-config failed"
+	echo -e "\nError message(s) from pkg-config were:"
+	cat config.tmp
+	rm config.tmp
+   fi
+
+   # Do a test compile
+
+   CFG_PNG_CFLAGS=`pkg-config --cflags libpng`
+   CFG_PNG_LIBS=`pkg-config --libs libpng`
+
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_PNG_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_PNG_LIBS"
+
+   cat >conftest.c <<EOF
+#include <zlib.h>
+#include <png.h>
+int main() { png_sig_cmp(NULL,0,0); return 0;}
+EOF
+
+   if try_compile; then
+     echo "OK"
+   else
+     echo "FAILED"
+     exit 1
+   fi
+
+   echo "CFG_PNG_CFLAGS = $CFG_PNG_CFLAGS" >> Makefile.config
+   echo "CFG_PNG_LIBS = $CFG_PNG_LIBS" >> Makefile.config
+}
+
 # Check for a specific function,
 # assuming that the corresponding library has already been specified
 # by the preceeding configuration commands.
@@ -1589,11 +1768,11 @@ int main(){
 #ifdef $symb_name
    return 0; }
 #else
-   return 1; }
+ #error no symbol }
 #endif
 EOF
 
-   if try_compile && ./conftest; then
+   if try_compile ; then
      answer="yes"
      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_$symb_upcase"
      echo " $symb_name in $incl_name: $answer"
@@ -1726,7 +1905,70 @@ EOF
 	   ;;
       esac
   fi
+}
 
+#
+# Figure out bitness of system
+#
+
+function CHECK_BITNESS()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-bitness=[32 | 64]"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_BITNESS */\n" >>$LOGFILE
+   echo -n "Checking bitness..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_bitness"; then
+      case "$cfg_with_bitness" in
+	32) echo " 32bit (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_32BIT"
+	        ;;
+	64) echo " 64bit (user supplied)"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_64BIT"
+	        ;;
+        *) echo -e " $cfg_with_bitness (illegal value)\n"
+	   echo "Please use one of the following values:"
+	   echo "--with-bitness=[32 | 64]"
+	   exit 1
+	   ;;
+      esac
+      return 0;
+   fi
+
+   # Try automatic detection
+
+   cat > conftest.c <<EOF
+int main()
+{  switch(sizeof(char*))
+   {  case 4: printf("32\n"); break;
+      case 8: printf("64\n"); break;
+      default: printf("failure\n"); break;
+   }
+}
+EOF
+
+   if try_compile; then
+      bitness=`./conftest`
+      case "$bitness" in
+	32) echo " 32bit"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_32BIT"
+	        ;;
+	64) echo " 64bit"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_64BIT"
+	        ;;
+        *) echo -e " error\n"
+	   echo "System bitness could not be determined."
+	   echo "Please specify one using the following option:"
+	   echo "--with-bitness=[32|64]"
+	   exit 1
+	   ;;
+      esac
+  fi
 }
 
 #
@@ -1787,6 +2029,64 @@ EOF
 }
 
 #
+# Check for AltiVec.
+#
+
+function CHECK_ALTIVEC()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-altivec=[yes | no]"
+     return 0
+   fi
+
+   CHECK_ALTIVEC_INVOKED=1
+
+   echo -e "\n/* *** CHECK_ALTIVEC */\n" >>$LOGFILE
+   echo -n "Checking for AltiVec..."
+
+   # See if user wants to override our test
+
+   if test -n "$cfg_with_altivec"; then
+      case "$cfg_with_altivec" in
+       no)  echo " no (user supplied)"
+               ;;
+       yes) echo " yes (user supplied)"
+               CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+               ;;
+        *) echo -e " $cfg_with_altivec (illegal value)\n"
+          echo "Please use one of the following values:"
+          echo "--with-altivec=[yes | no]"
+          exit 1
+          ;;
+      esac
+      return 0;
+   fi
+
+   # Do automatic detection
+
+   cat > conftest.c <<EOF
+#include <altivec.h>
+
+int main()
+{ vector unsigned char a, b, c;
+
+  c = vec_or(a, b);
+}
+EOF
+
+   local cflags_save=$CFG_CFLAGS
+   CFG_CFLAGS="-maltivec $CFG_CFLAGS"
+   if try_compile; then
+      echo " yes"
+      CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+   else
+      echo " no"
+   fi
+   CFG_CFLAGS=$cflags_save
+}
+
+
+#
 # Check whether a certain program is there and executable.
 #
 
@@ -1823,12 +2123,16 @@ function CREATE_MAKEFILES()
    echo "CFLAGS = $CFG_CFLAGS" >>Makefile.config
    echo "LDFLAGS = $CFG_LDFLAGS" >>Makefile.config
    echo "CFG_SYS_OPTIONS  = $CFG_SYS_OPTIONS" >> Makefile.config
+   echo "CFG_SYS_NAME     = $CFG_SYS_NAME" >> Makefile.config
    echo "CFG_EXE_SUFFIX   = $CFG_EXE_SUFFIX" >> Makefile.config
    echo "CFG_HAVE_OPTIONS = $CFG_HAVE_OPTIONS" >> Makefile.config
    echo "CFG_WITH_OPTIONS = $CFG_WITH_OPTIONS" | sed -e "$SED_UPCASE" >> Makefile.config
    echo "CFG_OTHER_OPTIONS = $CFG_OTHER_OPTIONS" >> Makefile.config
    if test -n "$CHECK_SSE2_INVOKED"; then
      echo "CFG_SSE2_OPTIONS = $CFG_SSE2_OPTIONS" >> Makefile.config
+   fi
+   if test -n "$CHECK_ALTIVEC_INVOKED"; then
+     echo "CFG_ALTIVEC_OPTIONS = $CFG_ALTIVEC_OPTIONS" >> Makefile.config
    fi
    echo >> Makefile.config
 

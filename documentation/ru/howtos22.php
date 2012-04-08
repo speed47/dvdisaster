@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Создание файлов для исправления ошибок", "Основные настройки", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Открытие диалога настроек.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>В диалоге настройки имеются следующие вкладки.
 Откройте диалог, выбрав значок, отмеченный зеленым на снимке с экрана
 (для увеличения картинки нажмите на нее). Этот значок может выглядеть по-разному,
@@ -32,7 +32,7 @@ howto_headline("Создание файлов для исправления ош
 
 <table width="100%" cellspacing="5">
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>Если у вас уже есть ISO-образ, вы можете пропустить
 две следующие вкладки и продолжить <a href="#ecc">настройки исправления ошибок</a>.
 Но убедитесь, что у вас действительно имеется образ в формате ISO; другие форматы, например, ".nrg",
@@ -124,7 +124,7 @@ howto_headline("Создание файлов для исправления ош
 <a href="howtos23.php">Создание данных для исправления ошибок...</a>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

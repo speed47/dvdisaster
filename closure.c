@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -167,9 +167,6 @@ static void get_base_dirs()
    char *appdata;
    char *homedir;
 #endif
-#ifdef SYS_DARWIN
-   char *resdir;
-#endif
 
    /*** Unless completely disabled through a configure option, the
 	source directory is supposed to hold the most recent files,
@@ -192,41 +189,15 @@ static void get_base_dirs()
    /*** Otherwise try the installation directory. 
 	On Unices this is a hardcoded directory.
 	Windows has binary distributions with no prior known installation place,
-	but luckily it provides a way for figuring out that location. 
-        Darwin is like Unix when installed via make install;
-        but tricky when app bundles are used. In that case we
-        use GTK_PATH to find out our location. */
+	but luckily it provides a way for figuring out that location. */
 
-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN) || defined(SYS_SOLARIS)
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
    if(DirStat(BINDIR))
      Closure->binDir = g_strdup(BINDIR);
 
    if(DirStat(DOCDIR))
      Closure->docDir = g_strdup(DOCDIR);
    Verbose("Using hardcoded BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
-#endif
-
-#ifdef SYS_DARWIN
-   resdir = (char*)g_getenv("GTK_PATH");
-   if(resdir)  /* looks like we are inside an app bundle */
-   {  if(DirStat(resdir))
-         Closure->binDir = g_strdup(resdir);
-
-      Closure->docDir = g_strdup_printf("%s/doc", resdir);
-      if(!DirStat(Closure->docDir))
-      {  g_free(Closure->docDir);
-	 Closure->docDir = NULL;
-      }
-   }
-   else  /* maybe a normal install */
-   {
-      if(DirStat(BINDIR))
-         Closure->binDir = g_strdup(BINDIR);
-
-      if(DirStat(DOCDIR))
-         Closure->docDir = g_strdup(DOCDIR);
-   }
-   Verbose("Using BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
 #endif
 
 #ifdef SYS_MINGW
@@ -755,37 +726,11 @@ void InitClosure()
 
 void LocalizedFileDefaults()
 {  
-#ifdef SYS_DARWIN
-   /* Darwin uses / as the current working directory when invoked
-      from an app bundle. Not good. */
-   char *buf = getcwd(NULL,0);
-   
-   Closure->imageName = NULL;
+   /* Storing the files in the cwd is a sane default. */
 
-   if(buf && !strcmp(buf,"/"))
-   {  free(buf);
-      buf = getenv("HOME");
-      if(buf)
-      {
-         Closure->imageName   = g_strdup_printf("%s/%s",buf,_("medium.iso"));
-         Closure->eccName     = g_strdup_printf("%s/%s",buf,_("medium.ecc"));
-         Closure->dDumpPrefix = g_strdup_printf("%s/%s",buf,_("sector-"));
-      }
-   }
-
-   if(!Closure->imageName)
-   {
-     Closure->imageName   = g_strdup(_("medium.iso"));
-     Closure->eccName     = g_strdup(_("medium.ecc"));
-     Closure->dDumpPrefix = g_strdup(_("sector-"));
-   }
-
-#else
-   /* On all other OS, storing the files in the cwd is a sane default. */
    Closure->imageName   = g_strdup(_("medium.iso"));
    Closure->eccName     = g_strdup(_("medium.ecc"));
    Closure->dDumpPrefix = g_strdup(_("sector-"));
-#endif
 }
 
 

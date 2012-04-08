@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Das große Bild - Ein Vergleich von dvdisaster mit normaler Datensicherung</h3>
+<h3 class="top">Das große Bild - Ein Vergleich von dvdisaster mit normaler Datensicherung</h3>
 
 dvdisaster archiviert Daten so auf CD/DVD/BD, daß sie auch dann noch wiederherstellbar sind, 
 wenn der Datenträger bereits einige Lesefehler enthält. Dabei verbraucht dvdisaster 
@@ -28,25 +28,25 @@ Zunächst sei die Funktionsweise einer normalen Datensicherung betrachtet:<p>
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/backup1.png"></td>
-<td width="60px">Kopie<br><img src="../images/right-arrow.png"></td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/backup1.png" alt="Symbol: Vorhandener Datenträger"></td>
+<td class="w65x">Kopie<br><img src="../images/right-arrow.png" alt="Symbol: Pfeil nach rechts"></td>
+<td class="w65x"><img src="../images/backup2.png" alt="Symbol: Backup-Datenträger"></td>
 <td> &nbsp; </td>
 <td>Zu einem vorhandenen Datenträger (1) wird eine identische Sicherungskopie (2)
 erstellt.</td>
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td width="60px"><img src="../images/bad-cd1.png"></td>
-<td width="60px"> </td>
-<td width="60px"><img src="../images/backup2.png"></td>
+<td class="w65x"><img src="../images/bad-cd1.png" alt="Symbol: Beschädigter Datenträger"></td>
+<td class="w65x"> </td>
+<td class="w65x"><img src="../images/backup2.png" alt="Symbol: Backup-Datenträger"></td>
 <td></td>
 <td>Falls anschließend einer der beiden Datenträger beschädigt wird,
 verbleibt immer noch eine weitere vollständige Kopie der Daten.</td>
@@ -72,9 +72,9 @@ An dieser Stelle setzt dvdisaster an. Beispiel:<p>
 
 <table width="100%">
 <tr>
-<td width="60px"><img src="../images/good-cd.png"></td>
-<td width="60px">ECC<br><img src="../images/right-arrow.png"><br>erstellen</td>
-<td width="60px"><img src="../images/ecc.png"></td>
+<td class="w65x"><img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)"></td>
+<td class="w65x">ECC<br><img src="../images/right-arrow.png" alt="Symbol: Pfeil nach rechts"><br>erstellen</td>
+<td class="w65x"><img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei"></td>
 <td> &nbsp; </td>
 <td>
 Anstelle einer kompletten Sicherungskopie erzeugt dvdisaster Fehlerkorrektur-Daten (genannt "ECC"), 
@@ -84,16 +84,16 @@ mit denen zum Beispiel bis zu 20% eines gealterten Datenträgers repariert werde
 </tr>
 
 <tr>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten">&nbsp;&nbsp;</td>
 <td></td>
-<td align="center"><img src="../images/down-arrow.png">&nbsp;&nbsp;</td>
+<td align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten">&nbsp;&nbsp;</td>
 <td> </td>
 </tr>
 
 <tr>
-<td><img src="../images/bad-cd.png"></td>
+<td><img src="../images/bad-cd.png" alt="Symbol: Beschädigter Datenträger (teilweise unlesbar)"></td>
 <td> </td>
-<td><img src="../images/ecc.png"></td>
+<td><img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei"></td>
 <td> &nbsp; </td>
 <td>
 Wenn der Datenträger später kaputt geht,
@@ -103,9 +103,9 @@ rekonstruiert.
 </tr>
 
 <tr>
-<td align="right">80%<img src="../images/rdiag-arrow.png"></td>
+<td align="right" class="w65x">80%<img src="../images/rdiag-arrow.png" alt="Symbol: Diagonaler Pfeil nach rechts"></td>
 <td> </td>
-<td align="left"><img src="../images/ldiag-arrow.png">20%</td>
+<td align="left" class="w65x"><img src="../images/ldiag-arrow.png" alt="Symbol: Diagonaler Pfeil nach links">20%</td>
 <td> </td>
 <td>Dazu muß der Datenträger noch mindestens 80% der Daten liefern, und die verbleibenden 20%
 kommen aus den Fehlerkorrektur-Daten.</td>
@@ -113,7 +113,7 @@ kommen aus den Fehlerkorrektur-Daten.</td>
 
 <tr>
 <td> </td>
-<td> <img src="../images/good-image.png"></td>
+<td> <img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
 <td> </td>
 <td> </td>
 <td>Die vollständig wiederherstellten Daten liegen nun als ISO-Abbild vor (den kaputten Datenträger selbst
@@ -123,7 +123,7 @@ kann man nicht mehr reparieren).
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/down-arrow.png"></td>
+<td align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td> </td>
 <td> </td>
 <td>Davon können Sie mit Hilfe einer beliebigen Brennsoftware wieder einen neuen Datenträger brennen.</td>
@@ -131,7 +131,7 @@ kann man nicht mehr reparieren).
 
 <tr>
 <td> </td>
-<td align="center"><img src="../images/good-cd.png"></td>
+<td align="center"><img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)"></td>
 <td> </td>
 <td> </td>
 <td>Schließlich haben Sie einen neuen, wieder vollständigen Datenträger.</td>
@@ -183,7 +183,7 @@ Die Geschichten sind natürlich frei erfunden und Ähnlichkeiten mit real existi
 Personen oder Situationen sind rein zufällig.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -17,9 +17,9 @@ $answer=$_GET["answer"];
 howto_headline("Fehlerkorrektur-Daten erstellen", "Entscheidungshilfe", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Entscheidungshilfe</h3>
+<h3 class="top">Entscheidungshilfe</h3>
 
 Fehlerkorrektur-Daten können entweder in einer eigenständigen Fehlerkorrektur-Datei 
 oder direkt auf dem Datenträger abgelegt werden.
@@ -83,12 +83,12 @@ Diese Datei müssen Sie dann auf einem anderen Datenträger speichern, d.h. Sie 
 zusätzliche Vorkehrungen treffen, um Ihre Fehlerkorrektur-Dateien  
 <a href="howtos24.php">zu archivieren</a>.<p>
 
-In der <a href="http://dvdisaster.net/legacy/de/background30.html">alten Dokumentation</a>
+In den <a href="qa33.php#table">Hintergrundinformationen</a>
 finden Sie weitere Informationen zu den Vor- und Nachteilen der beiden Methoden. 
 
 <pre> </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 footnote("*","footnote","An dieser Stelle noch einmal der Hinweis: Fehlerkorrektur-Daten müssen erstellt werden, bevor der Datenträger kaputt geht. Von defekten Datenträgern können keine Fehlerkorrektur-Daten mehr erstellt und damit sehr wahrscheinlich auch keine unlesbaren Sektoren wiederhergestellt werden.");

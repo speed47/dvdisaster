@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,13 +14,13 @@ begin_page();
 howto_headline("Augmenting images with error correction data", "Overview", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Putting error correction data directly onto the medium</h3>
+<h3 class="top">Putting error correction data directly onto the medium</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Task</b></td>
+<td class="w20p"><b>Task</b></td>
 <td>
 Error correction data is stored along with the user data on the same medium.
 </td>
@@ -41,7 +41,7 @@ a separate file.
 </tr>
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>
 <ul>
 <li>an authoring ("burning") software capable of creating ISO images</li>
@@ -53,7 +53,7 @@ a separate file.
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>What to do:<p></b></td>
+<td colspan="2"><b>What to do:</b><p></td>
 </tr>
 
 <tr>
@@ -74,7 +74,7 @@ a separate file.
 
 </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 footnote("*","footnote","An already written medium can not be augmented with error correction data.");

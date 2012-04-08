@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Fehler berichten</h3>
+<h3 class="top">Fehler berichten</h3>
 Wie jede komplexe Software kann dvdisaster Programmierfehler enthalten oder
 mit bestimmten Laufwerken und/oder Softwareprodukten nicht zusammenarbeiten.
 Geben Sie uns daher Rückmeldungen über Schwierigkeiten, die Sie beim Einsatz
@@ -52,7 +52,7 @@ Laufwerke in virtuellen Maschinen.
 <h4>Einsenden von Fehlerberichten:</h4>
 
 Bitte schicken Sie Ihre Fehlerberichte pe E-Mail an
-<img src="../images/email.png" align="top">. Ihr Bericht sollte die folgenden
+<img src="../images/email.png" alt="als Grafik dargestellte E-Mail-Adresse" class="valigntt">. Ihr Bericht sollte die folgenden
 Informationen enthalten:<p>
 
 <ul>
@@ -80,7 +80,7 @@ durch und fügen Sie die erzeugte Protokolldatei Ihrer Fehlerbeschreibung hinzu.
 
 Vielen Dank für Ihre Mithilfe!
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

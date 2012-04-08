@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Oprava bitové kopie</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Verze 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/cs/">Online verze</a>
+        
+       <a href="../de/howtos42.html"></a> 
+       <a href="../en/howtos42.html"></a> 
+       <a href="../ru/howtos42.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Obsah</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Novinky</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Přehled</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Běžné použití</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos60.html">Celkový přehled</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos10.html">Kontrola poškození disků</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos20.html">Vytvoření samostatného souboru pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos30.html">Rozšíření bitové kopie o&nbsp;data pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos40.html">Oprava bitových kopií</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtos41.html">Základní nastavení</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Oprava bitové kopie</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtos43.html">Pokročilá nastavení</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos50.html">Zjištění informací o&nbsp;bitových kopiích a datech pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos90.html">Testování kompatibility bitové kopie</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtosa0.html">Dialogy a tlačítka</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Ke&nbsp;stažení</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Otázky a odpovědi</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Hlášení chyb</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+<table width="100%" style="background-color:#f0f0f0;">
+<tr><td><span class="fl"><b>Oprava bitových kopií disků</b></span></td>
+<td rowspan="2" align="right"><img src="images/fix-icon.png" alt=""></td></tr>
+<tr><td><i>Postup</i></td></tr>
+</table><p>
+
+<!-- Insert actual page content below -->Ujistěte se, že byl dvdisaster nastaven tak, jak je uvedeno v sekci <a href="howtos41.html">základní nastavení</a>. Poté postupujte podle následujícího návodu:<p><hr><a name="a"></a><table>
+<tr>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Ikona: Vložit disk do mechaniky"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů"></td>
+<td>  </td>
+<td class="valignt"><b>Vložte poškozený disk do mechaniky</b> která je přímo připojena k vašemu počítači. Nelze použít síťové mechaniky, softwarové mechaniky ani mechaniky virtuálních počítačů.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Ikona: Zavřít okna otevřená funkcí Autoplay"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů"></td>
+<td>  </td>
+<td class="valignt"><b>Zavřete všechna okna</b> která váš operační systém otevřel k procházení obsahu disku a případně ukončete programy které mohli být z daného disku automaticky spuštěny. Počkejte až mechanika disk identifikuje a přestane ho načítat.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa1.html"> <img src="../images/select-drive.png" alt="Ovládací prvky dvdisaster: Výběr mechaniky (rozevírací nabídka)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Vyberte mechaniku</b> obsahující poškozený disk z rozevírací nabídky dvdisaster.</td>
+</tr>
+</table><a name="select_eccfile"></a><table>
+<tr>
+<td class="w200x"align="center"><img src="../images/select-ecc.png" alt="Ovládací prvky dvdisaster: Výběr souboru pro opravu chyb (vstupní pole a tlačítko)" class="nobordervalignm"></td>
+<td>  </td>
+<td class="valignt">Pokud používáte <a href="howtos20.html">soubor pro opravu chyb</a> zadejte jeho název do zobrazeného pole. Pokud byl disk <a href="howtos30.html">rozšířen o data pro opravu chyb</a>, ponechte tuto položku prázdnou.<br></td>
+</tr>
+<tr>
+<td class="w200x" align="center"><a href="howtosa1.html"> <img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa4.html"> <img src="images/read-icon.png" alt="Ovládací prvky dvdisaster: Načíst (tlačítko)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Klikněte na tlačítko &quot;Načíst&quot;</b> pro spuštění procesu čtení.</td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap1"></a>
+      <a href="howtos42_expand=1.html#snap1">       <img src="thumbnails/adaptive-progress.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+<b>Sledujte průběh čtení.</b> Adaptivní strategie čtení provede systematické vyhledání čitelných sektorů. V průběhu čtení bude možné sledovat vytváření mezer, které ale budou v průběhu čtení postupně uzavírány. Tento efekt je obvykle méně výrazný než na zobrazeném příkladu. Pokud jsou všechny poškozené sektory na konci disku, může být proces čtení přerušen ještě před tím než narazí na první nečitelný sektor.    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<p><table>
+<tr>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table class="screenshot">
+  <tr><td>
+    <a name="snap2"></a>
+<b>Váš další postup záleží na výsledku čtení.</b> Čtení je automaticky přerušeno v okamžiku kdy je získáno dostatek dat k opravě disku (viz zeleně označený výstup). V tom případě pokračujte kliknutím na tlačítko &quot;Opravit&quot;.   </td></tr>
+  <tr><td align="center">
+    <a href="howtos42_expand=0.html#snap2">
+      <img src="images/adaptive-success.png" alt="" class="noborder">
+    </a>
+  </td></tr>
+  <tr><td align="center">Snímek obrazovky: Reading process successful.</td></tr>
+</table><!-- end of screen shot -->
+ <!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap3"></a>
+      <a href="howtos42_expand=3.html#snap3">       <img src="thumbnails/adaptive-failure.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+Čtení bude také přerušeno pokud se nepodařilo nalézt dostatek čitelných sektorů (viz výstup označený červeně). Bitová kopie v tomto nekompletním stavu ještě <b>není</b> opravitelná. Pokuste se získat dodatečná data za pomoci tipů uvedených v <a href="howtos43.html">pokročilém nastavení</a>.    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<table>
+<tr>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td></td><td></td>
+</tr>
+
+<tr>
+<td class="w200x" align="center"><a name="b"></a><a href="howtosa4.html"> <img src="images/fix-icon.png" alt="Ovládací prvky dvdisaster: Opravit (tlačítko)" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt">Pro spuštění <b>opravy bitové kopie</b> klikněte na tlačítko Opravit (funguje <b>pouze</b> pokud byl proces čtení úspěšný!).</td>
+</tr>
+
+<tr>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td></td><td></td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap4"></a>
+      <a href="howtos42_expand=4.html#snap4">       <img src="thumbnails/fix-success.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+<b>Sledujte průběh opravy.</b> Adaptivní čtení je vždy automaticky přerušeno v okamžiku kdy je získáno dostatek dat k opravě, zatížení opravy chyb bude proto vždy maximální. To má za následek zobrazení masivního červeného bloku v grafu &quot;Chyby/ECC blok&quot; a není důvodem k obavám. V závislosti na velikosti disku a výkonu vašeho systému může oprava trvat několik minut až hodin.    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<table>
+<tr>
+<td class="w200x"align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x"align="center"><img src="../images/good-image.png" alt="Ikona: Kompletní bitová kopie" class="nobordervalignm"></td>
+<td>  </td>
+<td class="valignt">Po dokončení opravy budou všechna data bitové kopie opět kompletní.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x"align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtos33_way=2.html#c"> <img src="thumbnails/write-iso1.png" alt="Ikona: Zápis bitové kopie na disk" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Vypalte opravenou bitovou kopii</b> na nový disk. Postupujte podle stejných instrukcí jaké jsou uvedeny pro <a href="howtos33_way=2.html#c">vypálení disku</a> který byl <a href="howtos33.html">rozšířen o data pro opravu chyb</a>.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x"align="center"><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x"align="center"><img src="../images/old-cd.png" alt="Ikona: Starý (poškozený) disk" class="nobordervalignm"> <img src="../images/old-image.png" alt="Ikona: Starý soubor bitové kopie" class="nobordervalignm"> <img src="../images/good-cd.png" alt="Ikona: Nepoškozený disk (bez chyb)" class="nobordervalignm"></td>
+<td>  </td>
+<td class="valignt">Nyní jste vytvořili nový disk obsahující opravená data. Nezapomeňte <a href="howtos10.html">zkontrolovat zda je zcela čitelný</a>. Pak můžete zahodit poškozený disk a smazat vytvořenou bitovou kopii. Pokud jste však pro původní disk vytvořili soubor pro opravu chyb, můžete ho použít i pro nově vytvořený opravený disk.</td>
+</tr>
+</table>
+
+<!-- do not change below -->
+
+  </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/cs/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Kopírování a distribuce neupravené verze tohoto článku v libovolné formě je povolena za předpokladu, že bude zachována tato poznámka..
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

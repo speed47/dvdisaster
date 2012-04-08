@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>dvdisaster als Ergänzung zu Qualitäts-Analysen</h3>
+<h3 class="top">dvdisaster als Ergänzung zu Qualitäts-Analysen</h3>
 
 <a href="qa.php#pipo">Qualitäts-Analysen</a>, z.B. C2- oder PI/PO-Tests,
 sind ein wertvolles Werkzeug zur Überprüfung und Optimierung der Brennqualität.<p>
@@ -46,7 +46,7 @@ neuer Datenträger erstellt.</li>
 <a href="index30.php">Vor- und Nachteile von dvdisaster zusammengefaßt...</a>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

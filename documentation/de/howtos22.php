@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Fehlerkorrektur-Datei erstellen", "Grundeinstellungen", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Einstellungsdialog aufrufen.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="Bedienelement: Einstellungen (Aufruf-Knopf)" class="valignb"></td>
 <td>Die nachfolgend besprochenen Reiterkarten finden Sie
 im Einstellungsdialog. Das zum Aufruf verwendete Symbol ist
 in dem Bildschirmfoto grün markiert (Anklicken vergrößert das Bild).
@@ -32,7 +32,7 @@ Das Symbol kann je nach verwendetem Symbol-Thema anders aussehen.</td>
 
 <table width="100%" cellspacing="5">
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild"></td>
 <td>Wenn Sie bereits ein ISO-Abbild des Datenträgers vorliegen haben, 
 dann können sie die nächsten beiden Reiterkarten überspringen und gleich 
 mit den <a href="#ecc">Einstellungen zur Fehlerkorrektur-Datei beginnen</a>.
@@ -93,11 +93,8 @@ schnell überlastet werden könnte.
 <?php end_screen_shot(); ?>
 
 <?php begin_screen_shot("Reiterkarte \"Dateien\".","create-prefs-file.png"); ?>
-<b>Reiterkarte "Dateien".</b> Wenn Ihr Betriebssystem keine Dateien erzeugen kann, die größer als 2GB sind,
-müssen Sie die grün markierte Einstellung auswählen. Anstelle einer einzigen Datei "abbild.iso" 
-werden dann bis zu 100 Segmente "abbild00.iso", "abbild01.iso" usw. verwendet; dies kostet etwas Geschwindigkeit.
-Sie brauchen diese Option hauptsächlich unter Windows, wenn Sie dort noch mit dem alten Dateisystem FAT32 arbeiten.
-Die übrigen Einstellungen sollten Sie zunächst ausgeschaltet lassen; Hinweise auf <a href="howtos25.php">Optimierungen</a>
+<b>Reiterkarte "Dateien".</b> Lassen Sie die Optionen auf dieser Reiterkarte
+zunächst ausgeschaltet; Hinweise auf <a href="howtos25.php">Optimierungen</a>
 mit Hilfe dieser Werte folgen später.
 <?php end_screen_shot(); ?>
 
@@ -116,7 +113,7 @@ keine Auswirkungen auf die erstellten Fehlerkorrektur-Dateien.
 
 <a href="howtos23.php">Fehlerkorrektur-Datei erzeugen...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

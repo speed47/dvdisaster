@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Datenträger-Abbild rekonstruieren", "Durchführen", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Vergewissern Sie sich zunächst, daß dvdisaster wie in den 
 <a href="howtos41.php">Grundeinstellungen</a> beschrieben konfiguriert ist.
@@ -27,10 +27,10 @@ Führen Sie dann die folgenden Schritte aus:<p>
 <a name="a"></a>
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Symbol: Datenträger in Laufwerk einlegen">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Legen Sie den defekten Datenträger in ein Laufwerk</b>, 
+<td class="valignt"><b>Legen Sie den defekten Datenträger in ein Laufwerk</b>, 
 das direkt mit 
 Ihrem Rechner verbunden ist. Sie können keine Netzwerklaufwerke, keine Softwarelaufwerke und keine 
 Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
@@ -39,10 +39,10 @@ Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Symbol: Automatisch geöffnete Fenster schließen">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
+<td class="valignt"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
 möglicherweise öffnet, um den Inhalt des Datenträgers anzuzeigen oder abzuspielen.
 Warten Sie, bis das Laufwerk den Datenträger erkannt hat und zur
 Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
@@ -51,38 +51,41 @@ Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="Bedienelement: Laufwerksauswahl (Ausklappbares Menü)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
+<td class="valignt"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
 in das Sie den Datenträger eingelegt haben.</td>
 </tr>
 </table>
 
+<a name="select_eccfile"></a>
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/select-ecc.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/select-ecc.png" alt="Bedienelement: Fehlerkorrektur-Datei auswählen (Eingabefeld und Knopf für Dialog)" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 Wenn Sie mit <a href="howtos20.php">Fehlerkorrektur-Dateien</a> arbeiten, geben
 Sie jetzt den Dateinamen an. Lassen Sie das Eingabefeld leer falls der Datenträger 
 <a href="howtos30.php">mit Fehlerkorrektur-Daten erweitert</a> wurde.<br>
 </td>
 </tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/down-arrow.png" border="0"></a></td>
+<tr>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
+</tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/read-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/read-icon.png" alt="Bedienelement: Lesen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Beginnen Sie den Lesevorgang</b> durch Klicken 
+<td class="valignt"><b>Beginnen Sie den Lesevorgang</b> durch Klicken 
 auf den "Lesen"-Knopf.</td>
 </tr>
 </table>
@@ -99,8 +102,8 @@ es sogar sein daß der Lesevorgang endet bevor die defekten Sektoren erreicht we
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 </tr>
 </table>
 
@@ -123,22 +126,21 @@ die Fehlerkorrektur einzulesen.
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td></td><td></td>
 </tr>
 
-<a name="b"></a>
 <tr>
-<td width="200px" align="center"><a href="howtosa4.php">
-<img src="images/fix-icon.png" border="0">
+<td class="w200x" align="center"><a name="b"></a><a href="howtosa4.php">
+<img src="images/fix-icon.png" alt="Bedienelement: Reparieren (Auswahlknopf)" class="noborder"></a>
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Klicken Sie auf den "Reparieren"-Knopf, um die
+<td class="valignt">Klicken Sie auf den "Reparieren"-Knopf, um die
 <b>Wiederherstellung des Abbilds</b> zu beginnen (<b>nur</b> wenn der Lesevorgang erfolgreich war!).</td>
 </tr>
 
 <tr>
-<td width="200px" align="center"><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td></td><td></td>
 </tr>
 </table>
@@ -154,18 +156,18 @@ mehrere Minuten bis Stunden dauern.
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/good-image.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Nach dem Abschluß der Wiederherstellung
+<td class="valignt">Nach dem Abschluß der Wiederherstellung
 haben Sie wieder ein vollständiges ISO-Abbild.
 </td>
 </tr>
@@ -173,19 +175,19 @@ haben Sie wieder ein vollständiges ISO-Abbild.
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtos33.php?way=2#c">
-<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<img src="thumbnails/write-iso1.png" alt="Abb.: Abbild auf einen Datenträger schreiben" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Schreiben Sie das wiederhergestellte ISO-Abbild</b> 
+<td class="valignt"><b>Schreiben Sie das wiederhergestellte ISO-Abbild</b> 
 auf einen neuen Datenträger. Gehen Sie dabei genau so vor wie es im
 Abschnitt zum <a href="howtos33.php?way=2#c">Brennen von Datenträgern</a> beschrieben
 ist, die <a href="howtos33.php">mit Fehlerkorrektur-Daten erweitert wurden</a>.
@@ -195,20 +197,20 @@ ist, die <a href="howtos33.php">mit Fehlerkorrektur-Daten erweitert wurden</a>.
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/old-cd.png" border="0" align="center">
-<img src="../images/old-image.png" border="0" align="center">
-<img src="../images/good-cd.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/old-cd.png" alt="Symbol: Alter (beschädigter) Datenträger" class="nobordervalignm">
+<img src="../images/old-image.png" alt="Symbol: Alte Abbild-Datei" class="nobordervalignm">
+<img src="../images/good-cd.png" alt="Symbol: Guter Datenträger (ohne Lesefehler)" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Sie haben jetzt einen neuen Datenträger erzeugt, der wieder
+<td class="valignt">Sie haben jetzt einen neuen Datenträger erzeugt, der wieder
 alle Daten enthält. <a href="howtos10.php">Überprüfen Sie ihn zur Sicherheit auf 
 Lesefehler</a>. Danach können Sie den alten defekten Datenträger wegwerfen 
 sowie das ISO-Abbild löschen. Eine für den alten Datenträger erstellte
@@ -217,7 +219,7 @@ Fehlerkorrektur-Datei können Sie mit dem neuen Datenträger weiter verwenden.
 </tr>
 </table>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

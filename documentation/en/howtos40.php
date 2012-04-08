@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,13 +13,13 @@ require("../include/footnote.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Recovering media images</h3>
+<h3 class="top">Recovering media images</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Task</b></td>
+<td class="w20p"><b>Task</b></td>
 <td>
 Recover the contents of a defective medium.
 </td>
@@ -30,8 +30,8 @@ Recover the contents of a defective medium.
 <td colspan="2"><b>Required:</b><p></td>
 </tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd-ecc.png" align="top">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd-ecc.png" alt="Icon: Damaged medium with error correction data" class="valignt">
  </td>
 <td>
 A defective medium containing <a href="howtos30.php">error correction data</a>,
@@ -39,9 +39,9 @@ A defective medium containing <a href="howtos30.php">error correction data</a>,
 </tr>
 <tr><td></td><td>or</td></tr>
 <tr>
- <td width="150px" align="right">
-   <img src="../images/bad-cd.png">
-   <img src="../images/ecc.png">
+ <td class="w150x" align="right">
+   <img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)">
+   <img src="../images/ecc.png" alt="Icon: Separate file with error correction data">
  </td>
 <td>
 a defective medium with an appropriate <a href="howtos20.php">error correction file</a><a href="#footnote"><sup>*)</sup></a>.
@@ -50,7 +50,7 @@ a defective medium with an appropriate <a href="howtos20.php">error correction f
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>What to do:<p></b></td>
+<td colspan="2"><b>What to do:</b><p></td>
 </tr>
 
 <tr>
@@ -70,7 +70,7 @@ a defective medium with an appropriate <a href="howtos20.php">error correction f
 
 </pre>
 
-<!--- do not change below --->
+<!-- do not change below -->
 <?php
 footnote("*","footnote",
 "The error correction file must have been created at a time the medium was still intact: It is not possible to create error correction data from an already defective medium.");

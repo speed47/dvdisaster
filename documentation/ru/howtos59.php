@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Примеры</h3>
+<h3 class="top">Примеры</h3>
 
 На предыдущих страницах уже приводились примеры
  <a href="howtos52.php?expand=1">хороших образов и файлов для исправления ошибок</a>
@@ -70,11 +70,11 @@ ECC, поскольку даные для исправления ошибок р
 Файл для исправления ошибок был создан для другого образа.
 Это приводит к появлению большого числа CRC-ошибок, поскольку в секторах другое содержимое.
 Однако вот наиболее важный намек:<p>
-Отпечаток: <font color="red">несоответствие</font><p>
+Отпечаток: <span class="red">несоответствие</span><p>
 Это говорит о том, что файл для исправления ошибок не от этого образа.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

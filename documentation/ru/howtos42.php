@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -16,7 +16,7 @@ begin_page();
 howto_headline("Восстановление образов носителей", "Прохождение", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Убедитесь, что dvdisaster сконфигурирован, как описано в разделе
 <a href="howtos41.php">основные параметры</a>.
@@ -27,10 +27,10 @@ howto_headline("Восстановление образов носителей",
 <a name="a"></a>
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Icon: Insert the medium into a drive">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Вставьте поврежденный носитель в привод,</b> 
+<td class="valignt"><b>Вставьте поврежденный носитель в привод,</b> 
 которые непосредственно подключен к компьютеру. Нельзя использовать сетевые приводы,
 виртуальные приводы и приводы в виртуальных машинах.</td>
 </tr>
@@ -38,10 +38,10 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Icon: Close any windows opened by the Autoplay function">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Закройте все окна,</b> которые могут быть открыты операционной системой
+<td class="valignt"><b>Закройте все окна,</b> которые могут быть открыты операционной системой
 для просмотра или запуска на исполнение содержимого носителя.
 Подождите, пока привод не распознает носитель и носитель не замедлит вращение.</td>
 </tr>
@@ -49,39 +49,41 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="dvdisaster UI: Drive selection (dropdown menu)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Выберите привод,</b> содержащий поврежденный носитель, 
+<td class="valignt"><b>Выберите привод,</b> содержащий поврежденный носитель, 
 в выпадающем меню dvdisaster'а.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/select-ecc.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/select-ecc.png" alt="dvdisaster UI: Error correction file selection (input field and button)" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">
+<td class="valignt">
 Если используются <a href="howtos20.php">файлы для исправления ошибок,</a>
 введите имя файла в показанное поле. 
 Оставьте это поле пустым, если носитель был 
 <a href="howtos30.php">дополнен данными для исправления ошибок</a>.<br>
 </td>
 </tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/down-arrow.png" border="0"></a></td>
+<tr>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
+</tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/read-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/read-icon.png" alt="dvdisaster UI: Read (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Нажмите кнопку "Читать"</b> для запуска процесса чтения.</td>
+<td class="valignt"><b>Нажмите кнопку "Читать"</b> для запуска процесса чтения.</td>
 </tr>
 </table>
 
@@ -94,8 +96,8 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 </tr>
 </table>
 
@@ -112,22 +114,21 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td></td><td></td>
 </tr>
 
-<a name="b"></a>
 <tr>
-<td width="200px" align="center"><a href="howtosa4.php">
-<img src="images/fix-icon.png" border="0">
+<td class="w200x" align="center"><a name="b"></a><a href="howtosa4.php">
+<img src="images/fix-icon.png" alt="dvdisaster UI: Fix (button)" class="noborder"></a>
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Нажмите на кнопку "Исправить" для запуска
+<td class="valignt">Нажмите на кнопку "Исправить" для запуска
 <b>восстановления образа</b> (работает <b>только</b> в случае, когда вышеописанный процесс чтения завершился успешно!).</td>
 </tr>
 
 <tr>
-<td width="200px" align="center"><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center"><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td></td><td></td>
 </tr>
 </table>
@@ -138,37 +139,37 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/good-image.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/good-image.png" alt="Icon: Complete image" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">После завершения восстановления все данные в ISO-образе будут снова в порядке.
+<td class="valignt">После завершения восстановления все данные в ISO-образе будут снова в порядке.
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtos33.php?way=2#c">
-<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<img src="thumbnails/write-iso1.png" alt="Icon: Writing image to a medium" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Запишите восстановленный ISO-образ</b> 
+<td class="valignt"><b>Запишите восстановленный ISO-образ</b> 
 на новый носитель. Выполните такие же действия, как описано в разделе
 о <a href="howtos33.php?way=2#c">записи носителей,</a> которые были
 <a href="howtos33.php">дополнены данными для исправления ошибок</a>.
@@ -178,27 +179,27 @@ howto_headline("Восстановление образов носителей",
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x"align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder">
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/old-cd.png" border="0" align="center">
-<img src="../images/old-image.png" border="0" align="center">
-<img src="../images/good-cd.png" border="0" align="center"></a></td>
+<td class="w200x"align="center">
+<img src="../images/old-cd.png" alt="Icon: Old (broken) medium" class="nobordervalignm">
+<img src="../images/old-image.png" alt="Icon: Old image file" class="nobordervalignm">
+<img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">Теперь вы создали новый носитель, содержащий полностью восстановленные данные.
+<td class="valignt">Теперь вы создали новый носитель, содержащий полностью восстановленные данные.
 Обязательно <a href="howtos10.php">проверьте их на ошибки чтения</a>. 
 Затем можно выбросить поврежденный носитель и удалить ISO-образ. Однако если для старого носителя был создан файл для исправления ошибок, его можно хранить для защиты вновь созданного носителя.
 </td>
 </tr>
 </table>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

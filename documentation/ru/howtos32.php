@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Дополнение образов данными для исправления ошибок", "Основные параметры", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Открытие диалога настроек.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="dvdisaster UI: Preferences (button)" class="valignb"></td>
 <td>В диалоге настроек находятся следующие вкладки.
 Откройте диалог, выбрав значок, отмеченный зеленым на снимке с экрана
 (нажмите на картинку, и она увеличится). Этот значок может выглядеть по-разному
@@ -53,7 +53,7 @@ howto_headline("Дополнение образов данными для исп
 <a href="howtos33.php">Дополнение образа данными для исправления ошибок...</a>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

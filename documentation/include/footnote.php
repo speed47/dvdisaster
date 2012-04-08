@@ -1,7 +1,7 @@
 <?php
 
 #  dvdisaster homepage: Footnote functions
-#  Copyright (C) 2007-2010 Carsten Gnörlich
+#  Copyright (C) 2007-2012 Carsten Gnörlich
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 function footnote($symbol, $name, $content)
 {
-   echo "<table width=\"30%\" cellpadding=\"0\"><tr bgcolor=\"#000000\"><td><img width=1 height=1 alt=\"\"></td></tr></table>\n";
+   echo "<table width=\"30%\" cellpadding=\"0\"><tr><td class=\"hsep\"></td></tr></table>\n";
    echo "<a name=\"$name\"><sup>$symbol)</sup>$content</a>\n";
 }
 ?>

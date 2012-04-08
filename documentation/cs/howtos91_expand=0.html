@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>se&nbsp;soubory pro opravu chyb</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Verze 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/cs/">Online verze</a>
+        
+       <a href="../de/howtos91.html"></a> 
+       <a href="../en/howtos91.html"></a> 
+       <a href="../ru/howtos91.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Obsah</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Novinky</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Přehled</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Běžné použití</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos60.html">Celkový přehled</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos10.html">Kontrola poškození disků</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos20.html">Vytvoření samostatného souboru pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos30.html">Rozšíření bitové kopie o&nbsp;data pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos40.html">Oprava bitových kopií</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos50.html">Zjištění informací o&nbsp;bitových kopiích a datech pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtos90.html">Testování kompatibility bitové kopie</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">se&nbsp;soubory pro opravu chyb</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="howtos92.html">při rozšiřování bitové kopie o&nbsp;data pro opravu chyb</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="howtosa0.html">Dialogy a tlačítka</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Ke&nbsp;stažení</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Otázky a odpovědi</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Hlášení chyb</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Testování kompatibility mezi soubory pro opravu chyb a bitovými kopiemi</h3><b>Záměr:</b> Chcete zapsat data na disk a vytvořit pro ně soubor s daty pro opravu chyb. Pro ušetření času provedete následující:<ol>
+<li>Pomocí vypalovacího programu vytvoříte bitovou kopii ve formátu ISO.</li>
+<li>Bitovou kopii vypálíte na disk.</li>
+<li>Pro stejnou bitovou kopii vytvoříte soubor pro opravu chyb.</li>
+</ol><b>Možná nekompatibilita:</b> Vypalovací program vytvoří disk, který není zcela shodný s bitovou kopií. To může způsobit, že soubor pro opravu nebude možné použít k opravě poškození disku.<p><b>Jak otestovat kompatibilitu:</b><p>Předesíláme, že některé kroky jsou zde jen načrtnuty; podrobnější informace a postup najdete v odkazovaných sekcích.<p><table>
+<tr>
+<td class="w200x" align="center"><img src="../images/good-image.png" alt="Ikona: Kompletní bitová kopie"><p><img src="../images/down-fork-arrow.png" alt="Ikona: Dvojitá šipka"></td>
+<td>  </td>
+<td class="valignt">Z dat která chcete vypálit na disk <b>vytvořte bitovou kopii ve formátu ISO</b>. Pokud potřebujete poradit jak vytvářet bitové kopie ISO, podívejte se na <a href="howtos33_way=1.html">příklad vytváření bitových kopií</a>.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w100x" align="center"><img src="../images/good-cd.png" alt="Ikona: Nepoškozený disk (bez chyb)" class="nobordervalignm"><p><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td class="w100x" align="center" valign="top"><img src="../images/ecc.png" alt="Ikona: Samostatný soubor s daty pro opravu chyb" class="nobordervalignm"></td>
+<td>  </td>
+<td class="valignt"><b>Vypalte disk a vytvořte data pro opravu chyb.</b> Pro <a href="howtos33_way=3.html#c">vypálení disku</a> použijte právě vytvořenou bitovou kopii. Poté proveďte tato <a href="howtos22.html#ecc">základní nastavení</a> a z bitové kopie <a href="howtos23_way=2.html">vytvořte soubor pro opravu chyb</a>.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w100x" align="center"><img src="../images/good-image2.png" alt="Ikona: Kompletní bitová kopie z předtím zapsaného disku" class="noborder"><p><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td class="w100x" align="center"></td>
+<td>  </td>
+<td class="valignt"><b>Vytvořte <i>druhou</i> bitovou kopii z <i>vypáleného</i> disku. </b> Použijte tato <a href="howtos22.html#read">nastavení</a> a disk načtěte jak je popsáno ve <a href="howtos23_way=1.html">vytváření bitové kopie</a> pro vytvoření souboru pro opravu chyb. Postup však můžete přerušit po vytvoření bitové kopie, protože soubor pro opravu chyb už nemusíme znova vytvářet.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa2.html"> <img src="../images/select-image.png" alt="Ovládací prvky dvdisaster: Výběr souboru bitové kopie (vstupní pole a tlačítko)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Zadejte název <i>druhé</i> bitové kopie</b> kterou jste právě vytvořili z disku. Zapamatujte si, že následující test je zbytečné provádět s bitovou kopií vytvořenou vypalovacím programem.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa3.html"> <img src="../images/select-ecc.png" alt="Ovládací prvky dvdisaster: Výběr souboru pro opravu chyb (vstupní pole a tlačítko)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt">Pokud již není přednastaven z předchozích kroků, <b>zadejte název souboru pro opravu chyb</b>.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa4.html"> <img src="images/compare-icon.png" alt="Ovládací prvky dvdisaster: Ověřit (tlačítko)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Spusťte vyhodnocení</b> pomocí tlačítka &quot;Ověřit&quot;.</td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap1"></a>
+      <a href="howtos91_expand=1.html#snap1">       <img src="thumbnails/compat-okay-rs01.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+<b>Prohlédněte si výsledky ověření.</b> Pokud jsou zobrazeny zelené hlášky &quot;Bitová kopie je v pořádku.&quot; a &quot;Soubor pro opravu chyb je v pořádku.&quot;, jsou váš vypalovací program a dvdisaster kompatibilní. Soubory pro opravu chyb pak můžete vytvářet přímo z bitových kopií vytvořených vypalovacím programem.    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<hr><a name="err"> </a> <b>Možné příčiny chyb a jejich odstranění:</b><p><!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap2"></a>
+      <a href="howtos91_expand=2.html#snap2">       <img src="thumbnails/compat-150-rs01.png" alt="" class="noborder">
+       <br><img src="../images/down-arrow.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+ <b>Typický problém: špatná velikost bitové kopie.</b> Ověření může zjistit, že je bitová kopie větší než bylo očekáváno. Rozdíl je typicky 150 nebo 300 sektorů pro CD a 1-15 sektorů pro DVD/BD. V tomto případě se může jednat o padding. Pro ověření zkuste:    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<table>
+<tr>
+<td class="w200x" align="center"><img src="images/fix-icon.png" alt="Ovládací prvky dvdisaster: Opravit (tlačítko)" class="noborder"><p><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td>  </td>
+<td class="valignt"><b>Spusťte proces opravy.</b></td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap3"></a>
+      <a href="howtos91_expand=3.html#snap3">       <img src="thumbnails/compat-dialog-rs01.png" alt="" class="noborder">
+       <br><img src="../images/down-arrow.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+<b>Potvrďte dialog.</b> Objeví se dialog s dotazem zda odstranit přebytečné sektory. Odpovězte &quot;OK&quot;.    </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+<table>
+<tr>
+<td class="w200x" align="center"><img src="images/stop-icon.png" alt="Ovládací prvky dvdisaster: Zastavit (tlačítko)" class="noborder"><p><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></td>
+<td>  </td>
+<td class="valignt"><b>Zastavte proces opravy,</b> protože po zkrácení bitové kopie již není třeba provádět žádné další akce.</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="w200x" align="center"><a href="howtosa4.html"> <img src="images/compare-icon.png" alt="Ovládací prvky dvdisaster: Ověřit (tlačítko)" class="noborder"> <br><img src="../images/down-arrow.png" alt="Ikona: Šipka dolů" class="noborder"></a></td>
+<td>  </td>
+<td class="valignt"><b>Znovu spusťte proces ověření</b> kliknutím na tlačítko &quot;Ověřit&quot;.</td>
+</tr>
+</table>
+
+<!-- begin of screen shot -->
+<table>
+  <tr>
+    <td class="w200x" align="center">
+      <a name="snap4"></a>
+      <a href="howtos91_expand=4.html#snap4">       <img src="thumbnails/compat-okay-rs01.png" alt="" class="noborder">
+      </a>
+    </td><td>&nbsp; &nbsp;</td>
+    <td class="valignt">
+<b>Zkontrolujte nové výsledky.</b> Pokud se nyní zobrazí zelené hlášky &quot;Bitová kopie je v pořádku.&quot; a &quot;Soubor pro opravu chyb je v pořádku.&quot; je váš problém pouze kosmetický: Vypalovací program pouze přidal vynulované padding sektory.     </td>
+  </tr>
+</table><p>
+<!-- end of screen shot -->
+ <span class="red">Pokud však problém přetrvá i po provedení výše uvedených kroků, <i>nepředpokládejte</i>, že jsou dvdisaster a váš vypalovací program kompatibilní. Vytvořený soubor pro opravu chyb bude pravděpodobně nepoužitelný.</span><p>Pro vytváření souborů pro opravu chyb použijte následující metodu:<hr>
+
+<pre> </pre><b>Alternativní metoda obcházející nekompatibilitu:</b><ol>
+<li>Nejdříve vypalte data na disk.</li>
+<li>Z vypáleného disku vytvořte pomocí dvdisaster bitovou kopii.</li>
+<li>Pro vytvoření souboru pro opravu chyb použijte tuto bitovou kopii.</li>
+</ol>Tato metoda zabere více času díky dodatečnému procesu čtení, ale výhodou je, že zároveň otestuje čitelnost vytvořeného disku.<!-- do not change below -->   </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/cs/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Kopírování a distribuce neupravené verze tohoto článku v libovolné formě je povolena za předpokladu, že bude zachována tato poznámka..
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

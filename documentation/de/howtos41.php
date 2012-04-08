@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,10 +15,10 @@ begin_page();
 howto_headline("Datenträger-Abbild rekonstruieren", "Grundeinstellungen", "images/fix-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php begin_screen_shot("Einstellungsdialog aufrufen.","global-prefs-invoke.png"); ?>
-<table><tr><td valign="top"><img src="../images/prefs-icon.png" valign="bottom"></td>
+<table><tr><td class="valignt"><img src="../images/prefs-icon.png" alt="Bedienelement: Eigenschaften (Auswahlknopf)" class="valignb"></td>
 <td>Die nachfolgend besprochenen Reiterkarten finden Sie
 im Einstellungsdialog. Das zum Aufruf verwendete Symbol ist
 in dem Bildschirmfoto grün markiert (Anklicken vergrößert das Bild).
@@ -49,6 +49,7 @@ dazu gibt es in den <a href="howtos43.php#21h">fortgeschrittenen Einstellungen</
 <p>
 <?php end_screen_shot(); ?>
 
+<a name="reading_attempts"></a>
 <?php begin_screen_shot("Reiterkarte \"Leseversuche\".","fix-prefs-read-attempts.png"); ?>
 <b>Reiterkarte "Leseversuche".</b> Die Stärke des angepaßten Leseverfahrens besteht darin,
 die noch lesbaren Sektoren auf dem Datenträger zu finden und sich nicht mit dem Einlesen
@@ -61,13 +62,6 @@ Sie das Aufbewahren von Roh-Sektoren zunächst abgewählt.
 Erst wenn diese Einstellungen nicht genügend Daten liefern können Sie weitere 
 <a href="howtos43.php">Anpassungen</a> vornehmen.
 <p>
-<?php end_screen_shot(); ?>
-
-<?php begin_screen_shot("Reiterkarte \"Dateien\".","create-prefs-file.png"); ?>
-<b>Reiterkarte "Dateien".</b> Wenn Ihr Betriebssystem keine Dateien erzeugen kann, die größer als 2GB sind,
-müssen Sie die grün markierte Einstellung auswählen. Anstelle einer einzigen Datei "abbild.iso" 
-werden dann bis zu 100 Segmente "abbild00.iso", "abbild01.iso" usw. verwendet; dies kostet etwas Geschwindigkeit.
-Sie brauchen diese Option hauptsächlich unter Windows wenn Sie dort noch mit dem alten Dateisystem FAT32 arbeiten.
 <?php end_screen_shot(); ?>
 
 <pre> </pre>
@@ -84,7 +78,7 @@ keine Auswirkungen auf das Einlesen von Datenträgern.
 
 <a href="howtos42.php">Abbild einlesen und Daten wiederherstellen...</a>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

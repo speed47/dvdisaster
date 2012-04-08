@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Типичные приложения</h3>
+<h3 class="top">Типичные приложения</h3>
 
 dvdisaster - это сложный инструмент, для описания всех свойств которого потребовалась бы
 целая книга. Поскольку в настоящее время у нас нет ресурсов для
@@ -38,8 +38,8 @@ dvdisaster - это сложный инструмент, для описания
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd.png"></td>
-<td align="center" width="15%"><img src="../images/bad-cd.png"></td>
+<td align="center" width="15%"><img src="../images/good-cd.png" alt="Icon: Good medium (without read errors)"></td>
+<td align="center" width="15%"><img src="../images/bad-cd.png" alt="Icon: Damaged medium (partially unreadable)"></td>
 <td width="55%">Эти обозначения показывают, является ли обработка носителя
 частью соответствующей задачи, и должен ли носитель
 быть полностью без ошибок или уже может быть поврежден.
@@ -56,8 +56,8 @@ dvdisaster - это сложный инструмент, для описания
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-image.png"></td>
-<td align="center" width="15%"><img src="../images/bad-image.png"></td>
+<td align="center" width="15%"><img src="../images/good-image.png" alt="Icon: Complete image"></td>
+<td align="center" width="15%"><img src="../images/bad-image.png" alt="Icon: Incomplete image (from a damaged medium)"></td>
 <td width="55%">Некоторые функции работают не напрямую с носителем, а
 с ISO-образом на жестком диске. В зависимости от состояния соответствующего
 носителя образ может быть полным или неполным.</td>
@@ -72,8 +72,8 @@ dvdisaster - это сложный инструмент, для описания
 
 <table cellspacing="10">
 <tr>
-<td align="center" width="15%"><img src="../images/good-cd-ecc.png"></td>
-<td align="center" width="15%"><img src="../images/ecc.png"></td>
+<td align="center" width="15%"><img src="../images/good-cd-ecc.png" alt="Icon: Medium containing error correction data"></td>
+<td align="center" width="15%"><img src="../images/ecc.png" alt="Icon: Separate file with error correction data"></td>
 <td width="55%">Восстановление образов носителей с помощью данных для исправления ошибок
 является главной особенностью dvdisaster. Это обозначение показывает, требуются ли
 данные для исправления ошибок.
@@ -87,7 +87,7 @@ dvdisaster - это сложный инструмент, для описания
 </table><p>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

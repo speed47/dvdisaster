@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -28,23 +28,23 @@ be needed for a full recovery. Using the difference between the two values
 to collect enough sectors for a successful recovery:<p>
 <?php end_screen_shot(); ?>
 
-<table cellspacing="0" cellpadding="10px">
-<tr bgcolor="#c0ffc0">
-<td width="10%" align="center" valign="top">&lt; 5%</td>
+<table cellspacing="0" cellpadding="10">
+<tr style="background-color:#c0ffc0;">
+<td class="w10p" align="center" valign="top">&lt; 5%</td>
 <td>Chances are good that you will get enough data using more reading attempts.
 </td></tr>
-<tr bgcolor="#ffffc0">
-<td width="10%" align="center" valign="top">5%-10%</td>
+<tr style="background-color:#ffffc0;">
+<td class="w10p" align="center" valign="top">5%-10%</td>
 <td> If you have several drives with different reading characteristics 
 you may get the required data by being persistent and patient.
 </td></tr>
-<tr bgcolor="#ffe0c0">
-<td width="10%" align="center" valign="top">10%-20%</td>
+<tr style="background-color:#ffe0c0;">
+<td class="w10p" align="center" valign="top">10%-20%</td>
 <td> You are in trouble. If the missing sectors do not drop significantly
 below 10% during the next 2-3 reading attempts the medium is probably unrecoverable. 
 </td></tr>
-<tr bgcolor="#ffc0c0">
-<td width="10%" align="center" valign="top">&gt; 20%</td>
+<tr style="background-color:#ffc0c0;">
+<td class="w10p" align="center" valign="top">&gt; 20%</td>
 <td>Too much data loss; you can write this medium off as unrecoverable.
 To prevent this from happening again, use error correction data with
 higher redundancies and shorten the intervals for defect scanning.
@@ -77,7 +77,7 @@ position and the number of readable sectors improves.
 <b>Complete the image using different drives</b><p>
 Perform additional reading attempts using different drives. Transfer the
 image to other computers to see if their drives can contribute more readable
-sectors.</b><p>
+sectors.<p>
 
 <hr>
 
@@ -123,7 +123,7 @@ Perform another reading attempt using raw reading mode "21h" (see the screenshot
 Check again whether some raw files have been created.
 <?php end_screen_shot(); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

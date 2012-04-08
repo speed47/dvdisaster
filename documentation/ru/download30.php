@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: Russian homepage translation
-# Copyright (C) 2007-2010 Igor Gorbounov
+# Copyright (C) 2007-2012 Igor Gorbounov
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Установка из исходных текстов</h3>
+<h3 class="top">Установка из исходных текстов</h3>
 
 dvdisaster использует обычный механизм: <tt>./configure; make; make install</tt>,- 
 для установки из исходных текстов. Более подробно смотрите в файле <tt>INSTALL</tt> в
@@ -59,7 +59,7 @@ GTK+.<p>
 странных ошибок, которые будут казаться совсем не связанными с неправильной установкой.
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

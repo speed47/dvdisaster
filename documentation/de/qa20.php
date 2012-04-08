@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -12,9 +12,9 @@ require("../include/dvdisaster.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Fehlermeldungen und Probleme</h3>
+<h3 class="top">Fehlermeldungen und Probleme</h3>
 
 <a href="#tao">3.1 Was bedeutet "Warnung: 2 Sektoren fehlen am Ende des Datenträgers..."?</a><p>
 <a href="#block">3.2 Das Programm hängt nach dem Aufruf.</a><p>
@@ -43,7 +43,7 @@ Hinweis geben, um diese Sektoren als echte Lesefehler zu betrachten.<p>
 Wenn Sie Datenträger mit nur einer Sitzung erzeugen, sollten Sie daher immer
 im Modus "DAO / Disc at once" (manchmal auch "SAO / Session at once" genannt) brennen, 
 um diese Probleme zu vermeiden. 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="block">3.2 Das Programm hängt nach dem Aufruf</a></b><p>
@@ -56,14 +56,14 @@ Werfen Sie den Datenträger aus, damit sich das Programm beendet.
 Legen Sie das Speichermedium dann wieder ein und warten Sie, 
 bis das Laufwerk den Datenträger erkennt und zur Ruhe kommt.
 Ein erneuter Aufruf von dvdisaster sollte jetzt funktionieren. 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="crc">3.3 Was bedeutet die Meldung "CRC error, sector: n"?</a></b><p>
 Der betreffende Sektor konnte gelesen werden, aber die Prüfsumme seines Inhalts
 stimmt nicht mit ihrem Gegenstück in der Fehlerkorrekturdatei überein. 
 Für die Ursachen gibt es <a href="howtos13.php?crc">mehrere mögliche Erklärungen</a>. 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 <b><a name="rw">3.4 Lesefehler oder falsche Abbild-Größe bei -RW/+RW/-RAM-Datenträgern</a></b><p>
 
@@ -71,21 +71,21 @@ Einige Laufwerke liefern bei -RW/+RW/-RAM-Datenträgern fehlerhafte Informatione
 Abbild-Größe. Besonders häufig sind die folgenden beiden Fälle:<p>
 
 <table>
-<tr><td valign="top">Fehler:</td>
+<tr><td class="valignt">Fehler:</td>
 <td>Das Laufwerk liefert den Umfang des größten jemals auf den Datenträger geschriebenen Abbildes 
 anstelle der tatsächlichen Abbild-Größe.
 </td></tr>
-<tr><td valign="top">Auswirkung:</td>
+<tr><td class="valignt">Auswirkung:</td>
 <td>Ein Datenträger wird gelöscht und dann mit einer 100MB großen Datei beschrieben.
 Beim Zurücklesen ist das Abbild aber einige GB groß und es enthält
 noch die Reste älterer Abbilder.
 </td></tr>
 <tr><td><pre> </pre></td><td></td></tr>
-<tr><td valign="top">Fehler:</td>
+<tr><td class="valignt">Fehler:</td>
 <td>Das Laufwerk liefert die maximale Datenträger-Kapazität (typischerweise 2295104 Sektoren)
 anstelle der tatsächlich genutzten Sektoren.
 </td></tr>
-<tr><td valign="top">Auswirkung:</td>
+<tr><td class="valignt">Auswirkung:</td>
 <td>Beim Einlesen des Abbilds treten ab einer bestimmten Stelle nur noch Lesefehler auf;
 die Dateien auf dem Datenträger sind aber alle vollständig.
 </td></tr>
@@ -93,7 +93,7 @@ die Dateien auf dem Datenträger sind aber alle vollständig.
 
 Mögliche Abhilfe: <p>
 
-<table width=100%><tr><td bgcolor=#000000 width=2><img width=1 height=1 alt=""></td><td>
+<table width="100%"><tr><td class="vsep"></td><td>
 Verwenden Sie die Option zum Bestimmen der Abbildgröße 
 aus dem ISO/UDF- bzw. ECC/RS02 Dateisystem.
 </td></tr></table><p>
@@ -113,7 +113,7 @@ abgeschnitten werden soll, antworten Sie mit "OK".
 </li>
 </ul>
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="dvdrom">3.5 Selbstgebrannter Datenträger wird als "DVD-ROM" erkannt und abgelehnt.</a></b><p>
@@ -127,7 +127,7 @@ Brenner angenommen, der auch solche Rohlinge schreiben kann.<p>
 
 Versuchen Sie in diesen Fällen, das Abbild mit einem anderen Laufwerk einzulesen.
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="freebsd">3.6 Unter FreeBSD erscheinen keine Laufwerke.</a></b><p>
@@ -140,7 +140,7 @@ benötigt, um die Laufwerke mit dvdisaster verwenden zu können.
 (z.B. /dev/pass0) haben.
 </ul>
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
 
 <b><a name="v40error">3.7 "Fehlerkorrekturdatei wurde mit Version 0.40.7 erzeugt"</a></b><p>
@@ -151,9 +151,9 @@ speziellen Bit. Dies bewirkt in den dvdisaster-Versionen bis einschließlich
 0.65 fälschlicherweise die obige Fehlermeldung. Bitte verwenden Sie die CVS-Versionen
 nur zusammen mit dvdisaster 0.66 oder neueren Versionen.
 
-<div align=right><a href="#top">&uarr;</a></div>
+<div class="talignr"><a href="#top">&uarr;</a></div>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

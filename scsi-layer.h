@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -36,19 +36,6 @@
 #include <camlib.h>
 #endif
 
-#ifdef SYS_DARWIN
-#define REAL_VERSION VERSION
-#undef VERSION
-#include <CoreFoundation/CoreFoundation.h>
-#include <IOKit/IOKitLib.h>
-#include <IOKit/scsi/SCSITaskLib.h>
-#include <IOKit/storage/IODVDTypes.h>
-#include <mach/mach.h>
-#include <string.h>
-#include <stdlib.h>
-#define VERSION REAL_VERSION
-#endif
-
 /***
  *** Define the Sense data structure.
  ***/
@@ -73,7 +60,7 @@
 #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
 #endif
 
-#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD) || defined(SYS_SOLARIS) || defined(SYS_DARWIN)
+#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD)
 #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
 #endif
 
@@ -125,13 +112,6 @@ typedef struct _DeviceHandle
    int aspiUsed;	      /* TRUE is device is accessed via ASPI */
    int ha,target,lun;         /* ASPI way of describing drives */ 
 #endif
-#ifdef SYS_DARWIN
-   IOCFPlugInInterface **plugInInterface;
-   MMCDeviceInterface **mmcDeviceInterface;
-   SCSITaskDeviceInterface **scsiTaskDeviceInterface;
-   SCSITaskInterface **taskInterface;
-   IOVirtualRange *range;
-#endif
    
    /*
     * OS-independent data about the device
@@ -142,6 +122,7 @@ typedef struct _DeviceHandle
    char vendor[34];           /* vendor and product info only */
 
    Sense sense;               /* sense data from last operation */
+   int senseSize;             /* OS may have differently sized struct */
 
    double singleRate;         /* supposed KB/sec @ single speed */
    int maxRate;               /* guessed maximum transfer rate */

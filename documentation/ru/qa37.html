@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Hints for storing the error correction files</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Версия 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/ru/">К интернет-версии</a>
+       <a href="../cs/qa37.html"></a> 
+       <a href="../de/qa37.html"></a> 
+       <a href="../en/qa37.html"></a> 
+        
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Содержание</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Новости</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Обзор</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Howto's</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Скачать</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Вопросы и ответы</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa10.html">Технические вопросы</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa20.html">Сообщения об ошибках</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa30.html">Background information</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa31.html">Error correction properties</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa32.html">Image level data recovery</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa33.html">RS01, RS02 and RS03</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa34.html">Linear reading strategy</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa35.html">Adaptive reading strategy</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa36.html">Remarks on read errors</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Hints for storing the error correction files</span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Сообщения об ошибках</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Hints for storing the error correction files</h3>
+
+Currently there are few exchangeable media technologies
+which can be a cost-effective alternative to the various CD/DVD/BD formats.
+So you will probably not only use CD/DVD/BD for data archival, but store
+the respective error correction files on CD, DVD or BD as well.<p>
+
+There is nothing wrong with that, but bear in mind that your archived data
+and the error correction files are stored on media with the same degree of
+reliability. When read errors occur on the archived data, be prepared that
+the disc with the respective error correction file might have aged beyond
+full readability, too.<p>
+
+Therefore it is important to protect your error correction files with the same
+care as your other data<sup><a href="qa37.html#footnote1">*)</a></sup>. 
+This is best achieved by integrating the error correction
+files into your normal data backup scheme. Here are two ideas:<p>
+
+<b>1. Storing the error correction files on dedicated media:</b><p>
+
+If you decide to store error correction files on separate media, it is
+<a href="qa32.html#eccfile">important</a> to protect those media
+with dvdisaster as well. To avoid a never-ending chain
+(error correction files for media of error correction files for ...),
+try the following:<p>
+
+Lets assume that five error correction files can be stored at each medium.
+Write the first five error correction files to the first medium and create
+another error correction file for that medium. Now save that error correction
+file together with four other error correction files on the second medium.
+If you continue that way, all error correction files except for those from the
+last medium (which may still be kept on hard disc) are protected by dvdisaster.<p>
+
+<b>2. Putting the error correction file on the next medium of a series:</b><p>
+
+If you do not fill your media to the max (e.g. with less than 4GB for a single layered DVD), you can store the error correction file of one medium
+on the succeeding medium within a series.<p>
+
+<pre> </pre>
+<table width="50%"><tr><td><hr></td></tr></table>
+
+<span class="fs">
+<a name="footnote1"><sup>*)</sup></a> 
+You might also choose an <a href="howtos30.html">augmented image</a> using RS02
+or RS03 instead of creating an error correction file.
+</span>
+
+<!-- do not change below -->
+
+  </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/en/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2007-2009 Igor Gorbounov.<br>
+         Дословное копирование и распространение всей этой статьи разрешается на любом носителе, при условии, что это уведомление сохраняется.
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

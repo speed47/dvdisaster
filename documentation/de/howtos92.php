@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -13,9 +13,9 @@ require("../include/screenshot.php");
 begin_page();
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Kompatibilität beim Ablegen von Fehlerkorrektur-Daten auf dem Datenträger prüfen</h3>
+<h3 class="top">Kompatibilität beim Ablegen von Fehlerkorrektur-Daten auf dem Datenträger prüfen</h3>
 
 <b>Motivation:</b> dvdisaster kann Fehlerkorrektur-Daten
 <a href="howtos30.php">zusammen mit den Nutzdaten auf dem Datenträger</a>
@@ -38,10 +38,10 @@ in den jeweiligen Unterkapiteln dieser Dokumentation. <p>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/good-cd-ecc.png">
-<p><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/good-cd-ecc.png" alt="Symbol: Datenträger mit Fehlerkorrektur-Daten">
+<p><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erzeugen Sie zunächst einen Datenträger, der mit
+<td class="valignt"><b>Erzeugen Sie zunächst einen Datenträger, der mit
 Fehlerkorrektur-Daten erweitert</b> wurde. 
 Vergessen Sie nicht, die erforderlichen <a href="howtos32.php">Einstellungen</a>
 vorzunehmen und folgen Sie der
@@ -56,12 +56,12 @@ beeinflussen kann
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image2.png" border="0"><p>
-<img src="../images/down-arrow.png" border="0">
+<td class="w200x" align="center">
+<img src="../images/good-image2.png" alt="Symbol: Vollständiges Abbild von dem eben geschriebenen Datenträger" class="noborder"><p>
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder">
 </td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erstellen Sie ein <i>zweites</i> Abbild aus dem <i>gebrannten</i> Datenträger.</b> Verwenden Sie die gleichen <a href="howtos22.php">Grundeinstellungen</a>
+<td class="valignt"><b>Erstellen Sie ein <i>zweites</i> Abbild aus dem <i>gebrannten</i> Datenträger.</b> Verwenden Sie die gleichen <a href="howtos22.php">Grundeinstellungen</a>
 und das gleiche Vorgehen wie beim <a href="howtos23.php?way=1">Einlesen eines Datenträgers</a> zum Erstellen einer Fehlerkorrektur-Datei. 
 Allerdings brauchen wir nur die Abbild-Datei; es muß keine 
 Fehlerkorrektur-Datei erzeugt werden.
@@ -71,12 +71,12 @@ Fehlerkorrektur-Datei erzeugt werden.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="Bedienelement: Abbild-Datei auswählen (Eingabefeld und Knopf für Dialog)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Geben Sie den Dateinamen des <i>zweiten</i> ISO-Abbilds</b> an, 
+<td class="valignt"><b>Geben Sie den Dateinamen des <i>zweiten</i> ISO-Abbilds</b> an, 
 das Sie eben von dem Datenträger eingelesen haben. Beachten Sie daß der folgende
 Test nutzlos ist wenn Sie mit dem ersten Abbild arbeiten, das Sie mit der 
 Brennsoftware erstellt und mit dvdisaster erweitert haben.
@@ -86,12 +86,12 @@ Brennsoftware erstellt und mit dvdisaster erweitert haben.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="Bedienelement: Vergleichen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Beginnen Sie die Auswertung der Abbild-Datei</b> durch
+<td class="valignt"><b>Beginnen Sie die Auswertung der Abbild-Datei</b> durch
 Klicken auf den "Vergleichen"-Knopf.</td>
 </tr>
 </table>
@@ -121,11 +121,11 @@ Schritte aus um herauszufinden ob dies der Fall ist:
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/fix-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/fix-icon.png" alt="Bedienelement: Reparieren (Auswahlknopf)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Beginnen Sie einen Reparaturvorgang.</b>
+<td class="valignt"><b>Beginnen Sie einen Reparaturvorgang.</b>
 </td>
 </tr>
 </table>
@@ -139,11 +139,11 @@ um die überzähligen Sektoren verkürzt werden soll. Bestätigen Sie mit "OK".
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="images/stop-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="images/stop-icon.png" alt="Bedienelement: Abbrechen (Auswahlknopf)" class="noborder">
+<p><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Brechen Sie den Reparaturvorgang ab,</b>
+<td class="valignt"><b>Brechen Sie den Reparaturvorgang ab,</b>
 da es außer der Verkürzung des Abbilds nichts weiter zu tun gibt.
 </td>
 </tr>
@@ -151,12 +151,12 @@ da es außer der Verkürzung des Abbilds nichts weiter zu tun gibt.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/compare-icon.png" border="0">
-<p><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/compare-icon.png" alt="Bedienelement: Vergleichen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Beginnen Sie die Auswertung</b> erneut durch
+<td class="valignt"><b>Beginnen Sie die Auswertung</b> erneut durch
 Klicken auf den "Vergleichen"-Knopf.</td>
 </tr>
 </table>
@@ -168,13 +168,13 @@ erhalten, haben Sie tatsächlich nur ein kosmetisches Problem: Die Brennsoftware
 hat einige leere Sektoren am Ende des Abbilds beim Brennen hinzugefügt.
 <?php end_howto_shot(); ?>
 
-<font color="#800000">Wenn das Problem trotz der obigen Schritte bestehen 
+<span class="red">Wenn das Problem trotz der obigen Schritte bestehen 
 bleibt, können Sie die betreffende Brennsoftware <i>nicht</i> dazu verwenden,
 um mit Fehlerkorrektur-Daten erweiterte Abbilder zu schreiben.
 Führen Sie den Test erneut mit der Software eines anderen Herstellers aus.
-</font> <p> 
+</span> <p> 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

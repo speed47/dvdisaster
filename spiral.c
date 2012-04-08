@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2011 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2012 Carsten Gnoerlich.
  *  Project home page: http://www.dvdisaster.com
  *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
@@ -143,9 +143,6 @@ void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
 {  double a;
    double scale_i,scale_o,ring_expand;
    GdkPoint points[4];
-#ifdef SYS_DARWIN
-   GdkRegion *region;
-#endif
 
    if(segment<0 || segment>=spiral->segmentClipping)
      return;
@@ -177,14 +174,6 @@ void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
    gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
    gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->outline);
    gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
-
-   /* Work around GUI lock up on Mac OS X port of GTK+ 
-      FIXME: Remove when GTK+ behaviour improves. */
-
-#ifdef SYS_DARWIN
-   region = gdk_region_polygon(points, 4, GDK_EVEN_ODD_RULE);
-   gdk_window_invalidate_region(GDK_WINDOW(spiral->drawable), region, FALSE);
-#endif
 }
 
 /*

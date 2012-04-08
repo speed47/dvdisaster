@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -18,7 +18,7 @@ if($way & 2) $write_iso_action=$way&1;
 else	     $write_iso_action=$way|2;
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php
 howto_headline("Fehlerkorrektur-Daten auf dem Datenträger ablegen", "Durchführen", "images/create-icon.png");
@@ -36,14 +36,14 @@ Brenner erhalten oder dazugekauft haben. <p>
 <a name="a"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$make_iso_action\">\n";
 ?>
-<img src="thumbnails/make-iso1.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="thumbnails/make-iso1.png" alt="Abb.: Abbild-Datei erzeugen" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erstellen Sie ein ISO-Abbild</b> mit Ihrer Brennsoftware.
+<td class="valignt"><b>Erstellen Sie ein ISO-Abbild</b> mit Ihrer Brennsoftware.
 Wählen Sie in der Brennsoftware die Dateien aus, 
 die Sie auf den Datenträger brennen möchten. 
 Starten Sie den Brennvorgang jedoch noch nicht, sondern erzeugen
@@ -90,16 +90,16 @@ dem Programmstart öffnet.</i>
 Typischerweise gibt es einen Auswahldialog aus dem Sie die Dateien wählen
 oder in das Projekt ziehen können. <p>
 
-In K3b: <i>Wählen Sie die gewünschten Dateien in der oberen Fensterhälfte aus. 
+In K3b: <i>Wählen Sie die gewünschten Dateien in der oberen Fensterhälfte aus.  
 In dem Beispiel wurden die Dateien <i>backup.tar.gz</i>,
 <i>win.zip</i> und <i>work.tar.gz</i> zum Brennen auf CD ausgewählt. Die momentane
-Auswahl wird in der unteren Fensterhälfte angezeigt.</i><p>
+Auswahl wird in der unteren Fensterhälfte angezeigt.</i><p> 
 
 <b>Wichtig:</b> Achten Sie darauf, den Datenträger nicht vollständig zu füllen. 
 Es müssen mindestens 20% Platz für die Fehlerkorrektur-Daten übrig bleiben.<p>
 
 In K3b: <i> In der grünen Leiste wird unten der Platzbedarf auf dem 
-Datenträger angezeigt (558,9 MB). 
+Datenträger angezeigt (558,9 MB).</i>
 <?php end_screen_shot(); ?>
 
 <hr>
@@ -145,10 +145,10 @@ K3b erzeugt immer .iso-Abbilder, d.h. zum Typ ist nichts weiter einzustellen.</i
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -159,11 +159,11 @@ K3b erzeugt immer .iso-Abbilder, d.h. zum Typ ist nichts weiter einzustellen.</i
 <a name="b"></a>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center">
+<img src="../images/good-image.png" alt="Symbol: Vollständiges Abbild (von einem unbeschädigten Datenträger)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Arbeiten Sie mit dvdisaster</b> weiter, sobald
+<td class="valignt"><b>Arbeiten Sie mit dvdisaster</b> weiter, sobald
 Sie das Abbild haben.
 Vergewissern Sie sich zunächst, daß dvdisaster wie in den 
 <a href="howtos32.php">Grundeinstellungen</a> beschrieben konfiguriert ist.
@@ -173,24 +173,24 @@ Vergewissern Sie sich zunächst, daß dvdisaster wie in den
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image2.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image2.png" alt="Bedienelement: Abbild-Datei auswählen (Eingabefeld und Knopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie in dvdisaster die Abbild-Datei aus,</b> 
+<td class="valignt"><b>Wählen Sie in dvdisaster die Abbild-Datei aus,</b> 
 die Sie eben mit Ihrer Brennsoftware erzeugt haben.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="Bedienelement: Erzeugen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erweitern Sie das Abbild mit Fehlerkorrektur-Daten</b> durch
+<td class="valignt"><b>Erweitern Sie das Abbild mit Fehlerkorrektur-Daten</b> durch
 Klicken auf den "Erzeugen"-Knopf.</td>
 </tr>
 </table>
@@ -212,13 +212,13 @@ im Dateimanager betrachten, sehen Sie wie sich die Größe des Abbild verändert
 <a name="c"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$write_iso_action\">\n";
 ?>
-<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<img src="thumbnails/write-iso1.png" alt="Abb.: Abbild auf einen Datenträger schreiben" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Schreiben Sie das erweiterte ISO-Abbild</b> auf den Datenträger.
+<td class="valignt"><b>Schreiben Sie das erweiterte ISO-Abbild</b> auf den Datenträger.
 Wählen Sie in der Brennsoftware das eben erweiterte Abbild aus und führen Sie
 den Brennvorgang durch. Klicken Sie auf das Bild zur linken Seite um ein
 <?php
@@ -235,10 +235,10 @@ if($way&2)
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -296,19 +296,19 @@ In K3b: <i>Klicken Sie auf den "Start"-Knopf in dem Fenster aus dem vorherigen B
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-cd-ecc.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/good-cd-ecc.png" alt="Symbol: Abgesicherter Datenträger mit Fehlerkorrektur-Daten" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Fertig!</b> Sie haben jetzt eine mit Fehlerkorrektur-Daten abgesicherte CD erstellt.</td>
+<td class="valignt"><b>Fertig!</b> Sie haben jetzt eine mit Fehlerkorrektur-Daten abgesicherte CD erstellt.</td>
 </tr>
 </table>
 
@@ -322,7 +322,7 @@ Dies ist empfohlen, wenn Sie zum ersten Mal mit Ihrer Brennsoftware ein erweiter
 </li>
 </ul>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

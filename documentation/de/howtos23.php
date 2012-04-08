@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -23,7 +23,7 @@ switch($way)
 howto_headline("Fehlerkorrektur-Datei erstellen", $action, "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 Vergewissern Sie sich zunächst, daß dvdisaster wie in den 
 <a href="howtos22.php">Grundeinstellungen</a> beschrieben konfiguriert ist.
@@ -40,9 +40,9 @@ erzeugen möchten. Klicken Sie auf eine der beiden Möglichkeiten:<p>
 <?php
 $expand=$_GET["expand"];
 if($expand=="") $expand=0;
-echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=1&expand=$expand\"><img src=\"../images/good-cd.png\" alt=\"Symbol: Guter Datenträger (ohne Lesefehler)\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=1&expand=$expand\">Fehlerkorrektur-Datei von einem Datenträger erzeugen</a></td>\n";
-echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" border=\"0\"></a></td>\n";
+echo "<td><a href=\"howtos23.php?way=2&expand=$expand\"><img src=\"../images/good-image.png\" alt=\"Symbol: Vollständiges Abbild\" class=\"noborder\"></a></td>\n";
 echo "<td><a href=\"howtos23.php?way=2&expand=$expand\">Fehlerkorrektur-Datei von einem ISO-Abbild erzeugen</a></td>\n";
 ?>
 
@@ -56,10 +56,10 @@ if($way==1){
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/slot-in.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/slot-in.png" alt="Icon: Insert the medium into a drive">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Legen Sie den Datenträger in ein Laufwerk</b>, 
+<td class="valignt"><b>Legen Sie den Datenträger in ein Laufwerk</b>, 
 das direkt mit Ihrem Rechner verbunden ist. Sie können keine Netzwerklaufwerke und keine
 Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
 </tr>
@@ -67,10 +67,10 @@ Laufwerke innerhalb von virtuellen Maschinen verwenden.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><img src="../images/winbrowser.png">
-<br><img src="../images/down-arrow.png"></td>
+<td class="w200x" align="center"><img src="../images/winbrowser.png" alt="Symbol: Alle automatisch geöffneten Fenster schließen">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
+<td class="valignt"><b>Schließen Sie alle Fenster,</b> die Ihr Betriebssystem
 möglicherweise öffnet, um den Inhalt des Datenträgers anzuzeigen oder abzuspielen.
 Warten Sie mit dem Test, bis das Laufwerk den Datenträger erkannt hat und zur
 Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
@@ -79,35 +79,35 @@ Ruhe gekommen ist, also z.B. den Datenträger nicht mehr dreht.</td>
 
 <table>
 <tr>
-<td width="200px" align="center"><a href="howtosa1.php">
-<img src="../images/select-drive.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center"><a href="howtosa1.php">
+<img src="../images/select-drive.png" alt="Bedienelement: Laufwerksauswahl (Ausklappbares Menü)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
+<td class="valignt"><b>Wählen Sie in dvdisaster das Laufwerk aus,</b>
 in das Sie den Datenträger eingelegt haben.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="Bedienelemente: Abbild-Datei wählen (Eingabefeld und Knopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie ein Verzeichnis und einen Dateinamen aus,</b> unter dem Sie das ISO-Abbild des
+<td class="valignt"><b>Wählen Sie ein Verzeichnis und einen Dateinamen aus,</b> unter dem Sie das ISO-Abbild des
 Datenträgers speichern möchten.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/read-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/read-icon.png" alt="Bedienelement: Lesen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erstellen Sie ein ISO-Abbild</b> des Datenträgers durch
+<td class="valignt"><b>Erstellen Sie ein ISO-Abbild</b> des Datenträgers durch
 Klicken auf den "Lesen"-Knopf.</td>
 </tr>
 </table>
@@ -126,12 +126,12 @@ if($way == 2) {
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image.png" alt="Bedienelemente: Abbild-Datei wählen (Eingabefeld und Knopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Geben Sie das Verzeichnis und den Dateinamen 
+<td class="valignt"><b>Geben Sie das Verzeichnis und den Dateinamen 
 des ISO-Abbilds</b> an, von dem
 Sie die Fehlerkorrektur-Datei erstellen möchten.
 (In diesem Fall wird davon ausgegangen, daß Sie das
@@ -146,24 +146,24 @@ if($way != 0) {
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa3.php">
-<img src="../images/select-ecc.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-ecc.png" alt="Bedienelemente: Fehlerkorrektur-Datei auswählen (Eingabefeld und Knopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Wählen Sie ein Verzeichnis und einen Dateinamen aus,</b> 
+<td class="valignt"><b>Wählen Sie ein Verzeichnis und einen Dateinamen aus,</b> 
 unter dem Sie die Fehlerkorrektur-Datei speichern möchten.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="Bedienelement: Erzeugen (Auswahlknopf)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Symbol: Pfeil nach unten" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Erstellen Sie die Fehlerkorrektur-Datei</b> durch
+<td class="valignt"><b>Erstellen Sie die Fehlerkorrektur-Datei</b> durch
 Klicken auf den "Erzeugen"-Knopf.</td>
 </tr>
 </table>
@@ -178,12 +178,12 @@ müssen Sie auf einem aktuellen Rechner ca. 5 Minuten einplanen.
 
 <table>
 <tr>
-<td width="200px"align="center">
-<img src="../images/old-image.png" border="0" align="center">
+<td class="w200x"align="center">
+<img src="../images/old-image.png" alt="Symbol: Alte Abbild-Datei" class="nobordervalignm">
 &nbsp;&nbsp;&nbsp;
-<img src="../images/ecc.png" border="0" align="center"></a></td>
+<img src="../images/ecc.png" alt="Symbol: Eigenständige Fehlerkorrektur-Datei" class="nobordervalignm"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Nachbearbeitung.</b> Sofern Sie das ISO-Abbild nicht noch für 
+<td class="valignt"><b>Nachbearbeitung.</b> Sofern Sie das ISO-Abbild nicht noch für 
 andere Zwecke benötigen, können Sie es jetzt löschen. Die Fehlerkorrektur-Datei müssen
 Sie hingegen gut aufheben und vor Beschädigung schützen. Auf der nächsten Seite gibt
 es ein paar Vorschläge, wie Sie die <a href="howtos24.php">Fehlerkorrektur-Datei archivieren</a> können.
@@ -196,7 +196,7 @@ es ein paar Vorschläge, wie Sie die <a href="howtos24.php">Fehlerkorrektur-Date
 <?php
 } /* end of if($way != 0) */
 ?>
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Fehlerkorrektur-Datei auswählen</h3>
+<h3 class="top">Fehlerkorrektur-Datei auswählen</h3>
 
 Die Fehlerkorrektur-Datei enthält Informationen, um unlesbare Sektoren aus einem
 beschädigten Datenträger wiederherzustellen. Sie ist auch hilfreich, um einen
@@ -27,16 +27,16 @@ Dateinamen-Erweiterung ist ".ecc".<p>
 Sie können die Fehlerkorrektur-Datei auf zwei Arten auswählen:
 <ul>
 <li>im normalen <a href="#filechooser">Dateiauswahl-Dialog</a> (grün markierter Knopf), oder</li>
-<li>durch Direkteingabe in das Textfeld (blau markiertes Textfeld).</li><p>
-</ul>
+<li>durch Direkteingabe in das Textfeld (blau markiertes Textfeld).</li>
+</ul><p>
 Die Direkteingabe ist hilfreich, 
 wenn Sie mehrere Fehlerkorrektur-Dateien nacheinander im gleichen
 Unterverzeichnis erzeugen. Ändern Sie dazu einfach den Namen in dem Textfeld.<p>
 <?php end_screen_shot(); ?>
 
-<? require("howtos_winfile.php"); ?>
+<?php require("howtos_winfile.php"); ?>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

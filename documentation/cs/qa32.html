@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title>Oprava dat na&nbsp;úrovni bitové kopie</title>
+ <link rel="stylesheet" type="text/css" href="../include/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+     <td align="left">
+       <span class="fxxl"><b>dvdisaster</b></span>
+       <i>Verze 0.72.4 / 0.72 (pl4)</i>
+  </td>
+  <td align="right">
+     <span class="fxxl">&nbsp;</span><a href="http://dvdisaster.net/cs/">Online verze</a>
+        
+       <a href="../de/qa32.html"></a> 
+       <a href="../en/qa32.html"></a> 
+       <a href="../ru/qa32.html"></a> 
+     </td>
+  </tr>
+</table>
+
+<!-- Language chooser or separator -->
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td colspan="2" class="hsep"></td>
+  </tr>
+  <tr><td colspan="2" style="height: 10px">
+  </td></tr>
+</table>
+  
+<!-- Main body (Navigation, actual page content, optional news column) --> 
+<table width="100%" cellspacing=0>
+ <tr>
+  <!-- Navigation -->
+  <td style="background-color:#f0f0f0; vertical-align:top; width:20%;">
+    <table width="100%" cellpadding="10">
+      <tr>
+        <td>
+         <span class="fs"><b>Obsah</b></span>
+          <table width="100%" cellpadding="0" cellspacing="0">
+	    <tr>
+	      <td class="hsep"></td>
+	    </tr>
+	  </table><p>
+
+          <table width="100%">
+            <tr><td colspan=3><span class="fs"><a href="news.html">Novinky</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="index.html">Přehled</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="howtos.html">Běžné použití</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="download.html">Ke&nbsp;stažení</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="qa.html">Otázky a odpovědi</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa10.html">Technické otázky</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa20.html">Chybová hlášení</a></span></td></tr>
+            <tr><td style="width:1%; vertical-align:top;">&middot;</td><td colspan=2><span class="fs"><a href="qa30.html">Technické informace</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa31.html">Vlastnosti opravy chyb</a></span></td></tr>
+            <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs">Oprava dat na&nbsp;úrovni bitové kopie</span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa33.html">RS01, RS02 a RS03</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa34.html">Lineární strategie čtení</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa35.html">Adaptivní strategie čtení</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa36.html">Poznámky k&nbsp;chybám čtení</a></span></td></tr>
+        <tr><td></td><td style="vertical-align:top; font-size:small;">-</td><td><span class="fs"><a href="qa37.html">Tipy pro uchovávání souborů pro opravu chyb</a></span></td></tr>
+            <tr><td></td><td></td><td style="height:10px;"></td></tr>
+            <tr><td colspan=3><span class="fs"><a href="feedback.html">Hlášení chyb</a></span></td></tr>
+	  </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td></td>
+
+  <!-- Actual page contents -->
+  <td style="vertical-align:top; width:77%;" rowspan="2">
+
+<!-- Insert actual page content below -->
+
+<h3 class="top">Oprava chyb na úrovni bitové kopie</h3>Oprava disku pomocí opravných kódů probíhá ve dvou krocích:<ol>
+<li>Nejdříve je z poškozeného disku načteno co nejvíce čitelných dat.<p></li>
+<li>Chybějící data, která nemohla být přečtena jsou poté opravena pomocí opravných kódů.</li>
+</ol>Množství čitelných dat (krok 1) nezávisí jen na čtecích schopnostech mechaniky, ale také na tom na jaké logické úrovni proces čtení probíhá. Tato stránka popisuje jednotlivé logické úrovně a vysvětluje, proč dvdisaster používá čtení na úrovni bitové kopie.<p><b>Logické úrovně disku</b><p>Optické disky jsou rozděleny na <i>datové sektory</i> o velikosti 2048 bajtů. Postupné čtení a ukládání těchto sektorů vede k vytvoření <i>bitové kopie</i> disku.<p>Z uživatelského hlediska je ale práce s jednotlivými sektory nepraktická. Disky proto obsahují <i>systémy souborů</i>, které datové sektory prezentují jako <i>soubory</i>. To vyžaduje vedení přesných záznamů o tom, z kterých datových sektorů se jednotlivé soubory skládají, i o dalších atributech jako jsou názvy souborů a přístupová práva. Pro uložení těchto údajů je na disku vyhrazeno několik datových sektorů, do kterých jsou zapsány odpovídající datové struktury.<p>V důsledku toho obsahují disky různé <i>logické úrovně</i>: Pohlížet na disk jako na sled datových sektorů znamená pracovat na <i>úrovni bitové kopie</i>. Pohled na disk jako na sadu souborů je pak perspektiva <i>úrovně (systému) souborů</i>.<p>Pokud jde o opravu chyb, mají tyto dvě úrovně rozdílné vlastnosti:<p><a name="file"> </a> <b>Nevýhody čtení disku na úrovni souborů</b><p>Čtení poškozeného disku na <b>úrovni souborů</b> znamená pokusit se přečíst co nejvíce dat z jednotlivých souborů.<p>Problém nastane, pokud byly poškozeny sektory sloužící k uchovávání informací souborového systému. Seznam souborů na disku pak může být neúplný. Nebo nemusí být kompletní přiřazení sektorů k souborům. Mohou tak být ztraceny i soubory (nebo jejich části) i přesto, že jsou samotné datové sektory daných souborů čitelné. To je špatné, protože, i malé čitelné části poškozených souborů jsou pro kód opravy chyb cenné.<p>Extrémně špatný případ pak nastává, pokud jsou i data pro opravu chyb uložena jako soubory. Data pro opravu chyb jsou pak vyžadována pro opravu systému souborů, ale poškozený systém souborů zabraňuje v přístupu k těmto datům. To znamená kompletní ztrátu data a vznáší některé otázky týkající se <a href="qa32.html#eccfile">práce se soubory pro opravu chyb</a> (o tom podrobně později).<p>Podobný problém nastává, pokud jsou soubory rozšířeny o PAR2 data pro opravu chyb a pak jsou všechny uloženy na stejném disku. Pokud jsou poškozeny sektory s údaji souborového systému, stanou se všechny soubory a tím také data pro opravu chyb nepřístupnými a jsou tím pádem ztraceny.<p>Situace se ale významně zlepší pokud je použit přístup na úrovni bitové kopie:<p><a name="image"> </a> <b>Výhody čtení na úrovni bitové kopie</b><p>Čtení na úrovni bitové kopie používá přímou komunikaci s mechanikou pro přístup k datovým sektorům.<p>Počet čitelných sektorů závisí pouze na schopnostech čtení mechaniky a je nezávislý na stavu souborového systému. Poškození jednoho sektoru neblokuje přístup k ostatním datovým sektorům. Protože jsou získány <i>všechny</i> sektory které byla mechanika schopna přečíst, poskytuje tato metoda pro opravu chyb nejlepší podmínky.<p>Bitová kopie obsahuje všechny datové sektory disku. Pokud je bitová kopie opravena, je opraven i v ní obsažený souborový systém. Ochrana na úrovni bitové kopie má proto mnohem širší záběr než ochrana na úrovni souborů.<p>Pro využití těchto předností pracuje dvdisaster výhradně na úrovni bitové kopie. <a href="qa33.html">Metoda RS02</a> dokonce umožňuje uchovávání dat pro opravu chyb na stejném disku. To je možné díky tomu, že čtení dat pro opravu chyb na úrovni bitové kopie není ovlivněno poškozením jiných částí disku (poškozené sektory s daty pro opravu chyb sníží kapacitu opravy chyb, ale opravu zcela neznemožní).<p><a href="qa33.html">Metoda RS01</a> také chrání disk na úrovni bitové kopie, ale data pro opravu chyb jsou uložena v samostatných souborech. Následující sekce upozorňuje na některá z toho vyplývající úskalí.<p><a name="eccfile"> </a> <b>Důsledky pro uchovávání souborů pro opravu chyb</b><p>Data pro opravu chyb vytvořená dvdisaster chrání disky na úrovni bitové kopie. Ale jak jsou chráněny <i>soubory</i> pro opravu chyb?<p>Protože soubory pro opravu chyb jsou čteny na úrovni souborů, platí pro ně výše uvedené nevýhody. Pokud je disk se soubory pro opravu chyb poškozen, může k nim být znemožněn přístup, nebo nemusí být zcela čitelné.<p><table width="100%"><tr><td class="vsep"></td><td>Je proto třeba soubory pro opravu chyb také chránit na úrovni bitové kopie: <a href="qa37.html">Disk obsahující soubory pro opravu chyb</a> musí být také chráněn prostřednictvím dvdisaster.</td></tr></table><p>Protože je předpokládána ochrana na úrovni bitové kopie, neobsahují soubory pro opravu chyb RS01 <i>žádnou dodatečnou ochranu před poškozením</i>! Ta by stejně příliš nepomohla: Soubory pro opravu chyb by mohly být navrženy tak, aby i v poškozeném stavu umožňovaly opravu chyb (i když se sníženou kapacitou)<sup><a href="qa32.html#footnote1">*)</a></sup>. Ale ať už by takováto ochrana byla navržena jakkoliv, stále by se jednalo o ochranu na úrovni souborů, se všemi výše diskutovanými nevýhodami!<p>Výpočetní čas a redundanci jinak použitou pro vnitřní ochranu je lepší využít na úrovni bitové kopie: Oprava chyb Reed-Solomon pracuje nejlépe, pokud jsou informace pro opravu chyb rozloženy ve větším množství dat. Je lepší chránit celý obraz, než každý v něm obsažený soubor samostatně.<p><pre> </pre>
+<table width="50%"><tr><td><hr></td></tr></table><span class="fs"> <a name="footnote1"><sup>*)</sup></a> Soubory pro opravu chyb vytvořené pomocí nového kodeku RS03 mají přesně tyto vlastnosti, dokud ještě vystačí kapacita opravy, jsou odolné proti poškození. To bylo umožněno díky dostupnosti dostatečného výpočetního výkonu a dostatečně rychlému přístupu k datům na pevném disku. V době vývoje RS01 ještě tyto zdroje nebyly k dispozici. Ale i RS03 soubory pro opravu chyb stále neodstraňují nevýhody čtení na úrovni souborů! </span> <!-- do not change below -->   </td> <!-- end of page contents -->
+
+ </tr>
+
+<!--
+ <tr valign="bottom">
+   <td style="background-color:#f0f0f0;">
+      <table cellpadding="10"><tr><td><a href="http://dvdisaster.net/legacy/cs/index.html"><span class="fs"></span></a></td></tr></table>
+   </td>
+   <td></td>
+   <td></td>
+ </tr>
+-->
+</table> <!-- end of main body table -->
+
+
+<!-- Page footer -->
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2012 Carsten Gnörlich.<br>
+         Kopírování a distribuce neupravené verze tohoto článku v libovolné formě je povolena za předpokladu, že bude zachována tato poznámka..
+    </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

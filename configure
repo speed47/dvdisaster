@@ -21,7 +21,7 @@ fi
 
 PACKAGE dvdisaster 0.72
 
-REL_MICRO=3
+REL_MICRO=4
 REL_STATUS=patch
 #REL_STATUS=devel
 #REL_STATUS=rc
@@ -37,6 +37,11 @@ case "$REL_STATUS" in
   patch) DEFINE_VAR FULL_VERSION "\"$VERSION (pl${REL_MICRO})\"" ;;
   *) DEFINE_VAR FULL_VERSION "\"$VERSION (${REL_STATUS}-${REL_MICRO})\"" ;;
 esac
+
+# Last stable version (used only in WWW pages)
+
+DEFINE_VAR HAVE_EXPERIMENTAL "yes"
+DEFINE_VAR STABLE_VERSION "0.72.4"
 
 # Check for some essential tools.
 
@@ -107,7 +112,6 @@ CFG_CFLAGS=$SAVE_CFLAGS
 
 echo
 CHECK_ENDIAN
-CHECK_SSE2
 
 # Look for required tools
 

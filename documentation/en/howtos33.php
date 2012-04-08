@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -18,7 +18,7 @@ if($way & 2) $write_iso_action=$way&1;
 else	     $write_iso_action=$way|2;
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
 <?php
 howto_headline("Augmenting images with error correction data", "Walkthrough", "images/create-icon.png");
@@ -36,14 +36,14 @@ purchasing your drive.<p>
 <a name="a"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$make_iso_action\">\n";
 ?>
-<img src="thumbnails/make-iso1.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="thumbnails/make-iso1.png" alt="Icon: Creating an image file" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>First create an ISO image</b> using your CD/DVD/BD
+<td class="valignt"><b>First create an ISO image</b> using your CD/DVD/BD
 writing software. Select the files you want to write to medium,
 but do not start the writing process yet. Instead, create an ISO
 image on your hard disk. Click on the image to the left to see a 
@@ -88,10 +88,10 @@ Using K3b: <i>Begin a new project by clicking into the highlighted field
 Typically there is a file selection dialog from which you can select files
 or drag them into the project.<p>
 
-Using K3b: <i>Choose the required files in the upper half of the window.
+Using K3b: <i>Choose the required files in the upper half of the window. 
 In the example the files <i>backup.tar.gz</i>,
 <i>win.zip</i> and <i>work.tar.gz</i> have been selected for writing onto CD.
-The currently selected files are shown in the lower window half.</i><p>
+The currently selected files are shown in the lower window half.</i><p> 
 
 <b>Important:</b> Do not completely fill the medium. Make sure to keep
 at least 20% of the medium space for the error correction data.<p>
@@ -144,10 +144,10 @@ are no choices to be made for the image type.</i>
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -158,11 +158,11 @@ are no choices to be made for the image type.</i>
 <a name="b"></a>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-image.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<td class="w200x" align="center">
+<img src="../images/good-image.png" alt="Icon: Complete image (from an undamaged medium)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top">When you have prepared the image
+<td class="valignt">When you have prepared the image
 <b>switch over to dvdisaster</b>. Make sure that it
 has been configured as described in 
 the <a href="howtos32.php">basic settings</a>.
@@ -172,24 +172,24 @@ the <a href="howtos32.php">basic settings</a>.
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa2.php">
-<img src="../images/select-image2.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="../images/select-image2.png" alt="dvdisaster UI: Image file selection (input field and button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Select the directory and file name</b> 
+<td class="valignt"><b>Select the directory and file name</b> 
 of the ISO image which you have just created.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <a href="howtosa4.php">
-<img src="images/create-icon.png" border="0">
-<br><img src="../images/down-arrow.png" border="0"></a></td>
+<img src="images/create-icon.png" alt="dvdisaster UI: Create (button)" class="noborder">
+<br><img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Augment the image with error correction data</b> by
+<td class="valignt"><b>Augment the image with error correction data</b> by
 clicking on the "Create" button.</td>
 </tr>
 </table>
@@ -210,13 +210,13 @@ and after processing it with dvdisaster and note how its size increases.
 <a name="c"></a>
 <table>
 <tr>
-<td width="200px" align="center">
+<td class="w200x" align="center">
 <?php
 echo "<a href=\"howtos33.php?way=$write_iso_action\">\n";
 ?>
-<img src="thumbnails/write-iso1.png" border="0"></a></td>
+<img src="thumbnails/write-iso1.png" alt="Icon: Writing image to a medium" class="noborder"></a></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Write the augmented ISO image</b> on the medium.
+<td class="valignt"><b>Write the augmented ISO image</b> on the medium.
 Select the augmented image in your writing software and
 start the writing process. Click on the screen shot to the left for
 <?php
@@ -233,10 +233,10 @@ if($way&2)
 ?>
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
@@ -292,19 +292,19 @@ screen shot.</i>
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/down-arrow.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/down-arrow.png" alt="Icon: Arrow down" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"></td>
+<td class="valignt"></td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td width="200px" align="center">
-<img src="../images/good-cd-ecc.png" border="0"></td>
+<td class="w200x" align="center">
+<img src="../images/good-cd-ecc.png" alt="Icon: Undamaged medium with error correction data" class="noborder"></td>
 <td>&nbsp;&nbsp;</td>
-<td valign="top"><b>Finished!</b> You have now created a CD which is
+<td class="valignt"><b>Finished!</b> You have now created a CD which is
 protected by error correction code.</td>
 </tr>
 </table>
@@ -322,7 +322,7 @@ interoperates well with dvdisaster.
 </li>
 </ul>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

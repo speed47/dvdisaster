@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,13 +14,13 @@ begin_page();
 howto_headline("Дополнение образов данными для исправления ошибок", "Обзор", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Помещение данных для исправления ошибок непосредственно на носитель</h3>
+<h3 class="top">Помещение данных для исправления ошибок непосредственно на носитель</h3>
 
 <table width="100%" cellspacing="5">
 <tr valign="top">
-<td width="20%"><b>Задача</b></td>
+<td class="w20p"><b>Задача</b></td>
 <td>
 Данные для исправления ошибок сохраняются вместе с пользовательскими данными на том же носителе.
 </td>
@@ -41,7 +41,7 @@ howto_headline("Дополнение образов данными для исп
 </tr>
 
 <tr>
-<td><img src="../images/good-image.png"></td>
+<td><img src="../images/good-image.png" alt="Icon: Complete image"></td>
 <td>
 <ul>
 <li>программа для создания ("прожига") дисков, способная создавать ISO-образы</li>
@@ -53,7 +53,7 @@ howto_headline("Дополнение образов данными для исп
 <tr><td> <pre> </pre> </td></tr>
 
 <tr>
-<td colspan="2"><b>Что делать:<p></b></td>
+<td colspan="2"><b>Что делать:</b><p></td>
 </tr>
 
 <tr>
@@ -75,7 +75,7 @@ howto_headline("Дополнение образов данными для исп
 </pre>
 
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.

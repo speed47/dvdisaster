@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: English homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 ?>
@@ -19,32 +19,32 @@ on doing the GNU/Linux version instead ;-)<p>
 <?php begin_screen_shot("Choosing files in the Windows version","filebrowser.png"); ?>
 
 <b>Choosing existing files.</b>
-The areas marked <font color="#008000">green</font> are used for choosing existing files.
+The areas marked <span class="green">green</span> are used for choosing existing files.
 Directories are picked and navigated in the left half of the dialog; the files
-contained are shown and selectable in the right half.</b><p>
+contained are shown and selectable in the right half.<p>
 
 <b>Choosing a name and location for new files.</b> 
 First choose a directory for the new file using the
-<font color="#008000">green</font> area in the left half of the dialog.
+<span class="green">green</span> area in the left half of the dialog.
 Then enter the name for the new file in the 
-text field marked <font color="0000A0">blue</font>. 
+text field marked <span class="blue">blue</span>. 
 To double check that you are creating the file in the right place please review
-the "Selection:" caption of the <font color="0000A0">blue</font> field; it contains the
+the "Selection:" caption of the <span class="blue">blue</span> field; it contains the
 drive letter and directory path under which the new file will be created.<p>
 
 <b>Switching between partitions ("drive letters").</b>
 
 The available partitions are listed in 
-the <font color="#e0b000">yellow</font> marked area. If the currently selected drive
+the <span class="yellow">yellow</span> marked area. If the currently selected drive
 contains lots of subdirectories you might have to scroll down to see the
 drive letters.<p>
 
 <b>Going back to the parent directory.</b>
-Click on the two dots (..) marked <font color="#a00000">red</font>
+Click on the two dots (..) marked <span class="red">red</span>
 to go back one directory level. All directories leading up to the current one
 are contained in the drop down menu centered at the top of the dialog
-(also marked <font color="#a00000">red</font>). 
+(also marked <span class="red">red</span>). 
 Note that this drop down menu is <i>not</i> used for switching drive letters;
-please use the <font color="#e0b000">yellow</font> part of the selection for that.
+please use the <span class="yellow">yellow</span> part of the selection for that.
 
 <?php end_screen_shot(); ?>

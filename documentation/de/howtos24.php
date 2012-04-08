@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -15,8 +15,8 @@ begin_page();
 howto_headline("Fehlerkorrektur-Datei erstellen", "Archivieren", "images/create-icon.png");
 ?>
 
-<!--- Insert actual page content below --->
-<h3>Tips zum Aufbewahren der Fehlerkorrektur-Datei</h3>
+<!-- Insert actual page content below -->
+<h3 class="top">Tips zum Aufbewahren der Fehlerkorrektur-Datei</h3>
 
 Zur Zeit gibt es kaum Wechselspeichersysteme, 
 die eine wirtschaftliche Alternative zu CD/DVD/BD-Formaten darstellen. 
@@ -25,13 +25,13 @@ auch auf diesen Formaten speichern.<p>
 
 Dagegen ist nichts einzuwenden, aber Sie müssen sich dabei bewußt sein, daß sich Ihre Nutzdaten und die Fehlerkorrektur-Dateien auf Speichermedien mit ähnlicher Verläßlichkeit befinden. Wenn Lesefehler auf einem zu rekonstruierenden Datenträger auftreten, so müssen Sie damit rechnen, daß die zur gleichen Zeit erstellte Scheibe mit den Fehlerkorrektur-Dateien ebenfalls nicht mehr vollständig lesbar ist.<p>
 
-<table width=100%><tr><td bgcolor=#000000 width=2><img width=1 height=1 alt=""></td>
+<table width="100%"><tr><td class="vsep"></td>
 <td>&nbsp;</td>
 <td>Es mag überraschend klingen, aber es kann nicht sichergestellt werden,
 daß eine Fehlerkorrektur-Datei funktionsfähig bleibt, wenn sie auf einem beschädigten
-Datenträger gespeichert ist.
-Die <a href="http://dvdisaster.net/legacy/de/background20.html">technischen Hintergründe</a>
-sind in der alten Dokumentation zu dvdisaster erklärt.
+Datenträger gespeichert ist - hier werden die
+<a href="qa32.php#file">technischen Hintergründe</a>
+erklärt.
 </td></tr></table><p>
 
 Deshalb ist es wichtig, die Fehlerkorrektur-Dateien genauso wie die übrigen Daten zu schützen. 
@@ -63,7 +63,7 @@ rekonstruieren, um an die Daten des ersten wieder heranzukommen ;-)
 </li>
 </ol>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 

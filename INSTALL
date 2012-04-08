@@ -11,7 +11,7 @@ Contents
 2. Operating system specific issues
 2.1 Windows
 2.1.1 Getting the GNU environment for Windows
-2.2 Mac OS X / Darwin
+2.2 (empty)
 2.3 FreeBSD
 2.3.1 Loading the atapicam kernel module by hand
 2.3.2 (Optionally) loading the atapicam kernel module permanently
@@ -77,24 +77,13 @@ see http://www.gimp.org/~tml/gimp/win32/downloads.html for details.
 You'll need both the normal and "-devel" versions of the libraries. 
 
 
-2.2 Mac OS X / Darwin
----------------------
-
-dvdisaster was ported by Julian Einwag to Darwin, 
-the Unix foundation of Mac OS X. 
-
-Currently dvdisaster needs to be built and run as an X11 application under Mac OS X;
-see http://developer.apple.com/opensource/tools/runningX11.html for more information.
-
-An Aqua compatible version of the Gtk+ library is under development, but not
-yet stable. As soon as this changes, dvdisaster will be able to run under
-Mac OS X without using X11.
-
+2.2 (removed)
+-------------
 
 2.3 FreeBSD
 -----------
 
-2.3.1 Loading the atapicam kernel module by hand (tested on FreeBSD 7.1)
+2.3.1 Loading the atapicam kernel module by hand (tested on FreeBSD 9)
 
 FreeBSD does not pre-install an uniform CD-ROM driver for SCSI and ATAPI drives 
 (as is the case in Linux and Windows). Therefore dvdisaster can not

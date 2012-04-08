@@ -1,6 +1,6 @@
 <?php
 # dvdisaster: German homepage translation
-# Copyright (C) 2004-2010 Carsten Gnörlich
+# Copyright (C) 2004-2012 Carsten Gnörlich
 #
 # UTF-8 trigger: äöüß 
 #
@@ -14,9 +14,9 @@ begin_page();
 
 ?>
 
-<!--- Insert actual page content below --->
+<!-- Insert actual page content below -->
 
-<h3>Laufwerk auswählen</h3>
+<h3 class="top">Laufwerk auswählen</h3>
 
 <?php begin_screen_shot("Laufwerk auswählen","dialog-drive-full.png"); ?>
 Das Auswahlfeld für die Laufwerke befindet sich oben links in der
@@ -41,14 +41,14 @@ Manchmal ist dieser Text nicht sehr aussagekräftig.<p></li>
 <b>Beispiele:</b>
 <table width="100%">
 <tr>
-<td width="50%" align="center"><img src="images/select-drive-linux.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-linux.png" alt="Bedienelement: Laufwerksauswahl in Linux"><br>
 Ausgeklappte Auswahl unter GNU/Linux</td>
-<td width="50%" align="center"><img src="images/select-drive-win.png"><br>
+<td class="w50p" align="center"><img src="images/select-drive-win.png" alt="Bedienelement: Laufwerksauswahl in Windows"><br>
 Ausgeklappte Auswahl unter Windows</td>
 </tr>
 </table><p>
 
-<!--- do not change below --->
+<!-- do not change below -->
 
 <?php
 # end_page() adds the footer line and closes the HTML properly.
