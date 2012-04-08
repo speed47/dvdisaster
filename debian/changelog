@@ -1,8 +1,9 @@
-dvdisaster (0.72.4-1) UNRELEASED; urgency=low
+dvdisaster (0.72.4-1) unstable; urgency=low
 
-  * New upstream; debian/patches/glib-single-include.patch: Fix glib include. (Closes: #665522)
+  * New upstream (Closes: #665522)
+  * debian/paches/04-manpage.patch: Removed (merged by upstream).
 
- -- TANIGUCHI Takaki <takaki@asis.media-as.org>  Sun, 08 Apr 2012 21:49:37 +0900
+ -- TANIGUCHI Takaki <takaki@debian.org>  Sun, 08 Apr 2012 22:02:16 +0900
 
 dvdisaster (0.72.3-2) unstable; urgency=low
 
