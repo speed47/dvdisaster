@@ -1,5 +1,5 @@
 #  Bash based configure - library of test functions
-#  Copyright (C) 2004-2012 Carsten Gnörlich
+#  Copyright (C) 2004-2015 Carsten Gnörlich
 #
 #  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
 #  Project homepage: http://www.dvdisaster.org
@@ -40,6 +40,7 @@
 # GET_MANDIR default	Where to install our man pages. The --mandir option will
 #			override the default setting.
 # GET_BUILDROOT		Temporary build directory for creating packages
+# GET_BUILDTMP		Scratch dir for .o files and other temporary build files
 # GET_DIR default name ... Creates a --namedir option for querying misc directories 
 # REQUIRE_X11 with-Xt	Require the X11 library and friends, if with-Xt is given.
 # REQUIRE_XPM		Require the Xpm library
@@ -62,20 +63,20 @@
 #
 # CHECK_ENDIAN		Test whether system is little or big endian
 # CHECK_BITNESS		Test whether system is 32bit or 64bit
-# CHECK_SSE2		Test whether when can compile for SSE2 extensions
-# CHECK_ALTIVEC		Test whether when can compile for AltiVec extensions
+# CHECK_SSE2		Test whether we can compile for SSE2 extensions
+# CHECK_ALTIVEC		Test whether we can compile for AltiVec extensions
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
 #			    to CFG_WITH_OPTIONS
-# WITH_MUDFLAP [single|multi] uses libmudflap
 
-CONFIGURE_VERSION="0.56"
+CONFIGURE_VERSION="0.58"
 
 echo "Bash based configure V$CONFIGURE_VERSION"
 echo
 
 # sed command to transform pipe contents into upcase
+# could be better done with tr ;-)
 
 SED_UPCASE="y%abcdefghijklmnopqrstuvwxyz%ABCDEFGHIJKLMNOPQRSTUVWXYZ%"
 
@@ -119,7 +120,7 @@ case "$cfg_uname" in
 
   Linux*) cfg_system=linux-std 
         CFG_SYS_OPTIONS="-DSYS_LINUX"
-	CFG_SYS_NAME="-DSYS_NAME=\\\"Linux\\\""
+	CFG_SYS_NAME="-DSYS_NAME=\\\"GNU/Linux\\\""
         CFG_EXE_SUFFIX=""
 	function add_linker_flags()
         {  lflags_return="-L$1 -Wl,-rpath,$1 $2"
@@ -204,6 +205,9 @@ do
   
   -buildroot=* | --buildroot=*)
     cfg_buildroot=$cfg_optarg ;;
+
+  -buildtmp=* | --buildtmp=*)
+    cfg_buildtmp=$cfg_optarg ;;
 
   # process the -with-foo=bar into $cfg_with_foo=bar
 
@@ -334,14 +338,42 @@ function REQUIRE_GCC()
 
    echo -n "Checking for gcc: "
 
-   if gcc -v >/dev/null 2>&1; then
-     if (gcc -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
-       then echo "yes"
-	    echo "CC = `which gcc`" >>Makefile.config
-	    CC=gcc
-	    return 0
-     fi;
-   fi;
+   # Try $CC first
+
+   if test -n "$CC" && $CC -v >/dev/null 2>&1; then
+     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
+       then CC=`which $CC`
+       	    echo "yes ($CC)"
+	    echo "CC = `which $CC`" >>Makefile.config
+     	    return 0
+     fi	   
+   fi
+
+   # Try gcc binary
+
+   CC=gcc
+   if test -n "$CC" && $CC -v >/dev/null 2>&1; then
+     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
+       then CC=`which $CC`
+	    echo "yes ($CC)"
+	    echo "CC = $CC" >>Makefile.config
+     	    return 0
+     fi	   
+   fi
+
+   # FreeBSD has not gcc symlink, just gccxx binaries
+
+   if test "$cfg_uname" == "FreeBSD"; then
+     CC=$(ls /usr/local/bin | grep -E "^gcc[0-9]*$" | sort -n -r | head -n 1)
+     if test -n "$CC" && $CC -v >/dev/null 2>&1; then
+     	if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
+       	then CC=`which $CC`
+	     echo "yes ($CC)"
+	     echo "CC = $CC" >>Makefile.config
+     	     return 0
+	fi 
+     fi	   
+   fi
 
    echo "no"
    echo "This package requires the GNU C compiler (gcc)."
@@ -400,75 +432,6 @@ function WITH_OPTION()
    else
 	echo "$cfg_user_arg (user supplied)"
 	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_${cooked_name}_$cfg_user_arg"
-   fi
-
-   export "cfg_with_$cooked_name"
-   return 0
-}
-
-# Special case for libmudflap
-
-function WITH_MUDFLAP()
-{  local thread_mode=$1
-
-   # first deal with help mode
-
-   if test -z "$thread_mode"; then 
-      echo "WITH_MUDFLAP needs one argument"
-      exit 1
-   fi
-
-   if test -n "$cfg_help_mode"; then
-      echo " --with-mudflap=[no | yes]"
-      return 0
-   fi
-
-   # now start the real processing
-   # if $cfg_with_$cooked_name is unset, we set it to "no".
-
-   echo -n " with mudflap: "
-
-   case $thread_mode in
-     single) LIBVER=mudflap;;
-     multi)  LIBVER=mudflapth;;
-   esac
-
-   eval "cfg_user_arg=\$cfg_with_mudflap"
-
-   if test -z "$cfg_user_arg" || test "$cfg_user_arg" == "no"; then
-	echo "no"
-	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_no"
-	eval "cfg_with_mudflap=no"
-   else
-        local cflags_save=$CFG_CFLAGS
-   	local lflags_save=$CFG_LDFLAGS
-   	local libs_save=$CFG_LIBS
-
-	CFG_CFLAGS="$CFG_CFLAGS -f$LIBVER"
-   	CFG_LDFLAGS="$CFG_LDFLAGS -f$LIBVER"
-   	CFG_LIBS="$CFG_LIBS -l$LIBVER"
-
-	echo "int main() { return 0; }" >conftest.c
-   	if ! try_compile; then
- 	  echo "$cfg_user_arg (user supplied, but seems not to work)"
-	  CFG_CFLAGS=$cflags_save
-   	  CFG_LDFLAGS=$ldflags_save
-   	  CFG_LIBS=$libs_save
-	  CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_no"
-	  eval "cfg_with_mudflap=no"
-	  return 0
-	fi	
-
-	CFG_CFLAGS=$cflags_save
-   	CFG_LDFLAGS=$ldflags_save
-   	CFG_LIBS=$libs_save
-
-	echo "CFG_MUDFLAP_CFLAGS=-f$LIBVER"  >> Makefile.config 
-   	echo "CFG_MUDFLAP_LFLAGS=-f$LIBVER" >> Makefile.config
-   	echo "CFG_MUDFLAP_LIBS=-l$LIBVER" >> Makefile.config
-
-	echo "$cfg_user_arg (user supplied)"
-	CFG_WITH_OPTIONS="$CFG_WITH_OPTIONS -Dwith_mudflap_$cfg_user_arg"
    fi
 
    export "cfg_with_$cooked_name"
@@ -674,8 +637,7 @@ function GET_MANDIR()
 # Preset the build root directory
 
 function GET_BUILDROOT() 
-{  local default="$1"
-
+{  
    if test -n "$cfg_help_mode"; then
      echo " --buildroot=DIR        install everything relative to given directory"
      echo "                        ONLY for creating packages, NOT for direct installation!"
@@ -688,6 +650,25 @@ function GET_BUILDROOT()
    else echo "Build root: " $BUILDROOT
    fi
    echo "CFG_BUILDROOT = $BUILDROOT" >> Makefile.config
+}
+
+# Preset the scratch directory for temporary build files
+
+function GET_BUILDTMP() 
+{  
+   BUILDTMP="$cfg_buildtmp"
+   if test -z "$BUILDTMP"; then
+        BUILDTMP=$(pwd)
+   fi	
+
+   if test -n "$cfg_help_mode"; then
+     echo " --buildtmp=DIR         put temporary build files (e.g. *.o files) into given directory"
+     echo "                        [$BUILDTMP]"
+     return 0
+   fi
+
+   echo "Build tmp: " $BUILDTMP
+   echo "CFG_BUILDTMP = $BUILDTMP" >> Makefile.config
 }
 
 # Query a misc directory.
@@ -1352,7 +1333,7 @@ Make sure you have the following packages installed:
 - pkg-config (sometimes, the obvious is overlooked ;-)
 - glib2
 
-Some Linux distributions distinguish between
+Some GNU/Linux distributions distinguish between
 end-user packages of the libraries (e.g. 'glib2') and
 versions suitable for building programs (e.g. 'glib2-devel').
 You might have to install the development versions explicitly
@@ -1453,7 +1434,7 @@ Make sure you have the following packages installed:
 - atk
 - gtk2
 
-Some Linux distributions (e.g. SuSE) distinguish between
+Some GNU/Linux distributions (e.g. SuSE) distinguish between
 end-user packages of the libraries (e.g. 'gtk2') and
 versions suitable for building programs (e.g. 'gtk2-devel').
 You might have to install the development versions explicitly
@@ -1541,7 +1522,7 @@ cat <<EOF
 
 Make sure you have sdl installed.
 
-Some Linux distributions (e.g. Debian) distinguish between
+Some GNU/Linux distributions (e.g. Debian) distinguish between
 end-user packages of the libraries (e.g. 'libsdl1.2') and
 versions suitable for building programs (e.g. 'libsdl1.2-dev').
 You might have to install the development versions explicitly
@@ -1994,7 +1975,8 @@ function CHECK_SSE2()
 	no)  echo " no (user supplied)"
 	        ;;
 	yes) echo " yes (user supplied)"
-	        CFG_SSE2_OPTIONS="-msse2 -DHAVE_SSE2"
+	        CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_SSE2"
+	        CFG_SSE2_OPTIONS="-msse2"
 	        ;;
         *) echo -e " $cfg_with_sse2 (illegal value)\n"
 	   echo "Please use one of the following values:"
@@ -2021,7 +2003,8 @@ EOF
    CFG_CFLAGS="-msse2 $CFG_CFLAGS"
    if try_compile; then
       echo " yes"
-      CFG_SSE2_OPTIONS="-msse2 -DHAVE_SSE2"
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_SSE2"
+      CFG_SSE2_OPTIONS="-msse2"
    else
       echo " no"
    fi
@@ -2051,7 +2034,8 @@ function CHECK_ALTIVEC()
        no)  echo " no (user supplied)"
                ;;
        yes) echo " yes (user supplied)"
-               CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+               CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_ALTIVEC"
+               CFG_ALTIVEC_OPTIONS="-maltivec"
                ;;
         *) echo -e " $cfg_with_altivec (illegal value)\n"
           echo "Please use one of the following values:"
@@ -2078,7 +2062,8 @@ EOF
    CFG_CFLAGS="-maltivec $CFG_CFLAGS"
    if try_compile; then
       echo " yes"
-      CFG_ALTIVEC_OPTIONS="-maltivec -DHAVE_ALTIVEC"
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_ALTIVEC"
+      CFG_ALTIVEC_OPTIONS="-maltivec"
    else
       echo " no"
    fi

@@ -1,23 +1,24 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *  Copyright (C) 2006 Andrei Grecu
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -1163,7 +1164,6 @@ int AckHeuristic(RawBuffer *rb)
    int i, j;
    int iteration=1;
    int p_err, q_err;
-   int p_decimated, q_decimated;
    int last_p_err = N_P_VECTORS;
    int last_q_err = N_Q_VECTORS;
    int last_p_failures = N_P_VECTORS;
@@ -1183,7 +1183,6 @@ int AckHeuristic(RawBuffer *rb)
       p_failures = q_failures = 0;
       p_corrected = q_corrected = 0;
       p_err = q_err = 0;
-      p_decimated = q_decimated = 0;
       
       /* Get the entire Q status */
       for(q = 0; q < N_Q_VECTORS; q++)
@@ -1863,8 +1862,8 @@ int AckHeuristic(RawBuffer *rb)
       
 #ifdef DEBUG_ACK_HEURISTIC
       printf("AH L-EC: iteration %d\n", iteration); 
-      printf("      Q-f/c/e + d: %2d/%2d/%2d + %2d\n", q_failures, q_corrected, q_err, q_decimated);
-      printf("      P-f/c/e + d: %2d/%2d/%2d + %2d\n", p_failures, p_corrected, p_err, p_decimated);
+      printf("      Q-f/c/e + d: %2d/%2d/%2d\n", q_failures, q_corrected, q_err);
+      printf("      P-f/c/e + d: %2d/%2d/%2d\n", p_failures, p_corrected, p_err);
 #endif
       
       if(p_failures + p_err + q_failures + q_err == 0) break;
@@ -1898,7 +1897,6 @@ int BruteForceSearchPlausibleSector(RawBuffer *rb)
    int p,q;
    int iteration=1;
    int p_err, q_err;
-   int p_decimated, q_decimated;
    int last_p_err = N_P_VECTORS;
    int last_q_err = N_Q_VECTORS;
    int last_p_failures = N_P_VECTORS;
@@ -1917,7 +1915,6 @@ int BruteForceSearchPlausibleSector(RawBuffer *rb)
       p_failures = q_failures = 0;
       p_corrected = q_corrected = 0;
       p_err = q_err = 0;
-      p_decimated = q_decimated = 0;
 
       /* Perform Q-Parity error correction */
       for(q = 0; q < N_Q_VECTORS; q++)
@@ -2118,8 +2115,8 @@ int BruteForceSearchPlausibleSector(RawBuffer *rb)
 
 #ifdef DEBUG_SEARCH_PLAUSIBLE
       Verbose("SPS L-EC: iteration %d\n", iteration); 
-      Verbose("      Q-f/c/e + d: %2d/%2d/%2d + %2d\n", q_failures, q_corrected, q_err, q_decimated);
-      Verbose("      P-f/c/e + d: %2d/%2d/%2d + %2d\n", p_failures, p_corrected, p_err, p_decimated);
+      Verbose("      Q-f/c/e + d: %2d/%2d/%2d\n", q_failures, q_corrected, q_err);
+      Verbose("      P-f/c/e + d: %2d/%2d/%2d\n", p_failures, p_corrected, p_err);
 #endif
 
       if(p_failures + p_err + q_failures + q_err == 0) break;

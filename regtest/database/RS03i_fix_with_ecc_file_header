@@ -1,0 +1,171 @@
+95b221fd894f6adb6f6e8d3b89583fb6
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso
+ExamineUDF(File: rs03i-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs03i-tmp.iso
+try_sector: trying sector 21000
+try_sector: no cookie, skipping current modulo
+try_sector: trying sector 20850
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4611686018427387904
+FindHeaderInMedium: Trying modulo 2305843009213693952
+FindHeaderInMedium: Trying modulo 1152921504606846976
+FindHeaderInMedium: Trying modulo 576460752303423488
+FindHeaderInMedium: Trying modulo 288230376151711744
+FindHeaderInMedium: Trying modulo 144115188075855872
+FindHeaderInMedium: Trying modulo 72057594037927936
+FindHeaderInMedium: Trying modulo 36028797018963968
+FindHeaderInMedium: Trying modulo 18014398509481984
+FindHeaderInMedium: Trying modulo 9007199254740992
+FindHeaderInMedium: Trying modulo 4503599627370496
+FindHeaderInMedium: Trying modulo 2251799813685248
+FindHeaderInMedium: Trying modulo 1125899906842624
+FindHeaderInMedium: Trying modulo 562949953421312
+FindHeaderInMedium: Trying modulo 281474976710656
+FindHeaderInMedium: Trying modulo 140737488355328
+FindHeaderInMedium: Trying modulo 70368744177664
+FindHeaderInMedium: Trying modulo 35184372088832
+FindHeaderInMedium: Trying modulo 17592186044416
+FindHeaderInMedium: Trying modulo 8796093022208
+FindHeaderInMedium: Trying modulo 4398046511104
+FindHeaderInMedium: Trying modulo 2199023255552
+FindHeaderInMedium: Trying modulo 1099511627776
+FindHeaderInMedium: Trying modulo 549755813888
+FindHeaderInMedium: Trying modulo 274877906944
+FindHeaderInMedium: Trying modulo 137438953472
+FindHeaderInMedium: Trying modulo 68719476736
+FindHeaderInMedium: Trying modulo 34359738368
+FindHeaderInMedium: Trying modulo 17179869184
+FindHeaderInMedium: Trying modulo 8589934592
+FindHeaderInMedium: Trying modulo 4294967296
+FindHeaderInMedium: Trying modulo 2147483648
+FindHeaderInMedium: Trying modulo 1073741824
+FindHeaderInMedium: Trying modulo 536870912
+FindHeaderInMedium: Trying modulo 268435456
+FindHeaderInMedium: Trying modulo 134217728
+FindHeaderInMedium: Trying modulo 67108864
+FindHeaderInMedium: Trying modulo 33554432
+FindHeaderInMedium: Trying modulo 16777216
+FindHeaderInMedium: Trying modulo 8388608
+FindHeaderInMedium: Trying modulo 4194304
+FindHeaderInMedium: Trying modulo 2097152
+FindHeaderInMedium: Trying modulo 1048576
+FindHeaderInMedium: Trying modulo 524288
+FindHeaderInMedium: Trying modulo 262144
+FindHeaderInMedium: Trying modulo 131072
+FindHeaderInMedium: Trying modulo 65536
+FindHeaderInMedium: Trying modulo 32768
+FindHeaderInMedium: Trying modulo 16384
+try_sector: trying sector 16384
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 8192
+try_sector: trying sector 24576
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4096
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 2048
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 1024
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 512
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 256
+try_sector: trying sector 24832
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 128
+try_sector: trying sector 24960
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 64
+Sector 24960 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 32
+Sector 24960 cached; skipping modulo
+...trying RS03
+RS03RecognizeImage: file rs03i-tmp.iso
+FindRS03HeaderInImage: file rs03i-tmp.iso
+.. Ecc file header in image - IGNORED
+RS03RecognizeImage: No EH, entering exhaustive search
+Warning: image size set to 25000 for debugging!
+.. trying layer size 98
+Scanning layers for signatures.
+- layer slice 0
+** Success: sector 21070, rediscovered format with 39 roots
+...augmented image found
+GetImageFingerprint(16): read & cached
+: 24990 medium sectors.
+Calculated layout for RS03 image:
+data sectors      = 21000
+data padding      = 68
+layer size        = 98
+total sectors     = 24990
+medium capacity   = 0
+header position   = 21000
+first CRC sector  = 21070
+first ECC sector  = 21168
+ndata             = 216
+nroots            = 39 (18.1%)
+
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+Ecc progress:   0.0%Ecc progress:   1.0%Ecc progress:   2.0%Ecc progress:   3.0%Ecc progress:   4.0%Ecc progress:   5.1%Ecc progress:   6.1%Ecc progress:   7.1%Ecc progress:   8.1%Ecc progress:   9.1%Ecc progress:  10.2%Ecc progress:  11.2%Ecc progress:  12.2%Ecc progress:  13.2%Ecc progress:  14.2%Ecc progress:  15.3%Ecc progress:  16.3%Ecc progress:  17.3%Ecc progress:  18.3%Ecc progress:  19.3%Ecc progress:  20.4%Ecc progress:  21.4%Ecc progress:  22.4%Ecc progress:  23.4%Ecc progress:  24.4%Ecc progress:  25.5%Ecc progress:  26.5%Ecc progress:  27.5%CRC error in sector 21000
+-> CRC-predicted error in sector 21000 at byte   16 (value 02 '.', expected 00 '.')
+-> CRC-predicted error in sector 21000 at byte   96 (value 8e '.', expected 32 '2')
+-> CRC-predicted error in sector 21000 at byte   97 (value 2b '+', expected 3d '=')
+-> CRC-predicted error in sector 21000 at byte   98 (value 89 '.', expected 37 '7')
+-> CRC-predicted error in sector 21000 at byte   99 (value 1d '.', expected 91 '.')
+    1 repaired sectors: 21000c 
+Ecc progress:  28.5%Ecc progress:  29.5%Ecc progress:  30.6%Ecc progress:  31.6%Ecc progress:  32.6%Ecc progress:  33.6%Ecc progress:  34.6%Ecc progress:  35.7%Ecc progress:  36.7%Ecc progress:  37.7%Ecc progress:  38.7%Ecc progress:  39.7%Ecc progress:  40.8%Ecc progress:  41.8%Ecc progress:  42.8%Ecc progress:  43.8%Ecc progress:  44.8%Ecc progress:  45.9%Ecc progress:  46.9%Ecc progress:  47.9%Ecc progress:  48.9%Ecc progress:  50.0%Ecc progress:  51.0%Ecc progress:  52.0%Ecc progress:  53.0%Ecc progress:  54.0%Ecc progress:  55.1%Ecc progress:  56.1%Ecc progress:  57.1%Ecc progress:  58.1%Ecc progress:  59.1%Ecc progress:  60.2%Ecc progress:  61.2%Ecc progress:  62.2%Ecc progress:  63.2%Ecc progress:  64.2%Ecc progress:  65.3%Ecc progress:  66.3%Ecc progress:  67.3%Ecc progress:  68.3%Ecc progress:  69.3%Ecc progress:  70.4%Ecc progress:  71.4%Ecc progress:  72.4%Ecc progress:  73.4%Ecc progress:  74.4%Ecc progress:  75.5%Ecc progress:  76.5%Ecc progress:  77.5%Ecc progress:  78.5%Ecc progress:  79.5%Ecc progress:  80.6%Ecc progress:  81.6%Ecc progress:  82.6%Ecc progress:  83.6%Ecc progress:  84.6%Ecc progress:  85.7%Ecc progress:  86.7%Ecc progress:  87.7%Ecc progress:  88.7%Ecc progress:  89.7%Ecc progress:  90.8%Ecc progress:  91.8%Ecc progress:  92.8%Ecc progress:  93.8%Ecc progress:  94.8%Ecc progress:  95.9%Ecc progress:  96.9%Ecc progress:  97.9%Ecc progress:  98.9%Ecc progress: 100.0%
+Repaired sectors: 1 (1 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.0; worst = 1.
+
+Summary of processed sectors:
+1 damaged sectors
+1 CRC errors
+5 of 200704 ecc blocks damaged (1 / 98 sectors)
+all data sectors processed
+all  crc sectors processed
+all  ecc sectors processed

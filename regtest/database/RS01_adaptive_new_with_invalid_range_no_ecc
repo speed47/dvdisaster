@@ -1,0 +1,24 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Adaptive reading: Stopping when unreadable intervals < 16.
+* Warning: Using adaptive reading without error correction data
+*          has little advantage over linear reading, but may
+*          cause significant wear on the drive due to excessive
+*          seek operations.
+*          Please consider using linear reading instead.
+
+*
+* dvdisaster - can not continue:
+*
+Sectors must be in range [0..20999].
+
+

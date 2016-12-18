@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -67,6 +68,15 @@ static void menu_cb(GtkWidget *widget, gpointer data)
         break;
 
       case MENU_FILE_QUIT:
+	/* If an action is currently running with spawned threads,
+	   give them time to terminate cleanly. */
+   
+	if(Closure->subThread)
+	{  Closure->stopActions = STOP_SHUTDOWN_ALL;
+
+	   g_thread_join(Closure->subThread);
+	}
+
 	/* Extract current file selections so that they are saved in the .dvdisaster file */
    
 	g_free(Closure->imageName);
@@ -101,7 +111,7 @@ static void menu_cb(GtkWidget *widget, gpointer data)
 	break;
 
       case MENU_HELP_MANUAL:
-	ShowHTML(NULL);
+	ShowPDF(NULL);
 	break;
 
       case MENU_HELP_ABOUT:
@@ -195,8 +205,8 @@ GtkWidget *CreateMenuBar(GtkWidget *parent)
 
    menu_strip = gtk_menu_new();
 
-   add_menu_button(menu_strip, _("menu|Select Image"), MENU_FILE_IMAGE);
-   add_menu_button(menu_strip, _("menu|Select Parity File"), MENU_FILE_ECC);
+   Closure->fileMenuImage = add_menu_button(menu_strip, _("menu|Select Image"), MENU_FILE_IMAGE);
+   Closure->fileMenuEcc   = add_menu_button(menu_strip, _("menu|Select Parity File"), MENU_FILE_ECC);
    add_menu_button(menu_strip, _("menu|Quit"), MENU_FILE_QUIT);
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|File"));
@@ -213,7 +223,7 @@ GtkWidget *CreateMenuBar(GtkWidget *parent)
    if(Closure->debugMode && !Closure->screenShotMode)
       add_menu_button(menu_strip, _("menu|Raw sector editor"), MENU_TOOLS_RAW_EDITOR);
    
-   menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
+   Closure->toolMenuAnchor = menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
    gtk_menu_bar_append(GTK_MENU_BAR(menu_bar), menu_anchor);
 
@@ -396,8 +406,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
  */
 
 void set_path(GtkWidget *entry, char *path)
-{ char *ignore;
-
+{
   if(path[0] == '/' || path[0] == '\\' || path[1] == ':' || strlen(path) < 1)
    {  gtk_entry_set_text(GTK_ENTRY(entry), path);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
@@ -405,13 +414,9 @@ void set_path(GtkWidget *entry, char *path)
    else
    {  char buf[PATH_MAX + strlen(path) + 2];
 
-#ifdef SYS_MINGW
-      ignore = getcwd(buf, PATH_MAX);
-      strcat(buf,"\\");
-#else
-      ignore = getcwd(buf, PATH_MAX);
+      getcwd(buf, PATH_MAX);
       strcat(buf,"/");
-#endif
+
       strcat(buf,path);
       gtk_entry_set_text(GTK_ENTRY(entry), buf);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
@@ -463,7 +468,7 @@ GtkWidget *CreateToolBar(GtkWidget *parent)
    gtk_widget_set_events(ebox, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
    gtk_box_pack_start(GTK_BOX(box), ebox, FALSE, FALSE, 0);
    AttachTooltip(ebox, _("tooltip|Drive selection"), _("Use the nearby drop-down list to select the input drive."));
-   icon = gtk_image_new_from_stock(GTK_STOCK_CDROM, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_stock("dvdisaster-cd", GTK_ICON_SIZE_LARGE_TOOLBAR);
    gtk_container_add(GTK_CONTAINER(ebox), icon);
 
    Closure->driveCombo = combo_box = gtk_combo_box_new_text();
@@ -547,7 +552,7 @@ GtkWidget *CreateToolBar(GtkWidget *parent)
 
    /*** Preferences button */
 
-   icon = gtk_image_new_from_stock(GTK_STOCK_PREFERENCES, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_stock("dvdisaster-gtk-preferences", GTK_ICON_SIZE_LARGE_TOOLBAR);
    Closure->prefsButton = prefs = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(prefs), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(prefs), icon);
@@ -557,17 +562,17 @@ GtkWidget *CreateToolBar(GtkWidget *parent)
 
    /*** Help button */
 
-   icon = gtk_image_new_from_stock(GTK_STOCK_HELP, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_stock("dvdisaster-gtk-help", GTK_ICON_SIZE_LARGE_TOOLBAR);
    Closure->helpButton = help = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(help), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(help), icon);
    g_signal_connect(G_OBJECT(help), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_HELP_MANUAL);
    gtk_box_pack_start(GTK_BOX(box), help, FALSE, FALSE, 0);
-   AttachTooltip(help, _("tooltip|User manual"), _("Displays the user manual (external HTML browser required)."));
+   AttachTooltip(help, _("tooltip|User manual"), _("Displays the user manual (external PDF viewer required)."));
 
    /*** Quit button */
 
-   icon = gtk_image_new_from_stock(GTK_STOCK_QUIT, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_stock("dvdisaster-gtk-quit", GTK_ICON_SIZE_LARGE_TOOLBAR);
    quit = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(quit), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(quit), icon);

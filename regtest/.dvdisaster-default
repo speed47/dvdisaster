@@ -1,0 +1,65 @@
+# dvdisaster-0.79.5 Konfigurations-Datei
+# Dies ist eine automatisch erzeugte Datei.
+# Sie wird bei jedem Aufruf von dvdisaster neu überschrieben.
+
+last-device:       sim-cd
+last-image:        /dev/shm/medium.iso
+last-ecc:          /dev/shm/medium.ecc
+
+adaptive-read:     0
+auto-suffix:       0
+bd-size1:          11826176
+bd-size2:          23652352
+cache-size:        32
+cd-size:           359424
+codec-threads:     2
+confirm-deletion:  0
+dao:               0
+defective-dump:    0
+defective-dir:     /home/cg
+defective-prefix:  sektor_
+dotfile-version:   7905
+dvd-size1:         2295104
+dvd-size2:         4171712
+ecc-target:        1
+eject:             0
+encoding-algorithm:0
+encoding-io-strategy:0
+examine-rs02:      0
+examine-rs03:      0
+fill-unreadable:   -1
+ignore-fatal-sense: 0
+ignore-iso-size:   0
+internal-attempts: -1
+jump:              16
+log-file-enabled:  0
+log-file:          /tmp/.dvdisaster.log
+medium-size:       25000
+method-name:       RS01
+max-read-attempts: 1
+min-read-attempts: 1
+old-missing-sector-marker: 0
+pdf-viewer:        evince
+prefetch-sectors:  128
+raw-mode:          32
+read-and-create:   0
+read-medium:       0
+read-raw:          0
+redundancy:        normal
+reverse-cancel-ok: 0
+spinup-delay:      0
+unlink:            0
+verbose:           0
+welcome-msg:       0
+
+positive-text:       008000
+negative-text:       ff0000
+bar-color:           ff0000
+log-color:           ff00ff
+curve-color:         0000ff
+defective-sector:    ff0000
+bad-checksum-sector: ffc000
+good-sector:         00db00
+ignored-sector:      0000ff
+highlit-sector:      ffffff
+present-sector:      008000

@@ -1,25 +1,26 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
  *  The Reed-Solomon error correction draws a lot of inspiration - and even code -
  *  from Phil Karn's excellent Reed-Solomon library: http://www.ka9q.net/code/fec/
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -84,7 +85,7 @@ void FreeGaloisTables(GaloisTables *gt)
 }
 
 /***
- *** Create the the Reed-Solomon generator polynomial
+ *** Create the Reed-Solomon generator polynomial
  *** and some auxiliary data structures.
  */
 
@@ -95,6 +96,7 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
 {  ReedSolomonTables *rt = g_malloc0(sizeof(ReedSolomonTables));
    int lut_size, feedback;
    gint32 i,j,root;
+   guint8 *lut;
 
    rt->gfTables = gt;
    rt->fcr      = first_consecutive_root;
@@ -151,7 +153,9 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
      rt->shiftInit = 0;
 
    /*
-    * Initialize lookup tables for the 8bit encoder 
+    * Initialize lookup tables for both encoder types.
+    * The 32bit portable encoder will shift them to word boundaries,
+    * while the SSE2 encoder does direct unaligned reads.
     */
 
    lut_size = (rt->nroots+15)&~15;
@@ -170,6 +174,15 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
       }
    }
 
+   /*
+    * Prepare lookup table for syndrome calculation.
+    */
+
+   lut = rt->synLut = g_malloc(rt->nroots * GF_FIELDSIZE * sizeof(int));
+   for(i=0; i<rt->nroots; i++)
+     for(j=0; j<GF_FIELDSIZE; j++)
+       *lut++ = gt->alphaTo[mod_fieldmax(gt->indexOf[j] + (rt->fcr+i)*rt->primElem)];
+
    return rt;
 }
 
@@ -181,6 +194,7 @@ void FreeReedSolomonTables(ReedSolomonTables *rt)
   for(i=0; i<GF_FIELDSIZE; i++)
   {  g_free(rt->bLut[i]);
   }
+  g_free(rt->synLut);
 
   g_free(rt);
 }

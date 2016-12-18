@@ -1,0 +1,33 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Completing image rs01-tmp.iso. Only missing sectors will be read.
+* Unrecoverable sector found!
+* 
+* Sector 3030 is marked unreadable and annotated to be
+* in a different location (3130).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* ... more unrecoverable sectors found ...
+* further messages are suppressed unless the -v option is given.
+Read position:  21.0% (nn.nx)Read position:  21.1% (nn.nx)
+3 sectors read.     

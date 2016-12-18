@@ -9,13 +9,10 @@ Contents
 1.2 Gtk+ and localozation support
 
 2. Operating system specific issues
-2.1 Windows
-2.1.1 Getting the GNU environment for Windows
-2.2 (empty)
-2.3 FreeBSD
-2.3.1 Loading the atapicam kernel module by hand
-2.3.2 (Optionally) loading the atapicam kernel module permanently
-2.3.3 (Optionally) recompiling the kernel
+2.1 FreeBSD
+2.1.1 Required packages
+2.2 NetBSD
+2.2.1 Required packages
 
 3. Compiling the source code
 3.1 Unpacking the source code archive
@@ -26,7 +23,10 @@ Contents
 4.1 Installation of the program
 4.2 Removing an installation
 
-5. Program documentation
+5 Running the program
+5.1 Program documentation
+5.2 FreeBSD hints
+5.3 NetBSD hints
 
 =======================================================
 
@@ -38,13 +38,19 @@ Contents
 
 dvdisaster requires the usual GNU development tools for compiling 
 C programs. You must have gcc, GNU make, the bash shell and the
-GNU fileutils and textutils packages installed. Other versions
-of these tools will not work and patches for them will not be accepted.
+GNU fileutils and textutils packages installed.
+Using other compilers and tools is currently not tested,
+recommended or supported in any way. Patches for them will
+not be accepted.
 
 FreeBSD, Linux and NetBSD typically come with suitable packages on 
 their installation media. Sometimes these packages are not installed
 completely by default; you may need to install their development versions
 also. The additional packages are usually suffixed with "-devel" or "-dev".
+
+See Section 3.2 for information on configuring the build process,
+and for specifying the compiler.
+
 
 1.2 Gtk+ and localization support
 ---------------------------------
@@ -52,75 +58,43 @@ also. The additional packages are usually suffixed with "-devel" or "-dev".
 Depending on your operating system you will also need:
 
 - The gettext library			http://www.gnu.org/software/gettext/
-- The iconv library (only for Windows)	http://www.gnu.org/software/libiconv/
 - The pkgconfig tool			http://www.freedesktop.org/software/pkgconfig/releases
 - The GTK+ library version 2.2 or better,    http://www.gtk.org
   including all auxiliary libraries.
 
-Again, the freeware Unices should have suitable packages on their distribution media.
+Again, the supported Unices should have suitable packages on their distribution media.
 
 
 2. Operating system specific issues
 ===================================
 
-2.1 Windows
+2.1 FreeBSD
 -----------
 
-2.1.1 Getting the GNU environment for Windows
+2.1.1 Required packages
 
-For Windows the GNU tools are available in the MingW framework: 
-See http://www.mingw.org.
-Building under Cygwin is not supported.
+For your convenience, building dvdisaster required
+the following packages under FreeBSD 10.1:
 
-The Gtk+ project offers pre-compiled Windows versions of their libraries;
-see http://www.gimp.org/~tml/gimp/win32/downloads.html for details.
-You'll need both the normal and "-devel" versions of the libraries. 
+# pkg install bash
+# pkg install gmake
+# pkg install gettext
+# pkg install gcc
+# pkg install pkgconf
+# pkg install gtk2
 
+2.2 NetBSD
+----------
 
-2.2 (removed)
--------------
+2.2.1 Required packages
 
-2.3 FreeBSD
------------
+For your convenience, building dvdisaster required
+the following packages under NetBSD 9.0:
 
-2.3.1 Loading the atapicam kernel module by hand (tested on FreeBSD 9)
-
-FreeBSD does not pre-install an uniform CD-ROM driver for SCSI and ATAPI drives 
-(as is the case in Linux and Windows). Therefore dvdisaster can not
-use any ATAPI drives in an out-of-the-box FreeBSD installation. 
-
-To manually load the required kernel module, do:
-
-root@freebsd# kldload atapicam
-
-Use the follwing command to see if any CD/DVD/BD drives became
-available:
-
-root@freebsd# camcontrol devlist
-<NAME OF YOUR DRIVE>                at scbus1 target 0 lun 0 (pass0,cd0)
-
-
-2.3.2 (Optionally) loading the atapicam kernel module permanently
-
-If the above step works you can load the kernel module at boot 
-time by adding the line
-
-atapicam_load="YES"
-
-at the end of /boot/loader.conf.local
-
-
-
-2.3.3 (Optionally) recompiling the kernel
-
-If the atapicam kernel module is not available (check the contents
-of /boot/kernel) you will need to recompile the kernel with the following 
-additional device line in the kernel configuration:
-
-device atapicam
-
-The devices ata, scbus, cd, and pass are also required, 
-but are included by default in FreeBSD 6.0 and later.
+# pkg_add bash
+# pkg_add gmake
+# pkg_add pkg-config
+# pkg_add gtk2+
 
 
 3. Compiling the source code
@@ -137,11 +111,11 @@ Please change into a directory which is writeable
 for you and unpack the source code archive:
 
 user@host> cd /var/tmp
-user@host> tar xjf dvdisaster-0.72.1.tar.bz2
+user@host> tar xjf dvdisaster-0.79.5.tar.bz2
 
 Then change into the newly created directory:
 
-user@host> cd /var/tmp/dvdisaster-0.72.1
+user@host> cd /var/tmp/dvdisaster-0.79.5
 
 3.2. Configuring the package
 ----------------------------
@@ -161,10 +135,21 @@ The "--help" option will also give information about some
 options which are useful if you plan to install the package
 to a certain location.
 
-Please note that the ==buildroot=DIR option is mainly useful for
+Please note that the --buildroot=DIR option is mainly useful for
 package maintainers, but will mess up things when trying a direct
 install via "make install".
 
+If your gcc compiler resides in an unusual place, specify it
+by setting the CC environment variable for the ./configure
+script. Example (may be helpful for FreeBSD):
+
+CC=/usr/local/bin/gcc48 ./configure
+
+Please note that changing CC at a later time, e.g. when doing
+the make step, has no effect.
+
+After ./configure has been run, do a "make show" to review
+the settings obtained by the configuration.
 
 3.3 Compiling the package
 -------------------------
@@ -179,23 +164,17 @@ On some systems, GNU make must be invoked as "make".
 Invoke the program for a quick test:
 
 user@linux> ./dvdisaster
-user@windows>./dvdisaster-win
 
 After a short moment the main window should open an the program
 is ready for use. Working with the program from the current 
 directory (e.g. without installation) is okay.
-
-On windows two program version are provided as it is not possible
-to have the same binary operate in command line and window mode
-there. dvdisaster.exe is the command line version, while
-dvdisaster-win.exe provides the graphical user interface.
 
 
 4. Installation
 ===============
 
 4.1 Installation of the program
-===============================
+-------------------------------
 
 To install the program and documentation permanently
 on your system, become root and do:
@@ -208,7 +187,7 @@ Enter "bash configure --help" to get information on changing the installation
 paths.
 
 4.2. Removing an installation
-=============================
+-----------------------------
 
 During the installation process a shell script is created
 which can be used to remove dvdisaster from your system:
@@ -220,16 +199,68 @@ please remove the directory you have created as described
 in section 3.1:
 
 user@host> cd /var/tmp
-user@host> rm -rf dvdisaster-0.72.1
+user@host> rm -rf dvdisaster-0.79.5
 
 
-5. Program documentation
-========================
+5. Running the program
+======================
+
+5.1 Program documentation
+-------------------------
 
 The online documentation is located in the
-sub directory documentation/en. 
+sub directory documentation/manual.pdf
 You can also press the respective toolbar button 
 in dvdisaster to view the online docs.
+
+5.2 FreeBSD hints
+-----------------
+
+Running as an unpriviledged user
+
+If you want to run dvdisaster as an unpriviledged
+user (which is recommended), make sure that the
+respective user is member of the "operator" group
+and that he has read _and_ write permission on the
+optical drive, e.g. /dev/pass1.
+
+Use camcontrol to find out which passthrough device
+is assigned to your drive:
+
+root@freebsd# camcontrol devlist
+<NAME OF YOUR DRIVE>  at scbus1 target 0 lun 0 (pass1,cd0)
+
+You can change permission permanently by adding the
+following line to /etc/devfs.conf:
+
+perm pass1 0660
+
+To make the change available immediately, restart devfs:
+
+root@freebsd# /etc/rc.d/devfs restart
+
+
+Avoid copy-on-write filesystems
+
+dvdisaster assumes that ISO images are laid out
+sequentially on the hard disk, and that it can
+rewrite sectors in place. Therefore avoid
+processing images on ZFS volumes, as reading and
+recovering defective images may lead to serious
+fragmentation and performance hits.
+
+
+5.3 NetBSD hints
+----------------
+
+Running as an unpriviledged user
+
+If you want to run dvdisaster as an unpriviledged
+user (which is recommended), make sure that the
+respective user is member of the "operator" group
+and that he has read _and_ write permission on the
+optical drive, e.g. /dev/rcd0d.
+
 
 
 Enjoy using dvdisaster!

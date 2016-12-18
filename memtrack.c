@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #define _GNU_SOURCE
@@ -72,6 +73,7 @@ static int phCnt[64];
 static int phMax[64];
 static int currentAllocation;		/* current memory allocation */
 static int peakAllocation;		/* maximum allocation */
+static GMutex phMutex;
 
 /*
  * Remember an allocated pointer. 
@@ -80,9 +82,8 @@ static int peakAllocation;		/* maximum allocation */
 void remember(void *ptr, int size, char *file, int line)
 {  memchunk *mc;
    int hash_idx;
-   static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
 
-   g_static_mutex_lock(&mutex);
+   g_mutex_lock(&phMutex);
 
    hash_idx = (((long)ptr)>>3)&63;
    if(phCnt[hash_idx] >= phMax[hash_idx])
@@ -106,7 +107,7 @@ void remember(void *ptr, int size, char *file, int line)
    if(currentAllocation > peakAllocation)
       peakAllocation = currentAllocation;
 
-   g_static_mutex_unlock(&mutex);
+   g_mutex_unlock(&phMutex);
 } 
 
 /*
@@ -114,12 +115,11 @@ void remember(void *ptr, int size, char *file, int line)
  */
 
 int forget(void *ptr)
-{  static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-   memchunk **ptrlist;
+{  memchunk **ptrlist;
    int hash_idx;
    int i;
 
-   g_static_mutex_lock(&mutex);
+   g_mutex_lock(&phMutex);
 
    hash_idx = (((long)ptr)>>3)&63;
    ptrlist = ptrhash[hash_idx];
@@ -132,11 +132,11 @@ int forget(void *ptr)
 	 if(phCnt[hash_idx] > 0)
 	    ptrlist[i] = ptrlist[phCnt[hash_idx]];
 
-	 g_static_mutex_unlock(&mutex);
+	 g_mutex_unlock(&phMutex);
          return 0;
       }
 
-   g_static_mutex_unlock(&mutex);
+   g_mutex_unlock(&phMutex);
    return 1;
 }
 
@@ -147,14 +147,25 @@ int forget(void *ptr)
 static void print_ptr(memchunk *mc, int size)
 {  char strbuf[16];
    char *ptr = (char*)mc->ptr; 
-   int j,maxlen;
+   int j;
 
-   if(mc->size < size) maxlen = mc->size; else maxlen = size;
+   /* print the pointer */
+
    for(j=0; j<15; j++)
    {  if(ptr[j]<32) break;
       strbuf[j] = ptr[j];
    } 
 
+#ifdef HAVE_64BIT
+   if(j) 
+   {  strbuf[j]=0;
+      g_printf("Address 0x%llx (\"%s\"), %d bytes, from %s, line %d\n",
+	       (unsigned long long)mc->ptr,strbuf,mc->size,mc->file,mc->line);
+   }
+   else 
+     g_printf("Address 0x%llx (binary data), %d bytes, from %s, line %d\n",
+	      (unsigned long long)mc->ptr,mc->size,mc->file,mc->line);
+#else /* hopefully 32BIT */
    if(j) 
    {  strbuf[j]=0;
       g_printf("Address 0x%lx (\"%s\"), %d bytes, from %s, line %d\n",
@@ -163,6 +174,7 @@ static void print_ptr(memchunk *mc, int size)
    else 
      g_printf("Address 0x%lx (binary data), %d bytes, from %s, line %d\n",
 	      (unsigned long)mc->ptr,mc->size,mc->file,mc->line);
+#endif
 }
 
 static void print_ptrs(char *msg)
@@ -333,6 +345,6 @@ void check_memleaks(void)
 	      " non-freed memory chunks detected.\n\n");
       print_ptrs(msg);
    }
-   else g_printf("\ndvdisaster: No memory leaks found.\n");
+   else g_printf("dvdisaster: No memory leaks found.\n");
 }
 

@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -337,7 +338,7 @@ void CreateRS02VerifyWindow(Method *self, GtkWidget *parent)
  */
 
 typedef struct
-{  LargeFile *file;
+{  Image *image;
    EccHeader *eh;
    RS02Layout *lay;
    RS02Widgets *wl;
@@ -350,12 +351,12 @@ typedef struct
 static void cleanup(gpointer data)
 {  verify_closure *cc = (verify_closure*)data;
 
-   Closure->cleanupProc = NULL;
+   UnregisterCleanup();
 
    if(Closure->guiMode)
       AllowActions(TRUE);
 
-   if(cc->file) LargeClose(cc->file);
+   if(cc->image) CloseImage(cc->image);
    if(cc->lay) g_free(cc->lay);
    if(cc->map) FreeBitmap(cc->map);
    if(cc->crcBuf) g_free(cc->crcBuf);
@@ -380,7 +381,8 @@ static void read_crc(verify_closure *cc, RS02Layout *lay)
    gint64 crc_sector,s;
    int i,crc_idx;
    int crc_valid = 1;
-
+   int unrecoverable_sectors = 0;
+   
    /* Allocate buffer for ascending sector order CRCs */
 
    cc->crcBuf   = g_malloc(2048 * lay->crcSectors);
@@ -389,7 +391,7 @@ static void read_crc(verify_closure *cc, RS02Layout *lay)
 
    /* First sector containing crc data */
 
-   if(!LargeSeek(cc->file, 2048*(lay->dataSectors+2)))
+   if(!LargeSeek(cc->image->file, 2048*(lay->dataSectors+2)))
      Stop(_("Failed seeking to sector %lld in image: %s"), 
 	  lay->dataSectors+2, strerror(errno));
    crc_sector = lay->dataSectors+2;
@@ -429,12 +431,12 @@ static void read_crc(verify_closure *cc, RS02Layout *lay)
 	    if(crc_idx >= 512)
 	    {  int err;
  
-	       if(LargeRead(cc->file, crc_buf, 2048) != 2048)
+	       if(LargeRead(cc->image->file, crc_buf, 2048) != 2048)
 		  Stop(_("problem reading crc data: %s"), strerror(errno));
 
 	       err = CheckForMissingSector((unsigned char*)crc_buf, crc_sector, eh->mediumFP, eh->fpSector);
 	       if(err != SECTOR_PRESENT)
-		  ExplainMissingSector((unsigned char*)crc_buf, crc_sector, err, TRUE);
+		 ExplainMissingSector((unsigned char*)crc_buf, crc_sector, err, SOURCE_IMAGE, &unrecoverable_sectors);
 
 	        crc_sector++;
 	        crc_valid = (err == SECTOR_PRESENT);
@@ -488,8 +490,6 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 	 else damaged_sectors++;
       }
 
-      Verbose("Ecc block %d: %d erasures\n", eccblock, count);
-
       if(count>0)                damaged_eccsecs++;
       if(count>worst_ecc)        worst_ecc = count; 
       if(count<=vc->lay->nroots) correctable += count;
@@ -535,10 +535,10 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
  * The verify action
  */
 
-void RS02Verify(Method *self)
+void RS02Verify(Image *image)
 {  verify_closure *cc = g_malloc0(sizeof(verify_closure));
+   Method *self = FindMethod("RS02");
    RS02Widgets *wl = self->widgetList;
-   LargeFile *image;
    EccHeader *eh;
    RS02Layout *lay;
    struct MD5Context image_md5;
@@ -547,13 +547,18 @@ void RS02Verify(Method *self)
    unsigned char ecc_sum[16];
    unsigned char medium_sum[16];
    char data_digest[33], hdr_digest[33], digest[33];
-   gint64 s, image_sectors, crc_idx;
+   gint64 s, crc_idx;
    int last_percent = 0;
    unsigned char buf[2048];
    gint64 first_missing, last_missing;
-   gint64 total_missing,data_missing,crc_missing,ecc_missing,hdr_missing;
-   gint64 new_missing = 0, new_crc_errors = 0;
-   gint64 data_crc_errors,hdr_crc_errors;
+   gint64 total_missing = 0;
+   gint64 data_missing = 0;
+   gint64 crc_missing = 0;
+   gint64 ecc_missing = 0;
+   gint64 new_missing = 0;
+   gint64 new_crc_errors = 0;
+   gint64 data_crc_errors = 0;
+   gint64 hdr_missing, hdr_crc_errors;
    gint64 hdr_ok,hdr_pos,hdr_correctable;
    gint64 ecc_sector,expected_sectors;
    int ecc_md5_failure = FALSE;
@@ -563,20 +568,26 @@ void RS02Verify(Method *self)
    char *img_advice = NULL;
    char *ecc_advice = NULL;
    int try_it;
-
+   int unrecoverable_sectors = 0;
+   
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, cc);
    cc->wl = wl;
 
-   /*** Open the .iso file */
+   /* extract some important information */
 
-   LargeStat(Closure->imageName, &image_sectors);
-   image_sectors /= 2048;
-   image = cc->file = LargeOpen(Closure->imageName, O_RDONLY, IMG_PERMS);
+   eh  = cc->eh  = image->eccHeader;
+   lay = cc->lay = RS02LayoutFromImage(image);
 
-   if(!image)  /* Failing here is unlikely since caller could open it */
-     Stop("Could not open %s: %s",Closure->imageName, strerror(errno));
+   expected_sectors = lay->eccSectors+lay->dataSectors;
+   if(!eh->inLast)      /* 0.66 pre-releases did not set this */
+     eh->inLast = 2048;
+
+   cc->image = image;
+   cc->map = CreateBitmap0(expected_sectors);
+
+   /*** Print information on image size */
 
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
@@ -584,28 +595,18 @@ void RS02Verify(Method *self)
 		  _("Image contains error correction data."));
 
    PrintLog("\n%s: ",Closure->imageName);
-   PrintLog(_("present, contains %lld medium sectors.\n"),image_sectors);
-
-   eh  = cc->eh = self->lastEh;  /* will always be present */
-   lay = cc->lay = CalcRS02Layout(uchar_to_gint64(eh->sectors), eh->eccBytes); 
-   expected_sectors = lay->eccSectors+lay->dataSectors;
-   if(!eh->inLast)      /* 0.66 pre-releases did not set this */
-     eh->inLast = 2048;
-
-   cc->map = CreateBitmap0(expected_sectors);
-
-   /*** Print information on image size */
+   PrintLog(_("present, contains %lld medium sectors.\n"),image->sectorSize);
 
    if(Closure->guiMode)
-   {  if(expected_sectors == image_sectors)
-      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%lld", image_sectors);
+   {  if(expected_sectors == image->sectorSize)
+      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%lld", image->sectorSize);
       }
       else
       {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "<span %s>%lld</span>", 
-		      Closure->redMarkup, image_sectors);
-	 if(expected_sectors > image_sectors)
-	      img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors shorter than expected.</span>"), Closure->redMarkup, expected_sectors - image_sectors);
-	 else img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors longer than expected.</span>"), Closure->redMarkup, image_sectors - expected_sectors);
+		      Closure->redMarkup, image->sectorSize);
+	 if(expected_sectors > image->sectorSize)
+	      img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors shorter than expected.</span>"), Closure->redMarkup, expected_sectors - image->sectorSize);
+	 else img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors longer than expected.</span>"), Closure->redMarkup, image->sectorSize - expected_sectors);
       }
    }
 
@@ -617,13 +618,13 @@ void RS02Verify(Method *self)
    while(hdr_pos < expected_sectors)
    {  EccHeader eh;
 
-      if(hdr_pos < image_sectors)
+      if(hdr_pos < image->sectorSize)
       {  int n;
 
-	 if(!LargeSeek(image, 2048*hdr_pos))
+	 if(!LargeSeek(image->file, 2048*hdr_pos))
 	   Stop(_("Failed seeking to ecc header at %lld: %s\n"), hdr_pos, strerror(errno));
 
-	 n = LargeRead(image, &eh, sizeof(EccHeader));
+	 n = LargeRead(image->file, &eh, sizeof(EccHeader));
 	 if(n != sizeof(EccHeader))
 	   Stop(_("Failed reading ecc header at %lld: %s\n"), hdr_pos, strerror(errno));
 
@@ -674,6 +675,13 @@ void RS02Verify(Method *self)
       }
    }
 
+   /* take shortcut in quick mode */
+
+   if(Closure->quickVerify)
+   {  PrintLog(_("* quick mode        : image NOT scanned\n"));
+      goto continue_with_ecc;
+   }
+
    /*** Read the CRC portion */ 
 
    read_crc(cc, lay);
@@ -681,7 +689,7 @@ void RS02Verify(Method *self)
    /*** Check the data portion of the image file for the
 	"dead sector marker" and CRC errors */
    
-   if(!LargeSeek(image, 0))
+   if(!LargeSeek(image->file, 0))
      Stop(_("Failed seeking to start of image: %s\n"), strerror(errno));
 
    MD5Init(&image_md5);
@@ -689,8 +697,6 @@ void RS02Verify(Method *self)
    MD5Init(&meta_md5);
 
    first_missing = last_missing = -1;
-   total_missing = data_missing = crc_missing = ecc_missing = 0;
-   data_crc_errors = 0;
    crc_idx = 0;
 
    ecc_sector = 0;
@@ -703,16 +709,17 @@ void RS02Verify(Method *self)
       /* Check for user interruption */
 
       if(Closure->stopActions)   
-      {  SetLabelText(GTK_LABEL(wl->cmpImageResult), 
-		      _("<span %s>Aborted by user request!</span>"),
-		      Closure->redMarkup); 
+      {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+	    SetLabelText(GTK_LABEL(wl->cmpImageResult), 
+			 _("<span %s>Aborted by user request!</span>"),
+			 Closure->redMarkup); 
          goto terminate;
       }
 
       /* Read the next sector */
 
-      if(s < image_sectors)  /* image may be truncated */
-      {  int n = LargeRead(image, buf, 2048);
+      if(s < image->sectorSize)  /* image may be truncated */
+      {  int n = LargeRead(image->file, buf, 2048);
          if(n != 2048)
 	    Stop(_("premature end in image (only %d bytes): %s\n"),n,strerror(errno));
       }
@@ -728,7 +735,7 @@ void RS02Verify(Method *self)
 
       current_missing = CheckForMissingSector(buf, s, eh->mediumFP, eh->fpSector);
       if(current_missing != SECTOR_PRESENT)
-	 ExplainMissingSector(buf, s, current_missing, TRUE);
+	ExplainMissingSector(buf, s, current_missing, SOURCE_IMAGE, &unrecoverable_sectors);
 
       if(current_missing)
       {  if(first_missing < 0) first_missing = s;
@@ -890,7 +897,7 @@ void RS02Verify(Method *self)
    }
 
    /*** Print some information on the ecc portion */
-
+continue_with_ecc:
    PrintLog(_("\nError correction data: "));
 
    major = eh->creatorVersion/10000; 
@@ -951,7 +958,7 @@ void RS02Verify(Method *self)
 
    /* required dvdisaster version */
 
-   if(!VerifyVersion(eh, 0))
+   if(Closure->version >= eh->neededVersion)
    {  PrintLog(_("- requires         : dvdisaster-%d.%d (good)\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
@@ -965,7 +972,7 @@ void RS02Verify(Method *self)
    else 
    {  PrintLog(_("* requires         : dvdisaster-%d.%d (BAD)\n"
 		 "* Warning          : The following output might be incorrect.\n"
-		 "*                  : Please visit http://www.dvdisaster.com for an upgrade.\n"),
+		 "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
 
@@ -983,7 +990,7 @@ void RS02Verify(Method *self)
 
    /* Number of sectors medium is supposed to have */
 
-   if(image_sectors == expected_sectors)
+   if(image->sectorSize == expected_sectors)
    {  PrintLog(_("- medium sectors   : %lld / %lld (good)\n"), 
 	       expected_sectors, lay->dataSectors);
 
@@ -992,7 +999,7 @@ void RS02Verify(Method *self)
 		     expected_sectors, lay->dataSectors);
    }
    else 
-   {  if(image_sectors > expected_sectors && image_sectors - expected_sectors <= 2)   
+   {  if(image->sectorSize > expected_sectors && image->sectorSize - expected_sectors <= 2)   
            PrintLog(_("* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"),
 		    expected_sectors);
       else PrintLog(_("* medium sectors   : %lld (BAD)\n"),expected_sectors);
@@ -1000,10 +1007,13 @@ void RS02Verify(Method *self)
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
 		      "<span %s>%lld</span>", Closure->redMarkup, expected_sectors);
-	 if(!ecc_advice && image_sectors > expected_sectors)
+	 if(!ecc_advice && image->sectorSize > expected_sectors)
 	    ecc_advice = g_strdup_printf(_("<span %s>Image size does not match recorded size.</span>"), Closure->redMarkup);
       }
    }
+
+   if(Closure->quickVerify)  /* take shortcut again */
+     goto terminate;
 
    /* image md5sum as stored in the ecc header */
 

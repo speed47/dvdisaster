@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -27,7 +28,16 @@
 
 static void destroy_cb(GtkWidget *widget, gpointer data)
 {
-    gtk_main_quit();
+   /* If an action is currently running with spawned threads,
+      give them time to terminate cleanly. */
+   
+   if(Closure->subThread)
+   {  Closure->stopActions = STOP_SHUTDOWN_ALL;
+
+      g_thread_join(Closure->subThread);
+   }
+
+   gtk_main_quit();
 }
 
 static gboolean delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
@@ -39,26 +49,13 @@ static gboolean delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
  *** The right-side action buttons
  ***/
 
-static void remove_the_00s(char *filename)
-{  char *dot = strrchr(filename, '.');
-
-   if(dot) 
-   {  int pos = dot-filename;
-     
-      if(pos>2 && filename[pos-2] == '0' 
-	       && filename[pos-1] == '0') 
-	memmove(filename+pos-2, filename+pos, 
-		strlen(filename)-pos+1);
-   }
-}
-
 /*
  * Callback for the action buttons
  */
 
 static void action_cb(GtkWidget *widget, gpointer data)
 {  gint action = GPOINTER_TO_INT(data);
-   Method *method; 
+   Method *method = NULL; 
 
    if(action != ACTION_STOP)
    {  
@@ -67,7 +64,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
       if(action != ACTION_CREATE_CONT)
       {  g_mutex_lock(Closure->logLock);
 	 g_string_truncate(Closure->logString, 0);
-         g_string_printf(Closure->logString, _("dvdisaster-%s log\n"),VERSION);
+         g_string_printf(Closure->logString, _("log: %s\n"), Closure->versionString);
 	 g_mutex_unlock(Closure->logLock);
 	 Closure->logFileStamped = FALSE;
       }
@@ -91,11 +88,29 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
       }
 
-      /* Transform foo00.[iso|ecc] into foo.[iso|ecc] when in filesplit mode */
+      /* The ecc file may not be labeled as an .iso image */
 
-      if(Closure->splitFiles)
-      {  remove_the_00s(Closure->imageName);
-	 remove_the_00s(Closure->eccName);
+      if(Closure->eccName)
+      {  int len = strlen(Closure->eccName);
+
+	if(!strcmp(Closure->eccName, Closure->imageName)) 
+	{  CreateMessage(_("The .iso image and error correction file\n"
+			   "must not be the same file!\n\n"
+			   "If you intended to create or use an .iso image\n"
+			   "which is augmented with error correction data,\n"
+			   "please leave the error correction file name blank."), 
+			 GTK_MESSAGE_ERROR);
+	  return;
+	}
+
+	if(!strcmp(Closure->eccName+len-4, ".iso")) 
+	{  CreateMessage(_("The error correction file type must not be \".iso\".\n\n"
+			   "If you intended to create or use an .iso image\n"
+			   "which is augmented with error correction data,\n"
+			   "please leave the error correction file name blank."), 
+			 GTK_MESSAGE_ERROR);
+	  return;
+	}
       }
 
       /* Reset warnings which may be temporarily disabled during an action */
@@ -111,7 +126,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
    switch(action)
    {  case ACTION_STOP: 
-        Closure->stopActions = TRUE;
+        Closure->stopActions = STOP_CURRENT_ACTION;
         break;
 
       case ACTION_READ:
@@ -145,18 +160,32 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->notebook), method->tabWindowIndex);
 	method->resetCreateWindow(method);
 	AllowActions(FALSE);
-	CreateGThread((GThreadFunc)CreateEcc, (gpointer)NULL);
+	CreateGThread((GThreadFunc)method->create, (gpointer)method);
         break;
 
       case ACTION_FIX:
-	ClearCrcCache();
-	if(!(method = EccFileMethod(TRUE)))
-	   break;
+      { Image *image;
 
+	ClearCrcCache();
+
+	image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+	image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
+	if(ReportImageEccInconsistencies(image)) /* abort if no method found */
+	  return;
+
+	/* Determine method. Ecc files win over augmented ecc. */
+
+	if(image && image->eccFileMethod) method = image->eccFileMethod;
+	else if(image && image->eccMethod) method = image->eccMethod;
+	else {  CreateMessage(_("Internal error: No suitable method for repairing image."),
+			      GTK_MESSAGE_ERROR);
+	        return;
+	     }
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->notebook),  method->tabWindowIndex+1);
 	method->resetFixWindow(method);
 	AllowActions(FALSE);
-	CreateGThread((GThreadFunc)method->fix, (gpointer)method);
+	CreateGThread((GThreadFunc)method->fix, (gpointer)image);
+      }
         break;
 
       case ACTION_SCAN:
@@ -172,15 +201,28 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	/* If something is wrong with the .iso or .ecc files
 	   we fall back to the RS01 method for verifying since it is robust
 	   against missing files. */
-	if(!(method = EccFileMethod(FALSE)))
-	  if(!(method = FindMethod("RS01")))
-	     break;
+
+      { Image *image;
+
+	image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+	image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
+
+	/* Determine method. Ecc files win over augmented ecc. */
+
+	if(image && image->eccFileMethod) method = image->eccFileMethod;
+	else if(image && image->eccMethod) method = image->eccMethod;
+	else if(!(method = FindMethod("RS01")))
+	     {  CreateMessage(_("RS01 method not available for comparing files."),
+			      GTK_MESSAGE_ERROR);
+	        return;
+	     }
 
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->notebook), method->tabWindowIndex+2);
 	method->resetVerifyWindow(method);
 	AllowActions(FALSE);
-	CreateGThread((GThreadFunc)method->verify, (gpointer)method);
+	CreateGThread((GThreadFunc)method->verify, (gpointer)image);
         break;
+      }
    }
 }
 
@@ -241,7 +283,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    Closure->readButton = wid = create_button(_("button|Read"), "dvdisaster-read");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_READ);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   AttachTooltip(wid, _("tooltip|Read Image"), _("Reads a CD/DVD image into a file (or tries to complete an existing image file)."));
+   AttachTooltip(wid, _("tooltip|Read Image"), _("Reads an optical disc image into a file (or tries to complete an existing image file)."));
 
    content = gtk_vbox_new(FALSE, 0);   /* read linear window */
    ignore = gtk_label_new("read_tab_l");
@@ -283,7 +325,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Stop */
 
-   wid = create_button(_("button|Stop"), "gtk-stop");
+   wid = create_button(_("button|Stop"), "dvdisaster-gtk-stop");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STOP);
    gtk_box_pack_end(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    AttachTooltip(wid, _("tooltip|Abort action"), _("Aborts an ongoing action."));
@@ -365,13 +407,7 @@ void CreateMainWindow(int *argc, char ***argv)
 
     /*** Open the main window */
 
-    if(Closure->screenShotMode) 
-         g_snprintf(title, 80, "dvdisaster-%s", VERSION);
-    else g_snprintf(title, 80, "dvdisaster-%s", Closure->cookedVersion);
-
-#ifdef SYS_MINGW
-    sig_okay = VerifySignature();
-#endif
+    g_snprintf(title, 80, "dvdisaster-%s", Closure->cookedVersion);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), title);
@@ -387,56 +423,6 @@ void CreateMainWindow(int *argc, char ***argv)
     /* and with destroy events */
 
     g_signal_connect(window, "destroy", G_CALLBACK(destroy_cb), NULL);
-
-    /*** Validate our binary directory */
-
-#ifdef SYS_MINGW
-    if(!sig_okay)
-    {  GtkWidget *lab, *icon, *button;
-       char *msg, *utf, version[80];
-
-       if(Closure->version % 100)
-            sprintf(version, "dvdisaster-%s.%d-setup.exe", VERSION, Closure->version%100);
-       else sprintf(version, "dvdisaster-%s-setup.exe", VERSION);
-
-       gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-
-       outer_box = gtk_hbox_new(FALSE, 10);
-       gtk_container_add(GTK_CONTAINER(window), outer_box);
-
-       middle_box = gtk_vbox_new(FALSE, 0);
-       gtk_box_pack_start(GTK_BOX(outer_box), middle_box, FALSE, FALSE, 0);
-
-       icon = gtk_image_new_from_stock(GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG);
-       gtk_box_pack_start(GTK_BOX(middle_box), icon, FALSE, FALSE, 0);
-
-       middle_box = gtk_vbox_new(FALSE, 0);
-       gtk_box_pack_start(GTK_BOX(outer_box), middle_box, FALSE, FALSE, 0);
-
-       lab = gtk_label_new(NULL);
-       gtk_box_pack_start(GTK_BOX(middle_box), lab, FALSE, FALSE, 0);
-       msg = g_strdup_printf(_("<b>dvdisaster is not properly installed</b>\n\n"
-			       "Please execute the installer program (%s) again.\n"), version);
-       utf = g_locale_to_utf8(msg, -1, NULL, NULL, NULL);
-       gtk_label_set_markup(GTK_LABEL(lab), utf);
-       g_free(msg);
-       g_free(utf);
-
-       box = gtk_hbox_new(FALSE, 0);
-       gtk_box_pack_start(GTK_BOX(middle_box), box, FALSE, FALSE, 0);
-
-       button = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-       gtk_box_pack_end(GTK_BOX(box), button, FALSE, FALSE, 0);
-
-       g_signal_connect_swapped(G_OBJECT (button), "clicked",
-				G_CALLBACK(gtk_widget_destroy),
-				G_OBJECT(window));
-       gtk_widget_show_all(window);
-       gtk_main();
-
-       return;
-    }
-#endif
 
     /*** Initialize the tooltips struct */
 
@@ -505,7 +491,7 @@ void CreateMainWindow(int *argc, char ***argv)
     box = gtk_hbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(button), box);
 
-    icon = gtk_image_new_from_stock(GTK_STOCK_INDEX, GTK_ICON_SIZE_SMALL_TOOLBAR);
+    icon = gtk_image_new_from_stock("dvdisaster-gtk-index", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
     gtk_box_pack_start(GTK_BOX(box), icon, FALSE, FALSE, 2);
 

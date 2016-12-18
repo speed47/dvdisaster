@@ -1,8 +1,8 @@
 #ifndef MD5_H
 #define MD5_H
 
-#if defined(PNGPACK) || defined(SIMPLE_MD5SUM)
-  typedef unsigned int guint32;
+#if defined(SIMPLE_MD5SUM)
+typedef unsigned int guint32;
 #endif
 
 typedef struct MD5Context {

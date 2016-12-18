@@ -1,0 +1,179 @@
+c319fc9939c126bacb39ac6d66121c28
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+ExamineUDF(File: rs03i-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 118354 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs03i-tmp.iso
+try_sector: trying sector 118354
+try_sector: read error, trying next header
+try_sector: trying sector 118204
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4611686018427387904
+FindHeaderInMedium: Trying modulo 2305843009213693952
+FindHeaderInMedium: Trying modulo 1152921504606846976
+FindHeaderInMedium: Trying modulo 576460752303423488
+FindHeaderInMedium: Trying modulo 288230376151711744
+FindHeaderInMedium: Trying modulo 144115188075855872
+FindHeaderInMedium: Trying modulo 72057594037927936
+FindHeaderInMedium: Trying modulo 36028797018963968
+FindHeaderInMedium: Trying modulo 18014398509481984
+FindHeaderInMedium: Trying modulo 9007199254740992
+FindHeaderInMedium: Trying modulo 4503599627370496
+FindHeaderInMedium: Trying modulo 2251799813685248
+FindHeaderInMedium: Trying modulo 1125899906842624
+FindHeaderInMedium: Trying modulo 562949953421312
+FindHeaderInMedium: Trying modulo 281474976710656
+FindHeaderInMedium: Trying modulo 140737488355328
+FindHeaderInMedium: Trying modulo 70368744177664
+FindHeaderInMedium: Trying modulo 35184372088832
+FindHeaderInMedium: Trying modulo 17592186044416
+FindHeaderInMedium: Trying modulo 8796093022208
+FindHeaderInMedium: Trying modulo 4398046511104
+FindHeaderInMedium: Trying modulo 2199023255552
+FindHeaderInMedium: Trying modulo 1099511627776
+FindHeaderInMedium: Trying modulo 549755813888
+FindHeaderInMedium: Trying modulo 274877906944
+FindHeaderInMedium: Trying modulo 137438953472
+FindHeaderInMedium: Trying modulo 68719476736
+FindHeaderInMedium: Trying modulo 34359738368
+FindHeaderInMedium: Trying modulo 17179869184
+FindHeaderInMedium: Trying modulo 8589934592
+FindHeaderInMedium: Trying modulo 4294967296
+FindHeaderInMedium: Trying modulo 2147483648
+FindHeaderInMedium: Trying modulo 1073741824
+FindHeaderInMedium: Trying modulo 536870912
+FindHeaderInMedium: Trying modulo 268435456
+FindHeaderInMedium: Trying modulo 134217728
+FindHeaderInMedium: Trying modulo 67108864
+FindHeaderInMedium: Trying modulo 33554432
+FindHeaderInMedium: Trying modulo 16777216
+FindHeaderInMedium: Trying modulo 8388608
+FindHeaderInMedium: Trying modulo 4194304
+FindHeaderInMedium: Trying modulo 2097152
+FindHeaderInMedium: Trying modulo 1048576
+FindHeaderInMedium: Trying modulo 524288
+FindHeaderInMedium: Trying modulo 262144
+try_sector: trying sector 262144
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 131072
+Sector 262144 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 65536
+try_sector: trying sector 327680
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 32768
+Sector 327680 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 16384
+try_sector: trying sector 344064
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 8192
+try_sector: trying sector 352256
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4096
+try_sector: trying sector 356352
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 2048
+try_sector: trying sector 358400
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 1024
+Sector 358400 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 512
+try_sector: trying sector 358912
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 256
+try_sector: trying sector 359168
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 128
+Sector 359168 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 64
+try_sector: trying sector 359232
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 32
+try_sector: trying sector 359264
+try_sector: no cookie, skipping current modulo
+...trying RS03
+RS03RecognizeImage: file rs03i-tmp.iso
+FindRS03HeaderInImage: file rs03i-tmp.iso
+RS03RecognizeImage: No EH, entering exhaustive search
+.. trying layer size 1409
+Scanning layers for signatures.
+- layer slice 0
+-> 1 untested layers remaining
+- layer slice 1
+-> 1 untested layers remaining
+- layer slice 2
+-> 1 untested layers remaining
+- layer slice 3
+-> 1 untested layers remaining
+- layer slice 4
+-> 1 untested layers remaining
+- layer slice 5
+** Success: sector 118361, rediscovered format with 170 roots
+...augmented image found
+GetImageFingerprint(16): read & cached
+
+rs03i-tmp.iso present.
+Calculated layout for RS03 image:
+data sectors      = 118354
+data padding      = 0
+layer size        = 1409
+total sectors     = 359295
+medium capacity   = 0
+header position   = 118354
+first CRC sector  = 118356
+first ECC sector  = 119765
+ndata             = 85
+nroots            = 170 (200.0%)
+
+
+Error correction properties:
+- type             : Augmented image
+- method           : RS03, 170 roots, 200.0% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+
+Data integrity:
+- medium sectors   : 359295 total / 118354 data
+* quick mode        : image NOT scanned

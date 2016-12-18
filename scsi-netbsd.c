@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* NetBSD support by Sergey Svishchev <svs@ropnet.ru>. 
@@ -41,6 +42,12 @@ char* DefaultDevice()
    char *disknames, *p, raw;
    int dev_type, sysctl_mib[2];
    size_t sysctl_len;
+
+   /* As a convenience, add the simulated drive first. */
+
+   InitSimulatedCD();
+
+   /* Now probe the physical drives. */
 
    raw = 'a' + getrawpartition();
 
@@ -93,7 +100,7 @@ char* DefaultDevice()
    if(Closure->deviceNodes->len)
      return g_strdup(g_ptr_array_index(Closure->deviceNodes, 0));
    else
-   {  PrintLog(_("No CD/DVD drives found.\n"
+   {  PrintLog(_("No optical drives found.\n"
 		  "No drives will be pre-selected.\n"));
 
       return g_strdup("no_drives");
@@ -105,12 +112,30 @@ DeviceHandle* OpenDevice(char *device)
 
    dh = g_malloc0(sizeof(DeviceHandle));
    dh->senseSize = sizeof(Sense);
-   dh->fd = open(device, O_RDWR | O_NONBLOCK);
 
-   if(dh->fd < 0)
-   {  g_free(dh);
-      Stop(_("Could not open %s: %s"),device, strerror(errno));
-      return NULL;
+   if(!strcmp(device, "sim-cd"))
+   {  if(!Closure->simulateCD) /* can happen via resource file / last-device */
+      {  g_free(dh);
+         return NULL;
+      }
+     
+      dh->simImage = LargeOpen(Closure->simulateCD, O_RDONLY, IMG_PERMS);
+      if(!dh->simImage)
+      {  g_free(dh);
+
+	 Stop(_("Could not open %s: %s"), Closure->simulateCD, strerror(errno));
+	 return NULL;
+      }
+   }
+   else
+   {  dh->fd = open(device, O_RDWR | O_NONBLOCK);
+
+      if(dh->fd < 0)
+      {  g_free(dh);
+
+	 Stop(_("Could not open %s: %s"),device, strerror(errno));
+	 return NULL;
+      }
    }
 
    dh->device = g_strdup(device);
@@ -130,14 +155,10 @@ void CloseDevice(DeviceHandle *dh)
     close(dh->fd);
   if(dh->device)
     g_free(dh->device);
-  if(dh->rs02Header)
-    g_free(dh->rs02Header);
   if(dh->typeDescr) 
     g_free(dh->typeDescr);
   if(dh->mediumDescr) 
     g_free(dh->mediumDescr);
-  if(dh->isoInfo)
-    FreeIsoInfo(dh->isoInfo);
   if(dh->defects)
     FreeBitmap(dh->defects);
   g_free(dh);
@@ -147,6 +168,9 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
 {  struct scsireq sc;
    int sense_len;
    int rc;
+
+   if(dh->simImage)
+      return SimulateSendPacket(dh, cmd, cdb_size, buf, size, sense, data_mode);
 
    /* prepare the scsi request */
 

@@ -1,0 +1,144 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+ExamineUDF(File: rs02-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 30000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs02-tmp.iso
+try_sector: trying sector 30000
+try_sector: header at 30000: magic cookie found
+try_sector: CRC okay
+GetImageFingerprint(16): read & cached
+try_sector: fingerprint okay, header good
+Root sector search at +0 successful
+...augmented image found
+Expected size calculated from ecc header: 34932
+--> confirmed layout variant 1
+Calculated layout for RS02 image:
+data sectors      = 30000
+crc sectors       = 59
+protected sectors = 30061 (incl. 2 hdr sectors)
+reed solomon secs = 4795 (35 roots, 220 data)
+header repeats    = 38 (using modulo 128)
+added sectors     = 4932
+total image size  = 34932
+medium capacity   = n.a.
+
+Interleaving layout:
+137 sectors per ecc layer
+first layer sector with CRC data 136 (sector# 30002)
+
+GetImageFingerprint(16): cached
+RS02LayoutFromImage(): returning cached layout
+
+rs02-tmp.iso: present, contains 34932 medium sectors.
+- testing sectors  :   1%- testing sectors  :   2%- testing sectors  :   3%- testing sectors  :   4%- testing sectors  :   5%- testing sectors  :   6%- testing sectors  :   7%- testing sectors  :   8%* Unrecoverable sector found!
+* 
+* Sector 3030 is marked unreadable and annotated to be
+* in a different location (3130).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* missing sector   : 3030
+- testing sectors  :   9%- testing sectors  :  10%- testing sectors  :  11%- testing sectors  :  12%* Unrecoverable sector found!
+* 
+* Sector 4400 is marked unreadable and annotated to be
+* in a different location (4500).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* missing sector   : 4400
+* Unrecoverable sector found!
+* 
+* Sector 4411 is marked unreadable and annotated to be
+* in a different location (4511).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* missing sector   : 4411
+- testing sectors  :  13%- testing sectors  :  14%- testing sectors  :  15%- testing sectors  :  16%- testing sectors  :  17%- testing sectors  :  18%- testing sectors  :  19%- testing sectors  :  20%- testing sectors  :  21%- testing sectors  :  22%- testing sectors  :  23%- testing sectors  :  24%- testing sectors  :  25%- testing sectors  :  26%- testing sectors  :  27%- testing sectors  :  28%- testing sectors  :  29%- testing sectors  :  30%- testing sectors  :  31%- testing sectors  :  32%- testing sectors  :  33%- testing sectors  :  34%- testing sectors  :  35%- testing sectors  :  36%- testing sectors  :  37%- testing sectors  :  38%- testing sectors  :  39%- testing sectors  :  40%- testing sectors  :  41%- testing sectors  :  42%- testing sectors  :  43%- testing sectors  :  44%- testing sectors  :  45%- testing sectors  :  46%- testing sectors  :  47%- testing sectors  :  48%- testing sectors  :  49%- testing sectors  :  50%- testing sectors  :  51%- testing sectors  :  52%- testing sectors  :  53%- testing sectors  :  54%- testing sectors  :  55%- testing sectors  :  56%- testing sectors  :  57%- testing sectors  :  58%- testing sectors  :  59%- testing sectors  :  60%- testing sectors  :  61%- testing sectors  :  62%- testing sectors  :  63%- testing sectors  :  64%- testing sectors  :  65%- testing sectors  :  66%- testing sectors  :  67%- testing sectors  :  68%- testing sectors  :  69%- testing sectors  :  70%- testing sectors  :  71%- testing sectors  :  72%- testing sectors  :  73%- testing sectors  :  74%- testing sectors  :  75%- testing sectors  :  76%- testing sectors  :  77%- testing sectors  :  78%- testing sectors  :  79%- testing sectors  :  80%- testing sectors  :  81%- testing sectors  :  82%- testing sectors  :  83%- testing sectors  :  84%- testing sectors  :  85%- testing sectors  :  86%- testing sectors  :  87%- testing sectors  :  88%- testing sectors  :  89%- testing sectors  :  90%- testing sectors  :  91%- testing sectors  :  92%- testing sectors  :  93%- testing sectors  :  94%- testing sectors  :  95%- testing sectors  :  96%- testing sectors  :  97%- testing sectors  :  98%- testing sectors  :  99%- testing sectors  : 100%* BAD image        : 3 sectors missing
+  ... ecc headers    : 39 ok, 0 CRC errors, 0 missing
+  ... data section   : 3 sectors missing; 0 CRC errors
+  ... crc section    : 0 sectors missing
+  ... ecc section    : 0 sectors missing
+
+Error correction data: created by dvdisaster-0.80
+- method           : RS02, 35 roots, 15.9% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 34932 / 30000 (good)
+- data md5sum      : -
+- crc md5sum       : 9ec24e5d61de7d32d6987adfd3762ea0 (good)
+- ecc md5sum       : 2e33b26c0c14624662be79875844ab76 (good)
+- erasure counts   :  avg =  1.5; worst = 2 per ecc block.
+- prognosis        : 34932 of 34932 sectors recoverable (100.0%)

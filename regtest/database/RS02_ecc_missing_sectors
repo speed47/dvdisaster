@@ -1,0 +1,21 @@
+d6c796066e7d0b538b34cd8a111d245c
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs02-tmp.iso: 30000 medium sectors.
+Augmenting image with Method RS02:
+ 58 MiB data, 9 MiB ecc (35 roots; 15.9% redundancy).
+* Warning: Using redundancies below 20%% may not give
+*          the expected data loss protection.
+Preparing image (checksums, adding space):   1%Preparing image (checksums, adding space):   2%
+*
+* dvdisaster - can not continue:
+*
+Image contains unread(able) sectors.
+Error correction information can only be
+appended to complete (undamaged) images.
+
+

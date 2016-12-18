@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -29,7 +30,7 @@
  ***/
 
 static int query_type(DeviceHandle*, int);
-static unsigned int query_size(DeviceHandle*);
+static gint64 query_size(Image*);
 static int query_copyright(DeviceHandle*);
 
 static int read_dvd_sector(DeviceHandle*, unsigned char*, int, int);
@@ -135,7 +136,7 @@ int InquireDevice(DeviceHandle *dh, int probe_only)
 
       if(ab->buf[0] != 0x05 && !probe_only)
       {  PrintCLI("\n");
-	 if(ab->buf[0]) Stop(_("Device %s (%s) is not a CDROM drive."),dh->device,ibuf);
+	 if(ab->buf[0]) Stop(_("Device %s (%s) is not an optical drive."),dh->device,ibuf);
 	 else           Stop(_("Device %s (%s) is a hard disk."),dh->device,ibuf);
       }
    }
@@ -157,7 +158,7 @@ static int try_fallback_type_check(DeviceHandle *dh)
 {  AlignedBuffer *ab;
    Sense *sense = &dh->sense;
    unsigned char cmd[MAX_CDB_SIZE];
-   unsigned int length;
+   int length;
 
    Verbose("# *** try_fallback_type_check(%s) ***\n", dh->devinfo);
 
@@ -190,8 +191,6 @@ static int try_fallback_type_check(DeviceHandle *dh)
 
    length = ab->buf[0]<<8 | ab->buf[1];
    length += 2;
-   length_align(&length);
-
    if(length != 4100) /* not a BD */
    {  Verbose("# allocation length = %d != 4100 -> not a BD type medium.\n", length);
       goto try_dvd;
@@ -422,7 +421,7 @@ static int query_incomplete(DeviceHandle *dh, int probe_only)
 
    status = dh->read(dh, ab->buf, 16, 1);
    if(status)
-   {  Verbose("# Readiing the ISO root sector failed\n");
+   {  Verbose("# Reading the ISO root sector failed\n");
       FreeAlignedBuffer(ab);
       return FALSE;
    }
@@ -479,7 +478,6 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2  ;  /* MMC3: "Disc information length excludes itself" */
    length_align(&length);
-
    Verbose("#CD: size returned is %d\n", length);
 
    if(length>1024) /* don't let the drive hack us using a buffer overflow ;-) */
@@ -538,7 +536,6 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2;    /* MMC3: "Disc information length excludes itself" */
    length_align(&length);
-
    Verbose("#CD: size returned is %d\n", length);
 
    if(length < 15)
@@ -553,8 +550,6 @@ static int query_cd(DeviceHandle *dh, int probe_only)
 	 Stop(_("TOC info too long (%d), probably multisession.\n"),length);
       return FALSE;
    }
-
-   length = 16;  /* Works around Windows (and possibly other OS) driver issues */
 
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x43;  /* READ TOC/PMA/ATIP */
@@ -975,7 +970,6 @@ static int query_bd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2;
    length_align(&length);
-
    Verbose("#BD: disc structure query succeeded, length %d bytes\n", length);
 
    /* Do the real query */
@@ -1082,6 +1076,7 @@ static int query_type(DeviceHandle *dh, int probe_only)
    Verbose("# trying READ DISC INFORMATION for size\n");
    if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
+      length_align(&length);
 
       Verbose("# size returned is %d\n", length);
 
@@ -1194,7 +1189,6 @@ static int query_blank(DeviceHandle *dh)
       length = buf[0]<<8 | buf[1];
       length += 2;    /* MMC3: "Disc information length excludes itself" */
       length_align(&length);
-
       Verbose("#CD: size returned is %d\n", length);
 
       if(length < 15 || length > 1024)  /* implausible */
@@ -1250,7 +1244,6 @@ static int query_blank(DeviceHandle *dh)
 	    length = buf[0]<<8 | buf[1];
 	    length += 2;    /* MMC3: "Disc information length excludes itself" */
 	    length_align(&length);
-
 	    Verbose("#DVD: size returned is %d\n", length);
 
 	    memset(cmd, 0, MAX_CDB_SIZE);
@@ -1782,11 +1775,14 @@ static void evaluate_results(int res0, int res1, int *result, char **msg)
 }
 
 /*
- * Query the medium size.
+ * Do a READ CAPACITY.
+ * Needs to be separated as we need this value to invoke the RS02/RS03
+ * size heuristics which in turn must be executed before calling query_size().
  */
 
-static unsigned int query_size(DeviceHandle *dh)
-{  Sense sense;
+static void read_capacity(Image *image)
+{  DeviceHandle *dh = image->dh;
+   Sense sense;
    AlignedBuffer *ab = CreateAlignedBuffer(2048);
    unsigned char *buf = ab->buf; 
    unsigned char cmd[MAX_CDB_SIZE];
@@ -1794,7 +1790,8 @@ static unsigned int query_size(DeviceHandle *dh)
 
    /*** Query size by doing READ CAPACITY */
 
-   Verbose("# *** query_size(%s) ***\n", dh->devinfo);
+   Verbose("# *** read_capacity(%s) ***\n", dh->devinfo);
+
    memset(cmd, 0, MAX_CDB_SIZE);
    cmd[0] = 0x25;  /* READ CAPACITY */
 
@@ -1802,10 +1799,12 @@ static unsigned int query_size(DeviceHandle *dh)
    {  FreeAlignedBuffer(ab);
       Stop(_("%s\nCould not query medium size.\n"),
 	   GetSenseString(sense.sense_key, sense.asc, sense.ascq, TRUE));
-      return 0;
+      dh->readCapacity = 0;
+      return;
    }
 
    dh->readCapacity = (gint64)(buf[0]<<24 | buf[1]<<16 | buf[2]<<8 | buf[3]);
+   Verbose(" -> %lld\n", dh->readCapacity);
    FreeAlignedBuffer(ab);
 
    /*** Validate capacity */
@@ -1819,48 +1818,45 @@ static unsigned int query_size(DeviceHandle *dh)
    if(dh->mainType == DVD && dh->layers == 2 && dh->readCapacity > MAX_DVD_DL_SIZE)
       implausible = TRUE;
 
-   if(implausible)
+   if(implausible && !dh->simImage)
    {  LogWarning(_("READ CAPACITY: implausible medium size, %lld sectors\n"), 
 		 (gint64)dh->readCapacity);
       dh->readCapacity = 0;
    }
+}
 
-   /*** If RS02 header search is enabled and we can find an appropriate header,
-	use it as an authoritative source for the medium size. */
+/*
+ * Query the medium size.
+ */
 
-   if(Closure->querySize >= 2)
-   {  if(dh->rs02Size <= 0)
-      {  gint64 last_sector = MAX(dh->readCapacity, dh->userAreaSize);
-      
-	 if(last_sector > 0)
-	    dh->rs02Size = MediumLengthFromRS02(dh, last_sector);
-      }
-      else Verbose("Root header search succeeded!\n"); 
-      if(dh->rs02Size > 0) 
-      {  Verbose("Medium size obtained from ECC header: %lld sectors\n", dh->rs02Size);  
-	 return dh->rs02Size;
-      }
-      else Verbose("Medium size could NOT be determined from ECC header.\n");
-   } 
-   else 
-   {   if(dh->rs02Size > 0) 
-      {  Verbose("Exhaustive ECC header search disabled, but root header search succeeded!\n"); 
-	 Verbose("Medium size obtained from ECC header: %lld sectors\n", dh->rs02Size);  
-	 return dh->rs02Size;
-      }
-      Verbose("Skipping medium size determination from ECC header.\n");
+static gint64 query_size(Image *image)
+{  DeviceHandle *dh = image->dh;
+  
+   Verbose("# *** query_size(%s) ***\n", dh->devinfo);
+
+   /*** If an EccHeader was already found and the codec specified
+	the overall image size, use that as an authoritative source 
+	for the medium size. */
+
+   if(image->expectedSectors > 0) 
+   {  Verbose("Medium size obtained from ECC header: %lld sectors\n", image->expectedSectors);  
+      return image->expectedSectors;
    }
+   else Verbose("Medium size could NOT be determined from ECC header.\n");
 
-   /*** If ISO/UDF filesystem parsing is enabled try this next. */
+   /*** Try getting the size from the ISO/UDF filesystem. */
 
-   if(Closure->querySize >= 1)
-   {  if(dh->isoInfo)
-      {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
-		 dh->isoInfo->volumeSize);  
-	 return dh->isoInfo->volumeSize;
+   if(image->isoInfo)
+   {  if(Closure->ignoreIsoSize)
+      {  Verbose("Note: NOT examining ISO/UDF filesystem as requested by user option!\n");
       }
-      else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
-   } else Verbose("Skipping medium size determination from ISO/UDF filesystem.\n");
+      else
+      {  Verbose("Medium size obtained from ISO/UDF file system: %d sectors\n", 
+		 image->isoInfo->volumeSize);  
+	 return image->isoInfo->volumeSize;
+      }
+   }
+   else Verbose("Medium size could NOT be determined from ISO/UDF filesystem.\n");
 
    /*** If everything else fails, query the drive. */
    
@@ -2000,51 +1996,50 @@ static unsigned int query_size(DeviceHandle *dh)
  */
 
 gint64 CurrentMediumSize(int get_blank_size)
-{  DeviceHandle *dh = NULL;
+{  Image *image;
    gint64 size;
 
 #ifdef SYS_UNKNOWN
    return 0;
 #endif
 
-   dh = OpenDevice(Closure->device);
-   if(!dh) return 0;
-   if(InquireDevice(dh, 1) != 0x05) 
-   {  CloseDevice(dh);
+   image = OpenImageFromDevice(Closure->device);
+   if(!image) return 0;
+   if(InquireDevice(image->dh, 1) != 0x05) 
+   {  CloseImage(image);
       return 0;
    }
 
    /* Avoid size query on unknown media */
 
-   if(!query_type(dh, 1) && !get_blank_size)
-   {  CloseDevice(dh);
+   if(!query_type(image->dh, 1) && !get_blank_size)
+   {  CloseImage(image);
       return 0;
    }
 
    /* A size query on unsupported media would derail */
 
-   if((dh->subType == UNSUPPORTED) && !get_blank_size)
-   {  CloseDevice(dh);
+   if((image->dh->subType == UNSUPPORTED) && !get_blank_size)
+   {  CloseImage(image);
       return 0;
    }
 
    /* We can return either the image size or the size of  blank media. */
 
    if(get_blank_size)
-   {  if(!query_blank(dh))
-      {  CloseDevice(dh);
+   {  if(!query_blank(image->dh))
+      {  CloseImage(image);
 	 return 0;
       }
 
-      size = dh->blankCapacity;
+      size = image->dh->blankCapacity;
    }
    else
-   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
-	 ExamineUDF(dh);
-      size = query_size(dh);
+   {  read_capacity(image);
+      size = query_size(image);
    }
 
-   CloseDevice(dh);
+   CloseImage(image);
 
    return size;
 }
@@ -2119,7 +2114,7 @@ void LoadMedium(DeviceHandle *dh, int load)
    if(load) return;
 
    /* Some drives lock the tray when it was closed via START STOP.
-      That sucks especially under newer Linux kernels as we need to
+      That sucks especially under newer GNU/Linux kernels as we need to
       be root to unlock it. Try anyways; maybe this changes in
       future kernels. */
 
@@ -2270,9 +2265,19 @@ static int read_cd_sector(DeviceHandle *dh, unsigned char *buf, int lba, int nse
    ret = SendPacket(dh, cmd, 12, buf, 2048*nsectors, sense, DATA_READ);
 
 #if 0
-   if(lba==16000)  /* fixme */
-   {  buf[240]^=255;
-   }
+#define BORK 34999
+   if(lba<=BORK && BORK<lba+nsectors)  /* fixme */
+     {  int offset = 2048*(BORK-lba);
+      buf[offset+240]^=255;
+  }
+#endif
+
+#if 0
+#define BORK2 300
+   if(lba<=BORK2 && BORK2<lba+nsectors)  /* fixme */
+     {  int offset = 2048*(BORK2-lba);
+      buf[offset+240]^=255;
+  }
 #endif
 
    if(ret<0) RememberSense(sense->sense_key, sense->asc, sense->ascq);
@@ -2558,12 +2563,13 @@ int ReadSectorsFast(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors
  *** Open the device and query some of its properties.
  ***/
 
-DeviceHandle* OpenAndQueryDevice(char *device)
-{  DeviceHandle *dh = NULL;
+Image* OpenImageFromDevice(char *device)
+{  Image *image = NULL;
+   DeviceHandle *dh = NULL;
 
    /* Open the device. */
 
-   Verbose("# *** OpenAndQueryDevice(%s) ***\n", device);
+   Verbose("# *** OpenImageFromDevice(%s) ***\n", device);
    dh = OpenDevice(device);
    if(!dh) return NULL;
 
@@ -2573,25 +2579,26 @@ DeviceHandle* OpenAndQueryDevice(char *device)
    if(!TestUnitReady(dh))
    {  if(   dh->sense.sense_key == 2  /* Not Ready */
 	 && dh->sense.asc == 0x3a)    /* Medium not present */
-	   Stop(_("Device %s: no medium present\n"), device);
-      else Stop(_("Device %s does not become ready:\n%s\n\n"), device,
-		GetSenseString(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq, FALSE));
+      {   CloseDevice(dh);
+	  Stop(_("Device %s: no medium present\n"), device);
+	  return NULL;
+      }
+      else 
+      {  CloseDevice(dh);
+	 Stop(_("Device %s does not become ready:\n%s\n\n"), device,
+	      GetSenseString(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq, FALSE));
+	 return NULL;
+      }
    }
 
-#ifdef SYS_LINUX
    PrintLog(_("\nDevice: %s, %s\n"),device, dh->devinfo);
-#endif
-
-#ifdef SYS_MINGW
-   PrintLog(_("\nDevice: %s (%s), %s\n"),
-	    device, dh->aspiUsed ? "ASPI" : "SPTI", dh->devinfo);
-#endif
 
    /* Query the type and fail immediately if incompatible medium is found
       so that the later tests are not derailed by the wrong medium type */
 
    if(!query_type(dh, 0))
-   {  Stop(_("Drive failed to report media type."));
+   {  CloseDevice(dh);
+      Stop(_("Drive failed to report media type."));
       return NULL;
    }
      
@@ -2614,6 +2621,14 @@ DeviceHandle* OpenAndQueryDevice(char *device)
       return NULL;
    }
 
+   /* Create the Image structure.
+      From here we need it to store additional information about the image. */
+
+   image = g_malloc0(sizeof(Image));
+   image->type = IMAGE_MEDIUM;
+   image->fpSector = -1;
+   image->dh   = dh;
+
    /* Activate raw reading features if possible,
       output selected reading mode */
 
@@ -2623,7 +2638,7 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 	if(Closure->readRaw)
 	{  dh->rawBuffer = CreateRawBuffer(MAX_RAW_TRANSFER_SIZE);
 
-	   dh->rawBuffer->validFP = GetMediumFingerprint(dh, dh->rawBuffer->mediumFP, FINGERPRINT_SECTOR);
+	   dh->rawBuffer->validFP = GetImageFingerprint(image, dh->rawBuffer->mediumFP, FINGERPRINT_SECTOR);
 	 
 	   if(dh->subType == XA21)
 	   {  dh->rawBuffer->dataOffset = 24;
@@ -2653,11 +2668,14 @@ DeviceHandle* OpenAndQueryDevice(char *device)
 
    /* Examine medium type */
 
-   if(Closure->querySize >= 1)  /* parseUDF or better requested */
-     ExamineUDF(dh);
+   GetImageFingerprint(image, NULL, FINGERPRINT_SECTOR);
+   ExamineUDF(image);
+
+   read_capacity(image);  /* Needed for ExamineECC() ! */
+   ExamineECC(image);
 
    Verbose("# Calling query_size()\n");
-   dh->sectors = query_size(dh);
+   dh->sectors = query_size(image);
    Verbose("# returned: %lld sectors\n", dh->sectors); 
 
    switch(dh->subType & MAIN_TYPE_MASK)
@@ -2665,16 +2683,16 @@ DeviceHandle* OpenAndQueryDevice(char *device)
       case DVD:
       case CD:
       {  char *tmp;
-         if(!dh->isoInfo) // || dh->rs02Size > 0)
+         if(!image->isoInfo) // || dh->rs02Size > 0)
 	    tmp = g_strdup_printf(_("Medium: %s, %lld sectors%s"),
 				  dh->typeDescr, dh->sectors,
-				  dh->rs02Size ? ", Ecc" : "");
+				  image->expectedSectors ? ", Ecc" : ""); //fixme: validate
 	 else
 	    tmp = g_strdup_printf(_("Medium \"%s\": %s, %lld sectors%s created %s"),
-				  dh->isoInfo->volumeLabel,
+				  image->isoInfo->volumeLabel,
 				  dh->typeDescr, dh->sectors,
-				  dh->rs02Size ? ", Ecc," : ",",
-				  dh->isoInfo->creationDate);
+				  image->expectedSectors ? ", Ecc," : ",",  //fixme: validate
+				  image->isoInfo->creationDate);
 
 	 if(dh->manuID[0] && dh->manuID[0] != '-') 
 	      dh->mediumDescr = g_strdup_printf("%s, %s %s.", tmp, _("Manuf.-ID:"), dh->manuID);
@@ -2688,15 +2706,16 @@ DeviceHandle* OpenAndQueryDevice(char *device)
       {  char *td = alloca(strlen(dh->typeDescr)+1);
 
  	 strcpy(td, dh->typeDescr);
-	 CloseDevice(dh);
+	 CloseImage(image);
        	 Stop(_("This software does not support \"%s\" type media."), td);
        	 return NULL;
       }
    }
 
    if(dh->mainType == DVD && query_copyright(dh))
-   {  CloseDevice(dh);
+   {  CloseImage(image);
       Stop(_("This software does not support encrypted media.\n"));
+      return NULL;
    }
 
    /* Create the bitmap of simulated defects */
@@ -2704,97 +2723,7 @@ DeviceHandle* OpenAndQueryDevice(char *device)
    if(Closure->simulateDefects)
      dh->defects = SimulateDefects(dh->sectors);
 
-   return dh;
-}
-
-/*** 
- *** Open the device and query some of the medium properties.
- ***
- * Does NOT gather enough information for actually reading from the device;
- * use OpenAndQueryDevice() for that.
- */
-
-DeviceHandle* QueryMediumInfo(char *device)
-{  DeviceHandle *dh = NULL;
-
-   /* Open the device. */
-
-   Verbose("# *** QueryMediumInfo(%s) ***\n", device);
-   dh = OpenDevice(device);
-   if(!dh) return NULL;
-
-   InquireDevice(dh, 0);
-
-   if(!TestUnitReady(dh))
-   {  if(   dh->sense.sense_key == 2  /* Not Ready */
-	 && dh->sense.asc == 0x3a)    /* Medium not present */
-	   Stop(_("Device %s: no medium present\n"), device);
-      else Stop(_("Device %s does not become ready:\n%s\n\n"), device,
-		GetSenseString(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq, FALSE));
-      return NULL;
-   }
-
-   /* General type detection */
-
-   query_type(dh, 1);
-   query_blank(dh);
-
-   /* Examine medium size (only on known/handled formats) */
-
-   if(dh->subType != UNSUPPORTED)
-   {  if(Closure->querySize >= 1)  /* parseUDF or better requested */
-	 ExamineUDF(dh);
-
-      dh->sectors = query_size(dh);
-   }
-
-   return dh;
-}
-
-/*
- * Get the md5sum from the specified sector. Results are cached in the
- * DeviceHandle as multiple queries may occur.
- */
-
-int GetMediumFingerprint(DeviceHandle *dh, guint8 *fp_out, gint64 sector)
-{  AlignedBuffer *ab;
-   int status;
-
-   /* Sector already cached? */
-
-   if(dh->fpSector == sector)
-      switch(dh->fpState)
-      {  case 0:    /* not read */
-	    break;
-	 case 1:    /* unreadable */
-	    memset(fp_out, 0, 16);
-	    return FALSE;
-	 case 2:    /* already cached */
-	    memcpy(fp_out, dh->mediumFP, 16);
-	    return TRUE;
-      }
-
-     ab = CreateAlignedBuffer(2048);
-     status = ReadSectorsFast(dh, ab->buf, sector, 1);
-   
-     dh->fpSector = sector;
-     if(status)  /* read error */
-     {  dh->fpState = 1;
-     }
-     else
-     {  struct MD5Context md5ctxt;
-   
-	dh->fpState = 2;
-
-	MD5Init(&md5ctxt);
-	MD5Update(&md5ctxt, ab->buf, 2048);
-	MD5Final(dh->mediumFP, &md5ctxt);
-	memcpy(fp_out, dh->mediumFP, 16);
-     }
-
-     FreeAlignedBuffer(ab);
-
-     return dh->fpState == 2;
+   return image;
 }
 
 /***

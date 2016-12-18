@@ -1,0 +1,617 @@
+# Global toggles
+
+FAIL_ON_BAD yes
+SPAWN_LOG_WINDOW no
+
+### RS01 tests
+
+# Verify tests
+RS01_good no
+RS01_good_quick no
+RS01_no_files no
+RS01_no_image no
+RS01_no_ecc no
+RS01_defective_image_no_ecc no
+RS01_plus56_bytes no
+RS01_image_plus56_bytes no
+RS01_ecc_plus56_bytes no
+RS01_normal_image_ecc_plus56b no
+RS01_image_plus56b_normal_ecc no
+RS01_image_few_bytes_shorter no
+RS01_image_few_bytes_longer no
+RS01_truncated_by_bytes no
+RS01_truncated no
+RS01_plus1 no
+RS01_plus17 no
+RS01_defective_with_ecc no
+RS01_missing_sectors_with_ecc no
+RS01_crc_errors_with_ecc no
+RS01_crc_in_fingerprint no
+RS01_missing_fingerprint no
+RS01_missing_ecc_header no
+RS01_ecc_header_crc_error no
+RS01_uncorrectable_dsm_in_image no
+RS01_uncorrectable_dsm_in_image_verbose no
+RS01_uncorrectable_dsm_in_image2 no
+RS01_uncorrectable_dsm_in_image2_verbose no
+
+# Create tests
+
+RS01_ecc_create no
+RS01_ecc_missing_image no
+RS01_ecc_no_read_perm no
+RS01_ecc_no_write_perm no
+RS01_ecc_create_plus56 no
+RS01_ecc_missing_sectors no
+RS01_ecc_create_after_read no
+RS01_ecc_recreate_after_read_rs01 no
+RS01_ecc_recreate_after_read_rs02 no
+RS01_ecc_recreate_after_read_rs03i no
+RS01_ecc_recreate_after_read_rs03f no
+RS01_ecc_create_after_partial_read no
+
+# Repair tests
+
+RS01_fix_good no
+RS01_fix_no_read_perm no
+RS01_fix_no_read_perm_ecc no
+RS01_fix_good_plus56 no
+RS01_fix_no_write_perm no
+RS01_fix_missing_sectors no
+RS01_fix_crc_errors no
+RS01_fix_additional_sector no
+RS01_fix_plus17 no
+RS01_fix_plus17_truncate no
+RS01_fix_plus56 no
+RS01_fix_plus56_plus17 no
+RS01_fix_plus56_plus1s no
+RS01_fix_plus56_plus2s no
+RS01_fix_plus56_plus17500 no
+RS01_fix_truncated no
+RS01_fix_plus56_truncated no
+RS01_fix_plus56_little_truncated no
+
+# Scanning tests
+
+RS01_scan_no_ecc no
+RS01_scan_no_device no
+RS01_scan_no_device_access no
+RS01_scan_defective_no_ecc no
+RS01_scan_defective_no_ecc_again no
+RS01_scan_defective_large_skip no
+RS01_scan_new_with_range_no_ecc no
+RS01_scan_new_with_invalid_range_no_ecc no
+RS01_scan_with_ecc no
+RS01_scan_with_non_existing_ecc no
+RS01_scan_with_no_permission_for_ecc no
+RS01_scan_crc_errors_with_ecc no
+RS01_scan_shorter_with_ecc no
+RS01_scan_longer_with_ecc no
+RS01_scan_tao_tail_with_ecc no
+RS01_scan_no_tao_tail_with_ecc no
+RS01_scan_more_missing_at_end_with_ecc no
+RS01_scan_with_double_ecc no
+RS01_scan_with_incompatible_ecc no
+RS01_scan_with_hardware_failure no
+RS01_scan_with_ignored_hardware_failure no
+RS01_scan_medium_with_dsm no
+
+# Reading tests (linear)
+
+RS01_read_no_ecc no
+RS01_read_no_ecc_good_file no
+RS01_read_no_device no
+RS01_read_no_device_access no
+RS01_read_defective_no_ecc no
+RS01_read_defective_no_ecc_again no
+RS01_read_defective_large_skip no
+RS01_read_truncated_no_ecc no
+RS01_read_truncated_no_ecc_again no
+RS01_read_multipass_no_ecc_again no
+RS01_read_with_gap_no_ecc no
+RS01_read_new_with_range_no_ecc no
+RS01_read_new_with_invalid_range_no_ecc no
+RS01_read_two_missing_secs_no_ecc no
+RS01_read_with_ecc no
+RS01_read_with_ecc_good_file no
+RS01_read_with_non_existing_ecc no
+RS01_read_with_no_permission_for_ecc no
+RS01_read_crc_errors_with_ecc no
+RS01_read_shorter_with_ecc no
+RS01_read_longer_with_ecc no
+RS01_read_tao_tail_with_ecc no
+RS01_read_no_tao_tail_with_ecc no
+RS01_read_more_missing_at_end_with_ecc no
+RS01_read_wrong_fp_with_ecc no
+RS01_read_with_double_ecc no
+RS01_read_with_incompatible_ecc no
+RS01_read_with_hardware_failure no
+RS01_read_with_ignored_hardware_failure no
+RS01_read_multipass_partial_success no
+RS01_read_second_pass_with_ecc_success no
+RS01_read_second_pass_with_crc_error no
+RS01_read_medium_with_dsm no
+RS01_read_medium_with_dsm_verbose no
+RS01_read_medium_with_dsm_in_image no
+RS01_read_medium_with_dsm_in_image_verbose no
+RS01_read_medium_with_dsm_in_image2 no
+RS01_read_medium_with_dsm_in_image2_verbose no
+
+# Reading tests (adaptive)
+
+RS01_adaptive_good no
+RS01_adaptive_no_ecc no
+RS01_adaptive_no_device no
+RS01_adaptive_no_device_access no
+RS01_adaptive_defective_no_ecc no
+RS01_adaptive_defective_large_skip no
+RS01_adaptive_truncated_no_ecc no
+RS01_adaptive_truncated_no_ecc_again no
+RS01_adaptive_with_gap_no_ecc no
+RS01_adaptive_with_gap_no_ecc2 no
+RS01_adaptive_with_gap_no_ecc3 no
+RS01_adaptive_new_with_range_no_ecc no
+RS01_adaptive_new_with_invalid_range_no_ecc no
+RS01_adaptive_with_no_permission_for_ecc no
+RS01_adaptive_crc_errors_with_ecc no
+RS01_adaptive_shorter_with_ecc no
+RS01_adaptive_longer_with_ecc no
+RS01_adaptive_tao_tail_with_ecc no
+RS01_adaptive_no_tao_tail_with_ecc no
+RS01_adaptive_wrong_fp_with_ecc no
+RS01_adaptive_with_double_ecc no
+RS01_adaptive_with_incompatible_ecc no
+RS01_adaptive_with_hardware_failure no
+RS01_adaptive_with_ignored_hardware_failure no
+RS01_adaptive_medium_with_dsm no
+
+### RS02 tests
+
+# Verify tests
+RS02_good no
+RS02_good_quick no
+RS02_no_image no
+RS02_truncated no
+RS02_plus1 no
+RS02_plus17 no
+RS02_bad_header no
+RS02_bad_headers no
+RS02_missing_headers no
+RS02_missing_data_sectors no
+RS02_missing_crc_sectors no
+RS02_missing_ecc_sectors no
+RS02_data_bad_byte no
+RS02_crc_bad_byte no
+RS02_ecc_bad_byte no
+RS02_good_0_offset no
+RS02_good_150_offset no
+RS02_bad_master no
+RS02_modulo_glitch no
+RS02_modulo_glitch2 no
+RS02_modulo_glitch3 no
+RS02_modulo_glitch4 no
+RS02_with_rs01_file no
+RS02_with_wrong_rs01_file no
+RS02_with_rs03_file no
+RS02_with_wrong_rs03_file no
+RS02_uncorrectable_dsm_in_image no
+RS02_uncorrectable_dsm_in_image_verbose no
+RS02_uncorrectable_dsm_in_image2 no
+RS02_uncorrectable_dsm_in_image2_verbose no
+RS02_uncorrectable_dsm_in_image3 no
+
+# Creation tests
+RS02_ecc_create no
+RS02_ecc_missing_image no
+RS02_ecc_no_read_perm no
+RS02_ecc_no_write_perm no
+RS02_ecc_from_rs02 no
+RS02_ecc_from_rs03 no
+RS02_ecc_from_larger_rs02 no
+RS02_ecc_from_rs02_non_blocksize no
+RS02_ecc_from_rs03_non_blocksize no
+RS02_ecc_from_larger_rs02_non_blocksize no
+RS02_ecc_non_blocksize no
+RS02_ecc_missing_sectors no
+RS02_ecc_create_after_read no
+RS02_ecc_recreate_after_read_rs01 no
+RS02_ecc_recreate_after_read_rs02 no
+RS02_ecc_recreate_after_read_rs03i no
+RS02_ecc_recreate_after_read_rs03f no
+RS02_ecc_create_after_partial_read no
+
+# Repair test
+RS02_fix_no_read_perm no
+RS02_fix_no_write_perm no
+RS02_fix_good_image no
+RS02_fix_image_plus137 no
+RS02_fix_image_error_in_plus137 no
+RS02_fix_truncated_image no
+RS02_fix_trailing_bytes no
+RS02_fix_trailing_tao no
+RS02_fix_trailing_garbage no
+RS02_fix_trailing_garbage2 no
+RS02_fix_bad_master no
+RS02_fix_bad_header no
+RS02_fix_bad_headers no
+RS02_fix_missing_headers no
+RS02_fix_missing_data_sectors no
+RS02_fix_missing_crc_sectors no
+RS02_fix_missing_ecc_sectors no
+RS02_fix_large_file no
+RS02_fix_data_bad_byte no
+RS02_fix_crc_bad_byte no
+RS02_fix_ecc_bad_byte no
+RS02_fix_good_0_offset no
+RS02_fix_good_150_offset no
+RS02_fix_with_rs01_file no
+RS02_fix_with_rs03_file no
+
+# Scan tests
+
+RS02_scan_good no
+RS02_scan_shorter no
+RS02_scan_longer no
+RS02_scan_tao_tail no
+RS02_scan_no_tao_tail no
+RS02_scan_incompatible_ecc no
+RS02_scan_bad_header no
+RS02_scan_bad_headers no
+RS02_scan_missing_data_sectors no
+RS02_scan_missing_crc_sectors no
+RS02_scan_missing_ecc_sectors no
+RS02_scan_data_bad_byte no
+RS02_scan_crc_bad_byte no
+RS02_scan_ecc_bad_byte no
+RS02_scan_modulo_glitch no
+RS02_scan_modulo_glitch2 no
+RS02_scan_modulo_glitch3 no
+RS02_scan_modulo_glitch4 no
+RS02_scan_with_rs01_file no
+RS02_scan_with_wrong_rs01_file no
+RS02_scan_with_rs03_file no
+RS02_scan_with_wrong_rs03_file no
+
+# Reading tests (linear)
+
+RS02_read_good no
+RS02_read_good_file no
+RS02_read_good_verbose no
+RS02_read_shorter no
+RS02_read_longer no
+RS02_read_tao_tail no
+RS02_read_no_tao_tail no
+RS02_read_incompatible_ecc no
+RS02_read_bad_master no
+RS02_read_bad_master_exhaustive no
+RS02_read_bad_header no
+RS02_read_bad_headers no
+RS02_read_missing_data_sectors no
+RS02_read_missing_crc_sectors no
+RS02_read_missing_ecc_sectors no
+RS02_read_data_bad_byte no
+RS02_read_crc_bad_byte no
+RS02_read_ecc_bad_byte no
+RS02_read_modulo_glitch no
+RS02_read_modulo_glitch2 no
+RS02_read_modulo_glitch3 no
+RS02_read_modulo_glitch4 no
+RS02_read_with_rs01_file no
+RS02_read_with_wrong_rs01_file no
+RS02_read_with_rs03_file no
+RS02_read_with_wrong_rs03_file no
+
+# Reading tests (adaptive)
+
+RS02_adaptive_good no
+RS02_adaptive_good_file no
+RS02_adaptive_good_verbose no
+RS02_adaptive_shorter no
+RS02_adaptive_longer no
+RS02_adaptive_tao_tail no
+RS02_adaptive_no_tao_tail no
+RS02_adaptive_incompatible_ecc no
+RS02_adaptive_bad_header no
+RS02_adaptive_bad_headers no
+RS02_adaptive_missing_data_sectors no
+RS02_adaptive_missing_crc_sectors no
+RS02_adaptive_missing_ecc_sectors no
+RS02_adaptive_data_bad_byte no
+RS02_adaptive_crc_bad_byte no
+RS02_adaptive_ecc_bad_byte no
+RS02_adaptive_modulo_glitch no
+RS02_adaptive_modulo_glitch2 no
+RS02_adaptive_modulo_glitch3 no
+RS02_adaptive_modulo_glitch4 no
+RS02_adaptive_with_rs01_file no
+RS02_adaptive_with_wrong_rs01_file no
+RS02_adaptive_with_rs03_file no
+RS02_adaptive_with_wrong_rs03_file no
+
+### RS03 augmented image tests
+
+# Verify tests
+
+RS03i_good no
+RS03i_good_quick no
+RS03i_no_image no
+RS03i_truncated no
+RS03i_plus1 no
+RS03i_plus17 no
+RS03i_plus_56_bytes no
+RS03i_bad_crc_cookie no
+RS03i_bad_crc_checksum no
+RS03i_missing_crc_sectors no
+RS03i_missing_data_sectors no
+RS03i_missing_ecc_sectors no
+RS03i_data_bad_byte no
+RS03i_ecc_bad_byte no
+RS03i_layer_multiple no
+RS03i_no_padding no
+RS03i_with_rs01_file no
+RS03i_with_wrong_rs01_file no
+RS03i_with_rs03_file no
+RS03i_with_wrong_rs03_file no
+RS03i_crc_section_with_uncorrectable_dsm no
+RS03i_uncorrectable_dsm_in_image no
+RS03i_uncorrectable_dsm_in_image_verbose no
+RS03i_ecc_section_with_uncorrectable_dsm no
+RS03i_uncorrectable_dsm_in_image2 no
+RS03i_uncorrectable_dsm_in_image2_verbose no
+RS03i_missing_iso_header no
+RS03i_missing_header no
+RS03i_missing_header2 no
+RS03i_missing_header3 no
+RS03i_missing_header4 no
+RS03i_missing_header_truncated no
+RS03i_missing_header_no_crcsec no
+RS03i_random_image no
+RS03i_rediscover_8_roots no
+RS03i_rediscover_8_roots2 no
+RS03i_rediscover_170_roots no
+RS03i_rediscover_170_roots2 no
+RS03i_rediscover_170_roots_padding no
+RS03i_rediscover_170_roots_padding2 no
+RS03i_with_ecc_file_header no
+RS03i_with_ecc_file_crc_block no
+
+# Creation tests
+
+RS03i_ecc_create no
+RS03i_ecc_missing_image no
+RS03i_ecc_no_read_perm no
+RS03i_ecc_no_write_perm no
+RS03i_ecc_from_rs03 no
+RS03i_ecc_from_rs02 no
+RS03i_ecc_from_larger_rs03 no
+RS03i_ecc_from_rs02_non_blocksize no
+RS03i_ecc_from_rs03_non_blocksize no
+RS03i_ecc_from_larger_rs03_non_blocksize no
+RS03i_ecc_non_blocksize no
+RS03i_ecc_missing_sectors no
+RS03i_ecc_layer_multiple no
+RS03i_ecc_no_padding no
+RS03i_ecc_create_after_read no
+RS03i_ecc_recreate_after_read_rs01 no
+RS03i_ecc_recreate_after_read_rs02 no
+RS03i_ecc_recreate_after_read_rs03i no
+RS03i_ecc_recreate_after_read_rs03f no
+RS03i_ecc_create_after_partial_read no
+
+# Fixing tests
+
+RS03i_fix_no_read_perm no
+RS03i_fix_no_write_perm no
+RS03i_fix_good_image no
+RS03i_fix_truncated_image no
+RS03i_fix_trailing_bytes no
+RS03i_fix_trailing_tao no
+RS03i_fix_trailing_garbage no
+RS03i_fix_trailing_garbage2 no
+RS03i_fix_correctable no
+RS03i_fix_border_cases_erasures no
+RS03i_fix_border_cases_crc_errors no
+RS03i_fix_layer_multiple no
+RS03i_fix_no_padding no
+RS03i_fix_with_rs01_file no
+RS03i_fix_with_rs03_file no
+RS03i_fix_with_missing_header no
+RS03i_fix_with_missing_iso_header no
+RS03i_fix_with_ecc_file_header no
+RS03i_fix_with_ecc_file_crc_block no
+
+# Scanning tests
+
+RS03i_scan_good no
+RS03i_scan_good_verbose no
+RS03i_scan_shorter no
+RS03i_scan_longer no
+RS03i_scan_tao_tail no
+RS03i_scan_no_tao_tail no
+RS03i_scan_incompatible_ecc no
+RS03i_scan_bad_header no
+RS03i_scan_missing_data_sectors no
+RS03i_scan_missing_crc_sectors no
+RS03i_scan_missing_ecc_sectors no
+RS03i_scan_data_bad_byte no
+RS03i_scan_crc_bad_byte no
+RS03i_scan_ecc_bad_byte no
+RS03i_scan_with_rs01_file no
+RS03i_scan_with_wrong_rs01_file no
+RS03i_scan_with_rs03_file no
+RS03i_scan_with_wrong_rs03_file no
+RS03i_scan_missing_header_not_exhaustive no
+RS03i_scan_missing_header no
+RS03i_scan_missing_header2 no
+RS03i_scan_missing_header3 no
+RS03i_scan_missing_header4 no
+RS03i_scan_missing_header_truncated no
+RS03i_scan_missing_header_no_crcsec no
+RS03i_scan_random_image no
+RS03i_scan_rediscover_8_roots no
+RS03i_scan_rediscover_8_roots2 no
+RS03i_scan_rediscover_170_roots no
+RS03i_scan_rediscover_170_roots2 no
+RS03i_scan_rediscover_170_roots_padding no
+RS03i_scan_rediscover_170_roots_padding2 no
+
+# Reading tests (linear)
+
+RS03i_read_good no
+RS03i_read_good_verbose no
+RS03i_read_good_file no
+RS03i_read_shorter no
+RS03i_read_longer no
+RS03i_read_tao_tail no
+RS03i_read_no_tao_tail no
+RS03i_read_incompatible_ecc no
+RS03i_read_bad_header no
+RS03i_read_bad_header_exhaustive no
+RS03i_read_missing_data_sectors no
+RS03i_read_missing_crc_sectors no
+RS03i_read_missing_ecc_sectors no
+RS03i_read_data_bad_byte no
+RS03i_read_crc_bad_byte no
+RS03i_read_ecc_bad_byte no
+RS03i_read_with_rs01_file no
+RS03i_read_with_wrong_rs01_file no
+RS03i_read_with_rs03_file no
+RS03i_read_with_wrong_rs03_file no
+RS03i_read_crc_section_with_uncorrectable_dsm no
+RS03i_read_with_missing_header no
+RS03i_read_with_missing_header_exhaustive no
+RS03i_read_with_missing_iso_header_exhaustive no
+RS03i_read_with_ecc_file_header no
+RS03i_read_with_ecc_file_crc_block no
+
+# Reading tests (adaptive)
+
+### RS03 error correction file tests
+
+# Verify tests
+
+RS03f_good no
+RS03f_good_quick no
+RS03f_no_image no
+RS03f_plus56_bytes no
+RS03f_no_image_plus56_bytes no
+RS03f_special_padding no
+RS03f_special_padding_plus56 no
+RS03f_normal_image_ecc_plus56_bytes no
+RS03f_image_plus56_normal_ecc no
+RS03f_few_bytes_shorter no
+RS03f_few_bytes_longer no
+RS03f_few_bytes_shorter2 no
+RS03f_image_truncated_by5 no
+RS03f_one_extra_sector no
+RS03f_17_extra_sectors no
+RS03f_missing_sectors no
+RS03f_crc_errors no
+RS03f_mixed_errors no
+RS03f_crc_error_in_fingerprint no
+RS03f_fingerprint_unreadable no
+RS03f_missing_ecc_header no
+RS03f_missing_ecc_header_and_crc no
+RS03f_missing_ecc_header_and_defective_crc no
+RS03f_ecc_header_crc_error no
+RS03f_ecc_file_truncated no
+RS03f_ecc_file_plus_garbage no
+RS03f_ecc_file_cookieless_crc no
+RS03f_ecc_file_defective_crc no
+RS03f_ecc_file_defective_ecc no
+RS03f_ecc_file_missing_crc no
+RS03f_ecc_file_missing_crc2 no
+RS03f_ecc_file_missing_crc3 no
+RS03f_ecc_file_missing_ecc no
+RS03f_crc_section_with_uncorrectable_dsm no
+RS03f_uncorrectable_dsm_in_image no
+RS03f_uncorrectable_dsm_in_image_verbose no
+RS03f_ecc_section_with_uncorrectable_dsm no
+RS03f_uncorrectable_dsm_in_image2 no
+RS03f_uncorrectable_dsm_in_image2_verbose no
+
+# Create tests
+
+RS03f_ecc_create no
+RS03f_ecc_existing_file no
+RS03f_ecc_missing_image no
+RS03f_ecc_no_read_perm no
+RS03f_ecc_no_write_perm no
+RS03f_ecc_create_plus56 no
+RS03f_ecc_missing_sectors no
+RS03f_ecc_create_after_read no
+RS03f_ecc_recreate_after_read_rs01 no
+RS03f_ecc_recreate_after_read_rs02 no
+RS03f_ecc_recreate_after_read_rs03i no
+RS03f_ecc_recreate_after_read_rs03f no
+RS03f_ecc_create_after_partial_read no
+
+# Repair tests
+
+RS03f_fix_good no
+RS03f_fix_missing_data_sectors no
+RS03f_fix_missing_crc_sectors no
+RS03f_fix_missing_ecc_sectors no
+RS03f_fix_border_cases_erasures no
+RS03f_fix_border_cases_crc_errors no
+RS03f_fix_no_read_perm no
+RS03f_fix_no_read_perm_ecc no
+RS03f_fix_no_write_perm no
+RS03f_fix_no_write_perm_ecc no
+RS03f_fix_good_plus56 no
+RS03f_fix_additional_sector no
+RS03f_fix_plus17 no
+RS03f_fix_plus17_truncate no
+RS03f_fix_plus56 no
+RS03f_fix_plus56_plus17 no
+RS03f_fix_plus56_plus17_truncate no
+RS03f_fix_plus56_plus1s no
+RS03f_fix_plus56_plus2s no
+RS03f_fix_plus56_plus17500 no
+RS03f_fix_truncated no
+RS03f_fix_plus56_truncated no
+RS03f_fix_plus56_little_truncated no
+RS03f_fix_ecc_file_truncated no
+RS03f_fix_missing_ecc_header no
+
+# Scanning tests
+
+RS03f_scan_good no
+RS03f_scan_good_verbose no
+RS03f_scan_shorter no
+RS03f_scan_longer no
+RS03f_scan_tao_tail no
+RS03f_scan_no_tao_tail no
+RS03f_scan_incompatible_ecc no
+RS03f_scan_bad_header no
+RS03f_scan_missing_data_sectors no
+RS03f_scan_missing_crc_sectors no
+RS03f_scan_missing_ecc_sectors no
+RS03f_scan_data_bad_byte no
+RS03f_scan_crc_bad_byte no
+RS03f_scan_ecc_bad_byte no
+RS03f_scan_missing_ecc_header no
+RS03f_scan_missing_ecc_header_and_crc no
+RS03f_scan_missing_ecc_header_and_defective_crc no
+RS03f_scan_ecc_header_crc_error no
+
+# Reading tests (linear)
+
+RS03f_read_good no
+RS03f_read_good_verbose no
+RS03f_read_good_file no
+RS03f_read_shorter no
+RS03f_read_longer no
+RS03f_read_tao_tail no
+RS03f_read_no_tao_tail no
+RS03f_read_incompatible_ecc no
+RS03f_read_bad_header no
+RS03f_read_missing_data_sectors no
+RS03f_read_missing_crc_sectors no
+RS03f_read_missing_ecc_sectors no
+RS03f_read_data_bad_byte no
+RS03f_read_crc_bad_byte no
+RS03f_read_ecc_bad_byte no
+RS03f_read_crc_section_with_uncorrectable_dsm no
+
+# Reading tests (adaptive)

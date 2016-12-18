@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -121,7 +122,7 @@ void gint64_to_uchar(unsigned char *out, gint64 in)
  * and the remaining bytes in the last sector for a given medium size.
  */
 
-void CalcSectors(gint64 size, gint64 *sectors, int *in_last)
+void CalcSectors(guint64 size, guint64 *sectors, int *in_last)
 {
    *sectors = size/2048;
    *in_last = size & 0x7ff; 
@@ -142,7 +143,6 @@ void CalcSectors(gint64 size, gint64 *sectors, int *in_last)
 static void clamp_gstring(GString *string)
 {  gchar *ptr;
    int cut;
-
 
    if(string->len < MAX_LOG_WIN_SIZE)
       return;
@@ -202,8 +202,7 @@ static void print_greetings(FILE *where)
    if(greetings_shown) return;
 
    greetings_shown = 1;
-   g_fprintf(where, _("dvdisaster-%s%sCopyright 2004-2012 Carsten Gnoerlich.\n"),
-	     VERSION, strstr(VERSION,"pl") ? " " : "  ");
+   g_fprintf(where, "%s\n%s.\n", Closure->versionString, _("Copyright 2004-2015 Carsten Gnoerlich"));
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE
@@ -242,7 +241,7 @@ void PrintCLI(char *format, ...)
    g_vfprintf(stdout, format, argp);
    va_end(argp);
 
-   fflush(stdout);   /* at least needed for Windows */
+   fflush(stdout);
 }
 
 /*
@@ -253,8 +252,7 @@ void PrintCLI(char *format, ...)
  */
 
 void PrintProgress(char *format, ...)
-{  static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-   char msg[256];
+{  char msg[256];
    va_list argp;
    int n;
 
@@ -265,29 +263,41 @@ void PrintProgress(char *format, ...)
 
    va_start(argp, format);
    g_vsnprintf(msg, 256, format, argp);
-#ifdef SYS_MINGW
-   n = strlen(msg);  /* UTF-8 is broken under Windows */
-#else
    n = g_utf8_strlen(msg,-1);
-#endif
    va_end(argp);
 
    if(n>255) 
    {  n = 255;
       msg[255] = 0;
    }
+   Closure->progressLength = n;
 
    if(strchr(msg, '\n'))
       g_fprintf(stderr, "%s", msg);
    else
-   {  g_static_mutex_lock(&mutex);
+   {  g_mutex_lock(&Closure->progressLock);
       Closure->bs[n] = 0;
       g_fprintf(stderr, "%s%s", msg, Closure->bs);
       Closure->bs[n] = '\b';
-      g_static_mutex_unlock(&mutex);
+      g_mutex_unlock(&Closure->progressLock);
    }
 
-   fflush(stderr);   /* at least needed for Windows */
+   fflush(stderr);
+}
+
+/*
+ * Clear last progress string
+ */
+
+void ClearProgress(void)
+{  int n = Closure->progressLength;
+
+   g_mutex_lock(&Closure->progressLock);
+   Closure->bs[n] = Closure->sp[n] = 0;
+   g_fprintf(stderr, "%s%s", Closure->sp, Closure->bs);
+   Closure->bs[n] = '\b';
+   Closure->sp[n] = ' ';
+   g_mutex_unlock(&Closure->progressLock);
 }
 
 /*
@@ -312,11 +322,61 @@ void PrintLog(char *format, ...)
       print_greetings(stderr);
       g_vfprintf(stderr, format, argp);
 
-      fflush(stderr);   /* at least needed for Windows */
+      fflush(stderr);
    }
 
    va_end(argp);
 }
+
+/*
+ * Print a message to both stderr and the log window,
+ * prepending each line with an asterisk and space.
+ */
+
+void PrintLogWithAsterisks(char *format, ...)
+{  va_list argp;
+   char *in, *out;
+   char *new_format = alloca(4*strlen(format));
+
+   /* annotate with asterisks */
+
+   out=new_format;
+   *out++='*';
+   *out++=' ';
+
+   for(in=format; *in; in++)
+   {  *out++ = *in;
+
+      if(*in == '\n' && *(in+1))
+      {  *out++='*';
+	 *out++=' ';
+      }
+   }
+   *out=0;
+   
+   /* same logging as in PrintLog() */
+   
+   if(Closure->logFileEnabled)
+   {  va_start(argp, format);
+      VPrintLogFile(new_format, argp);
+      va_end(argp);
+   }
+
+   va_start(argp, format);
+
+   if(Closure->guiMode)
+      log_window_vprintf(new_format, argp);
+   else 
+   {
+      print_greetings(stderr);
+      g_vfprintf(stderr, new_format, argp);
+
+      fflush(stderr);
+   }
+
+   va_end(argp);
+}
+
 
 /*
  * Same as PrintLog(), but does nothing unless Closure->verbose is true
@@ -343,7 +403,7 @@ void Verbose(char *format, ...)
       print_greetings(stderr);
       g_vfprintf(stderr, format, argp);
 
-      fflush(stderr);   /* at least needed for Windows */
+      fflush(stderr);
    }
 
    va_end(argp);
@@ -377,7 +437,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
    else
    {  g_fprintf(stderr, "%s", tmp2);
 
-      fflush(stderr);   /* at least needed for Windows */
+      fflush(stderr);
    }
 
    g_free(tmp1);
@@ -419,10 +479,30 @@ void PrintCLIorLabel(GtkLabel *label, char *format, ...)
    else
    {  g_vprintf(format, argp);
 
-      fflush(stdout);   /* at least needed for Windows */
+      fflush(stdout);
    }
 
    va_end(argp);
+}
+
+/*
+ * Find out longest phrase in a list of translations
+ */
+
+int GetLongestTranslation(char *first, ...)
+{  va_list argp;
+   char *c;
+   int length=g_utf8_strlen(first, -1);
+
+   va_start(argp, first);
+   while( (c=va_arg(argp, char*)) )
+   {  int new_len = g_utf8_strlen(_(c), -1);
+      if(new_len > length)
+	 length = new_len;
+   }
+
+   va_end(argp);
+   return length;
 }
 
 /*
@@ -467,7 +547,7 @@ static void vlog_warning(char *format, va_list argp)
    else
    {  print_greetings(stderr);
       g_fprintf(stderr, "%s", str->str);
-      fflush(stderr);   /* at least needed for Windows */
+      fflush(stderr);
    }
 
    g_string_free(str, TRUE);
@@ -484,6 +564,18 @@ void LogWarning(char *format, ...)
 
 /*
  * Tell user that current action was aborted due to a serious error.
+ *
+ * There are three different circumstances under which this routine
+ * may be called:
+ * 
+ * a) We're running in CLI mode
+ *    -> clean up and terminate the program
+ * b) We're running in GUI mode 
+ *  -> spawn the dialogue
+ *     - via idle function when we're called from a sub thread
+ *     - directly when we're called from the main thread
+ *     ShowMessage() takes care of this.  
+ *  -> clean up and continue execution
  */
 
 void Stop(char *format, ...)
@@ -498,6 +590,8 @@ void Stop(char *format, ...)
       va_end(argp);
    }
 
+   /*** CLI mode */
+   
    if(!Closure->guiMode) 
    {  g_fprintf(stderr, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
@@ -506,6 +600,9 @@ void Stop(char *format, ...)
       g_fprintf(stderr, "\n\n");
       fflush(stderr);
    }
+
+   /*** GUI mode */
+   
    else
    {  char *titled,*msg,*utf_msg;
       int idx;
@@ -552,7 +649,8 @@ void Stop(char *format, ...)
      Closure->cleanupProc(Closure->cleanupData);
 
    /* Safety check; this indicates broken code.
-      Reminder to myself: Use CreateMessage() instead ;-) */
+      Concurrent threads should have been terminated by the
+      cleanup above. */
    
    if(Closure->mainThread)
    {  GThread *me = g_thread_self();
@@ -579,8 +677,14 @@ void RegisterCleanup(char *error_title, void (*cleanup)(gpointer), gpointer data
 {  
    Closure->cleanupProc = cleanup;
    Closure->cleanupData = data;
+   Closure->subThread = g_thread_self();
    if(Closure->errorTitle) g_free(Closure->errorTitle);
    Closure->errorTitle  = g_strdup(error_title);
+}
+
+void UnregisterCleanup()
+{  Closure->cleanupProc = NULL;
+   Closure->subThread = NULL;
 }
 
 /***
@@ -589,7 +693,7 @@ void RegisterCleanup(char *error_title, void (*cleanup)(gpointer), gpointer data
 
 /*
  * Thread creation.
- * Linux and Windows seem to provide at least 2MB of stack size per thread,
+ * GNU/Linux seems to provide at least 2MiB of stack size per thread,
  * but FreeBSD has insanely small defaults. If this turns out to be too low,
  * we need the currently commented out alternative.
  */
@@ -598,16 +702,30 @@ GThread* CreateGThread(GThreadFunc f, gpointer data)
 {  GError *err = NULL;
    GThread *t;
 
-   t = g_thread_create(f, data, FALSE, &err);
-
-#if 0
-   t = g_thread_create_full(f, data, MY_MINIMUM_STACKSIZE,
-			    FALSE, FALSE, G_THREAD_PRIORITY_NORMAL, &err);
-#endif
+   t = g_thread_try_new("generic thread", f, data, &err);
 
    if(!t) Stop("Could not create thread: %s\n",err->message);
 
    return t;
+}
+
+/*
+ * Spawning of idle functions.
+ * Idle functions are required to perform actions (like opening
+ * a dialogue) from a sub thread.
+ * However idle functions must not be spawned from the main thread
+ * as it would block infinitely; in that case we must run the idle
+ * function directly.
+ */
+
+void CallIdleFunc(gboolean (*idle_func)(gpointer), gpointer data)
+{ 
+   if(Closure->mainThread == g_thread_self())
+   {  idle_func(data);
+   }
+   else
+   {  g_idle_add(idle_func, data);
+   }
 }
 
 /***
@@ -630,13 +748,20 @@ void ShowWidget(GtkWidget *widget)
   g_idle_add(show_idle_func, (gpointer)widget);
 }
 
-
 /*
  * Activation / Deactivation of the action buttons
  */
 
 static gboolean allow_actions_idle_func(gpointer data)
 {  gboolean s = (data != NULL);
+
+   /* Disable/Enable parts of the menu */
+
+   gtk_widget_set_sensitive(Closure->fileMenuImage, s);
+   gtk_widget_set_sensitive(Closure->fileMenuEcc, s);
+   gtk_widget_set_sensitive(Closure->toolMenuAnchor, s);
+
+   /* Disable/Enable toolbar and sidebar buttons */
 
    if(Closure->deviceNodes->len) 
    {  gtk_widget_set_sensitive(Closure->readButton, s);
@@ -697,7 +822,9 @@ void ShowMessage(GtkWindow *parent, char *msg, GtkMessageType type)
    mi->type   = type;
    mi->window = parent;
 
-   g_idle_add(message_idle_func, mi);
+   if(Closure->mainThread == g_thread_self())
+        message_idle_func(mi);
+   else g_idle_add(message_idle_func, mi);
 }
 
 /*
@@ -872,8 +999,8 @@ static int vmodal_dialog(GtkMessageType mt, GtkButtonsType bt,
    mi->message_type = mt;
    mi->button_type = bt;
    mi->button_fn = button_fn;
-   mi->mutex = g_mutex_new();
-   mi->cond  = g_cond_new();
+   mi->mutex = g_malloc(sizeof(GMutex)); g_mutex_init(mi->mutex);
+   mi->cond  = g_malloc(sizeof(GCond)); g_cond_init(mi->cond);
 
    tmp = g_strdup_vprintf(msg, argp);
    idx = strlen(tmp);  /* Remove trailing newline */
@@ -884,7 +1011,7 @@ static int vmodal_dialog(GtkMessageType mt, GtkButtonsType bt,
 
    mi->ret = -1;
 
-   g_idle_add(modal_idle_func, mi);
+   CallIdleFunc(modal_idle_func, mi);
 
    g_mutex_lock(mi->mutex);
    while(mi->ret == -1)
@@ -892,10 +1019,11 @@ static int vmodal_dialog(GtkMessageType mt, GtkButtonsType bt,
 
    ret = mi->ret;
    g_mutex_unlock(mi->mutex);
-
    g_free(mi->msg);
-   g_mutex_free(mi->mutex);
-   g_cond_free(mi->cond);
+   g_mutex_clear(mi->mutex);
+   g_free(mi->mutex);
+   g_cond_clear(mi->cond);
+   g_free(mi->cond);
    g_free(mi);
 
    return ret;
@@ -916,7 +1044,7 @@ int ModalDialog(GtkMessageType mt, GtkButtonsType bt,
 /*
  * A wrapper around ModalDialog() to create a logged warning.
  * Note that in CLI mode the answer is always "yes",
- * so warnings will never abort CLI mode.
+ * so warnings will be printed but never abort CLI mode.
  */
 
 int ModalWarning(GtkMessageType mt, GtkButtonsType bt, 
@@ -1098,3 +1226,70 @@ void LockLabelSize(GtkLabel *label, char *format, ...)
 
    g_free(text);
 }
+
+/***
+ *** Safety requesters before overwriting stuff
+ ***/
+
+static void dont_ask_again_cb(GtkWidget *widget, gpointer data)
+{  int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  
+   Closure->confirmDeletion = !state;
+
+   UpdatePrefsConfirmDeletion();
+}
+
+static void insert_button(GtkDialog *dialog)
+{  GtkWidget *check,*align;
+
+   align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
+   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), align, FALSE, FALSE, 0);
+
+   check = gtk_check_button_new_with_label(_utf("Do not ask again"));
+   gtk_container_add(GTK_CONTAINER(align), check);
+   gtk_container_set_border_width(GTK_CONTAINER(align), 10);
+   g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
+
+   gtk_widget_show(align);
+   gtk_widget_show(check);
+   ReverseCancelOK(GTK_DIALOG(dialog));
+} 
+
+int ConfirmImageDeletion(char *file)
+{  int answer;
+
+   if(!Closure->guiMode)  /* Always delete it in command line mode */
+      return TRUE;
+
+   if(!Closure->confirmDeletion) /* I told you so... */
+      return TRUE;
+
+   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+			insert_button,
+			_("Image file already exists and does not match the medium:\n\n"
+			  "%s\n\n"
+			  "The existing image file will be deleted."),
+			file);
+
+   return answer == GTK_RESPONSE_OK;
+}
+
+int ConfirmEccDeletion(char *file)
+{  int answer;
+
+   if(!Closure->guiMode)  /* Always delete it in command line mode */
+      return TRUE;
+
+   if(!Closure->confirmDeletion) /* I told you so... */
+      return TRUE;
+
+   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+			insert_button,
+			_("The error correction file is already present:\n\n"
+			  "%s\n\n"
+			  "Overwrite it?"),
+			file);
+
+   return answer == GTK_RESPONSE_OK;
+}
+

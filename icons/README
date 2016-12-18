@@ -1,0 +1,4 @@
+Files starting with "gtk-" have been taken from
+the GTK+ 2.18 distribution in order to override 
+theming and keep the GUI consistent with the
+online documentation.

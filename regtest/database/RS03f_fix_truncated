@@ -1,0 +1,105 @@
+9503f278d4550a9507a317664481adf8
+1f52f29bf40b8a530697c969ab7044a6
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03f-tmp.iso: 20731 medium sectors.
+Expanding image:   1%Expanding image:   2%Expanding image:   3%Expanding image:   4%Expanding image:   5%Expanding image:   6%Expanding image:   7%Expanding image:   8%Expanding image:   9%Expanding image:  10%Expanding image:  11%Expanding image:  12%Expanding image:  13%Expanding image:  14%Expanding image:  15%Expanding image:  16%Expanding image:  17%Expanding image:  18%Expanding image:  19%Expanding image:  20%Expanding image:  21%Expanding image:  22%Expanding image:  23%Expanding image:  24%Expanding image:  25%Expanding image:  26%Expanding image:  27%Expanding image:  28%Expanding image:  29%Expanding image:  30%Expanding image:  31%Expanding image:  32%Expanding image:  33%Expanding image:  34%Expanding image:  35%Expanding image:  36%Expanding image:  37%Expanding image:  38%Expanding image:  39%Expanding image:  40%Expanding image:  41%Expanding image:  42%Expanding image:  43%Expanding image:  44%Expanding image:  45%Expanding image:  46%Expanding image:  47%Expanding image:  48%Expanding image:  49%Expanding image:  50%Expanding image:  51%Expanding image:  52%Expanding image:  53%Expanding image:  54%Expanding image:  55%Expanding image:  56%Expanding image:  57%Expanding image:  58%Expanding image:  59%Expanding image:  60%Expanding image:  61%Expanding image:  62%Expanding image:  63%Expanding image:  64%Expanding image:  65%Expanding image:  66%Expanding image:  67%Expanding image:  68%Expanding image:  69%Expanding image:  70%Expanding image:  71%Expanding image:  72%Expanding image:  73%Expanding image:  74%Expanding image:  75%Expanding image:  76%Expanding image:  77%Expanding image:  78%Expanding image:  79%Expanding image:  80%Expanding image:  81%Expanding image:  82%Expanding image:  83%Expanding image:  84%Expanding image:  85%Expanding image:  86%Expanding image:  87%Expanding image:  88%Expanding image:  89%Expanding image:  90%Expanding image:  91%Expanding image:  92%Expanding image:  93%Expanding image:  94%Expanding image:  95%Expanding image:  96%Expanding image:  97%Expanding image:  98%Expanding image:  99%Expanding image: 100%
+
+Fix mode(RS03f): Repairable sectors will be fixed in the image.
+    3 repaired sectors: 20790d 20880d 20970d 
+Ecc progress:   0.0%    3 repaired sectors: 20791d 20881d 20971d 
+Ecc progress:   1.1%    3 repaired sectors: 20792d 20882d 20972d 
+Ecc progress:   2.2%    3 repaired sectors: 20793d 20883d 20973d 
+Ecc progress:   3.3%    3 repaired sectors: 20794d 20884d 20974d 
+Ecc progress:   4.4%    3 repaired sectors: 20795d 20885d 20975d 
+Ecc progress:   5.5%    3 repaired sectors: 20796d 20886d 20976d 
+Ecc progress:   6.6%    3 repaired sectors: 20797d 20887d 20977d 
+Ecc progress:   7.7%    3 repaired sectors: 20798d 20888d 20978d 
+Ecc progress:   8.8%    3 repaired sectors: 20799d 20889d 20979d 
+Ecc progress:  10.0%    3 repaired sectors: 20800d 20890d 20980d 
+Ecc progress:  11.1%    3 repaired sectors: 20801d 20891d 20981d 
+Ecc progress:  12.2%    3 repaired sectors: 20802d 20892d 20982d 
+Ecc progress:  13.3%    3 repaired sectors: 20803d 20893d 20983d 
+Ecc progress:  14.4%    3 repaired sectors: 20804d 20894d 20984d 
+Ecc progress:  15.5%    3 repaired sectors: 20805d 20895d 20985d 
+Ecc progress:  16.6%    3 repaired sectors: 20806d 20896d 20986d 
+Ecc progress:  17.7%    3 repaired sectors: 20807d 20897d 20987d 
+Ecc progress:  18.8%    3 repaired sectors: 20808d 20898d 20988d 
+Ecc progress:  20.0%    3 repaired sectors: 20809d 20899d 20989d 
+Ecc progress:  21.1%    3 repaired sectors: 20810d 20900d 20990d 
+Ecc progress:  22.2%    3 repaired sectors: 20811d 20901d 20991d 
+Ecc progress:  23.3%    3 repaired sectors: 20812d 20902d 20992d 
+Ecc progress:  24.4%    3 repaired sectors: 20813d 20903d 20993d 
+Ecc progress:  25.5%    3 repaired sectors: 20814d 20904d 20994d 
+Ecc progress:  26.6%    3 repaired sectors: 20815d 20905d 20995d 
+Ecc progress:  27.7%    3 repaired sectors: 20816d 20906d 20996d 
+Ecc progress:  28.8%    3 repaired sectors: 20817d 20907d 20997d 
+Ecc progress:  30.0%    3 repaired sectors: 20818d 20908d 20998d 
+Ecc progress:  31.1%    3 repaired sectors: 20819d 20909d 20999d 
+Ecc progress:  32.2%    2 repaired sectors: 20820d 20910d 
+Ecc progress:  33.3%    3 repaired sectors: 20731d 20821d 20911d 
+Ecc progress:  34.4%    3 repaired sectors: 20732d 20822d 20912d 
+Ecc progress:  35.5%    3 repaired sectors: 20733d 20823d 20913d 
+Ecc progress:  36.6%    3 repaired sectors: 20734d 20824d 20914d 
+Ecc progress:  37.7%    3 repaired sectors: 20735d 20825d 20915d 
+Ecc progress:  38.8%    3 repaired sectors: 20736d 20826d 20916d 
+Ecc progress:  40.0%    3 repaired sectors: 20737d 20827d 20917d 
+Ecc progress:  41.1%    3 repaired sectors: 20738d 20828d 20918d 
+Ecc progress:  42.2%    3 repaired sectors: 20739d 20829d 20919d 
+Ecc progress:  43.3%    3 repaired sectors: 20740d 20830d 20920d 
+Ecc progress:  44.4%    3 repaired sectors: 20741d 20831d 20921d 
+Ecc progress:  45.5%    3 repaired sectors: 20742d 20832d 20922d 
+Ecc progress:  46.6%    3 repaired sectors: 20743d 20833d 20923d 
+Ecc progress:  47.7%    3 repaired sectors: 20744d 20834d 20924d 
+Ecc progress:  48.8%    3 repaired sectors: 20745d 20835d 20925d 
+Ecc progress:  50.0%    3 repaired sectors: 20746d 20836d 20926d 
+Ecc progress:  51.1%    3 repaired sectors: 20747d 20837d 20927d 
+Ecc progress:  52.2%    3 repaired sectors: 20748d 20838d 20928d 
+Ecc progress:  53.3%    3 repaired sectors: 20749d 20839d 20929d 
+Ecc progress:  54.4%    3 repaired sectors: 20750d 20840d 20930d 
+Ecc progress:  55.5%    3 repaired sectors: 20751d 20841d 20931d 
+Ecc progress:  56.6%    3 repaired sectors: 20752d 20842d 20932d 
+Ecc progress:  57.7%    3 repaired sectors: 20753d 20843d 20933d 
+Ecc progress:  58.8%    3 repaired sectors: 20754d 20844d 20934d 
+Ecc progress:  60.0%    3 repaired sectors: 20755d 20845d 20935d 
+Ecc progress:  61.1%    3 repaired sectors: 20756d 20846d 20936d 
+Ecc progress:  62.2%    3 repaired sectors: 20757d 20847d 20937d 
+Ecc progress:  63.3%    3 repaired sectors: 20758d 20848d 20938d 
+Ecc progress:  64.4%    3 repaired sectors: 20759d 20849d 20939d 
+Ecc progress:  65.5%    3 repaired sectors: 20760d 20850d 20940d 
+Ecc progress:  66.6%    3 repaired sectors: 20761d 20851d 20941d 
+Ecc progress:  67.7%    3 repaired sectors: 20762d 20852d 20942d 
+Ecc progress:  68.8%    3 repaired sectors: 20763d 20853d 20943d 
+Ecc progress:  70.0%    3 repaired sectors: 20764d 20854d 20944d 
+Ecc progress:  71.1%    3 repaired sectors: 20765d 20855d 20945d 
+Ecc progress:  72.2%    3 repaired sectors: 20766d 20856d 20946d 
+Ecc progress:  73.3%    3 repaired sectors: 20767d 20857d 20947d 
+Ecc progress:  74.4%    3 repaired sectors: 20768d 20858d 20948d 
+Ecc progress:  75.5%    3 repaired sectors: 20769d 20859d 20949d 
+Ecc progress:  76.6%    3 repaired sectors: 20770d 20860d 20950d 
+Ecc progress:  77.7%    3 repaired sectors: 20771d 20861d 20951d 
+Ecc progress:  78.8%    3 repaired sectors: 20772d 20862d 20952d 
+Ecc progress:  80.0%    3 repaired sectors: 20773d 20863d 20953d 
+Ecc progress:  81.1%    3 repaired sectors: 20774d 20864d 20954d 
+Ecc progress:  82.2%    3 repaired sectors: 20775d 20865d 20955d 
+Ecc progress:  83.3%    3 repaired sectors: 20776d 20866d 20956d 
+Ecc progress:  84.4%    3 repaired sectors: 20777d 20867d 20957d 
+Ecc progress:  85.5%    3 repaired sectors: 20778d 20868d 20958d 
+Ecc progress:  86.6%    3 repaired sectors: 20779d 20869d 20959d 
+Ecc progress:  87.7%    3 repaired sectors: 20780d 20870d 20960d 
+Ecc progress:  88.8%    3 repaired sectors: 20781d 20871d 20961d 
+Ecc progress:  90.0%    3 repaired sectors: 20782d 20872d 20962d 
+Ecc progress:  91.1%    3 repaired sectors: 20783d 20873d 20963d 
+Ecc progress:  92.2%    3 repaired sectors: 20784d 20874d 20964d 
+Ecc progress:  93.3%    3 repaired sectors: 20785d 20875d 20965d 
+Ecc progress:  94.4%    3 repaired sectors: 20786d 20876d 20966d 
+Ecc progress:  95.5%    3 repaired sectors: 20787d 20877d 20967d 
+Ecc progress:  96.6%    3 repaired sectors: 20788d 20878d 20968d 
+Ecc progress:  97.7%    3 repaired sectors: 20789d 20879d 20969d 
+Ecc progress:  98.8%Ecc progress: 100.0%
+Repaired sectors: 269 (269 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  3.0; worst = 3.

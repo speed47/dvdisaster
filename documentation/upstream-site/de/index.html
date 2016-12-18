@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title></title>
+ <link rel="stylesheet" type="text/css" href="../css/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td align="left">
+      <span class="fxxl"><b>dvdisaster</b>&nbsp;</span>
+      <i>Version 0.79.5</i>
+    </td>
+    <td align="right">
+    <span class="fxxl">&nbsp;</span>
+    Deutsch &nbsp; <a href="../en/index.html">English</a>
+    </td>
+  </tr>
+  <tr><td colspan="2" class="hsep"></td></tr>
+  <tr><td colspan="2">
+      <table class="navigation" width="100%" cellpadding="0" border="0">
+	<tr>
+	  <td>Unterseiten: &nbsp;&nbsp;&nbsp;
+	    <b>Entwickler-Seite</b> &nbsp;&middot;&nbsp;
+	    <a href="verschiedenes.html">Verschiedenes</a>
+	  </td>
+	  <td align="right"><a href="datenschutz.html">Datenschutz-Erklärung</a> &nbsp;&middot;&nbsp; <a href="impressum.html">Impressum</a></td>
+	</tr>
+      </table>
+  </td></tr>
+  <tr><td colspan="2" class="hsep"></td></tr>
+  <tr><td style="height: 10px"></td></tr>
+</table>
+  
+<!-- Main body --> 
+
+  
+<b>Entwickler-Seite</a></b><p>
+
+Auf dieser Seite finden Sie den neuesten Quellkode
+von <i>dvdisaster</i> für die Betriebssysteme
+FreeBSD, GNU/Linux und NetBSD. Der Inhalt dieser
+Seite richtet sich vorwiegend an die Betreuer
+von Binärpaketen für die genannten Plattformen.
+Typischerweise ist es bequemer, wenn Sie sich
+dvdisaster aus dem Paketsystem Ihres Betriebssystems
+bzw. Ihrer Distribution installieren.
+Natürlich können Sie sich 
+den Quellkode von dvdisaster aber auch selbst
+herunterladen und übersetzen, wenn Sie dies
+lieber möchten.<br>
+
+Diese Seite enthält <i>keine</i> Informationen
+über den Sinn und die Benutzung von dvdisaster.
+Dies ist an anderen Stellen besser beschrieben -
+zum Beispiel in zahlreichen Foren und (in englischer Sprache) im
+<a href="verschiedenes.html#manual">Benutzerhandbuch</a>.
+
+<p>
+
+<a name="download"></a>
+<b>Quellkode herunterladen</b>
+
+<table width="100%">
+<tr>
+  <td>dvdisaster unterstützt die Betriebssysteme <b>FreeBSD</b>, <b>GNU/Linux</b> und <b>NetBSD</b>.
+    Es wird Ihnen 
+    als <a href="http://www.germany.fsfeurope.org/documents/freesoftware.de.html">freie Software</a> 
+    unter der <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License v3</a>  zur 
+    Verfügung gestellt.
+  </td>
+  <td class="w127x" valign="top"><img src="../images/gplv3-127x51.png" alt="GPLv3-Logo" width="127">
+  </td>
+</tr>
+</table>
+<p>
+
+<table>
+  <tr>
+    <td>Aktuelle Version:&nbsp;</td> 
+    <td><a href="../downloads/dvdisaster-0.79.5.tar.bz2">dvdisaster-0.79.5.tar.bz2</a></td>
+    <td>(<a href="../downloads/dvdisaster-0.79.5.tar.bz2.gpg">digitale Unterschrift</a>,
+      MD5-Prüfsumme: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)</td>
+  </tr>
+  <tr>
+    <td>Vorherige (ältere) Version:</td> 
+    <td><a href="../downloads/dvdisaster-0.72.6.tar.bz2">dvdisaster-0.72.6.tar.bz2</a></td>
+    <td>(<a href="../downloads/dvdisaster-0.72.6.tar.bz2.gpg">digitale Unterschrift</a>,
+      MD5-Prüfsumme: f4213af05fe5c36e93bdf8a1732a66d1)</td>
+  </tr>
+</table>
+<p>
+
+Die Archive können mit einer <a href="verschiedenes.html#pubkey">digitalen Unterschrift</a> auf 
+ihren Ursprungszustand überprüft werden. In den Archiven gibt die Datei
+<tt>INSTALL</tt> weitere Informationen zum Übersetzen des Programmes.
+
+<p>
+
+Die Unterstützung von <b>Windows</b> and <b>Mac OS</b> wurde eingestellt.
+Ein anderer Entwickler hat angefangen, eine Version von dvdisaster direkt für Windows zu
+erstellen, aber es gibt dazu noch nichts anzukündigen. Verwenden Sie
+bis dahin bitte weiterhin
+die <a href="verschiedenes.html#windows">letzte veröffentlichte Version 0.72.3 für Windows</a>.
+  
+<p>
+<b>Was ist mit den alten dvdisaster-Seiten passiert?</b><p>
+
+Zur Erläuterung eine Übersetzung des Vorwortes aus 
+dem englischen <a href="misc.html#manual">Benutzerhandbuch</a>:<p>
+    
+Seit der Veröffentlichung von dvdisaster 0.79.3 (Version 0.79.4
+wurde nicht abgeschlossen und veröffentlicht) sind nahezu
+fünf Jahre vergangen.
+Dies liegt teilweise an den veränderten Lebensumständen
+des verantwortlichen Entwicklers, aber auch an vielen
+Änderungen am Quellkode. Viele interne Strukturen wurden
+in dvdisaster 0.79.5 im Vergleich zu seinem Vorgänger
+deutlich verändert.<p>
+
+Die wichtigste Änderung ist in dvdisaster 0.79.5
+natürlich der multihreading-fähige RS03-Kodierer.
+Während es ungefähr 62 Minuten auf einem durchschnittlich
+leistungsfähigen PC dauert, um ein 36 GiB großes Abbild
+mit dem RS02-Kodierer zu bearbeiten, so benötigt der
+neue RS03-Kodierer weniger als 7 Minuten mit sechs
+Prozessorkernen auf der selben Maschine. Auf einem
+Hochleistungs-Server mit 16 Prozessorkernen und
+hohem Ein-/Ausgabe-Durchsatz kann diese Aufgabe in
+unter einer Minute bearbeitet werden. Das ist
+ein großer Schritt nach vorne.<p>
+
+RS03 ist ab dieser Version für den produktiven
+Einsatz geeignet. Einige nicht grundlegende
+Funktionen werden noch mit den nächsten Versionen
+nachgereicht; dies umfaßt unter anderem das
+adaptive Lesen mit RS03 sowie das schnelle
+Reparieren von Datenträgern unter Nutzung von
+Multithreading.<p>
+
+Andere Teile des Projektes mußten geändert oder
+eingestellt werden. Ein Softwareprojekt lebt
+von der Weiterentwicklung und von regelmäßigen
+Veröffentlichungen; anderenfalls hört das
+Projekt letztendlich auf zu existieren.
+dvdisaster lief in den letzten Jahren Gefahr,
+dieses Schicksal zu erleiden. Um zu verhindern
+daß dies erneut eintritt, wird sich das
+Projekt nun auf die Entwicklung des Quellkodes
+konzentrieren; alle anderen Aktivitäten werden
+an andere Personen weitergegeben oder
+eingestellt. Die Quellkode-Entwicklung wird
+sich nur noch mit der GNU/Linux-Version
+befassen, die auch die Basis für alle
+anderen Betriebssysteme liefert. Darin
+inbegriffen sind die Portierungen für
+FreeBSD und NetBSD, die sich sehr einfach
+aus der GNU/Linux-Version ableiten lassen.
+Dies gilt leider nicht für die Mac OS-
+und Windows-Versionen, die ab sofort
+eingestellt werden.<p>
+
+Ebenso werden die getrennten Versionszweige mit
+stabilen Versionen und Entwicklerversionen eingestellt.
+Ab dieser Version werden alle dvdisaster-Veröffentlichungen
+als bereit für den produktiven Einsatz betrachtet,
+wodurch sich eine Unterscheidung in verschiedene
+Zweige erübrigt.<p>
+
+Die Bereitstellung der mehrsprachlichen Dokumentation,
+die gleichzeitig auch als Projektseite im Internet diente,
+hat sich ebenfalls als zu aufwändig erwiesen.
+Die Projektseite ist nun eine einfache Plattform
+zum Herunterladen des Quellkodes. Sie wendet sich jetzt
+an die Paketverwalter, die Binärversionen für
+GNU/Linux, FreeBSD und NetBSD bereitstellen. <br>
+
+Das Benutzerhandbuch wird nun im PDF-Format
+bereitgestellt; dies ist viel einfacher zu
+erzeugen als die alte HTML-Version. Die
+einzige verfügbare Sprache ist Englisch.
+Die meisten Teile des Benutzerhandbuches wurden
+aus der alten Online-Dokumentation übernommen;
+daher wirkt sie immer noch mehr wie die
+Internetseiten als wie ein Buch. Hyperlinks
+sind in PDF nicht so komfortabel nutzbar
+wie in HTML, aber sie wurden in dem Handbuch
+belassen um zu betonen daß es als Online-Referenz
+gedacht ist. Bitte schonen Sie die Natur und
+drucken Sie das Benutzerhandbuch nicht aus.
+Es ist ohnehin nicht dazu gedacht, von
+vorne nach hinten wie ein Buch gelesen zu werden.<p>
+
+Nun gut, genug geredet. Möge Ihnen dvdisaster helfen,
+Ihre Daten zu schützen und wiederherzustellen, und
+vielen Dank daß Sie es nutzen!<p>
+
+<i> -- cg, August 2015</i>
+
+<!-- Page footer -->
+
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td></tr>
+ <tr><td colspan="2" class="hsep"></td></tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2015 Carsten Gn&ouml;rlich.<br>
+Die unveränderte Vervielfältigung und Verteilung dieses gesamten Artikels in beliebiger Form ist gestattet, 
+sofern dieser Hinweis erhalten bleibt.
+     </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>
