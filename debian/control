@@ -5,13 +5,13 @@ Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
         Rogério Brito <rbrito@ime.usp.br>
 DM-Upload-Allowed: yes
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper (>= 9),
 	       gettext,
 	       libbz2-dev,
 	       libgtk2.0-dev,
 	       libpng-dev,
 	       pkg-config
-Standards-Version: 3.9.3
+Standards-Version: 3.9.8
 Vcs-Browser: http://git.debian.org/?p=pkg-opt-media/dvdisaster.git 
 Vcs-Git: git://git.debian.org/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
