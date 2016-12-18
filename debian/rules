@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+export DEB_CFLAGS_MAINT_APPEND = $(CPPFLAGS)
+
 %:
 	dh $@
 
