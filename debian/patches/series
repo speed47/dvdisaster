@@ -9,3 +9,4 @@
 10-use-non-size-specific-icon-and-add-keywords-to-desktop-file.patch
 11-no-cruft.patch
 12-fix-spelling-of-up-to.patch
+13-fix-missing-language-field-in-po-files.patch
