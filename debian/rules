@@ -17,20 +17,10 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--localedir=\$${prefix}/share/locale \
 		--docdir=\$${prefix}share/doc \
-		--docsubdir=dvdisaster-doc/html 
+		--docsubdir=dvdisaster-doc/html
 
 override_dh_auto_install:
-	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp 
-
-	# Installing desktop file
-	install -D -m 0644 contrib/dvdisaster.desktop debian/dvdisaster/usr/share/applications/dvdisaster.desktop
-	sed -i -e 's/dvdisaster48/dvdisaster/' debian/dvdisaster/usr/share/applications/dvdisaster.desktop
-
-	# Installing icon
-	install -D -m 0644 contrib/dvdisaster32.png debian/dvdisaster/usr/share/icons/dvdisaster.png
-
-	# Installing pixmaps
-	install -D -m 0644 debian/pixmaps/dvdisaster.xpm debian/dvdisaster/usr/share/pixmaps/dvdisaster.xpm
+	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp
 
 	# Removing double files
 	rm -f debian/tmp/usr/bin/dvdisaster-uninstall.sh
