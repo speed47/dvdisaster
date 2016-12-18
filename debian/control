@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org>
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
         Rogério Brito <rbrito@ime.usp.br>
-DM-Upload-Allowed: yes
 Build-Depends: debhelper (>= 9),
 	       gettext,
 	       libbz2-dev,
