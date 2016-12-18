@@ -29,6 +29,7 @@ Description: data loss/scratch/aging protection for CD/DVD media
 Package: dvdisaster-doc
 Section: doc
 Architecture: all
+Multi-Arch: foreign
 Depends: ${misc:Depends}
 Suggests: dvdisaster
 Description: data loss/scratch/aging protection for CD/DVD media (documentation)
