@@ -1,11 +1,21 @@
-Author: Daniel Baumann <daniel@debian.org>
-Description: Customizes the help-dialog according to README.MODIFYING.
+From: Daniel Baumann <daniel@debian.org>
+Date: Sun, 8 Apr 2012 21:53:29 +0900
+Subject: Customizes the help-dialog according to README.MODIFYING.
 
-Index: dvdisaster/help-dialogs.c
-===================================================================
---- dvdisaster.orig/help-dialogs.c	2012-04-08 21:41:14.000000000 +0900
-+++ dvdisaster/help-dialogs.c	2012-04-08 21:53:29.300264928 +0900
-@@ -402,7 +402,7 @@
+Description: Customizes the help-dialog according to README.MODIFYING.
+Author: Daniel Baumann <daniel@debian.org>
+Last-Update: 2012-04-08
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index 793be52..1514a7a 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -402,7 +402,7 @@ void ShowGPL()
    ShowTextfile(_("windowtitle|GNU General Public License"), 
  	       _("<big>GNU General Public License</big>\n"
  		 "<i>The license terms of dvdisaster.</i>"),
@@ -14,7 +24,7 @@ Index: dvdisaster/help-dialogs.c
  }
  
  /*
-@@ -566,7 +566,7 @@
+@@ -566,7 +566,7 @@ static void show_modifying(void)
  {  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
  	       _("<big>Modifying dvdisaster</big>\n"
  		 "<i>Your changes are not ours.</i>"),
@@ -23,7 +33,7 @@ Index: dvdisaster/help-dialogs.c
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -742,14 +742,14 @@
+@@ -742,14 +742,14 @@ void AboutDialog()
     AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
  				"This is free software and you are welcome to redistribute it\n"
  				"under the conditions of the [GNU General Public License].\n"), 

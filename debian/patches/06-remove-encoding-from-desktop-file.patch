@@ -1,9 +1,23 @@
-Author: Rogério Theodoro de Brito <rbrito@ime.usp.br>
-Description: Remove unneeded Encoding-key from desktop file
+From: =?utf-8?q?Rog=C3=A9rio_Theodoro_de_Brito?= <rbrito@ime.usp.br>
+Date: Sun, 18 Dec 2016 22:01:27 +1100
+Subject: Remove unneeded Encoding-key from desktop file
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+Description: Remove unneeded Encoding-key from desktop file
+Author: Rogério Theodoro de Brito <rbrito@ime.usp.br>
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ contrib/dvdisaster.desktop | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/contrib/dvdisaster.desktop b/contrib/dvdisaster.desktop
+index 63f2e4f..c7661ec 100644
 --- a/contrib/dvdisaster.desktop
 +++ b/contrib/dvdisaster.desktop
-@@ -10,4 +10,3 @@
+@@ -10,4 +10,3 @@ Icon=dvdisaster48.png
  Terminal=false
  Type=Application
  Categories=Application;System;

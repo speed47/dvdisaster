@@ -1,4 +1,4 @@
-libpng15
+01-libpng15.patch
 02-encryption.patch
 03-dvdrom.patch
 05-help-dialog.patch

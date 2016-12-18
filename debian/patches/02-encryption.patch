@@ -1,11 +1,21 @@
-Author: n/a
-Description: Disables to skip on encrypted disks (e.g. DVD with CSS-Encryption).
+From: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org>
+Date: Sun, 8 Apr 2012 21:51:29 +0900
+Subject: Disables to skip on encrypted disks (e.g. DVD with CSS-Encryption).
 
-Index: dvdisaster/scsi-layer.c
-===================================================================
---- dvdisaster.orig/scsi-layer.c	2012-04-08 21:51:10.995588783 +0900
-+++ dvdisaster/scsi-layer.c	2012-04-08 21:51:29.259678075 +0900
-@@ -2693,11 +2693,12 @@
+Description: Disables to skip on encrypted disks (e.g. DVD with CSS-Encryption).
+Author: n/a
+Last-Update: 2012-04-08
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ scsi-layer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/scsi-layer.c b/scsi-layer.c
+index 99b2ce9..13784dd 100644
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -2693,11 +2693,12 @@ DeviceHandle* OpenAndQueryDevice(char *device)
         	 return NULL;
        }
     }
