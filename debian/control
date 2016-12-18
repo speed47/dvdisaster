@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 9),
 	       libpng-dev,
 	       pkg-config
 Standards-Version: 3.9.8
-Vcs-Browser: http://git.debian.org/?p=pkg-opt-media/dvdisaster.git 
-Vcs-Git: git://git.debian.org/pkg-opt-media/dvdisaster.git
+Vcs-Browser: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
 
 Package: dvdisaster
