@@ -21,9 +21,3 @@ override_dh_auto_configure:
 
 override_dh_auto_install:
 	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp
-
-	# Removing double files
-	rm -f debian/tmp/usr/bin/dvdisaster-uninstall.sh
-	rm -f debian/tmp/usr/share/doc/dvdisaster-doc/html/CHANGELOG
-	rm -f debian/tmp/usr/share/doc/dvdisaster-doc/html/COPYING
-

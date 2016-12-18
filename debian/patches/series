@@ -7,3 +7,4 @@
 08-fix-gnu-make-detection.patch
 09-fix-format-security-warnings.patch
 10-use-non-size-specific-icon-and-add-keywords-to-desktop-file.patch
+11-no-cruft.patch
