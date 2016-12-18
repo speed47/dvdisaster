@@ -8,3 +8,4 @@
 09-fix-format-security-warnings.patch
 10-use-non-size-specific-icon-and-add-keywords-to-desktop-file.patch
 11-no-cruft.patch
+12-fix-spelling-of-up-to.patch
