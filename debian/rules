@@ -18,7 +18,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--localedir=\$${prefix}/share/locale \
 		--docdir=\$${prefix}share/doc \
-		--docsubdir=dvdisaster-doc/html \
+		--docsubdir=dvdisaster-doc \
 		--with-embedded-src-path=no
 
 override_dh_clean:
@@ -31,13 +31,13 @@ override_dh_auto_build-arch:
 	make all
 
 override_dh_auto_build-indep:
-	make images
+	make manual
 
 override_dh_auto_install-arch:
 	dh_auto_install -a -- BUILDROOT=$(CURDIR)/debian/tmp
 
 override_dh_auto_install-indep:
-	make install-doc BUILDROOT=$(CURDIR)/debian/tmp
+	true
 
 # Ensure that none of the text files that the application
 # tries to display directly are not compressed, as it doesn't

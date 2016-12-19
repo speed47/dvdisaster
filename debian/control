@@ -12,6 +12,9 @@ Build-Depends: debhelper (>= 10),
                libgtk2.0-dev,
                libpng-dev,
                pkg-config
+Build-Depends-Indep: texlive-fonts-recommended,
+                     texlive-latex-base,
+                     texlive-latex-extra
 Standards-Version: 3.9.8
 Vcs-Browser: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
 Vcs-Git: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
