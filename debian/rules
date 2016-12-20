@@ -13,7 +13,8 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--localedir=\$${prefix}/share/locale \
 		--docdir=\$${prefix}share/doc \
-		--docsubdir=dvdisaster-doc/html
+		--docsubdir=dvdisaster-doc/html \
+		--with-embedded-src-path=no
 
 override_dh_auto_install:
 	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp
