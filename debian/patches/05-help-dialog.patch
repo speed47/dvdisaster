@@ -3,16 +3,20 @@ Date: Sun, 8 Apr 2012 21:53:29 +0900
 Subject: Customizes the help-dialog according to README.MODIFYING.
 
 Description: Customizes the help-dialog according to README.MODIFYING.
+ .
+ * 2016-12-19 - Fixed path:
+   /usr/share/common/licenses/GPL-2 -> /usr/share/common-licenses/GPL-2
+   and restored use of "GPL" label.
 Author: Daniel Baumann <daniel@debian.org>
-Last-Update: 2012-04-08
+Last-Update: 2016-12-19
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- help-dialogs.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ help-dialogs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index 793be52..1514a7a 100644
+index 793be52..ed86afe 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
 @@ -402,7 +402,7 @@ void ShowGPL()
@@ -20,7 +24,7 @@ index 793be52..1514a7a 100644
  	       _("<big>GNU General Public License</big>\n"
  		 "<i>The license terms of dvdisaster.</i>"),
 -	       "COPYING", NULL, NULL);
-+	       "/usr/share/common/licenses/GPL-2", NULL, NULL);
++	       "/usr/share/common-licenses/GPL-2", NULL, NULL);
  }
  
  /*
@@ -33,12 +37,8 @@ index 793be52..1514a7a 100644
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -742,14 +742,14 @@ void AboutDialog()
-    AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
- 				"This is free software and you are welcome to redistribute it\n"
- 				"under the conditions of the [GNU General Public License].\n"), 
--			"GPL");
-+			"/usr/share/common-licenses/GPL-2");
+@@ -745,11 +745,11 @@ void AboutDialog()
+ 			"GPL");
  
  #ifdef MODIFIED_SOURCE
 -   AboutTextWithLink(vbox, _("\nThis program is <b>not the original</b>. It is based on the\n"
