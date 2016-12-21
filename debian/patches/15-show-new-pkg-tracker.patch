@@ -1,0 +1,29 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Mon, 19 Dec 2016 12:02:51 +1100
+Subject: Update help dialog to show link to the new Debian package tracker.
+
+Description: Update help dialog to show link to the new Debian
+ package tracker.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2016-12-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index ed86afe..fb1b457 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -749,7 +749,7 @@ void AboutDialog()
+ 			     "for Debian to support DVD-ROMs (with and without encryption).\n\n"
+ 			     "Please do not bother the original authors of dvdisaster\n"
+ 			     "but submit bugreports against the [debian package] instead.\n"),
+-			     "http://packages.qa.debian.org/dvdisaster");
++			     "https://tracker.debian.org/pkg/dvdisaster");
+ 
+ #else
+    lang = g_getenv("LANG");

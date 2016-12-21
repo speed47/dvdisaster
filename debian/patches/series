@@ -11,3 +11,4 @@
 12-fix-spelling-of-up-to.patch
 13-fix-missing-language-field-in-po-files.patch
 14-make-builds-reproducible.patch
+15-show-new-pkg-tracker.patch
