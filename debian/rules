@@ -16,5 +16,14 @@ override_dh_auto_configure:
 		--docsubdir=dvdisaster-doc/html \
 		--with-embedded-src-path=no
 
-override_dh_auto_install:
-	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp
+override_dh_auto_build-arch:
+	make all
+
+override_dh_auto_build-indep:
+	make images
+
+override_dh_auto_install-arch:
+	dh_auto_install -a -- BUILDROOT=$(CURDIR)/debian/tmp
+
+override_dh_auto_install-indep:
+	make install-doc BUILDROOT=$(CURDIR)/debian/tmp
