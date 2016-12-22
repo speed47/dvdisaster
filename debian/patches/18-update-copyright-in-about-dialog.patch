@@ -1,0 +1,31 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Wed, 21 Dec 2016 07:25:17 +1100
+Subject: Update copyright notice in about dialog.
+
+Description: Update copyright notice in about dialog.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2016-12-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index fb1b457..3658bfc 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -722,8 +722,9 @@ void AboutDialog()
+    g_free(text);
+ 
+ #ifdef MODIFIED_SOURCE
+-   AboutTextWithLink(vbox, 
+-		     _("Modified version Copyright 2012 (please fill in - [directions])\n"
++   AboutTextWithLink(vbox,
++		     _("[Modified version]\n"
++		       "Copyright 2005-2016 Debian Optical Media Tools Team\n"
+ 		       "Copyright 2004-2012 Carsten Gnoerlich"),
+ 		     "MODIFYING");
+ #else
