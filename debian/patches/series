@@ -15,3 +15,4 @@
 16-remove-auto-build-of-doco-from-install-rule.patch
 17-fix-all-but-deprecated-api-warnings.patch
 18-update-copyright-in-about-dialog.patch
+19-show-text-files-with-abs-path.patch
