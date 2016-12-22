@@ -13,3 +13,4 @@
 14-make-builds-reproducible.patch
 15-show-new-pkg-tracker.patch
 16-remove-auto-build-of-doco-from-install-rule.patch
+17-fix-all-but-deprecated-api-warnings.patch
