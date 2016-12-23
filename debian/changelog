@@ -1,3 +1,54 @@
+dvdisaster (0.72.4-2) unstable; urgency=medium
+
+  * Team upload.
+  * Make builds reproducible:
+    + Use the Debian changelog details to derive a build number and date.
+    + Don't build with source path embedded in binary.
+  * debian/control:
+    + Update to Standards Version 3.9.8.
+      - Format security warnings required fixing in tools/memory.c as
+        a result.
+    + Update VCS details.
+    + Remove obsolete DM-Upload-Alllowed control field.
+    + Perform wrap and sort.
+    + Mark dvdisaster-doc as a multi-arch foreign package.
+  * debian/rules:
+    + Build with all hardening flags set.
+    + Link required libraries as needed.
+    + Fix installation of desktop file and icon images.
+    + Tidy up installation of doc files.
+    + Fix clean up.
+    + Separate binary-arch and binary-indep rules.
+    + Silence deprecated API warnings.
+  * debian/*:
+    + Update uscan rules.
+    + Drop debian/dvdisaster.menu file in favour of desktop file.
+    + Convert copyright file into proper DEP5 format and update.
+    + Drop no longer required debian/pixmaps/dvdisaster.xpm.
+    + Add debian/dvdisaster-doc.doc-base file.
+    + Add link to html docs in dvdisaster-doc package.
+    + Remove unnecessary duplication of doc files in the two packages.
+    + Link all duplicate doc files.
+    + Fix installation of thumbnails for Czech doco.
+  * debian/patches/*:
+    + Fix headers to work with git-buildpackage, retaining as much
+      meta info as possible.
+    + Fix GNU Make detection. (Closes: #848811)
+    + Fix path of GPL-2 license in 05-help-dialog.patch. (Closes: #708384)
+    + Fix all warnings except for those related to deprecated API.
+      (Closes: #748416)
+    + Use non-size-specific icon and add keywords to desktop file.
+    + Fix spelling: upto -> up to
+    + Fix missing language fields in PO files.
+    + Update help dialog to show link to the new Debian package tracker.
+    + Update copyright notice in about dialog.
+    + Allow ShowTextFile() to work with absolute path names.
+    + Fix display of changelog, credits and to-do files.
+    + Remove link to the newsfeed, to fix Lintian privacy-breach-generic
+      warning. The news feed no longer works anyway.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Fri, 23 Dec 2016 15:53:13 +1100
+
 dvdisaster (0.72.4-1) unstable; urgency=low
 
   * New upstream (Closes: #665522)
