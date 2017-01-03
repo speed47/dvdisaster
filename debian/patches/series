@@ -18,3 +18,4 @@
 19-show-text-files-with-abs-path.patch
 20-display-changelog-credits-and-todo.patch
 21-fix-privacy-breach-in-doco.patch
+22-fix-hurd-i386-ftbfs.patch
