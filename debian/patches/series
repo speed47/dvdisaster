@@ -19,3 +19,4 @@
 20-display-changelog-credits-and-todo.patch
 21-fix-privacy-breach-in-doco.patch
 22-fix-hurd-i386-ftbfs.patch
+23-add-bdrom-support.patch

@@ -1,0 +1,32 @@
+From: Corey Wright <undefined@pobox.com>
+Date: Sat, 24 Sep 2016 14:16:10 -0500
+Subject: Add support for BD-ROM media-type.
+
+Description: Add support for BD-ROM media-type.
+ The attached patch adds support to dvdisaster for the BD-ROM
+ media-type.  This allows dvdisaster to scan and read (ie create ISO
+ images of) BD-ROM media.
+Author: Corey Write <undefined@pobox.com>
+Origin: vendor, https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=849518;filename=dvdisaster-add_bdrom_support.patch;msg=5
+Bug-Debian: https://bugs.debian.org/849518
+Forwarded: no
+Last-Update: 2016-12-27
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ scsi-layer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scsi-layer.c b/scsi-layer.c
+index 0ba0976..8b005ec 100644
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -1035,7 +1035,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
+ 
+    if(!strncmp((char*)&buf[4+8], "BDO", 3))
+    {  dh->typeDescr = g_strdup("BD-ROM");
+-      dh->subType = UNSUPPORTED;
++      dh->subType = BD;
+    }
+ 
+    if(!strncmp((char*)&buf[4+8], "BDW", 3))
