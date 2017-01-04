@@ -6,15 +6,26 @@ include /usr/share/dpkg/buildflags.mk
 export DEB_CFLAGS_MAINT_APPEND = $(CPPFLAGS) -Wall -Wno-deprecated-declarations -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+MUTABLE_FILES := build.h $(wildcard locale/*.po)
+
 %:
 	dh $@
 
 override_dh_auto_configure:
+	for f in $(MUTABLE_FILES); do \
+		cp -an $$f $$f.orig; \
+	done
 	dh_auto_configure -- \
 		--localedir=\$${prefix}/share/locale \
 		--docdir=\$${prefix}share/doc \
 		--docsubdir=dvdisaster-doc/html \
 		--with-embedded-src-path=no
+
+override_dh_clean:
+	dh_clean -X.orig
+	for f in $(MUTABLE_FILES); do \
+		test ! -f $$f.orig || mv -f $$f.orig $$f; \
+	done
 
 override_dh_auto_build-arch:
 	make all
