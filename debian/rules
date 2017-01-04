@@ -33,5 +33,5 @@ override_dh_auto_install-indep:
 # automatically decompress text files.
 override_dh_compress:
 	dh_compress -p dvdisaster \
-		-X.CHANGELOG -XCREDITS -XREADME.MODIFYING -XTODO
+		-XCHANGELOG -XCREDITS -XREADME.MODIFYING -XTODO
 	dh_compress --remaining-packages

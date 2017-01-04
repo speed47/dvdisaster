@@ -9,7 +9,7 @@ Description: Fix display of changelog, credits and to-do files.
 Author: Carlos Maddela <e7appew@gmail.com>
 Origin: vendor
 Forwarded: not-needed
-Last-Update: 2016-12-21
+Last-Update: 2017-01-05
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
@@ -17,7 +17,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/menubar.c b/menubar.c
-index 99ae4fc..40f11d5 100644
+index 99ae4fc..33e6ba4 100644
 --- a/menubar.c
 +++ b/menubar.c
 @@ -116,21 +116,21 @@ static void menu_cb(GtkWidget *widget, gpointer data)
@@ -25,7 +25,7 @@ index 99ae4fc..40f11d5 100644
  		     _("<big>Change log</big>\n"
  		       "<i>Major differences from earlier program versions.</i>"),
 -		     "CHANGELOG", NULL, NULL);
-+		     "/usr/share/doc/dvdisaster/.CHANGELOG", NULL, NULL);
++		     "/usr/share/doc/dvdisaster/CHANGELOG", NULL, NULL);
  	break;
  
        case MENU_HELP_CREDITS:
