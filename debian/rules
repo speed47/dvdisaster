@@ -35,8 +35,17 @@ override_dh_clean:
 override_dh_auto_build-arch:
 	make all
 
+# For the time being, we'll just package the upstream-generated
+# manual.pdf, since we can't build the PDF reproducibly ourselves.
+# The reason we can't is most probably due to the fact that the
+# LaTeX document embeds other PDF documents and PNG images.
+# Although we are able to reproduce the PDF's creation and mod
+# dates, as well as its PDF IDs, the stream elements representing
+# the embedded images are always what seem to differ each time we
+# try to generate the PDF.
 override_dh_auto_build-indep:
-	make manual
+	# make manual
+	true
 
 override_dh_auto_install-arch:
 	dh_auto_install -a -- BUILDROOT=$(CURDIR)/debian/tmp
