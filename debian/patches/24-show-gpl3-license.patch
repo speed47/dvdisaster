@@ -1,0 +1,28 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 5 Jan 2017 14:36:27 +1100
+Subject: Update help dialog to show GPL-3 license.
+
+Description: Update help dialog to show GPL-3 license.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2017-01-05
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index 6214429..5065e76 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -403,7 +403,7 @@ void ShowGPL()
+   ShowTextfile(_("windowtitle|GNU General Public License"), 
+ 	       _("<big>GNU General Public License</big>\n"
+ 		 "<i>The license terms of dvdisaster.</i>"),
+-	       "/usr/share/common-licenses/GPL-2", NULL, NULL);
++	       "/usr/share/common-licenses/GPL-3", NULL, NULL);
+ }
+ 
+ /*

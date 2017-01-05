@@ -15,3 +15,4 @@
 20-display-changelog-credits-and-todo.patch
 22-fix-hurd-i386-ftbfs.patch
 23-add-bdrom-support.patch
+24-show-gpl3-license.patch
