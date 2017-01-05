@@ -1,0 +1,27 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 5 Jan 2017 19:14:35 +1100
+Subject: Generate the same PDF document IDs for build reproducibility.
+
+Description: Generate the same PDF IDs for build reproducibility.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2016-12-21
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ documentation/user-manual/manual.tex | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/documentation/user-manual/manual.tex b/documentation/user-manual/manual.tex
+index 60fb51e..aaab4fa 100644
+--- a/documentation/user-manual/manual.tex
++++ b/documentation/user-manual/manual.tex
+@@ -65,6 +65,7 @@
+ \fancyfoot{}
+ \fancyfoot[LE,RO]{page \thepage\ of \pageref{LastPage}}
+ 
++\pdftrailerid{dvdisaster}
+ \begin{document}
+ 
+ \definecolor{lightorange}{RGB}{255,224,150}
