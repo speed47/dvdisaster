@@ -1,0 +1,37 @@
+\section{Changelog}
+
+Clarifications of specifications (without actual changes of implementations) 
+are numbered with lowercase letters, e.g. {\em V1.00a}, {\em V1.00b} etc.
+
+\smallskip
+
+Changes which affect the implementation of codecs are indicated by increasing
+version numbers, e.g. {\em V1.00}, {\em V1.01}. Version numbering is independent
+for each codec.
+
+\subsection{RS03 codec}
+
+\begin{tabular}{lp{14cm}}
+V1.00 & {\em supported since dvdisaster version V0.79.4} \\
+      & Clarified: RS03 header does not contain copy of first CRC sector (appendix \ref{eh}). \\
+      & Added $sectorsPerLayer$ field in Ecc header and CRC block format.\\
+      & Added ecc file specification.\\
+\end{tabular}
+
+\subsection{RS02 codec}
+
+\begin{tabular}{lp{14cm}}
+V1.01 & {\em supported since dvdisaster version V0.79.5} \\
+      & Added the {\em sectorsAddedByEcc} field in the {\em EccHeader}. \\
+V1.00 & {\em supported since dvdisaster version V0.66} \\
+      & First draft of specification, open for review for missing parts and errors. \\
+\end{tabular}
+
+\subsection{RS01 codec}
+
+\begin{tabular}{lp{14cm}}
+V1.00 & {\em supported since dvdisaster version V0.66} \\
+      & First release of specification. \\
+\end{tabular}
+
+\newpage

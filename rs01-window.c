@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -29,7 +30,20 @@
 
 static void redraw_curve(RS01Widgets*);
 static void update_geometry(RS01Widgets*);
+
+/* Protected widget access */
       
+static void activate_toggle_button(GtkToggleButton *toggle, int state)
+{  if(toggle) gtk_toggle_button_set_active(toggle, state);
+}
+
+static void set_range_value(GtkRange *range, int value)
+{  if(range) gtk_range_set_value(range, value);
+}
+
+static void set_spin_button_value(GtkSpinButton *spin, int value)
+{  if(spin) gtk_spin_button_set_value(spin, value);
+}
 
 /***
  *** Encoding window
@@ -309,7 +323,8 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 {  RS01Widgets *wl = (RS01Widgets*)data; 
 
    if(event->count) /* Exposure compression */
-     return TRUE;
+   {  return TRUE;
+   }
 
    update_geometry(wl);
    redraw_curve(wl);
@@ -413,9 +428,13 @@ enum
    PREF_ECC_SIZE = 2
 };
 
+#ifdef HAVE_32BIT
+static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
+			    1024, 1536 };
+#else
 static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
 			    1024, 1536, 2048, 2560, 3072, 4096, 5120, 6144, 7168, 8192 };
-//			    11264, 15360, 23552, 31744, 48128, 64512 };
+#endif
 
 static gchar* format_cb(GtkScale *scale, gdouble value, gpointer data)
 {  int nroots = value;
@@ -442,9 +461,9 @@ static void cache_cb(GtkWidget *widget, gpointer data)
    char *text, *utf;
 
    value = gtk_range_get_value(GTK_RANGE(widget));
-   Closure->cacheMB = cache_size[value];
+   Closure->cacheMiB = cache_size[value];
 	
-   text = g_strdup_printf(_("%d MB of file cache"), Closure->cacheMB);
+   text = g_strdup_printf(_("%d MiB of file cache"), Closure->cacheMiB);
    utf  = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), utf);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), utf);
@@ -463,8 +482,10 @@ static void nroots_cb(GtkWidget *widget, gpointer data)
    Closure->redundancy = g_strdup_printf("%d", value);
 
    if(widget == wl->redundancyScaleA)
-        gtk_range_set_value(GTK_RANGE(wl->redundancyScaleB), value);
-   else gtk_range_set_value(GTK_RANGE(wl->redundancyScaleA), value);
+        set_range_value(GTK_RANGE(wl->redundancyScaleB), value);
+   else set_range_value(GTK_RANGE(wl->redundancyScaleA), value);
+
+   UpdateMethodPreferences();
 }
 
 static void ecc_size_cb(GtkWidget *widget, gpointer data)
@@ -479,13 +500,14 @@ static void ecc_size_cb(GtkWidget *widget, gpointer data)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(Closure->redundancy));
    else gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(Closure->redundancy));
 
+   UpdateMethodPreferences();
 }
 
 static void toggle_cb(GtkWidget *widget, gpointer data)
 {  Method *method = (Method*)data;
    RS01Widgets *wl = (RS01Widgets*)method->widgetList;
    int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
+      
    if(state == TRUE)
    {  if(widget == wl->radio3A || widget == wl->radio3B)
       {  gtk_widget_set_sensitive(wl->redundancyScaleA, TRUE);
@@ -512,8 +534,8 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
       if(   widget == wl->radio1A  /* Normal */
 	 || widget == wl->radio1B)
       {  
-         gtk_range_set_value(GTK_RANGE(wl->redundancyScaleA), 32);
-         gtk_range_set_value(GTK_RANGE(wl->redundancyScaleB), 32);
+         set_range_value(GTK_RANGE(wl->redundancyScaleA), 32);
+         set_range_value(GTK_RANGE(wl->redundancyScaleB), 32);
 
 	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio1A), TRUE);
 	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio1B), TRUE);
@@ -525,8 +547,8 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
       if(   widget == wl->radio2A  /* High */
 	 || widget == wl->radio2B)
       {  
-         gtk_range_set_value(GTK_RANGE(wl->redundancyScaleA), 64);
-         gtk_range_set_value(GTK_RANGE(wl->redundancyScaleB), 64);
+         set_range_value(GTK_RANGE(wl->redundancyScaleA), 64);
+         set_range_value(GTK_RANGE(wl->redundancyScaleB), 64);
 
 	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio2A), TRUE);
 	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio2B), TRUE);
@@ -556,6 +578,8 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 if(Closure->redundancy) g_free(Closure->redundancy);
 	 Closure->redundancy = g_strdup_printf("%dm", space);
       }
+
+      UpdateMethodPreferences();
    }
 }
 
@@ -563,12 +587,72 @@ void ResetRS01PrefsPage(Method *method)
 {  RS01Widgets *wl = (RS01Widgets*)method->widgetList;
    int index;
 
+   /* Redundancy selection */
+
+   if(Closure->redundancy)
+   {  
+      if(!strcmp(Closure->redundancy, "normal"))
+      {  if(wl->radio1A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio1A)) == FALSE)
+	 {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio1A), TRUE);
+	    activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio1B), TRUE);
+	 }
+      }
+      else if(!strcmp(Closure->redundancy, "high"))
+      {  if(wl->radio2A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio2A)) == FALSE)
+	 {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio2A), TRUE);
+	    activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio2B), TRUE);
+	 }
+      }
+      else
+      {  int last = strlen(Closure->redundancy)-1;
+
+         if(Closure->redundancy[last] == 'm')
+	 {  if(wl->redundancySpinA)
+	    {  int old = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(wl->redundancySpinA));
+	       int new;
+
+	       Closure->redundancy[last] = 0;
+	       new = atoi(Closure->redundancy);
+	       Closure->redundancy[last] = 'm';
+
+	       if(new != old)
+	       {  set_spin_button_value(GTK_SPIN_BUTTON(wl->redundancySpinA), new);
+		  set_spin_button_value(GTK_SPIN_BUTTON(wl->redundancySpinB), new);
+	       }
+
+	       if(wl->radio4A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio4A)) == FALSE)
+	       {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio4A), TRUE);
+		  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio4B), TRUE);
+	       }
+	    }
+	 }
+	 else
+	 {  if(wl->redundancyScaleA)
+	    {  int old = gtk_range_get_value(GTK_RANGE(wl->redundancyScaleA));
+	       int new = atoi(Closure->redundancy);
+
+	       if(new != old)
+	       {  set_range_value(GTK_RANGE(wl->redundancyScaleA), new);
+	          set_range_value(GTK_RANGE(wl->redundancyScaleB), new);
+	       }
+
+	       if(wl->radio3A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio3A)) == FALSE)
+	       {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio3A), TRUE);
+		  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio3B), TRUE);
+	       }
+	    }
+	 }
+      }
+   }
+
+   /* Memory caching */
+
    for(index = 0; index < sizeof(cache_size)/sizeof(int); index++)
-     if(cache_size[index] > Closure->cacheMB)
+     if(cache_size[index] > Closure->cacheMiB)
        break;
 
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
+   set_range_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
+   set_range_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
 }
 
 void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
@@ -719,7 +803,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       gtk_entry_set_width_chars(GTK_ENTRY(spin), 8);
       gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
 
-      lab = gtk_label_new(_utf("MB for error correction data"));
+      lab = gtk_label_new(_utf("MiB for error correction data"));
       gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
       gtk_widget_set_sensitive(spin, FALSE);
       gtk_widget_set_sensitive(lab, FALSE);
@@ -737,7 +821,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
    }
 
    AddHelpParagraph(lwoh, _("<b>Space-delimited redundancy</b>\n\n"
-			    "Specifies the maximum size of the error correction file in MB. "
+			    "Specifies the maximum size of the error correction file in MiB. "
 			    "dvdisaster will choose a suitable redundancy setting so that "
 			    "the overall size of the error correction file does not exceed "
 			    "the given limit.\n\n"
@@ -763,6 +847,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
 	 {  Closure->redundancy[last] = 0;
 	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(Closure->redundancy));
 	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(Closure->redundancy));
+	    Closure->redundancy[last] = 'm';
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio4A), TRUE);
 	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio4B), TRUE);
 	 }
@@ -781,14 +866,14 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
    frame = gtk_frame_new(_utf("Memory utilization"));
    gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
 
-   text = g_strdup_printf(_("%d MB of file cache"), Closure->cacheMB);
+   text = g_strdup_printf(_("%d MiB of file cache"), Closure->cacheMiB);
    lwoh = CreateLabelWithOnlineHelp(_("File cache"), text);
    RegisterPreferencesHelpWindow(lwoh);
    g_free(text);
 
    wl->cacheLwoh = lwoh;
-   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d MB of file cache"), 2222);
-   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d MB of file cache"), 2222);
+   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d MiB of file cache"), 2222);
+   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d MiB of file cache"), 2222);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -798,7 +883,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
 
       for(index = 0; index < n_entries; index++)
-	if(cache_size[index] > Closure->cacheMB)
+	if(cache_size[index] > Closure->cacheMiB)
 	  break;
 
       scale = gtk_hscale_new_with_range(0,n_entries-1,1);
@@ -825,5 +910,5 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
    AddHelpParagraph(lwoh, _("<b>File cache</b>\n\n"
 			    "dvdisaster optimizes access to the image and error correction "
 			    "files by maintaining its own cache. "
-			    "The preset of 32MB is suitable for most systems."));
+			    "The preset of 32MiB is suitable for most systems."));
 }

@@ -1,0 +1,206 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+# *** OpenImageFromDevice(sim-cd) ***
+# InquireDevice returned: Simulated CD drive 1.00
+
+Device: sim-cd, Simulated CD drive 1.00
+# *** query_type(Simulated CD drive 1.00, 0) ***
+# *** get_configuration(Simulated CD drive 1.00) ***
+# 8 data len, 9 current
+-> profile 9: CD-R
+# trying READ DISC INFORMATION for size
+# size returned is 32
+# trying READ DISC INFORMATION for real info
+0000: 00 20 1e 00 00 00 00 00  00 00 00 00 00 00 00 00  . ...... ........ 
+0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ ........ 
+# status is 1e, disc type 0
+#CD: starting media probe
+#CD: querying size of READ TOC/PMA/ATIP (for TOC)
+#CD: size returned is 12
+#CD: querying real READ TOC/PMA/ATIP (for TOC)
+0000: 00 0a 00 00 00 14 00 00  00 00 00 00              ........ ....
+#CD: control is 0x14
+#CD: querying size of READ TOC/PMA/ATIP (for full TOC)
+# Warning: Realigning length from 26 to 24
+#CD: size returned is 24
+#CD: querying real READ TOC/PMA/ATIP (for full TOC)
+0000: 00 18 00 01 00 00 00 a0  00 00 00 00 00 00 00 00  ........ ........ 
+0010: 00 00 00 00 00 00 00 00                           ........ 
+#CD: 1 sessions
+#CD: CD medium detected, type: CD-R mode 1
+# query_type() returned.
+# deciding reading strategy...
+Using READ CD.
+GetImageFingerprint(16): read & cached
+
+ExamineUDF(Device: Simulated CD drive 1.00)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+# *** read_capacity(Simulated CD drive 1.00) ***
+ -> 20999
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: medium sim-cd
+try_sector: trying sector 21000
+try_sector: read error, trying next header
+try_sector: trying sector 20850
+try_sector: no cookie, skipping current modulo
+RS02Recognize: skipping exhaustive RS02 search
+...trying RS03
+RS03RecognizeImage: medium sim-cd
+FindRS03HeaderInImage: medium sim-cd
+RS03RecognizeImage: skipping exhaustive RS03 search
+...no augmented image detected.
+# Calling query_size()
+# *** query_size(Simulated CD drive 1.00) ***
+Medium size could NOT be determined from ECC header.
+Medium size obtained from ISO/UDF file system: 21000 sectors
+# returned: 21000 sectors
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+GetImageFingerprint(16): cached
+Completing image rs01-tmp.iso. Only missing sectors will be read.
+* Unrecoverable sector found!
+* 
+* Sector 3030 is marked unreadable and annotated to be
+* in a different location (3130).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* Unrecoverable sector found!
+* 
+* Sector 3030 is marked unreadable and annotated to be
+* in a different location (3130).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* Unrecoverable sector found!
+* 
+* Sector 4400 is marked unreadable and annotated to be
+* in a different location (4500).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* Unrecoverable sector found!
+* 
+* Sector 4411 is marked unreadable and annotated to be
+* in a different location (4511).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+* Unrecoverable sector found!
+* 
+* Sector 4400 is marked unreadable and annotated to be
+* in a different location (4500).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+Read position:  21.0% (nn.nx)* Unrecoverable sector found!
+* 
+* Sector 4411 is marked unreadable and annotated to be
+* in a different location (4511).
+* 
+* The image was probably mastered from defective content.
+* For example it might contain one or more files which came
+* from a damaged medium which was NOT fully recovered.
+* This means that some files may have been silently corrupted.
+* 
+* The label of the original (defective) medium was:
+* 
+*  Random Image
+* 
+* Since the image was already created defective it can not be
+* repaired by dvdisaster. Also it will not be possible to create
+* error correction data for it. Sorry for the bad news.
+Read position:  21.1% (nn.nx)CRC NOT created.
+
+3 sectors read.     

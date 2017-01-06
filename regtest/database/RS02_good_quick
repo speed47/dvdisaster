@@ -1,0 +1,14 @@
+814f4c46fbb687eb43613fdfde9458cf
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs02-master.iso: present, contains 34932 medium sectors.
+* quick mode        : image NOT scanned
+
+Error correction data: created by dvdisaster-0.80
+- method           : RS02, 35 roots, 15.9% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 34932 / 30000 (good)

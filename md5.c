@@ -25,10 +25,13 @@
    and addition of AsciiDigest(), print_sum() and main()
    by Carsten Gnörlich for the dvdisaster project, 2004-2006. */
 
+/* byteReverse() and MD5Final() changed for clean endian-independent 
+   guint32->unsigned char conversion 
+   by Carsten Gnörlich for the dvdisaster project, 2015. */
 
-#if defined(PNGPACK) || defined(SIMPLE_MD5SUM)    /* pngpack or simple-md5sum*/
+#if defined(SIMPLE_MD5SUM)    	/* simple-md5sum*/
   #include <string.h>
-#else                                             /* dvdisaster */
+#else                           /* dvdisaster */
   #include "dvdisaster.h"
 #endif
 
@@ -39,17 +42,21 @@ static void MD5Transform(guint32 buf[4], guint32 const in[16]);
 /*
  * Note: this code is harmless on little-endian machines.
  */
+
+#ifdef HAVE_LITTLE_ENDIAN
+  #define byteReverse(buf, longs)	/* even more harmless */
+#else
 static void
 byteReverse(unsigned char *buf, unsigned longs)
 {
 	guint32 t;
 	do {
-		t = (guint32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
-		    ((unsigned) buf[1] << 8 | buf[0]);
-		*(guint32 *) buf = t;
+		t = buf[0]; buf[0] = buf[3]; buf[3] = t;	
+		t = buf[1]; buf[1] = buf[2]; buf[2] = t;	
 		buf += 4;
 	} while (--longs);
 }
+#endif
 
 /*
  * Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
@@ -125,7 +132,8 @@ MD5Final(unsigned char digest[16], struct MD5Context *ctx)
 {
 	unsigned int count;
 	unsigned char *p;
-
+	unsigned char *in;
+		
 	/* Compute number of bytes mod 64 */
 	count = (ctx->bits[0] >> 3) & 0x3F;
 
@@ -153,13 +161,34 @@ MD5Final(unsigned char digest[16], struct MD5Context *ctx)
 	byteReverse(ctx->in, 14);
 
 	/* Append length in bits and transform */
-	((guint32 *) ctx->in)[14] = ctx->bits[0];
-	((guint32 *) ctx->in)[15] = ctx->bits[1];
+	/* changed by cg to prevent compiler warnings */
+
+	in = &ctx->in[56];
+
+#ifdef HAVE_LITTLE_ENDIAN
+	*in++ = (unsigned char)((ctx->bits[0]      ) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0] >>  8) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0] >> 16) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0] >> 24) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1]      ) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >>  8) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >> 16) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >> 24) & 0xff);
+#else
+	*in++ = (unsigned char)((ctx->bits[0] >> 24) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0] >> 16) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0] >>  8) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[0]      ) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >> 24) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >> 16) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1] >>  8) & 0xff);
+	*in++ = (unsigned char)((ctx->bits[1]      ) & 0xff);
+#endif
 
 	MD5Transform(ctx->buf, (guint32 *) ctx->in);
 	byteReverse((unsigned char *) ctx->buf, 4);
 	memmove(digest, ctx->buf, 16);
-	memset(ctx, 0, sizeof (ctx));	/* In case it's sensitive */
+	memset(ctx, 0, sizeof(struct MD5Context));	/* In case it's sensitive */
 }
 
 /* The four core functions - F1 is optimized somewhat */
@@ -293,10 +322,6 @@ void AsciiDigest(char *out, unsigned char *in)
 
 #include <stdio.h>
 
-#ifdef SYS_MINGW
-  #include <fcntl.h>
-#endif
-
 static void print_sum(char *path)
 {  FILE *file;
    struct MD5Context ctxt;
@@ -328,10 +353,6 @@ static void print_sum(char *path)
 
 int main(int argc, char *argv[])
 {  int i;
-
-#ifdef SYS_MINGW
-   setmode(fileno(stdout), O_BINARY);
-#endif
 
    for(i=1; i<argc; i++)
      print_sum(argv[i]);

@@ -1,28 +1,27 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef READ_LINEAR_H
 #define READ_LINEAR_H
-
-#include "rs02-includes.h"
 
 /*
  * Local data package used during reading 
@@ -33,8 +32,9 @@
 typedef struct
 {  LargeFile *readerImage;  /* we need two file handles to prevent LargeSeek() */
    LargeFile *writerImage;  /* race conditions between the reader and writer */
-   struct _DeviceHandle *dh;
-   EccInfo *ei;
+   Image *image;
+   Method *eccMethod;       /* Ecc method selected for this image */
+   EccHeader *eccHeader;    /* accompanying Ecc header */
    GThread *worker;
    struct MD5Context md5ctxt;   /* Complete image checksum (RS01) */
    struct MD5Context dataCtxt;  /* Image section checksums (RS02) */
@@ -44,8 +44,6 @@ typedef struct
    int doMD5sums;               /* whether we should calculate the above */
    int savedSectorSkip;
    CrcBuf *crcBuf;              /* CRC sums retrieved from above */
-   RS02Layout *lay;             /* needed for processing RS02 images */
-   unsigned char *fingerprint;  /* needed for missing sector generation */
    char *volumeLabel;
 
    /* Data exchange between reader and worker */
@@ -61,8 +59,6 @@ typedef struct
 
    /* for usage within the reader */
 
-   gint64 sectors;                   /* medium capacity (total number of sectors) */
-   gint64 dataSectors;               /* crc protected data sectors (RS02) */
    gint64 firstSector, lastSector;   /* reading range */
 
    gint64 readPos;                   /* current sector reading position */
@@ -85,7 +81,8 @@ typedef struct
    gint64 lastErrorsPrinted;
    int pass;
    int maxC2;                       /* max C2 error since last output */
-
+   int crcIncomplete;               /* CRC information was found incomplete (RS03 only) */
+  
    /* for drawing the curve and spiral */
 
    gint lastCopied;
@@ -93,6 +90,7 @@ typedef struct
    gint lastPlotted;
    gint lastPlottedY;
    gint activeRenderers;
+   GMutex *rendererMutex;
 
 } read_closure;
 

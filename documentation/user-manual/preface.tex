@@ -1,0 +1,86 @@
+\section*{Preface}
+\label{preface}
+
+Since the release of dvdisaster 0.79.3\footnote{Version 0.79.4 was never finished
+and released.}, nearly five years have passed.
+This was partly due to changed circumstances in its
+primary developer's life, but there was also a lot of
+coding going on behind the scenes. In comparison with its
+predecessor, dvdisaster 0.79.5 comes with lots of its
+internals being significantly reworked.
+
+\smallskip
+
+The most visible improvement  of dvdisaster 0.79.5 is, of
+course, its multithreaded RS03 codec. While it takes
+about 62 minutes for protecting a 36 GiB image with RS02
+on a mid range PC,
+the same task is done with RS03 in less than 7 minutes
+using 6 processor cores on the same machine.
+On a high end server with at least 16 cores and very good I/O,
+this can be done in under a minute. That's quite an
+improvement.
+
+RS03 is ready for production use in the current release.
+Some non-essential features, especially reworking the
+adaptive reading for use with RS03 and multi-threaded
+RS03 decoding (media fixing) will be delivered with
+the following dvdisaster releases.
+
+\smallskip
+
+Other parts of the project had to be changed or even
+discontinued. A software project lives on development
+and continuous releases; else the
+project will eventually die. In this respect, dvdisaster
+was very endangered in the last few years.
+To prevent this from happening again, most effort
+is now directed into source code development;
+everything else is delegated or discontinued.
+Source code development basically means making
+the GNU/Linux version, which provides the code base
+for all other versions, and the FreeBSD and NetBSD ports,
+which are very easily derived from the GNU/Linux code.
+This is not the case for the Mac OS and Windows ports,
+which are, unfortunately, \tlnk{qa-discontinued-os}{discontinued} as of now.
+
+Another feature which has to go are the separate
+stable and development releases.
+Starting with this version, all dvdisaster releases
+are considered production quality, so there is no
+need for different branches anymore.
+
+\smallskip
+
+Maintaining the multi-lingual online documentation, which
+also served as the project home page, did also prove to
+be too time consuming. The project home page has
+been changed into a simple download platform for
+the project sources. It is now directed at package
+maintainers who will create and pass on binaries
+for the GNU/Linux, FreeBSD and NetBSD distributions.
+
+The program documentation, which you are reading
+right now, is provided in PDF format which is much
+easier to author than the HTML version. The only
+language available is English. Most parts of this
+manual have been adapted from the old online
+documentation, so it still feels more like a website
+than a book. While hyperlinks are not as usable in PDF
+as in HTML, they have been kept in this document to
+stress that it is intended to be used as an online reference.
+So please do our environment a favour and do not print
+this manual. It is not meant to be read
+from front cover to back cover, anyways.
+
+\smallskip
+
+Okay, enough ranting already. May dvdisaster be helpful
+in protecting and recovering your valuable data,
+and thanks for using it!
+
+\bigskip
+
+{\em -- -- cg, August 2015}
+
+

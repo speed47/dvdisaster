@@ -1,27 +1,29 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
 
 #include "read-linear.h"
+#include "scsi-layer.h"
 
 #define C2_CLAMP_VALUE 2352
 
@@ -54,13 +56,13 @@ void InitializeCurve(void *rc_ptr, int max_rate, int can_c2)
    int i;
 
    Closure->readLinearCurve->maxY = max_rate;
-   Closure->readLinearCurve->maxX = rc->sectors/512;
+   Closure->readLinearCurve->maxX = rc->image->dh->sectors/512;
    Closure->readLinearCurve->logMaxY = C2_CLAMP_VALUE;
 
    if(can_c2) Closure->readLinearCurve->enable = DRAW_FCURVE | DRAW_LCURVE;
    else       Closure->readLinearCurve->enable = DRAW_FCURVE;
 
-   rc->lastCopied = (1000*rc->firstSector)/rc->sectors;
+   rc->lastCopied = (1000*rc->firstSector)/rc->image->dh->sectors;
    rc->lastPlotted = rc->lastSegment = rc->lastCopied;
    rc->lastPlottedY = 0;
 
@@ -119,7 +121,9 @@ static gboolean curve_idle_func(gpointer data)
 
    if(rc->pass)      /* 2nd or higher reading pass, don't touch the curve */
    {  g_free(ci);
+      g_mutex_lock(rc->rendererMutex);
       rc->activeRenderers--;
+      g_mutex_unlock(rc->rendererMutex);
       return FALSE;
    }
 
@@ -138,7 +142,9 @@ static gboolean curve_idle_func(gpointer data)
       rc->lastPlotted = ci->percent;
       rc->lastPlottedY = CurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
       g_free(ci);
+      g_mutex_lock(rc->rendererMutex);
       rc->activeRenderers--;
+      g_mutex_unlock(rc->rendererMutex);
       return FALSE;
    }
 
@@ -174,7 +180,9 @@ static gboolean curve_idle_func(gpointer data)
    }
 
    g_free(ci);
+   g_mutex_lock(rc->rendererMutex);
    rc->activeRenderers--;
+   g_mutex_unlock(rc->rendererMutex);
    return FALSE;
 }
 
@@ -219,7 +227,9 @@ void AddCurveValues(void *rc_ptr, int percent, int color, int c2)
       rc->lastCopied = percent;
    }
 
+   g_mutex_lock(rc->rendererMutex);
    rc->activeRenderers++;
+   g_mutex_unlock(rc->rendererMutex);
    g_idle_add(curve_idle_func, ci);
 }
 
@@ -271,7 +281,7 @@ static void update_geometry(void)
    Closure->readLinearSpiral->mx = a->width - 15 - Closure->readLinearSpiral->diameter / 2;
    Closure->readLinearSpiral->my = a->height / 2;
 
-   if(Closure->eccType != ECC_NONE || Closure->crcErrors)
+   if(Closure->crcAvailable || Closure->crcErrors)
    {  int w,h;
 
       SetText(Closure->readLinearCurve->layout, _("Sectors with CRC errors"), &w, &h);
@@ -314,10 +324,10 @@ static void redraw_curve(void)
    DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		   _("Successfully read"), Closure->greenSector, x, pos++);
 
-   if(Closure->eccType != ECC_NONE || Closure->crcErrors)
+   if(Closure->crcAvailable || Closure->crcErrors)
      DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		     _("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
-   
+
    DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		   _("Unreadable / skipped"), Closure->redSector, x, pos++);
 
@@ -353,6 +363,35 @@ void ResetLinearReadWindow()
    ZeroCurve(Closure->readLinearCurve);
    FillSpiral(Closure->readLinearSpiral, Closure->background);
    DrawSpiral(Closure->readLinearSpiral);
+}
+
+/*
+ * Re-layout and redraw the read window while it is in use.
+ * Required to add the information that CRC data is available,
+ * since this happens when the the initial rendering of the window
+ * contents have already been carried out.
+ */
+
+static gboolean redraw_idle_func(gpointer data)
+{  GdkRectangle rect;
+   GdkWindow *window;
+   gint ignore;
+
+   /* Trigger an expose event for the drawing area. */
+
+   window = gtk_widget_get_parent_window(Closure->readLinearDrawingArea);
+   if(window) 
+   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
+
+      gdk_window_invalidate_rect(window, &rect, TRUE); 
+   }
+
+   return FALSE;
+}
+
+void RedrawReadLinearWindow(void)
+{
+   g_idle_add(redraw_idle_func, NULL);
 }
 
 /***

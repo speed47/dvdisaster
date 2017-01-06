@@ -1,305 +1,28 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
 
 #include "udf.h"
-#include "rs02-includes.h"
-
-/***
- *** Look for ecc headers in RS02 style media
- ***/
-
-enum { HEADER_FOUND, TRY_NEXT_HEADER, TRY_NEXT_MODULO};
-
-static int try_sector(DeviceHandle *dh, gint64 pos, EccHeader **ehptr, unsigned char *secbuf)
-{  EccHeader *eh;
-   unsigned char fingerprint[16];
-   guint32 recorded_crc;
-   guint32 real_crc;
-   gint64 last_fp = -1;
-
-   /* Try reading the sector */
-
-   Verbose("udf/try_sector: trying sector %lld\n", pos);
-
-   if(ReadSectorsFast(dh, secbuf, pos, 2))
-   {  Verbose("udf/try_sector: read error, trying next header\n");
-      return TRY_NEXT_HEADER;
-   }
-
-   eh = (EccHeader*)secbuf;
-
-   /* See if the magic cookie is there. If not, searching within
-      this modulo makes no sense for write-once media.
-      However if the medium is rewriteable, there might be trash
-      data behind the image. So finding an invalid sector
-      does not imply there is no RS02 data present. 
-      Added workaround: Avoid misrecognizing RS03 images */
-
-   if(strncmp((char*)eh->cookie, "*dvdisaster*RS02", 16))
-   {  if(dh->rewriteable)
-      {   Verbose("udf/try_sector: no cookie but rewriteable medium: skipping header\n");
-	  return TRY_NEXT_HEADER;
-      }
-      else
-      {   Verbose("udf/try_sector: no cookie, skipping current modulo\n");
-	  return TRY_NEXT_MODULO;
-      }
-   }
-   else Verbose("udf/try_sector: header at %lld: magic cookie found\n", (long long int)pos);
-
-   /* Calculate CRC */
-
-   recorded_crc = eh->selfCRC;
-
-#ifdef HAVE_BIG_ENDIAN
-   eh->selfCRC = 0x47504c00;
-#else
-   eh->selfCRC = 0x4c5047;
-#endif
-   real_crc = Crc32((unsigned char*)eh, sizeof(EccHeader));
-
-   if(real_crc != recorded_crc)
-   {  Verbose("udf/try_sector: CRC failed, skipping header\n");
-      return TRY_NEXT_HEADER;
-   }
-
-   eh = g_malloc(sizeof(EccHeader));
-   memcpy(eh, secbuf, sizeof(EccHeader));
-#ifdef HAVE_BIG_ENDIAN
-   SwapEccHeaderBytes(eh);
-#endif
-   eh->selfCRC = recorded_crc;
-
-   Verbose("udf/try_sector: CRC okay\n");
-
-   /* Compare medium fingerprint with that recorded in Ecc header */
-
-   if(last_fp != eh->fpSector)  /* fingerprint in different sector as before? */
-   {  int fp_read;
-
-      /* read new fingerprint */
-
-      fp_read = GetMediumFingerprint(dh, fingerprint, eh->fpSector);
-      last_fp = eh->fpSector;
-		  
-      if(!fp_read)  /* be optimistic if fingerprint sector is unreadable */
-      {  *ehptr = eh;
-	 Verbose("udf/try_sector: read error in fingerprint sector\n");
-	 return HEADER_FOUND;
-      }
-
-      if(!memcmp(fingerprint, eh->mediumFP, 16))  /* good fingerprint */
-      {  *ehptr = eh;
-	 Verbose("udf/try_sector: fingerprint okay, header good\n");
-	 return HEADER_FOUND;
-      }
-
-      /* This might be a header from a larger previous session.
-	 Discard it and continue */
-
-      Verbose("udf/try_sector: fingerprint mismatch, skipping sector\n");
-      g_free(eh);
-   }
-   
-   return TRY_NEXT_HEADER;
-}
-
-/*
- * Dialog components for disabling RS02 search
- */
-
-static void no_rs02_cb(GtkWidget *widget, gpointer data)
-{  int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-  
-  if(state) Closure->querySize = 1;
-  else      Closure->querySize = 2;
-
-  UpdatePrefsQuerySize();
-}
-
-static void insert_buttons(GtkDialog *dialog)
-{  GtkWidget *check,*align;
-
-   gtk_dialog_add_buttons(dialog, 
-			  _utf("Skip RS02 test"), 1,
-			  _utf("Continue searching"), 0, NULL);
-
-   align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), align, FALSE, FALSE, 0);
-
-   check = gtk_check_button_new_with_label(_utf("Disable RS02 initialization in the preferences"));
-   gtk_container_add(GTK_CONTAINER(align), check);
-   gtk_container_set_border_width(GTK_CONTAINER(align), 10);
-   g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(no_rs02_cb), NULL);
-
-   gtk_widget_show(align);
-   gtk_widget_show(check);
-} 
-
-/*
- * RS02 header search
- */
-
-EccHeader* FindHeaderInMedium(DeviceHandle *dh, gint64 max_sectors)
-{  AlignedBuffer *ab = CreateAlignedBuffer(4096);
-   EccHeader *eh = NULL;
-   Bitmap *try_next_header, *try_next_modulo;
-   gint64 pos;
-   gint64 header_modulo;
-   int read_count = 0;
-   int answered_continue = FALSE;
-   int warning_shown = FALSE;
-
-   /*** Quick search at fixed offsets relative to ISO filesystem */
-
-   if(!max_sectors)
-   {  if(dh->isoInfo)
-      {  gint64 iso_size = dh->isoInfo->volumeSize; 
-
-	 /* Iso size is correct; look for root sector at +2 */
-
-	 if(try_sector(dh, iso_size, &eh, ab->buf) == HEADER_FOUND)
-	 {  Verbose("Root sector search at +0 successful\n");
-	    FreeAlignedBuffer(ab);
-	    return eh;
-	 }
-
-	 /* Strange stuff. Sometimes the iso size is increased by 150
-	    sectors by the burning software. */
-
-	 if(try_sector(dh, iso_size-150, &eh, ab->buf) == HEADER_FOUND)
-	 {  Verbose("Root sector search at -150 successful\n");
-	    FreeAlignedBuffer(ab);
-	    return eh;
-	 }
-      }
-      FreeAlignedBuffer(ab);
-      return NULL;
-   }
-
-   /*** Normal exhaustive search */
-
-   header_modulo = (gint64)1<<62;
-
-   try_next_header = CreateBitmap0(max_sectors);
-   try_next_modulo = CreateBitmap0(max_sectors);
-
-   Verbose("Medium rewriteable: %s\n", dh->rewriteable ? "TRUE" : "FALSE");
-
-   /*** Search for the headers */
-
-   while(header_modulo >= 32)
-   {  pos = max_sectors & ~(header_modulo - 1);
-
-      Verbose("FindHeaderInMedium: Trying modulo %lld\n", header_modulo);
-
-      while(pos > 0)
-      {  int result;
-	
-	 if(Closure->stopActions)
-	   goto bail_out;
-
-	 if(GetBit(try_next_header, pos))
-	 {  Verbose("Sector %lld cached; skipping\n", pos);
-	    goto check_next_header;
-	 }
-
-	 if(GetBit(try_next_modulo, pos))
-	 {  Verbose("Sector %lld cached; skipping modulo\n", pos);
-	     goto check_next_modulo;
-	 }
-
-	 result = try_sector(dh, pos, &eh, ab->buf);
-
-	 switch(result)
-	 {  case TRY_NEXT_HEADER:
-	       SetBit(try_next_header, pos);
-	       read_count++;
-	       if(!answered_continue && read_count > 5)
-	       {  if(Closure->guiMode)
-		  {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-					      _("Faster medium initialization\n\n"
-						"Searching this medium for error correction data may take a long time.\n"
-						"Press \"Skip RS02 test\" if you are certain that this medium was\n"
-						"not augmented with RS02 error correction data."));
-		 
-		    if(answer) goto bail_out;
-		    answered_continue = TRUE;
-		  }
-		  if(!Closure->guiMode && !warning_shown)
-		  {  PrintCLI(_("\nSearching this medium for error correction data may take a long time.\n"
-				"If you are certain that this medium was not augmented with RS02 error correction\n"
-				"data, you might wish to abort this command and re-run with the option\n"
-				"--query-size=udf\n"));
-		    warning_shown = TRUE;
-		  }
-	       }
-	       goto check_next_header;
-	    case TRY_NEXT_MODULO:
-	       SetBit(try_next_modulo, pos);
-	       goto check_next_modulo;
-	    case HEADER_FOUND:
-	       FreeBitmap(try_next_header);
-	       FreeBitmap(try_next_modulo);
-	       FreeAlignedBuffer(ab);
-	       return eh;
-	 }
-
-      check_next_header:
-	pos -= header_modulo;
-      }
-
-   check_next_modulo:
-      header_modulo >>= 1;
-   }
-
-bail_out:
-   FreeBitmap(try_next_header);
-   FreeBitmap(try_next_modulo);
-   FreeAlignedBuffer(ab);
-   return NULL;
-}
-
-gint64 MediumLengthFromRS02(DeviceHandle *dh, gint64 max_size)
-{  EccHeader *eh;
-   RS02Layout *lay;
-   gint64 real_size;
-
-   eh = FindHeaderInMedium(dh, max_size);
-   if(eh) 
-   {  dh->rs02Header = eh;
-
-      lay = CalcRS02Layout(uchar_to_gint64(eh->sectors), eh->eccBytes); 
-      real_size = lay->eccSectors+lay->dataSectors;
-
-      g_free(lay);
-
-      return real_size;
-   }
-
-   return 0;
-}
-
 
 /***
  *** Rudimentary UDF and ISO filesystem parsing.
@@ -628,25 +351,23 @@ static IsoInfo* examine_primary_vd(unsigned char *buf)
    return ii;
 }
 
-static IsoInfo* examine_iso(DeviceHandle *dh)
+static IsoInfo* examine_iso(Image *image)
 {  AlignedBuffer *ab = CreateAlignedBuffer(2048);
    unsigned char *buf = ab->buf;
    IsoInfo *ii = NULL;
-   int sector,status;
+   int sector;
    int vdt,vdt_ver;
    unsigned char sid[6];
       
    Verbose(" Examining the ISO file system...\n");
 
    /*** Iterate over the volume decriptors */
-
+ 
    for(sector=16; sector<32; sector++)
    {  if(Closure->stopActions) 
         continue;
 
-      status = ReadSectorsFast(dh, buf, sector, 1);
-
-      if(status)
+      if(ImageReadSectors(image, buf, sector, 1) != 1)
       {  Verbose("  Sector %2d: unreadable\n", sector);
 	 continue;
       }
@@ -693,20 +414,17 @@ finished:
  ***/
 
 
-int ExamineUDF(DeviceHandle *dh)
-{
-   Verbose("\nExamineUDF(%s)\n",dh->devinfo);
+void ExamineUDF(Image *image)
+{  
+   if(!image) return;
 
-   dh->isoInfo = examine_iso(dh);
+   if(image->type == IMAGE_MEDIUM) Verbose("\nExamineUDF(Device: %s)\n", image->dh->devinfo);
+   if(image->type == IMAGE_FILE  ) Verbose("\nExamineUDF(File: %s)\n", image->file->path);
+
+   image->isoInfo = examine_iso(image);
 
    Verbose(" Examining the UDF file system...\n");
    Verbose("  not yet implemented.\n\n");
-
-   /* Try to find the root header at a fixed offset to the ISO filesystem end. */
-
-   dh->rs02Size = MediumLengthFromRS02(dh, 0);
-
-   return TRUE;
 }
 
 /***
@@ -1076,7 +794,7 @@ void FreeIsoHeader(IsoHeader *ih)
 
 void AddFile(IsoHeader *ih, char *name, guint64 size)
 {  static int n;
-   char iso[20], joliet[strlen(name+3)];
+   char iso[20], joliet[strlen(name)+3];
 
    n++;
    sprintf(iso,"RAN_%04d.DAT;1", n);

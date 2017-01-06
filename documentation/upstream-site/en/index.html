@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <title></title>
+ <link rel="stylesheet" type="text/css" href="../css/dvdisaster.css">
+</head>
+<body>
+
+<!-- Title header -->
+
+<table width="100%" cellpadding="0" border="0">
+  <tr>
+    <td align="left">
+      <span class="fxxl"><b>dvdisaster</b>&nbsp;</span>
+      <i>Version 0.79.5</i>
+    </td>
+    <td align="right">
+    <span class="fxxl">&nbsp;</span>
+    <a href="../de/index.html">Deutsch</a> &nbsp; English
+    </td>
+  </tr>
+  <tr><td colspan="2" class="hsep"></td></tr>
+  <tr><td colspan="2">
+      <table class="navigation" width="100%" cellpadding="0" border="0">
+	<tr>
+	  <td>Navigation: &nbsp;&nbsp;&nbsp;
+	    <b>Developer site</b> &nbsp;&middot;&nbsp;
+	    <a href="misc.html">Miscellaneous</a>
+	  </td>
+	  <td align="right">
+	    <a href="privacy.html">Privacy policy</a> &nbsp;&middot;&nbsp;
+	    <a href="imprint.html">Contact information</a>
+	  </td>
+	</tr>
+      </table>
+  </td></tr>
+  <tr><td colspan="2" class="hsep"></td></tr>
+  <tr><td style="height: 10px"></td></tr>
+</table>
+  
+<!-- Main body --> 
+
+<b>Developer site</b><p>
+
+    This site provides the latest source code release of dvdisaster for the
+    FreeBSD, GNU/Linux and NetBSD operating systems. It is mostly aimed at
+    maintainers of binary packages for the beforementioned platforms.
+    End users might find it more convenient to install dvdisaster from the
+    package system of their operating system bundle or distribution.
+    But if you prefer to download and compile the source package on your own,
+    you're welcome, too.<br>
+    
+    This site does <i>not</i> provide information on the purpose and usage
+    of dvdisaster. This is better described at other places, e.g. 
+    in the <a href="misc.html#manual">user manual</a> and numerous online
+    forums.
+<p>
+
+<a name="download"></a>
+<b>Download the source code</b>
+
+<table width="100%">
+<tr>
+  <td>dvdisaster is available for the <b>FreeBSD</b>, <b>GNU/Linux</b> und <b>NetBSD</b>
+      operating systems.
+    It is provided as
+    <a href="http://fsfe.org/about/basics/freesoftware.en.html">free software</a> 
+    under the <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License v3</a>.   </td>
+  <td class="w127x" valign="top"><img src="../images/gplv3-127x51.png" alt="GPLv3-Logo" width="127">
+  </td>
+</tr>
+</table>
+<p>
+
+<table>
+  <tr>
+    <td>Current version:&nbsp;</td> 
+    <td><a href="../downloads/dvdisaster-0.79.5.tar.bz2">dvdisaster-0.79.5.tar.bz2</a></td>
+    <td>(<a href="../downloads/dvdisaster-0.79.5.tar.bz2.gpg">digital signature</a>,
+      MD5 checksum: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)</td>
+  </tr>
+  <tr>
+    <td>Previous (older) version:</td> 
+    <td><a href="../downloads/dvdisaster-0.72.6.tar.bz2">dvdisaster-0.72.6.tar.bz2</a></td>
+    <td>(<a href="../downloads/dvdisaster-0.72.6.tar.bz2.gpg">digital signature</a>,
+      MD5 checksum: f4213af05fe5c36e93bdf8a1732a66d1)</td>
+  </tr>
+</table>
+<p>
+
+A <a href="misc.html#pubkey">digital signature</a> is provided for
+verification that the packages are in their original state. The archives
+contain a file <tt>INSTALL</tt> with further instructions for building dvdisaster.
+
+<p>
+
+  <b>Windows</b> and <b>Mac OS</b> are no longer supported. A native Windows fork
+  of dvdisaster will be started soon by another developer, but there is nothing to announce yet.
+  In the mean time, please continue using
+  the <a href="misc.html#windows">last published version for Windows (0.72.3)</a>.
+
+<p>
+<b>What happened to the old dvdisaster site?</b><p>
+To quote from the preface of the <a href="misc.html#manual">user manual</a>:<p>
+    
+Since the release of dvdisaster 0.79.3 (version 0.79.4 was
+never finished and released), nearly five years have passed.
+This was partly due to changed circumstances in its
+primary developer's life, but there was also a lot of
+coding going on behind the scenes. In comparison with its
+predecessor, dvdisaster 0.79.5 comes with lots of its
+internals being significantly reworked. <p>
+
+The most visible improvement  of dvdisaster 0.79.5 is, of
+course, its multithreaded RS03 codec. While it takes
+about 62 minutes for protecting a 36 GiB image with RS02
+on a mid range PC,
+the same task is done with RS03 in less than 7 minutes
+using 6 processor cores on the same machine.
+On a high end server with at least 16 cores and very good I/O,
+this can be done in under a minute. That's quite an
+improvement.<br>
+
+RS03 is ready for production use in the current release.
+Some non-essential features, especially reworking the
+adaptive reading for use with RS03 and multi-threaded
+RS03 decoding (media fixing) will be delivered with
+the following dvdisaster releases.<p>
+
+Other parts of the project had to be changed or even
+discontinued. A software project lives on development
+and continuous releases; else the
+project will eventually die. In this respect, dvdisaster
+was very endangered in the last few years.
+To prevent this from happening again, most effort
+is now directed into source code development;
+everything else is delegated or discontinued.
+Source code development basically means making
+the GNU/Linux version, which provides the code base
+for all other versions, and the FreeBSD and NetBSD ports,
+which are very easily derived from the GNU/Linux code.
+This is not the case for the Mac OS and Windows ports,
+which are, unfortunately, discontinued as of now.<br>
+
+Another feature which has to go are the separate
+stable and development releases.
+Starting with this version, all dvdisaster releases
+are considered production quality, so there is no
+need for different branches anymore.<p>
+
+Maintaining the multi-lingual online documentation, which
+also served as the project home page, did also prove to
+be too time consuming. The project home page has
+been changed into a simple download platform for
+the project sources. It is now directed at package
+maintainers who will create and pass on binaries
+for the GNU/Linux, FreeBSD and NetBSD distributions.<br>
+
+The program documentation, which you are reading
+right now, is provided in PDF format which is much
+easier to author than the HTML version. The only
+language available is English. Most parts of this
+manual have been adapted from the old online
+documentation, so it still feels more like a website
+than a book. While hyperlinks are not as usable in PDF
+as in HTML, they have been kept in this document to
+stress that it is intended to be used as an online reference.
+So please do our environment a favour and do not print
+this manual. It is not meant to be read
+from front cover to back cover, anyways.<p>
+
+Okay, enough ranting already. May dvdisaster be helpful
+in protecting and recovering your valuable data,
+and thanks for using it!<p>
+
+<i> -- cg, August 2015</i>
+    
+<!-- Page footer -->
+
+<table width="100%" cellpadding="0" border="0">
+ <tr><td colspan="2" style="width:100%; height:10px;"></td></tr>
+ <tr><td colspan="2" class="hsep"></td></tr>
+ <tr>
+  <td align="center">
+   <span class="fs">
+     <i> Copyright 2004-2015 Carsten Gn&ouml;rlich.<br>
+Verbatim copying and distribution of this entire article is permitted in any medium, provided this notice is preserved. 
+     </i>
+   </span>
+  </td>
+ </tr>
+ <tr><td colspan="2" class="hsep"></td>
+ </tr>
+</table>
+</body>
+</html>

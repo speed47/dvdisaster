@@ -19,29 +19,7 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.72
-
-REL_MICRO=4
-REL_STATUS=patch
-#REL_STATUS=devel
-#REL_STATUS=rc
-
-#REL_MICRO=0
-#REL_STATUS="-"  # requires MICRO=0
-
-DEFINE_STRING RELEASE_MICRO $REL_MICRO
-DEFINE_STRING RELEASE_STATUS $REL_STATUS
-
-case "$REL_STATUS" in
-  -) DEFINE_VAR FULL_VERSION "$VERSION" ;;
-  patch) DEFINE_VAR FULL_VERSION "\"$VERSION (pl${REL_MICRO})\"" ;;
-  *) DEFINE_VAR FULL_VERSION "\"$VERSION (${REL_STATUS}-${REL_MICRO})\"" ;;
-esac
-
-# Last stable version (used only in WWW pages)
-
-DEFINE_VAR HAVE_EXPERIMENTAL "yes"
-DEFINE_VAR STABLE_VERSION "0.72.4"
+PACKAGE dvdisaster 0.79.5
 
 # Check for some essential tools.
 
@@ -60,15 +38,14 @@ GET_DOCDIR /usr/share/doc
 GET_DIR "$PKGNAME" docsub "Documentation sub"\
         "       put documentation into this subdirectory\n                        under \$DOCDIR "
 GET_LOCALEDIR /usr/share/locale
-GET_DIR "/var/www/dvdisaster" phpmount "PHP bind mount"\
-        "     place to bind mount our PHP based documentation so that\n                        a local web server can access it\n                        "
-
 GET_BUILDROOT
+GET_BUILDTMP
 
 # Look for required libraries
 
 PRINT_MESSAGE "\nLooking for includes and libraries:"
 
+REQUIRE_GLIB2 2 32 0
 REQUIRE_GTK2 2 6 0 WITH_THREADS
 echo
 
@@ -86,6 +63,8 @@ CHECK_LIBRARY cam cam_open_device cam
 # Look for required functions
 
 PRINT_MESSAGE "\nChecking for functions and symbols..."
+
+CHECK_FUNCTION mmap
 
 if ! CHECK_FUNCTION getopt_long ; then
   if ! test -e getopt.h || ! test -e getopt.c ; then
@@ -112,6 +91,9 @@ CFG_CFLAGS=$SAVE_CFLAGS
 
 echo
 CHECK_ENDIAN
+CHECK_BITNESS
+CHECK_SSE2
+CHECK_ALTIVEC
 
 # Look for required tools
 
@@ -132,21 +114,17 @@ if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
   exit 1
 fi
 
-if test $CFG_SYS_OPTIONS == -DSYS_MINGW; then
-  if ! EXECUTE_PROGRAM "dllwrap -version" dllwrap ; then
-    echo "* dllwrap not installed or path to it is missing."
-    echo "* You can build dvdisaster, but not the windows installer."
-  fi
-fi
-
 # Evaluate the --with* customization options
 
 PRINT_MESSAGE "\nAdditional configuration options:"
 
 WITH_OPTION nls yes "[yes | no]"
+WITH_OPTION embedded-src-path yes "[yes | no]"
+
+PRINT_MESSAGE "\nDebugging options (do not use in production system):"
+
 WITH_OPTION memdebug no "[no | yes]"
 WITH_OPTION efence no "[no | yes]"
-WITH_OPTION embedded-src-path yes "[yes | no]"
 
 if test "$cfg_with_efence" == "yes"; then
   if ! CHECK_LIBRARY efence malloc efence; then
@@ -169,12 +147,12 @@ PRINT_MESSAGE "\nCollecting source files:"
 
 rm -f conftest.c method-link.c
 cfiles="method-link.c"
-ofiles="method-link.o"
+ofiles="$BUILDTMP/method-link.o"
 
 for cfile in *.c; do
   cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
   cfiles="$cfiles $cfile"
-  ofiles="$ofiles $cfile_prefix.o"
+  ofiles="$ofiles $BUILDTMP/$cfile_prefix.o"
   echo -n " $cfile_prefix"
 done
 
@@ -212,34 +190,10 @@ done
 echo "}" >> method-link.c
 echo 
 
-# Temporary fix for missing rs03 sources
-
-if test -e rs03-includes.h; then
-  CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_RS03"
-fi
-
 # Okay, hopefully we've got everything together now.
 
 (cd locale; bash create-makefile)
 CREATE_MAKEFILES GNUmakefile 
-
-# Now configure the tools directory
-
-echo
-echo -n "Configuring the tools ... "
-if (cd tools; bash configure $@ >tools-configure); then
-  echo "OK"
-else
-  echo "Failed"
-  echo "Problem encountered configuring the tools:"
-  cat tools/tools-configure
-  echo
-  echo "The above output describes a problem doing ./configure"
-  echo "in the tools directory. Please cd into that directory"
-  echo "and ./configure it manually."
-  exit 1
-fi
-rm tools/tools-configure
 
 # Okay, tell the user we're done and how to proceed.
 
@@ -274,12 +228,7 @@ if test -n "$BUILDROOT"; then
   echo
 fi
 
-if test $cfg_system == "solaris"; then
-  id_binary="/usr/xpg4/bin/id"
-else
-  id_binary="id"
-fi
-
+id_binary="id"
 if test `$id_binary -u` -eq 0; then
   echo "* WARNING: Compiling the project as ROOT USER is not recommended"
   echo "*          and may cause unexpected problems. If compilation fails"

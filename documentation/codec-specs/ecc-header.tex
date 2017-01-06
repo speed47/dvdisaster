@@ -1,0 +1,123 @@
+\appendix
+\newpage
+\section{The common Ecc header format}
+\label{eh}
+
+The ecc header is defined in the include file {\em dvdisaster.h}. 
+Its C definition is as follows:
+
+\begin{tabbing}
+ xxx \= xxxxxxxxxxxxxxxxxxxxxxx \= xxx \kill
+typedef struct \_EccHeader \\
+\{\>gint8 cookie[12];           \>{\em /* "*dvdisaster*" */}\\
+ \>gint8 method[4];            \>{\em /* e.g. "RS01" */}\\
+ \>gint8 methodFlags[4];       \>{\em /* 0-2 for free use by the respective methods; 3 see above */}\\
+ \>guint8 mediumFP[16];        \>{\em /* fingerprint of FINGERPRINT SECTOR */}\\ 
+ \>guint8 mediumSum[16];       \>{\em /* complete md5sum of whole medium */}\\
+ \>guint8 eccSum[16];          \>{\em /* md5sum of ecc code section of .ecc file */}\\
+ \>guint8 sectors[8];          \>{\em /* number of sectors medium is supposed to have w/o ecc*/}\\
+ \>gint32 dataBytes;           \>{\em /* data bytes per ecc block */}\\
+ \>gint32 eccBytes;            \>{\em /* ecc bytes per ecc block */}\\
+ \>gint32 creatorVersion;      \>{\em /* which dvdisaster version created this */}\\
+ \>gint32 neededVersion;       \>{\em /* oldest version which can decode this file */}\\
+ \>gint32 fpSector;            \>{\em /* sector used to calculate mediumFP */}\\
+ \>guint32 selfCRC;            \>{\em /* CRC32 of EccHeader (currently RS02 only) -- since V0.66 --*/}\\
+ \>guint8 crcSum[16];          \>{\em /* md5sum of crc code section of RS02 .iso file  */}\\
+ \>gint32 inLast;              \>{\em /* bytes contained in last sector */}\\
+ \>guint64 sectorsPerLayer;    \>{\em /* layer size for RS03 */}\\
+ \>guint64 sectorsAddedByEcc;  \>{\em /* sectors added by RS02 */}\\
+ \>gint8 padding[3960];        \>{\em /* pad to 4096 bytes: room for future expansion */}\\
+\} EccHeader;
+\end{tabbing}
+
+\bigskip
+
+The ecc header is used in all ecc formats (RS01, RS02, RS03) of dvdisaster,
+but not all fields apply to all formats. See the following table for the meaning
+and usage of the fields:
+\bigskip
+
+\begin{tabular}{|l|p{10cm}|c|}
+\hline
+Field & Usage & Format(s) \\
+\hline
+$cookie$ & Magic byte sequence for recognizing the header.\newline
+Contains the string {\tt *dvdisaster*}. & all \\
+\hline
+$method$ & 4 characters describing the format; currently allowed:\newline
+{\tt RS01}, {\tt RS02}, {\tt RS03}. & all \\ 
+\hline
+$methodFlags$ & 4 bytes for further specification of the format. &\\
+ \cline{2-3} 
+ & Byte 0 contains the following flag: &\\
+ & Bit 0 - The {\em mediumSum} field is valid. & RS03 \\
+ & Bit 1 - Set to 1 in ecc files. & RS03 \\
+ \cline{2-3} 
+ & Bytes 1-2 are unused in the current methods. & \\
+ \cline{2-3} 
+ & Byte 3 contains the following flags:\newline
+Bit 0 - ecc data was created by a development release.\newline
+Bit 1 - ecc data was created by a release candidate.\newline
+If these bits are present, the user will be hinted that he is using
+ecc data from a non-stable dvdisaster version. & all \\
+\hline
+\end{tabular}
+
+{\footnotesize (continued on next page)}
+\vfill
+\newpage
+
+\begin{tabular}{|l|p{10cm}|c|}
+\hline
+$mediumFP$ & The md5sum of the sector specified by the {\em fpSector}.
+The sector should be chosen to have a huge probability being unique to the medium;
+currently sector 16 (the ISO filesystem root sector) is used. & all \\
+\hline
+$mediumSum$ & The md5sum of the ISO image. For RS01 this is the md5sum of the
+whole image; for RS02 it is calculated for the original ISO image (without
+the added RS02 sectors). RS03 uses this value only when bit 1 in
+{\em methodFlags} is set. & all \\ 
+\hline
+$eccSum$ & On RS01 this is the md5sum of the ecc file excluding the first 4096
+bytes. For RS02 this is the md5sum calculated over the md5sums of the $nroots$
+ecc layers. RS03 does not use this value. & RS01, RS02 \\
+\hline
+$sectors$ & For error correction files this is the number of sectors in the
+protected medium. If augmented images are used, this denotes the number of
+sectors in the original ISO image (without the added RS02/RS03 sectors). & all \\
+\hline
+$dataBytes$ & The number of data layers, including the CRC layer. & all \\
+\hline
+$eccBytes$ & The number of ecc layers (= number of roots) for the parity.
+$dataBytes + eccBytes = 255$. & all\\
+\hline
+$creatorVersion$ & The dvdisaster version used for creating this ecc data.
+A decimal value 102345 would mean dvdisaster version 10.23.45. & all \\
+\hline
+$neededVersion$ & The minimum dvdisaster version required for 
+processing this ecc data. Version encoding as above. & all \\
+\hline
+$fpSector$ & The sector used for calculating $mediumFP$. & all \\
+\hline
+$selfCRC$ & A CRC32 checksum of the ecc header itself. Not used 
+header fields are set to zero and the selfCRC field is initialized to the 
+value 0x4c5047 (little endian). & \\
+\hline
+$crcSum$ & md5sum of the CRC layer in RS02 encoded images. & RS02 \\
+\hline
+$inLast$ & The number of Bytes contained in the last image sector. This allows for
+encoding of files with arbitrary length, not just ISO images. 
+dvdisaster versions prior to V0.66 do not use this field and always assume it
+to be 2048 which is the default for iso images. & all \\
+\hline
+$sectorsPerLayer$ & The number of sectors per layer. & RS03 \\
+\hline
+$sectorsAddedByEcc$ & The total number of sectors (Headers, CRC, ECC) added. & RS02 \\
+\hline
+$padding$ & The ecc header is zero padded to a length of 4096 bytes. Future codes
+may allocate additional space for the zero padding. See the note below for
+usage of the upper 2048 bytes on RS02/RS03. & all \\
+\hline
+Byte 2048-4096 & A copy of the first CRC layer sector. & RS02 \\
+\hline
+\end{tabular}

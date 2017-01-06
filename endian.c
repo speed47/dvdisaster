@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -69,10 +70,10 @@ void print_hex(char *label, guint8 *values, int n)
    PrintCLI("\n");
 }
 
-void print_ecc_header(EccHeader *eh)
+void PrintEccHeader(EccHeader *eh)
 {  char buf[16]; 
 
-   PrintCLI("\nContents of EccHeader:\n\n");
+  PrintCLI(_("\nContents of Ecc Header:\n\n"));
 
    strncpy(buf, (char*)eh->cookie, 12); buf[12] = 0;
    PrintCLI("cookie           %s\n",buf);
@@ -83,19 +84,45 @@ void print_ecc_header(EccHeader *eh)
    print_hex("mediumSum        ", eh->mediumSum, 16);
    print_hex("eccSum           ", eh->eccSum, 16);
    print_hex("sectors          ", eh->sectors, 8);
-   PrintCLI("sectors (native) %lld\n", uchar_to_gint64(eh->sectors));
-   PrintCLI("dataBytes        %8x\n", eh->dataBytes);
-   PrintCLI("eccBytes         %8x\n", eh->eccBytes);
-   PrintCLI("creatorVersion   %8x\n", eh->creatorVersion);
-   PrintCLI("neededVersion    %8x\n", eh->neededVersion);
-   PrintCLI("fpSector         %8x\n", eh->fpSector);
-   PrintCLI("selfCRC          %8x\n", eh->selfCRC);
-   print_hex("crcSum           ", eh->crcSum, 16);
-   PrintCLI("inLast           %8x\n", eh->inLast);
+   PrintCLI("sectors (native)  %lld\n", uchar_to_gint64(eh->sectors));
+   PrintCLI("dataBytes         %8x\n", eh->dataBytes);
+   PrintCLI("eccBytes          %8x\n", eh->eccBytes);
+   PrintCLI("creatorVersion    %8x\n", eh->creatorVersion);
+   PrintCLI("neededVersion     %8x\n", eh->neededVersion);
+   PrintCLI("fpSector          %8x\n", eh->fpSector);
+   PrintCLI("selfCRC           %8x\n", eh->selfCRC);
+   print_hex("crcSum            ", eh->crcSum, 16);
+   PrintCLI("inLast            %8x\n", eh->inLast);
+   PrintCLI("sectorsPerLayer   %lld\n", eh->sectorsPerLayer);
+   PrintCLI("sectorsAddedByEcc %lld\n", eh->sectorsAddedByEcc);
 
    PrintCLI("\n");
 }
 
+void print_crc_block(CrcBlock *cb)
+{  char buf[16]; 
+
+   PrintCLI("\nContents of CrcBlock:\n\n");
+
+   strncpy(buf, (char*)cb->cookie, 12); buf[12] = 0;
+   PrintCLI("cookie           %s\n",buf);
+   strncpy(buf, (char*)cb->method, 4);  buf[4] = 0;
+   PrintCLI("method           %s\n",buf);
+   print_hex("methodFlags      ", (guint8*)cb->methodFlags, 4);
+   PrintCLI("creatorVersion   %8x\n", cb->creatorVersion);
+   PrintCLI("neededVersion    %8x\n", cb->neededVersion);
+   PrintCLI("fpSector         %8x\n", cb->fpSector);
+   print_hex("mediumFP         ", cb->mediumFP, 16);
+   print_hex("mediumSum        ", cb->mediumSum, 16);
+   PrintCLI("dataSectors     %ll16x\n ",cb->dataSectors);
+   PrintCLI("inLast           %8x\n", cb->inLast);
+   PrintCLI("dataBytes        %8x\n", cb->dataBytes);
+   PrintCLI("eccBytes         %8x\n", cb->eccBytes);
+   PrintCLI("sectorsPerLayer  %lld\n", cb->sectorsPerLayer);
+   PrintCLI("selfCRC          %8x\n", cb->selfCRC);
+
+   PrintCLI("\n");
+}
 /*
  * This is the most annoying part of the endian conversions.
  */
@@ -115,9 +142,32 @@ void SwapEccHeaderBytes(EccHeader *eh)
   eh->neededVersion = SwapBytes32(eh->neededVersion);
   eh->fpSector = SwapBytes32(eh->fpSector);
   eh->inLast = SwapBytes32(eh->inLast);
+  eh->sectorsPerLayer = SwapBytes64(eh->sectorsPerLayer);
+  eh->sectorsAddedByEcc = SwapBytes64(eh->sectorsAddedByEcc);
 #ifdef VERBOSE
   printf("after swap:\n");
   print_ecc_header(eh);
+#endif
+}
+
+void SwapCrcBlockBytes(CrcBlock *cb)
+{
+#ifdef VERBOSE
+  printf("before swap:\n");
+  print_crc_block(cb);
+#endif
+
+  cb->creatorVersion = SwapBytes32(cb->creatorVersion);
+  cb->neededVersion = SwapBytes32(cb->neededVersion);
+  cb->fpSector = SwapBytes32(cb->fpSector);
+  cb->dataSectors = SwapBytes64(cb->dataSectors);
+  cb->inLast = SwapBytes32(cb->inLast);
+  cb->dataBytes = SwapBytes32(cb->dataBytes);
+  cb->eccBytes = SwapBytes32(cb->eccBytes);
+  cb->sectorsPerLayer = SwapBytes64(cb->sectorsPerLayer);
+#ifdef VERBOSE
+  printf("after swap:\n");
+  print_crc_block(cb);
 #endif
 }
 

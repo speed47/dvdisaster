@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -33,6 +34,10 @@ char* DefaultDevice()
    GDir *dir;
    const char* dev;
    int dev_type;
+
+   /* As a convenience, add the simulated drive first. */
+
+   InitSimulatedCD();
 
    /*** Look for suitable devices */
 
@@ -51,7 +56,7 @@ char* DefaultDevice()
 
    while((dev = g_dir_read_name(dir)))
    { 
-     if((strlen(dev) == 5 && !strncmp(dev,"pass",4)))
+     if(!strncmp(dev,"pass",4))
      { char buf[80];
 
        sprintf(buf,"/dev/%s", dev); 
@@ -94,7 +99,7 @@ char* DefaultDevice()
    if(Closure->deviceNodes->len)
      return g_strdup(g_ptr_array_index(Closure->deviceNodes, 0));
    else
-   {  PrintLog(_("No CD/DVD drives found in /dev.\n"
+   {  PrintLog(_("No optical drives found in /dev.\n"
 		  "No drives will be pre-selected.\n"));
 
       return g_strdup("no_drives");
@@ -113,21 +118,39 @@ DeviceHandle* OpenDevice(char *device)
    if(dh->senseSize > sizeof(struct scsi_sense_data))
       dh->senseSize = sizeof(struct scsi_sense_data);
 
-   dh->camdev = cam_open_pass(device, O_RDWR, NULL);
+   if(!strcmp(device, "sim-cd"))
+   {  if(!Closure->simulateCD) /* can happen via resource file / last-device */
+      {  g_free(dh);
+         return NULL;
+      }
+     
+      dh->simImage = LargeOpen(Closure->simulateCD, O_RDONLY, IMG_PERMS);
+      if(!dh->simImage)
+      {  g_free(dh);
 
-   if(!dh->camdev)
-   {  g_free(dh);
-      Stop(_("Could not open %s: %s"),device, strerror(errno));
-      return NULL;
+	 Stop(_("Could not open %s: %s"), Closure->simulateCD, strerror(errno));
+	 return NULL;
+      }
    }
+   else
+   {  dh->camdev = cam_open_pass(device, O_RDWR, NULL);
 
-   dh->ccb = cam_getccb(dh->camdev);
+      if(!dh->camdev)
+      {  g_free(dh);
 
-   if(!dh->ccb)
-   {  cam_close_device(dh->camdev);
-      g_free(dh);
-      Stop("Could not allocate ccb for %s", device);
-      return NULL;
+	 Stop(_("Could not open %s: %s"),device, strerror(errno));
+	 return NULL;
+      }
+
+      dh->ccb = cam_getccb(dh->camdev);
+
+      if(!dh->ccb)
+      {  cam_close_device(dh->camdev);
+	 g_free(dh);
+
+	 Stop("Could not allocate ccb for %s", device);
+	 return NULL;
+      }
    }
 
    dh->device = g_strdup(device);
@@ -149,14 +172,10 @@ void CloseDevice(DeviceHandle *dh)
     cam_close_device(dh->camdev);
   if(dh->device)
     g_free(dh->device);
-  if(dh->rs02Header)
-    g_free(dh->rs02Header);
   if(dh->typeDescr) 
     g_free(dh->typeDescr);
   if(dh->mediumDescr) 
     g_free(dh->mediumDescr);
-  if(dh->isoInfo)
-    FreeIsoInfo(dh->isoInfo);
   if(dh->defects)
     FreeBitmap(dh->defects);
   g_free(dh);
@@ -165,7 +184,9 @@ void CloseDevice(DeviceHandle *dh)
 int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char *buf, int size, Sense *sense, int data_mode)
 {  union ccb *ccb = dh->ccb;
    u_int32_t flags = 0;
-   u_int8_t status;
+
+   if(dh->simImage)
+      return SimulateSendPacket(dh, cmd, cdb_size, buf, size, sense, data_mode);
 
    bzero(&(&ccb->ccb_h)[1],
 	 sizeof(struct ccb_scsiio) - sizeof(struct ccb_hdr));
@@ -205,10 +226,18 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
    if((ccb->ccb_h.status & CAM_STATUS_MASK) == CAM_REQ_CMP)
      return 0;
 
-   /* See what went wrong (has still to be done; see scsi-win32.c) */
+   /* See what went wrong (not covering all cases) */
 
-   status = ccb->csio.scsi_status;
+   switch(ccb->csio.scsi_status)
+   {  case 0x08:  /* BUSY */
+        PrintLog("SendPacket: Target busy.\n");
+	break;
 
+      case 0x18:  /* Reservation conflict */
+        PrintLog("SendPacket: Reservation conflict.\n");
+	break;
+   } 
+   
    return -1;
 }
 
