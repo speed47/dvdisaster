@@ -1,3 +1,18 @@
+dvdisaster (0.72.4-3) unstable; urgency=medium
+
+  [ Carlos Maddela ]
+  * Team upload.
+  * Bump compat level to 10.
+  * debian/watch: Relax upstream version restriction.
+  * Use original name for the duplicate uncompressed upstream CHANGELOG.
+  * Backup and restore mutable files to allow multiple builds.
+  * Fix FTBFS for hurd-i386.
+
+  [ Corey Wright ]
+  * Add support for BD-ROM media-type. (Closes: #849518)
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 07 Jan 2017 00:29:19 +1100
+
 dvdisaster (0.72.4-2) unstable; urgency=medium
 
   * Team upload.
