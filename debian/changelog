@@ -1,3 +1,28 @@
+dvdisaster (0.79.5-1) experimental; urgency=medium
+
+  * Team upload.
+  * New upstream version [0.79.5]
+  * Refresh and drop patches. The following patches have been dropped:
+    + 01-libpng15.patch
+    + 06-remove-encoding-from-desktop-file.patch
+    + 07-fix-spelling-errors-in-binaries.patch
+    + 09-fix-format-security-warnings.patch
+    + 21-fix-privacy-breach-in-doco.patch
+  * Update license to GPL-3.
+  * Update clean rule as old files no longer apply.
+  * Update documentation build and install rules.
+  * debian/rules: Update mutable file list.
+  * Fix generated man pages. The generated man pages incorrectly direct
+    users to the directory of the old HTML documentation, which is no
+    longer available.
+  * Fix display of manual.pdf. The PDF file is automatically compressed
+    by Debhelper, so we need to account for this.
+  * Resurrect old code to support opening URLs in a browser.
+  * Ship upstream-generated manual.pdf for the time being, as we can't
+    generate it ourselves reproducibly.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 07 Jan 2017 00:36:53 +1100
+
 dvdisaster (0.72.4-3) unstable; urgency=medium
 
   [ Carlos Maddela ]
