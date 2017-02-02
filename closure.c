@@ -1,35 +1,26 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
-
-#ifdef SYS_MINGW
- #include <windows.h>
- #include <tlhelp32.h>
- #include <psapi.h>
- #include <shlobj.h>
-
- /* safety margin in case we're getting UTF path names */
- #define WIN_MAX_PATH (4*MAX_PATH)
-#endif
 
 #if 0 
  #define Verbose g_printf
@@ -41,155 +32,23 @@
  *** Locate the binary and documentation directory
  ***/
 
-/* 
- * Find location of special windows directories.
- * Copied from glib sources since they have declared it static.
- * Windows only.
- * CHECKME: Is it okay to return UTF8?
- */ 
-
-#ifdef SYS_MINGW
-static gchar *get_special_folder(int csidl)
-{
-  union 
-  { char c[WIN_MAX_PATH+1];
-    wchar_t wc[WIN_MAX_PATH+1];
-  } path;
-
-  HRESULT hr;
-  LPITEMIDLIST pidl = NULL;
-  BOOL b;
-  gchar *retval = NULL;
-
-  hr = SHGetSpecialFolderLocation(NULL, csidl, &pidl);
-  if(hr == S_OK)
-  {  if (G_WIN32_HAVE_WIDECHAR_API())
-     {  b = SHGetPathFromIDListW(pidl, path.wc);
-	if(b)
-	  retval = g_utf16_to_utf8(path.wc, -1, NULL, NULL, NULL);
-     }
-     else
-     {  b = SHGetPathFromIDListA(pidl, path.c);
-        if(b)
-	  retval = g_locale_to_utf8(path.c, -1, NULL, NULL, NULL);
-     }
-     CoTaskMemFree(pidl);
-  }
-  return retval;
-}
-#endif
-
-/*
- * Find the place of our executable
- * (Windows only)
- */
-
-#ifdef SYS_MINGW
-static char* get_exe_path()
-{  char path[WIN_MAX_PATH];
-   int n = GetModuleFileNameA(NULL, path, WIN_MAX_PATH);
-
-   if(n>0 && n<WIN_MAX_PATH-1)
-   {  char *backslash = strrchr(path, '\\');
-
-      if(backslash) *backslash=0;
-      
-      return g_strdup(path);
-   }
- 
-   return NULL;
-}
-#endif
-
-/*
- * Create / compare signatures for our installation directory
- */
-
-#ifdef SYS_MINGW
-static unsigned char *create_signature()
-{  struct MD5Context md5ctxt;
-   unsigned char *digest = g_malloc(20);
-   char buf[80];
-
-   sprintf(buf,"dvdisaster %s signature string", Closure->cookedVersion);
-
-   MD5Init(&md5ctxt);
-   MD5Update(&md5ctxt, buf, strlen(buf));
-   MD5Final(digest+2, &md5ctxt);
-   digest[ 0] = digest[ 7]+19;
-   digest[ 1] = digest[ 9]+58;
-   digest[18] = digest[12]+31;
-   digest[19] = digest[15]+5;
-
-   return digest;
-}
-
-void WriteSignature()
-{  char loc[strlen(Closure->binDir) + strlen("\\signature")+ 10];
-   unsigned char *sig = create_signature();
-   FILE *file;
-
-   /* processing of error conditions not necessary */
-
-   sprintf(loc, "%s\\signature", Closure->binDir);
-   if(!(file = portable_fopen(loc, "wb")))
-     return;
-   fwrite(sig, 20, 1, file);
-   fclose(file);
-   g_free(sig);
-}
-
-int VerifySignature()
-{  char loc[strlen(Closure->binDir) + strlen("\\signature")+ 10];
-   unsigned char *sig = create_signature();
-   char buf[20];
-   FILE *file;
-   int result;
-
-   sprintf(loc, "%s\\signature", Closure->binDir);
-   if(!(file = portable_fopen(loc, "rb")))
-     return FALSE;
-
-   fread(buf, 20, 1, file);
-   fclose(file);
-
-   result = !memcmp(sig, buf, 20);
-
-   return result;
-}
-
-#endif
-
-
 static void get_base_dirs()
 {  
-#ifdef SYS_MINGW
-   char *appdata;
-   char *homedir;
-#endif
-
    /*** Unless completely disabled through a configure option, the
 	source directory is supposed to hold the most recent files,
-	so try this first. Not necessary under Windows as it will always
-	use the directory the binary has been called from. */
+	so try this first. */
 
 #ifdef WITH_EMBEDDED_SRC_PATH_YES
-
-#ifndef SYS_MINGW
    if(DirStat(SRCDIR))
    {  Closure->binDir = g_strdup(SRCDIR);
       Closure->docDir = g_strdup_printf("%s/documentation",SRCDIR);
       Verbose("Using paths from SRCDIR = %s\n", SRCDIR);
       goto find_dotfile;
    } 
-#endif
-
 #endif /* WITH_EMBEDDED_SRC_PATH_YES */
 
    /*** Otherwise try the installation directory. 
-	On Unices this is a hardcoded directory.
-	Windows has binary distributions with no prior known installation place,
-	but luckily it provides a way for figuring out that location. */
+	On Unices this is a hardcoded directory. */
 
 #if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
    if(DirStat(BINDIR))
@@ -200,95 +59,25 @@ static void get_base_dirs()
    Verbose("Using hardcoded BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
 #endif
 
-#ifdef SYS_MINGW
-   Closure->binDir = get_exe_path();
-
-   if(Closure->binDir)
-      Closure->docDir = g_strdup_printf("%s\\documentation", Closure->binDir);
-   Verbose("Using path from get_exe_path() = %s\n", Closure->binDir);
-#endif
-
    /*** The location of the dotfile depends on the operating system. 
 	Under Unix the users home directory is used. */
 
-#ifndef SYS_MINGW
- #ifdef WITH_EMBEDDED_SRC_PATH_YES
+#ifdef WITH_EMBEDDED_SRC_PATH_YES
 find_dotfile:
- #endif /* WITH_EMBEDDED_SRC_PATH_YES */
+#endif /* WITH_EMBEDDED_SRC_PATH_YES */
    
    Closure->homeDir = g_strdup(g_getenv("HOME"));
-   Closure->dotFile = g_strdup_printf("%s/.dvdisaster", Closure->homeDir);
-#endif
-
-#ifdef SYS_MINGW
-   /* For Windows the user's application directory in the roaming
-      profile is preferred for the dotfile; 
-      if it does not exist we use the installation directory.  */
-
-   appdata = get_special_folder(CSIDL_APPDATA);
-   homedir = get_special_folder(CSIDL_PERSONAL);
-   Verbose("Windows specific paths:\n"
-	   "- CSIDL_APPDATA: %s\n"
-	   "- CSIDL_PERSONAL: %s\n",
-	   appdata ? appdata : "NULL",
-	   homedir ? homedir : "NULL");
-
-   if(homedir && DirStat(homedir))
-   {
-      Closure->homeDir = g_strdup(homedir);
-      Verbose("- homedir path : %s\n", Closure->homeDir);
-
-      g_free(homedir);
-   }
-
-   if(appdata)
-   {  Closure->appData  = g_strdup_printf("%s\\dvdisaster", appdata);
-
-      if(DirStat(appdata)) /* CSIDL_APPDATA present? */
-      { 
-	 Verbose("- dotfile path : %s\n", Closure->appData);
-
-	 if(DirStat(Closure->appData))
-	 {  Closure->dotFile = g_strdup_printf("%s\\.dvdisaster", Closure->appData);
-	    Verbose("- dotfile path : present\n");
-	 }
-	 else if(!portable_mkdir(Closure->appData)) /* Note: Windows! */
-	 {  Closure->dotFile = g_strdup_printf("%s\\.dvdisaster", Closure->appData);
-	    Verbose("- dotfile path : - created -\n");
-	 }
-	 else 
-	 {  g_free(Closure->appData);
-	    Closure->appData = NULL;
-	 }
-      }
-      else 
-      {	 Verbose("- dotfile path : *can not be used*\n");
-	 g_free(Closure->appData);
-	 Closure->appData = NULL;
-      }
-
-      g_free(appdata);
-   }
-
-   /* Fallbacks: Expect .dvdisaster file in binDir;
-                 propose C:\Windows\Temp as working dir */
-
-   if(!Closure->dotFile)
-      Closure->dotFile = g_strdup_printf("%s\\.dvdisaster", Closure->binDir);
-   if(!Closure->homeDir)
-      Closure->homeDir = g_strdup("C:\\Windows\\Temp");
-#endif
+   if(!Closure->dotFile) /* may have been set by the --resource-file option */
+      Closure->dotFile = g_strdup_printf("%s/.dvdisaster", Closure->homeDir);
 
    Verbose("\nUsing file locations:\n"
 	   "- Homedir: %s\n"
 	   "- Bin dir: %s\n"
 	   "- Doc dir: %s\n"
-	   "- AppData: %s\n"
 	   "- dotfile: %s\n\n",
 	   Closure->homeDir,
 	   Closure->binDir,
 	   Closure->docDir,
-	   Closure->appData ? Closure->appData : "Null",
 	   Closure->dotFile);   
 }
 
@@ -402,12 +191,12 @@ void ReadDotfile()
    while(TRUE)
    {  int n;
       char symbol[41];
-      char *value, *ignore;
+      char *value;
 
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      ignore = fgets(line, MAX_LINE_LEN, dotfile);
+      fgets(line, MAX_LINE_LEN, dotfile);
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -443,16 +232,14 @@ void ReadDotfile()
 						    Closure->eccName = g_strdup("");
                                                else Closure->eccName = g_strdup(value); continue; 
                                              }
-      if(!strcmp(symbol, "browser"))         { g_free(Closure->browser);
-                                               Closure->browser     = g_strdup(value); continue; }
-
       if(!strcmp(symbol, "adaptive-read"))   { Closure->adaptiveRead   = atoi(value); continue; }
       if(!strcmp(symbol, "auto-suffix"))     { Closure->autoSuffix  = atoi(value); continue; }
       if(!strcmp(symbol, "bd-size1"))        { Closure->bdSize1 = Closure->savedBDSize1 = atoll(value); continue; }
       if(!strcmp(symbol, "bd-size2"))        { Closure->bdSize2 = Closure->savedBDSize2 = atoll(value); continue; }
-      if(!strcmp(symbol, "cache-size"))      { Closure->cacheMB     = atoi(value); continue; }
+      if(!strcmp(symbol, "cache-size"))      { Closure->cacheMiB = atoi(value); continue; }
       if(!strcmp(symbol, "cd-size"))         { Closure->cdSize = Closure->savedCDSize = atoll(value); continue; }
       if(!strcmp(symbol, "codec-threads"))   { Closure->codecThreads = atoi(value); continue; }
+      if(!strcmp(symbol, "confirm-deletion")){ Closure->confirmDeletion = atoi(value); continue; }
       if(!strcmp(symbol, "dao"))             { Closure->noTruncate  = atoi(value); continue; }
       if(!strcmp(symbol, "defective-dump"))  { Closure->defectiveDump = atoi(value); continue; }
       if(!strcmp(symbol, "defective-dir"))   { if(Closure->dDumpDir) g_free(Closure->dDumpDir);
@@ -462,9 +249,15 @@ void ReadDotfile()
       if(!strcmp(symbol, "dotfile-version")) { Closure->dotFileVersion = atoi(value); continue; }
       if(!strcmp(symbol, "dvd-size1"))       { Closure->dvdSize1 = Closure->savedDVDSize1 = atoll(value); continue; }
       if(!strcmp(symbol, "dvd-size2"))       { Closure->dvdSize2 = Closure->savedDVDSize2 = atoll(value); continue; }
+      if(!strcmp(symbol, "ecc-target"))      { Closure->eccTarget  = atoi(value); continue; }
       if(!strcmp(symbol, "eject"))           { Closure->eject  = atoi(value); continue; }
+      if(!strcmp(symbol, "encoding-algorithm")) { Closure->encodingAlgorithm = atoi(value); continue; }
+      if(!strcmp(symbol, "encoding-io-strategy")) { Closure->encodingIOStrategy = atoi(value); continue; }
+      if(!strcmp(symbol, "examine-rs02"))    { Closure->examineRS02  = atoi(value); continue; }
+      if(!strcmp(symbol, "examine-rs03"))    { Closure->examineRS03  = atoi(value); continue; }
       if(!strcmp(symbol, "fill-unreadable")) { Closure->fillUnreadable = atoi(value); continue; }
       if(!strcmp(symbol, "ignore-fatal-sense")) { Closure->ignoreFatalSense  = atoi(value); continue; }
+      if(!strcmp(symbol, "ignore-iso-size")) { Closure->ignoreIsoSize  = atoi(value); continue; }
       if(!strcmp(symbol, "internal-attempts"))  { Closure->internalAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "jump"))            { Closure->sectorSkip  = atoi(value); continue; }
       if(!strcmp(symbol, "log-file-enabled")){ Closure->logFileEnabled = atoi(value); continue; }
@@ -475,8 +268,11 @@ void ReadDotfile()
 	                                       Closure->methodName = g_strdup(value); continue; }
       if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = atoi(value); continue; }
-      if(!strcmp(symbol, "missing-sector-marker"))  { Closure->dsmVersion  = atoi(value); continue; }
-      if(!strcmp(symbol, "query-size"))      { Closure->querySize  = atoi(value); continue; }
+      if(!strcmp(symbol, "old-missing-sector-marker"))  { Closure->dsmVersion  = !atoi(value); continue; }
+      if(!strcmp(symbol, "pdf-viewer"))      { g_free(Closure->viewer);
+                                               Closure->viewer = g_strdup(value); continue; }
+
+      if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = atoi(value); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
       if(!strcmp(symbol, "read-medium"))     { Closure->readingPasses = atoi(value); continue; }
@@ -485,7 +281,6 @@ void ReadDotfile()
                                                Closure->redundancy  = g_strdup(value); continue; }
       if(!strcmp(symbol, "reverse-cancel-ok")) { Closure->reverseCancelOK = atoi(value); continue; }
       if(!strcmp(symbol, "spinup-delay"))    { Closure->spinupDelay = atoi(value); continue; }
-      if(!strcmp(symbol, "split-files"))     { Closure->splitFiles  = atoi(value); continue; }
       if(!strcmp(symbol, "unlink"))          { Closure->unlinkImage = atoi(value); continue; }
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
       if(!strcmp(symbol, "welcome-msg"))     { Closure->welcomeMessage = atoi(value); continue; }
@@ -543,16 +338,16 @@ static void update_dotfile()
 
    g_fprintf(dotfile, "last-device:       %s\n", Closure->device);
    g_fprintf(dotfile, "last-image:        %s\n", Closure->imageName);
-   g_fprintf(dotfile, "last-ecc:          %s\n", Closure->eccName);
-   g_fprintf(dotfile, "browser:           %s\n\n", Closure->browser);
+   g_fprintf(dotfile, "last-ecc:          %s\n\n", Closure->eccName);
 
    g_fprintf(dotfile, "adaptive-read:     %d\n", Closure->adaptiveRead);
    g_fprintf(dotfile, "auto-suffix:       %d\n", Closure->autoSuffix);
    g_fprintf(dotfile, "bd-size1:          %lld\n", (long long int)Closure->bdSize1);
    g_fprintf(dotfile, "bd-size2:          %lld\n", (long long int)Closure->bdSize2);
-   g_fprintf(dotfile, "cache-size:        %d\n", Closure->cacheMB);
+   g_fprintf(dotfile, "cache-size:        %d\n", Closure->cacheMiB);
    g_fprintf(dotfile, "cd-size:           %lld\n", (long long int)Closure->cdSize);
    g_fprintf(dotfile, "codec-threads:     %d\n", Closure->codecThreads);
+   g_fprintf(dotfile, "confirm-deletion:  %d\n", Closure->confirmDeletion);
    g_fprintf(dotfile, "dao:               %d\n", Closure->noTruncate);
    g_fprintf(dotfile, "defective-dump:    %d\n", Closure->defectiveDump);
    g_fprintf(dotfile, "defective-dir:     %s\n", Closure->dDumpDir);
@@ -560,9 +355,15 @@ static void update_dotfile()
    g_fprintf(dotfile, "dotfile-version:   %d\n", Closure->dotFileVersion);
    g_fprintf(dotfile, "dvd-size1:         %lld\n", (long long int)Closure->dvdSize1);
    g_fprintf(dotfile, "dvd-size2:         %lld\n", (long long int)Closure->dvdSize2);
+   g_fprintf(dotfile, "ecc-target:        %d\n", Closure->eccTarget);
    g_fprintf(dotfile, "eject:             %d\n", Closure->eject);
+   g_fprintf(dotfile, "encoding-algorithm:%d\n", Closure->encodingAlgorithm);
+   g_fprintf(dotfile, "encoding-io-strategy:%d\n", Closure->encodingIOStrategy);
+   g_fprintf(dotfile, "examine-rs02:      %d\n", Closure->examineRS02);
+   g_fprintf(dotfile, "examine-rs03:      %d\n", Closure->examineRS03);
    g_fprintf(dotfile, "fill-unreadable:   %d\n", Closure->fillUnreadable);
    g_fprintf(dotfile, "ignore-fatal-sense: %d\n", Closure->ignoreFatalSense);
+   g_fprintf(dotfile, "ignore-iso-size:   %d\n", Closure->ignoreIsoSize);
    g_fprintf(dotfile, "internal-attempts: %d\n", Closure->internalAttempts);
    g_fprintf(dotfile, "jump:              %d\n", Closure->sectorSkip);
    g_fprintf(dotfile, "log-file-enabled:  %d\n", Closure->logFileEnabled);
@@ -571,8 +372,9 @@ static void update_dotfile()
    g_fprintf(dotfile, "method-name:       %s\n", Closure->methodName);
    g_fprintf(dotfile, "max-read-attempts: %d\n", Closure->maxReadAttempts);
    g_fprintf(dotfile, "min-read-attempts: %d\n", Closure->minReadAttempts);
-   g_fprintf(dotfile, "missing-sector-marker: %d\n", Closure->dsmVersion);
-   g_fprintf(dotfile, "query-size:        %d\n", Closure->querySize);
+   g_fprintf(dotfile, "old-missing-sector-marker: %d\n", !Closure->dsmVersion);
+   g_fprintf(dotfile, "pdf-viewer:        %s\n", Closure->viewer);
+   g_fprintf(dotfile, "prefetch-sectors:  %d\n", Closure->prefetchSectors);
    g_fprintf(dotfile, "raw-mode:          %d\n", Closure->rawMode);
    g_fprintf(dotfile, "read-and-create:   %d\n", Closure->readAndCreate);
    g_fprintf(dotfile, "read-medium:       %d\n", Closure->readingPasses);
@@ -581,7 +383,6 @@ static void update_dotfile()
      g_fprintf(dotfile, "redundancy:        %s\n", Closure->redundancy);
    g_fprintf(dotfile, "reverse-cancel-ok: %d\n", Closure->reverseCancelOK);
    g_fprintf(dotfile, "spinup-delay:      %d\n", Closure->spinupDelay);
-   g_fprintf(dotfile, "split-files:       %d\n", Closure->splitFiles);
    g_fprintf(dotfile, "unlink:            %d\n", Closure->unlinkImage);
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);
    g_fprintf(dotfile, "welcome-msg:       %d\n\n", Closure->welcomeMessage);
@@ -616,19 +417,24 @@ void InitClosure()
 
    Closure = g_malloc0(sizeof(GlobalClosure));
 
-   /* Give versions with patch levels a nicer formatting */
+   /* Extract the version string */
 
-   if(!strcmp(RELEASE_STATUS, "patch"))
-     Closure->cookedVersion = g_strdup_printf("%s (pl%s)",VERSION,RELEASE_MICRO);
-   else if(!strcmp(RELEASE_STATUS, "devel"))
-   { Closure->releaseFlags = MFLAG_DEVEL;
-     Closure->cookedVersion = g_strdup_printf("%s (devel-%s)",VERSION,RELEASE_MICRO);
-   }
-   else if(!strcmp(RELEASE_STATUS, "rc"))
-   { Closure->releaseFlags = MFLAG_RC;
-     Closure->cookedVersion = g_strdup_printf("%s (rc-%s)",VERSION,RELEASE_MICRO);
-   }
-   else Closure->cookedVersion = g_strdup(VERSION);
+   Closure->cookedVersion = g_strdup(VERSION);
+
+   /* Generate a more comprehensive version string */
+
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
+  #ifdef HAVE_64BIT
+    #define BITNESS_STRING " 64bit"
+  #else
+    #define BITNESS_STRING " 32bit"
+  #endif
+#else
+  #define BITNESS_STRING ""
+#endif
+
+   Closure->versionString = g_strdup_printf("dvdisaster %s build %d, %s%s",
+					    Closure->cookedVersion, buildCount, SYS_NAME, BITNESS_STRING);
 
    /* Replace the dot with a locale-resistant separator */
 
@@ -639,21 +445,16 @@ void InitClosure()
         dots++;
      }
 
-   if(dots == 1) 
+   if(dots == 2) 
    {  v1 = v2 = v3 = 0;
-      sscanf(version,"%dx%d",&v1,&v2);
+      sscanf(version,"%dx%dx%d",&v1,&v2,&v3);
    }
    else 
    {  g_printf("Error: malformed version number %s\n",VERSION);
       exit(EXIT_FAILURE);
    }
 
-   v3 = atoi(RELEASE_MICRO);
    Closure->version = 10000*v1 + 100*v2 + v3;
-
-#if 0
-   printf("Version %s; %d; Flags %d\n", Closure->cookedVersion, Closure->version, Closure->releaseFlags);
-#endif
 
    /* Get home and system directories */
 
@@ -663,22 +464,25 @@ void InitClosure()
 
    Closure->deviceNames = g_ptr_array_new();
    Closure->deviceNodes = g_ptr_array_new();
-   Closure->browser     = g_strdup("xdg-open");
+   Closure->viewer      = g_strdup("xdg-open");
    Closure->methodList  = g_ptr_array_new();
    Closure->methodName  = g_strdup("RS01");
    Closure->dDumpDir    = g_strdup(Closure->homeDir);
-   Closure->cacheMB     = 32;
+   Closure->cacheMiB    = 32;
+   Closure->prefetchSectors = 128;
    Closure->codecThreads = 1;
+   Closure->eccTarget = 1;
+   Closure->encodingAlgorithm = ENCODING_ALG_DEFAULT;
    Closure->minReadAttempts = 1;
    Closure->maxReadAttempts = 1;
    Closure->rawMode     = 0x20;
    Closure->internalAttempts = -1;
    Closure->sectorSkip  = 16;
    Closure->spinupDelay = 5;
-   Closure->querySize   = 2;
    Closure->fillUnreadable = -1;
    Closure->welcomeMessage = 1;
-   Closure->useSCSIDriver = DRIVER_CDROM_DEFAULT;
+   Closure->useSCSIDriver = DRIVER_SG;
+   Closure->dsmVersion = 1;
 
    /* default sizes for typical CD and DVD media */
 
@@ -689,7 +493,8 @@ void InitClosure()
    Closure->bdSize2  = Closure->savedBDSize2  = BD_DL_SIZE;
 
    Closure->logString = g_string_sized_new(1024);
-   Closure->logLock   = g_mutex_new();
+   Closure->logLock   = g_malloc0(sizeof(GMutex));
+     g_mutex_init(Closure->logLock);
 
    Closure->background = g_malloc0(sizeof(GdkColor));
    Closure->foreground = g_malloc0(sizeof(GdkColor));
@@ -710,12 +515,9 @@ void InitClosure()
    DefaultColors();
 
    memset(Closure->bs, '\b', 255);
+   memset(Closure->sp, ' ', 255);
 
    DefaultLogFile();
-
-#ifdef SYS_MINGW
-   OpenAspi();
-#endif
 }
 
 /*
@@ -726,13 +528,12 @@ void InitClosure()
 
 void LocalizedFileDefaults()
 {  
-   /* Storing the files in the cwd is a sane default. */
+   /* Storing the files in the cwd appears to be a sane default. */
 
    Closure->imageName   = g_strdup(_("medium.iso"));
    Closure->eccName     = g_strdup(_("medium.ecc"));
    Closure->dDumpPrefix = g_strdup(_("sector-"));
 }
-
 
 /*
  * Clear the CRC cache
@@ -777,6 +578,7 @@ void FreeClosure()
    ClearCrcCache();
 
    cond_free(Closure->cookedVersion);
+   cond_free(Closure->versionString);
    cond_free(Closure->device);
    cond_free_ptr_array(Closure->deviceNames);
    cond_free_ptr_array(Closure->deviceNodes);
@@ -793,9 +595,9 @@ void FreeClosure()
    cond_free(Closure->logFile);
    cond_free(Closure->binDir);
    cond_free(Closure->docDir);
-   cond_free(Closure->appData);
-   cond_free(Closure->browser);
+   cond_free(Closure->viewer);
    cond_free(Closure->errorTitle);
+   cond_free(Closure->simulateCD);
    cond_free(Closure->dDumpDir);
    cond_free(Closure->dDumpPrefix);
 
@@ -809,7 +611,9 @@ void FreeClosure()
       g_string_free(Closure->logString, TRUE);
 
    if(Closure->logLock)
-      g_mutex_free(Closure->logLock);
+   {  g_mutex_clear(Closure->logLock);
+      g_free(Closure->logLock);
+   }
 
    if(Closure->drawGC)
      g_object_unref(Closure->drawGC);
@@ -849,8 +653,4 @@ void FreeClosure()
      g_free(Closure->readAdaptiveErrorMsg);
 
    g_free(Closure);
-
-#ifdef SYS_MINGW
-   CloseAspi();
-#endif
 }

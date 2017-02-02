@@ -1,0 +1,20 @@
+ignore
+f9a035b429d23a542cddb521a7140320
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 34932 sectors, Ecc, created 16-07-2006.
+
+Adaptive reading: Trying to collect enough data for error correction.
+
+*
+* dvdisaster - can not continue:
+*
+Fingerprints of medium and ecc file do not match.
+Medium and ecc file do not belong together.
+
+

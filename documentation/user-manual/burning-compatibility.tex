@@ -1,0 +1,196 @@
+\section{Burning software compatibility}
+\label{burning-compatibility}
+
+dvdisaster must be used in conjunction with a CD/DVD/BD writing suite (``burning program'')
+in order to generate ISO images and to write augmented ISO image files. Unfortunately,
+not all burning programs provide the required features to work with dvdisaster.
+Some burning programs may even produce media and/or ISO images which can not be
+used with dvdisaster.
+
+\smallskip
+
+For your convenience, the dvdisaster project has tested some free burning programs
+available for GNU/Linux. Please note that this list will always be incomplete and
+only be a snapshot of a certain program version. It is likely to be outdated when
+you are reading this page. It is therefore recommended that you test your specific
+burning program version by following the \tlnk{howto-compat-overview}{instructions} given
+in the howto section.
+
+\paragraph{Recommended software}\quad
+
+\medskip
+
+The dvdisaster project recommends either using the command line tools
+listed below or using the K3B burning application (which is actually
+a graphical wrapper around the command line tools).
+
+\paragraph{Burning program compatibility table}\quad
+
+\medskip
+
+\newcommand{\tgrey}[1]{\cellcolor{dkgrey}#1}
+\newcommand{\tturquoise}[1]{\cellcolor{turquoise}#1}
+\newcommand{\tpink}[1]{\cellcolor{pink}#1}
+\newcommand{\tblue}[1]{\cellcolor{dkblue}#1}
+
+\newcommand{\tred}[1]{&\begin{minipage}{10mm}{\cellcolor{ltred}#1}\end{minipage}}
+\newcommand{\tyellow}[1]{&\begin{minipage}{10mm}\cellcolor{ltyellow}{#1}\end{minipage}}
+\newcommand{\ok}{&\cellcolor{ltgreen}OK}
+\newcommand{\na}{&\cellcolor{ltgrey}n.a.}
+\newcommand{\nt}{&\begin{minipage}{10mm}{not tested}\end{minipage}}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\tgrey{} & \tgrey{} & \tgrey{} & \tturquoise{Create} &
+  \multicolumn{3}{c|}{\tpink{Burning images}} & \multicolumn{3}{c|}{\tblue{Burning images}} \\
+  
+  \tgrey{Program} & \tgrey{Version} & \tgrey{Testing} & \tturquoise{ISO/} &
+  \multicolumn{3}{c|}{\tpink{for error}} &
+  \multicolumn{3}{c|}{\tblue{with embedded}} \\
+
+\tgrey{} & \tgrey{} & \tgrey{Date} & \tturquoise{UDF} & 
+  \multicolumn{3}{c|}{\tpink{correction files}} &
+  \multicolumn{3}{c|}{\tblue{error correction}} \\
+  
+  \cline{5-10}
+\tgrey{} & \tgrey{} & \tgrey{} &\tturquoise{Image} &\tpink{CD} &\tpink{DVD} &\tpink{BD} &\tblue{CD} &\tblue{DVD} &\tblue{BD} \\
+
+  \hline
+  \multicolumn{10}{|c|}{\cellcolor{ltgrey}Command line tools} \\
+  
+  \hline
+  genisoimage & 1.1.11 & Jul'14        \ok \na \na \na \na \na \na \\
+
+  \hline
+  wodim       & 1.1.11 & Jul'14        \na \ok \ok \na \ok \ok \na \\
+
+  \hline
+  growisofs   & 7.1    & Jul'14        \na \na \ok \ok \na \ok \ok \\
+
+  \hline
+  \multicolumn{10}{|c|}{\cellcolor{ltgrey}Tools with a graphical user interface} \\
+
+  \hline
+  brasero     & 3.4.1 & Jul'14         \tred{no UDF$^{1)}$} \tyellow{avoid$^{2)}$} \ok \na \tyellow{avoid$^{2)}$} \ok \na \\ 
+
+  \hline
+  K3B         & 2.0.2 & Jul'14         \ok \ok \ok \na \ok \ok \na \\
+
+  \hline
+  xfburn      & 0.4.3 & Jul'14         \ok \tyellow{re-read only$^{3)}$} \tyellow{re-read only$^{3)}$} \na \tred{do not use$^{3)}$} \tred{do not use$^{3)}$} \na \\
+  \hline
+\end{tabular}
+
+\bigskip
+
+\paragraph{Testing conditions and objectives}\quad
+\medskip
+
+Testing was done using Debian 7.5 (wheezy) on an amd64 machine.
+Versions of the tested writing software are indicated in the table above.
+
+\medskip
+
+Evaluation of the burning software is done for the two major cases where
+interoperability with dvdisaster is required: 
+
+\bigskip
+
+a) Creating error correction files
+
+\medskip
+
+The burning program is used to assemble an ISO image from a selected set of files,
+and to write a CD, DVD or BD disc from it. An \tlnk{howto-eccfile}{error correction file} will
+be created to protect this medium.
+
+\smallskip
+
+There are two ways of obtaining the ISO image for creating the error correction file:
+
+\begin{enumerate}
+\item The burning program is used to create an ISO image which is stored on hard disk.
+  This image is used for burning the medium and for creating the error correction file.
+  If the writing software creates a medium which does not exactly match the image,
+  the resulting error correction file may be useless.
+  A respective \tlnk{howto-compat-file}{testing method} is described
+  in the ``Howtos'' section. An ``OK'' in the table above indicates that
+  this test has been passed. But you are strongly advised to
+  \tlnk{howto-compat-file}{do your own test} at least
+  once to make sure that you are working on the same versions and premises.
+
+  \smallskip
+  
+  If it is not possible to use a pre-made ISO image for both writing the medium
+  and for creating the error correction file, the writing software is
+  rated ``Re-read only'' in the table. In that case, use the alternative
+  approach described below (topic 2).
+
+\item The burning program is used to write a medium, either by using a
+  pre-made ISO image or by creating the image on-the-fly while writing
+  the medium. Afterwards, the pre-made ISO image is discarded. dvdisaster
+  is used to read back a new ISO image from the newly written medium. From
+  this newly created ISO image the error correction file is created. This
+  process should always work; if not, the respective burning software is
+  marked as being unusable in the table.
+\end{enumerate}
+  
+\bigskip
+
+b) Augmenting a medium with error correction data
+
+\medskip
+
+\tlnk{howto-augment-write-iso}{Creating a medium}
+\tlnk{howto-augment}{with embedded error correction data} is comprised of
+several sub tasks: First, the burning application converts a selection of files
+into an ISO image stored on hard disk. dvdisaster augments the image residing
+on the hard disk with error correction data. Then, the burning application
+writes the augmented image to the CD, DVD or BD. The ISO image content or format
+must not be altered during the writing process. Especially, the added error correction
+sectors must not be removed and no padding sectors must be added to the image during
+the writing process. The ``Howto'' section describes
+\tlnk{howto-compat-augment}{a test for compatibility between
+a writing software and dvdisaster}. An ``OK'' in the table above indicates that this
+test has been passed; otherwise you can not use the respective software for writing
+augmented images. You are strongly advised to \tlnk{howto-compat-augment}{do your own test} at
+least once to make sure that you are working on the same versions
+and premises even with software marked as compatible in the table above.
+
+\bigskip
+
+c) Creating ISO images
+
+\medskip
+
+In addition, the table indicates whether the burning application can convert
+a selection of files into an ISO image and store that ISO image on hard disk
+for further processing with dvdisaster. 
+
+\paragraph{Notes (why a certain software failed a test)}\quad
+\medskip
+
+$^{1)}${\bf brasero} can only create ISO images, not ISO/UDF. This is not
+recommended for DVD-Video authoring and has the disadvantage that files
+with sizes greater than 2GiB can not be used in a portable way (the tested
+version can not use files larger than 2GiB at all even if it says otherwise).
+
+\bigskip
+
+$^{2)}${\bf brasero} does not support the ``disc at once'' writing strategy. This
+creates two spurious unreadable sectors at the end of CD media. dvdisaster
+can handle such media, but will issue a warning and requires a preferences
+setting each time such media is processed.
+
+\bigskip
+
+$^{3)}${\bf xfburn} can not be used to write RS02/RS03 augmented images due to a
+wrong implementation of padding sector handling. In a correct implementation,
+a burning program would add 150 zero padding sectors to an image it has created
+itself. However padding sectors must never be added to an image which was created
+or manipulated by a foreign application, such as an image being augmented by dvdisaster.
+This results in the image being read back with wrong checksums, and dvdisaster will
+rightfully complain that the ``Image file is 150 sectors longer than expected.''.
+Error correction files can - for the same reason - not be used when created from
+the original image, but it is possible to re-read the image from the written
+medium and create error correction files from that image. 

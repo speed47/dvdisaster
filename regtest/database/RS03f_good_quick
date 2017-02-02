@@ -1,0 +1,21 @@
+9503f278d4550a9507a317664481adf8
+1f52f29bf40b8a530697c969ab7044a6
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs03f-master.iso present.
+rs03f-master.ecc present.
+
+Error correction properties:
+- type             : Error correction file
+- method           : RS03, 20 roots,  8.5% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+- fingerprint match: good
+
+Data integrity:
+- sectors          : 21000 in image; 1892 in ecc file
+* quick mode        : image NOT scanned

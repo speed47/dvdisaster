@@ -1,0 +1,22 @@
+cc182b17f903e2f9c28a9c1052249a5a
+4be4dcc0f6b88965334ccf1050dfa5fa
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs01-tmp.iso: 21017 medium sectors.
+
+Fix mode(RS01): Repairable sectors will be fixed in the image.
+
+*
+* dvdisaster - can not continue:
+*
+The image file is 17 sectors longer as noted in the
+ecc file. This might simply be zero padding, especially
+on dual layer DVD media, but could also mean that
+the image and ecc files do not belong together.
+
+Add the --truncate option to the program call
+to have the superfluous sectors removed.
+

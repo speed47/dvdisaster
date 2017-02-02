@@ -1,0 +1,117 @@
+\documentclass[12pt,a4paper,twoside]{article}
+\usepackage{times}	% Skalierbarer und lesbarer Zeichensatz
+\usepackage{ucs}	% Benötigt für Eingabe von unicode-Zeichensätzen
+\usepackage[utf8x]{inputenc} % Aktiviert Eingabe von unicode-Zeichensätzen
+\usepackage{epsfig}	% Makros zum Einfügen von Grafiken
+\usepackage{anysize}	% Makros zum Einstellen der Seitenränder
+%\usepackage{makeidx}	% Makros zum Erstellen des Indexes
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{color}
+
+\marginsize{30mm}{20mm}{20mm}{20mm}  % Seitenränder links, rechts, oben, unten
+\parindent0em		% Keine amerikanische Einrückung am Anfang von Paragraphen
+\renewcommand{\floatpagefraction}{.99}
+
+\pagestyle{fancy}	% Seitenstil
+%\makeindex		% wird für Erstellung von Stichwortverzeichnissen benötigt
+
+% Ende der Voreinstellungen
+
+\newcommand{\paperversion}{{\em Version 1.01}}
+
+\fancyhead{}
+\fancyhead[LE,RO]{page \thepage\ of \pageref{LastPage}}
+\fancyhead[LO,RE]{\nouppercase{\rightmark}}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{#1}}
+\renewcommand{\subsectionmark}[1]{}
+
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot{}
+\fancyfoot[LE,RO]{dvdisaster codec specification}
+\fancyfoot[LO]{created: \today}
+\fancyfoot[RE]{\paperversion}
+
+\begin{document}
+
+\definecolor{lightblue}{RGB}{224,224,255}
+\pagecolor{lightblue}
+\title{The dvdisaster Reed-Solomon Codec specification}
+\author{Carsten Gnörlich\\carsten@dvdisaster.org}
+\date{}
+\maketitle
+\thispagestyle{empty}
+
+\centerline{\includegraphics[width=32mm]{title.eps}}
+  
+\begin{center}
+\paperversion
+\end{center}
+
+\bigskip
+
+\begin{abstract}
+This is the {\em blue manual}, describing the data formats of the dvdisaster
+Reed-Solomon codecs which are currently called RS01, RS02 and RS03.
+The codecs create Reed-Solomon parity data to protect data stored on optical media.
+Depending on the codec, parity data can either be stored in a separate file 
+or be integrated with the .iso image on the same medium. 
+See \url{http://dvdisaster.org}  for additional resources on the dvdisaster project,
+e.g. for the {\em orange manual} (manual.pdf) containing information for end users.
+\end{abstract}
+
+\bigskip
+
+{\bf Target audience.} This paper is primarily intended as a working base for the
+dvdisaster developers and, when the final version has been crafted, as an implementation
+guide for third party developers who wish to create and process dvdisaster error correction data.
+It is {\bf neither intended nor suitable} as end-user documentation; for usage information
+please refer to the online documentation at \url{http://dvdisaster.org}.
+
+\bigskip
+
+{\bf Prerequisites.} This paper assumes profound knowledge of coding theory and the 
+underlying math. The reader is assumed to have a thorough understanding of Reed-Solomon
+codes, both in theory and from an implementation viewpoint. A basic understanding
+of programming in C is also assumed.
+
+\vfill
+\begin{center}
+{\em 
+Copyright 2008-2015 Carsten Gnörlich.
+Verbatim copying and distribution of this entire article is permitted in any medium, 
+provided this notice is preserved.}
+\end{center}
+
+\newpage
+\nopagecolor
+
+% Changelog
+
+\input{changelog}
+
+% Table of Contents
+
+\tableofcontents
+\newpage
+
+% Reed-Solomon encoding details
+
+\input{rs03}
+
+\input{rs02}
+
+\input{rs01}
+
+% Header formats
+
+\appendix
+
+\input{ecc-header}
+
+\input{crc-block}
+
+\input{rs-params}
+\end{document}

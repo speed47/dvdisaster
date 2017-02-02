@@ -1,29 +1,30 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
 
-extern int CurrentMediumSize(int);  /* from scsi-layer.h */
+extern gint64 CurrentMediumSize(int);  /* from scsi-layer.h */
 
 /***
  *** Forward declarations
@@ -357,9 +358,13 @@ enum
    PREF_ECC_SIZE = 2
 };
 
+#ifdef HAVE_32BIT
+static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
+			    1024, 1536 };
+#else
 static int cache_size[] = { 8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 
 			    1024, 1536, 2048, 2560, 3072, 4096, 5120, 6144, 7168, 8192 };
-//			    11264, 15360, 23552, 31744, 48128, 64512 };
+#endif
 
 static gchar* format_cb(GtkScale *scale, gdouble value, gpointer data)
 {  int nroots = value;
@@ -384,9 +389,9 @@ static void cache_cb(GtkWidget *widget, gpointer data)
    char *text, *utf;
 
    value = gtk_range_get_value(GTK_RANGE(widget));
-   Closure->cacheMB = cache_size[value];
+   Closure->cacheMiB = cache_size[value];
 	
-   text = g_strdup_printf(_("%d MB of file cache"), Closure->cacheMB);
+   text = g_strdup_printf(_("%d MiB of file cache"), Closure->cacheMiB);
    utf  = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), utf);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), utf);
@@ -647,11 +652,13 @@ void ResetRS02PrefsPage(Method *method)
    int index;
 
    for(index = 0; index < sizeof(cache_size)/sizeof(int); index++)
-     if(cache_size[index] > Closure->cacheMB)
+     if(cache_size[index] > Closure->cacheMiB)
        break;
-
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
-   gtk_range_set_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
+   
+   if(wl->cacheScaleA)
+     gtk_range_set_value(GTK_RANGE(wl->cacheScaleA), index > 0 ? index-1 : index);
+   if(wl->cacheScaleB)
+     gtk_range_set_value(GTK_RANGE(wl->cacheScaleB), index > 0 ? index-1 : index);
 }
 
 /*
@@ -745,7 +752,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
 			    "In order to pick a suitable medium the available media "
 			    "capacities must be known. Default sizes for CD and "
-			    "one/two layered DVD are given in the table. You can edit "
+			    "one/two layered DVD and BD are given in the table. You can edit "
 			    "these sizes according to your needs."));
 
    table = gtk_table_new(5, 6, FALSE);
@@ -1140,14 +1147,14 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    frame = gtk_frame_new(_utf("Memory utilization"));
    gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
 
-   text = g_strdup_printf(_("%d MB of file cache"), Closure->cacheMB);
+   text = g_strdup_printf(_("%d MiB of file cache"), Closure->cacheMiB);
    lwoh = CreateLabelWithOnlineHelp(_("File cache"), text);
    RegisterPreferencesHelpWindow(lwoh);
    g_free(text);
 
    wl->cacheLwoh = lwoh;
-   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d MB of file cache"), 2222);
-   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d MB of file cache"), 2222);
+   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d MiB of file cache"), 2222);
+   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d MiB of file cache"), 2222);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1157,7 +1164,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
       gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
 
       for(index = 0; index < n_entries; index++)
-	if(cache_size[index] > Closure->cacheMB)
+	if(cache_size[index] > Closure->cacheMiB)
 	  break;
 
       scale = gtk_hscale_new_with_range(0,n_entries-1,1);
@@ -1184,5 +1191,5 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    AddHelpParagraph(lwoh, _("<b>File cache</b>\n\n"
 			    "dvdisaster optimizes access to the image and error correction "
 			    "files by maintaining its own cache. "
-			    "The preset of 32MB is suitable for most systems."));
+			    "The preset of 32MiB is suitable for most systems."));
 }

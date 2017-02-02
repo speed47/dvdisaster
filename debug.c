@@ -1,30 +1,29 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
-#ifdef HAVE_RS03
-  #include "rs03-includes.h"
-#endif
+#include "rs03-includes.h"
 #include "udf.h"
 
 #include <time.h>
@@ -39,46 +38,37 @@
 
 /* RS01-style files */
 
-static void random_error1(char *prefix, char *arg)
-{  ImageInfo *ii;
-   gint64 block_idx[255];
+static void random_error1(Image *image, char *arg)
+{  EccHeader *eh;
+  gint64 block_idx[255];
    gint64 s,si;
    int block_sel[255];
    int i,percent,last_percent = 0;
-   int n_data,n_eras,n_errors;
+   int n_data,n_errors;
    double eras_scale, blk_scale;
-   char *cpos = NULL;
 
    SRandom(Closure->randomSeed);
+   eh = image->eccFileHeader;
+      
+   n_errors = atoi(arg);
 
-   cpos = strchr(arg,',');
-   if(!cpos) Stop(_("2nd argument is missing"));
-   *cpos = 0;
+   if(n_errors < 1|| n_errors > eh->eccBytes)
+     Stop(_("Number of erasures must be > 0 and <= %d\n"), eh->eccBytes);
 
-   n_eras   = atoi(arg);
-   n_errors = atoi(cpos+1);
-
-   if(n_eras < 8 || n_eras > 100 || n_errors < 1|| n_errors > n_eras)
-     Stop(_("Number of roots must be 8..100;\n"
-	    "the number of erasures must be > 0 and less than the number of roots.\n"));
-
-   n_data = 255-n_eras;
+   n_data = 255-eh->eccBytes;
    eras_scale = (n_errors+1)/((double)MY_RAND_MAX+1.0);
    blk_scale = (double)n_data/((double)MY_RAND_MAX+1.0);
 
 
-   /*** Open the image file */
-
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
-
    /*** Setup block pointers */
 
-   s = (ii->sectors+n_data-1)/n_data;
+   s = (image->sectorSize+n_data-1)/n_data;
 
    for(si=0, i=0; i<n_data; si+=s, i++)
      block_idx[i] = si;
 
-   PrintLog(_("\nGenerating random correctable erasures (for %d roots, max erasures = %d).\n"),n_eras, n_errors);
+   PrintLog(_("\nGenerating random correctable erasures (%s; for %d roots, max erasures = %d).\n"),
+	    "RS01", eh->eccBytes, n_errors);
 
    /*** Randomly delete the blocks */
 
@@ -106,14 +96,18 @@ static void random_error1(char *prefix, char *arg)
 
       for(i=0; i<n_data; i++)
       {  unsigned char missing[2048];
+ 	int write_size = 2048;
 	 
-	 if(block_sel[i] && block_idx[i]<ii->sectors)
-	 {  if(!LargeSeek(ii->file, (gint64)(2048*block_idx[i])))
+	 if(block_sel[i] && block_idx[i]<image->sectorSize)
+	 {  if(!LargeSeek(image->file, (gint64)(2048*block_idx[i])))
 	       Stop(_("Failed seeking to sector %lld in image: %s"),block_idx[i],strerror(errno));
 
-	    CreateMissingSector(missing, block_idx[i], ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
+	    CreateMissingSector(missing, block_idx[i], image->imageFP, FINGERPRINT_SECTOR, NULL); 
 
-	    if(LargeWrite(ii->file, missing, 2048) != 2048)
+	    if(block_idx[i] == image->sectorSize - 1 && image->inLast < 2048)
+	      write_size = image->inLast;
+
+	    if(LargeWrite(image->file, missing, write_size) != write_size)
 	       Stop(_("Failed writing to sector %lld in image: %s"),block_idx[i],strerror(errno));
 	 }
 	 
@@ -131,15 +125,13 @@ static void random_error1(char *prefix, char *arg)
 	"Recover the image using the --fix option before doing another --random-errors run.\n"
 	"Otherwise you'll accumulate >= %d erasures/ECC block and the image will be lost.\n"), 
 	n_errors);
-
-   FreeImageInfo(ii);
 }
 
 /* RS02 ecc images */
 
-static void random_error2(EccHeader *eh, char *prefix, char *arg)
-{  RS02Layout *lay;
-   ImageInfo *ii;
+static void random_error2(Image *image, char *arg)
+{  EccHeader *eh = image->eccHeader;
+   RS02Layout *lay;
    gint64 si;
    guint64 hpos;
    guint64 end;
@@ -150,7 +142,7 @@ static void random_error2(EccHeader *eh, char *prefix, char *arg)
    double eras_scale, blk_scale, hdr_scale;
 
    SRandom(Closure->randomSeed);
-   lay = CalcRS02Layout(uchar_to_gint64(eh->sectors), eh->eccBytes); 
+   lay = RS02LayoutFromImage(image);
 
    n_errors = atoi(arg);
 
@@ -165,11 +157,8 @@ static void random_error2(EccHeader *eh, char *prefix, char *arg)
    eras_scale = (n_errors+1)/((double)MY_RAND_MAX+1.0);
    blk_scale  = (double)255.0/((double)MY_RAND_MAX+1.0);
 
-   /*** Open the image file */
-
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
-
-   PrintLog(_("\nGenerating random correctable erasures (for %d roots, max erasures = %d).\n"), eh->eccBytes, n_errors);
+   PrintLog(_("\nGenerating random correctable erasures (%s; for %d roots, max erasures = %d).\n"), 
+	    "RS02", eh->eccBytes, n_errors);
 
    /*** Randomly delete some ecc headers */
 
@@ -198,12 +187,12 @@ static void random_error2(EccHeader *eh, char *prefix, char *arg)
       if(s>0)
       {  unsigned char missing[2048];
       
-	 if(!LargeSeek(ii->file, (gint64)(2048*s)))
+	 if(!LargeSeek(image->file, (gint64)(2048*s)))
 	    Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
 
-	 CreateMissingSector(missing, s, ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
+	 CreateMissingSector(missing, s, image->imageFP, image->fpSector, NULL); 
 
-         if(LargeWrite(ii->file, missing, 2048) != 2048)
+         if(LargeWrite(image->file, missing, 2048) != 2048)
 	    Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
       }
    }
@@ -246,16 +235,15 @@ static void random_error2(EccHeader *eh, char *prefix, char *arg)
 	    }
 	    else  s = RS02EccSectorIndex(lay, i-eh->dataBytes, si);
 
-            if(!LargeSeek(ii->file, (gint64)(2048*s)))
+            if(!LargeSeek(image->file, (gint64)(2048*s)))
 	       Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
 
-	    CreateMissingSector(missing, s, ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
-
-	    if(LargeWrite(ii->file, missing, 2048) != 2048)
+	    CreateMissingSector(missing, s, image->imageFP, image->fpSector, NULL); 
+	    if(LargeWrite(image->file, missing, 2048) != 2048)
 	       Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
 	  }
       }
-
+      
       percent = (100*si)/lay->sectorsPerLayer;
       if(last_percent != percent) 
       {  PrintProgress(_("Progress: %3d%%"),percent);
@@ -268,28 +256,32 @@ static void random_error2(EccHeader *eh, char *prefix, char *arg)
 	"Otherwise you'll accumulate >= %d erasures/ECC block and the image will be lost.\n"), 
 	n_errors);
 
-   FreeImageInfo(ii);
    g_free(lay);
 }
 
 /* RS03 ecc images */
 
-#ifdef HAVE_RS03
-static void random_error3(EccHeader *eh, char *prefix, char *arg)
-{  RS03Layout *lay;
-   ImageInfo *ii;
+static void random_error3(Image *image, char *arg)
+{  EccHeader *eh;
+   RS03Layout *lay;
    gint64 si;
-   guint64 hpos;
-   guint64 end;
-   guint64 header[42];
    int block_sel[255];
    int i,percent,last_percent = 0;
-   int hidx,n_errors,erase_max = 0;
-   double eras_scale, blk_scale, hdr_scale;
+   int n_errors,erase_max = 0;
+   double eras_scale, blk_scale;
 
    SRandom(Closure->randomSeed);
-   lay = CalcRS03Layout(uchar_to_gint64(eh->sectors), eh->eccBytes); 
 
+   /*** Calculate the layout */
+
+   if(image->eccFileState == ECCFILE_PRESENT)
+   {  eh = image->eccFileHeader;
+      lay = CalcRS03Layout(image, ECC_FILE);
+   }
+   else
+   {  eh = image->eccHeader;
+      lay = CalcRS03Layout(image, ECC_IMAGE); 
+   }
    n_errors = atoi(arg);
 
    if(n_errors < 0)
@@ -303,49 +295,10 @@ static void random_error3(EccHeader *eh, char *prefix, char *arg)
    eras_scale = (n_errors+1)/((double)MY_RAND_MAX+1.0);
    blk_scale  = (double)255.0/((double)MY_RAND_MAX+1.0);
 
-   /*** Open the image file */
-
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
-
-   PrintLog(_("\nGenerating random correctable erasures (for %d roots, max erasures = %d).\n"), eh->eccBytes, n_errors);
-
-   /*** Randomly delete some ecc headers */
-
-   header[0] = lay->firstEccHeader;
-   hidx = 1;
-
-   hpos = (lay->lastCrcSector + lay->headerModulo - 1) / lay->headerModulo;
-   hpos *= lay->headerModulo;
-   
-   end = lay->eccSectors+lay->dataSectors;
-
-   while(hpos < end)  /* Calculate positions of all headers */
-   { 
-      header[hidx++] = hpos;
-      hpos += lay->headerModulo;
-
-   }
-
-   /* Pick one header to remain intact.
-      Currently this must be one of the repeated headers */
-
-   hdr_scale = (double)(hidx-1)/((double)MY_RAND_MAX+1.0);
-   header[(int)(hdr_scale*(double)Random())+1] = 0;
-
-   for(i=0; i<hidx; i++)
-   {  gint64 s = header[i];
-      if(s>0)
-      {  unsigned char missing[2048];
-      
-	 if(!LargeSeek(ii->file, (gint64)(2048*s)))
-	    Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
-
-	 CreateMissingSector(missing, s, ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
-
-         if(LargeWrite(ii->file, missing, 2048) != 2048)
-	    Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
-      }
-   }
+   if(lay->target == ECC_FILE)
+         PrintLog(_("\nRS03 error correction file with %d roots.\n"), eh->eccBytes);
+   else  PrintLog(_("\nRS03 augmented image with %d roots.\n"), eh->eccBytes);
+   PrintLog(_("Generating at most %d random correctable erasures.\n"), n_errors);
 
    /*** Randomly delete the blocks */
 
@@ -375,18 +328,43 @@ static void random_error3(EccHeader *eh, char *prefix, char *arg)
 
       for(i=0; i<255; i++)
       {  if(block_sel[i])
-	 {  unsigned char missing[2048];
-	    gint64 s;
+	 {  LargeFile *file;
+	    unsigned char missing[2048];
+	    gint64 s,file_s;
 
 	    s = RS03SectorIndex(lay, i, si);
-	    if(s<0) continue; /* non-existing padding sector */
 
-            if(!LargeSeek(ii->file, (gint64)(2048*s)))
+	    if(s == 16)  /* FIXME: not implemented */
+	       continue;
+
+	    if(s == lay->eccHeaderPos || s == lay->eccHeaderPos+1)
+	      continue; /* FIXME: not implemented */
+
+	    /* Do not write out the virtual padding sectors
+	       in ecc file case */
+
+	    if(lay->target == ECC_FILE
+	       && i<=lay->ndata-1
+	       && s>=lay->dataSectors)
+	      continue;
+	    
+	    if(lay->target == ECC_FILE && i>=lay->ndata-1)
+	    {    file = image->eccFile;
+	         if(i == lay->ndata-1)
+		      file_s = lay->firstCrcPos + si;
+		 else file_s = lay->firstEccPos + (i-lay->ndata)*lay->sectorsPerLayer + si;
+	    }
+	    else
+	    {    file = image->file;
+	         file_s = s;
+	    }
+	      
+            if(!LargeSeek(file, (gint64)(2048*file_s)))  // FIXME: wrong for ecc files
 	       Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
 
-	    CreateMissingSector(missing, s, ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
+	    CreateMissingSector(missing, s, image->imageFP, image->fpSector, NULL); 
 
-	    if(LargeWrite(ii->file, missing, 2048) != 2048)
+	    if(LargeWrite(file, missing, 2048) != 2048)
 	       Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
 	  }
       }
@@ -403,35 +381,46 @@ static void random_error3(EccHeader *eh, char *prefix, char *arg)
 	"Otherwise you'll accumulate >= %d erasures/ECC block and the image will be lost.\n"), 
 	n_errors);
 
-   FreeImageInfo(ii);
    g_free(lay);
 }
-#endif
 
-void RandomError(char *prefix, char *arg)
-{  Method *method = EccFileMethod(TRUE);
+void RandomError(char *arg)
+{  Image *image;
+   Method *method = NULL;
    char buf[5];
 
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
+   ReportImageEccInconsistencies(image);
+
+   /* Determine method. Ecc files win over augmented ecc. */
+
+   if(image && image->eccFileMethod) method = image->eccFileMethod;
+   else if(image && image->eccMethod) method = image->eccMethod;
+   else Stop("Internal error: No ecc method identified.");
+
    if(!strncmp(method->name, "RS01", 4))
-   {  random_error1(prefix, arg);
+   {  random_error1(image, arg);
+      CloseImage(image);
       return;
    }
 
    if(!strncmp(method->name, "RS02", 4))
-   {  random_error2(method->lastEh, prefix, arg);
+   {  random_error2(image, arg);
+      CloseImage(image);
       return;
    }
 
-   /* FIXME: currently only handles augmented images */
-#ifdef HAVE_RS03
    if(!strncmp(method->name, "RS03", 4))
-   {  random_error3(method->lastEh, prefix, arg);
+   {  random_error3(image, arg);
+      CloseImage(image);
       return;
    }
-#endif
 
+   CloseImage(image);
    strncpy(buf, method->name, 4); buf[4] = 0;
    Stop("Don't know how to handle codec %s\n", buf);
+
 }
 
 /*
@@ -441,14 +430,17 @@ void RandomError(char *prefix, char *arg)
  */
 
 void Byteset(char *arg)
-{  ImageInfo *ii;
+{  Image *image;
    gint64 s;
    int i,byte;
    char *cpos = NULL;
+   unsigned char buf[1];
 
    /*** Open the image file */
 
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
 
    /*** See which byte to set */
 
@@ -466,8 +458,8 @@ void Byteset(char *arg)
    i = atoi(arg);
    byte = atoi(cpos+1);
 
-   if(s<0 || s>ii->sectors-1)
-     Stop(_("Sector must be in range [0..%lld]\n"),ii->sectors-1);
+   if(s<0 || s>=image->sectorSize)
+     Stop(_("Sector must be in range [0..%lld]\n"),image->sectorSize-1);
 
    if(i<0 || i>=2048)
      Stop(_("Byte position must be in range [0..2047]"));
@@ -481,13 +473,14 @@ void Byteset(char *arg)
    
    s = 2048*s + i;
    
-   if(!LargeSeek(ii->file, (gint64)s))
+   if(!LargeSeek(image->file, (gint64)s))
      Stop(_("Failed seeking to start of image: %s\n"),strerror(errno));
 
-   if(LargeWrite(ii->file, &byte, 1) != 1)
+   buf[0] = byte;
+   if(LargeWrite(image->file, buf, 1) != 1)
      Stop(_("Could not write the new byte value"));
 
-   FreeImageInfo(ii);
+   CloseImage(image);
 }
 
 /*
@@ -495,14 +488,28 @@ void Byteset(char *arg)
  */
 
 void Erase(char *arg)
-{  ImageInfo *ii;
+{  Image *image;
    gint64 start,end,s;
    char *dashpos = NULL;
-
+   char *colonpos = NULL;
+   char *simulation_hint = NULL;
+   
    /*** Open the image file */
 
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
+   ExamineUDF(image);  /* get the volume label */
 
+   /** See if there is a special debugging option following
+       the sector range. This is intentionally an undocumented feature. */
+
+   colonpos = strchr(arg,':');
+   if(colonpos)
+   {  *colonpos = 0;
+      simulation_hint=colonpos+1;
+   }
+     
    /*** See which sectors to erase */
 
    dashpos = strchr(arg,'-');
@@ -513,24 +520,26 @@ void Erase(char *arg)
    }
    else start = end = atoi(arg);
 
-   if(start>end || start < 0 || end >= ii->sectors)
-     Stop(_("Sectors must be in range [0..%lld].\n"),ii->sectors-1);
+   if(start>end || start < 0 || end >= image->sectorSize)
+     Stop(_("Sectors must be in range [0..%lld].\n"),image->sectorSize-1);
 
    PrintLog(_("Erasing sectors [%lld,%lld]\n"),start,end);
 
    /*** Erase them. */
 
-   if(!LargeSeek(ii->file, (gint64)(2048*start)))
+   if(!LargeSeek(image->file, (gint64)(2048*start)))
      Stop(_("Failed seeking to start of image: %s\n"),strerror(errno));
 
    for(s=start; s<=end; s++)
    {  unsigned char missing[2048];
-      int m = (end == ii->sectors-1) ? ii->inLast : 2048;
+      int m = (end == image->sectorSize-1) ? image->inLast : 2048;
       int n; 
 
-      CreateMissingSector(missing, s, ii->mediumFP, FINGERPRINT_SECTOR, NULL); 
+      CreateDebuggingSector(missing, s, image->imageFP, FINGERPRINT_SECTOR, 
+			    image->isoInfo ? image->isoInfo->volumeLabel : NULL,
+			    simulation_hint); 
 
-      n = LargeWrite(ii->file, missing, m);
+      n = LargeWrite(image->file, missing, m);
 
       if(n != m)
 	Stop(_("Failed writing to sector %lld in image: %s"),s,strerror(errno));
@@ -538,38 +547,40 @@ void Erase(char *arg)
 
    /*** Clean up */
 
-   FreeImageInfo(ii);
+   CloseImage(image);
 }
 
 /*
  * Debugging function for truncating images
  */
 
-void TruncateImage(char *arg)
-{  ImageInfo *ii;
+void TruncateImageFile(char *arg)
+{  Image *image;
    gint64 end;
 
    /*** Open the image file */
 
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
 
    /*** Determine last sector */
 
    end = atoi(arg);
 
-   if(end >= ii->sectors)
-     Stop(_("New length must be in range [0..%lld].\n"),ii->sectors-1);
+   if(end >= image->sectorSize)
+     Stop(_("New length must be in range [0..%lld].\n"),image->sectorSize-1);
 
    PrintLog(_("Truncating image to %lld sectors.\n"),end);
 
    /*** Truncate it. */
 
-   if(!LargeTruncate(ii->file, (gint64)(2048*end)))
+   if(!LargeTruncate(image->file, (gint64)(2048*end)))
      Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
    /*** Clean up */
 
-   FreeImageInfo(ii);
+   CloseImage(image);
 }
 
 /*
@@ -579,9 +590,10 @@ void TruncateImage(char *arg)
 void RandomImage(char *image_name, char *n_sectors, int mark)
 {  LargeFile *image;
    IsoHeader *ih;
-   gint64 sectors,s = 0;
+   gint64 sectors;
+   gint64 s = 25; /* number of ISO headers */
    int percent, last_percent = 0;
-   guint32 invert;
+   guint32 size,invert;
 
    sectors = atoi(n_sectors);
    if(sectors < 64) sectors = 64;
@@ -616,20 +628,12 @@ void RandomImage(char *image_name, char *n_sectors, int mark)
 	Otherwise some writing software will not recognize the image. */
 
    ih = InitIsoHeader();
-   for(s=25; s<sectors; s+=524288)
-   {  int size = 524288;
-      char name[40];
-
-      if(s+size >= sectors) 
-        size = sectors-s;
-      
-      sprintf(name, "random%02d.data", (int)(s/524288)+1);
-      AddFile(ih, name, 2048*size);
-   }
+   size = sectors-s;
+   if(size>=2048*1024)
+      size=2048*1024-1;
+   AddFile(ih, "random.data", 2048*size);
    WriteIsoHeader(ih, image);
    FreeIsoHeader(ih);
-
-   s = 25; /* number of ISO headers */
 
    /*** Create it */
 
@@ -675,37 +679,43 @@ void RandomImage(char *image_name, char *n_sectors, int mark)
  */
 
 void ZeroUnreadable(void)
-{  ImageInfo *ii;
+{  Image *image;
    unsigned char buf[2048],zeros[2048];
    gint64 s,cnt=0;
    int percent, last_percent = 0;
 
-   ii = OpenImageFile(NULL, WRITEABLE_IMAGE);
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
    PrintLog(_("Replacing the \"unreadable sector\" markers with zeros.\n"));
    memset(zeros, 0, 2048);   
 
-   for(s=0; s<ii->sectors; s++)
-   {  int n = LargeRead(ii->file, buf, 2048);
+   if(!LargeSeek(image->file, (gint64)0))
+     Stop(_("Failed seeking to start of image: %s\n"),strerror(errno));
+
+   for(s=0; s<image->sectorSize; s++)
+   {  int n = LargeRead(image->file, buf, 2048);
 
       if(n != 2048)
 	Stop(_("Could not read image sector %lld:\n%s\n"),s,strerror(errno));
 
       /* Replace the dead sector marker */
 
-      if(CheckForMissingSector(buf, s, ii->mediumFP, FINGERPRINT_SECTOR) != SECTOR_PRESENT)
+      if(CheckForMissingSector(buf, s, image->imageFP, FINGERPRINT_SECTOR) != SECTOR_PRESENT)
       {
-	if(!LargeSeek(ii->file, (gint64)(2048*s)))
+	if(!LargeSeek(image->file, (gint64)(2048*s)))
 	  Stop(_("Failed seeking to sector %lld in image: %s"),s,strerror(errno));
 
-	n = LargeWrite(ii->file, zeros, 2048);
-
+      	n = LargeWrite(image->file, zeros, 2048);
+	n=2048;
+	
 	if(n != 2048)
 	  Stop(_("Failed writing to sector %lld in image: %s"),s,strerror(errno));
 
 	cnt++;
       }
 
-      percent = (100*s)/ii->sectors;
+      percent = (100*s)/image->sectorSize;
       if(last_percent != percent) 
       {  PrintProgress(_("Progress: %3d%%"),percent);
 	 last_percent = percent;
@@ -714,7 +724,7 @@ void ZeroUnreadable(void)
 
    PrintProgress(_("%lld \"unreadable sector\" markers replaced.\n"), cnt);
 
-   FreeImageInfo(ii);
+   CloseImage(image);
 }
 
 /**
@@ -768,36 +778,78 @@ void CDump(unsigned char *buf, int lba, int len, int step)
    printf("};\n");
 }
 
+/*
+ * Show Ecc header from image file
+ */
+
+void ShowHeader(char *arg)
+{  Image *image;
+   gint64 sector;
+   int n;
+   EccHeader *eh = alloca(4096);
+   
+   /*** Open the image file */
+
+   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
+   
+   /*** Determine sector to show */
+
+   sector =  atoi(arg);
+
+   if(sector < 0 || sector >= image->sectorSize)
+     Stop(_("Sector must be in range [0..%lld]\n"),image->sectorSize-1);
+
+   /*** Load it. */
+
+   if(!LargeSeek(image->file, (gint64)(2048*sector)))
+     Stop(_("Failed seeking to sector %lld in image: %s"),sector,strerror(errno));
+
+   n = LargeRead(image->file, eh, 2048);
+   if(n != 2048)
+     Stop(_("Failed reading sector %lld in image: %s"),sector,strerror(errno));
+
+   /*** Clean up */
+
+   CloseImage(image);
+
+   /*** Show it */
+
+   PrintEccHeader(eh);
+}
 
 /*
  * Show sector from image file
  */
 
 void ShowSector(char *arg)
-{  ImageInfo *ii;
+{  Image *image;
    gint64 sector;
    int n;
    unsigned char buf[2048];
 
    /*** Open the image file */
 
-   ii = OpenImageFile(NULL, READABLE_IMAGE);
+   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
 
    /*** Determine sector to show */
 
    sector =  atoi(arg);
 
-   if(sector < 0 || sector >= ii->sectors)
-     Stop(_("Sector must be in range [0..%lld]\n"),ii->sectors-1);
+   if(sector < 0 || sector >= image->sectorSize)
+     Stop(_("Sector must be in range [0..%lld]\n"),image->sectorSize-1);
 
    PrintLog(_("Contents of sector %lld:\n\n"),sector);
 
    /*** Show it. */
 
-   if(!LargeSeek(ii->file, (gint64)(2048*sector)))
+   if(!LargeSeek(image->file, (gint64)(2048*sector)))
      Stop(_("Failed seeking to sector %lld in image: %s"),sector,strerror(errno));
 
-   n = LargeRead(ii->file, buf, 2048);
+   n = LargeRead(image->file, buf, 2048);
    if(n != 2048)
      Stop(_("Failed reading sector %lld in image: %s"),sector,strerror(errno));
 
@@ -810,7 +862,7 @@ void ShowSector(char *arg)
 
    /*** Clean up */
 
-   FreeImageInfo(ii);
+   CloseImage(image);
 }
 
 /* 
@@ -819,34 +871,36 @@ void ShowSector(char *arg)
 
 void ReadSector(char *arg)
 {  AlignedBuffer *ab = CreateAlignedBuffer(2048);
-   DeviceHandle *dh;
+   Image *image;
    gint64 sector;
    int status;
 
    /*** Open the device */
 
-   dh = OpenAndQueryDevice(Closure->device);
+   image = OpenImageFromDevice(Closure->device);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
 
    /*** Determine sector to show */
 
    sector =  atoi(arg);
 
-   if(sector < 0 || sector >= dh->sectors)
-   {  CloseDevice(dh);
+   if(sector < 0 || sector >= image->dh->sectors)
+   {  CloseImage(image);
       FreeAlignedBuffer(ab);
-      Stop(_("Sector must be in range [0..%lld]\n"),dh->sectors-1);
+      Stop(_("Sector must be in range [0..%lld]\n"),image->dh->sectors-1);
    }
 
    PrintLog(_("Contents of sector %lld:\n\n"),sector);
 
    /*** Read it. */
 
-   status = ReadSectors(dh, ab->buf, sector, 1); 
+   status = ReadSectors(image->dh, ab->buf, sector, 1); 
 
    /*** Print results */
    
    if(status)
-   {  CloseDevice(dh);
+   {  CloseImage(image);
       FreeAlignedBuffer(ab);
       Stop(_("Failed reading sector %lld: %s"),sector,strerror(errno));
    }
@@ -858,7 +912,7 @@ void ReadSector(char *arg)
       g_printf("CRC32 = %04x\n", Crc32(ab->buf, 2048));
    }
 
-   CloseDevice(dh);
+   CloseImage(image);
    FreeAlignedBuffer(ab);
 }
 
@@ -870,20 +924,22 @@ void RawSector(char *arg)
 {  AlignedBuffer *ab = CreateAlignedBuffer(4096);
    Sense *sense;
    unsigned char cdb[MAX_CDB_SIZE];
-   DeviceHandle *dh;
+   Image *image;
    gint64 lba;
    int length=0,status;
    int offset=16;
 
    /*** Open the device */
 
-   dh = OpenAndQueryDevice(Closure->device);
-   sense = &dh->sense;
+   image = OpenImageFromDevice(Closure->device);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
+   sense = &image->dh->sense;
 
    /*** Only CD can be read in raw mode */
 
-   if(dh->mainType != CD)
-   {  CloseDevice(dh);
+   if(image->dh->mainType != CD)
+   {  CloseImage(image);
       FreeAlignedBuffer(ab);
       Stop(_("Raw reading only possible on CD media\n"));
    }
@@ -892,10 +948,10 @@ void RawSector(char *arg)
 
    lba =  atoi(arg);
 
-   if(lba < 0 || lba >= dh->sectors)
-   {  CloseDevice(dh);
+   if(lba < 0 || lba >= image->dh->sectors)
+   {  CloseImage(image);
       FreeAlignedBuffer(ab);
-      Stop(_("Sector must be in range [0..%lld]\n"),dh->sectors-1);
+      Stop(_("Sector must be in range [0..%lld]\n"),image->dh->sectors-1);
    }
 
    PrintLog(_("Contents of sector %lld:\n\n"),lba);
@@ -904,7 +960,7 @@ void RawSector(char *arg)
 
    memset(cdb, 0, MAX_CDB_SIZE);
    cdb[0]  = 0xbe;         /* READ CD */
-   switch(dh->subType)     /* Expected sector type */
+   switch(image->dh->subType)     /* Expected sector type */
    {  case DATA1:          /* data mode 1 */ 
         cdb[1] = 2<<2; 
 #if 1
@@ -937,11 +993,11 @@ void RawSector(char *arg)
    cdb[11] = 0;        /* no special wishes for the control byte */
 
    CreateMissingSector(ab->buf, lba, NULL, 0, NULL); 
-   status = SendPacket(dh, cdb, 12, ab->buf, length, sense, DATA_READ);
+   status = SendPacket(image->dh, cdb, 12, ab->buf, length, sense, DATA_READ);
 
    if(status<0)  /* Read failed */
    {  RememberSense(sense->sense_key, sense->asc, sense->ascq);
-      CloseDevice(dh);
+      CloseImage(image);
       FreeAlignedBuffer(ab);
       Stop("Sector read failed: %s\n", GetLastSenseString(FALSE));
    }
@@ -1074,7 +1130,7 @@ Bitmap* SimulateDefects(gint64 size)
 void CopySector(char *arg)
 {  LargeFile *from, *to;
    char *from_path, *to_path;
-   gint64 from_sector, to_sector, sectors;
+   guint64 from_sector, to_sector, sectors;
    unsigned char buf[2048];
    char *cpos = NULL;
 
@@ -1150,9 +1206,8 @@ void CopySector(char *arg)
 void MergeImages(char *arg, int mode)
 {  LargeFile *left, *right;
    char *left_path, *right_path;
-   gint64 left_sectors, right_sectors,min_sectors,s;
+   guint64 left_sectors, right_sectors,min_sectors,s;
    int percent,last_percent = 0;
-   gint64 left_missing, right_missing, mismatch;
    char *cpos = NULL;
 
    /*** Evaluate arguments */
@@ -1185,7 +1240,6 @@ void MergeImages(char *arg, int mode)
 
    /*** Compare them */
 
-   left_missing = right_missing = mismatch = 0;
    if(left_sectors < right_sectors) 
         min_sectors = left_sectors;
    else min_sectors = right_sectors;
@@ -1208,35 +1262,7 @@ void MergeImages(char *arg, int mode)
 	 {  if(!mode) PrintLog("< Sector %lld missing\n", s);
 	    else
 	    {  PrintLog("< Sector %lld missing; copied from %s.\n", s, right_path);
-#if 0   /* Remove this */
-	       int dbl = FALSE;
-	       {  LargeFile *file;
-		  gint64 si;
-		  unsigned char buf[2048];
-
-		  file = LargeOpen(right_path, O_RDONLY, IMG_PERMS);
-		  for(si=0; si<right_sectors; si++)
-		  {  LargeRead(file, buf, 2048);
-		     if(s!=si && !memcmp(right_buf, buf, 2048))
-		     {  PrintLog("... double sector in %s at %lld\n", right_path, si);
-			dbl = TRUE;
-		     }
-		  }
-		  LargeClose(file);
-
-		  file = LargeOpen(left_path, O_RDONLY, IMG_PERMS);
-		  for(si=0; si<left_sectors; si++)
-		  {  LargeRead(file, buf, 2048);
-		     if(s!=si && !memcmp(right_buf, buf, 2048))
-		     {  PrintLog("... double sector in %s at %lld\n", left_path, si);
-			dbl = TRUE;
-		     }
-		  }
-		  LargeClose(file);
-	       }
-	       if(dbl) { PrintLog("NOT copying sector\n"); continue; }
-#endif
-	       if(!LargeSeek(left, (gint64)(2048*s)))
+	       if(!LargeSeek(left, (2048*s)))
 		  Stop(_("Failed seeking to sector %lld in image: %s"),
 		       s, strerror(errno));
 
@@ -1291,4 +1317,52 @@ void MergeImages(char *arg, int mode)
 
    LargeClose(left);
    LargeClose(right);
+}
+
+/*
+ * Print LaTeX'ed table of Galois fields and other matrices
+ */
+
+void LaTeXify(gint32 *table , int rows, int columns)
+{  int x,y;
+
+   printf("\\begin{tabular}{|l||");
+   for(x=0; x<columns; x++)
+      printf("c|");
+   printf("}\n\\hline\n");
+
+   printf("&");
+   for(x=0; x<columns; x++)
+      printf("%c %02x ", x==0?' ':'&', x);
+   printf("\\\\\n\\hline\n\\hline\n");
+
+   for(y=0; y<rows; y++)
+   {  printf("%02x &",16*y);
+      for(x=0; x<columns; x++)
+	 printf("%c %02x ", x==0?' ':'&', *table++);
+      printf("\\\\\n\\hline\n");
+   }
+   
+   printf("\\end{tabular}\n");
+}
+
+/*
+ * Append a text to a file in printf() manner,
+ * not keeping it open.
+ */
+
+void AppendToTextFile(char* filename, char *format, ...)
+{  va_list argp;
+   FILE *file;
+
+   file = fopen(filename, "a");
+   if(!file)
+     Stop("Could not open %s: %s\n", filename, strerror(errno));
+
+   va_start(argp, format);
+   g_vfprintf(file, format, argp);
+   va_end(argp);
+
+   if(fclose(file))
+     Stop("Could not close %s: %s\n", filename, strerror(errno));
 }

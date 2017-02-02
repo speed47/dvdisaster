@@ -1,4 +1,127 @@
-0.72 (pl4)
+
+0.79.5 16-12-2015
+	This is pretty much a relaunch of the project,
+	the internet site and the accompanying documentation.
+	There are too much changes for a detailed report.
+
+	The most prominent feature of this version is that
+	the multithreaded RS03 codec reached production
+	quality, and all required features have been implemented.
+	A few things will be added with the next releases:
+	- adaptive reading is currently disabled as it does
+	  not support RS03 yet and would crash or misbehave
+	  on RS03 error correction data
+	- a heuristic for an exhaustive re-discovery of RS03
+	  structures in a badly damaged medium is missing in
+	  the decoder
+	But these things should not keep you from using RS03,
+	as the encoder is complete and future decoder enhancements
+	do not affect already created RS03 data.
+	
+0.79.4 07-10-2012 (not released)
+       ## 0.79.4 is a technical release in order to freeze
+       ## and archive some parts of the source code.
+       ## Do not use for anything prodictive. 
+       ## The next useful release will be 0.79.5.
+	- optical drives would only be detected for /dev/pass[0-9]
+	  on FreeBSD. Fixed to work with arbitrary /dev/pass
+	  numbers. Thanks to Bill Eisele for reporting this.
+	  A similar problem was found and fixed for Linux.
+	- blocked menu selection when any other action is in progress
+	  (thanks to D. Herbold for reporting the resulting defects).
+	- made actions properly shut down (e.g. remove incomplete ecc data)
+	  when closing the window or pushing the "Quit" button.
+        - changed sources for clean compile on gcc 4.4.3
+	- added #include <zlib.h> for libpng 1.5 compatibility
+	  (thanks to Thomas Klausner for hinting at this!)
+	- introduced internal Image object for unified access to
+	  optical media and on disk ISO images; lots of internal
+	  changes and fixes due to that
+	- added --ignore-iso-size option
+	- Jindřich Šesták took over the Czech translation,
+	  provided up-to-date HTML documents and manual pages,
+	  made all (!) language versions of the manual validate
+	  cleanly, and fixed several other issues in the HTML/PHP
+	  sources.
+	- fixed bug in pngpack; thanks to Jindřich Šesták for
+	  noting this!
+	- added remaining patches from Jindřich for Czech 
+	  online manual. Big Thanks!
+	- more comprehensive and unified version information 
+	  for banner, --version, log window and log file to
+	  aid in working on bug reports
+	- hardcoded icons to defeat theming
+	- changed glib.h include for compatibility with glib 2.32
+	- removed Darwin / Mac OS X support
+	- synced with dvdisaster 0.72.4 fixes
+	- completed RS01 and RS03 specification in the
+	  papers subdir
+
+0.79.3	21-11-2010
+        - Switched Linux SCSI driver default to SG_IO ioctl().
+	- Michael Klein provided Altivec optimization for
+	  the RS03 encoder and valuable hints for general
+	  RS03 encoding speedup
+	- included Debian patches 04-manpage.patch,
+	  06-remove-encoding-from-desktop-file.patch,
+	  07-fix-spelling-errors-in-binaries.patch
+        - fixed and documented -n command line options for RS02.
+	  Thanks to Jack Giles for noting this.
+	- reworked configure for current NetBSD release
+	- removed inofficial Solaris support
+
+0.79.2  28-02-2010
+	Semantic Changes
+	The new missing sector marking method is now the default.
+	When interchanging images with dvdisaster 0.70 or older,
+	use --old-ds-marker or the respective setting under
+	Image/Image format in the preferences setting.
+	
+	Changes
+	- RS03 encoding will check for defective sectors now
+	- fixed crash when aborting RS03 encoding
+	- made the new missing sector marking method the default
+	- confirmation dialogues for overwriting images and ecc files
+	  are now configurable via preferences
+
+0.79.1 07-02-2010	
+       A word of caution: This version is still evolving and some parts
+       are not yet implemented. It may contain severe bugs and fail in 
+       non-obvious ways, even in functions which worked in previous versions. 
+       Do not process important data with this version and do
+       not keep images and error correction data for archival purposes;
+       that's what the stable version 0.72 is for.
+
+	Semantic Changes
+	- query-size option replaced with -a/--assume option.
+	  command line default is now NOT to do exhaustive search
+	  for RS02 information; add -a RS02 to enable it
+	  (old behaviour: exhaustive check was on; required
+	   --query-size=udf to disable it)
+	- same changes in the preferences dialogues: 
+	  "Image size" field replaced with 
+	  "Error correction data recognization" options.
+
+	Changes
+	- added MIN_TRANSFER_LEN and length sanity check as workaround 
+	  for buggy drive chipsets (thanks to R.G. for reporting this
+	  and helping with debugging output)
+	- added -tq command line option as suggested by Mikhail Arefiev
+	- fixed alignment brokeness between 32bit and 64bit systems
+	  in ecc header and crc sectors
+	- added RS03 encoding (GUI)
+	- added RS03 verifying (CLI and GUI)
+	- fixed RS02/RS03 crash when encoding invoked without image file
+	- added commandline RS03 encoding (singlethreaded/multithreaded)
+	- added RS03 decoding and verifying (CLI and GUI)
+	- fixed "typical uses" links in welcome screen (Thanks to C. Steigies)
+	- added warning when same files are selected for .iso
+	  and error correction data (Thanks to A. Postkutscher
+	  for suggesting this!)
+	- removed ASPI driver and ASPI/SPTI splitting logic
+	- removed 2GB file splitting
+
+0.72 (pl4) 07-04-2012
         - fixed crash in scsi layer for FreeBSD
 	- fixed double free when reading mode page 1 fails
 	- fixed DMA misalignment when reading mode page 1
@@ -8,27 +131,19 @@
 	- changed libpng test in configure to utilize pkg-config
 	- fixed some minor flaws for NetBSD
 
-0.72 (pl3) 03-10-2011
+0.72 (pl3) 05-10-2011
         - Volodymyr Bychkoviak found a problem when verifying 
 	  RS01 files which are larger than 2GB and provided a bugfix.
 	- Backported improved Windows locale detection from 0.79 branch.
 	- made package compile under OS X 10.6; updated OS X toolchain
 	  to Gtk 2.24.
 
-
 0.72 (pl-2) 31-10-2010
-        - fixed and documented -n command line options for RS02.
-	  Thanks to Jack Giles for noting this.
         - changed sources for clean compile on gcc 4.4.3
         - Using the CDROM_SEND_PACKET ioctl() will hang parallel
 	  SCSI adapters. Added tests to determine the SCSI bus type,
 	  and switch to the SG_IO ioctl() when in doubt.
-	  Thanks to S. Seidl and R. Manfredi for the respective bug reports.<
-	- backported MIN_TRANSFER_LEN and length sanity check from 0.79.1
-	  as a workaround for buggy drive chipsets (thanks to R.G. 
-	  for reporting this and helping with debugging output)
-	- backported "typical uses" link fix in welcome screen 
-	  (Thanks to C. Steigies)
+	  Thanks to S. Seidl and R. Manfredi for the respective bug reports.
         - fixed recognition of dvdisaster 0.79 RS03-augmented image 
 	- minor cosmetic changes for regression test compatibility
 	  with 0.79
@@ -40,6 +155,11 @@
 
 0.72 04-07-2009
 	- Igor Gorbounov completed the Russian translation
+	- fixed lockups in the spiral under Mac OS X
+	- fixed crash when calling dvdisaster on command line without
+	  specifying a file name on Mac OS X
+
+0.72 (rc-2)
 	- fixed lockups in the spiral under Mac OS X
 	- fixed crash when calling dvdisaster on command line without
 	  specifying a file name on Mac OS X
@@ -796,7 +916,7 @@
 	- unrolled the inner codec loop; optimized some C expressions within
 	- code cleanup in the encoder
 
-0.42.0: (no public release)
+0.42.0: 08-09-2004 (no public release)
 	- changed the caching and code generation strategy in the RS encoder
 	- added program version information in the ecc file header
 	- updated the --print option to show the new header information

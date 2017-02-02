@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -41,8 +42,8 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
    if(!Closure->drawGC)
    {  GdkColor *bg = &widget->style->bg[0];
-
       GdkColormap *cmap = gdk_colormap_get_system();
+
       Closure->drawGC = gdk_gc_new(widget->window);
 
       memcpy(Closure->background, bg, sizeof(GdkColor));
@@ -76,12 +77,14 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
-	 AboutText(box, _("- New raw reading mode for CD media.\n"
-			  "- Number of reading attempts can be selected\n"
-			  "%s per sector and for the whole medium.\n"
-			  "- Redesigned preferences dialog."),
-		   Closure->invisibleDash);
+	 AboutText(box, _("- New multithreaded codec (RS03)."));
+	 AboutText(box, _("- Completely reworked online manual."));
+	 AboutText(box, _("- Switched license to GPLv3.\n"));
 
+	 AboutText(box, _("<i>Please note:</i>\n"
+			  "Adaptive reading is <span color=\"#800000\">unavailable</span> in this version.\n"
+			  "It will be re-introduced in one of the next releases."));
+	 
 	 gtk_box_pack_start(GTK_BOX(box), gtk_hseparator_new(), FALSE, FALSE, 10);
 
 	 button = gtk_check_button_new_with_label(_utf("Show this message again"));
@@ -111,28 +114,32 @@ void CreateWelcomePage(GtkNotebook *notebook)
    align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
    ignore = gtk_label_new("welcome_tab");
    box = show_msg ? gtk_vbox_new(FALSE, 0) : gtk_hbox_new(FALSE, 10);
+
    g_signal_connect(G_OBJECT(align), "expose_event", G_CALLBACK(expose_cb), box);
    gtk_notebook_append_page(notebook, align, ignore);
 
    gtk_container_add(GTK_CONTAINER(align), box);
 
    if(!show_msg)
-   {  GtkWidget *widget;  
-     return;
+     {  return;  // simply leave the window blank 
+#if 0            // would print a centered dvdisaster logo
+      GtkWidget *widget;  
+
       widget  = gtk_image_new_from_stock("dvdisaster-create", GTK_ICON_SIZE_LARGE_TOOLBAR);
       gtk_box_pack_start(GTK_BOX(box), widget, FALSE, FALSE, 0);
 
       AboutText(box, "<span weight=\"bold\" size=\"xx-large\">dvdisaster</span>");
       return;
+#endif
    }
 
    AboutText(box, _("<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"));
 
    AboutText(box, _("\ndvdisaster creates error correction data to protect\n"
-		    "CD and DVD media against data loss.\n"));
+		    "optical media (CD,DVD,BD) against data loss.\n"));
 
-   AboutTextWithLink(box, _("Please see the manual for [typical uses] of dvdisaster.\n\n"), 
-		     "howtos.html");
+   AboutTextWithLink(box, _("Please see the [manual] for typical uses of dvdisaster.\n\n"), 
+		     "manual.pdf");
 
    AboutText(box, _("<i>New in this Version:</i>"));
 

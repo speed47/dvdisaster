@@ -47,3 +47,10 @@ $i/LC_MESSAGES/dvdisaster.mo: $i.po
 
 EOF
 done
+
+cat >> Makefile <<EOF
+.PHONY : check-untranslated
+
+check-untranslated:
+	@msgattrib --untranslated de.po
+EOF

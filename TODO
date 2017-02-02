@@ -1,30 +1,65 @@
 
-To do/ Release schedule
+Tentative to do/ release schedule
 
-Version 0.73/0.74: 
-- update tool chain for Windows version
-- find workarounds for the GTK+/Mac OS glitches
-- clean up source code in some places
-- add pause/resume button
-- optionally pause after n read errors for drives which
-  need to cool down 
-- add function for stripping RS02 data from image
-- don't create unusable images when RS02 encoding is aborted
-- add quiet option for command line mode
-- display estimated finishing time for encoding/decoding
-- catch up with many other queued up suggestions
-
-Version 0.79/0.80: new RS03 codec
+Version 0.79: new RS03 codec 
  - lots of speed optimizations in error correction data encoding
- - multithreaded / multicore processor support
+ - multithreaded / multicore processor support for encoding
+   (decoding still single threaded)
+ - add missing functionality, e.g. adaptive reading
+ 0.79.5: project re-launch
+ 0.79.6: re-introduce CRC and MD5 caching between reading
+         and ecc creation; cosmetical changes; support
+	 for 100G BD
+ 0.79.7: re-introduce adaptive reading
 
-Unspecified / later releases
+Version 0.80: milestone release
+ - RS03 encoding considered feature complete
 
-- provide a function for searching directories for suitable .ecc files 
-  for the current image
+Version 0.81:
+ - multithreaded decoding (error correction/repair) 
+   for RS01/RS02/RS03
+ - RS01 encoding (not decoding of course) will be
+   removed as RS03 fully replaces it
 
-- add real UDF parsing to udf.c 
-  (currently only the backward compatibility ISO structures are used)
+Version 0.82: milestone release
+ - RS03 decoding considered feature complete
 
-- provide a command line only version (without linkage against GTK+);
-  this is non-trivial.
+Version 0.84:
+ - compile option to create a CLI-only binary
+   (without GTK+ linkage)
+
+Version 0.86:
+ - maybe upgrade from GTK+ 2 to version 3
+   (not decided yet)
+   
+Version 0.90:
+ - Grand finale: add a new feature which isn't jaw dropping 
+   but very convenient to have (sorry - has nothing to do 
+   with ripping). Since I'm not sure whether there
+   is prior art to this feature, I won't get into
+   details about it until the first release to fence
+   off IP trolls.
+
+Version 1.00: maintenance releases
+   The project is considered finished. By the time we reach
+   1.00, optical media should be as extinct as floppy discs
+   are now. That won't obsolete dvdisaster (quite to the
+   contrary!), but we're probably feature complete in this
+   revision and won't need to introduce new features. 
+   From time to time maintenance releases will be made
+   to adapt for new operating system and toolkit versions.
+
+Unspecified schedule / later releases
+
+ - native Windows fork
+ - add pause/resume button
+ - optionally pause after n read errors for drives which
+   need to cool down 
+ - add function for stripping RS02 data from image
+ - add quiet option for command line mode
+ - display estimated finishing time for encoding/decoding
+ - catch up with many other queued up suggestions
+ - provide a function for searching directories for suitable .ecc files 
+   for the current image
+ - add real UDF parsing to udf.c 
+   (currently only the backward compatibility ISO structures are used)

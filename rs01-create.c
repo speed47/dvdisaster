@@ -1,25 +1,26 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
  *  The Reed-Solomon error correction draws a lot of inspiration - and even code -
  *  from Phil Karn's excellent Reed-Solomon library: http://www.ka9q.net/code/fec/
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -35,13 +36,13 @@
  * d) "nm"     -> choose redundancy so that .ecc file does not exceed n megabytes
  */
 
-static gint64 ecc_file_size(gint64 sectors, int nr)
+static guint64 ecc_file_size(guint64 sectors, int nr)
 {  int nd = GF_FIELDMAX - nr;
-   gint64 bytesize; 
+   guint64 bytesize; 
 
    bytesize = 4096 + 4*sectors + 2048*nr*((sectors+nd-1)/nd);
 
-   return (bytesize+0xfffff)/0x100000;   /* size in MB */
+   return (bytesize+0xfffff)/0x100000;   /* size in MiB */
 }		 
 
 static int calculate_redundancy(char *image_name)
@@ -49,7 +50,7 @@ static int calculate_redundancy(char *image_name)
    char last = 0; 
    double p;
    int ignore;
-   gint64 fs,sectors,filesize;
+   guint64 fs,sectors,filesize;
 
    if(Closure->redundancy) /* get last char of redundancy parameter */
    {  int len = strlen(Closure->redundancy);
@@ -93,6 +94,29 @@ static int calculate_redundancy(char *image_name)
 }
 
 /***
+ *** Remove the image file 
+ ***/
+
+static void unlink_image(GtkWidget *label)
+{
+   if(LargeUnlink(Closure->imageName))
+   {    PrintLog(_("\nImage file %s deleted.\n"),Closure->imageName);
+
+        if(Closure->guiMode)
+	  SetLabelText(GTK_LABEL(label),
+		       _("\nImage file %s deleted.\n"), Closure->imageName);
+   }
+   else 
+   {  if(!Closure->guiMode)
+       PrintLog("\n");
+
+       ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
+		    _("Image file %s not deleted: %s\n"),
+		    Closure->imageName, strerror(errno));
+   }
+}
+
+/***
  *** Create parity information for the medium sectors.
  ***/
 
@@ -105,19 +129,18 @@ typedef struct
    RS01Widgets *wl;
    GaloisTables *gt;
    ReedSolomonTables *rt;
+   Image *image;
    int earlyTermination;
    unsigned char *data;
    unsigned char *parity;
    char *msg;
-   ImageInfo *ii;
-   EccInfo *ei;
    GTimer *timer;
 } ecc_closure;
 
 static void ecc_cleanup(gpointer data)
 {  ecc_closure *ec = (ecc_closure*)data;
 
-   Closure->cleanupProc = NULL;
+   UnregisterCleanup();
 
    if(Closure->guiMode)
    {  if(ec->earlyTermination)
@@ -134,9 +157,8 @@ static void ecc_cleanup(gpointer data)
    if(ec->data) g_free(ec->data);
    if(ec->parity) g_free(ec->parity);
 
+   if(ec->image) CloseImage(ec->image);
    if(ec->msg)   g_free(ec->msg);
-   if(ec->ii)    FreeImageInfo(ec->ii);
-   if(ec->ei)    FreeEccInfo(ec->ei);
    if(ec->timer) g_timer_destroy(ec->timer);
 
    if(Closure->enableCurveSwitch)
@@ -156,15 +178,17 @@ static void ecc_cleanup(gpointer data)
 
 enum { NORMAL, HIGH, GENERIC };
 
-void RS01Create(Method *self)
-{  RS01Widgets *wl = (RS01Widgets*)self->widgetList;
+void RS01Create(void)
+{  Method *self = FindMethod("RS01");
+   RS01Widgets *wl = (RS01Widgets*)self->widgetList;
    GaloisTables *gt;
    ReedSolomonTables *rt;
    ecc_closure *ec = g_malloc0(sizeof(ecc_closure));
-   ImageInfo *ii = NULL;
-   EccInfo   *ei = NULL;
-   gint64 block_idx[256];  /* must be >= ndata */
-   gint64 s,si,n;
+   struct MD5Context md5Ctxt;
+   EccHeader *eh;
+   Image *image;
+   guint64 block_idx[256];  /* must be >= ndata */
+   guint64 s,si,n;
    int i;
    int percent = 0,max_percent,progress = 0, last_percent = -1;
    guint64 n_parity_blocks,n_layer_sectors;
@@ -216,12 +240,42 @@ void RS01Create(Method *self)
 
    /*** Test the image file and create the CRC sums */
 
-   /* Explicitly unlinking the ecc file removes superflous segments
-      in FAT mode if the ecc file already existed. */
+   /* Get rid of old ecc file (if any exists) */
 
-   LargeUnlink(Closure->eccName); 
-   ei = ec->ei = OpenEccFile(WRITEABLE_ECC);
-   ii = ec->ii = OpenImageFile(NULL, READABLE_IMAGE);
+   if(LargeStat(Closure->eccName, &n))
+   {  
+      if(ConfirmEccDeletion(Closure->eccName))
+	 LargeUnlink(Closure->eccName);
+      else
+      {  SetLabelText(GTK_LABEL(ec->wl->encFootline),
+		      _("<span %s>Aborted to keep existing ecc file.</span>"),
+		      Closure->redMarkup); 
+	 ec->earlyTermination = FALSE;
+	 goto terminate;
+      }
+   }
+
+   /* Open image and ecc files */
+
+   PrintLog(_("\nOpening %s"), Closure->imageName);
+
+   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+   ec->image = image;
+   if(!image)
+   {  PrintLog(": %s.\n", strerror(errno));
+      Stop(_("Image file %s: %s."),Closure->imageName, strerror(errno));
+   }
+   if(image->inLast == 2048)
+        PrintLog(_(": %lld medium sectors.\n"), image->sectorSize);
+   else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+		   image->sectorSize-1, image->inLast);
+
+   if(!Closure->eccName || !strlen(Closure->eccName))
+     Stop(_("No error correction file specified!\n"));
+
+   image->eccFile = LargeOpen(Closure->eccName, O_RDWR | O_CREAT, IMG_PERMS);
+   if(!image->eccFile)
+      Stop(_("Can't open %s:\n%s"),Closure->eccName,strerror(errno));
 
    ec->timer   = g_timer_new();
 
@@ -234,32 +288,32 @@ void RS01Create(Method *self)
 	SetLabelText(GTK_LABEL(wl->encLabel1),
 		     _("<b>1. Writing image sector checksums:</b>"));
 
-      memcpy(ii->mediumSum, Closure->md5Cache, 16);
-      MD5Init(&ei->md5Ctxt);    /*  md5sum of CRC portion of ecc file */
+      memcpy(image->mediumSum, Closure->md5Cache, 16);
+      MD5Init(&md5Ctxt);    /*  md5sum of CRC portion of ecc file */
 
       /* Write out the cached CRC sectors */
 
-      if(!LargeSeek(ei->file, (gint64)sizeof(EccHeader)))
+      if(!LargeSeek(image->eccFile, (gint64)sizeof(EccHeader)))
          Stop(_("Failed skipping the ecc header: %s"),strerror(errno));
 
-      for(crc_idx=0; crc_idx<ii->sectors; crc_idx+=1024)
+      for(crc_idx=0; crc_idx<image->sectorSize; crc_idx+=1024)
       {  int ci,n,size; 
 	 guint32 *crcbuf;
 
-	 if(crc_idx + 1024 > ii->sectors)
-	       ci = ii->sectors - crc_idx;
+	 if(crc_idx + 1024 > image->sectorSize)
+	       ci = image->sectorSize - crc_idx;
 	 else  ci = 1024;
 
 	 size   = ci*sizeof(guint32);
 	 crcbuf = &Closure->crcCache[crc_idx];
 
-	 n = LargeWrite(ei->file, crcbuf, size);
-	 MD5Update(&ei->md5Ctxt, (unsigned char*)crcbuf, size);
+	 n = LargeWrite(image->eccFile, crcbuf, size);
+	 MD5Update(&md5Ctxt, (unsigned char*)crcbuf, size);
 
 	 if(size != n)
 	   Stop(_("Error writing CRC information: %s"), strerror(errno));
 
-         percent = (100*crc_idx)/ii->sectors;
+         percent = (100*crc_idx)/image->sectorSize;
          if(last_percent != percent) 
          {  PrintProgress(msg,percent);
 
@@ -277,19 +331,20 @@ void RS01Create(Method *self)
        SetLabelText(GTK_LABEL(wl->encLabel1),
 		    _("<b>1. Calculating image sector checksums:</b>"));
 
-      RS01ScanImage(self, ii, ei, CREATE_CRC);
+      RS01ScanImage(self, image, &md5Ctxt, CREATE_CRC);
 
-      if(ii->sectorsMissing)
-      {  LargeClose(ei->file); /* Will be deleted anyways; no need to test for errors */
-	 ei->file = NULL;
+      if(image->sectorsMissing)
+      {  LargeClose(image->eccFile); /* Will be deleted anyways; no need to test for errors */
+	 image->eccFile = NULL;
 
 	 LargeUnlink(Closure->eccName);  /* Do not leave a CRC-only .ecc file behind */
 
 	 if(Closure->stopActions)   
 	 {
-	   SetLabelText(GTK_LABEL(wl->encFootline), 
-			_("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
-			Closure->redMarkup); 
+	    if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+	       SetLabelText(GTK_LABEL(wl->encFootline), 
+			    _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
+			    Closure->redMarkup); 
 	   ec->earlyTermination = FALSE;  /* suppress respective error message */
 	   goto terminate;
 	 }
@@ -297,7 +352,7 @@ void RS01Create(Method *self)
 	 {  if(Closure->guiMode)
 	     SetProgress(wl->encPBar1, 100, 100);
 
-	    Stop(_("%lld sectors unread or missing due to errors.\n"), ii->sectorsMissing);
+	    Stop(_("%lld sectors unread or missing due to errors.\n"), image->sectorsMissing);
 	 }
       }
    }
@@ -316,18 +371,17 @@ void RS01Create(Method *self)
    /*** Prepare Ecc file header.
         The .eccSum will be filled in after all ecc blocks have been created. */
 
-   memcpy(ei->eh->cookie, "*dvdisaster*", 12);
-   memcpy(ei->eh->method, "RS01", 4);
-   ei->eh->methodFlags[0] = 1;
-   ei->eh->methodFlags[3] = Closure->releaseFlags;
-   gint64_to_uchar(ei->eh->sectors, ii->sectors);
-   ei->eh->dataBytes       = ndata;
-   ei->eh->eccBytes        = nroots;
+   image->eccFileHeader = eh = g_malloc0(sizeof(EccHeader));
+   memcpy(eh->cookie, "*dvdisaster*", 12);
+   memcpy(eh->method, "RS01", 4);
+   eh->methodFlags[0] = 1;
+   gint64_to_uchar(eh->sectors, image->sectorSize);
+   eh->dataBytes       = ndata;
+   eh->eccBytes        = nroots;
 
-   ei->eh->creatorVersion  = Closure->version;
-   ei->eh->fpSector        = FINGERPRINT_SECTOR;
-   ei->eh->inLast          = ii->inLast;
-
+   eh->creatorVersion  = Closure->version;
+   eh->fpSector        = FINGERPRINT_SECTOR;
+   eh->inLast          = image->inLast;
 
    /* dvdisaster 0.66 brings some extensions which are not compatible with
       prior versions. These are:
@@ -335,30 +389,30 @@ void RS01Create(Method *self)
         prior versions will incorrectly reject ecc files as being produced by
 	version 0.40.7 due to a bug in the version processing code.
 	So ecc files tagged with -devel or -rc status will not work with prior
-	versions. But they are experimental version available only through CVS, 
-	so this issue is not a big as it appears.
+	versions. But they are experimental versions available only through CVS, 
+	so this issue is not as big as it appears.
       - Version 0.66 records the inLast value in the ecc file to facilitate
         processing non-image files. Previous versions do not use this field
 	and may round up file length to the next multiple of 2048 when doing
 	error correction.
    */
 
-   if(Closure->releaseFlags || ii->inLast != 2048)
-        ei->eh->neededVersion = 6600;
-   else ei->eh->neededVersion = 5500;
+   if(image->inLast != 2048)
+        eh->neededVersion = 6600;
+   else eh->neededVersion = 5500;
 
-   memcpy(ei->eh->mediumFP, ii->mediumFP, 16);
-   memcpy(ei->eh->mediumSum, ii->mediumSum, 16);
+   memcpy(eh->mediumFP, image->imageFP, 16);
+   memcpy(eh->mediumSum, image->mediumSum, 16);
 
-   if(!LargeSeek(ei->file, (gint64)sizeof(EccHeader) + ii->sectors*sizeof(guint32)))
+   if(!LargeSeek(image->eccFile, (gint64)sizeof(EccHeader) + image->sectorSize*sizeof(guint32)))
 	Stop(_("Failed skipping ecc+crc header: %s"),strerror(errno));
 
    /*** Allocate buffers for the parity calculation and image data caching. 
 
         The algorithm builds the parity file consecutively in chunks of n_parity_blocks.
-        We use all the amount of memory allowed by cacheMB for caching the parity blocks. */
+        We use all the amount of memory allowed by cacheMiB for caching the parity blocks. */
 
-   n_parity_blocks = ((guint64)Closure->cacheMB<<20) / (guint64)nroots;
+   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots;
    n_parity_blocks &= ~0x7ff;                   /* round down to multiple of 2048 */
    n_parity_bytes  = (guint64)nroots * n_parity_blocks;
 
@@ -379,15 +433,15 @@ void RS01Create(Method *self)
 
    if(!ec->parity || !ec->data)
       Stop(_("Failed allocating memory for I/O cache.\n"
-	     "Cache size is currently %d MB.\n"
+	     "Cache size is currently %d MiB.\n"
 	     "Try reducing it.\n"),
-	   Closure->cacheMB);
+	   Closure->cacheMiB);
 
    /*** Setup the block counters for mapping medium sectors to ecc blocks 
         The image is divided into ndata sections;
         with each section spanning s sectors. */
 
-   s = (ii->sectors+ndata-1)/ndata;
+   s = (image->sectorSize+ndata-1)/ndata;
 
    for(si=0, i=0; i<ndata; si+=s, i++)
      block_idx[i] = si;
@@ -428,12 +482,13 @@ void RS01Create(Method *self)
             unsigned char *par_idx = ec->parity;
 
 	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  SetLabelText(GTK_LABEL(wl->encFootline), 
-			    _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
-			    Closure->redMarkup); 
+	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+		  SetLabelText(GTK_LABEL(wl->encFootline), 
+			       _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
+			       Closure->redMarkup); 
 	       ec->earlyTermination = FALSE;  /* suppress respective error message */
-	       LargeClose(ei->file);
-	       ei->file = NULL;
+	       LargeClose(image->eccFile);
+	       image->eccFile = NULL;
 	       LargeUnlink(Closure->eccName); /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
@@ -441,7 +496,7 @@ void RS01Create(Method *self)
 	    /* Read the next data sectors of this layer. */
 
 	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(ii, ei->eh, ec->data+offset, block_idx[layer]);
+	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
 	       block_idx[layer]++;
 	       offset += 2048;
 	    }
@@ -520,12 +575,13 @@ void RS01Create(Method *self)
 	    unsigned char *par_idx = ec->parity;
 
 	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  SetLabelText(GTK_LABEL(wl->encFootline), 
-			    _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
-			    Closure->redMarkup); 
+	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+		  SetLabelText(GTK_LABEL(wl->encFootline), 
+			       _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
+			       Closure->redMarkup); 
 	       ec->earlyTermination = FALSE;   /* suppress respective error message */
-	       LargeClose(ei->file);
-	       ei->file = NULL;
+	       LargeClose(image->eccFile);
+	       image->eccFile = NULL;
 	       LargeUnlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
@@ -533,7 +589,7 @@ void RS01Create(Method *self)
 	    /* Read the next data sectors of this layer. */
 
 	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(ii, ei->eh, ec->data+offset, block_idx[layer]);
+	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
 	       block_idx[layer]++;
 	       offset += 2048;
 	    }
@@ -647,12 +703,13 @@ void RS01Create(Method *self)
             unsigned char *par_idx = ec->parity;
 
 	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  SetLabelText(GTK_LABEL(wl->encFootline), 
-			    _("<span %s>Aborted by user request!</span>"),
-			    Closure->redMarkup); 
+	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+		  SetLabelText(GTK_LABEL(wl->encFootline), 
+			       _("<span %s>Aborted by user request!</span>"),
+			       Closure->redMarkup); 
 	       ec->earlyTermination = FALSE;   /* suppress respective error message */
-	       LargeClose(ei->file);
-	       ei->file = NULL;
+	       LargeClose(image->eccFile);
+	       image->eccFile = NULL;
 	       LargeUnlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
@@ -660,7 +717,7 @@ void RS01Create(Method *self)
             /* Read the next data sectors of this layer. */
 
    	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(ii, ei->eh, ec->data+offset, block_idx[layer]);
+	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
 	       block_idx[layer]++;
 	       offset += 2048;
 	    }
@@ -934,29 +991,29 @@ void RS01Create(Method *self)
 
       /* Write the nroots bytes of parity information */
 
-      n = LargeWrite(ei->file, ec->parity, nroots*actual_layer_bytes);
+      n = LargeWrite(image->eccFile, ec->parity, nroots*actual_layer_bytes);
 
       if(n != nroots*actual_layer_bytes)
         Stop(_("could not write to ecc file \"%s\":\n%s"),Closure->eccName,strerror(errno));
 
-      MD5Update(&ei->md5Ctxt, ec->parity, nroots*actual_layer_bytes);
+      MD5Update(&md5Ctxt, ec->parity, nroots*actual_layer_bytes);
    }
 
    /*** Complete the ecc header and write it out */
 
-   MD5Final(ei->eh->eccSum, &ei->md5Ctxt);
+   MD5Final(eh->eccSum, &md5Ctxt);
 
-   LargeSeek(ei->file, 0);
+   LargeSeek(image->eccFile, 0);
 #ifdef HAVE_BIG_ENDIAN
-   SwapEccHeaderBytes(ei->eh);
+   SwapEccHeaderBytes(eh);
 #endif
-   n = LargeWrite(ei->file, ei->eh, sizeof(EccHeader));
+   n = LargeWrite(image->eccFile, eh, sizeof(EccHeader));
    if(n != sizeof(EccHeader))
      Stop(_("Can't write ecc header:\n%s"),strerror(errno));
 
-   if(!LargeClose(ei->file))
+   if(!LargeClose(image->eccFile))
      Stop(_("Error closing error correction file:\n%s"), strerror(errno));
-   ei->file = NULL;
+   image->eccFile = NULL;
 
    PrintTimeToLog(ec->timer, "for ECC generation.\n");
 
@@ -970,18 +1027,16 @@ void RS01Create(Method *self)
 
       SetLabelText(GTK_LABEL(wl->encFootline), 
 		   _("The error correction file has been successfully created.\n"
-		     "Make sure to keep this file on a reliable medium."),
-		   Closure->eccName); 
+		     "Make sure to keep this file on a reliable medium.")); 
    }
 
    /*** If the --unlink option or respective GUI switch is set, 
-	unlink the image.
-	Windows can not unlink until all file handles are closed. Duh. */
+	unlink the image. */
 
    if(Closure->unlinkImage)
-   {  if(ec->ii) FreeImageInfo(ec->ii);
-      ec->ii = NULL;
-      UnlinkImage(Closure->guiMode ? wl->encFootline2 : NULL);
+   {  if(ec->image) CloseImage(ec->image);
+      ec->image = NULL;
+      unlink_image(Closure->guiMode ? wl->encFootline2 : NULL);
    }
 
    /*** Clean up */

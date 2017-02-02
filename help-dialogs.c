@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -74,7 +75,7 @@ static gint help_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 
    switch(event->type)
    {  case GDK_BUTTON_PRESS: 
-        if(!lwoh->inside) return FALSE; /* Bug in Gtk for Windows? */
+        if(!lwoh->inside) return FALSE; /* Defect in certain Gtk versions? */
 	gtk_widget_show_all(GTK_WIDGET(lwoh->helpWindow));
 	break; 
 
@@ -412,7 +413,7 @@ void ShowGPL()
 char *find_file(char *file, size_t *size, char *lang)
 {  char *path;
    char lang_suffix[3];
-   gint64 stat_size;
+   guint64 stat_size;
 
    lang_suffix[0] = lang_suffix[2] = 0;
 
@@ -578,10 +579,10 @@ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 
    switch(event->type)
    {  case GDK_BUTTON_PRESS: 
-        if(!inside) return FALSE; /* Bug in Gtk for Windows? */
+        if(!inside) return FALSE; /* Defect in certain Gtk versions? */
         if(!strcmp(label,"GPL")) ShowGPL(); 
         else if(!strcmp(label,"MODIFYING")) show_modifying(); 
-        else ShowHTML(g_strdup(label));
+        else ShowPDF(g_strdup(label));
 	break; 
       case GDK_ENTER_NOTIFY: 
 	g_sprintf(text, "<span underline=\"single\" color=\"blue\">%s</span>", label);
@@ -723,11 +724,11 @@ void AboutDialog()
 
 #ifdef MODIFIED_SOURCE
    AboutTextWithLink(vbox, 
-		     _("Modified version Copyright 2012 (please fill in - [directions])\n"
-		       "Copyright 2004-2012 Carsten Gnoerlich"),
+		     _("Modified version Copyright 2015 (please fill in - [directions])\n"
+		       "Copyright 2004-2015 Carsten Gnoerlich"),
 		     "MODIFYING");
 #else
-   AboutText(vbox, _("Copyright 2004-2012 Carsten Gnoerlich"));
+   AboutText(vbox, _("Copyright 2004-2015 Carsten Gnoerlich"));
 #endif
 
    sep = gtk_hseparator_new();
@@ -735,7 +736,7 @@ void AboutDialog()
 
 
    AboutText(vbox, _("dvdisaster provides a margin of safety against data loss\n"
-		      "on CD and DVD media caused by aging or scratches.\n"
+		      "on optical media caused by aging or scratches.\n"
 		      "It creates error correction data which is used to recover\n"
 		      "unreadable sectors if the disc becomes damaged later on.\n"));
 

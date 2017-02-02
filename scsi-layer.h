@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCSI_LAYER_H
@@ -27,23 +28,22 @@
 #include <linux/cdrom.h>
 #endif
 
-#ifdef SYS_MINGW
-#include <windows.h>
-#include <winioctl.h>
-#endif
-
 #ifdef SYS_FREEBSD
 #include <camlib.h>
 #endif
 
 /***
- *** Define the Sense data structure.
+ *** Global settings
  ***/
 
 /* Theretically not needed, but using less causes DMA breakage 
    on some chipsets. */
 
 #define MIN_TRANSFER_LEN 4  
+
+/***
+ *** Define the Sense data structure.
+ ***/
 
 /* 
  * Linux already has one 
@@ -60,7 +60,7 @@
 #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
 #endif
 
-#if defined(SYS_UNKNOWN) || defined(SYS_MINGW) || defined(SYS_NETBSD)
+#if defined(SYS_UNKNOWN) || defined(SYS_NETBSD)
 #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
 #endif
 
@@ -99,20 +99,21 @@ typedef struct _DeviceHandle
 {  /*
     * OS-specific data for device access
     */
-#if defined(SYS_LINUX) || defined(SYS_NETBSD) || defined(SYS_SOLARIS)
+#if defined(SYS_LINUX) || defined(SYS_NETBSD)
    int fd;                    /* device file descriptor */
-   int forceSG_IO;            /* CDROM_SEND_PACKET broken on this target */
 #endif
 #ifdef SYS_FREEBSD
    struct cam_device *camdev; /* camlib device handle */
    union ccb *ccb;
 #endif
-#ifdef SYS_MINGW
-   HANDLE fd;                 /* Windows file handle for the device (SPTI case) */
-   int aspiUsed;	      /* TRUE is device is accessed via ASPI */
-   int ha,target,lun;         /* ASPI way of describing drives */ 
-#endif
-   
+
+  /*
+   * Simulated images
+   */
+  
+   LargeFile *simImage;       /* Image for simulation mode */
+   int pass;                  /* provided by the reader to simulate failure in specific passes */
+  
    /*
     * OS-independent data about the device
     */
@@ -165,10 +166,6 @@ typedef struct _DeviceHandle
    int rewriteable;
    char *mediumDescr;         /* textual description of medium */
 
-   guint8 mediumFP[16];       /* Medium fingerprint */
-   gint64 fpSector;           /* Sector used for calculating the fingerprint */
-   int fpState;               /* 0=unknown; 1=unreadable; 2=present */
-
    /*
     * size alternatives from different sources 
     */
@@ -176,14 +173,6 @@ typedef struct _DeviceHandle
    gint64 readCapacity;       /* value returned by READ CAPACITY */
    gint64 userAreaSize;       /* size of user area according to DVD Info struct */
    gint64 blankCapacity;      /* blank capacity (maybe 0 if query failed) */
-   gint64 rs02Size;           /* size reported in RS02 header */
-
-   /*
-    * file system(s) found on medium
-    */
-   
-   EccHeader *rs02Header;     /* copy of RS02 header */
-   struct _IsoInfo *isoInfo;  /* Information gathered from ISO filesystem */
 
    /*
     * debugging stuff
@@ -236,12 +225,8 @@ typedef struct _DeviceHandle
 
 DeviceHandle* OpenDevice(char*);
 
-#ifdef SYS_MINGW
-DeviceHandle* open_aspi_device(char*, int);
-DeviceHandle* open_spti_device(char*);
-#endif
-
 int SendPacket(DeviceHandle*, unsigned char*, int, unsigned char*, int, Sense*, int);
+int SimulateSendPacket(DeviceHandle*, unsigned char*, int, unsigned char*, int, Sense*, int);
 
 /*** 
  *** scsi-layer.c
@@ -254,10 +239,8 @@ enum
    MODE_PAGE_SET
 };
 
-DeviceHandle* OpenAndQueryDevice(char*);
-DeviceHandle* QueryMediumInfo(char*);
+
 gint64 CurrentMediumSize(int);
-int  GetMediumFingerprint(DeviceHandle*, guint8*, gint64);
 void CloseDevice(DeviceHandle*);
 
 int InquireDevice(DeviceHandle*, int); 
