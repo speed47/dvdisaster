@@ -1,5 +1,6 @@
-dvdisaster (0.79.5-1) experimental; urgency=medium
+dvdisaster (0.79.5-1) unstable; urgency=medium
 
+  [ Carlos Maddela ]
   * Team upload.
   * New upstream version [0.79.5]
   * Refresh and drop patches. The following patches have been dropped:
@@ -21,7 +22,7 @@ dvdisaster (0.79.5-1) experimental; urgency=medium
   * Ship upstream-generated manual.pdf for the time being, as we can't
     generate it ourselves reproducibly.
 
- -- Carlos Maddela <e7appew@gmail.com>  Sat, 07 Jan 2017 00:36:53 +1100
+ -- TANIGUCHI Takaki <takaki@debian.org>  Thu, 02 Feb 2017 22:28:25 +0900
 
 dvdisaster (0.72.4-3) unstable; urgency=medium
 
