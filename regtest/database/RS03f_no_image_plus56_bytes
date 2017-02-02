@@ -1,0 +1,16 @@
+ignore
+fb7871c3b6288f8dd6d39eb67e822d25
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+no.iso not present.
+rs03f-tmp.ecc present.
+
+Error correction properties:
+- type             : Error correction file
+- method           : RS03, 20 roots,  8.5% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available

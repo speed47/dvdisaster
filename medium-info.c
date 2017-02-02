@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -29,20 +30,20 @@
  */
 
 typedef struct _medium_info
-{  GtkWidget *profileDescr;
-   GtkWidget *physicalType;
-   GtkWidget *bookType;
-   GtkWidget *manufID;
-   GtkWidget *discStatus;
-   GtkWidget *usedCapacity1;
-   GtkWidget *usedCapacity2;
-   GtkWidget *blankCapacity;
-   GtkWidget *isoLabel;
-   GtkWidget *isoSize;
-   GtkWidget *isoTime;
-   GtkWidget *eccState;
-   GtkWidget *eccSize;
-   GtkWidget *eccVersion;
+{  GtkLabel *profileDescr;
+   GtkLabel *physicalType;
+   GtkLabel *bookType;
+   GtkLabel *manufID;
+   GtkLabel *discStatus;
+   GtkLabel *usedCapacity1;
+   GtkLabel *usedCapacity2;
+   GtkLabel *blankCapacity;
+   GtkLabel *isoLabel;
+   GtkLabel *isoSize;
+   GtkLabel *isoTime;
+   GtkLabel *eccState;
+   GtkLabel *eccSize;
+   GtkLabel *eccVersion;
 } medium_info;
 
 /***
@@ -50,37 +51,77 @@ typedef struct _medium_info
  ***/
 
 static void print_defaults(medium_info *mi)
-{  SetLabelText(GTK_LABEL(mi->physicalType), _("Medium not present"));
-   SetLabelText(GTK_LABEL(mi->manufID), "-");
-   SetLabelText(GTK_LABEL(mi->profileDescr), "-");
-   SetLabelText(GTK_LABEL(mi->discStatus), "-");
-   SetLabelText(GTK_LABEL(mi->usedCapacity1), "-");
-   SetLabelText(GTK_LABEL(mi->usedCapacity2), " ");
-   SetLabelText(GTK_LABEL(mi->blankCapacity), "-");
-   SetLabelText(GTK_LABEL(mi->isoLabel), "-");
-   SetLabelText(GTK_LABEL(mi->isoSize), "-");
-   SetLabelText(GTK_LABEL(mi->isoTime), "-");
-   SetLabelText(GTK_LABEL(mi->eccState), "-");
-   SetLabelText(GTK_LABEL(mi->eccSize), "-");
-   SetLabelText(GTK_LABEL(mi->eccVersion), "-");
+{  SetLabelText(mi->physicalType, _("Medium not present"));
+   SetLabelText(mi->manufID, "-");
+   SetLabelText(mi->profileDescr, "-");
+   SetLabelText(mi->discStatus, "-");
+   SetLabelText(mi->usedCapacity1, "-");
+   SetLabelText(mi->usedCapacity2, " ");
+   SetLabelText(mi->blankCapacity, "-");
+   SetLabelText(mi->isoLabel, "-");
+   SetLabelText(mi->isoSize, "-");
+   SetLabelText(mi->isoTime, "-");
+   SetLabelText(mi->eccState, "-");
+   SetLabelText(mi->eccSize, "-");
+   SetLabelText(mi->eccVersion, "-");
 }
 
-static void query_medium(medium_info *mi)
-{  DeviceHandle *dh;
+static void print_tab(char *label, int tab_width)
+{  char *translation=_(label);
+   int length = tab_width-g_utf8_strlen(translation, -1);
+   char pad[tab_width+1];
+
+   if(length < 1) pad[0] = 0;
+   else
+   {  memset(pad, ' ', length);
+      pad[length]=0;
+   }
+
+   PrintCLI("%s%s", translation, pad);
+}
+
+void PrintMediumInfo(void *mi_ptr)
+{  Image *image;
+   DeviceHandle *dh;
+   medium_info *mi=(medium_info*)mi_ptr;
    char *disc_status;
    char *sess_status;
+   int tab_width=30;
 
-   print_defaults(mi);
+   if(!mi) /* create dummy medium_info in CLI mode so that PrintCLIorLabel() won't crash */
+   {  mi=alloca(sizeof(medium_info));
+      memset(mi, 0, sizeof(medium_info));
+   }
 
-   dh = QueryMediumInfo(Closure->device);
-   if(!dh) return;
+   if(Closure->guiMode)
+      print_defaults(mi);
+
+   image = OpenImageFromDevice(Closure->device);
+   if(!image) return;
+   dh = image->dh;
 
    /* Medium properties */
 
-   SetLabelText(GTK_LABEL(mi->physicalType), dh->typeDescr);
-   SetLabelText(GTK_LABEL(mi->bookType), dh->bookDescr);
-   SetLabelText(GTK_LABEL(mi->manufID), dh->manuID);
-   SetLabelText(GTK_LABEL(mi->profileDescr), dh->profileDescr);
+   PrintCLI(_("Physical medium info"));
+   PrintCLI("\n\n");
+
+   tab_width=GetLongestTranslation("Medium type:",
+				   "Book type:",
+				   "Manuf.-ID:",
+				   "Drive profile:",
+				   "Disc status:",
+				   "Used sectors:",
+				   "Blank capacity:",
+				   NULL)+1;
+
+   print_tab("Medium type:",tab_width);
+   PrintCLIorLabel(mi->physicalType, "%s\n", dh->typeDescr);
+   print_tab("Book type:",tab_width);
+   PrintCLIorLabel(mi->bookType, "%s\n", dh->bookDescr);
+   print_tab("Manuf.-ID:",tab_width);
+   PrintCLIorLabel(mi->manufID, "%s\n", dh->manuID);
+   print_tab("Drive profile:",tab_width);
+   PrintCLIorLabel(mi->profileDescr, "%s\n", dh->profileDescr);
 
    switch(dh->discStatus&3)
    {  case 0: disc_status = g_strdup(_("empty")); break;
@@ -95,60 +136,90 @@ static void query_medium(medium_info *mi)
       default: sess_status = g_strdup(_("complete")); break;
    }
 
-   SetLabelText(GTK_LABEL(mi->discStatus), _("%s (%d sessions; last session %s)"),
+
+   print_tab("Disc status:",tab_width);
+   PrintCLIorLabel(mi->discStatus, _("%s (%d sessions; last session %s)\n"),
 		disc_status, dh->sessions, sess_status);
    g_free(disc_status);
    g_free(sess_status);
 
-   SetLabelText(GTK_LABEL(mi->usedCapacity1), _("%lld sectors (%lld MB), from READ CAPACITY"),
+   print_tab("Used sectors:",tab_width);
+   PrintCLIorLabel(mi->usedCapacity1, _("%lld sectors (%lld MiB), from READ CAPACITY\n"),
 		dh->readCapacity+1, (dh->readCapacity+1)>>9);
-   SetLabelText(GTK_LABEL(mi->usedCapacity2), _("%lld sectors (%lld MB), from DVD structure"),
+   print_tab(" ",tab_width);
+   PrintCLIorLabel(mi->usedCapacity2, _("%lld sectors (%lld MiB), from DVD structure\n"),
 		dh->userAreaSize, dh->userAreaSize>>9);
-   SetLabelText(GTK_LABEL(mi->blankCapacity), _("%lld sectors (%lld MB)"),
+
+   print_tab("Blank capacity:",tab_width);
+   PrintCLIorLabel(mi->blankCapacity, _("%lld sectors (%lld MiB)\n"),
 		dh->blankCapacity, (dh->blankCapacity)>>9);
 
    /* Filesystem properties */
 
-   if(dh->isoInfo)
-   {  SetLabelText(GTK_LABEL(mi->isoLabel), "%s", dh->isoInfo->volumeLabel);
-      SetLabelText(GTK_LABEL(mi->isoSize), _("%d sectors (%lld MB)"),
-		   dh->isoInfo->volumeSize, (gint64)dh->isoInfo->volumeSize>>9);
-      SetLabelText(GTK_LABEL(mi->isoTime), "%s", dh->isoInfo->creationDate);
+   if(image->isoInfo)
+   {  tab_width=GetLongestTranslation("Medium label:",
+				      "File system size:",
+				      "Creation time:",
+				      NULL)+1;
+
+      PrintCLI("\n\n");
+      PrintCLI(_("Filesystem info"));
+      PrintCLI("\n\n");
+
+      print_tab("Medium label:",tab_width);
+      PrintCLIorLabel(mi->isoLabel, "%s\n", image->isoInfo->volumeLabel);
+      print_tab("File system size:",tab_width);
+      PrintCLIorLabel(mi->isoSize, _("%d sectors (%lld MiB)\n"),
+		   image->isoInfo->volumeSize, (gint64)image->isoInfo->volumeSize>>9);
+      print_tab("Creation time:",tab_width);
+      PrintCLIorLabel(mi->isoTime, "%s\n", image->isoInfo->creationDate);
    }
 
-   /* Augmented image properties */
+   /* Augmented image properties
+      fixme: verify RS03 correctness */
 
-   if(dh->rs02Header)
-   {  EccHeader *eh = dh->rs02Header;
+   if(image->eccHeader)
+   {  EccHeader *eh = image->eccHeader;
       int major = eh->creatorVersion/10000; 
       int minor = (eh->creatorVersion%10000)/100;
       int pl    = eh->creatorVersion%100;
       char method[5];
       char *format = "%d.%d";
  
-      memcpy(method, dh->rs02Header->method, 4);
+      tab_width=GetLongestTranslation("Error correction data:",
+				      "Augmented image size:",
+				      "dvdisaster version:",
+				      NULL)+1;
+      PrintCLI("\n\n");
+      PrintCLI(_("Augmented image info"));
+      PrintCLI("\n\n");
+
+      memcpy(method, eh->method, 4);
       method[4] = 0;
-      SetLabelText(GTK_LABEL(mi->eccState), _("%s, %d roots, %4.1f%% redundancy."), 
+      print_tab("Error correction data:",tab_width);
+      PrintCLIorLabel(mi->eccState, _("%s, %d roots, %4.1f%% redundancy.\n"), 
 		   method, eh->eccBytes,
 		    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
-      SetLabelText(GTK_LABEL(mi->eccSize), _("%lld sectors (%lld MB)"),
-		   dh->rs02Size, dh->rs02Size>>9);
+      print_tab("Augmented image size:",tab_width);
+      PrintCLIorLabel(mi->eccSize, _("%lld sectors (%lld MiB)\n"),
+		   image->expectedSectors, image->expectedSectors>>9);
 
 
       if(eh->creatorVersion%100)        
       {  
 	 if(eh->methodFlags[3] & MFLAG_DEVEL) 
-	    format = "%d.%d (devel-%d)";
+	    format = "%d.%d (devel-%d)\n";
 	 else if(eh->methodFlags[3] & MFLAG_RC) 
-	    format = "%d.%d (rc-%d)";
-	 else format = "%d.%d (pl%d)";
+	    format = "%d.%d (rc-%d)\n";
+	 else format = "%d.%d (pl%d)\n";
       }
-      SetLabelText(GTK_LABEL(mi->eccVersion), format, major, minor, pl);
+      print_tab("dvdisaster version:",tab_width);
+      PrintCLIorLabel(mi->eccVersion, format, major, minor, pl);
    }
 
    /* Clean up */
 
-   CloseDevice(dh); 
+   CloseImage(image);
 }
 
 /***
@@ -183,7 +254,7 @@ static void drive_select_cb(GtkWidget *widget, gpointer data)
  */
 
 static void update_cb(GtkWidget *widget, gpointer data)
-{  query_medium((medium_info*)data); 
+{  PrintMediumInfo((medium_info*)data); 
 }
 
 /*
@@ -294,56 +365,64 @@ void CreateMediumInfoWindow()
   lab = gtk_label_new(_utf("Medium type:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->physicalType = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->physicalType = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Book type:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->bookType = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->bookType = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Manuf.-ID:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->manufID = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->manufID = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Drive profile:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->profileDescr = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->profileDescr = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Disc status:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->discStatus = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->discStatus = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 4, 5, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Used sectors:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->usedCapacity1 = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->usedCapacity1 = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 5, 6, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(" ");
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->usedCapacity2 = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->usedCapacity2 = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 6, 7, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Blank capacity:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->blankCapacity = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->blankCapacity = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 7, 8, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
@@ -359,21 +438,24 @@ void CreateMediumInfoWindow()
   lab = gtk_label_new(_utf("Medium label:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->isoLabel = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->isoLabel = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("File system size:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->isoSize = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->isoSize = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Creation time:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->isoTime = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->isoTime = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
@@ -389,21 +471,24 @@ void CreateMediumInfoWindow()
   lab = gtk_label_new(_utf("Error correction data:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->eccState = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->eccState = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Augmented image size:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->eccSize = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->eccSize = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("dvdisaster version:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
-  lab = mi->eccVersion = gtk_label_new(" ");
+  lab = gtk_label_new(" ");
+  mi->eccVersion = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
@@ -414,6 +499,6 @@ void CreateMediumInfoWindow()
   Closure->mediumDrive = combo_box;
   gtk_widget_show_all(dialog);
 
-  query_medium(mi);
+  PrintMediumInfo(mi);
 }
 

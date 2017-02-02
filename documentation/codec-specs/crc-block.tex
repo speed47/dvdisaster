@@ -1,0 +1,113 @@
+
+\newpage
+\section{RS03 CRC block format}
+\label{crc-block}
+
+The crc layer contains 2048 byte blocks containing the data structure
+described below. Except for the CRC32 checksums most of the information
+contained in this data structure is copied from the Ecc Header described
+in appendix \ref{eh}. The crc block format is defined in the include 
+file {\em dvdisaster.h} and has the following C definition:
+
+\begin{tabbing}
+ xxx \= xxxxxxxxxxxxxxxxxxxxxxx \= xxx \kill
+typedef struct \_CrcBlock \\
+\{\>guint32 crc[256];           \>{\em /* Checksum for the data sectors */}\\
+\> gint8 cookie[12];            \>{\em /* "*dvdisaster*" */}\\
+\> gint8 method[4];             \>{\em /* e.g. "RS03" */}\\
+\> gint8 methodFlags[4];        \>{\em /* 0-2 for free use by the respective methods; 3 see above */}\\
+\> gint32 creatorVersion;       \>{\em /* which dvdisaster version created this */}\\
+\> gint32 neededVersion;        \>{\em /* oldest version which can decode this file */}\\
+\> gint32 fpSector;             \>{\em /* sector used to calculate mediumFP */}\\
+\> guint8 mediumFP[16];         \>{\em /* fingerprint of FINGERPRINT SECTOR */}\\ 
+\> guint8 mediumSum[16];        \>{\em /* complete md5sum of whole medium */}\\
+\> guint64 dataSectors;         \>{\em /* number of sectors of the payload (e.g. iso file sys) */}\\
+\> gint32 inLast;               \>{\em /* bytes contained in last sector */}\\
+\> gint32 dataBytes;            \>{\em /* data bytes per ecc block */}\\
+\> gint32 eccBytes;             \>{\em /* ecc bytes per ecc block */}\\
+\> guint64 sectorsPerLayer;     \>{\em /* for recalculation of layout */}\\
+\> guint32 selfCRC;             \>{\em /* CRC32 of ourself, zero padded to 2048 bytes */}\\
+\} CrcBlock;
+\end{tabbing}
+
+\bigskip
+
+The CrcBlock data structure is used in the CRC layer of RS03 augmented images
+only. RS02 has a similar CRC layer but uses a different concept for retrieving
+layout information from the image. The following table describes the meaning
+and usage of the CrcBlock fields:
+\medskip
+
+\begin{tabular}{|l|p{12cm}|}
+\hline
+Field & Usage \\
+\hline 
+crc & If this data structure is found in the {\em i-th} sector of the CRC layer,
+it contains the CRC32 checksum for data sectors $d_{j,1}, \ldots, d_{j,n}$, with
+$j = (i+1) \bmod\ layer\ size$. See figure \ref{layout-logical} for details.
+Please note that the crc[] array is filled starting from crc[0], and unused field
+are left zero. \\
+\hline
+$cookie$ & Magic byte sequence for recognizing the header.\newline
+Contains the string {\tt *dvdisaster*}. \\
+\hline
+$method$ & 4 characters describing the format; currently only ``RS03''
+may appear here.\\
+\hline
+\end{tabular}
+
+{\footnotesize (continued on next page)}
+\vfill
+\newpage
+
+\begin{tabular}{|l|p{12cm}|}
+\hline
+$methodFlags$ & 4 bytes for further specification of the format.\newline
+Byte 0 contains the following flags:\newline
+Bit 0 - The {\em mediumSum} field is valid.\newline
+Bit 1 - Set to 1 in ecc files.\newline
+Bytes 1-2 are unused in the current methods.\newline
+Byte 3 contains the following flags:\newline
+Bit 0 - ecc data was created by a development release.\newline
+Bit 1 - ecc data was created by a release candidate.\newline
+If these bits are present, the user will be hinted that he is using
+ecc data from a non-stable dvdisaster version. \\
+\hline
+$creatorVersion$ & The dvdisaster version used for creating this ecc data.
+A decimal value 102345 would mean dvdisaster version 10.23.45.\\
+\hline
+$neededVersion$ & The minimum dvdisaster version required for 
+processing this ecc data. Version encoding as above. \\
+\hline
+$fpSector$ & The sector used for calculating $mediumFP$. \\
+\hline
+$mediumFP$ & The md5sum of the sector specified by the {\em fpSector}.
+The sector should be chosen to have a huge probability being unique to the medium;
+currently sector 16 (the ISO filesystem root sector) is used. \\
+\hline
+$mediumSum$ & The md5sum of the original ISO image if the first bit 
+in the {\em methodFlags} field is set. Since md5sum generation can not be
+parallelized, the user may opt not to calculate this checksum if multi core
+encoding is used. \\
+\hline
+$dataSectors$ & For error correction files this is the number of sectors in the
+protected medium. If augmented images are used, this denotes the number of
+sectors in the original ISO image (without the added padding and RS03 sectors). \\
+\hline
+$inLast$ & The number of Bytes contained in the last image sector. This allows for
+encoding of files with arbitrary length, not just ISO images.\\
+\hline
+$dataBytes$ & The number of data layers, including the CRC layer. \\
+\hline
+$eccBytes$ & The number of ecc layers (= number of roots) for the parity. \newline
+$dataBytes + eccBytes = 255$. \\
+\hline
+$sectorsPerLayer$ & The number of sectors per layer. \\
+\hline
+$selfCRC$ & A CRC32 checksum of the ecc header itself. Not used fields are
+set to zero and the selfCRC field is initialized to the 
+value 0x4c5047 (little endian). \\
+\hline
+remaining bytes & The CrcBlock is zero padded to a size of 2048 bytes.\\
+\hline
+\end{tabular}

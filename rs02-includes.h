@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef RS02INCLUDES_H
@@ -102,6 +103,19 @@ typedef struct
    int    percent, lastPercent;
 } RS02Widgets;
 
+/*
+ * local working closure for internal checksums
+ */
+
+typedef struct
+{  struct _RS02Layout *lay;     /* Codec data layout */
+   struct MD5Context md5ctxt;   /* Complete image checksum (currently unused) */
+   struct MD5Context dataCtxt;  /* md5sum of original iso image portion */
+   struct MD5Context crcCtxt;
+   struct MD5Context eccCtxt;
+   struct MD5Context metaCtxt;
+} RS02CksumClosure;
+
 /* 
  * These are exported via the Method struct 
  */
@@ -128,7 +142,8 @@ void CreateRS02VerifyWindow(Method*, GtkWidget*);
 /* rs02-common.c */
 
 typedef struct _RS02Layout
-{  guint64 dataSectors;          /* number of sectors used for image data */
+{  EccHeader *eh;                /* header for this image/ecc file */
+   guint64 dataSectors;          /* number of sectors used for image data */
    guint64 crcSectors;           /* number of sectors needed for CRC32 sector checkums */
    guint64 firstEccHeader;       /* location of first ecc header */
    guint64 headers;              /* number of ecc header ("master block") repeats */
@@ -143,20 +158,31 @@ typedef struct _RS02Layout
    double redundancy;            /* resulting redundancy */
 } RS02Layout;
 
-void RS02ReadSector(ImageInfo*, RS02Layout*, unsigned char*, gint64);
+CrcBuf *RS02GetCrcBuf(Image*);
+void RS02ResetCksums(Image*);
+void RS02UpdateCksums(Image*, gint64, unsigned char*);
+int RS02FinalizeCksums(Image*);
+
+void RS02ReadSector(Image*, RS02Layout*, unsigned char*, gint64);
 gint64 RS02EccSectorIndex(RS02Layout*, gint64, gint64);
 gint64 RS02SectorIndex(RS02Layout*, gint64, gint64);
 void RS02SliceIndex(RS02Layout*, gint64, gint64*, gint64*);
-RS02Layout *CalcRS02Layout(gint64, int);
+RS02Layout *CalcRS02Layout(Image*);
+RS02Layout *RS02LayoutFromImage(Image*);
+guint64 RS02ExpectedImageSize(Image*);
 void WriteRS02Headers(LargeFile*, RS02Layout*, EccHeader*);
 
 /* rs02-create.c */
 
-void RS02Create(Method*);
+void RS02Create(void);
 
 /* rs02-fix.c */
 
-void RS02Fix(Method*);
+void RS02Fix(Image*);
+
+/* rs02-recognize.c */
+
+int  RS02Recognize(Image*);
 
 /* rs02-window.c */
 
@@ -168,6 +194,6 @@ void RS02UpdateFixResults(RS02Widgets*, gint64, gint64);
 
 #define VERIFY_IMAGE_SEGMENTS 1000
 
-void RS02Verify(Method*);
+void RS02Verify(Image*);
 
 #endif

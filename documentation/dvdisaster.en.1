@@ -1,7 +1,7 @@
-.TH DVDISASTER 1 "2010-02-06" "0.80" "protection for CD/DVD media"
+.TH DVDISASTER 1 "2015-12-16" "0.79.5" "protection for optical media"
 
 .SH NAME
-DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
+DVDISASTER \- data loss/scratch/aging protection for optical media
 
 .SH SYNOPSIS
 .B dvdisaster
@@ -17,7 +17,7 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .RB [\| \-o
 .IR file|image \|]
 .RB [\| \-a
-.IR codec-list \|]
+.IR method-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
@@ -37,12 +37,17 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .RB [\| \-\-driver
 .IR d \|]
 .RB [\| \-\-eject \|]
+.RB [\| \-\-encoding-algorithm
+.IR n \|]
+.RB [\| \-\-encoding-io-strategy
+.IR n \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
 .RB [\| \-\-ignore-fatal-sense \|]
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-medium-info \|]
 .RB [\| \-\-old-ds-marker \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
@@ -53,6 +58,8 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 .RB [\| \-\-read-medium
 .IR n \|]
 .RB [\| \-\-read-raw \|]
+.RB [\| \-\-resource-file
+.IR n \|]
 .RB [\| \-\-speed-warning
 .IR n \|]
 .RB [\| \-\-spinup\-delay
@@ -60,7 +67,7 @@ DVDISASTER \- data loss/scratch/aging protection for CD/DVD media
 
 .SH DESCRIPTION
 .B DVDISASTER
-provides a margin of safety against data loss on CD and DVD media caused by
+provides a margin of safety against data loss on optical media caused by
 scratches or aging media. It creates error correction data which is used to
 recover unreadable sectors if the disc becomes damaged at a later time.
 
@@ -154,9 +161,9 @@ or augmented images (default: image).
 
 Tweaking options (see manual before using!):
 .TP
-.B \-a, \-\-assume codec1,codec2,...
-Assumes that the image is augmented with one of the given codecs.
-This enables an exhaustive search for codec signatures
+.B \-a, \-\-assume method1,method2,...
+Assumes that the image is augmented with one of the given methods.
+This enables an exhaustive search for method signatures
 and might be helpful for detecting error correction information on
 damaged media. If the image does
 not contain the specified error correction information, a significant
@@ -170,7 +177,7 @@ jump n sectors forward after a read error (default: 16).
 .TP
 .B \-n, \-\-redundancy n[unit]
 Error correction data redundancy. Allowed values depend
-on the codec:
+on the method:
 
 .RS
 RS01- and RS03-error correction files
@@ -181,8 +188,12 @@ RS01- and RS03-error correction files
 \-n x% creates error correction file with x percent redundancy.
 .RE
 .RS
-\-n xm creates error correction file of approx. x MB size.
+\-n xm creates error correction file of approx. x MiB size.
 .RE
+.RE
+
+.RS
+RS01 error correction flles additionally support:
 .RS 
 \-n normal - optimized codec for 14.3% redundancy/32 roots.
 .RE
@@ -218,6 +229,15 @@ RS02 images:
 \-n xr\ \ \ augments image with x roots error correction data.
 .RE
 .RE
+
+.RS
+RS03 images:
+.RS
+Setting the redundancy is not possible due to constraints in the format.
+The codec will automatically choose the size of the smallest fitting medium.
+.RE
+.RE
+
 .TP
 .B \-m, \-\-method n
 lists/selects error correction methods (default: RS01).
@@ -229,7 +249,7 @@ Possible values are RS01 and RS02.
 more diagnostic messages
 .TP
 .B \-x, \-\-threads n
-Use n threads for the RS03 codec. Use 2 or 4 threads for 2 or 4 core 
+Use n threads for encoding with the RS03 method. Use 2 or 4 threads for 2 or 4 core 
 processors respectively.
 On larger machines save one core for housekeeping; e.g. use 7 threads
 on an eight core machine.
@@ -241,7 +261,7 @@ use optimized strategy for reading damaged media.
 automatically add .iso and .ecc file suffixes.
 .TP
 .B \-\-cache-size n
-image cache size in MB during \-c mode (default: 32MB).
+image cache size in MiB during \-c mode (default: 32MiB).
 .TP
 .B \-\-dao
 assume DAO disc; do not trim image end.
@@ -260,6 +280,38 @@ please switch back to the older driver using \-\-driver=cdrom.
 .TP
 .B \-\-eject
 eject medium after successful read.
+.TP
+.B \-\-encoding-algorithm [32bit|64bit|SSE2|AltiVec]
+This option affects the speed of generating RS03 error correction data.
+dvdisaster can either use a generic encoding algorithm using 32bit or 64bit 
+wide operations running on the integer unit of the processor, or use
+processor specific extensions.
+.RS
+Available extensions are SSE2 for x86 based processors and AltiVec
+on PowerPC processors. These extensions encode with 128bit wide operations
+and will usually provide the fastest encoding variant. The
+SSE2/AltiVec algorithms will automatically be selected 
+if the processor supports them and nothing else is specified by this option.
+.RE
+.TP
+.B \-\-encoding-io-strategy [readwrite|mmap]
+This option controls how dvdisaster performs its disk I/O while creating error
+correction data with RS03. Try both options and see which performs best on your hardware
+setting. 
+.RS
+The "readwrite" option activates dvdisaster's own I/O scheduler
+which reads and writes image data using normal file I/O. The advantage of this
+scheme is that dvdisaster knows exactly which data needs to be cached and preloaded;
+the disadvantage is that all data needs to be copied between the kernel and
+dvdisaster's own buffers. Usually, this I/O scheme works best on slow storage    
+with high latency and seek times; e.g. on all storage involving spinning platters.
+The "mmap" option uses the kernel's memory mapping scheme for direct access
+to the image file. This has the advantage of minimal overhead, but may be adversely
+affected by poor caching and preloading decisions made by the kernel (since the kernel does not
+know what dvdisaster is going to do with the data). This scheme
+performs well when encoding in a RAM-based file system (such as /dev/shm on Linux)
+and on very fast media with low latency such as SSDs. 
+.RE
 .TP
 .B \-\-fill-unreadable n
 fill unreadable sectors with byte n
@@ -292,6 +344,9 @@ and manage read attempts through the \-\-read-attempts parameter. Most drives ig
 this setting anyways. Use \-1 to leave the drive at its default setting.
 .RE
 .TP
+.B \-\-medium-info
+Prints information about the currently inserted medium.
+.TP
 .B \-\-old-ds-marker
 Marks missing sectors in a manner which is compatible with
 dvdisaster 0.70 or older.
@@ -307,7 +362,7 @@ Do not process the same image with different settings for this option.
 .B \-\-prefetch-sectors n
 number of sectors to preload during RS03 de-/encoding (default: 32)
 .RS
-Using a value of n uses approx. n MB of RAM.
+Using a value of n uses approx. n MiB of RAM.
 .RE
 .TP
 .B \-\-raw-mode n
@@ -328,6 +383,9 @@ read the whole medium up to n times.
 .TP
 .B \-\-read-raw
 performs read in raw mode if possible.
+.TP
+.B \-\-resource-file n
+Specifies the path to the configuration file (default: $HOME/.dvdisaster)
 .TP
 .B \-\-speed-warning n
 print warning if speed changes by more than n percent.

@@ -1,0 +1,22 @@
+d264aeddbd65ffcf88a7872e492a27d6
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 25013 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+
+*
+* dvdisaster - can not continue:
+*
+The image file is 23 sectors longer as noted in the
+ecc data. This might simply be zero padding, but could
+also mean that the image was manipulated after appending
+the error correction information.
+
+Add the --truncate option to the program call
+to have the superfluous sectors removed.
+

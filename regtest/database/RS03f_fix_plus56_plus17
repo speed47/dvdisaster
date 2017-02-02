@@ -1,0 +1,19 @@
+a3e1c5452baabdb333d1199a247ab01f
+fb7871c3b6288f8dd6d39eb67e822d25
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03f-tmp.iso: 21000 medium sectors and 73 bytes.
+
+Fix mode(RS03f): Repairable sectors will be fixed in the image.
+
+*
+* dvdisaster - can not continue:
+*
+The image file is 17 bytes longer than noted
+in the ecc file.
+Add the --truncate option to the program call
+to have the superfluous sectors removed.
+

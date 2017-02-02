@@ -5,11 +5,15 @@
 # Currently supported locales
 
 PO_LOCALES = pt_BR cs de it ru sv
-MAN_LOCALES = cs de it
-DOC_LOCALES = cs de en ru
+MAN_LOCALES = de
 
 # Search for TAGS: online-docs
 # Don't forget edit NODIST for new doc locales
+
+# Local settings (not changeable from the configure script)
+
+# Where to put tar archives (arch, srcdist)
+TAR_PREFIX=/dev/shm
 
 ######################################################################
 # Take over variables from configure
@@ -25,8 +29,8 @@ MANDIR = $(CFG_MANDIR)
 DOCDIR = $(CFG_DOCDIR)
 DOCSUBDIR = $(CFG_DOCDIR)/$(CFG_DOCSUBDIR)
 LOCALEDIR = $(CFG_LOCALEDIR)
-PHPMOUNTDIR = $(CFG_PHPMOUNTDIR)
 BUILDROOT = $(CFG_BUILDROOT)
+BUILDTMP = $(CFG_BUILDTMP)
 
 INTL_INCL   = $(CFG_INTL_INCL)
 INTL_LFLAGS = $(CFG_INTL_LFLAGS)
@@ -43,17 +47,18 @@ EFENCE_LFLAGS = $(CFG_EFENCE_LFLAGS)
 EFENCE_LIBS   = $(CFG_EFENCE_LIBS)
 
 SYS_OPTIONS  = $(CFG_SYS_OPTIONS)
+SYS_NAME     = $(CFG_SYS_NAME)
 HAVE_OPTIONS = $(CFG_HAVE_OPTIONS)
 WITH_OPTIONS = $(CFG_WITH_OPTIONS)
 OTHER_OPTIONS = $(CFG_OTHER_OPTIONS) -DVERSION=\"$(VERSION)\"
-EXE_SUFFIX   = $(CFG_EXE_SUFFIX)
 SSE2_OPTIONS = $(CFG_SSE2_OPTIONS)
+ALTIVEC_OPTIONS = $(CFG_ALTIVEC_OPTIONS)
 
 LOCATIONS = -DSRCDIR=\"$(SRCDIR)\" -DBINDIR=\"$(BINDIR)\" -DDOCDIR=\"$(DOCSUBDIR)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
-COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS)
-LOPTS = $(LDFLAGS) $(INTL_LFLAGS) $(CAM_LFLAGS) $(EFENCE_LFLAGS)
+COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(SYS_NAME) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS) $(MUDFLAP_CFLAGS)
+LOPTS = $(LDFLAGS) $(INTL_LFLAGS) $(CAM_LFLAGS) $(EFENCE_LFLAGS) $(MUDFLAP_LFLAGS)
 
-LIBS = $(INTL_LIBS) $(CAM_LIBS) $(GTK_LIBS) $(EFENCE_LIBS) -lm
+LIBS = $(INTL_LIBS) $(CAM_LIBS) $(GTK_LIBS) $(EFENCE_LIBS) $(MUDFLAP_LIBS) -lm
 
 CFILES = $(CFG_CFILES)
 OFILES = $(CFG_OFILES)
@@ -64,11 +69,11 @@ OFILES = $(CFG_OFILES)
 
 .PHONY : all help show locale time-stamp
 
-.c.o:
-	@echo "Compiling:" $*.c
-	@$(CC) $(COPTS) -c $*.c
+${BUILDTMP}/%.o : %.c
+	@echo "Compiling:" $?
+	@$(CC) $(COPTS) -c $? -o $@
 
-all: time-stamp dvdisaster images 
+all: time-stamp dvdisaster
 
 # Building the dvdisaster binary
 
@@ -76,17 +81,8 @@ time-stamp:
 	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/build.h
 
 dvdisaster: inlined-icons.h $(OFILES) 
-	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
-	then echo "Linking  : dvdisaster-win, dvdisaster"; \
-	     windres -v winres.rc -O coff -o winres.o >/dev/null ; \
-	     $(CC) $(COPTS) -c dvdisaster.c ; \
-	     $(CC) $(LOPTS) $(OFILES) winres.o $(LIBS) -lole32 -mwindows -o dvdisaster-win; \
-	     $(CC) $(COPTS) -DWIN_CONSOLE -c dvdisaster.c ; \
-	     $(CC) $(LOPTS) $(OFILES) $(LIBS) -lole32 -o dvdisaster; \
-	     if ! test -e signature; then dvdisaster --debug --sign; fi; \
-	else echo "Linking  : dvdisaster"; \
-	     $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster; \
-	fi
+	@echo "Linking  : dvdisaster"
+	@$(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
 	 || echo $(WITH_OPTIONS) | grep "NLS_NO" >/dev/null; \
 	then echo "not touching locale"; \
@@ -101,8 +97,14 @@ inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png ic
 	@gdk-pixbuf-csource --raw --name=dvdisaster_verify   icons/verify.png   >>inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc icons/open-ecc.png >>inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_open_img icons/open-img.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_cd icons/cd.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help icons/gtk-help.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index icons/gtk-index.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit icons/gtk-quit.png >>inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop icons/gtk-stop.png >>inlined-icons.h
 
-help-dialogs.o: help-dialogs.c simple-md5sum
+$(BUILDTMP)/help-dialogs.o: help-dialogs.c simple-md5sum
 	@if test -e fingerprints.md5; \
 	then if test -e help-dialogs.h; then rm help-dialogs.h; fi; \
 	     mv inlined-icons.h inlined-icons.saved; \
@@ -118,124 +120,37 @@ help-dialogs.o: help-dialogs.c simple-md5sum
 	     rm tmp.md5 tmp2.md5; \
 	else echo "#define MODIFIED_SOURCE 1" >> help-dialogs.h; \
 	fi
-	@echo "Compiling:" $*.c
-	@$(CC) $(COPTS) -c $*.c
+	@echo "Compiling:" help-dialogs.c
+	@$(CC) $(COPTS) -c help-dialogs.c -o $(BUILDTMP)/help-dialogs.o
 
-rs-encoder-sse2.o: rs-encoder-sse2.c
-	@echo "Compiling:" $*.c
-	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c $*.c
+$(BUILDTMP)/rs-encoder-sse2.o: rs-encoder-sse2.c
+	@echo "Compiling:" rs-encoder-sse2.c
+	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c rs-encoder-sse2.c -o $(BUILDTMP)/rs-encoder-sse2.o
+
+$(BUILDTMP)/rs-encoder-altivec.o: rs-encoder-altivec.c
+	@echo "Compiling:" rs-encoder-altivec.c
+	@$(CC) $(ALTIVEC_OPTIONS) $(COPTS) -c rs-encoder-altivec.c -o $(BUILDTMP)/rs-encoder-altivec.o
 
 locale:
 	@$(MAKE) --no-print-directory -C locale
 
+untranslated:
+	@$(MAKE) --no-print-directory -C locale check-untranslated
+
 simple-md5sum: md5.c
-	@$(CC) $(COPTS) -DSIMPLE_MD5SUM md5.c -o simple-md5sum
+	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
 
-# Stuff needed to generate or prepare the documentation
-# TAG: online-docs
+version.tex:
+	@echo "\\newcommand{\\projectversion}{$(VERSION)}" >$(SRCDIR)/documentation/config/version.tex
 
-.PHONY : images pack-images lock-images mount-php html localhtml thumbnails thumbails-lazy
+manual: version.tex
+	@echo "Producing user manual... "
+	@$(MAKE) --no-print-directory -C documentation/user-manual manual.pdf
 
-documentation/images/email.png:
-	@if test -e THESE_ARE_THE_DEVEL_SOURCES; then \
-	  echo "not touching images"; \
-        else \
-	  $(MAKE) --no-print-directory -C tools; \
-	  echo -n "Unpacking images (may take a while) ... "; \
-	  cd $(SRCDIR)/documentation/images; \
-	  $(SRCDIR)/tools/pngpack -u ../images-common.pngpack >../pngpack.log; \
-	  echo -n "common "; \
-	  for i in $(DOC_LOCALES); do \
-	    (cd $(SRCDIR)/documentation/$$i/images; \
-	    $(SRCDIR)/tools/pngpack -u ../../images-$$i.pngpack -t160,../thumbnails >>../../pngpack.log  2>&1); \
-	    echo -n "$$i "; \
-	  done;  \
-	  echo "- done"; \
-        fi
+manualclean:
+	@echo "Removing temporary user manual files... "
+	@$(MAKE) --no-print-directory -C documentation/user-manual clean
 
-images: documentation/images/email.png
-
-lock-images:
-	@touch documentation/MAKE_SRCDIST
-
-
-pack-images: tools/pngpack
-	@echo -n "Packing images (may take a while) ... "
-	@cd documentation/images; $(SRCDIR)/tools/pngpack -p ../images-common.pngpack *.png >../pngpack.log;
-	@for i in $(DOC_LOCALES); do \
-	  (cd documentation/$$i/images; \
-	  $(SRCDIR)/tools/pngpack -p ../../images-$${i}.pngpack *.png >>../../pngpack.log); \
-	  echo -n "$$i "; \
-	done
-	@echo "- done"
-
-tools/pngpack: tools/pngpack.c
-	@$(MAKE) --no-print-directory -C tools
-
-thumbnails: pack-images
-	@echo -n "unpacking thumbnails ... "
-	@for i in $(DOC_LOCALES); do \
-	  mkdir $(SRCDIR)/documentation/temp; \
-	  if ! test -e $(SRCDIR)/documentation/$$i/thumbnails; then mkdir $(SRCDIR)/documentation/$$i/thumbnails; fi; \
-	  (cd documentation/temp; \
-	  $(SRCDIR)/tools/pngpack -u ../images-$${i}.pngpack *.png -t160,../$$i/thumbnails >>../pngpack.log); \
-	  echo -n "$$i "; \
-	  rm -rf $(SRCDIR)/documentation/temp; \
-	done
-	@echo "- done"
-
-version.php:
-	@echo "<?php" >$(SRCDIR)/documentation/include/version.php
-	@echo "\$$version=\"$(VERSION)\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$pkgname=\"$(PKGNAME)\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$cooked_version=\""$(CFG_FULL_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
-	@if test -e help-dialogs.h && grep UNMODIFIED help-dialogs.h >/dev/null; \
-	then echo "\$$modified_source=0;" >>$(SRCDIR)/documentation/include/version.php; \
-	else echo "\$$modified_source=1;" >>$(SRCDIR)/documentation/include/version.php; \
-	fi
-	@echo "\$$have_experimental=\""$(CFG_HAVE_EXPERIMENTAL)"\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$stable_version=\""$(CFG_STABLE_VERSION)"\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "\$$mode=\"www\";" >>$(SRCDIR)/documentation/include/version.php
-	@echo "?>" >>$(SRCDIR)/documentation/include/version.php
-
-mount-php:
-	@if ! test -e $(PHPMOUNTDIR)/dvdisaster.de.1; then\
-	  echo "* In order to create the *.html documentation from the PHP templates";\
-	  echo "* we need to bind mount the documentation under your local Web server";\
-	  echo "* HTML document directory (as specified by configure --phpmountdir).";\
-	  echo "* You need sudo priviledges to execute the command below:";\
-	  echo ;\
-	fi
-	if ! test -e $(PHPMOUNTDIR)/dvdisaster.de.1; then\
-	  if ! test -e $(PHPMOUNTDIR); then sudo mkdir -p $(PHPMOUNTDIR); fi;\
-	  sudo mount -o bind $(SRCDIR)/documentation $(PHPMOUNTDIR) ;\
-	fi
-	make version.php
-	make thumbnails
-
-html: mount-php version.php
-	@echo -n "Producing html documentation... "
-	@if ! test -e $(SRCDIR)/documentation/wget-tmp; then \
-	  mkdir $(SRCDIR)/documentation/wget-tmp; \
-	fi
-	@cd $(SRCDIR)/documentation/wget-tmp; \
-	  wget -r -p -l 0 -nH --cut-dirs=1 --html-extension --convert-links -q http://localhost/dvdisaster/index.html
-	@$(SRCDIR)/scripts/convert-wgetted.bash $(SRCDIR)
-	@rm -rf $(SRCDIR)/documentation/wget-tmp
-	@echo "done."
-
-localhtml: mount-php version.php
-	@sed "s/www/local/" <$(SRCDIR)/documentation/include/version.php >$(SRCDIR)/documentation/include/version1.php
-	@mv $(SRCDIR)/documentation/include/version1.php $(SRCDIR)/documentation/include/version.php
-	@echo -n "Producing html documentation... "
-	@if ! test -e $(SRCDIR)/documentation/wget-tmp; then \
-	  mkdir $(SRCDIR)/documentation/wget-tmp; \
-	fi
-	@cd $(SRCDIR)/documentation/wget-tmp; \
-	  wget -r -p -l 0 -nH --cut-dirs=1 --html-extension --convert-links -q http://localhost/dvdisaster/index.html
-	@$(SRCDIR)/scripts/convert-wgetted.bash $(SRCDIR)
-	@rm -rf $(SRCDIR)/documentation/wget-tmp
-	@echo "done."
 
 # Some usage info
 
@@ -247,12 +162,11 @@ help:
 	@echo "uninstall - uninstall dvdisaster"
 	@echo
 	@echo "Documentation related:"
-	@echo "mount-php - mount documentation sub directory"
-	@echo "www-images- create package of .php and .png files"
-	@echo "www       - create package of .php files only"
-	@echo "html      - create html version of internet documentation"
-	@echo "localhtml - create html version for local documentation"
-	@echo "thumbnails- unconditionally recreate all thumbnails"
+	@echo "manual    - create the user manual (requires LaTeX)"
+	@echo 
+	@echo "Locale related:"
+	@echo "locale    - update locale files"
+	@echo "untranslated - show untranslated German strings"
 	@echo 
 	@echo "Package maintenance:"
 	@echo "clean     - remove all easily rebuildable files"
@@ -260,7 +174,6 @@ help:
 	@echo "archclean - remove all files which are rebuildable in an development setup"
 	@echo "arch      - distclean and tar the source directory (dirty)"
 	@echo "srcdist   - produce the source distribution tarball (polished)"
-	@echo "windist   - produce the binary setup.exe for Windows"
 
 # Build configuration printing
 
@@ -278,8 +191,8 @@ show:
 	@echo "LOCALEDIR    = " $(LOCALEDIR)
 	@echo "DOCDIR       = " $(DOCDIR)
 	@echo "DOCSUBDIR    = " $(DOCSUBDIR)
-	@echo "PHPMOUNTDIR  = " $(PHPMOUNTDIR)
 	@echo "BUILDROOT    = " $(BUILDROOT)
+	@echo "BUILDTMP     = " $(BUILDTMP)
 	@echo
 	@echo "INTL_INCL    = " $(INTL_INCL)
 	@echo "INTL_LFLAGS  = " $(INTL_LFLAGS)
@@ -291,11 +204,12 @@ show:
 	@echo "EFENCE_LIBS  = " $(EFENCE_LIBS)
 	@echo
 	@echo "SYS_OPTIONS  = " $(SYS_OPTIONS)
-	@echo "EXE_SUFFIX   = " $(EXE_SUFFIX)
+	@echo "SYS_NAME     = " $(SYS_NAME)
 	@echo "HAVE_OPTIONS = " $(HAVE_OPTIONS)
 	@echo "WITH_OPTIONS = " $(WITH_OPTIONS)
 	@echo "OTHER_OPTIONS= " $(OTHER_OPTIONS)
 	@echo "SSE2_OPTIONS = " $(SSE2_OPTIONS)
+	@echo "ALTIVEC_OPTIONS= " $(ALTIVEC_OPTIONS)
 	@echo
 	@echo "CFLAGS       = " $(CFLAGS)
 	@echo "COPTS        = " $(COPTS)
@@ -307,46 +221,28 @@ show:
 ######################################################################
 
 .PHONY : install uninstall clean distclean arch
-.PHONY : www www-images 
-.PHONY : srcdist windist
+.PHONY : srcdist
 
-install: dvdisaster images
+install: dvdisaster manual
 	@echo "Installing package..."
 	install -d $(BUILDROOT)$(BINDIR)
-	install dvdisaster$(EXE_SUFFIX) $(BUILDROOT)$(BINDIR)
+	install dvdisaster $(BUILDROOT)$(BINDIR)
 	install -d $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 CHANGELOG $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 COPYING $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 CREDITS* $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 README.MODIFYING $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 TODO $(BUILDROOT)$(DOCSUBDIR)
-	for i in $(DOC_LOCALES); do \
-	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i; \
-	  (cd documentation; install -m 644 $$i/*.html $(BUILDROOT)$(DOCSUBDIR)/$$i); \
-	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/images; \
-	  (cd documentation/$$i; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/images); \
-	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails; \
-	  (cd documentation/$$i; install -m 644 thumbnails/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails); \
-	done
-	install -d $(BUILDROOT)$(DOCSUBDIR)/images
-	cd documentation; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/images
-#	cd documentation; install -m 644 images/*.jpg $(BUILDROOT)$(DOCSUBDIR)/images
-	install -d $(BUILDROOT)$(DOCSUBDIR)/include
-	cd documentation; install -m 644 include/*.css $(BUILDROOT)$(DOCSUBDIR)/include
+	install -d $(BUILDROOT)$(DOCSUBDIR)
+	(cd documentation/user-manual; install -m 644 manual.pdf $(BUILDROOT)$(DOCSUBDIR))
 	install -d $(BUILDROOT)$(MANDIR)/man1
-	install -d $(BUILDROOT)$(MANDIR)/cs/man1
 	install -d $(BUILDROOT)$(MANDIR)/de/man1
-	install -d $(BUILDROOT)$(MANDIR)/it/man1
 	cd documentation; \
 	  ESCAPED_DOCSUBDIR=`echo $(DOCSUBDIR) | sed -e 's/\//\\\\\//g'`; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/en/" <dvdisaster.en.1 >dvdisaster.updated; \
+	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.en.1 >dvdisaster.updated; \
 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/man1/dvdisaster.1; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/cs/" <dvdisaster.cs.1 >dvdisaster.updated; \
-	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/cs/man1/dvdisaster.1; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/de/" <dvdisaster.de.1 >dvdisaster.updated; \
+	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.de.1 >dvdisaster.updated; \
 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/de/man1/dvdisaster.1; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/en/" <dvdisaster.it.1 >dvdisaster.updated; \
-	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/it/man1/dvdisaster.1; \
 	  rm dvdisaster.updated
 	if echo $(WITH_OPTIONS) | grep "NLS_YES" >/dev/null; then \
 	  cd locale; \
@@ -358,20 +254,27 @@ install: dvdisaster images
 	@echo "# dvdisaster uninstaller script" > $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@echo "# Usage: sh dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@echo >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster.exe $(BINDIR)/dvdisaster-win.exe $(BINDIR)/dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -rf $(DOCSUBDIR)" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f $(MANDIR)/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(BINDIR)/dvdisaster\" \"$(BINDIR)/dvdisaster-uninstall.sh\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/CHANGELOG\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/COPYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.de\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.en\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/manual.pdf\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/README.MODIFYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(DOCSUBDIR)/TODO\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rmdir \"$(DOCSUBDIR)\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh	
 	@for i in $(PO_LOCALES); do \
-	  echo "rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm -f \"$(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 	done
+	@echo "rm -f \"$(MANDIR)/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@for i in $(MAN_LOCALES); do \
-	  echo "rm $(MANDIR)/$$i/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm -f \"$(MANDIR)/$$i/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 	done
 	@echo "echo \"dvdisaster has been uninstalled.\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	
+
 uninstall:
 	@echo "Uninstalling package..."
-	rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster.exe $(BINDIR)/dvdisaster-win.exe $(BINDIR)/dvdisaster-uninstall.sh
+	rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh
 	rm -rf $(DOCSUBDIR)
 	rm -f $(MANDIR)/man1/dvdisaster.1
 	for i in $(PO_LOCALES); do \
@@ -383,10 +286,8 @@ uninstall:
 
 archclean: distclean
 	@echo "Removing rebuildable documentation parts"
-	@for i in $(DOC_LOCALES); do \
-	   rm -f documentation/$$i/*.html; \
-	   rm -f documentation/$$i/thumbnails/*.png; \
-	done
+	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs archclean
+	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual archclean
 
 distclean: clean
 	@echo "Removing configuration files"
@@ -396,112 +297,44 @@ distclean: clean
 	@echo -e "\t@echo" >>GNUmakefile
 	@echo -e "\t@echo \"Please create a Makefile by entering \\\"bash configure\\\" first\"" >>GNUmakefile
 	@echo -e "\t@echo" >>GNUmakefile
-	@if test -e tools/Makefile.config; then $(MAKE) --no-print-directory -C tools distclean; fi
 
-clean: simple-md5sum
+# There might be a not executable simple-md5sum from a compiler run
+# under a different architecture, so make sure we have a working binary
+# in the clean target.
+
+clean:
 	@echo "Removing rebuildable files"
-	@rm -rf *.o medium.* dvdisaster *.exe *.zip .dvdisaster core core.* *.core *.stackdump
+	@rm -rf *.o $(BUILDTMP)/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
 	@rm -f inlined-icons.h help-dialogs.h
-	@rm -f wininst/installer.iss wininst/signature
-	@if test -e win-build-dir; then rm -rf win-build-dir; fi
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;
-	@if test -e THESE_ARE_THE_DEVEL_SOURCES && ! test -e documentation/MAKE_SRCDIST; then rm -f documentation/images-*.pngpack documentation/thumbnails-*.pngpack; fi
-	@rm -f documentation/pngpack.log
-	@rm -f documentation/include/version.php
-	@rm -rf documentation/wget-tmp
-	@if test -e tools/Makefile.config; then $(MAKE) --no-print-directory -C tools clean; fi
+	@rm -f documentation/config/version.tex
 	@if test -e $(PKGNAME); then rm -rf $(PKGNAME); fi
 	@if test -e ~/.dvdisaster-original-author; then \
 	  mv build.h build.saved ;\
+	  if ! test -x simple-md5sum || ! ./simple-md5sum >/dev/null 2>&1; then \
+	    rm -f simple-md5sum; \
+	    $(MAKE) --no-print-directory simple-md5sum; \
+	    echo "[simple-md5sum (re-)built]"; \
+	  fi; \
 	  ./simple-md5sum -b *.h *.c >fingerprints.md5 ;\
 	  mv build.saved build.h; \
 	fi
 	@rm -f simple-md5sum
-	@if test -e $(SRCDIR)/papers; then \
-	  $(MAKE) --no-print-directory -C papers clean; \
-	fi
+	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs clean;
+	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual clean;
 
 BUILD=`grep BUILD $(SRCDIR)/build.h | cut -d ' ' -f 3`
 arch:	archclean time-stamp
-	@cd .. ; tar -c -z -f $(PKGNAME)-$(BUILD).tgz $(PKGNAME)
-
-# TAG: online-docs
-www:   version.php
-	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css de/*.html en/*.html ru/*.html
-
-www-images: thumbnails version.php
-	@cd documentation ; \
-	tar cjf ../../www.tar.bz2 pubkey.asc index.html include/dvdisaster.css  de/*.html en/*.html ru/*.html images/*.png de/images/*.png de/thumbnails/*.png en/images/*.png en/thumbnails/*.png ru/images/*.png ru/thumbnails/*.png
+	@cd .. ; tar -c -z -f $(TAR_PREFIX)/$(PKGNAME)-$(BUILD).tgz $(PKGNAME)
 
 INSTALL: documentation/install.template
 	@sed "s/@@PKGNAME/$(PKGNAME)/" <documentation/install.template >INSTALL
 
-srcdist: INSTALL localhtml lock-images clean distclean 
-	@rm -f documentation/MAKE_SRCDIST
-	@cd .. ; tar -c -j -X $(PKGNAME)/NODIST -f $(PKGNAME).tar.bz2 $(PKGNAME)
-	@cd .. ; gpg --default-key 091ad320 --detach-sign --output $(PKGNAME).tar.bz2.gpg --armor $(PKGNAME).tar.bz2 
-	@rm -f documentation/images-*.pngpack
+srcdist: INSTALL distclean manual manualclean
+	@cd .. ; tar -c -j -X $(PKGNAME)/NODIST -f $(TAR_PREFIX)/$(PKGNAME).tar.bz2 $(PKGNAME)
+	@cd .. ; gpg --homedir .gnupg --default-key 758BCC23 --detach-sign --output $(TAR_PREFIX)/$(PKGNAME).tar.bz2.gpg --armor $(TAR_PREFIX)/$(PKGNAME).tar.bz2 
 
-prepare-dist:
-	@if test -e win-build-dir; then rm -rf win-build-dir; fi
-	@mkdir win-build-dir
-	@mkdir win-build-dir/documentation
-	@cp -r CHANGELOG COPYING CREDITS* README.MODIFYING TODO dvdisaster.exe dvdisaster-win.exe win-build-dir
-	@head --bytes=20 dvdisaster.exe >win-build-dir/signature
-	@cp wininst/*.bmp win-build-dir
-	@cp documentation/pubkey.asc win-build-dir/documentation
-	@for i in $(DOC_LOCALES); do \
-	  mkdir win-build-dir/documentation/$$i; \
-	  cp documentation/$$i/*.html win-build-dir/documentation/$$i; \
-	done
-	@mkdir win-build-dir/documentation/images
-	@mkdir win-build-dir/documentation/include
-	@cp documentation/include/*.css win-build-dir/documentation/include
-	@cp tools/pngpack.exe win-build-dir/documentation
-	@mv documentation/images-*.pngpack win-build-dir/documentation
-	@cp $(GTK_BINDIR)/libglib*.dll win-build-dir
-	#@cp $(GTK_BINDIR)/iconv.dll win-build-dir
-	@cp $(GTK_BINDIR)/intl.dll win-build-dir
-	@cp $(GTK_BINDIR)/libatk*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libcairo*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libexpat*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libfontconfig*.dll win-build-dir
-	@cp $(GTK_BINDIR)/freetype6*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libpango*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libpng12*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgmodule*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgobject*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgthread*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgdk_pixbuf*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgio*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgdk-win*.dll win-build-dir
-	@cp $(GTK_BINDIR)/libgtk-win*.dll win-build-dir
-	@cp $(GTK_BINDIR)/zlib1*.dll win-build-dir
-	@mkdir win-build-dir/locale
-	@cp -r locale/?? win-build-dir/locale
-	@cp -r locale/??_?? win-build-dir/locale
 
-	@mkdir -p win-build-dir/etc/gtk-2.0
-	@echo "# GdkPixbuf Image Loader Modules file" >  win-build-dir/etc/gtk-2.0/gdk-pixbuf.loaders
 
-	#@mkdir -p win-build-dir/etc/pango
-	#@cp $(GTK_BINDIR)/../etc/pango/pango.aliases win-build-dir/etc/pango
-	#@echo "# Pango Modules file" > win-build-dir/etc/pango/pango.modules
-	#@echo "#" >> win-build-dir/etc/pango/pango.modules
-	#@echo "pango-basic-win32.dll BasicScriptEngineWin32 PangoEngineShape PangoRenderWin32 common:" >> win-build-dir/etc/pango/pango.modules
-	#@cp $(GTK_BINDIR)/../lib/pango/1.?.?/modules/pango-basic-win32.dll win-build-dir
-
-	@mkdir -p win-build-dir/share/locale
-	@for i in $(PO_LOCALES); do \
-	  mkdir -p win-build-dir/share/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/atk*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/glib*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
-	  cp $(GTK_BINDIR)/../share/locale/$$i/LC_MESSAGES/gtk*.mo win-build-dir/share/locale/$$i/LC_MESSAGES; \
-	done
-
-windist: dvdisaster pack-images prepare-dist
-	@sed 's/dvdisaster-%version%/$(PKGNAME)/' <wininst/installer.template >wininst/installer.iss
-	@iscc wininst/installer.iss

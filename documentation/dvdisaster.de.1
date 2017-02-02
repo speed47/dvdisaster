@@ -1,7 +1,7 @@
-.TH DVDISASTER 1 "2010-02-07" "0.80" "Schutz f\[:u]r CD/DVD Medien"
+.TH DVDISASTER 1 "2015-12-16" "0.79.5" "Schutz f\[:u]r optische Datentr\[:a]ger"
 
 .SH NAME
-DVDISASTER \- Schutz f\[:u]r CD/DVD Medien gegen Datenverlust durch Alterung
+DVDISASTER \- Schutz f\[:u]r optische Datentr\[:a]ger gegen Datenverlust durch Alterung
 oder Kratzer
 
 .SH SYNTAX
@@ -18,7 +18,7 @@ oder Kratzer
 .RB [\| \-o
 .IR file|image \|]
 .RB [\| \-a
-.IR codec-list \|]
+.IR method-list \|]
 .RB [\| \-j
 .IR n \|]
 .RB [\| -n
@@ -38,12 +38,17 @@ oder Kratzer
 .RB [\| \-\-driver \|
 .IR d \|]
 .RB [\| \-\-eject \|]
+.RB [\| \-\-encoding-algorithm
+.IR n \|]
+.RB [\| \-\-encoding-io-strategy
+.IR n \|]
 .RB [\| \-\-fill-unreadable
 .IR n \|]
 .RB [\| \-\-ignore-fatal-sense \|]
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-medium-info \|]
 .RB [\| \-\-old-ds-marker \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
@@ -54,6 +59,8 @@ oder Kratzer
 .RB [\| \-\-read-medium
 .IR n \|]
 .RB [\| \-\-read-raw \|]
+.RB [\| \-\-resource-file
+.IR n \|]
 .RB [\| \-\-speed-warning
 .IR n \|]
 .RB [\| \-\-spinup\-delay
@@ -61,8 +68,8 @@ oder Kratzer
 
 .SH BESCHREIBUNG
 .B DVDISASTER
-erzeugt einen Sicherheitspuffer gegen Datenverluste, die auf CD- und
-DVD-Datentr\[:a]gern durch Alterung oder Kratzer entstehen. Es erzeugt
+erzeugt einen Sicherheitspuffer gegen Datenverluste, die auf optischen
+Datentr\[:a]gern durch Alterung oder Kratzer entstehen. Es erzeugt
 Fehlerkorrekturdaten, um bei nachfolgenden Datentr\[:a]ger-Problemen unlesbare
 Sektoren zu rekonstruieren.
 
@@ -162,10 +169,10 @@ Abbilder erzeugt werden sollen (Standard: erweiterte Abbilder).
 
 Feineinstellung (Beachten Sie die Hinweise in der Dokumentation!):
 .TP
-.B \-a, \-\-assume codec1,codec2,...
-Nimmt an da\[ss] das Abbild mit einem der angegebenen Kodierer erweitert
+.B \-a, \-\-assume method1,method2,...
+Nimmt an da\[ss] das Abbild mit einer der angegebenen Methoden erweitert
 wurde. Dies bewirkt eine ersch\[:o]pfende Suche nach den Datenstrukturen
-der Kodierer und ist hilfreich, um in besch\[:a]digten Datentr\[:a]gern enthaltene
+der Methode und ist hilfreich, um in besch\[:a]digten Datentr\[:a]gern enthaltene
 Fehlerkorrektur-Daten wiederzufinden. Wenn das Abbild allerdings keine
 der angegebenen Fehlerkorrektur-Daten enth\[:a]lt, verschwendet diese Option
 eine gro\[ss]e Menge Rechenzeit und Ein-/Ausgabeoperationen.
@@ -189,9 +196,13 @@ RS01- und RS03-Fehlerkorrektur-Dateien:
 \-n x% erzeugt Fehlerkorrektur-Datei mit x Prozent Redundanz.
 .RE
 .RS
-\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MB Gr\[:u]\[ss]e.
+\-n xm erzeugt Fehlerkorrektur-Datei mit ca. x MiB Gr\[:u]\[ss]e.
 .RE
-.RS 
+.RE
+
+.RS
+RS01-Fehlerkorrektur-Dateien unterst\[:u]tzen au\[ss]erdem:
+.RS
 \-n normal - optimierter Kodierer f\[:u]r 14.3% Redundanz/32 Nullstellen.
 .RE
 .RS
@@ -226,6 +237,15 @@ RS02-Abbilder:
 \-n xr\ \ \ erweitert Abbild mit x Nullstellen Fehlerkorrektur-Daten.
 .RE
 .RE
+
+.RS
+RS03-Abbilder:
+.RS
+Einstellungen sind formatbedingt nicht m\[:o]glich.
+Es wird automatisch die n\[:a]chste passende Datentr\[:a]gergr\[:o]\[ss]e ausgew\[:a]hlt.
+.RE
+.RE
+
 .TP
 .B \-m, \-\-method n
 Fehlerkorrektur-Methoden anzeigen/ausw\[:a]hlen (Standard: RS01).
@@ -249,7 +269,7 @@ verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
 automatisches Anf\[:u]gen der .iso- und .ecc-Dateiendungen.
 .TP
 .B \-\-cache-size n
-Zwischenspeicher in MB bei .ecc-Datei-Erzeugung - (Standard: 32MB).
+Zwischenspeicher in MiB bei .ecc-Datei-Erzeugung - (Standard: 32MiB).
 .TP
 .B \-\-dao
 unterstelle DAO; Abbild am Ende nicht k\[:u]rzen.
@@ -269,6 +289,44 @@ w\[:a]hlen Sie bitte wieder mit \-\-driver=cdrom den \[:a]lteren Treiber aus.
 .TP
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.
+.TP
+.B \-\-encoding-algorithm [32bit|64bit|SSE2|AltiVec]
+Diese Einstellung beeinflu\[ss]t die Geschwindigkeit beim Erstellen von
+RS03-Fehlerkorrektur-Daten. dvdisaster kann entweder ein allgemeines
+Kodierungsverfahren mit 32bit- oder 64bit breiten Rechenschritten
+verwenden, die auf der Ganzzahl-Einheit des Prozessors ausgef\[:u]hrt
+werden, oder es kann Prozessor-spezifische Erweiterungen nutzen.
+.RS
+W\[:a]hlbare Erweiterungen sind SSE2 auf x86-basierten Prozessoren
+sowie AltiVec auf PowerPC-basierten Prozessoren. Diese Erweiterungen
+rechnen mit 128bit breiten Operationen und liefern typischerweise
+die h\[:o]chste Geschwindigkeit. Daher werden der SSE2- oder der 
+AltiVec-Kodierer automatisch ausgew\[:a]hlt sofern der Prozessor 
+dies unterst\[:u]tzt und nichts anderes mit dieser Option angegeben wird.
+
+.RE
+.TP
+.B \-\-encoding-io-strategy [readwrite|mmap]
+Diese Einstellung beeinflu\[ss]t das Lesen und Schreiben von Daten w\[:a]hrend der
+Erstellung von RS03-Fehlerkorrektur-Daten. Probieren Sie beide Einstellungen
+um zu sehen welche am besten mit Ihrer Hardware harmoniert.
+.RS
+Die "readwrite"-Einstellung aktiviert das eingebaute I/O-Steuerprogramm
+von dvdisaster, das mit Hilfe normaler Ein- und Ausgabeoperationen auf Dateiebene arbeitet.
+Dies hat den Vorteil da\[ss] dvdisaster genau steuern kann welche Daten zwischengespeichert und
+im Hintergrund geladen werden m\[:u]ssen; der Nachteil ist allerdings da\[ss] alle Daten einmal
+zwischen dem Betriebssystemkern und den Pufferspeichern von dvdisaster kopiert werden
+m\[:u]ssen. Typischerweise funktioniert diese Einstellung am besten mit langsamen Massenspeichern,
+die hohe Such- und Reaktionszeiten aufweisen, also z.B. mit allen Speichersystemen,
+die drehende Magnetscheiben enthalten.
+Die "mmap"-Einstellung verwendet die M\[:o]glichkeit des Betriebssystemkerns, Dateien direkt
+in Speicherbereiche einzublenden. Dies hat den Vorteil, da\[ss] kaum Daten kopiert werden
+m\[:u]ssen, aber ein Nachteil kann dadurch entstehen, da\[ss] der Betriebssystemkern eine
+ungeschickte Strategie zum Zwischenspeichern von Daten trifft, da er keine Informationen
+dar\[:u]ber hat, was dvdisaster mit den Daten als n\[:a]chstes tun wird. Diese Einstellung
+funktioniert am besten beim direkten Arbeiten mit Dateien im Arbeitsspeicher (z.B. unter
+/dev/shm in Linux) sowie mit schnellen Speichermedien mit geringen Suchzeiten wie SSDs.
+.RE
 .TP
 .B \-\-fill-unreadable n
 f\[:u]lle unlesbare Sektoren mit Byte n.
@@ -303,6 +361,9 @@ Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 
 die Standardeinstellungen des Laufwerks zu verwenden.
 .RE
 .TP
+.B \-\-medium-info
+Gibt Informationen \[:u]ber den Datentr\[:a]ger im ausgew\[:a]hlten Laufwerk aus.
+.TP
 .B \-\-old-ds-marker
 Markiert fehlende Sektoren in einer Weise, die mit dvdisaster
 0.70 oder noch fr\[:u]heren Versionen kompatibel ist.
@@ -319,7 +380,7 @@ diese Option.
 .B \-\-prefetch-sectors n
 n Sektoren f\[:u]r die RS03-(De)kodierung im Voraus laden (Standard: 32)
 .RS
-Ein Wert von n verbraucht ungef\[:a]hr n MB Arbeitsspeicher.
+Ein Wert von n verbraucht ungef\[:a]hr n MiB Arbeitsspeicher.
 .RE
 .TP
 .B \-\-raw-mode n
@@ -341,6 +402,9 @@ liest den gesamten Datentr\[:a]ger bis zu n-mal.
 .TP
 .B \-\-read-raw
 liest in der "raw"\-Betriebsart sofern m\[:o]glich.
+.TP
+.B \-\-resource-file n
+Gibt den Pfad zur Konfigurationsdatei an (Voreinstellung: $HOME/.dvdisaster)
 .TP
 .B \-\-speed-warning n
 warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.

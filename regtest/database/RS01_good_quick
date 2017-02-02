@@ -1,0 +1,16 @@
+9503f278d4550a9507a317664481adf8
+4be4dcc0f6b88965334ccf1050dfa5fa
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-master.iso: present, contains 21000 medium sectors.
+* quick mode        : image NOT scanned
+
+rs01-master.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.55 (good)
+- medium sectors   : 21000 (good)
+- fingerprint match: good
+* quick mode        : ecc file NOT scanned

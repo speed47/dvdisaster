@@ -1,0 +1,140 @@
+e505d7c7ab1956ea00692102813a3da1
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+# *** OpenImageFromDevice(sim-cd) ***
+# InquireDevice returned: Simulated CD drive 1.00
+
+Device: sim-cd, Simulated CD drive 1.00
+# *** query_type(Simulated CD drive 1.00, 0) ***
+# *** get_configuration(Simulated CD drive 1.00) ***
+# 8 data len, 9 current
+-> profile 9: CD-R
+# trying READ DISC INFORMATION for size
+# size returned is 32
+# trying READ DISC INFORMATION for real info
+0000: 00 20 1e 00 00 00 00 00  00 00 00 00 00 00 00 00  . ...... ........ 
+0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ ........ 
+# status is 1e, disc type 0
+#CD: starting media probe
+#CD: querying size of READ TOC/PMA/ATIP (for TOC)
+#CD: size returned is 12
+#CD: querying real READ TOC/PMA/ATIP (for TOC)
+0000: 00 0a 00 00 00 14 00 00  00 00 00 00              ........ ....
+#CD: control is 0x14
+#CD: querying size of READ TOC/PMA/ATIP (for full TOC)
+# Warning: Realigning length from 26 to 24
+#CD: size returned is 24
+#CD: querying real READ TOC/PMA/ATIP (for full TOC)
+0000: 00 18 00 01 00 00 00 a0  00 00 00 00 00 00 00 00  ........ ........ 
+0010: 00 00 00 00 00 00 00 00                           ........ 
+#CD: 1 sessions
+#CD: CD medium detected, type: CD-R mode 1
+# query_type() returned.
+# deciding reading strategy...
+Using READ CD.
+GetImageFingerprint(16): read & cached
+
+ExamineUDF(Device: Simulated CD drive 1.00)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+# *** read_capacity(Simulated CD drive 1.00) ***
+ -> 20999
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: medium sim-cd
+try_sector: trying sector 21000
+try_sector: read error, trying next header
+try_sector: trying sector 20850
+try_sector: read error, trying next header
+RS02Recognize: skipping exhaustive RS02 search
+...trying RS03
+RS03Recognize: medium sim-cd
+FindRS03HeaderInImage: medium sim-cd
+RS03RecognizeImage: skipping exhaustive RS03 search
+...no augmented image detected.
+# Calling query_size()
+# *** query_size(Simulated CD drive 1.00) ***
+Medium size could NOT be determined from ECC header.
+Medium size obtained from ISO/UDF file system: 21000 sectors
+# returned: 21000 sectors
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+GetImageFingerprint(16): cached
+Adaptive reading: Stopping when unreadable intervals < 16.
+* Warning: Using adaptive reading without error correction data
+*          has little advantage over linear reading, but may
+*          cause significant wear on the drive due to excessive
+*          seek operations.
+*          Please consider using linear reading instead.
+GetImageFingerprint(16): cached
+Analysing existing image file:  1%Analysing existing image file:  2%Analysing existing image file:  3%Analysing existing image file:  4%Analysing existing image file:  5%Analysing existing image file:  6%Analysing existing image file:  7%Analysing existing image file:  8%Analysing existing image file:  9%Analysing existing image file: 10%Analysing existing image file: 11%Analysing existing image file: 12%Analysing existing image file: 13%Analysing existing image file: 14%Analysing existing image file: 15%Analysing existing image file: 16%Analysing existing image file: 17%Analysing existing image file: 18%Analysing existing image file: 19%Analysing existing image file: 20%Analysing existing image file: 21%Analysing existing image file: 22%Analysing existing image file: 23%Analysing existing image file: 24%Analysing existing image file: 25%Analysing existing image file: 26%Analysing existing image file: 27%Analysing existing image file: 28%Analysing existing image file: 29%Analysing existing image file: 30%Analysing existing image file: 31%Analysing existing image file: 32%Analysing existing image file: 33%Analysing existing image file: 34%Analysing existing image file: 35%Analysing existing image file: 36%Analysing existing image file: 37%Analysing existing image file: 38%Analysing existing image file: 39%Analysing existing image file: 40%Analysing existing image file: 41%Analysing existing image file: 42%Analysing existing image file: 43%Analysing existing image file: 44%Analysing existing image file: 45%Analysing existing image file: 46%Analysing existing image file: 47%Analysing existing image file: 48%Analysing existing image file: 49%Analysing existing image file: 50%Analysing existing image file: 51%Analysing existing image file: 52%Analysing existing image file: 53%Analysing existing image file: 54%Analysing existing image file: 55%Analysing existing image file: 56%Analysing existing image file: 57%Analysing existing image file: 58%Analysing existing image file: 59%Analysing existing image file: 60%Analysing existing image file: 61%Analysing existing image file: 62%Analysing existing image file: 63%Analysing existing image file: 64%Analysing existing image file: 65%Analysing existing image file: 66%Analysing existing image file: 67%Analysing existing image file: 68%Analysing existing image file: 69%Analysing existing image file: 70%Analysing existing image file: 71%Analysing existing image file: 72%Analysing existing image file: 73%Analysing existing image file: 74%Analysing existing image file: 75%Analysing existing image file: 76%Analysing existing image file: 77%Analysing existing image file: 78%Analysing existing image file: 79%Analysing existing image file: 80%Analysing existing image file: 81%Analysing existing image file: 82%Analysing existing image file: 83%Analysing existing image file: 84%Analysing existing image file: 85%Analysing existing image file: 86%Analysing existing image file: 87%Analysing existing image file: 88%Analysing existing image file: 89%Analysing existing image file: 90%Analysing existing image file: 91%Analysing existing image file: 92%Analysing existing image file: 93%Analysing existing image file: 94%Analysing existing image file: 95%Analysing existing image file: 96%Analysing existing image file: 97%Analysing existing image file: 98%Analysing existing image file: 99%Analysing existing image file: 20440 readable, 560 still missing.
+... Processing Interval [20440..20999], size 560
+Repairable: 97.3% (missing: 560; now reading [20440..20999], size 560)Repairable: 97.4% (missing: 536; now reading [20440..20999], size 560)Repairable: 97.5% (missing: 520; now reading [20440..20999], size 560)Repairable: 97.6% (missing: 504; now reading [20440..20999], size 560)Repairable: 97.7% (missing: 472; now reading [20440..20999], size 560)Repairable: 97.8% (missing: 456; now reading [20440..20999], size 560)Repairable: 97.9% (missing: 440; now reading [20440..20999], size 560)Repairable: 98.0% (missing: 408; now reading [20440..20999], size 560)Repairable: 98.1% (missing: 392; now reading [20440..20999], size 560)Repairable: 98.2% (missing: 376; now reading [20440..20999], size 560)Repairable: 98.3% (missing: 344; now reading [20440..20999], size 560)Repairable: 98.4% (missing: 328; now reading [20440..20999], size 560)Repairable: 98.5% (missing: 312; now reading [20440..20999], size 560)Repairable: 98.6% (missing: 280; now reading [20440..20999], size 560)Repairable: 98.7% (missing: 264; now reading [20440..20999], size 560)Repairable: 98.8% (missing: 248; now reading [20440..20999], size 560)Repairable: 98.9% (missing: 216; now reading [20440..20999], size 560)Repairable: 99.0% (missing: 200; now reading [20440..20999], size 560)Sector 20800, try 1: Medium Error; Unrecovered read error.
+Sector 20800, try 1: Medium Error; Unrecovered read error.
+
+Sector 20800: Medium Error; Unrecovered read error.
+... Interval 199 [20801..20999] added
+*** Splitting [20801..20999]
+... Processing Interval [20900..20999], size 100
+                                                                      Filling image area [20801..20899]: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|: |*.........|               
+Repairable: 99.0% (missing: 200; now reading [20900..20999], size 100)Repairable: 99.1% (missing: 189; now reading [20900..20999], size 100)Repairable: 99.2% (missing: 156; now reading [20900..20999], size 100)Repairable: 99.3% (missing: 140; now reading [20900..20999], size 100)Repairable: 99.4% (missing: 124; now reading [20900..20999], size 100)Repairable: 99.5% (missing: 100; now reading [20900..20999], size 100)Repairable: 99.5% (missing: 100; now reading [20900..20999], size 100)
+*** Splitting [20801..20899]
+... Processing Interval [20850..20899], size 50
+                                                                      Repairable: 99.5% (missing: 100; now reading [20850..20899], size 50)Sector 20850, try 1: Medium Error; Unrecovered read error.
+
+Sector 20850: Medium Error; Unrecovered read error.
+... Interval 49 [20851..20899] added
+*** Splitting [20801..20849]
+... Processing Interval [20825..20849], size 25
+Repairable: 99.5% (missing: 100; now reading [20825..20849], size 25)Sector 20825, try 1: Medium Error; Unrecovered read error.
+
+Sector 20825: Medium Error; Unrecovered read error.
+... Interval 24 [20826..20849] added
+*** Splitting [20851..20899]
+... Processing Interval [20875..20899], size 25
+Repairable: 99.5% (missing: 100; now reading [20875..20899], size 25)Sector 20875, try 1: Medium Error; Unrecovered read error.
+
+Sector 20875: Medium Error; Unrecovered read error.
+... Interval 24 [20876..20899] added
+*** Splitting [20801..20824]
+
+No unreadable intervals with >= 16 sectors left.
+99.5% of the image have been read (20900 sectors).

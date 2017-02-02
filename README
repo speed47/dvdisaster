@@ -2,7 +2,7 @@ This directory tree contains dvdisaster,
 a tool providing additional ECC protection for optical media.
 
 This version of dvdisaster supports the following platforms:
-Linux, FreeBSD, NetBSD on x86, PowerPC and Sparc.
+Linux, FreeBSD, NetBSD on x86, PowerPC, and Sparc.
 
 
 Roadmap of contained files
@@ -69,8 +69,4 @@ scripts
 tools
 	Auxiliary programs for the build and packaging process reside
 	in "tools".
-
-wininst
-	Additional files needed for building the Windows distribution.
-
 

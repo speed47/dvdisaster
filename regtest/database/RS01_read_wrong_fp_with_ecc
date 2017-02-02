@@ -1,0 +1,17 @@
+19f8cf1270684f74e70189423ebc1122
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+
+*
+* dvdisaster - can not continue:
+*
+Image file does not match the optical disc.
+

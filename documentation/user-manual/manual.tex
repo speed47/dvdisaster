@@ -1,0 +1,138 @@
+\documentclass[12pt,a4paper,twoside]{article}
+\usepackage{times}	% Skalierbarer und lesbarer Zeichensatz
+\usepackage{ucs}	% Benötigt für Eingabe von unicode-Zeichensätzen
+\usepackage[utf8x]{inputenc} % Aktiviert Eingabe von unicode-Zeichensätzen
+\usepackage{epsfig}	% Makros zum Einfügen von Grafiken
+\usepackage{anysize}	% Makros zum Einstellen der Seitenränder
+%\usepackage{makeidx}	% Makros zum Erstellen des Indexes
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+
+\marginsize{30mm}{20mm}{20mm}{20mm}  % Seitenränder links, rechts, oben, unten
+\parindent0em		% Keine amerikanische Einrückung am Anfang von Paragraphen
+\renewcommand{\textfraction}{0.01}
+\renewcommand{\floatpagefraction}{0.99}
+\renewcommand{\topfraction}{0.99}
+\renewcommand{\bottomfraction}{0.99}
+
+\pagestyle{fancy}	% Seitenstil
+%\makeindex		% wird für Erstellung von Stichwortverzeichnissen benötigt
+
+\definecolor{linkblue}{rgb}{0,0,0.75}
+\definecolor{dkgreen}{rgb}{0,0.66,0}
+\definecolor{dkred}{rgb}{0.75,0,0}
+
+\definecolor{dkgrey}{RGB}{184,184,184}
+\definecolor{ltgrey}{RGB}{224,224,224}
+\definecolor{turquoise}{RGB}{128,255,255}
+\definecolor{pink}{RGB}{255,180,240}
+\definecolor{dkblue}{RGB}{196,196,240}
+
+
+\definecolor{ltgreen}{RGB}{192,255,192}
+\definecolor{ltyellow}{RGB}{255,255,192}
+\definecolor{ltorange}{RGB}{255,224,192}
+\definecolor{ltred}{RGB}{255,192,192}
+
+\hypersetup{
+    pdftitle={dvdisaster User's Manual},
+    pdfauthor={Carsten Gnörlich},
+    colorlinks=true,
+    linkcolor=linkblue,
+    citecolor=linkblue,
+    filecolor=linkblue,
+    urlcolor=linkblue
+}
+
+\input{../config/version.tex}
+\input{local.tex}
+
+% Ende der Voreinstellungen
+
+\newcommand{\paperversion}{{\em for dvdisaster version \projectversion}}
+
+\fancyhead{}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+%\renewcommand{\sectionmark}[1]{\markboth{#1}{#1}}
+%\renewcommand{\subsectionmark}[1]{}
+
+%\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot{}
+\fancyfoot[LE,RO]{page \thepage\ of \pageref{LastPage}}
+
+\begin{document}
+
+\definecolor{lightorange}{RGB}{255,224,150}
+\pagecolor{lightorange}
+\title{The dvdisaster User's Manual}
+\author{Carsten Gnörlich\\carsten@dvdisaster.org}
+\date{}
+\maketitle
+\thispagestyle{empty}
+
+\centerline{\includegraphics[width=40mm]{figures/puzzle.pdf}}
+
+\begin{center}
+\paperversion
+\end{center}
+
+\bigskip
+
+\begin{abstract}
+This is the {\em orange manual}, describing the usage of {\em dvdisaster}, a tool for
+creating error correction data (``ecc data'') 
+for optical media  such as CD, DVD and BD discs. 
+Use cases for creating ecc data, recovering defective media
+using ecc data and for general maintenanance of optical 
+media are given. 
+See \url{http://dvdisaster.org}  for additional resources on
+the dvdisaster project, e.g. for the {\em blue} manual (codecs.pdf)
+containing a formal specification of the error correction data format.
+\end{abstract}
+
+\vfill
+\begin{center}
+{\em 
+Copyright 2008-2015 Carsten Gnörlich.
+Verbatim copying and distribution of this entire article is permitted in any medium, 
+provided this notice is preserved.}
+\end{center}
+
+\newpage
+\nopagecolor
+
+% Table of Contents
+
+\tableofcontents
+\newpage
+
+\input{preface}
+\newpage
+
+\input{overview}
+\newpage
+
+\input{howtos}
+\newpage
+
+\input{download}
+\newpage
+
+\input{qa}
+\newpage
+
+\input{background}
+\newpage
+
+\input{burning-compatibility}
+\newpage
+
+\input{defect-reporting}
+
+\label{LastPage}\label{missing}
+\end{document}

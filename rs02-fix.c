@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -29,22 +30,22 @@
  ***/
 
 typedef struct
-{  RS02Widgets *wl;
+{  Image *image;
+   EccHeader *eh;
+   RS02Widgets *wl;
    RS02Layout *lay;
    GaloisTables *gt;
    ReedSolomonTables *rt;
    int earlyTermination;
    char *msg;
-   ImageInfo *ii;
    unsigned char *imgBlock[255];
-   gint64 *eccIdx[255];
 } fix_closure;
 
 static void fix_cleanup(gpointer data)
 {  fix_closure *fc = (fix_closure*)data;
    int i;
 
-   Closure->cleanupProc = NULL;
+   UnregisterCleanup();
 
    if(Closure->guiMode)
    {  if(fc->earlyTermination)
@@ -57,15 +58,12 @@ static void fix_cleanup(gpointer data)
 
    /** Clean up */
 
+   if(fc->image) CloseImage(fc->image);
    if(fc->msg) g_free(fc->msg);
-   if(fc->ii) FreeImageInfo(fc->ii);
 
    for(i=0; i<255; i++)
    {  if(fc->imgBlock[i])
 	 g_free(fc->imgBlock[i]); 
-
-      if(fc->eccIdx[i])
-	 g_free(fc->eccIdx[i]); 
    }
 
    if(fc->lay) g_free(fc->lay);
@@ -83,23 +81,24 @@ static void fix_cleanup(gpointer data)
  * Expand a truncated image 
  */
 
-static void expand_image(ImageInfo *ii, gint64 new_size)
-{  int last_percent, percent;
+static void expand_image(fix_closure *fc, gint64 new_size)
+{  Image *image = fc->image;
+   int last_percent, percent;
    gint64 sectors, new_sectors;
 
-   if(!LargeSeek(ii->file, ii->size))
+   if(!LargeSeek(image->file, image->file->size))
      Stop(_("Failed seeking to end of image: %s\n"), strerror(errno));
 
    last_percent = 0;
-   new_sectors = new_size - ii->sectors;
+   new_sectors = new_size - image->sectorSize;
    for(sectors = 0; sectors < new_sectors; sectors++)
    {  unsigned char buf[2048];
       int n;
 
-      CreateMissingSector(buf, ii->sectors+sectors, 
-			  ii->mediumFP, FINGERPRINT_SECTOR, 
+      CreateMissingSector(buf, image->sectorSize+sectors, 
+			  fc->eh->mediumFP, FINGERPRINT_SECTOR, 
 			  "RS02 fix placeholder");
-      n = LargeWrite(ii->file, buf, 2048);
+      n = LargeWrite(image->file, buf, 2048);
       if(n != 2048)
 	Stop(_("Failed expanding the image: %s\n"), strerror(errno));
 
@@ -118,17 +117,20 @@ static void expand_image(ImageInfo *ii, gint64 new_size)
    {  PrintProgress(_("Expanding image: %3d%%"), 100);
       PrintProgress("\n");
    }
+
+   image->sectorSize = new_size;
+   image->file->size = new_size;
 }
 
 /***
  *** Test and fix the current image.
  ***/
 
-void RS02Fix(Method *self)
-{  RS02Widgets *wl = (RS02Widgets*)self->widgetList;
+void RS02Fix(Image *image)
+{  Method *self = FindMethod("RS02");
+   RS02Widgets *wl = (RS02Widgets*)self->widgetList;
    RS02Layout *lay;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
-   ImageInfo *ii = NULL;
    EccHeader *eh;
 #ifdef HAVE_BIG_ENDIAN
    EccHeader *eh_swapped;
@@ -160,10 +162,11 @@ void RS02Fix(Method *self)
    gint64 damaged_eccblocks=0;
    gint64 damaged_eccsecs=0;
    gint64 expected_sectors;
-   char *t=NULL,*msg;
+   char *t=NULL;
 
    /*** Register the cleanup procedure for GUI mode */
 
+   fc->image = image;
    fc->wl = wl;
    fc->earlyTermination = TRUE;
    RegisterCleanup(_("Repairing of image aborted"), fix_cleanup, fc);
@@ -175,9 +178,8 @@ void RS02Fix(Method *self)
 		  _("<big>Repairing the image.</big>\n<i>%s</i>"),
 		  _("Opening files..."));
 
-   eh  = self->lastEh;  /* will always be present */
-   ii  = fc->ii = OpenImageFile(eh, WRITEABLE_IMAGE);
-   lay = fc->lay = CalcRS02Layout(uchar_to_gint64(eh->sectors), eh->eccBytes); 
+   eh  = fc->eh  = image->eccHeader;
+   lay = fc->lay = RS02LayoutFromImage(image); 
 
    ndata  = lay->ndata;
    nroots = lay->nroots;
@@ -192,28 +194,29 @@ void RS02Fix(Method *self)
    /*** Expand a truncated image with "dead sector" markers */
 
    expected_sectors = lay->eccSectors+lay->dataSectors;
-   if(ii->sectors < expected_sectors)
-     expand_image(ii, expected_sectors);
+   if(image->sectorSize < expected_sectors)
+     expand_image(fc, expected_sectors);
 
    /*** Announce what we going to do */
 
-   msg = g_strdup_printf(_("Image contains error correction data: Method RS02, %d roots, %4.1f%% redundancy."),
-			 eh->eccBytes, 
-			 ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
-
    if(Closure->guiMode)
-   {  SetLabelText(GTK_LABEL(wl->fixHeadline),
+   {  char *msg = g_strdup_printf(_("Image contains error correction data: Method RS02, %d roots, %4.1f%% redundancy."),
+				  eh->eccBytes, 
+				  ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
+
+      SetLabelText(GTK_LABEL(wl->fixHeadline),
 		  _("<big>Repairing the image.</big>\n<i>%s</i>"), msg);
       RS02SetFixMaxValues(wl, eh->dataBytes, eh->eccBytes, expected_sectors);
       g_free(msg);
    }    
 
-   PrintLog(_("\nFix mode: Repairable sectors will be fixed in the image.\n"));
+   PrintLog(_("\nFix mode(%s): Repairable sectors will be fixed in the image.\n"),
+	    "RS02");
 
    /*** Truncate an image with trailing garbage */
 
-   if(ii->sectors > expected_sectors)
-   { gint64 diff = ii->sectors - expected_sectors;
+   if(image->sectorSize > expected_sectors)
+   { gint64 diff = image->sectorSize - expected_sectors;
      char *trans = _("The image file is %lld sectors longer as noted in the\n"
 		     "ecc data. This might simply be zero padding, but could\n"
 		     "also mean that the image was manipulated after appending\n"
@@ -235,9 +238,7 @@ void RS02Fix(Method *self)
 	   goto terminate;
 	}
 
-        ii->sectors -= diff;
-
-        if(!LargeTruncate(ii->file, (gint64)(2048*ii->sectors)))
+        if(!TruncateImage(image, (gint64)(2048*expected_sectors)))
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
      }
      
@@ -256,9 +257,7 @@ void RS02Fix(Method *self)
 	  goto terminate;
        }
 
-       ii->sectors -= diff;
-
-       if(!LargeTruncate(ii->file, (gint64)(2048*ii->sectors)))
+       if(!TruncateImage(image, (gint64)(2048*expected_sectors)))
 	 Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
        PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
@@ -271,9 +270,7 @@ void RS02Fix(Method *self)
 		_("Add the --truncate option to the program call\n"
 		  "to have the superfluous sectors removed."));
 
-         ii->sectors -= diff;
-
-	 if(!LargeTruncate(ii->file, (gint64)(2048*ii->sectors)))
+	 if(!TruncateImage(image, (gint64)(2048*expected_sectors)))
 	   Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
 	 PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
@@ -286,10 +283,10 @@ void RS02Fix(Method *self)
    eh_swapped = g_malloc(sizeof(EccHeader));
    memcpy(eh_swapped, eh, sizeof(EccHeader));
    SwapEccHeaderBytes(eh_swapped);
-   WriteRS02Headers(ii->file, lay, eh_swapped);
+   WriteRS02Headers(image->file, lay, eh_swapped);
    g_free(eh_swapped);
 #else
-   WriteRS02Headers(ii->file, lay, eh);
+   WriteRS02Headers(image->file, lay, eh);
 #endif
 
    /*** Prepare buffers for ecc code processing.
@@ -301,13 +298,10 @@ void RS02Fix(Method *self)
 	A portion of cache_size sectors is read ahead from each layer/slice,
 	giving a total cache size of 255*cache_size. */
 
-   cache_size = 2*Closure->cacheMB;  /* ndata+nroots=255 medium sectors are approx. 0.5MB */
+   cache_size = 2*Closure->cacheMiB;  /* ndata+nroots=255 medium sectors are approx. 0.5MiB */
 
    for(i=0; i<255; i++)
       fc->imgBlock[i] = g_malloc(cache_size*2048);
-
-   for(i=0; i<nroots; i++)
-      fc->eccIdx[i] = g_malloc(cache_size*sizeof(gint64));
 
    /*** Setup the block counters for mapping medium sectors to ecc blocks.
         Error correction begins at lay->CrcLayerIndex so that we have a chance
@@ -339,10 +333,11 @@ void RS02Fix(Method *self)
      /* See if user hit the Stop button */
 
      if(Closure->stopActions) 
-     {   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-			      fc->wl->fixFootline,
-			      _("<span %s>Aborted by user request!</span>"),
-			      Closure->redMarkup); 
+     {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
+	   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				fc->wl->fixFootline,
+				_("<span %s>Aborted by user request!</span>"),
+				Closure->redMarkup); 
          fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
      }
@@ -371,7 +366,7 @@ void RS02Fix(Method *self)
         for(i=0; i<ndata; i++)       /* Read data portion */
         {  int offset = 0;
 	   for(j=0; j<cache_size; j++) 
-	   {  RS02ReadSector(ii, lay, fc->imgBlock[i]+offset, block_idx[i]+j);
+	   {  RS02ReadSector(image, lay, fc->imgBlock[i]+offset, block_idx[i]+j);
 	      offset += 2048;
 	   }
 	}
@@ -381,12 +376,10 @@ void RS02Fix(Method *self)
 	   for(j=0; j<cache_size; j++) 
 	   {  gint64 esi = RS02EccSectorIndex(lay, i, ecc_idx+j);
 
-	      fc->eccIdx[i][j] = esi; /* remember for later use */ 
-
-	      if(!LargeSeek(ii->file, 2048*esi))
+	      if(!LargeSeek(image->file, 2048*esi))
 		Stop(_("Failed seeking to sector %lld in image: %s"), esi, strerror(errno));
 
-	      if(LargeRead(ii->file, fc->imgBlock[i+ndata]+offset, 2048) != 2048)
+	      if(LargeRead(image->file, fc->imgBlock[i+ndata]+offset, 2048) != 2048)
 		Stop(_("Failed reading sector %lld in image: %s"), esi, strerror(errno));
 
 	      offset += 2048;
@@ -417,10 +410,10 @@ void RS02Fix(Method *self)
 	     int err;
 
 	     if(crc_idx >= 512)
-	     {  if(!LargeSeek(ii->file, crc_sector_byte))
+	     {  if(!LargeSeek(image->file, crc_sector_byte))
 		  Stop(_("Failed seeking in crc area: %s"), strerror(errno));
 	
-		if(LargeRead(ii->file, crc_buf, 2048) != 2048)
+		if(LargeRead(image->file, crc_buf, 2048) != 2048)
 		  Stop(_("problem reading crc data: %s"), strerror(errno));
 
 		err = CheckForMissingSector((unsigned char*)crc_buf, crc_sector_byte/2048,
@@ -447,10 +440,11 @@ void RS02Fix(Method *self)
      }
 
      for(i=lay->ndata; i<GF_FIELDMAX; i++)  /* Check the ecc sectors */
-     {  int err = CheckForMissingSector(fc->imgBlock[i]+cache_offset,
-					fc->eccIdx[i-ndata][cache_sector],
+     {  gint64 ecc_sector = RS02EccSectorIndex(lay, i-ndata, ecc_idx);
+	int err = CheckForMissingSector(fc->imgBlock[i]+cache_offset,
+					ecc_sector,
 					eh->mediumFP, eh->fpSector);
-
+	 
 	if(err)
 	{  erasure_map[i] = 1;
 	   erasure_list[erasure_count++] = i;
@@ -469,8 +463,10 @@ void RS02Fix(Method *self)
 
 	   for(i=0; i<erasure_count; i++)
 	   {  gint64 loc = erasure_list[i];
-	      PrintCLI("%lld ", 
-		       loc < ndata ? block_idx[loc] : fc->eccIdx[loc-ndata][cache_sector]);
+
+	      if(loc < ndata) PrintCLI("%lld ", block_idx[loc]);
+	      else            PrintCLI("%lld ", RS02EccSectorIndex(lay, loc-ndata, ecc_idx));
+
 	   }
 	   PrintCLI("\n");
 	}
@@ -626,8 +622,9 @@ void RS02Fix(Method *self)
 
 	   for(i=0; i<erasure_count; i++)
 	   {  gint64 loc = erasure_list[i];
-	      PrintLog("%lld ", 
-		       loc < ndata ? block_idx[loc] : fc->eccIdx[loc-ndata][cache_sector]);
+
+	     if(loc < ndata) PrintLog("%lld ", block_idx[loc]);
+	     else            PrintLog("%lld ", RS02EccSectorIndex(lay, loc-ndata, ecc_idx));
 	   }
 	   PrintLog("\n");
 	   uncorrected += erasure_count;
@@ -696,7 +693,7 @@ void RS02Fix(Method *self)
 
 		 if(location < ndata)
 		      sector = block_idx[location];
-		 else sector = fc->eccIdx[location-ndata][cache_sector];
+		 else sector = RS02EccSectorIndex(lay, location-ndata, ecc_idx);
 
 		 PrintCLI(msg,
 			  sector, bi, 
@@ -709,7 +706,7 @@ void RS02Fix(Method *self)
 	}
      }
 
-     /* Write corrected sectors back to disc
+     /* Write corrected sectors back to disk
         and report them */
 
      erasure_count += error_count;  /* total errors encountered */
@@ -720,7 +717,7 @@ void RS02Fix(Method *self)
         for(i=0; i<255; i++)
         {  gint64 sec;
            char type='?';
-	   int length,n;
+	   int n;
 	   
 	   if(!erasure_map[i]) continue;
 
@@ -740,22 +737,23 @@ void RS02Fix(Method *self)
 	   }
 
 	   if(i < ndata) {  data_corr++; sec = block_idx[i]; }
-	   else          {  ecc_corr++;  sec = fc->eccIdx[i-ndata][cache_sector]; }
+	   else          {  ecc_corr++;  sec = RS02EccSectorIndex(lay, i-ndata, ecc_idx); }
+
 	   corrected++;
 
 	   PrintCLI("%lld%c ", sec, type);
 
 	   /* Write the recovered sector */
 
-	   if(!LargeSeek(ii->file, (gint64)(2048*sec)))
+	   if(!LargeSeek(image->file, (gint64)(2048*sec)))
 	     Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
 		  sec, "FW", strerror(errno));
 
-	   if(sec < lay->dataSectors-1) length = 2048;
-	   else length = ii->inLast;  /* error: use inLast calculated from eh->sectors */
-
-	   n = LargeWrite(ii->file, cache_offset+fc->imgBlock[i], length);
-	   if(n != length)
+	   /* augmented images can not have sizes not a multiple of 2048,
+	      e.g. we need not to examine the ->inLast value. */
+	   
+	   n = LargeWrite(image->file, cache_offset+fc->imgBlock[i], 2048);
+	   if(n != 2048)
 	     Stop(_("could not write medium sector %lld:\n%s"), sec, strerror(errno));
 
 	}

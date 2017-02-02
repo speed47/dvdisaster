@@ -1,0 +1,49 @@
+General structure of the database log file
+------------------------------------------
+
+Creating a new database file:
+Run the test, then copy and modify /dev/shm/newlog.txt
+
+- The first 2 lines of the log file contain special content
+  and are excluded from the diff against the actual log.
+
+Line 1: md5sum of image file or "ignore"
+Line 2: md5sum of ecc file or "ignore"
+
+- Remove directory path prefix of all occurrences of .iso and .ecc files!
+
+
+Anatomy of a test case
+----------------------
+
+Example:
+
+01 # Scan an image with a simulated hardware failure and 
+02 # --ignore-fatal-sense not set.
+03
+04 if try "scanning image, ignoring simulated hardware failure" scan_with_ignored_hardware_failure; then
+05
+06   cp $MASTERISO $SIMISO
+07   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
+08
+09   replace_config ignore-fatal-sense 1
+10   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+11   run_regtest scan_with_ignored_hardware_failure "--spinup-delay=0 -s --ignore-fatal-sense" $ISODIR/no.iso  $ISODIR/no.ecc
+12 fi
+
+line 01-02: Describe what the test case does and what results are expected.
+line 04   : try description symbol
+            provides a descriptive text for the test case and defines the symbol/label
+            which is part of the database file and the config.txt list.
+line 06-07: prepare test files
+line 09   : in GUI mode, some settings can only made in the .dvdisaster file,
+     	    not with the respective command line switches
+line 10   : arguments which work both in GUI mode and command line mode
+line 11   : run_regtest symbol args iso_image ecc_file
+     	    Runs the regtest.
+	    In GUI mode, args is ignored and only the iso_image and ecc_file parameters
+	    are passed via the configuration file. extra_args are provided on the
+	    command line.
+	    In CLI mode, args is prepended with extra_args and appended with switches
+	    for the iso_image and the ecc_file and then passed with the program
+	    call in the command line. 

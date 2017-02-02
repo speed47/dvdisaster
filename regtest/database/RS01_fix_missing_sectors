@@ -1,0 +1,109 @@
+9503f278d4550a9507a317664481adf8
+4be4dcc0f6b88965334ccf1050dfa5fa
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs01-tmp.iso: 21000 medium sectors.
+
+Fix mode(RS01): Repairable sectors will be fixed in the image.
+    3 repaired sectors: 0 190 2090 
+Ecc progress:   1.0%    1 repaired sectors: 2091 
+Ecc progress:   2.1%    2 repaired sectors: 192 2092 
+Ecc progress:   3.1%    1 repaired sectors: 2093 
+Ecc progress:   4.2%    2 repaired sectors: 2094 20999 
+Ecc progress:   5.2%    2 repaired sectors: 2000 2095 
+Ecc progress:   6.3%    2 repaired sectors: 2001 2096 
+Ecc progress:   7.3%    2 repaired sectors: 2002 2097 
+Ecc progress:   8.4%    2 repaired sectors: 2003 2098 
+Ecc progress:   9.4%    2 repaired sectors: 2004 2099 
+Ecc progress:  10.5%    2 repaired sectors: 2005 2100 
+Ecc progress:  11.5%    2 repaired sectors: 2006 2101 
+Ecc progress:  12.6%    2 repaired sectors: 2007 2102 
+Ecc progress:  13.6%    2 repaired sectors: 2008 2103 
+Ecc progress:  14.7%    2 repaired sectors: 2009 2104 
+Ecc progress:  15.7%    2 repaired sectors: 2010 2105 
+Ecc progress:  16.8%    2 repaired sectors: 2011 2106 
+Ecc progress:  17.8%    2 repaired sectors: 2012 2107 
+Ecc progress:  18.9%    2 repaired sectors: 2013 2108 
+Ecc progress:  20.0%    2 repaired sectors: 2014 2109 
+Ecc progress:  21.0%    3 repaired sectors: 590 2015 2110 
+Ecc progress:  22.1%    3 repaired sectors: 591 2016 2111 
+Ecc progress:  23.1%    3 repaired sectors: 592 2017 2112 
+Ecc progress:  24.2%    3 repaired sectors: 593 2018 2113 
+Ecc progress:  25.2%    3 repaired sectors: 594 2019 2114 
+Ecc progress:  26.3%    3 repaired sectors: 595 2020 2115 
+Ecc progress:  27.3%    3 repaired sectors: 596 2021 2116 
+Ecc progress:  28.4%    3 repaired sectors: 597 2022 2117 
+Ecc progress:  29.4%    3 repaired sectors: 598 2023 2118 
+Ecc progress:  30.5%    3 repaired sectors: 599 2024 2119 
+Ecc progress:  31.5%    3 repaired sectors: 600 2025 2120 
+Ecc progress:  32.6%    3 repaired sectors: 601 2026 2121 
+Ecc progress:  33.6%    3 repaired sectors: 602 2027 2122 
+Ecc progress:  34.7%    3 repaired sectors: 603 2028 2123 
+Ecc progress:  35.7%    3 repaired sectors: 604 2029 2124 
+Ecc progress:  36.8%    3 repaired sectors: 605 2030 2125 
+Ecc progress:  37.8%    3 repaired sectors: 606 2031 2126 
+Ecc progress:  38.9%    3 repaired sectors: 607 2032 2127 
+Ecc progress:  40.0%    3 repaired sectors: 608 2033 2128 
+Ecc progress:  41.0%    3 repaired sectors: 609 2034 2129 
+Ecc progress:  42.1%    3 repaired sectors: 610 2035 2130 
+Ecc progress:  43.1%    3 repaired sectors: 611 2036 2131 
+Ecc progress:  44.2%    3 repaired sectors: 612 2037 2132 
+Ecc progress:  45.2%    3 repaired sectors: 613 2038 2133 
+Ecc progress:  46.3%    3 repaired sectors: 614 2039 2134 
+Ecc progress:  47.3%    3 repaired sectors: 615 2040 2135 
+Ecc progress:  48.4%    3 repaired sectors: 616 2041 2136 
+Ecc progress:  49.4%    3 repaired sectors: 617 2042 2137 
+Ecc progress:  50.5%    3 repaired sectors: 618 2043 2138 
+Ecc progress:  51.5%    3 repaired sectors: 619 2044 2139 
+Ecc progress:  52.6%    2 repaired sectors: 620 2045 
+Ecc progress:  53.6%    3 repaired sectors: 621 2046 2141 
+Ecc progress:  54.7%    3 repaired sectors: 622 2047 2142 
+Ecc progress:  55.7%    3 repaired sectors: 623 2048 2143 
+Ecc progress:  56.8%    3 repaired sectors: 624 2049 2144 
+Ecc progress:  57.8%    3 repaired sectors: 625 2050 2145 
+Ecc progress:  58.9%    3 repaired sectors: 626 2051 2146 
+Ecc progress:  60.0%    3 repaired sectors: 627 2052 2147 
+Ecc progress:  61.0%    3 repaired sectors: 628 2053 2148 
+Ecc progress:  62.1%    3 repaired sectors: 629 2054 2149 
+Ecc progress:  63.1%    3 repaired sectors: 630 2055 2150 
+Ecc progress:  64.2%    3 repaired sectors: 631 2056 2151 
+Ecc progress:  65.2%    3 repaired sectors: 632 2057 2152 
+Ecc progress:  66.3%    3 repaired sectors: 633 2058 2153 
+Ecc progress:  67.3%    3 repaired sectors: 634 2059 2154 
+Ecc progress:  68.4%    3 repaired sectors: 635 2060 2155 
+Ecc progress:  69.4%    3 repaired sectors: 636 2061 2156 
+Ecc progress:  70.5%    3 repaired sectors: 637 2062 2157 
+Ecc progress:  71.5%    3 repaired sectors: 638 2063 2158 
+Ecc progress:  72.6%    3 repaired sectors: 639 2064 2159 
+Ecc progress:  73.6%    3 repaired sectors: 640 2065 2160 
+Ecc progress:  74.7%    3 repaired sectors: 641 2066 2161 
+Ecc progress:  75.7%    3 repaired sectors: 642 2067 2162 
+Ecc progress:  76.8%    3 repaired sectors: 643 2068 2163 
+Ecc progress:  77.8%    3 repaired sectors: 644 2069 2164 
+Ecc progress:  78.9%    3 repaired sectors: 645 2070 2165 
+Ecc progress:  80.0%    3 repaired sectors: 646 2071 2166 
+Ecc progress:  81.0%    3 repaired sectors: 647 2072 2167 
+Ecc progress:  82.1%    3 repaired sectors: 648 2073 2168 
+Ecc progress:  83.1%    3 repaired sectors: 649 2074 2169 
+Ecc progress:  84.2%    2 repaired sectors: 2075 2170 
+Ecc progress:  85.2%    2 repaired sectors: 2076 2171 
+Ecc progress:  86.3%    2 repaired sectors: 2077 2172 
+Ecc progress:  87.3%    2 repaired sectors: 2078 2173 
+Ecc progress:  88.4%    2 repaired sectors: 2079 2174 
+Ecc progress:  89.4%    2 repaired sectors: 2080 2175 
+Ecc progress:  90.5%    2 repaired sectors: 2081 2176 
+Ecc progress:  91.5%    1 repaired sectors: 2082 
+Ecc progress:  92.6%    1 repaired sectors: 2083 
+Ecc progress:  93.6%    1 repaired sectors: 2084 
+Ecc progress:  94.7%    1 repaired sectors: 2085 
+Ecc progress:  95.7%    1 repaired sectors: 2086 
+Ecc progress:  96.8%    1 repaired sectors: 2087 
+Ecc progress:  97.8%    1 repaired sectors: 2088 
+Ecc progress:  98.9%    1 repaired sectors: 2089 
+Ecc progress: 100.0%Ecc progress: 100.0%
+Repaired sectors: 240     
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  2.5; worst = 3.

@@ -1,22 +1,23 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2012 Carsten Gnoerlich.
- *  Project home page: http://www.dvdisaster.com
- *  Email: carsten@dvdisaster.com  -or-  cgnoerlich@fsfe.org
+ *  Copyright (C) 2004-2015 Carsten Gnoerlich.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
+ *  Project homepage: http://www.dvdisaster.org
+ *
+ *  This file is part of dvdisaster.
+ *
+ *  dvdisaster is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  dvdisaster is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,
- *  or direct your browser at http://www.gnu.org.
+ *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "dvdisaster.h"
@@ -456,13 +457,12 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
       case ACTION_FILESEL_LOAD_OK:
       {  LargeFile *file;
 	 char *path;
-	 int n;
 
 	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
 	 gtk_widget_hide(rec->loadBufSel);
 
 	 file = LargeOpen(path, O_RDONLY, IMG_PERMS);
-	 n = LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
+	 LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
 	 LargeClose(file);
 
 	 calculate_failures(rec);
@@ -477,13 +477,12 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
       case ACTION_FILESEL_SAVE_OK:
       {  LargeFile *file;
 	 char *path;
-	 int n;
 
 	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
 	 gtk_widget_hide(rec->saveBufSel);
 
 	 file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
-	 n = LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
+	 LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
 	 LargeClose(file);
 
 	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Buffer saved to %s."), path);
@@ -653,8 +652,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 /* Button press event handler */
 
 static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer data)
-{  static int last_action;
-   raw_editor_context *rec = Closure->rawEditorContext;
+{  raw_editor_context *rec = Closure->rawEditorContext;
    RawBuffer *rb = rec->rb;
    int mouse_x = event->x;
    int mouse_y = event->y;
@@ -816,7 +814,6 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 
    //   undo_remember(rec);
 
-   last_action = rec->onClickAction;
    return TRUE;
 }
 

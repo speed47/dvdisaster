@@ -1,0 +1,104 @@
+9503f278d4550a9507a317664481adf8
+1f52f29bf40b8a530697c969ab7044a6
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03f-master.iso: 21000 medium sectors.
+
+Fix mode(RS03f): Repairable sectors will be fixed in the image.
+    1 repaired sectors: ; ecc file: 1802d 
+Ecc progress:   0.0%    1 repaired sectors: ; ecc file: 1803d 
+Ecc progress:   1.1%    1 repaired sectors: ; ecc file: 1804d 
+Ecc progress:   2.2%    1 repaired sectors: ; ecc file: 1805d 
+Ecc progress:   3.3%    1 repaired sectors: ; ecc file: 1806d 
+Ecc progress:   4.4%    1 repaired sectors: ; ecc file: 1807d 
+Ecc progress:   5.5%    1 repaired sectors: ; ecc file: 1808d 
+Ecc progress:   6.6%    1 repaired sectors: ; ecc file: 1809d 
+Ecc progress:   7.7%    1 repaired sectors: ; ecc file: 1810d 
+Ecc progress:   8.8%    1 repaired sectors: ; ecc file: 1811d 
+Ecc progress:  10.0%    1 repaired sectors: ; ecc file: 1812d 
+Ecc progress:  11.1%    1 repaired sectors: ; ecc file: 1813d 
+Ecc progress:  12.2%    1 repaired sectors: ; ecc file: 1814d 
+Ecc progress:  13.3%    1 repaired sectors: ; ecc file: 1815d 
+Ecc progress:  14.4%    1 repaired sectors: ; ecc file: 1816d 
+Ecc progress:  15.5%    1 repaired sectors: ; ecc file: 1817d 
+Ecc progress:  16.6%    1 repaired sectors: ; ecc file: 1818d 
+Ecc progress:  17.7%    1 repaired sectors: ; ecc file: 1819d 
+Ecc progress:  18.8%    1 repaired sectors: ; ecc file: 1820d 
+Ecc progress:  20.0%    1 repaired sectors: ; ecc file: 1821d 
+Ecc progress:  21.1%    1 repaired sectors: ; ecc file: 1822d 
+Ecc progress:  22.2%    1 repaired sectors: ; ecc file: 1823d 
+Ecc progress:  23.3%    1 repaired sectors: ; ecc file: 1824d 
+Ecc progress:  24.4%    1 repaired sectors: ; ecc file: 1825d 
+Ecc progress:  25.5%    1 repaired sectors: ; ecc file: 1826d 
+Ecc progress:  26.6%    1 repaired sectors: ; ecc file: 1827d 
+Ecc progress:  27.7%    1 repaired sectors: ; ecc file: 1828d 
+Ecc progress:  28.8%    1 repaired sectors: ; ecc file: 1829d 
+Ecc progress:  30.0%    1 repaired sectors: ; ecc file: 1830d 
+Ecc progress:  31.1%    1 repaired sectors: ; ecc file: 1831d 
+Ecc progress:  32.2%    1 repaired sectors: ; ecc file: 1832d 
+Ecc progress:  33.3%    1 repaired sectors: ; ecc file: 1833d 
+Ecc progress:  34.4%    1 repaired sectors: ; ecc file: 1834d 
+Ecc progress:  35.5%    1 repaired sectors: ; ecc file: 1835d 
+Ecc progress:  36.6%    1 repaired sectors: ; ecc file: 1836d 
+Ecc progress:  37.7%    1 repaired sectors: ; ecc file: 1837d 
+Ecc progress:  38.8%    1 repaired sectors: ; ecc file: 1838d 
+Ecc progress:  40.0%    1 repaired sectors: ; ecc file: 1839d 
+Ecc progress:  41.1%    1 repaired sectors: ; ecc file: 1840d 
+Ecc progress:  42.2%    1 repaired sectors: ; ecc file: 1841d 
+Ecc progress:  43.3%    1 repaired sectors: ; ecc file: 1842d 
+Ecc progress:  44.4%    1 repaired sectors: ; ecc file: 1843d 
+Ecc progress:  45.5%    1 repaired sectors: ; ecc file: 1844d 
+Ecc progress:  46.6%    1 repaired sectors: ; ecc file: 1845d 
+Ecc progress:  47.7%    1 repaired sectors: ; ecc file: 1846d 
+Ecc progress:  48.8%    1 repaired sectors: ; ecc file: 1847d 
+Ecc progress:  50.0%    1 repaired sectors: ; ecc file: 1848d 
+Ecc progress:  51.1%    1 repaired sectors: ; ecc file: 1849d 
+Ecc progress:  52.2%    1 repaired sectors: ; ecc file: 1850d 
+Ecc progress:  53.3%    1 repaired sectors: ; ecc file: 1851d 
+Ecc progress:  54.4%    1 repaired sectors: ; ecc file: 1852d 
+Ecc progress:  55.5%    1 repaired sectors: ; ecc file: 1853d 
+Ecc progress:  56.6%    1 repaired sectors: ; ecc file: 1854d 
+Ecc progress:  57.7%    1 repaired sectors: ; ecc file: 1855d 
+Ecc progress:  58.8%    1 repaired sectors: ; ecc file: 1856d 
+Ecc progress:  60.0%    1 repaired sectors: ; ecc file: 1857d 
+Ecc progress:  61.1%    1 repaired sectors: ; ecc file: 1858d 
+Ecc progress:  62.2%    1 repaired sectors: ; ecc file: 1859d 
+Ecc progress:  63.3%    1 repaired sectors: ; ecc file: 1860d 
+Ecc progress:  64.4%    1 repaired sectors: ; ecc file: 1861d 
+Ecc progress:  65.5%    1 repaired sectors: ; ecc file: 1862d 
+Ecc progress:  66.6%    1 repaired sectors: ; ecc file: 1863d 
+Ecc progress:  67.7%    1 repaired sectors: ; ecc file: 1864d 
+Ecc progress:  68.8%    1 repaired sectors: ; ecc file: 1865d 
+Ecc progress:  70.0%    1 repaired sectors: ; ecc file: 1866d 
+Ecc progress:  71.1%    1 repaired sectors: ; ecc file: 1867d 
+Ecc progress:  72.2%    1 repaired sectors: ; ecc file: 1868d 
+Ecc progress:  73.3%    1 repaired sectors: ; ecc file: 1869d 
+Ecc progress:  74.4%    1 repaired sectors: ; ecc file: 1870d 
+Ecc progress:  75.5%    1 repaired sectors: ; ecc file: 1871d 
+Ecc progress:  76.6%    1 repaired sectors: ; ecc file: 1872d 
+Ecc progress:  77.7%    1 repaired sectors: ; ecc file: 1873d 
+Ecc progress:  78.8%    1 repaired sectors: ; ecc file: 1874d 
+Ecc progress:  80.0%    1 repaired sectors: ; ecc file: 1875d 
+Ecc progress:  81.1%    1 repaired sectors: ; ecc file: 1876d 
+Ecc progress:  82.2%    1 repaired sectors: ; ecc file: 1877d 
+Ecc progress:  83.3%    2 repaired sectors: ; ecc file: 1788d 1878d 
+Ecc progress:  84.4%    2 repaired sectors: ; ecc file: 1789d 1879d 
+Ecc progress:  85.5%    2 repaired sectors: ; ecc file: 1790d 1880d 
+Ecc progress:  86.6%    2 repaired sectors: ; ecc file: 1791d 1881d 
+Ecc progress:  87.7%    2 repaired sectors: ; ecc file: 1792d 1882d 
+Ecc progress:  88.8%    2 repaired sectors: ; ecc file: 1793d 1883d 
+Ecc progress:  90.0%    2 repaired sectors: ; ecc file: 1794d 1884d 
+Ecc progress:  91.1%    2 repaired sectors: ; ecc file: 1795d 1885d 
+Ecc progress:  92.2%    2 repaired sectors: ; ecc file: 1796d 1886d 
+Ecc progress:  93.3%    2 repaired sectors: ; ecc file: 1797d 1887d 
+Ecc progress:  94.4%    2 repaired sectors: ; ecc file: 1798d 1888d 
+Ecc progress:  95.5%    2 repaired sectors: ; ecc file: 1799d 1889d 
+Ecc progress:  96.6%    2 repaired sectors: ; ecc file: 1800d 1890d 
+Ecc progress:  97.7%    2 repaired sectors: ; ecc file: 1801d 1891d 
+Ecc progress:  98.8%Ecc progress: 100.0%
+Repaired sectors: 104 (0 data, 104 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.2; worst = 2.

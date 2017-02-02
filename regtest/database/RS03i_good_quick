@@ -1,0 +1,19 @@
+95b221fd894f6adb6f6e8d3b89583fb6
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs03i-master.iso present.
+
+Error correction properties:
+- type             : Augmented image
+- method           : RS03, 39 roots, 18.1% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+
+Data integrity:
+- medium sectors   : 24990 total / 21000 data
+* quick mode        : image NOT scanned
