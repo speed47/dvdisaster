@@ -16,10 +16,10 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index 793be52..ed86afe 100644
+index 4d6f9bb..eae04f2 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
-@@ -402,7 +402,7 @@ void ShowGPL()
+@@ -403,7 +403,7 @@ void ShowGPL()
    ShowTextfile(_("windowtitle|GNU General Public License"), 
  	       _("<big>GNU General Public License</big>\n"
  		 "<i>The license terms of dvdisaster.</i>"),
@@ -28,7 +28,7 @@ index 793be52..ed86afe 100644
  }
  
  /*
-@@ -566,7 +566,7 @@ static void show_modifying(void)
+@@ -567,7 +567,7 @@ static void show_modifying(void)
  {  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
  	       _("<big>Modifying dvdisaster</big>\n"
  		 "<i>Your changes are not ours.</i>"),
@@ -37,7 +37,7 @@ index 793be52..ed86afe 100644
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -745,11 +745,11 @@ void AboutDialog()
+@@ -746,11 +746,11 @@ void AboutDialog()
  			"GPL");
  
  #ifdef MODIFIED_SOURCE

@@ -6,6 +6,5 @@ Abstract: This manual describes what dvdisaster is and how it can be used
  and aging.
 Section: File Management
 
-Format: HTML
-Index: /usr/share/doc/dvdisaster/html/en/index.html
-Files: /usr/share/doc/dvdisaster/html/en/*.html
+Format: PDF
+Files: /usr/share/doc/dvdisaster-doc/manual.pdf.gz

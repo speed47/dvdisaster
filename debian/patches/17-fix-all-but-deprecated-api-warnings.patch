@@ -7,54 +7,35 @@ Author: Carlos Maddela <e7appew@gmail.com>
 Origin: vendor
 Bug-Debian: https://bugs.debian.org/748416
 Forwarded: no
-Last-Update: 2016-12-22
+Last-Update: 2017-01-05
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- closure.c        | 10 ++++++----
- crcbuf.c         |  2 --
- curve.c          |  2 +-
- debug.c          |  2 --
- file.c           |  6 +++---
- heuristic-lec.c  |  4 ++++
- large-io.c       |  4 ++--
- md5.c            |  2 +-
- memtrack.c       |  3 +--
- menubar.c        |  5 ++---
- preferences.c    |  2 +-
- raw-editor.c     |  9 +++------
- recover-raw.c    |  2 +-
- rs01-common.c    |  2 --
- rs01-fix.c       |  4 ----
- scsi-layer.c     |  4 ++++
- smart-lec.c      | 10 +++++-----
- tools/codec.c    |  2 ++
- tools/decimate.c |  1 +
- tools/memory.c   |  3 +--
- tools/pngio.c    |  4 ++--
- tools/pngpack.c  |  1 +
- 22 files changed, 41 insertions(+), 43 deletions(-)
+ closure.c     |  8 +++++---
+ curve.c       |  2 +-
+ menubar.c     |  2 +-
+ rs01-create.c | 10 +++++-----
+ rs01-verify.c |  2 +-
+ rs03-create.c | 24 ++++++++++++------------
+ rs03-fix.c    |  8 ++++----
+ scsi-layer.c  |  4 ++++
+ smart-lec.c   | 10 +++++-----
+ 9 files changed, 38 insertions(+), 32 deletions(-)
 
 diff --git a/closure.c b/closure.c
-index 6e344a9..ae98b79 100644
+index 7568cba..0e2f889 100644
 --- a/closure.c
 +++ b/closure.c
-@@ -402,12 +402,12 @@ void ReadDotfile()
-    while(TRUE)
-    {  int n;
-       char symbol[41];
--      char *value, *ignore;
-+      char *value;
- 
+@@ -196,7 +196,7 @@ void ReadDotfile()
        /* Get first MAX_LINE_LEN bytes of line, discard the rest */
       
        line[MAX_LINE_LEN-1] = 1;
--      ignore = fgets(line, MAX_LINE_LEN, dotfile);
+-      fgets(line, MAX_LINE_LEN, dotfile);
 +      if(!fgets(line, MAX_LINE_LEN, dotfile)) break;
        if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
  	while(!feof(dotfile) && fgetc(dotfile) != '\n')
  	  ;
-@@ -436,12 +436,14 @@ void ReadDotfile()
+@@ -225,12 +225,14 @@ void ReadDotfile()
        if(!strcmp(symbol, "last-image"))      { g_free(Closure->imageName);
  	                                       if(!strcmp(value, "none"))
  						    Closure->imageName = g_strdup("");
@@ -69,33 +50,13 @@ index 6e344a9..ae98b79 100644
 +                                               else Closure->eccName = g_strdup(value);
 +					       continue;
                                               }
-       if(!strcmp(symbol, "browser"))         { g_free(Closure->browser);
-                                                Closure->browser     = g_strdup(value); continue; }
-diff --git a/crcbuf.c b/crcbuf.c
-index 598355a..464953f 100644
---- a/crcbuf.c
-+++ b/crcbuf.c
-@@ -83,7 +83,6 @@ CrcBuf *GetCRCFromRS02(void *layv, void *dhv, LargeFile *image)
-    AlignedBuffer *ab = CreateAlignedBuffer(2048);
-    CrcBuf *cb = g_malloc(sizeof(CrcBuf));
-    gint64 block_idx[256];
--   guint32 *buf;
-    gint64 image_sectors,crc_sector;
-    gint64 s,i;
-    int crc_idx, crc_valid = FALSE;
-@@ -93,7 +92,6 @@ CrcBuf *GetCRCFromRS02(void *layv, void *dhv, LargeFile *image)
-    cb->crcbuf = g_malloc(image_sectors * sizeof(guint32));
-    cb->size   = image_sectors;
-    cb->valid  = CreateBitmap0(image_sectors);
--   buf = cb->crcbuf;
- 
-    /* Initialize ecc block index pointers.
-       The first CRC set (of lay->ndata checksums) relates to
+       if(!strcmp(symbol, "adaptive-read"))   { Closure->adaptiveRead   = atoi(value); continue; }
+       if(!strcmp(symbol, "auto-suffix"))     { Closure->autoSuffix  = atoi(value); continue; }
 diff --git a/curve.c b/curve.c
-index ca8d8c4..d64c2e2 100644
+index 668bc40..61b81a9 100644
 --- a/curve.c
 +++ b/curve.c
-@@ -122,7 +122,7 @@ int CurveLogY(Curve *curve, gdouble y) /* not really a log */
+@@ -123,7 +123,7 @@ int CurveLogY(Curve *curve, gdouble y) /* not really a log */
     hfact = (gdouble)(curve->bottomLY - curve->topLY);
   
     if(y==1) return curve->bottomLY - ((log(2)/log(curve->logMaxY)) * hfact)/2;
@@ -104,286 +65,194 @@ index ca8d8c4..d64c2e2 100644
  }
  
  /***
-diff --git a/debug.c b/debug.c
-index 2045ac6..d93f24c 100644
---- a/debug.c
-+++ b/debug.c
-@@ -1152,7 +1152,6 @@ void MergeImages(char *arg, int mode)
-    char *left_path, *right_path;
-    gint64 left_sectors, right_sectors,min_sectors,s;
-    int percent,last_percent = 0;
--   gint64 left_missing, right_missing, mismatch;
-    char *cpos = NULL;
+diff --git a/menubar.c b/menubar.c
+index 8258cfd..12f1933 100644
+--- a/menubar.c
++++ b/menubar.c
+@@ -414,7 +414,7 @@ void set_path(GtkWidget *entry, char *path)
+    else
+    {  char buf[PATH_MAX + strlen(path) + 2];
  
-    /*** Evaluate arguments */
-@@ -1185,7 +1184,6 @@ void MergeImages(char *arg, int mode)
+-      getcwd(buf, PATH_MAX);
++      if(!getcwd(buf, PATH_MAX)) return;
+       strcat(buf,"/");
  
-    /*** Compare them */
- 
--   left_missing = right_missing = mismatch = 0;
-    if(left_sectors < right_sectors) 
-         min_sectors = left_sectors;
-    else min_sectors = right_sectors;
-diff --git a/file.c b/file.c
-index bdc4033..e153bd9 100644
---- a/file.c
-+++ b/file.c
-@@ -246,9 +246,9 @@ void UnlinkImage(GtkWidget *label)
-    {  if(!Closure->guiMode)
-        PrintLog("\n");
+       strcat(buf,path);
+diff --git a/rs01-create.c b/rs01-create.c
+index 5cad591..88c352a 100644
+--- a/rs01-create.c
++++ b/rs01-create.c
+@@ -107,12 +107,12 @@ static void unlink_image(GtkWidget *label)
+ 		       _("\nImage file %s deleted.\n"), Closure->imageName);
+    }
+    else 
+-   {  if(!Closure->guiMode)
+-       PrintLog("\n");
++   {    if(!Closure->guiMode)
++	  PrintLog("\n");
  
 -       ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
 -		    _("Image file %s not deleted: %s\n"),
 -		    Closure->imageName, strerror(errno));
-+      ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
-+		   _("Image file %s not deleted: %s\n"),
-+		   Closure->imageName, strerror(errno));
++        ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
++		     _("Image file %s not deleted: %s\n"),
++		     Closure->imageName, strerror(errno));
     }
  }
  
-diff --git a/heuristic-lec.c b/heuristic-lec.c
-index 9508c50..2b10d9c 100644
---- a/heuristic-lec.c
-+++ b/heuristic-lec.c
-@@ -1865,6 +1865,8 @@ int AckHeuristic(RawBuffer *rb)
-       printf("AH L-EC: iteration %d\n", iteration); 
-       printf("      Q-f/c/e + d: %2d/%2d/%2d + %2d\n", q_failures, q_corrected, q_err, q_decimated);
-       printf("      P-f/c/e + d: %2d/%2d/%2d + %2d\n", p_failures, p_corrected, p_err, p_decimated);
-+#else
-+      (void) p_decimated;
+diff --git a/rs01-verify.c b/rs01-verify.c
+index 3315659..431a6d0 100644
+--- a/rs01-verify.c
++++ b/rs01-verify.c
+@@ -830,7 +830,7 @@ process_ecc:
+       {  if(!Closure->guiMode)
+ 	      PrintProgress(_("- ecc md5sum       : %3d%%"),percent);
+ 	 else SetLabelText(GTK_LABEL(wl->cmpEccMd5Sum), "%3d%%", percent);
+-	      last_percent = percent;
++	 last_percent = percent;
+       }
+ 
+       if(Closure->stopActions)   
+diff --git a/rs03-create.c b/rs03-create.c
+index 40066d2..b2c6033 100644
+--- a/rs03-create.c
++++ b/rs03-create.c
+@@ -31,9 +31,9 @@
+ 
+ //#define VERBOSE 1
+ #ifdef VERBOSE
+-  #define verbose(format,args...) printf(format, ## args)
++  #define verbose(format,...) printf(format, __VA_ARGS__)
+ #else
+-  #define verbose(format,args...)
++  #define verbose(format,...)
  #endif
+ 
+ #ifdef HAVE_MMAP
+@@ -688,7 +688,7 @@ static void flush_crc(ecc_closure *ec, LargeFile *file_out)
+ 
+    /* Write out the CRC layer */
        
-       if(p_failures + p_err + q_failures + q_err == 0) break;
-@@ -2120,6 +2122,8 @@ int BruteForceSearchPlausibleSector(RawBuffer *rb)
-       Verbose("SPS L-EC: iteration %d\n", iteration); 
-       Verbose("      Q-f/c/e + d: %2d/%2d/%2d + %2d\n", q_failures, q_corrected, q_err, q_decimated);
-       Verbose("      P-f/c/e + d: %2d/%2d/%2d + %2d\n", p_failures, p_corrected, p_err, p_decimated);
-+#else
-+      (void) p_decimated;
- #endif
+-   verbose("IO: writing CRC layer\n");
++   verbose("%s", "IO: writing CRC layer\n");
+    crc_sect = 2048*(ec->encoderChunk+lay->firstCrcPos);
+    if(!LargeSeek(file_out, crc_sect))
+    {  ec->abortImmediately = TRUE;
+@@ -709,7 +709,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
  
-       if(p_failures + p_err + q_failures + q_err == 0) break;
-diff --git a/large-io.c b/large-io.c
-index 04e145f..e2f05e0 100644
---- a/large-io.c
-+++ b/large-io.c
-@@ -425,7 +425,7 @@ ssize_t LargeRead(LargeFile *lf, void *buf, size_t count)
+    /* Write out the created parity. */
  
-         chunk = count > MAX_FILE_SIZE ? MAX_FILE_SIZE : count; 
+-   verbose("IO: writing parity...\n");
++   verbose("%s", "IO: writing parity...\n");
+    for(k=0; k<lay->nroots; k++)
+    {  gint64 idx=0;
  
--        read_in = read(lf->fileSegment[lf->segment], buf+n, chunk);
-+        read_in = read(lf->fileSegment[lf->segment], (char *)buf+n, chunk);
- 	n += read_in;
- 	count -= read_in;
- 	if(read_in != chunk) return n;
-@@ -591,7 +591,7 @@ ssize_t LargeWrite(LargeFile *lf, void *buf, size_t count)
- 
-         chunk = count > MAX_FILE_SIZE ? MAX_FILE_SIZE : count; 
- 
--	written = xwrite(lf->fileSegment[lf->segment], buf+n, chunk);
-+	written = xwrite(lf->fileSegment[lf->segment], (char *)buf+n, chunk);
- 	n += written;
- 	count -= written;
- 	if(written != chunk) return n;
-diff --git a/md5.c b/md5.c
-index 20c6240..d4e7ca6 100644
---- a/md5.c
-+++ b/md5.c
-@@ -159,7 +159,7 @@ MD5Final(unsigned char digest[16], struct MD5Context *ctx)
- 	MD5Transform(ctx->buf, (guint32 *) ctx->in);
- 	byteReverse((unsigned char *) ctx->buf, 4);
- 	memmove(digest, ctx->buf, 16);
--	memset(ctx, 0, sizeof (ctx));	/* In case it's sensitive */
-+	memset(ctx, 0, sizeof (*ctx));	/* In case it's sensitive */
+@@ -726,7 +726,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
+ 	 }
+       }
+    }
+-   verbose("IO: parity written.\n");
++   verbose("%s", "IO: parity written.\n");
  }
  
- /* The four core functions - F1 is optimized somewhat */
-diff --git a/memtrack.c b/memtrack.c
-index 68690f3..5f7ac50 100644
---- a/memtrack.c
-+++ b/memtrack.c
-@@ -147,9 +147,8 @@ int forget(void *ptr)
- static void print_ptr(memchunk *mc, int size)
- {  char strbuf[16];
-    char *ptr = (char*)mc->ptr; 
--   int j,maxlen;
-+   int j;
+ static gpointer io_thread(ecc_closure *ec)
+@@ -741,7 +741,7 @@ static gpointer io_thread(ecc_closure *ec)
+    int parity_available = 0;
+    int i;
  
--   if(mc->size < size) maxlen = mc->size; else maxlen = size;
-    for(j=0; j<15; j++)
-    {  if(ptr[j]<32) break;
-       strbuf[j] = ptr[j];
-diff --git a/menubar.c b/menubar.c
-index f31ae92..99ae4fc 100644
---- a/menubar.c
-+++ b/menubar.c
-@@ -396,7 +396,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
-  */
+-   verbose("Reader thread initializing\n");
++   verbose("%s", "Reader thread initializing\n");
  
- void set_path(GtkWidget *entry, char *path)
--{ char *ignore;
-+{
+    /*** Allocate local parity buffer aligned at 128bit boundary */
  
-   if(path[0] == '/' || path[0] == '\\' || path[1] == ':' || strlen(path) < 1)
-    {  gtk_entry_set_text(GTK_ENTRY(entry), path);
-@@ -405,11 +405,10 @@ void set_path(GtkWidget *entry, char *path)
-    else
-    {  char buf[PATH_MAX + strlen(path) + 2];
+@@ -809,7 +809,7 @@ static gpointer io_thread(ecc_closure *ec)
+       {  read_next_chunk(ec, chunk);
+ 	 //	 flush_crc(ec, file_out);  // FIXME
+ 	 needs_preload = 0;
+-	 verbose("IO: first chunk loaded\n");
++	 verbose("%s", "IO: first chunk loaded\n");
+ 	 continue;
+       }
  
-+      if(!getcwd(buf, PATH_MAX)) return;
- #ifdef SYS_MINGW
--      ignore = getcwd(buf, PATH_MAX);
-       strcat(buf,"\\");
- #else
--      ignore = getcwd(buf, PATH_MAX);
-       strcat(buf,"/");
- #endif
-       strcat(buf,path);
-diff --git a/preferences.c b/preferences.c
-index 39f2c5f..db009af 100644
---- a/preferences.c
-+++ b/preferences.c
-@@ -21,7 +21,7 @@
+@@ -856,7 +856,7 @@ static gpointer io_thread(ecc_closure *ec)
+       g_mutex_lock(ec->lock);
+       cpu_bound = ec->buffersToEncode;
+       while(ec->buffersToEncode)
+-      {  verbose("IO: Waiting for encoders to finish\n");
++      {  verbose("%s", "IO: Waiting for encoders to finish\n");
+ 	 g_cond_wait(ec->ioCond, ec->lock);
+       }
+       g_mutex_unlock(ec->lock);
+@@ -898,7 +898,7 @@ static gpointer io_thread(ecc_closure *ec)
+    ec->slicesFree = TRUE;  /* we have saved the slices; go ahead */
+    g_cond_broadcast(ec->ioCond);
+    while(ec->buffersToEncode)
+-   {  verbose("IO: Waiting for encoders to finish last chunk\n");
++   {  verbose("%s", "IO: Waiting for encoders to finish last chunk\n");
+       g_cond_wait(ec->ioCond, ec->lock);
+    }
+    g_mutex_unlock(ec->lock);
+@@ -911,7 +911,7 @@ static gpointer io_thread(ecc_closure *ec)
+    flush_crc(ec, file_out);
+    flush_parity(ec, file_out);
  
- #include "dvdisaster.h"
+-   verbose("IO: finished\n"); fflush(stdout);
++   verbose("%s", "IO: finished\n"); fflush(stdout);
+    return NULL;
+ }
  
--extern int CurrentMediumSize(int);  /* from scsi-layer.h */
-+extern gint64 CurrentMediumSize(int);  /* from scsi-layer.h */
+@@ -1098,7 +1098,7 @@ static gpointer encoder_thread(ecc_closure *ec)
+       ec->buffersToEncode-=enc_size;
+       if(!ec->buffersToEncode)
+       {  g_cond_broadcast(ec->ioCond);
+-	 verbose("ENC: processed last buffer; telling IO process.\n");
++	 verbose("%s", "ENC: processed last buffer; telling IO process.\n");
+ 	 fflush(stdout);
+       }
+       g_mutex_unlock(ec->lock);
+@@ -1198,7 +1198,7 @@ static void create_reed_solomon(ecc_closure *ec)
+       verbose("SCHED: joined with worker %d\n", i);
+       fflush(stdout);
+    }
+-   verbose("SCHED: scheduler finished.\n");
++   verbose("%s", "SCHED: scheduler finished.\n");
+ }
  
  /***
-  *** debugging workaround
-diff --git a/raw-editor.c b/raw-editor.c
-index fd07f48..5818e57 100644
---- a/raw-editor.c
-+++ b/raw-editor.c
-@@ -456,13 +456,12 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
-       case ACTION_FILESEL_LOAD_OK:
-       {  LargeFile *file;
- 	 char *path;
--	 int n;
+diff --git a/rs03-fix.c b/rs03-fix.c
+index 0a7a1d3..e162e5e 100644
+--- a/rs03-fix.c
++++ b/rs03-fix.c
+@@ -829,10 +829,10 @@ void RS03Fix(Image *image)
+ 	      if we were processing an augmented image. */
  
- 	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
- 	 gtk_widget_hide(rec->loadBufSel);
+ 	   if(lay->target == ECC_FILE && i >= ndata-1)
+-	   {  
+-              if(!LargeSeek(image->eccFile, (gint64)(2048*sec)))
+-		 Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
+-		      sec, "FW", strerror(errno));
++	   {
++		 if(!LargeSeek(image->eccFile, (gint64)(2048*sec)))
++		    Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
++			 sec, "FW", strerror(errno));
  
- 	 file = LargeOpen(path, O_RDONLY, IMG_PERMS);
--	 n = LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
-+	 LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
- 	 LargeClose(file);
- 
- 	 calculate_failures(rec);
-@@ -477,13 +476,12 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
-       case ACTION_FILESEL_SAVE_OK:
-       {  LargeFile *file;
- 	 char *path;
--	 int n;
- 
- 	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
- 	 gtk_widget_hide(rec->saveBufSel);
- 
- 	 file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
--	 n = LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
-+	 LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
- 	 LargeClose(file);
- 
- 	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Buffer saved to %s."), path);
-@@ -653,7 +651,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
- /* Button press event handler */
- 
- static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer data)
--{  static int last_action;
-+{
-    raw_editor_context *rec = Closure->rawEditorContext;
-    RawBuffer *rb = rec->rb;
-    int mouse_x = event->x;
-@@ -816,7 +814,6 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
- 
-    //   undo_remember(rec);
- 
--   last_action = rec->onClickAction;
-    return TRUE;
- }
- 
-diff --git a/recover-raw.c b/recover-raw.c
-index 892a7c0..4789922 100644
---- a/recover-raw.c
-+++ b/recover-raw.c
-@@ -183,7 +183,7 @@ void ResetRawBuffer(RawBuffer *rb)
-    for(i=0; i<N_Q_VECTORS; i++)
-      rb->qParityN[i][0] = rb->qParityN[i][1] = 0;
- 
--   rb->bestFrame = rb->bestFrame = 0;
-+   rb->bestFrame = 0;
-    rb->bestP1 = rb->bestP2 = N_P_VECTORS;
-    rb->bestQ1 = rb->bestQ2 = N_Q_VECTORS;
- }
-diff --git a/rs01-common.c b/rs01-common.c
-index b8294c2..c6c2927 100644
---- a/rs01-common.c
-+++ b/rs01-common.c
-@@ -96,7 +96,6 @@ void RS01ScanImage(Method *method, ImageInfo *ii, EccInfo *ei, int mode)
-    gint64 prev_missing = 0;
-    gint64 prev_crc_errors = 0;
-    int last_percent,current_missing;
--   int fp_sector = FINGERPRINT_SECTOR;
-    char *msg;
- 
-    /* Extract widget list from method */
-@@ -110,7 +109,6 @@ void RS01ScanImage(Method *method, ImageInfo *ii, EccInfo *ei, int mode)
-    {   LargeSeek(ei->file, 0);
-        LargeRead(ei->file, &eh, sizeof(EccHeader));
-        eh_sectors = uchar_to_gint64(eh.sectors);
--       fp_sector = eh.fpSector;
-    }     
- 
-    /* Position behind the ecc file header,
-diff --git a/rs01-fix.c b/rs01-fix.c
-index fe7707b..c6e6a5f 100644
---- a/rs01-fix.c
-+++ b/rs01-fix.c
-@@ -115,12 +115,10 @@ void RS01Fix(Method *method)
-    EccHeader *eh = NULL;
-    unsigned char parity[256];
-    int erasure_count,erasure_list[256],erasure_map[256];
--   int unexpected_failure;
-    gint64 block_idx[256];
-    gint64 s,si;
-    int i,j,k,n;
-    gint64 corrected, uncorrected;
--   gint64 last_corrected, last_uncorrected;
-    gint64 parity_block = 0;
-    int worst_ecc,damaged_ecc,damaged_sec,percent,last_percent = -1;
-    int cache_size,cache_sector,cache_offset = 0;
-@@ -345,7 +343,6 @@ void RS01Fix(Method *method)
-    /*** Verify ecc information for the medium image. */ 
- 
-    corrected = uncorrected = 0;
--   last_corrected = last_uncorrected = 0;
-    worst_ecc = damaged_ecc = damaged_sec = local_plot_max = 0;
- 
-    for(si=0; si<s; si++)
-@@ -380,7 +377,6 @@ void RS01Fix(Method *method)
-      /* Determine erasures based on the "dead sector" marker */
- 
-      erasure_count = 0;
--     unexpected_failure = 0;
- 
-      for(i=0; i<ndata; i++)
-      {  guint32 crc = Crc32(fc->imgBlock[i]+cache_offset, 2048);
+ 		 n = LargeWrite(image->eccFile, cache_offset+fc->imgBlock[i], 2048);
+ 		 if(n != 2048)
 diff --git a/scsi-layer.c b/scsi-layer.c
-index cd7795a..0ba0976 100644
+index 64a3dba..3be21ff 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
-@@ -30,7 +30,9 @@
+@@ -31,7 +31,9 @@
  
  static int query_type(DeviceHandle*, int);
- static unsigned int query_size(DeviceHandle*);
+ static gint64 query_size(Image*);
 +#if 0
  static int query_copyright(DeviceHandle*);
 +#endif
  
  static int read_dvd_sector(DeviceHandle*, unsigned char*, int, int);
  static int read_cd_sector(DeviceHandle*, unsigned char*, int, int);
-@@ -1656,6 +1658,7 @@ reset_mode_page:
+@@ -1649,6 +1651,7 @@ reset_mode_page:
   * Find out whether we are allowed to create an image from the DVD.
   */
  
@@ -391,7 +260,7 @@ index cd7795a..0ba0976 100644
  static int query_copyright(DeviceHandle *dh)
  {  Sense sense;
     AlignedBuffer *ab = CreateAlignedBuffer(2048);
-@@ -1716,6 +1719,7 @@ static int query_copyright(DeviceHandle *dh)
+@@ -1709,6 +1712,7 @@ static int query_copyright(DeviceHandle *dh)
  
     return result;
  }
@@ -400,10 +269,10 @@ index cd7795a..0ba0976 100644
  /*
   * See whether a sector lies within the user area.
 diff --git a/smart-lec.c b/smart-lec.c
-index 621ef86..3739a44 100644
+index 8da74ff..0355879 100644
 --- a/smart-lec.c
 +++ b/smart-lec.c
-@@ -26,9 +26,9 @@
+@@ -27,9 +27,9 @@
  
  #define VERBOSE 1
  #ifdef VERBOSE
@@ -415,7 +284,7 @@ index 621ef86..3739a44 100644
  #endif
  
  /***
-@@ -431,7 +431,7 @@ static void update_pq_state(sh_context *shc)
+@@ -432,7 +432,7 @@ static void update_pq_state(sh_context *shc)
  static void print_pq_state(sh_context *shc)
  {  int i;
  
@@ -424,7 +293,7 @@ index 621ef86..3739a44 100644
  
     for(i=0; i<N_P_VECTORS; i++)
     {  if(shc->pState[i] == 1)
-@@ -1353,7 +1353,7 @@ static void swap_p_for_new_improvement(sh_context *shc)
+@@ -1354,7 +1354,7 @@ static void swap_p_for_new_improvement(sh_context *shc)
  		  count++;
  
  	    if(count < 2)
@@ -433,7 +302,7 @@ index 621ef86..3739a44 100644
  	       goto decrement;
  	    }
  
-@@ -1416,7 +1416,7 @@ decrement:
+@@ -1417,7 +1417,7 @@ decrement:
  	    if(index >= n_q) break;
  	    selection[index]=0;
  
@@ -442,84 +311,3 @@ index 621ef86..3739a44 100644
  	 }
        }
     }
-diff --git a/tools/codec.c b/tools/codec.c
-index 33b85e0..ed7f4cb 100644
---- a/tools/codec.c
-+++ b/tools/codec.c
-@@ -20,6 +20,7 @@
- #include <errno.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include <string.h>
- 
- #include <bzlib.h>
- 
-@@ -520,6 +521,7 @@ void LoadPPK(char *name, Image ***list_out, int *n_out)
- 
-    file_format = load_int(bzfile);  /* always zero */
-    file_format = load_int(bzfile);
-+   (void) file_format;
- 
-    /* read the image list */
- 
-diff --git a/tools/decimate.c b/tools/decimate.c
-index b754ca4..13cbc6a 100644
---- a/tools/decimate.c
-+++ b/tools/decimate.c
-@@ -21,6 +21,7 @@
- #include <math.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include <string.h>
- 
- #include "pngio.h"
- #include "memory.h"
-diff --git a/tools/memory.c b/tools/memory.c
-index edf32ec..2fb34ec 100644
---- a/tools/memory.c
-+++ b/tools/memory.c
-@@ -144,9 +144,8 @@ int forget(void *ptr)
- static void print_ptr(memchunk *mc, int size)
- {  char strbuf[16];
-    char *ptr = (char*)mc->ptr; 
--   int j,maxlen;
-+   int j;
- 
--   if(mc->size < size) maxlen = mc->size; else maxlen = size;
-    for(j=0; j<15; j++)
-    {  if(ptr[j]<32) break;
-       strbuf[j] = ptr[j];
-diff --git a/tools/pngio.c b/tools/pngio.c
-index 6c0f014..68db499 100644
---- a/tools/pngio.c
-+++ b/tools/pngio.c
-@@ -20,6 +20,7 @@
- #include <errno.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include <string.h>
- #include <sys/stat.h>
- 
- #include "pngio.h"
-@@ -81,8 +82,7 @@ Image *LoadPNG(char *name)
- 
-    /* verify that we've got a png file */
- 
--   fread(buf, 1, 8, pi->file);
--   if(png_sig_cmp(buf, 0, 8))
-+   if(fread(buf, 1, 8, pi->file) < 8 || png_sig_cmp(buf, 0, 8))
-    {  fclose(pi->file);
-       fprintf(stdout, "%s is not a .png file!\n", name);
-       fflush(stdout);
-diff --git a/tools/pngpack.c b/tools/pngpack.c
-index c0d1c76..f882a08 100644
---- a/tools/pngpack.c
-+++ b/tools/pngpack.c
-@@ -22,6 +22,7 @@
- #include <getopt.h>
- #include <sys/stat.h>
- #include <stdlib.h>
-+#include <string.h>
- 
- #include "md5.h"
- #include "pngio.h"

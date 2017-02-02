@@ -7,72 +7,28 @@ Description: Don't build and install documentation automatically.
 Author: Carlos Maddela <e7appew@gmail.com>
 Origin: vendor
 Forwarded: not-needed
-Last-Update: 2016-12-21
+Last-Update: 2017-01-05
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- GNUmakefile.template | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ GNUmakefile.template | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/GNUmakefile.template b/GNUmakefile.template
-index 10e4524..dd91bf3 100644
+index 6fda92b..d9bef11 100644
 --- a/GNUmakefile.template
 +++ b/GNUmakefile.template
-@@ -68,7 +68,7 @@ OFILES = $(CFG_OFILES)
- 	@echo "Compiling:" $*.c
- 	@$(CC) $(COPTS) -c $*.c
+@@ -223,12 +223,11 @@ show:
+ .PHONY : install uninstall clean distclean arch
+ .PHONY : srcdist
  
--all: time-stamp dvdisaster images 
-+all: time-stamp dvdisaster
- 
- # Building the dvdisaster binary
- 
-@@ -310,24 +310,10 @@ show:
- .PHONY : www www-images 
- .PHONY : srcdist windist
- 
--install: dvdisaster images
+-install: dvdisaster manual
 +install: dvdisaster
  	@echo "Installing package..."
  	install -d $(BUILDROOT)$(BINDIR)
- 	install dvdisaster$(EXE_SUFFIX) $(BUILDROOT)$(BINDIR)
--	install -d $(BUILDROOT)$(DOCSUBDIR)
--	for i in $(DOC_LOCALES); do \
--	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i; \
--	  (cd documentation; install -m 644 $$i/*.html $(BUILDROOT)$(DOCSUBDIR)/$$i); \
--	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/images; \
--	  (cd documentation/$$i; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/images); \
--	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails; \
--	  (cd documentation/$$i; install -m 644 thumbnails/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails); \
--	done
--	install -d $(BUILDROOT)$(DOCSUBDIR)/images
--	cd documentation; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/images
--#	cd documentation; install -m 644 images/*.jpg $(BUILDROOT)$(DOCSUBDIR)/images
--	install -d $(BUILDROOT)$(DOCSUBDIR)/include
--	cd documentation; install -m 644 include/*.css $(BUILDROOT)$(DOCSUBDIR)/include
+ 	install dvdisaster $(BUILDROOT)$(BINDIR)
+ 	install -d $(BUILDROOT)$(DOCSUBDIR)
+-	(cd documentation/user-manual; install -m 644 manual.pdf $(BUILDROOT)$(DOCSUBDIR))
  	install -d $(BUILDROOT)$(MANDIR)/man1
- 	install -d $(BUILDROOT)$(MANDIR)/cs/man1
  	install -d $(BUILDROOT)$(MANDIR)/de/man1
-@@ -351,6 +337,22 @@ install: dvdisaster images
- 	  done \
- 	fi
- 
-+install-doc: images
-+	install -d $(BUILDROOT)$(DOCSUBDIR)
-+	for i in $(DOC_LOCALES); do \
-+	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i; \
-+	  (cd documentation; install -m 644 $$i/*.html $(BUILDROOT)$(DOCSUBDIR)/$$i); \
-+	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/images; \
-+	  (cd documentation/$$i; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/images); \
-+	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails; \
-+	  (cd documentation/$$i; install -m 644 thumbnails/*.png $(BUILDROOT)$(DOCSUBDIR)/$$i/thumbnails); \
-+	done
-+	install -d $(BUILDROOT)$(DOCSUBDIR)/images
-+	cd documentation; install -m 644 images/*.png $(BUILDROOT)$(DOCSUBDIR)/images
-+#	cd documentation; install -m 644 images/*.jpg $(BUILDROOT)$(DOCSUBDIR)/images
-+	install -d $(BUILDROOT)$(DOCSUBDIR)/include
-+	cd documentation; install -m 644 include/*.css $(BUILDROOT)$(DOCSUBDIR)/include
-+
- uninstall:
- 	@echo "Uninstalling package..."
- 	rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster.exe $(BINDIR)/dvdisaster-win.exe $(BINDIR)/dvdisaster-uninstall.sh
+ 	cd documentation; \

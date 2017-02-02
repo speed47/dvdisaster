@@ -1,0 +1,48 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 5 Jan 2017 18:59:30 +1100
+Subject: Fix display of manual.pdf.
+
+Description: Fix display of manual.pdf.
+ The PDF file is automatically compressed by Debhelper, so we need to
+ account for this.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2017-01-05
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ show-manual.c    | 4 ++--
+ welcome-window.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/show-manual.c b/show-manual.c
+index d53c9a5..ecb0922 100644
+--- a/show-manual.c
++++ b/show-manual.c
+@@ -287,8 +287,8 @@ void ShowPDF(char *target)
+ 
+    /* If no target is given, show the manual. */
+ 
+-   if(!target) 
+-   {    bi->path = g_strdup_printf("%s/manual.pdf",Closure->docDir); 
++   if(!target)
++   {    bi->path = g_strdup_printf("%s/manual.pdf.gz",Closure->docDir);
+    }
+    else 
+       if(*target != '/') bi->path = g_strdup_printf("%s/%s",Closure->docDir, target); 
+diff --git a/welcome-window.c b/welcome-window.c
+index 1046bc8..3261b7c 100644
+--- a/welcome-window.c
++++ b/welcome-window.c
+@@ -138,8 +138,8 @@ void CreateWelcomePage(GtkNotebook *notebook)
+    AboutText(box, _("\ndvdisaster creates error correction data to protect\n"
+ 		    "optical media (CD,DVD,BD) against data loss.\n"));
+ 
+-   AboutTextWithLink(box, _("Please see the [manual] for typical uses of dvdisaster.\n\n"), 
+-		     "manual.pdf");
++   AboutTextWithLink(box, _("Please see the [manual] for typical uses of dvdisaster.\n\n"),
++		     "manual.pdf.gz");
+ 
+    AboutText(box, _("<i>New in this Version:</i>"));
+ 

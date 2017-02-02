@@ -1,0 +1,33 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 5 Jan 2017 18:51:49 +1100
+Subject: Fix generated man pages.
+
+Description: Fix generated man pages.
+ The generated man pages incorrectly direct users to the directory of
+ the old HTML documentation, which is no longer available.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: no
+Last-Update: 2016-12-21
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ GNUmakefile.template | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/GNUmakefile.template b/GNUmakefile.template
+index d9bef11..d80932d 100644
+--- a/GNUmakefile.template
++++ b/GNUmakefile.template
+@@ -232,9 +232,9 @@ install: dvdisaster
+ 	install -d $(BUILDROOT)$(MANDIR)/de/man1
+ 	cd documentation; \
+ 	  ESCAPED_DOCSUBDIR=`echo $(DOCSUBDIR) | sed -e 's/\//\\\\\//g'`; \
+-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.en.1 >dvdisaster.updated; \
++	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.en.1 >dvdisaster.updated; \
+ 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/man1/dvdisaster.1; \
+-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.de.1 >dvdisaster.updated; \
++	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.de.1 >dvdisaster.updated; \
+ 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/de/man1/dvdisaster.1; \
+ 	  rm dvdisaster.updated
+ 	if echo $(WITH_OPTIONS) | grep "NLS_YES" >/dev/null; then \

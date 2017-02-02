@@ -15,10 +15,10 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index ed86afe..fb1b457 100644
+index eae04f2..c89c552 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
-@@ -749,7 +749,7 @@ void AboutDialog()
+@@ -750,7 +750,7 @@ void AboutDialog()
  			     "for Debian to support DVD-ROMs (with and without encryption).\n\n"
  			     "Please do not bother the original authors of dvdisaster\n"
  			     "but submit bugreports against the [debian package] instead.\n"),

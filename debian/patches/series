@@ -1,11 +1,7 @@
-01-libpng15.patch
 02-encryption.patch
 03-dvdrom.patch
 05-help-dialog.patch
-06-remove-encoding-from-desktop-file.patch
-07-fix-spelling-errors-in-binaries.patch
 08-fix-gnu-make-detection.patch
-09-fix-format-security-warnings.patch
 10-use-non-size-specific-icon-and-add-keywords-to-desktop-file.patch
 11-no-cruft.patch
 12-fix-spelling-of-up-to.patch
@@ -17,6 +13,10 @@
 18-update-copyright-in-about-dialog.patch
 19-show-text-files-with-abs-path.patch
 20-display-changelog-credits-and-todo.patch
-21-fix-privacy-breach-in-doco.patch
 22-fix-hurd-i386-ftbfs.patch
 23-add-bdrom-support.patch
+24-show-gpl3-license.patch
+25-fix-man-pages.patch
+26-fix-display-of-manual.pdf.patch
+27-allow-opening-in-browser-again.patch
+28-fudge-pdf-doc-ids.patch
