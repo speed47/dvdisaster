@@ -1,0 +1,11 @@
+Document: dvdisaster
+Title: The dvdisaster User's Manual
+Author: Carsten Gnörlich
+Abstract: This manual describes what dvdisaster is and how it can be used
+ to protect optical media (CD/DVD/BD) from data loss, due to scratches
+ and aging.
+Section: File Management
+
+Format: HTML
+Index: /usr/share/doc/dvdisaster/html/en/index.html
+Files: /usr/share/doc/dvdisaster/html/en/*.html

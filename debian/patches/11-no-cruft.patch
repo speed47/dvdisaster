@@ -1,0 +1,53 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Mon, 19 Dec 2016 05:06:30 +1100
+Subject: Do not install cruft.
+
+Description: Do not install cruft.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2016-12-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ GNUmakefile.template | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
+
+diff --git a/GNUmakefile.template b/GNUmakefile.template
+index fe4c504..10e4524 100644
+--- a/GNUmakefile.template
++++ b/GNUmakefile.template
+@@ -315,11 +315,6 @@ install: dvdisaster images
+ 	install -d $(BUILDROOT)$(BINDIR)
+ 	install dvdisaster$(EXE_SUFFIX) $(BUILDROOT)$(BINDIR)
+ 	install -d $(BUILDROOT)$(DOCSUBDIR)
+-	install -m 644 CHANGELOG $(BUILDROOT)$(DOCSUBDIR)
+-	install -m 644 COPYING $(BUILDROOT)$(DOCSUBDIR)
+-	install -m 644 CREDITS* $(BUILDROOT)$(DOCSUBDIR)
+-	install -m 644 README.MODIFYING $(BUILDROOT)$(DOCSUBDIR)
+-	install -m 644 TODO $(BUILDROOT)$(DOCSUBDIR)
+ 	for i in $(DOC_LOCALES); do \
+ 	  install -d $(BUILDROOT)$(DOCSUBDIR)/$$i; \
+ 	  (cd documentation; install -m 644 $$i/*.html $(BUILDROOT)$(DOCSUBDIR)/$$i); \
+@@ -355,20 +350,7 @@ install: dvdisaster images
+ 	    install -m 644 $$i/LC_MESSAGES/dvdisaster.mo $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
+ 	  done \
+ 	fi
+-	@echo "# dvdisaster uninstaller script" > $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "# Usage: sh dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster.exe $(BINDIR)/dvdisaster-win.exe $(BINDIR)/dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "rm -rf $(DOCSUBDIR)" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "rm -f $(MANDIR)/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@for i in $(PO_LOCALES); do \
+-	  echo "rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+-	done
+-	@for i in $(MAN_LOCALES); do \
+-	  echo "rm $(MANDIR)/$$i/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+-	done
+-	@echo "echo \"dvdisaster has been uninstalled.\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	
++
+ uninstall:
+ 	@echo "Uninstalling package..."
+ 	rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster.exe $(BINDIR)/dvdisaster-win.exe $(BINDIR)/dvdisaster-uninstall.sh

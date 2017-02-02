@@ -1,0 +1,32 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Mon, 19 Dec 2016 09:39:49 +1100
+Subject: Make builds reproducible.
+
+Description: Make builds reproducible.
+ Use the Debian changelog details to derive a build number and date,
+ so that we can make reproducible binaries.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2016-12-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ scripts/time-stamper.bash | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/time-stamper.bash b/scripts/time-stamper.bash
+index fd28794..60fe91a 100755
+--- a/scripts/time-stamper.bash
++++ b/scripts/time-stamper.bash
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env bash
+ 
+-build=$(grep BUILD $1  | cut -d\  -f3)
+-build=$((build+1))
++# Use Debian changelog details to derive build number and date.
++build=$(dpkg-parsechangelog -S Version | sed 's/.*-\([0-9]\+\).*/\1/')
+ echo "#define BUILD $build" >$1
+-date=$(date +"%d.%m.%y (%A, %H:%M)")
++date=$(date --date="$(dpkg-parsechangelog -S Date)" +"%d.%m.%y (%A, %H:%M)")
+ echo "#define BDATE \"$date\"" >>$1

@@ -1,0 +1,29 @@
+From: Nobuhiro Iwamatsu <iwamatsu@debian.org>
+Date: Sun, 8 Apr 2012 21:51:13 +0900
+Subject: Build with libpng15.
+
+Description: Build with libpng15.
+Author: Nobuhiro Iwamatsu <iwamatsu@debian.org>
+Origin: vendor
+Last-Update: 2012-04-08
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ tools/pngio.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/pngio.h b/tools/pngio.h
+index d9f884e..5d3a575 100644
+--- a/tools/pngio.h
++++ b/tools/pngio.h
+@@ -22,6 +22,10 @@
+ 
+ #include <zlib.h>
+ #include <png.h>
++#if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR >= 4
++  #include <zlib.h>
++#endif
++
+ 
+ typedef struct
+ {  char *name;

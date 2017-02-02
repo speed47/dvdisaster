@@ -1,20 +1,34 @@
-Author: Daniel Baumann <daniel@debian.org>
-Description: Customizes the help-dialog according to README.MODIFYING.
+From: Daniel Baumann <daniel@debian.org>
+Date: Sun, 8 Apr 2012 21:53:29 +0900
+Subject: Customizes the help-dialog according to README.MODIFYING.
 
-Index: dvdisaster/help-dialogs.c
-===================================================================
---- dvdisaster.orig/help-dialogs.c	2012-04-08 21:41:14.000000000 +0900
-+++ dvdisaster/help-dialogs.c	2012-04-08 21:53:29.300264928 +0900
-@@ -402,7 +402,7 @@
+Description: Customizes the help-dialog according to README.MODIFYING.
+ .
+ * 2016-12-19 - Fixed path:
+   /usr/share/common/licenses/GPL-2 -> /usr/share/common-licenses/GPL-2
+   and restored use of "GPL" label.
+Author: Daniel Baumann <daniel@debian.org>
+Last-Update: 2016-12-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index 793be52..ed86afe 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -402,7 +402,7 @@ void ShowGPL()
    ShowTextfile(_("windowtitle|GNU General Public License"), 
  	       _("<big>GNU General Public License</big>\n"
  		 "<i>The license terms of dvdisaster.</i>"),
 -	       "COPYING", NULL, NULL);
-+	       "/usr/share/common/licenses/GPL-2", NULL, NULL);
++	       "/usr/share/common-licenses/GPL-2", NULL, NULL);
  }
  
  /*
-@@ -566,7 +566,7 @@
+@@ -566,7 +566,7 @@ static void show_modifying(void)
  {  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
  	       _("<big>Modifying dvdisaster</big>\n"
  		 "<i>Your changes are not ours.</i>"),
@@ -23,12 +37,8 @@ Index: dvdisaster/help-dialogs.c
  }
  
  static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-@@ -742,14 +742,14 @@
-    AboutTextWithLink(vbox, _("This software comes with  <b>absolutely no warranty</b>.\n"
- 				"This is free software and you are welcome to redistribute it\n"
- 				"under the conditions of the [GNU General Public License].\n"), 
--			"GPL");
-+			"/usr/share/common-licenses/GPL-2");
+@@ -745,11 +745,11 @@ void AboutDialog()
+ 			"GPL");
  
  #ifdef MODIFIED_SOURCE
 -   AboutTextWithLink(vbox, _("\nThis program is <b>not the original</b>. It is based on the\n"

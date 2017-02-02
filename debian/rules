@@ -1,34 +1,48 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+export DEB_CFLAGS_MAINT_APPEND = $(CPPFLAGS) -Wall -Wno-deprecated-declarations -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+MUTABLE_FILES := build.h $(wildcard locale/*.po)
+
 %:
 	dh $@
 
-#override_dh_autoclean:
-#	dh_autoclean
-#	find documentation -name "*.png" | xargs rm -f
-
-
 override_dh_auto_configure:
+	for f in $(MUTABLE_FILES); do \
+		cp -an $$f $$f.orig; \
+	done
 	dh_auto_configure -- \
 		--localedir=\$${prefix}/share/locale \
 		--docdir=\$${prefix}share/doc \
-		--docsubdir=dvdisaster-doc/html 
+		--docsubdir=dvdisaster-doc/html \
+		--with-embedded-src-path=no
 
-override_dh_auto_install:
-	dh_auto_install -- BUILDROOT=$(CURDIR)/debian/tmp 
+override_dh_clean:
+	dh_clean -X.orig
+	for f in $(MUTABLE_FILES); do \
+		test ! -f $$f.orig || mv -f $$f.orig $$f; \
+	done
 
-	# Installing desktop file
-	install -D -m 0644 contrib/dvdisaster.desktop debian/dvdisaster/usr/share/applications/dvdisaster.desktop
-	sed -i -e 's/dvdisaster48/dvdisaster/' debian/dvdisaster/usr/share/applications/dvdisaster.desktop
+override_dh_auto_build-arch:
+	make all
 
-	# Installing icon
-	install -D -m 0644 contrib/dvdisaster32.png debian/dvdisaster/usr/share/icons/dvdisaster.png
+override_dh_auto_build-indep:
+	make images
 
-	# Installing pixmaps
-	install -D -m 0644 debian/pixmaps/dvdisaster.xpm debian/dvdisaster/usr/share/pixmaps/dvdisaster.xpm
+override_dh_auto_install-arch:
+	dh_auto_install -a -- BUILDROOT=$(CURDIR)/debian/tmp
 
-	# Removing double files
-	rm -f debian/tmp/usr/bin/dvdisaster-uninstall.sh
-	rm -f debian/tmp/usr/share/doc/dvdisaster-doc/html/CHANGELOG
-	rm -f debian/tmp/usr/share/doc/dvdisaster-doc/html/COPYING
+override_dh_auto_install-indep:
+	make install-doc BUILDROOT=$(CURDIR)/debian/tmp
 
+# Ensure that none of the text files that the application
+# tries to display directly are not compressed, as it doesn't
+# automatically decompress text files.
+override_dh_compress:
+	dh_compress -p dvdisaster \
+		-XCHANGELOG -XCREDITS -XREADME.MODIFYING -XTODO
+	dh_compress --remaining-packages

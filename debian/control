@@ -3,22 +3,23 @@ Section: otherosfs
 Priority: optional
 Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org>
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
-        Rogério Brito <rbrito@ime.usp.br>
-DM-Upload-Allowed: yes
-Build-Depends: debhelper (>= 7.0.50~),
-	       gettext,
-	       libbz2-dev,
-	       libgtk2.0-dev,
-	       libpng-dev,
-	       pkg-config
-Standards-Version: 3.9.3
-Vcs-Browser: http://git.debian.org/?p=pkg-opt-media/dvdisaster.git 
-Vcs-Git: git://git.debian.org/pkg-opt-media/dvdisaster.git
+           Rogério Brito <rbrito@ime.usp.br>
+Build-Depends: debhelper (>= 10),
+               dh-exec,
+               dpkg-dev (>= 1.16.1.1),
+               gettext,
+               libbz2-dev,
+               libgtk2.0-dev,
+               libpng-dev,
+               pkg-config
+Standards-Version: 3.9.8
+Vcs-Browser: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
 
 Package: dvdisaster
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, xdg-utils
+Depends: xdg-utils, ${misc:Depends}, ${shlibs:Depends}
 Recommends: dvdisaster-doc
 Description: data loss/scratch/aging protection for CD/DVD media
  dvdisaster provides a margin of safety against data loss on CD and DVD media
@@ -28,6 +29,7 @@ Description: data loss/scratch/aging protection for CD/DVD media
 Package: dvdisaster-doc
 Section: doc
 Architecture: all
+Multi-Arch: foreign
 Depends: ${misc:Depends}
 Suggests: dvdisaster
 Description: data loss/scratch/aging protection for CD/DVD media (documentation)

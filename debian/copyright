@@ -1,42 +1,32 @@
-Author: Carsten Gnoerlich <cgnoerlich@fsfe.org>
-Download: http://www.dvdisaster.com/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: Carsten Gnörlich <carsten@dvdisaster.org>
+Upstream-Name: dvdisaster
+Source: http://dvdisaster.net/
 
 Files: *
-Copyright: Copyright (C) 2004-2009 Carsten Gnoerlich <cgnoerlich@fsfe.org>
+Copyright: 2004–2012, Carsten Gnörlich <carsten@dvdisaster.org>
 License: GPL-2+
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- .
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU General Public License for more details.
- .
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- .
- On Debian systems, the complete text of the GNU General Public License
- can be found in /usr/share/common-licenses/GPL-2 file.
 
 Files: debian/*
-Copyright (C) 2005-2009 Daniel Baumann <daniel@debian.org>
+Copyright: 2005–2009, Daniel Baumann <daniel@debian.org>
+           2009–2012, TANIGUCHI Takaki <takaki@debian.org>
+           2009–2010, Rogério Brito <rbrito@ime.usp.br>
+           2016, Carlos Maddela <e7appew@gmail.com>
 License: GPL-2+
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
+
+License: GPL-2+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
  .
- This program is distributed in the hope that it will be useful,
+ This package is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  GNU General Public License for more details.
  .
  You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
  .
- On Debian systems, the complete text of the GNU General Public License
- can be found in /usr/share/common-licenses/GPL-2 file.
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".

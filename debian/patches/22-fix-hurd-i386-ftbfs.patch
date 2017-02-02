@@ -1,0 +1,32 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Wed, 4 Jan 2017 03:55:58 +1100
+Subject: Fix FTBFS for hurd-i386.
+
+Description: Fix FTBFS for hurd-i386.
+ Hurd does not have path length restrictions, so doesn't define
+ PATH_MAX. Assuming a PATH_MAX of 4096 as a quick workaround.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: no
+Last-Update: 2017-01-04
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ menubar.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/menubar.c b/menubar.c
+index 33e6ba4..0a40e1a 100644
+--- a/menubar.c
++++ b/menubar.c
+@@ -23,6 +23,10 @@
+ 
+ #include <limits.h>
+ 
++#ifndef PATH_MAX
++  #define PATH_MAX 4096
++#endif
++
+ /***
+  *** Forward declarations
+  ***/

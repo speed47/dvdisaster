@@ -1,0 +1,47 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Wed, 21 Dec 2016 09:59:58 +1100
+Subject: Fix display of changelog, credits and to-do files.
+
+Description: Fix display of changelog, credits and to-do files.
+ Use absolute paths to compensate for the fact that we don't install
+ duplicates in /usr/share/doc/dvdisaster-doc or build with source
+ path embedded anymore.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: not-needed
+Last-Update: 2017-01-05
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ menubar.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/menubar.c b/menubar.c
+index 99ae4fc..33e6ba4 100644
+--- a/menubar.c
++++ b/menubar.c
+@@ -116,21 +116,21 @@ static void menu_cb(GtkWidget *widget, gpointer data)
+         ShowTextfile(_("windowtitle|Change log"), 
+ 		     _("<big>Change log</big>\n"
+ 		       "<i>Major differences from earlier program versions.</i>"),
+-		     "CHANGELOG", NULL, NULL);
++		     "/usr/share/doc/dvdisaster/CHANGELOG", NULL, NULL);
+ 	break;
+ 
+       case MENU_HELP_CREDITS:
+         ShowTextfile(_("windowtitle|Credits"), 
+ 		     _("<big>Credits</big>\n"
+ 		       "<i>Thanks go out to...</i>"),
+-		     "CREDITS", NULL, NULL);
++		     "/usr/share/doc/dvdisaster/CREDITS", NULL, NULL);
+ 	break;
+ 
+       case MENU_HELP_TODO:
+ 	ShowTextfile(_("windowtitle|To do list"), 
+ 		     _("<big>To do list</big>\n"
+ 		       "<i>A sneak preview of coming features ... perhaps ;-)</i>"),
+-		     "TODO", NULL, NULL);
++		     "/usr/share/doc/dvdisaster/TODO", NULL, NULL);
+ 	break;
+ 
+       default:

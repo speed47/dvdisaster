@@ -1,11 +1,21 @@
-Author: Corey Wright <undefined@pobox.com>
-Description: Adds support for DVD-ROM medium-type.
+From: Corey Wright <undefined@pobox.com>
+Date: Tue, 6 Mar 2012 11:10:30 +0900
+Subject: Adds support for DVD-ROM medium-type.
 
-Index: dvdisaster/scsi-layer.c
-===================================================================
---- dvdisaster.orig/scsi-layer.c	2012-03-06 11:10:17.147044691 +0900
-+++ dvdisaster/scsi-layer.c	2012-03-06 11:10:30.927044292 +0900
-@@ -913,6 +913,11 @@
+Description: Adds support for DVD-ROM medium-type.
+Author: Corey Wright <undefined@pobox.com>
+Last-Update: 2012-03-06
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ scsi-layer.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/scsi-layer.c b/scsi-layer.c
+index 13784dd..cd7795a 100644
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -913,6 +913,11 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
  	    break;
  	 }
  

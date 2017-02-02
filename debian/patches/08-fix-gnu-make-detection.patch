@@ -1,0 +1,42 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Sun, 18 Dec 2016 23:05:03 +1100
+Subject: Fix GNU Make detection.
+
+Description: Fix GNU Make detection.
+ While the previous code works with earlier versions of bash, it doesn't
+ seem to work with bash 4.4.5. The redirection to /dev/null somehow causes
+ grep to return an error code of 2.
+ .
+ This change allows for more predictable behaviour: grep returns an
+ error code of 0 or 1.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Bug-Debian: https://bugs.debian.org/848811
+Forwarded: no
+Last-Update: 2016-12-18
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ scripts/bash-based-configure | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/bash-based-configure b/scripts/bash-based-configure
+index f9d80c8..ffb5919 100644
+--- a/scripts/bash-based-configure
++++ b/scripts/bash-based-configure
+@@ -309,13 +309,13 @@ function REQUIRE_GMAKE()
+ 
+    echo -n "Checking for gmake: "
+ 
+-   if (gmake -v | grep "GNU Make") > /dev/null 2>&1 ;
++   if (gmake -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
+      then echo "yes"
+ 	  echo "MAKE = `which gmake`" >>Makefile.config
+ 	  return 0
+    fi;
+ 
+-   if (make -v | grep "GNU Make") > /dev/null 2>&1 ;
++   if (make -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
+      then echo "yes"
+ 	  echo "MAKE = `which make`" >>Makefile.config
+ 	  return 0

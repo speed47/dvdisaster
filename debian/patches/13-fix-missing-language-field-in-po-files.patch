@@ -1,0 +1,56 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Mon, 19 Dec 2016 07:04:02 +1100
+Subject: Fix missing language fields in PO files.
+
+Description: Fix missing language fields in PO files.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: no
+Last-Update: 2016-12-19
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ locale/cs.po    | 2 +-
+ locale/pt_BR.po | 2 +-
+ locale/ru.po    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/locale/cs.po b/locale/cs.po
+index c26007b..89a9d7f 100644
+--- a/locale/cs.po
++++ b/locale/cs.po
+@@ -15,7 +15,7 @@ msgstr ""
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+-"Language: \n"
++"Language: cs_CZ\n"
+ "X-Generator: KBabel 1.11.1\n"
+ "Plural-Forms:  nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+ 
+diff --git a/locale/pt_BR.po b/locale/pt_BR.po
+index 803288a..4cc57ee 100644
+--- a/locale/pt_BR.po
++++ b/locale/pt_BR.po
+@@ -14,7 +14,7 @@ msgstr ""
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+-"Language: \n"
++"Language: pt_BR\n"
+ "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+ 
+ #: closure.c:539
+diff --git a/locale/ru.po b/locale/ru.po
+index b4d457d..38ee2df 100644
+--- a/locale/ru.po
++++ b/locale/ru.po
+@@ -16,7 +16,7 @@ msgstr ""
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+-"Language: \n"
++"Language: ru\n"
+ "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+ 
+ #: closure.c:539

@@ -1,0 +1,44 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Wed, 21 Dec 2016 09:08:05 +1100
+Subject: Allow ShowTextFile() to work with absolute path names.
+
+Description: Allow ShowTextFile() to work with absolute path names.
+Author: Carlos Maddela <e7appew@gmail.com>
+Origin: vendor
+Forwarded: no
+Last-Update: 2016-12-21
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ help-dialogs.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/help-dialogs.c b/help-dialogs.c
+index 3658bfc..9151d52 100644
+--- a/help-dialogs.c
++++ b/help-dialogs.c
+@@ -422,6 +422,24 @@ char *find_file(char *file, size_t *size, char *lang)
+       lang_suffix[1] = lang[1];
+    }
+ 
++   /* Test for absolute path first. */
++   if(*file == '/')
++   {
++      if(lang)
++	 path = g_strdup_printf("%s.%s", file, lang_suffix);
++      else
++	 path = g_strdup(file);
++
++      if(LargeStat(path, &stat_size))
++      {
++	 *size = stat_size;
++	 return path;
++      }
++
++      g_free(path);
++      return NULL;
++   }
++
+    /* Try file in bin dir */
+ 
+    if(Closure->binDir) 
