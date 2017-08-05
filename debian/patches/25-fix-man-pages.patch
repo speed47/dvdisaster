@@ -6,7 +6,6 @@ Description: Fix generated man pages.
  The generated man pages incorrectly direct users to the directory of
  the old HTML documentation, which is no longer available.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: no
 Last-Update: 2016-12-21
 ---

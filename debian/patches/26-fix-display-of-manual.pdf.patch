@@ -6,7 +6,6 @@ Description: Fix display of manual.pdf.
  The PDF file is automatically compressed by Debhelper, so we need to
  account for this.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: not-needed
 Last-Update: 2017-01-05
 ---

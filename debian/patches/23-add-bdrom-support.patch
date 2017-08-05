@@ -7,7 +7,7 @@ Description: Add support for BD-ROM media-type.
  media-type.  This allows dvdisaster to scan and read (ie create ISO
  images of) BD-ROM media.
 Author: Corey Write <undefined@pobox.com>
-Origin: vendor, https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=849518;filename=dvdisaster-add_bdrom_support.patch;msg=5
+Origin: other, https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=849518;filename=dvdisaster-add_bdrom_support.patch;msg=5
 Bug-Debian: https://bugs.debian.org/849518
 Forwarded: no
 Last-Update: 2016-12-27

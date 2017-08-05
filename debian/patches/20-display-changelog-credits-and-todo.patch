@@ -7,7 +7,6 @@ Description: Fix display of changelog, credits and to-do files.
  duplicates in /usr/share/doc/dvdisaster-doc or build with source
  path embedded anymore.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: not-needed
 Last-Update: 2017-01-05
 ---

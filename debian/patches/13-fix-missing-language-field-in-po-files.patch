@@ -4,7 +4,6 @@ Subject: Fix missing language fields in PO files.
 
 Description: Fix missing language fields in PO files.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: no
 Last-Update: 2017-01-05
 ---

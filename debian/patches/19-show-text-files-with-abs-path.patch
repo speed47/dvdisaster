@@ -4,7 +4,6 @@ Subject: Allow ShowTextFile() to work with absolute path names.
 
 Description: Allow ShowTextFile() to work with absolute path names.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: no
 Last-Update: 2016-12-21
 ---
