@@ -1,0 +1,322 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Sun, 6 Aug 2017 10:37:18 +1000
+Subject: Add better support for HURD and kFreeBSD systems.
+
+Description: Add better support for HURD and kFreeBSD systems.
+ Hurd still compiles without SCSI layer, however.
+Author: Carlos Maddela <e7appew@gmail.com>
+Last-Update: 2017-08-06
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ cacheprobe.c                 | 16 +++++++++-------
+ closure.c                    |  6 ++++--
+ rs03-create.c                |  2 +-
+ scripts/bash-based-configure | 18 ++++++++++++++++++
+ scsi-freebsd.c               |  4 ++--
+ scsi-layer.c                 | 10 ++++++----
+ scsi-layer.h                 | 17 +++++++++--------
+ scsi-unknown.c               |  4 ++--
+ show-html.c                  | 15 ++++++++++-----
+ 9 files changed, 61 insertions(+), 31 deletions(-)
+
+diff --git a/cacheprobe.c b/cacheprobe.c
+index 60c55f9..f30f5d3 100644
+--- a/cacheprobe.c
++++ b/cacheprobe.c
+@@ -22,7 +22,8 @@
+ 
+ #include "dvdisaster.h"
+ 
+-#ifdef SYS_LINUX
++#if defined(SYS_LINUX)
++
+ int ProbeCacheLineSize()
+ {  int cl_size = 0;
+ 
+@@ -36,9 +37,9 @@ int ProbeCacheLineSize()
+ 
+    return cl_size;
+ }
+-#endif
+ 
+-#ifdef SYS_FREEBSD
++#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
++
+ #include <sys/param.h>
+ 
+ int ProbeCacheLineSize()
+@@ -52,9 +53,9 @@ int ProbeCacheLineSize()
+ 
+    return cl_size;
+ }
+-#endif
+ 
+-#ifdef SYS_NETBSD
++#elif defined(SYS_NETBSD)
++
+ #include <sys/param.h>
+ 
+ int ProbeCacheLineSize()
+@@ -68,13 +69,14 @@ int ProbeCacheLineSize()
+ 
+    return cl_size;
+ }
+-#endif
+ 
+-#ifdef SYS_UNKNOWN
++#else /* SYS_UNKNOWN and others. */
++
+ int ProbeCacheLineSize()
+ {
+   return 64;
+ }
++
+ #endif
+ 
+ 
+diff --git a/closure.c b/closure.c
+index 632c103..7c8b3bd 100644
+--- a/closure.c
++++ b/closure.c
+@@ -50,7 +50,8 @@ static void get_base_dirs()
+    /*** Otherwise try the installation directory. 
+ 	On Unices this is a hardcoded directory. */
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD) || defined(SYS_UNKNOWN)
+    if(DirStat(BINDIR))
+      Closure->binDir = g_strdup(BINDIR);
+ 
+@@ -425,7 +426,8 @@ void InitClosure()
+ 
+    /* Generate a more comprehensive version string */
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+   #ifdef HAVE_64BIT
+     #define BITNESS_STRING " 64bit"
+   #else
+diff --git a/rs03-create.c b/rs03-create.c
+index b14e326..7a22bae 100644
+--- a/rs03-create.c
++++ b/rs03-create.c
+@@ -43,7 +43,7 @@
+ 
+   #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE)
+ 
+-#elif defined(SYS_FREEBSD)
++#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+ 
+   #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ)
+ 
+diff --git a/scripts/bash-based-configure b/scripts/bash-based-configure
+index d62f5d7..9abcf96 100644
+--- a/scripts/bash-based-configure
++++ b/scripts/bash-based-configure
+@@ -136,6 +136,15 @@ case "$cfg_uname" in
+ 	}
+ 	;;
+ 
++  GNU/kFreeBSD*) cfg_system=kfreebsd
++	CFG_SYS_OPTIONS="-DSYS_KFREEBSD"
++	CFG_SYS_NAME="-DSYS_NAME=\\\"GNU/kFreeBSD\\\""
++	CFG_EXE_SUFFIX=""
++	function add_linker_flags()
++	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
++	}
++	;;
++
+   NetBSD*) cfg_system=netbsd
+         CFG_SYS_OPTIONS="-DSYS_NETBSD"
+ 	CFG_SYS_NAME="-DSYS_NAME=\\\"NetBSD\\\""
+@@ -146,6 +155,15 @@ case "$cfg_uname" in
+ 	}
+ 	;;
+ 
++  GNU*) cfg_system=hurd
++	CFG_SYS_OPTIONS="-DSYS_HURD"
++	CFG_SYS_NAME="-DSYS_NAME=\\\"GNU/Hurd\\\""
++	CFG_EXE_SUFFIX=""
++	function add_linker_flags()
++	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
++	}
++	;;
++
+   *) cfg_system=unknown-system
+         CFG_SYS_OPTIONS="-DSYS_UNKNOWN"
+ 	CFG_SYS_NAME="-DSYS_NAME=\\\"Unknown\\\""
+diff --git a/scsi-freebsd.c b/scsi-freebsd.c
+index 78d0be4..793f206 100644
+--- a/scsi-freebsd.c
++++ b/scsi-freebsd.c
+@@ -25,7 +25,7 @@
+ #include "scsi-layer.h"
+ #include "udf.h"
+ 
+-#ifdef SYS_FREEBSD
++#if defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+ 
+ /* SCSI wrappers for FreeBSD are still work in progress. */
+ 
+@@ -241,4 +241,4 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
+    return -1;
+ }
+ 
+-#endif /* SYS_FREEBSD */
++#endif /* defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) */
+diff --git a/scsi-layer.c b/scsi-layer.c
+index 515cc93..609cb73 100644
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -2005,12 +2005,13 @@ static gint64 query_size(Image *image)
+  */
+ 
+ gint64 CurrentMediumSize(int get_blank_size)
+-{  Image *image;
++{
++#if defined(SYS_UNKNOWN) || defined(SYS_HURD)
++   return 0;
++#else
++   Image *image;
+    gint64 size;
+ 
+-#ifdef SYS_UNKNOWN
+-   return 0;
+-#endif
+ 
+    image = OpenImageFromDevice(Closure->device);
+    if(!image) return 0;
+@@ -2051,6 +2052,7 @@ gint64 CurrentMediumSize(int get_blank_size)
+    CloseImage(image);
+ 
+    return size;
++#endif
+ }
+ 
+ /***
+diff --git a/scsi-layer.h b/scsi-layer.h
+index cc7d9fc..0706a22 100644
+--- a/scsi-layer.h
++++ b/scsi-layer.h
+@@ -28,7 +28,7 @@
+ #include <linux/cdrom.h>
+ #endif
+ 
+-#ifdef SYS_FREEBSD
++#if defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+ #include <camlib.h>
+ #endif
+ 
+@@ -49,19 +49,21 @@
+  * Linux already has one 
+  */
+ 
+-#ifdef SYS_LINUX
++#if defined(SYS_LINUX)
++
+ #define MAX_CDB_SIZE CDROM_PACKET_SIZE
+ 
+ /* Now globally defined for all OSes here */
+ //typedef struct request_sense Sense;
+-#endif
+ 
+-#ifdef SYS_FREEBSD
++#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
++
+ #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
+-#endif
+ 
+-#if defined(SYS_UNKNOWN) || defined(SYS_NETBSD)
++#else /* SYS_UNKNOWN and others. */
++
+ #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
++
+ #endif
+ 
+ /* 
+@@ -101,8 +103,7 @@ typedef struct _DeviceHandle
+     */
+ #if defined(SYS_LINUX) || defined(SYS_NETBSD)
+    int fd;                    /* device file descriptor */
+-#endif
+-#ifdef SYS_FREEBSD
++#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+    struct cam_device *camdev; /* camlib device handle */
+    union ccb *ccb;
+ #endif
+diff --git a/scsi-unknown.c b/scsi-unknown.c
+index e9183f6..ef54552 100644
+--- a/scsi-unknown.c
++++ b/scsi-unknown.c
+@@ -25,7 +25,7 @@
+ #include "scsi-layer.h"
+ #include "udf.h"
+ 
+-#ifdef SYS_UNKNOWN
++#if defined(SYS_UNKNOWN) || defined(SYS_HURD)
+ 
+ /* Dummy routines so that we can compile on unknown architectures
+    for which we don't have SCSI support yet. */
+@@ -51,4 +51,4 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
+    return -1;
+ }
+ 
+-#endif /* SYS_UNKNOWN */
++#endif /* defined(SYS_UNKNOWN) || defined(SYS_HURD) */
+diff --git a/show-html.c b/show-html.c
+index 608e8ec..20715f4 100644
+--- a/show-html.c
++++ b/show-html.c
+@@ -21,7 +21,8 @@
+ 
+ #include "dvdisaster.h"
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+ #include <sys/wait.h>
+ #endif
+ 
+@@ -34,7 +35,8 @@
+  *** Ask user to specify his browser
+  ***/
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+ 
+ #define SEARCH_BUTTON 1
+ 
+@@ -173,7 +175,8 @@ static void msg_destroy_cb(GtkWidget *widget, gpointer data)
+    bi->msg = NULL; 
+ }
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) ||  defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+ 
+ /* 
+  * The following list of browsers and html wrappers
+@@ -273,7 +276,8 @@ static gboolean browser_timeout_func(gpointer data)
+  * Invoke the browser
+  */
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+ static void try_browser(browser_info *bi)
+ {  pid_t pid;
+ 
+@@ -393,7 +397,8 @@ void ShowHTML(char *target)
+    g_timeout_add(1000, browser_timeout_func, (gpointer)bi);
+ #endif
+ 
+-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
++#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
++    defined(SYS_NETBSD) || defined(SYS_HURD)
+    /* Try the first browser */
+ 
+    browser_index = 0;

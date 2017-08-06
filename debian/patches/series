@@ -22,3 +22,4 @@
 28-fudge-pdf-doc-ids.patch
 29-fix-more-typos.patch
 30-hurd-kfreebsd-ftbfs.patch
+31-improve-hurd-and-kfreebsd-support.patch
