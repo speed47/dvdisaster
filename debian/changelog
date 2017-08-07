@@ -9,8 +9,6 @@ dvdisaster (0.79.5-2) experimental; urgency=medium
   * Remove incorrect use of 'Origin: vendor' from DEP-3 patch headers.
   * Improve support for Hurd and kFreeBSD systems, although Hurd still
     builds without SCSI.
-  * Mark bug, which we should have done in previous release, as closed.
-    (Closes: #838294)
 
  -- Carlos Maddela <e7appew@gmail.com>  Sun, 06 Aug 2017 18:00:54 +1000
 
