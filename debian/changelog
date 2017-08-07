@@ -1,5 +1,6 @@
-dvdisaster (0.79.5-2) experimental; urgency=medium
+dvdisaster (0.79.5-2) unstable; urgency=medium
 
+  [ Carlos Maddela ]
   * Team upload.
   * Bump Standards Version to 4.0.0.
   * Remove unnecessary calls to dpkg-parsechangelog from debian/rules.
@@ -10,7 +11,7 @@ dvdisaster (0.79.5-2) experimental; urgency=medium
   * Improve support for Hurd and kFreeBSD systems, although Hurd still
     builds without SCSI.
 
- -- Carlos Maddela <e7appew@gmail.com>  Mon, 07 Aug 2017 14:26:01 +1000
+ -- TANIGUCHI Takaki <takaki@debian.org>  Mon, 07 Aug 2017 17:34:01 +0900
 
 dvdisaster (0.79.5-1) unstable; urgency=medium
 
