@@ -6,7 +6,6 @@ Description: Fix FTBFS for hurd-i386.
  Hurd does not have path length restrictions, so doesn't define
  PATH_MAX. Assuming a PATH_MAX of 4096 as a quick workaround.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: no
 Last-Update: 2017-01-04
 ---

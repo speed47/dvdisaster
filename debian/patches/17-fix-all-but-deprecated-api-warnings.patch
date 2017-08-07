@@ -4,7 +4,6 @@ Subject: Fix all warnings except for those related to deprecated API.
 
 Description: Fix all warnings except for those related to deprecated API.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Bug-Debian: https://bugs.debian.org/748416
 Forwarded: no
 Last-Update: 2017-01-05

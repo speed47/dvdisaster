@@ -4,7 +4,6 @@ Subject: Generate the same PDF document IDs for build reproducibility.
 
 Description: Generate the same PDF IDs for build reproducibility.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: not-needed
 Last-Update: 2016-12-21
 ---

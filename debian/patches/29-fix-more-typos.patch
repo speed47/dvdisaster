@@ -1,0 +1,173 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Sun, 6 Aug 2017 02:16:17 +1000
+Subject: Fix more typos in error messages and docs.
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Description: Fix more typos in error messages and docs.
+ 'sucessful' → 'successful'
+ 'improvment' → 'improvement'
+Author: Carlos Maddela <e7appew@gmail.com>
+Last-Update: 2017-08-06
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ documentation/user-manual/howtos.tex | 2 +-
+ locale/cs.po                         | 2 +-
+ locale/de.po                         | 2 +-
+ locale/it.po                         | 2 +-
+ locale/pt_BR.po                      | 2 +-
+ locale/ru.po                         | 2 +-
+ locale/sv.po                         | 2 +-
+ preferences.c                        | 4 ++--
+ regtest/rs01.bash                    | 2 +-
+ scsi-layer.c                         | 2 +-
+ smart-lec.c                          | 2 +-
+ 11 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/documentation/user-manual/howtos.tex b/documentation/user-manual/howtos.tex
+index 51ff827..80fe9d3 100644
+--- a/documentation/user-manual/howtos.tex
++++ b/documentation/user-manual/howtos.tex
+@@ -1822,7 +1822,7 @@ process of creating error correction files using these options. The
+ first option marked green lets dvdisaster create the error correction
+ file immediately after the medium has been (completely) read.
+ The second option marked green deletes the image when the error correction
+-file has been sucessfully created.
++file has been successfully created.
+ 
+ \bigskip
+ 
+diff --git a/locale/cs.po b/locale/cs.po
+index ed1fc65..9010d21 100644
+--- a/locale/cs.po
++++ b/locale/cs.po
+@@ -1903,7 +1903,7 @@ msgid "Media ejection"
+ msgstr "Vysunutí disku"
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr "Po úspěšném načtení vysunout disk"
+ 
+ #: preferences.c:2091
+diff --git a/locale/de.po b/locale/de.po
+index bbbfdcc..bb5baa6 100644
+--- a/locale/de.po
++++ b/locale/de.po
+@@ -1959,7 +1959,7 @@ msgid "Media ejection"
+ msgstr "Datenträger auswerfen"
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr "Datenträger nach erfolgreichem Lesen auswerfen"
+ 
+ #: preferences.c:2091
+diff --git a/locale/it.po b/locale/it.po
+index a074339..000d5c3 100644
+--- a/locale/it.po
++++ b/locale/it.po
+@@ -1749,7 +1749,7 @@ msgid "Media ejection"
+ msgstr ""
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr ""
+ 
+ #: preferences.c:2091
+diff --git a/locale/pt_BR.po b/locale/pt_BR.po
+index 04b33b5..00bcaee 100644
+--- a/locale/pt_BR.po
++++ b/locale/pt_BR.po
+@@ -1839,7 +1839,7 @@ msgid "Media ejection"
+ msgstr "Ejeção da mídia"
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr "Ejetar mídia após uma leitura completa"
+ 
+ #: preferences.c:2091
+diff --git a/locale/ru.po b/locale/ru.po
+index 6cd3789..1c677d4 100644
+--- a/locale/ru.po
++++ b/locale/ru.po
+@@ -1841,7 +1841,7 @@ msgid "Media ejection"
+ msgstr "Извлечь носитель"
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr "Извлечь носитель после успешного чтения"
+ 
+ #: preferences.c:2091
+diff --git a/locale/sv.po b/locale/sv.po
+index 9f70808..5cd4927 100644
+--- a/locale/sv.po
++++ b/locale/sv.po
+@@ -1755,7 +1755,7 @@ msgid "Media ejection"
+ msgstr ""
+ 
+ #: preferences.c:2064 preferences.c:2065
+-msgid "Eject medium after sucessful read"
++msgid "Eject medium after successful read"
+ msgstr ""
+ 
+ #: preferences.c:2091
+diff --git a/preferences.c b/preferences.c
+index f5ef889..5a24200 100644
+--- a/preferences.c
++++ b/preferences.c
+@@ -2061,8 +2061,8 @@ void CreatePreferencesWindow(void)
+       frame = gtk_frame_new(_utf("Media ejection"));
+       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+ 
+-      lwoh = CreateLabelWithOnlineHelp(_("Eject medium after sucessful read"), 
+-				       _("Eject medium after sucessful read"));
++      lwoh = CreateLabelWithOnlineHelp(_("Eject medium after successful read"),
++				       _("Eject medium after successful read"));
+       RegisterPreferencesHelpWindow(lwoh);
+ 
+       for(i=0; i<2; i++)
+diff --git a/regtest/rs01.bash b/regtest/rs01.bash
+index 46bfac4..45f7611 100755
+--- a/regtest/rs01.bash
++++ b/regtest/rs01.bash
+@@ -1327,7 +1327,7 @@ if try "reading medium in 3 passes; 3rd pass recovers some" read_multipass_parti
+   run_regtest read_multipass_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
+ fi
+ 
+-# Do a second sucessful read attempt at an incomplete image;
++# Do a second successful read attempt at an incomplete image;
+ # see whether correct results are reported when ecc data is present
+ # since CRC caching is a bit complicated in this case.
+ 
+diff --git a/scsi-layer.c b/scsi-layer.c
+index b70a4a4..515cc93 100644
+--- a/scsi-layer.c
++++ b/scsi-layer.c
+@@ -2474,7 +2474,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
+       if(Closure->readRaw && dh->rawBuffer)
+ 	recommended_attempts = dh->rawBuffer->recommendedAttempts;
+ 
+-      if(status)  /* current try was unsucessful */
++      if(status)  /* current try was unsuccessful */
+       {  int last_key, last_asc, last_ascq;
+ 
+ 	 if(Closure->stopActions)  /* user break */
+diff --git a/smart-lec.c b/smart-lec.c
+index 0355879..e33ad8f 100644
+--- a/smart-lec.c
++++ b/smart-lec.c
+@@ -1609,7 +1609,7 @@ static int smart_lec_iteration(sh_context *shc, char *message)
+    shc->bestBonus = 0;
+    shc->bestMalus = 100000;
+    memcpy(shc->bestFrame, rb->recovered, rb->sampleSize);
+-   sprintf(shc->msg, "smart_lec: no further improvment");
++   sprintf(shc->msg, "smart_lec: no further improvement");
+ 
+    update_pq_state(shc);
+    print_pq_state(shc);

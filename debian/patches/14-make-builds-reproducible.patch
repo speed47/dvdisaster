@@ -6,7 +6,6 @@ Description: Make builds reproducible.
  Use the Debian changelog details to derive a build number and date,
  so that we can make reproducible binaries.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: not-needed
 Last-Update: 2016-12-19
 ---

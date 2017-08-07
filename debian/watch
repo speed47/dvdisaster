@@ -1,6 +1,4 @@
 version=3
-opts="pgpsigurlmangle=s/$/.gpg/, \
-      compression=xz, \
-      repack" \
+opts="pgpsigurlmangle=s/$/.gpg/" \
 http://dvdisaster.net/en/index.html \
      (?:.*?/)?dvdisaster-(.*)\.tar\.bz2 debian uupdate

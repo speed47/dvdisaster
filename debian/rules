@@ -6,8 +6,7 @@ include /usr/share/dpkg/buildflags.mk
 export DEB_CFLAGS_MAINT_APPEND = $(CPPFLAGS) -Wall -Wno-deprecated-declarations -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
-export SOURCE_DATE_EPOCH := \
-	$(shell date --date="$$(dpkg-parsechangelog -S Date)" +%s)
+include /usr/share/dpkg/pkg-info.mk
 export FORCE_SOURCE_DATE = 1
 
 MUTABLE_FILES := build.h $(wildcard locale/*.po) \

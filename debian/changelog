@@ -1,3 +1,17 @@
+dvdisaster (0.79.5-2) experimental; urgency=medium
+
+  * Team upload.
+  * Bump Standards Version to 4.0.0.
+  * Remove unnecessary calls to dpkg-parsechangelog from debian/rules.
+  * debian/watch: Avoid repacking upstream tarballs unnecessarily.
+  * Fix more typos in error messages and docs.
+  * Fix FTBFS on Hurd and kFreeBSD.
+  * Remove incorrect use of 'Origin: vendor' from DEP-3 patch headers.
+  * Improve support for Hurd and kFreeBSD systems, although Hurd still
+    builds without SCSI.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Mon, 07 Aug 2017 14:26:01 +1000
+
 dvdisaster (0.79.5-1) unstable; urgency=medium
 
   [ Carlos Maddela ]

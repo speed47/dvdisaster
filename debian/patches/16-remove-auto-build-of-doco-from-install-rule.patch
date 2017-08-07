@@ -5,7 +5,6 @@ Subject: Don't build and install documentation automatically.
 Description: Don't build and install documentation automatically.
  This allows for better control over binary-arch and binary-indep builds.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Forwarded: not-needed
 Last-Update: 2017-01-05
 ---

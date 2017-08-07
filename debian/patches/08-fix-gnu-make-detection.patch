@@ -10,7 +10,6 @@ Description: Fix GNU Make detection.
  This change allows for more predictable behaviour: grep returns an
  error code of 0 or 1.
 Author: Carlos Maddela <e7appew@gmail.com>
-Origin: vendor
 Bug-Debian: https://bugs.debian.org/848811
 Forwarded: no
 Last-Update: 2016-12-18

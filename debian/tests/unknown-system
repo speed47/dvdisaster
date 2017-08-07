@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+# Make sure we haven't built for an unknown system.
+! (dvdisaster --version | grep -qiw unknown)

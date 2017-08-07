@@ -1,0 +1,46 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Sun, 6 Aug 2017 02:40:33 +1000
+Subject: Fix FTBFS on Hurd and kFreeBSD.
+
+Description: Fix FTBFS on Hurd and kFreeBSD.
+ Make sure MMAP_FLAGS gets defined.
+Author: Carlos Maddela <e7appew@gmail.com>
+Last-Update: 2017-08-06
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ rs03-create.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/rs03-create.c b/rs03-create.c
+index b2c6033..b14e326 100644
+--- a/rs03-create.c
++++ b/rs03-create.c
+@@ -39,16 +39,19 @@
+ #ifdef HAVE_MMAP
+   #include <sys/mman.h>
+ 
+-#ifdef SYS_LINUX
+-  #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE) 
+-#endif
++#if defined(SYS_LINUX)
+ 
+-#ifdef SYS_FREEBSD
+-  #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ) 
+-#endif
++  #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE)
++
++#elif defined(SYS_FREEBSD)
++
++  #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ)
++
++#else
++
++  /* SYS_NETBSD and others. */
++  #define MMAP_FLAGS (MAP_SHARED)
+ 
+-#ifdef SYS_NETBSD
+-  #define MMAP_FLAGS (MAP_SHARED) 
+ #endif
+ 
+ #endif
