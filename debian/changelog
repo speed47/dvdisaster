@@ -10,7 +10,7 @@ dvdisaster (0.79.5-2) experimental; urgency=medium
   * Improve support for Hurd and kFreeBSD systems, although Hurd still
     builds without SCSI.
 
- -- Carlos Maddela <e7appew@gmail.com>  Sun, 06 Aug 2017 18:00:54 +1000
+ -- Carlos Maddela <e7appew@gmail.com>  Mon, 07 Aug 2017 14:26:01 +1000
 
 dvdisaster (0.79.5-1) unstable; urgency=medium
 
