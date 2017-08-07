@@ -11,14 +11,13 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
  cacheprobe.c                 | 16 +++++++++-------
  closure.c                    |  6 ++++--
- rs03-create.c                |  2 +-
  scripts/bash-based-configure | 18 ++++++++++++++++++
  scsi-freebsd.c               |  4 ++--
  scsi-layer.c                 | 10 ++++++----
  scsi-layer.h                 | 17 +++++++++--------
  scsi-unknown.c               |  4 ++--
  show-html.c                  | 15 ++++++++++-----
- 9 files changed, 61 insertions(+), 31 deletions(-)
+ 8 files changed, 60 insertions(+), 30 deletions(-)
 
 diff --git a/cacheprobe.c b/cacheprobe.c
 index 60c55f9..f30f5d3 100644
@@ -99,19 +98,6 @@ index 632c103..7c8b3bd 100644
    #ifdef HAVE_64BIT
      #define BITNESS_STRING " 64bit"
    #else
-diff --git a/rs03-create.c b/rs03-create.c
-index b14e326..7a22bae 100644
---- a/rs03-create.c
-+++ b/rs03-create.c
-@@ -43,7 +43,7 @@
- 
-   #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE)
- 
--#elif defined(SYS_FREEBSD)
-+#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
- 
-   #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ)
- 
 diff --git a/scripts/bash-based-configure b/scripts/bash-based-configure
 index d62f5d7..9abcf96 100644
 --- a/scripts/bash-based-configure

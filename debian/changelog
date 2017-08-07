@@ -1,3 +1,10 @@
+dvdisaster (0.79.5-3) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Fix another build failure on kFreeBSD.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Tue, 08 Aug 2017 03:13:26 +1000
+
 dvdisaster (0.79.5-2) unstable; urgency=medium
 
   [ Carlos Maddela ]
