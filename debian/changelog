@@ -4,6 +4,8 @@ dvdisaster (0.79.5-3) UNRELEASED; urgency=medium
   * Fix another build failure on kFreeBSD.
   * Bump Standards Version to 4.0.1.
   * Regenerate patches with git version 2.14.0.
+  * Do not suppress the display of compilation commands,
+    so that build logs may be analysed by blhc.
 
  -- Carlos Maddela <e7appew@gmail.com>  Tue, 08 Aug 2017 03:13:26 +1000
 
