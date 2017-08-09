@@ -48,19 +48,19 @@ index db2031e..22eab5a 100644
  
     GMutex progressLock; /* A mutex protected the stuff below */
     char bs[256];        /* A string of 255 backspace characters */
-@@ -1299,6 +1300,12 @@ int ProbeAltiVec(void);
+@@ -1298,6 +1299,12 @@ int ProbeAltiVec(void);
+ 
  void ShowPDF(char*);
  
- /***
++/***
 + *** show-html.c
 + ***/
 +
 +void ShowHTML(char*);
 +
-+/***
+ /***
   *** smart-lec.c
   ***/
- 
 diff --git a/help-dialogs.c b/help-dialogs.c
 index 5065e76..3874463 100644
 --- a/help-dialogs.c
