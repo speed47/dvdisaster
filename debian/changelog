@@ -7,6 +7,9 @@ dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
     dpkg-parsechangelog.
   * Call ./configure script directly, instead of relying on debhelper,
     to resolve incompatibilities with Bash-based script.
+  * Use alternative way of installing icons to remove dependency on
+    dh-exec.
+  * Drop redundant dependency on dpkg-dev.
 
  -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 23:04:38 +1000
 

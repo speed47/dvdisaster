@@ -13,6 +13,10 @@ export FORCE_SOURCE_DATE = 1
 MUTABLE_FILES := build.h $(wildcard locale/*.po) \
 	documentation/config/version.tex
 
+BUILDROOT := $(CURDIR)/debian/tmp
+ICONS := $(wildcard contrib/dvdisaster*.png)
+ICON_SIZES := $(patsubst contrib/dvdisaster%.png,%,$(ICONS))
+
 %:
 	dh $@
 
@@ -50,7 +54,13 @@ override_dh_auto_build-indep:
 	true
 
 override_dh_auto_install-arch:
-	dh_auto_install -a -- BUILDROOT=$(CURDIR)/debian/tmp
+	dh_auto_install -a -- BUILDROOT=$(BUILDROOT)
+	set -e; \
+	for S in $(ICON_SIZES); do \
+		D="$(BUILDROOT)/usr/share/icons/hicolor/$${S}x$${S}/apps"; \
+		install -d "$${D}"; \
+		install -T "contrib/dvdisaster$${S}.png" "$${D}/dvdisaster.png"; \
+	done
 
 override_dh_auto_install-indep:
 	true

@@ -6,8 +6,6 @@ Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
            Rogério Brito <rbrito@ime.usp.br>,
            Carlos Maddela <e7appew@gmail.com>
 Build-Depends: debhelper (>= 10),
-               dh-exec,
-               dpkg-dev (>= 1.16.1.1),
                gettext,
                libbz2-dev,
                libcam-dev [kfreebsd-any],
