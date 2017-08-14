@@ -3,7 +3,8 @@ Section: otherosfs
 Priority: optional
 Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org>
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
-           Rogério Brito <rbrito@ime.usp.br>
+           Rogério Brito <rbrito@ime.usp.br>,
+           Carlos Maddela <e7appew@gmail.com>
 Build-Depends: debhelper (>= 10),
                dh-exec,
                dpkg-dev (>= 1.16.1.1),
@@ -16,7 +17,7 @@ Build-Depends: debhelper (>= 10),
 # Build-Depends-Indep: texlive-fonts-recommended,
 #                      texlive-latex-base,
 #                      texlive-latex-extra
-Standards-Version: 4.0.0
+Standards-Version: 4.0.1
 Vcs-Browser: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
 Vcs-Git: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
 Homepage: http://dvdisaster.net/
