@@ -1,4 +1,4 @@
-dvdisaster (0.79.5-3) UNRELEASED; urgency=medium
+dvdisaster (0.79.5-3) unstable; urgency=medium
 
   * Team upload.
   * Fix another build failure on kFreeBSD.
@@ -8,7 +8,7 @@ dvdisaster (0.79.5-3) UNRELEASED; urgency=medium
     so that build logs may be analysed by blhc.
   * Update uploaders list.
 
- -- Carlos Maddela <e7appew@gmail.com>  Tue, 08 Aug 2017 03:13:26 +1000
+ -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 14:52:56 +1000
 
 dvdisaster (0.79.5-2) unstable; urgency=medium
 
