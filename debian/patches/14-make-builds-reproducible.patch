@@ -7,15 +7,111 @@ Description: Make builds reproducible.
  so that we can make reproducible binaries.
 Author: Carlos Maddela <e7appew@gmail.com>
 Forwarded: not-needed
-Last-Update: 2016-12-19
+Last-Update: 2017-08-14
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- scripts/time-stamper.bash | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ build.c                   | 2 +-
+ closure.c                 | 2 +-
+ dvdisaster.h              | 2 +-
+ locale/cs.po              | 4 ++--
+ locale/pt_BR.po           | 4 ++--
+ locale/ru.po              | 4 ++--
+ scripts/time-stamper.bash | 8 ++++----
+ 7 files changed, 13 insertions(+), 13 deletions(-)
 
+diff --git a/build.c b/build.c
+index 1666795..05a3b24 100644
+--- a/build.c
++++ b/build.c
+@@ -25,4 +25,4 @@
+ /* build is incremented at each make;
+    make recompile of dependent file as fast as possible */
+ 
+-int  buildCount = BUILD;
++const char *const buildCount = BUILD;
+diff --git a/closure.c b/closure.c
+index 7568cba..51e91a2 100644
+--- a/closure.c
++++ b/closure.c
+@@ -433,7 +433,7 @@ void InitClosure()
+   #define BITNESS_STRING ""
+ #endif
+ 
+-   Closure->versionString = g_strdup_printf("dvdisaster %s build %d, %s%s",
++   Closure->versionString = g_strdup_printf("dvdisaster %s build %s, %s%s",
+ 					    Closure->cookedVersion, buildCount, SYS_NAME, BITNESS_STRING);
+ 
+    /* Replace the dot with a locale-resistant separator */
+diff --git a/dvdisaster.h b/dvdisaster.h
+index db2031e..bcfd4f5 100644
+--- a/dvdisaster.h
++++ b/dvdisaster.h
+@@ -450,7 +450,7 @@ void FreeBitmap(Bitmap*);
+  *** build.h
+  ***/
+ 
+-int buildCount;
++extern const char *const buildCount;
+ 
+ /***
+  *** cacheprobe.h
+diff --git a/locale/cs.po b/locale/cs.po
+index ed1fc65..24b1e7c 100644
+--- a/locale/cs.po
++++ b/locale/cs.po
+@@ -6476,11 +6476,11 @@ msgstr "<i>Novinky v této verzi:</i>"
+ 
+ #~ msgid ""
+ #~ "\n"
+-#~ "dvdisaster version %s build %d\n"
++#~ "dvdisaster version %s build %s\n"
+ #~ "\n"
+ #~ msgstr ""
+ #~ "\n"
+-#~ "dvdisaster verze %s sestavení %d\n"
++#~ "dvdisaster verze %s sestavení %s\n"
+ #~ "\n"
+ 
+ #~ msgid "--prefetch-sectors must be in range 32...8096"
+diff --git a/locale/pt_BR.po b/locale/pt_BR.po
+index 04b33b5..012ce9e 100644
+--- a/locale/pt_BR.po
++++ b/locale/pt_BR.po
+@@ -6200,11 +6200,11 @@ msgstr "<i>Novidades dessa versão:</i>"
+ 
+ #~ msgid ""
+ #~ "\n"
+-#~ "dvdisaster version %s build %d\n"
++#~ "dvdisaster version %s build %s\n"
+ #~ "\n"
+ #~ msgstr ""
+ #~ "\n"
+-#~ "dvdisaster, versão %s build %d\n"
++#~ "dvdisaster, versão %s build %s\n"
+ 
+ #~ msgid "--cache-size maximum is 8192MiB."
+ #~ msgstr "--cache-size máximo é 8192MiB."
+diff --git a/locale/ru.po b/locale/ru.po
+index 6cd3789..912d6fb 100644
+--- a/locale/ru.po
++++ b/locale/ru.po
+@@ -6215,11 +6215,11 @@ msgstr "<i>Новое в этой версии:</i>"
+ 
+ #~ msgid ""
+ #~ "\n"
+-#~ "dvdisaster version %s build %d\n"
++#~ "dvdisaster version %s build %s\n"
+ #~ "\n"
+ #~ msgstr ""
+ #~ "\n"
+-#~ "dvdisaster версия %s сборка %d\n"
++#~ "dvdisaster версия %s сборка %s\n"
+ #~ "\n"
+ 
+ #~ msgid "--cache-size maximum is 8192MiB."
 diff --git a/scripts/time-stamper.bash b/scripts/time-stamper.bash
-index fd28794..60fe91a 100755
+index fd28794..4ec3e60 100755
 --- a/scripts/time-stamper.bash
 +++ b/scripts/time-stamper.bash
 @@ -1,7 +1,7 @@
@@ -23,9 +119,10 @@ index fd28794..60fe91a 100755
  
 -build=$(grep BUILD $1  | cut -d\  -f3)
 -build=$((build+1))
-+# Use Debian changelog details to derive build number and date.
-+build=$(dpkg-parsechangelog -S Version | sed 's/.*-\([0-9]\+\).*/\1/')
- echo "#define BUILD $build" >$1
+-echo "#define BUILD $build" >$1
 -date=$(date +"%d.%m.%y (%A, %H:%M)")
-+date=$(date --date="$(dpkg-parsechangelog -S Date)" +"%d.%m.%y (%A, %H:%M)")
++# Use Debian changelog details to derive build number and date.
++build=$(echo "${DEB_VERSION}" | cut -f2 -d-)
++echo "#define BUILD \"$build\"" >$1
++date=$(date --date="@${SOURCE_DATE_EPOCH}" --utc +"%d.%m.%y (%A, %H:%M)")
  echo "#define BDATE \"$date\"" >>$1

@@ -7,6 +7,7 @@ export DEB_CFLAGS_MAINT_APPEND = $(CPPFLAGS) -Wall -Wno-deprecated-declarations 
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 include /usr/share/dpkg/pkg-info.mk
+export DEB_VERSION
 export FORCE_SOURCE_DATE = 1
 
 MUTABLE_FILES := build.h $(wildcard locale/*.po) \
