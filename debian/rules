@@ -11,7 +11,8 @@ export DEB_VERSION
 export FORCE_SOURCE_DATE = 1
 
 MUTABLE_FILES := build.h $(wildcard locale/*.po) \
-	documentation/config/version.tex
+	documentation/config/version.tex \
+	documentation/user-manual/manual.pdf
 
 BUILDROOT := $(CURDIR)/debian/tmp
 ICONS := $(wildcard contrib/dvdisaster*.png)
@@ -41,17 +42,8 @@ override_dh_clean:
 override_dh_auto_build-arch:
 	make all
 
-# For the time being, we'll just package the upstream-generated
-# manual.pdf, since we can't build the PDF reproducibly ourselves.
-# The reason we can't is most probably due to the fact that the
-# LaTeX document embeds other PDF documents and PNG images.
-# Although we are able to reproduce the PDF's creation and mod
-# dates, as well as its PDF IDs, the stream elements representing
-# the embedded images are always what seem to differ each time we
-# try to generate the PDF.
 override_dh_auto_build-indep:
-	# make manual
-	true
+	make manual
 
 override_dh_auto_install-arch:
 	dh_auto_install -a -- BUILDROOT=$(BUILDROOT)
@@ -66,9 +58,8 @@ override_dh_auto_install-indep:
 	true
 
 # Ensure that none of the text files that the application
-# tries to display directly are not compressed, as it doesn't
+# tries to display directly are compressed, as it doesn't
 # automatically decompress text files.
-override_dh_compress:
+override_dh_compress-arch:
 	dh_compress -p dvdisaster \
 		-XCHANGELOG -XCREDITS -XREADME.MODIFYING -XTODO
-	dh_compress --remaining-packages
