@@ -20,9 +20,11 @@ override_dh_auto_configure:
 	for f in $(MUTABLE_FILES); do \
 		cp -an $$f $$f.orig; \
 	done
-	dh_auto_configure -- \
-		--localedir=\$${prefix}/share/locale \
-		--docdir=\$${prefix}share/doc \
+	./configure \
+		--prefix=/usr \
+		--mandir=share/man \
+		--localedir=share/locale \
+		--docdir=share/doc \
 		--docsubdir=dvdisaster-doc \
 		--with-embedded-src-path=no
 
