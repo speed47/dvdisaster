@@ -5,7 +5,7 @@ Subject: Fix spelling: upto -> up to
 Description: Fix spelling: upto -> up to
 Author: Carlos Maddela <e7appew@gmail.com>
 Forwarded: no
-Last-Update: 2017-01-05
+Last-Update: 2017-12-21
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
@@ -26,7 +26,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  14 files changed, 35 insertions(+), 35 deletions(-)
 
 diff --git a/debug.c b/debug.c
-index df70416..b4ffc21 100644
+index b4a96d1..bd725d6 100644
 --- a/debug.c
 +++ b/debug.c
 @@ -1023,7 +1023,7 @@ void RawSector(char *arg)
@@ -52,7 +52,7 @@ index ebb1ee5..a8c0d90 100644
  figure. The next ecc blocks are calculated and stored accordingly.
  In total, the ecc section contains $k*ls$ bytes of parity information,
 diff --git a/documentation/codec-specs/rs02.tex b/documentation/codec-specs/rs02.tex
-index 3cf5fb1..c026772 100644
+index 69195a0..fb88384 100644
 --- a/documentation/codec-specs/rs02.tex
 +++ b/documentation/codec-specs/rs02.tex
 @@ -133,7 +133,7 @@ Its format is described in appendix \ref{eh}. For RS02, only the data fields
@@ -65,10 +65,10 @@ index 3cf5fb1..c026772 100644
  to the nearest multiple of 2048. 
  CRC32 checksums are calculated over a whole CD sector comprising 2048 bytes.
 diff --git a/documentation/dvdisaster.en.1 b/documentation/dvdisaster.en.1
-index 028c6e0..95faa5a 100644
+index 3472012..d71abec 100644
 --- a/documentation/dvdisaster.en.1
 +++ b/documentation/dvdisaster.en.1
-@@ -274,7 +274,7 @@ Selects between the sg (SG_IO) driver (default setting) and the
+@@ -279,7 +279,7 @@ Selects between the sg (SG_IO) driver (default setting) and the
  older cdrom (CDROM_SEND_PACKET) driver for accessing the optical drives.
  Both drivers should work equally well; however the cdrom driver is known
  to cause system failures on some ancient SCSI controllers. 
@@ -77,7 +77,7 @@ index 028c6e0..95faa5a 100644
  if the now pre-selected sg driver changes something to the worse for you
  please switch back to the older driver using \-\-driver=cdrom.
  .TP
-@@ -376,7 +376,7 @@ the uncorrected sector instead.
+@@ -384,7 +384,7 @@ the uncorrected sector instead.
  .RE
  .TP
  .B \-\-read-attempts n-m
@@ -87,10 +87,10 @@ index 028c6e0..95faa5a 100644
  .B \-\-read-medium n
  read the whole medium up to n times.
 diff --git a/documentation/user-manual/qa.tex b/documentation/user-manual/qa.tex
-index 5d4b35a..91befa1 100644
+index a3465a8..d79ca4d 100644
 --- a/documentation/user-manual/qa.tex
 +++ b/documentation/user-manual/qa.tex
-@@ -457,6 +457,6 @@ drive for reading images in these cases.}
+@@ -465,6 +465,6 @@ drive for reading images in these cases.}
  
  \qa{``Ecc file has been created with version 0.40.7.''}
        {Some developer versions of dvdisaster mark their ecc files with a special bit.
@@ -99,10 +99,10 @@ index 5d4b35a..91befa1 100644
          message. Please use the developer versions only together with dvdisaster
          0.66 or newer versions. }
 diff --git a/dvdisaster.c b/dvdisaster.c
-index a24e599..d549676 100644
+index 6742d99..6840fd5 100644
 --- a/dvdisaster.c
 +++ b/dvdisaster.c
-@@ -917,7 +917,7 @@ int main(int argc, char *argv[])
+@@ -930,7 +930,7 @@ int main(int argc, char *argv[])
        PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
        PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
        PrintCLI(_("  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"));
@@ -110,12 +110,12 @@ index a24e599..d549676 100644
 +      PrintCLI(_("  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"));
        PrintCLI(_("  --read-medium n        - read the whole medium up to n times\n"));
        PrintCLI(_("  --read-raw             - performs read in raw mode if possible\n"));
-       PrintCLI(_("  --resource-file p      - get resource file from given path\n"));
+       PrintCLI(_("  --regtest              - tweaks output for compatibility with regtests\n"));
 diff --git a/dvdisaster.h b/dvdisaster.h
-index 2507ab9..db2031e 100644
+index 7fb980b..a466450 100644
 --- a/dvdisaster.h
 +++ b/dvdisaster.h
-@@ -101,7 +101,7 @@
+@@ -112,7 +112,7 @@
  
  #define MAX_CODEC_THREADS 1024           /* not including IO and GUI */
  #define MAX_OLD_CACHE_SIZE  8096         /* old cache for RS01/RS02  */
@@ -124,7 +124,7 @@ index 2507ab9..db2031e 100644
  
  /* Choices for I/O strategy */
  
-@@ -364,7 +364,7 @@ typedef struct _LargeFile
+@@ -376,7 +376,7 @@ typedef struct _LargeFile
  #define FINGERPRINT_SECTOR 16 /* Sector currently used to calculate the fingerprint. */
                                /* This is the ISO filesystem root sector which contains */
                                /* the volume label and creation time stamps. */
@@ -134,19 +134,19 @@ index 2507ab9..db2031e 100644
  
  #define MFLAG_DEVEL (1<<0)    /* for methodFlags[3] */
 diff --git a/locale/cs.po b/locale/cs.po
-index bdec530..ed1fc65 100644
+index 3274de9..4f766a3 100644
 --- a/locale/cs.po
 +++ b/locale/cs.po
-@@ -658,7 +658,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -662,7 +662,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr "  --raw-mode n           - režim přímého čtení pro CD disky (20 nebo 21)\n"
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr "  --read-attempts n-m    - zkusit n až m opakovaných čtení poškozeného sektoru\n"
  
- #: dvdisaster.c:921
-@@ -2000,7 +2000,7 @@ msgstr "Přečtení sektoru nezkoušet více než %d krát"
+ #: dvdisaster.c:934
+@@ -2014,7 +2014,7 @@ msgstr "Přečtení sektoru nezkoušet více než %d krát"
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -155,7 +155,7 @@ index bdec530..ed1fc65 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -2072,7 +2072,7 @@ msgstr " krát"
+@@ -2086,7 +2086,7 @@ msgstr " krát"
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -165,19 +165,19 @@ index bdec530..ed1fc65 100644
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
 diff --git a/locale/de.po b/locale/de.po
-index af978eb..bbbfdcc 100644
+index b252c19..5b47778 100644
 --- a/locale/de.po
 +++ b/locale/de.po
-@@ -700,7 +700,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -704,7 +704,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr "  --raw-mode n           - \"raw-modus\" zum Lesen von CD (20 or 21)\n"
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr "  --read-attempts n-m    - versucht beschädigten Sektor n bis m-mal zu lesen\n"
  
- #: dvdisaster.c:921
-@@ -2057,7 +2057,7 @@ msgstr "Höchstens %d Leseversuche pro Sektor"
+ #: dvdisaster.c:934
+@@ -2073,7 +2073,7 @@ msgstr "Höchstens %d Leseversuche pro Sektor"
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -186,7 +186,7 @@ index af978eb..bbbfdcc 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -2129,7 +2129,7 @@ msgstr " mal lesen"
+@@ -2145,7 +2145,7 @@ msgstr " mal lesen"
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -196,19 +196,19 @@ index af978eb..bbbfdcc 100644
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
 diff --git a/locale/it.po b/locale/it.po
-index 9f3a97b..a074339 100644
+index efd3d27..f6e9dfd 100644
 --- a/locale/it.po
 +++ b/locale/it.po
-@@ -625,7 +625,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -629,7 +629,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr ""
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr ""
  
- #: dvdisaster.c:921
-@@ -1824,7 +1824,7 @@ msgstr ""
+ #: dvdisaster.c:934
+@@ -1838,7 +1838,7 @@ msgstr ""
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -217,7 +217,7 @@ index 9f3a97b..a074339 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -1883,7 +1883,7 @@ msgstr ""
+@@ -1897,7 +1897,7 @@ msgstr ""
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -226,7 +226,7 @@ index 9f3a97b..a074339 100644
  "\n"
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
-@@ -6054,7 +6054,7 @@ msgstr ""
+@@ -6086,7 +6086,7 @@ msgstr ""
  #~ msgstr "Se potete verificate se la dimensione dell'immagine è corretta,\n"
  
  #~ msgid ""
@@ -236,19 +236,19 @@ index 9f3a97b..a074339 100644
  #~ msgstr ""
  #~ "Prego inviare l'intero output di dvdisaster fino a questa linea\n"
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index b557c84..573531b 100644
+index 21ea77b..86eda03 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
-@@ -641,7 +641,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -645,7 +645,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr "  --raw-mode n            - modo para leitura de mídia CD em modo raw (20 ou 21)\n"
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr "  --read-attempts n-m     - tenta de n a m leituras em um setor defeituoso\n"
  
- #: dvdisaster.c:921
-@@ -1935,7 +1935,7 @@ msgstr "Máx. de %d tentativas de leitura por setor"
+ #: dvdisaster.c:934
+@@ -1949,7 +1949,7 @@ msgstr "Máx. de %d tentativas de leitura por setor"
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -257,7 +257,7 @@ index b557c84..573531b 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -2007,7 +2007,7 @@ msgstr " vezes"
+@@ -2021,7 +2021,7 @@ msgstr " vezes"
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -266,7 +266,7 @@ index b557c84..573531b 100644
  "\n"
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
-@@ -6450,7 +6450,7 @@ msgstr "<i>Novidades dessa versão:</i>"
+@@ -6482,7 +6482,7 @@ msgstr "<i>Novidades dessa versão:</i>"
  #~ "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
  #~ "  --query-size n         - query drive/udf/ecc for image size (default: ecc)\n"
  #~ "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
@@ -275,7 +275,7 @@ index b557c84..573531b 100644
  #~ "  --read-medium n        - read the whole medium up to n times\n"
  #~ "  --read-raw             - performs read in raw mode if possible\n"
  #~ "  --speed-warning n      - print warning if speed changes by more than n percent\n"
-@@ -6469,7 +6469,7 @@ msgstr "<i>Novidades dessa versão:</i>"
+@@ -6501,7 +6501,7 @@ msgstr "<i>Novidades dessa versão:</i>"
  #~ msgid ""
  #~ "<b>File splitting</b>\n"
  #~ "\n"
@@ -285,19 +285,19 @@ index b557c84..573531b 100644
  #~ "<b>Separação de arquivos</b>\n"
  #~ "\n"
 diff --git a/locale/ru.po b/locale/ru.po
-index 34b1796..a9fc25c 100644
+index 767f906..7984c59 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
-@@ -640,7 +640,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -644,7 +644,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr "  --raw-mode n           - режим для низкоуровневого чтения CD-носителей (20 или 21)\n"
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr "  --read-attempts n-m    - делается от n до m попыток чтения поврежденного сектора\n"
  
- #: dvdisaster.c:921
-@@ -1938,7 +1938,7 @@ msgstr "Макс. %d попыток чтения на сектор"
+ #: dvdisaster.c:934
+@@ -1952,7 +1952,7 @@ msgstr "Макс. %d попыток чтения на сектор"
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -306,7 +306,7 @@ index 34b1796..a9fc25c 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -2010,7 +2010,7 @@ msgstr " раз"
+@@ -2024,7 +2024,7 @@ msgstr " раз"
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -315,7 +315,7 @@ index 34b1796..a9fc25c 100644
  "\n"
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
-@@ -6511,7 +6511,7 @@ msgstr "<i>Новое в этой версии:</i>"
+@@ -6543,7 +6543,7 @@ msgstr "<i>Новое в этой версии:</i>"
  #~ "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
  #~ "  --query-size n         - query drive/udf/ecc for image size (default: ecc)\n"
  #~ "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
@@ -324,7 +324,7 @@ index 34b1796..a9fc25c 100644
  #~ "  --read-medium n        - read the whole medium up to n times\n"
  #~ "  --read-raw             - performs read in raw mode if possible\n"
  #~ "  --speed-warning n      - print warning if speed changes by more than n percent\n"
-@@ -6528,7 +6528,7 @@ msgstr "<i>Новое в этой версии:</i>"
+@@ -6560,7 +6560,7 @@ msgstr "<i>Новое в этой версии:</i>"
  #~ msgid ""
  #~ "<b>File splitting</b>\n"
  #~ "\n"
@@ -333,7 +333,7 @@ index 34b1796..a9fc25c 100644
  #~ msgstr ""
  #~ "<b>Разбиение файлов</b>\n"
  #~ "\n"
-@@ -6574,7 +6574,7 @@ msgstr "<i>Новое в этой версии:</i>"
+@@ -6606,7 +6606,7 @@ msgstr "<i>Новое в этой версии:</i>"
  #~ "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
  #~ "  --query-size n         - query drive/udf/ecc for image size (default: ecc)\n"
  #~ "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
@@ -343,19 +343,19 @@ index 34b1796..a9fc25c 100644
  #~ "  --read-raw             - performs read in raw mode if possible\n"
  #~ "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 diff --git a/locale/sv.po b/locale/sv.po
-index f69035e..9f70808 100644
+index 548e2e5..c74a942 100644
 --- a/locale/sv.po
 +++ b/locale/sv.po
-@@ -626,7 +626,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+@@ -630,7 +630,7 @@ msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
  msgstr ""
  
- #: dvdisaster.c:920
+ #: dvdisaster.c:933
 -msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
 +msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
  msgstr ""
  
- #: dvdisaster.c:921
-@@ -1830,7 +1830,7 @@ msgstr ""
+ #: dvdisaster.c:934
+@@ -1844,7 +1844,7 @@ msgstr ""
  msgid ""
  "<b>Maximum number of reading attempts</b>\n"
  "\n"
@@ -364,7 +364,7 @@ index f69035e..9f70808 100644
  "\n"
  "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
  msgstr ""
-@@ -1889,7 +1889,7 @@ msgstr ""
+@@ -1903,7 +1903,7 @@ msgstr ""
  msgid ""
  "<b>Media read attempts</b> for the linear reading strategy\n"
  "\n"
@@ -374,7 +374,7 @@ index f69035e..9f70808 100644
  "Only the missing sectors will be tried in the additional reading passes."
  msgstr ""
 diff --git a/preferences.c b/preferences.c
-index 4f1fe5c..f5ef889 100644
+index 70afa02..4899317 100644
 --- a/preferences.c
 +++ b/preferences.c
 @@ -2221,7 +2221,7 @@ void CreatePreferencesWindow(void)

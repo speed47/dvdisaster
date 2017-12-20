@@ -6,23 +6,20 @@ Description: Fix all warnings except for those related to deprecated API.
 Author: Carlos Maddela <e7appew@gmail.com>
 Bug-Debian: https://bugs.debian.org/748416
 Forwarded: no
-Last-Update: 2017-01-05
+Last-Update: 2017-12-21
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- closure.c     |  8 +++++---
- curve.c       |  2 +-
+ closure.c     |  2 +-
  menubar.c     |  2 +-
- rs01-create.c | 10 +++++-----
- rs01-verify.c |  2 +-
  rs03-create.c | 24 ++++++++++++------------
  rs03-fix.c    |  8 ++++----
  scsi-layer.c  |  4 ++++
  smart-lec.c   | 10 +++++-----
- 9 files changed, 38 insertions(+), 32 deletions(-)
+ 6 files changed, 27 insertions(+), 23 deletions(-)
 
 diff --git a/closure.c b/closure.c
-index 51e91a2..40bb225 100644
+index d633d53..fa52f09 100644
 --- a/closure.c
 +++ b/closure.c
 @@ -196,7 +196,7 @@ void ReadDotfile()
@@ -34,38 +31,8 @@ index 51e91a2..40bb225 100644
        if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
  	while(!feof(dotfile) && fgetc(dotfile) != '\n')
  	  ;
-@@ -225,12 +225,14 @@ void ReadDotfile()
-       if(!strcmp(symbol, "last-image"))      { g_free(Closure->imageName);
- 	                                       if(!strcmp(value, "none"))
- 						    Closure->imageName = g_strdup("");
--					       else Closure->imageName = g_strdup(value); continue; 
-+					       else Closure->imageName = g_strdup(value);
-+					       continue;
-                                              }
-       if(!strcmp(symbol, "last-ecc"))        { g_free(Closure->eccName);
- 	                                       if(!strcmp(value, "none"))
- 						    Closure->eccName = g_strdup("");
--                                               else Closure->eccName = g_strdup(value); continue; 
-+                                               else Closure->eccName = g_strdup(value);
-+					       continue;
-                                              }
-       if(!strcmp(symbol, "adaptive-read"))   { Closure->adaptiveRead   = atoi(value); continue; }
-       if(!strcmp(symbol, "auto-suffix"))     { Closure->autoSuffix  = atoi(value); continue; }
-diff --git a/curve.c b/curve.c
-index 668bc40..61b81a9 100644
---- a/curve.c
-+++ b/curve.c
-@@ -123,7 +123,7 @@ int CurveLogY(Curve *curve, gdouble y) /* not really a log */
-    hfact = (gdouble)(curve->bottomLY - curve->topLY);
-  
-    if(y==1) return curve->bottomLY - ((log(2)/log(curve->logMaxY)) * hfact)/2;
--            return curve->bottomLY - (log(y)/log(curve->logMaxY)) * hfact;
-+   return curve->bottomLY - (log(y)/log(curve->logMaxY)) * hfact;
- }
- 
- /***
 diff --git a/menubar.c b/menubar.c
-index 8258cfd..12f1933 100644
+index 94d462b..ee24ebe 100644
 --- a/menubar.c
 +++ b/menubar.c
 @@ -414,7 +414,7 @@ void set_path(GtkWidget *entry, char *path)
@@ -77,43 +44,8 @@ index 8258cfd..12f1933 100644
        strcat(buf,"/");
  
        strcat(buf,path);
-diff --git a/rs01-create.c b/rs01-create.c
-index 5cad591..88c352a 100644
---- a/rs01-create.c
-+++ b/rs01-create.c
-@@ -107,12 +107,12 @@ static void unlink_image(GtkWidget *label)
- 		       _("\nImage file %s deleted.\n"), Closure->imageName);
-    }
-    else 
--   {  if(!Closure->guiMode)
--       PrintLog("\n");
-+   {    if(!Closure->guiMode)
-+	  PrintLog("\n");
- 
--       ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
--		    _("Image file %s not deleted: %s\n"),
--		    Closure->imageName, strerror(errno));
-+        ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
-+		     _("Image file %s not deleted: %s\n"),
-+		     Closure->imageName, strerror(errno));
-    }
- }
- 
-diff --git a/rs01-verify.c b/rs01-verify.c
-index 3315659..431a6d0 100644
---- a/rs01-verify.c
-+++ b/rs01-verify.c
-@@ -830,7 +830,7 @@ process_ecc:
-       {  if(!Closure->guiMode)
- 	      PrintProgress(_("- ecc md5sum       : %3d%%"),percent);
- 	 else SetLabelText(GTK_LABEL(wl->cmpEccMd5Sum), "%3d%%", percent);
--	      last_percent = percent;
-+	 last_percent = percent;
-       }
- 
-       if(Closure->stopActions)   
 diff --git a/rs03-create.c b/rs03-create.c
-index 40066d2..b2c6033 100644
+index 71460ef..9c7265d 100644
 --- a/rs03-create.c
 +++ b/rs03-create.c
 @@ -31,9 +31,9 @@
@@ -128,7 +60,7 @@ index 40066d2..b2c6033 100644
  #endif
  
  #ifdef HAVE_MMAP
-@@ -688,7 +688,7 @@ static void flush_crc(ecc_closure *ec, LargeFile *file_out)
+@@ -714,7 +714,7 @@ static void flush_crc(ecc_closure *ec, LargeFile *file_out)
  
     /* Write out the CRC layer */
        
@@ -137,7 +69,7 @@ index 40066d2..b2c6033 100644
     crc_sect = 2048*(ec->encoderChunk+lay->firstCrcPos);
     if(!LargeSeek(file_out, crc_sect))
     {  ec->abortImmediately = TRUE;
-@@ -709,7 +709,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
+@@ -735,7 +735,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
  
     /* Write out the created parity. */
  
@@ -146,7 +78,7 @@ index 40066d2..b2c6033 100644
     for(k=0; k<lay->nroots; k++)
     {  gint64 idx=0;
  
-@@ -726,7 +726,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
+@@ -752,7 +752,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
  	 }
        }
     }
@@ -155,7 +87,7 @@ index 40066d2..b2c6033 100644
  }
  
  static gpointer io_thread(ecc_closure *ec)
-@@ -741,7 +741,7 @@ static gpointer io_thread(ecc_closure *ec)
+@@ -767,7 +767,7 @@ static gpointer io_thread(ecc_closure *ec)
     int parity_available = 0;
     int i;
  
@@ -164,7 +96,7 @@ index 40066d2..b2c6033 100644
  
     /*** Allocate local parity buffer aligned at 128bit boundary */
  
-@@ -809,7 +809,7 @@ static gpointer io_thread(ecc_closure *ec)
+@@ -835,7 +835,7 @@ static gpointer io_thread(ecc_closure *ec)
        {  read_next_chunk(ec, chunk);
  	 //	 flush_crc(ec, file_out);  // FIXME
  	 needs_preload = 0;
@@ -173,7 +105,7 @@ index 40066d2..b2c6033 100644
  	 continue;
        }
  
-@@ -856,7 +856,7 @@ static gpointer io_thread(ecc_closure *ec)
+@@ -882,7 +882,7 @@ static gpointer io_thread(ecc_closure *ec)
        g_mutex_lock(ec->lock);
        cpu_bound = ec->buffersToEncode;
        while(ec->buffersToEncode)
@@ -182,7 +114,7 @@ index 40066d2..b2c6033 100644
  	 g_cond_wait(ec->ioCond, ec->lock);
        }
        g_mutex_unlock(ec->lock);
-@@ -898,7 +898,7 @@ static gpointer io_thread(ecc_closure *ec)
+@@ -924,7 +924,7 @@ static gpointer io_thread(ecc_closure *ec)
     ec->slicesFree = TRUE;  /* we have saved the slices; go ahead */
     g_cond_broadcast(ec->ioCond);
     while(ec->buffersToEncode)
@@ -191,7 +123,7 @@ index 40066d2..b2c6033 100644
        g_cond_wait(ec->ioCond, ec->lock);
     }
     g_mutex_unlock(ec->lock);
-@@ -911,7 +911,7 @@ static gpointer io_thread(ecc_closure *ec)
+@@ -937,7 +937,7 @@ static gpointer io_thread(ecc_closure *ec)
     flush_crc(ec, file_out);
     flush_parity(ec, file_out);
  
@@ -200,7 +132,7 @@ index 40066d2..b2c6033 100644
     return NULL;
  }
  
-@@ -1098,7 +1098,7 @@ static gpointer encoder_thread(ecc_closure *ec)
+@@ -1123,7 +1123,7 @@ static gpointer encoder_thread(ecc_closure *ec)
        ec->buffersToEncode-=enc_size;
        if(!ec->buffersToEncode)
        {  g_cond_broadcast(ec->ioCond);
@@ -209,7 +141,7 @@ index 40066d2..b2c6033 100644
  	 fflush(stdout);
        }
        g_mutex_unlock(ec->lock);
-@@ -1198,7 +1198,7 @@ static void create_reed_solomon(ecc_closure *ec)
+@@ -1223,7 +1223,7 @@ static void create_reed_solomon(ecc_closure *ec)
        verbose("SCHED: joined with worker %d\n", i);
        fflush(stdout);
     }
@@ -219,7 +151,7 @@ index 40066d2..b2c6033 100644
  
  /***
 diff --git a/rs03-fix.c b/rs03-fix.c
-index 0a7a1d3..e162e5e 100644
+index 7afb6d6..19b9322 100644
 --- a/rs03-fix.c
 +++ b/rs03-fix.c
 @@ -829,10 +829,10 @@ void RS03Fix(Image *image)
@@ -235,10 +167,10 @@ index 0a7a1d3..e162e5e 100644
 +		    Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
 +			 sec, "FW", strerror(errno));
  
- 		 n = LargeWrite(image->eccFile, cache_offset+fc->imgBlock[i], 2048);
- 		 if(n != 2048)
+ 	      n = LargeWrite(image->eccFile, cache_offset+fc->imgBlock[i], 2048);
+ 	      if(n != 2048)
 diff --git a/scsi-layer.c b/scsi-layer.c
-index 64a3dba..3be21ff 100644
+index b3a9d0e..f8d2112 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
 @@ -31,7 +31,9 @@
@@ -268,7 +200,7 @@ index 64a3dba..3be21ff 100644
  /*
   * See whether a sector lies within the user area.
 diff --git a/smart-lec.c b/smart-lec.c
-index 8da74ff..0355879 100644
+index 02b9c49..944b70d 100644
 --- a/smart-lec.c
 +++ b/smart-lec.c
 @@ -27,9 +27,9 @@

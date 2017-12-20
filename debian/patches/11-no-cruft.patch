@@ -5,15 +5,15 @@ Subject: Do not install cruft.
 Description: Do not install cruft.
 Author: Carlos Maddela <e7appew@gmail.com>
 Forwarded: not-needed
-Last-Update: 2017-01-05
+Last-Update: 2017-12-21
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
- GNUmakefile.template | 26 --------------------------
- 1 file changed, 26 deletions(-)
+ GNUmakefile.template | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
 diff --git a/GNUmakefile.template b/GNUmakefile.template
-index a3074c7..6fda92b 100644
+index 77a57bf..6fda92b 100644
 --- a/GNUmakefile.template
 +++ b/GNUmakefile.template
 @@ -228,12 +228,6 @@ install: dvdisaster manual
@@ -29,28 +29,21 @@ index a3074c7..6fda92b 100644
  	(cd documentation/user-manual; install -m 644 manual.pdf $(BUILDROOT)$(DOCSUBDIR))
  	install -d $(BUILDROOT)$(MANDIR)/man1
  	install -d $(BUILDROOT)$(MANDIR)/de/man1
-@@ -251,26 +245,6 @@ install: dvdisaster manual
+@@ -251,19 +245,6 @@ install: dvdisaster manual
  	    install -m 644 $$i/LC_MESSAGES/dvdisaster.mo $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
  	  done \
  	fi
 -	@echo "# dvdisaster uninstaller script" > $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 -	@echo "# Usage: sh dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 -	@echo >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(BINDIR)/dvdisaster\" \"$(BINDIR)/dvdisaster-uninstall.sh\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/CHANGELOG\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/COPYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.de\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.en\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/manual.pdf\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/README.MODIFYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rm -f \"$(DOCSUBDIR)/TODO\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
--	@echo "rmdir \"$(DOCSUBDIR)\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh	
+-	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "rm -rf $(DOCSUBDIR)" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 -	@for i in $(PO_LOCALES); do \
--	  echo "rm -f \"$(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+-	  echo "rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 -	done
--	@echo "rm -f \"$(MANDIR)/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+-	@echo "rm -f $(MANDIR)/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 -	@for i in $(MAN_LOCALES); do \
--	  echo "rm -f \"$(MANDIR)/$$i/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+-	  echo "rm $(MANDIR)/$$i/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 -	done
 -	@echo "echo \"dvdisaster has been uninstalled.\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
  

@@ -20,7 +20,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  8 files changed, 60 insertions(+), 30 deletions(-)
 
 diff --git a/cacheprobe.c b/cacheprobe.c
-index 60c55f9..f30f5d3 100644
+index 545c690..9f754dd 100644
 --- a/cacheprobe.c
 +++ b/cacheprobe.c
 @@ -22,7 +22,8 @@
@@ -75,7 +75,7 @@ index 60c55f9..f30f5d3 100644
  
  
 diff --git a/closure.c b/closure.c
-index f408f7a..f4b1893 100644
+index 24c1e8c..26ee13b 100644
 --- a/closure.c
 +++ b/closure.c
 @@ -50,7 +50,8 @@ static void get_base_dirs()
@@ -88,7 +88,7 @@ index f408f7a..f4b1893 100644
     if(DirStat(BINDIR))
       Closure->binDir = g_strdup(BINDIR);
  
-@@ -425,7 +426,8 @@ void InitClosure()
+@@ -432,7 +433,8 @@ void InitClosure()
  
     /* Generate a more comprehensive version string */
  
@@ -99,7 +99,7 @@ index f408f7a..f4b1893 100644
      #define BITNESS_STRING " 64bit"
    #else
 diff --git a/scripts/bash-based-configure b/scripts/bash-based-configure
-index d62f5d7..9abcf96 100644
+index f1a8bd1..487a50b 100644
 --- a/scripts/bash-based-configure
 +++ b/scripts/bash-based-configure
 @@ -136,6 +136,15 @@ case "$cfg_uname" in
@@ -135,7 +135,7 @@ index d62f5d7..9abcf96 100644
          CFG_SYS_OPTIONS="-DSYS_UNKNOWN"
  	CFG_SYS_NAME="-DSYS_NAME=\\\"Unknown\\\""
 diff --git a/scsi-freebsd.c b/scsi-freebsd.c
-index 78d0be4..793f206 100644
+index 0e3397a..bbfb913 100644
 --- a/scsi-freebsd.c
 +++ b/scsi-freebsd.c
 @@ -25,7 +25,7 @@
@@ -154,7 +154,7 @@ index 78d0be4..793f206 100644
 -#endif /* SYS_FREEBSD */
 +#endif /* defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) */
 diff --git a/scsi-layer.c b/scsi-layer.c
-index 515cc93..609cb73 100644
+index 22e825d..eaecc5c 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
 @@ -2005,12 +2005,13 @@ static gint64 query_size(Image *image)
@@ -184,7 +184,7 @@ index 515cc93..609cb73 100644
  
  /***
 diff --git a/scsi-layer.h b/scsi-layer.h
-index cc7d9fc..0706a22 100644
+index cb5c559..6169508 100644
 --- a/scsi-layer.h
 +++ b/scsi-layer.h
 @@ -28,7 +28,7 @@
@@ -234,7 +234,7 @@ index cc7d9fc..0706a22 100644
     union ccb *ccb;
  #endif
 diff --git a/scsi-unknown.c b/scsi-unknown.c
-index e9183f6..ef54552 100644
+index f5f1072..7b2ccdb 100644
 --- a/scsi-unknown.c
 +++ b/scsi-unknown.c
 @@ -25,7 +25,7 @@

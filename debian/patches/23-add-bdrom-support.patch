@@ -18,7 +18,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scsi-layer.c b/scsi-layer.c
-index 3be21ff..b70a4a4 100644
+index f8d2112..50f6c4c 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
 @@ -1029,7 +1029,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)

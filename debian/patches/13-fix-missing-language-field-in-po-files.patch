@@ -14,7 +14,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index 573531b..04b33b5 100644
+index 86eda03..f3437f3 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
 @@ -11,7 +11,7 @@ msgstr ""
@@ -27,7 +27,7 @@ index 573531b..04b33b5 100644
  "Content-Type: text/plain; charset=UTF-8\n"
  "Content-Transfer-Encoding: 8bit\n"
 diff --git a/locale/ru.po b/locale/ru.po
-index a9fc25c..6cd3789 100644
+index 7984c59..1bc7324 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
 @@ -13,7 +13,7 @@ msgstr ""

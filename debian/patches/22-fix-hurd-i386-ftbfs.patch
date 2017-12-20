@@ -15,7 +15,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 4 insertions(+)
 
 diff --git a/menubar.c b/menubar.c
-index 15ce4ad..df4203c 100644
+index 4a9f470..8330edb 100644
 --- a/menubar.c
 +++ b/menubar.c
 @@ -24,6 +24,10 @@

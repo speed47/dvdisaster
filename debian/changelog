@@ -1,6 +1,7 @@
 dvdisaster (0.79.6-1) UNRELEASED; urgency=medium
 
   * New upstream development version [0.79.6].
+  * Rebase patches.
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:34:22 +1100
 

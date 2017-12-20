@@ -16,7 +16,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/show-manual.c b/show-manual.c
-index d53c9a5..ecb0922 100644
+index c25342b..4abbe97 100644
 --- a/show-manual.c
 +++ b/show-manual.c
 @@ -287,8 +287,8 @@ void ShowPDF(char *target)
@@ -31,10 +31,10 @@ index d53c9a5..ecb0922 100644
     else 
        if(*target != '/') bi->path = g_strdup_printf("%s/%s",Closure->docDir, target); 
 diff --git a/welcome-window.c b/welcome-window.c
-index 1046bc8..3261b7c 100644
+index d30ebd9..63ac3df 100644
 --- a/welcome-window.c
 +++ b/welcome-window.c
-@@ -138,8 +138,8 @@ void CreateWelcomePage(GtkNotebook *notebook)
+@@ -139,8 +139,8 @@ void CreateWelcomePage(GtkNotebook *notebook)
     AboutText(box, _("\ndvdisaster creates error correction data to protect\n"
  		    "optical media (CD,DVD,BD) against data loss.\n"));
  

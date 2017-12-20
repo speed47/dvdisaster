@@ -16,7 +16,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/menubar.c b/menubar.c
-index 12f1933..15ce4ad 100644
+index ee24ebe..4a9f470 100644
 --- a/menubar.c
 +++ b/menubar.c
 @@ -126,21 +126,21 @@ static void menu_cb(GtkWidget *widget, gpointer data)
