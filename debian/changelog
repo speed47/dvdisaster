@@ -12,6 +12,7 @@ dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
   * Reproducibly generate PDF documentation from TeX sources.
   * Remove trailing white space from debian/changelog.
   * Remove unnecessary Testsuite header from debian/control.
+  * Indicate compliance with Debian Policy 4.1.2.
 
  -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 23:04:38 +1000
 
