@@ -1,6 +1,5 @@
 dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
 
-  * Team upload.
   * Use complete Debian revision number as build number, instead of
     just the numeric part.
   * Re-implement scripts/time-stamper.bash without direct calls to
@@ -11,6 +10,7 @@ dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
     dh-exec.
   * Drop redundant dependency on dpkg-dev.
   * Reproducibly generate PDF documentation from TeX sources.
+  * Remove trailing white space from debian/changelog.
 
  -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 23:04:38 +1000
 
@@ -142,7 +142,7 @@ dvdisaster (0.72.4-1) unstable; urgency=low
 
 dvdisaster (0.72.3-2) unstable; urgency=low
 
-  * debian/patches/libpng15: Build with libpng15. (Closes: #649555) 
+  * debian/patches/libpng15: Build with libpng15. (Closes: #649555)
 
  -- TANIGUCHI Takaki <takaki@debian.org>  Mon, 19 Mar 2012 11:08:53 +0900
 
@@ -189,7 +189,7 @@ dvdisaster (0.72.1-1) unstable; urgency=low
   * New maintainer (Closes: 543876)
   * new upstream version.
   * debian/control: update Homepage:
-  * debian/README.source: create 
+  * debian/README.source: create
   * debian/control: add Vcs-*.
 
  -- TANIGUCHI Takaki <takaki@debian.org>  Mon, 23 Nov 2009 10:29:09 +0900
