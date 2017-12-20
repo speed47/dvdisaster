@@ -1,0 +1,28 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 21 Dec 2017 02:44:53 +1100
+Subject: Honour LDFLAGS set by dpkg-buildflags in building all binaries.
+
+Description: Honour LDFLAGS set by dpkg-buildflags in building all binaries.
+ Unpackaged simple-md5sum utility must do so as well, to keep blhc happy.
+Author: Carlos Maddela <e7appew@gmail.com>
+Forwarded: no
+Last-Update: 2017-12-21
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ GNUmakefile.template | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile.template b/GNUmakefile.template
+index ac1f597..4509c48 100644
+--- a/GNUmakefile.template
++++ b/GNUmakefile.template
+@@ -138,7 +138,7 @@ untranslated:
+ 	$(MAKE) --no-print-directory -C locale check-untranslated
+ 
+ simple-md5sum: md5.c
+-	$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
++	$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
+ 
+ version.tex:
+ 	@echo "\\newcommand{\\projectversion}{$(VERSION)}" >$(SRCDIR)/documentation/config/version.tex
