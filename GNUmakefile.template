@@ -254,21 +254,14 @@ install: dvdisaster manual
 	@echo "# dvdisaster uninstaller script" > $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@echo "# Usage: sh dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@echo >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(BINDIR)/dvdisaster\" \"$(BINDIR)/dvdisaster-uninstall.sh\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/CHANGELOG\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/COPYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.de\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.en\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/manual.pdf\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/README.MODIFYING\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f \"$(DOCSUBDIR)/TODO\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rmdir \"$(DOCSUBDIR)\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh	
+	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -rf $(DOCSUBDIR)" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@for i in $(PO_LOCALES); do \
-	  echo "rm -f \"$(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 	done
-	@echo "rm -f \"$(MANDIR)/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f $(MANDIR)/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 	@for i in $(MAN_LOCALES); do \
-	  echo "rm -f \"$(MANDIR)/$$i/man1/dvdisaster.1\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm $(MANDIR)/$$i/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
 	done
 	@echo "echo \"dvdisaster has been uninstalled.\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
 

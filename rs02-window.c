@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -415,16 +415,19 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 gtk_widget_set_sensitive(wl->dvdEntry2A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdEntry1A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdEntry2A, TRUE);
+	 gtk_widget_set_sensitive(wl->bdEntry3A, TRUE);
 	 gtk_widget_set_sensitive(wl->cdButtonA, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdButton1A, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdButton2A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdButton1A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdButton2A, TRUE);
+	 gtk_widget_set_sensitive(wl->bdButton3A, TRUE);
 	 gtk_widget_set_sensitive(wl->cdUndoButtonA, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton1A, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton2A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton1A, TRUE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton2A, TRUE);
+	 gtk_widget_set_sensitive(wl->bdUndoButton3A, TRUE);
 
 	 gtk_widget_set_sensitive(wl->otherEntryA, FALSE);
 
@@ -440,16 +443,19 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 gtk_widget_set_sensitive(wl->dvdEntry2B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdEntry1B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdEntry2B, TRUE);
+	 gtk_widget_set_sensitive(wl->bdEntry3B, TRUE);
 	 gtk_widget_set_sensitive(wl->cdButtonB, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdButton1B, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdButton2B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdButton1B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdButton2B, TRUE);
+	 gtk_widget_set_sensitive(wl->bdButton3B, TRUE);
 	 gtk_widget_set_sensitive(wl->cdUndoButtonB, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton1B, TRUE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton2B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton1B, TRUE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton2B, TRUE);
+	 gtk_widget_set_sensitive(wl->bdUndoButton3B, TRUE);
 
 	 gtk_widget_set_sensitive(wl->otherEntryB, FALSE);
 
@@ -466,16 +472,19 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 gtk_widget_set_sensitive(wl->dvdEntry2A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdEntry1A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdEntry2A, FALSE);
+	 gtk_widget_set_sensitive(wl->bdEntry3A, FALSE);
 	 gtk_widget_set_sensitive(wl->cdButtonA, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdButton1A, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdButton2A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdButton1A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdButton2A, FALSE);
+	 gtk_widget_set_sensitive(wl->bdButton3A, FALSE);
 	 gtk_widget_set_sensitive(wl->cdUndoButtonA, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton1A, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton2A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton1A, FALSE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton2A, FALSE);
+	 gtk_widget_set_sensitive(wl->bdUndoButton3A, FALSE);
 
 	 gtk_widget_set_sensitive(wl->otherEntryA, TRUE);
 
@@ -492,16 +501,19 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 gtk_widget_set_sensitive(wl->dvdEntry2B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdEntry1B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdEntry2B, FALSE);
+	 gtk_widget_set_sensitive(wl->bdEntry3B, FALSE);
 	 gtk_widget_set_sensitive(wl->cdButtonB, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdButton1B, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdButton2B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdButton1B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdButton2B, FALSE);
+	 gtk_widget_set_sensitive(wl->bdButton3B, FALSE);
 	 gtk_widget_set_sensitive(wl->cdUndoButtonB, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton1B, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdUndoButton2B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton1B, FALSE);
 	 gtk_widget_set_sensitive(wl->bdUndoButton2B, FALSE);
+	 gtk_widget_set_sensitive(wl->bdUndoButton3B, FALSE);
 
 	 gtk_widget_set_sensitive(wl->otherEntryB, TRUE);
 
@@ -578,6 +590,17 @@ static void query_cb(GtkWidget *widget, gpointer data)
       gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), value);
       gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), value);
    }
+
+   if(widget == wl->bdButton3A || widget == wl->bdButton3B)
+   {  gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+   }
+
+   if(widget == wl->bdUndoButton3A || widget == wl->bdUndoButton3B )
+   {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedBDSize3);
+      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+   }
 }
 
 /*
@@ -632,6 +655,15 @@ static void entry_tracker_cb(GtkWidget *widget, gpointer data)
       gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), text);
    }
 
+   if(widget == wl->bdEntry3A)
+   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3A));
+      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), text);
+   }
+   if(widget == wl->bdEntry3B)
+   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3B));
+      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), text);
+   }
+
    if(widget == wl->otherEntryA)
    {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->otherEntryA));
       gtk_entry_set_text(GTK_ENTRY(wl->otherEntryB), text);
@@ -681,6 +713,8 @@ void ReadRS02Preferences(Method *method)
    Closure->bdSize1 = value > 0 ? value : 0; 
    value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry2A)));
    Closure->bdSize2 = value > 0 ? value : 0; 
+   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3A)));
+   Closure->bdSize3 = value > 0 ? value : 0; 
 
    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio1A)))   
    {  Closure->mediumSize = 0;
@@ -1059,6 +1093,65 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 			    "may be a few sectors smaller than specified for "
 			    "technical reasons."));
 
+   /* BDXL three layer capacity table row */
+
+   lwoh = CreateLabelWithOnlineHelp(_("BDXL 3 layers:"), _("BDXL 3 layers:"));
+   RegisterPreferencesHelpWindow(lwoh);
+
+     gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
+     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+
+     wl->bdEntry3A = gtk_entry_new();
+     gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry3A), 9);
+     g_signal_connect(G_OBJECT(wl->bdEntry3A), "activate", G_CALLBACK(entry_tracker_cb), wl);
+     gtk_table_attach(GTK_TABLE(table), wl->bdEntry3A, 1, 2, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+
+     wl->bdButton3A = gtk_button_new_with_label(_utf("query medium"));
+     g_signal_connect(G_OBJECT(wl->bdButton3A), "clicked", G_CALLBACK(query_cb), wl);
+     gtk_table_attach(GTK_TABLE(table), wl->bdButton3A, 2, 3, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+
+     icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+     wl->bdUndoButton3A = gtk_button_new();
+     gtk_container_add(GTK_CONTAINER(wl->bdUndoButton3A), icon);
+     g_signal_connect(G_OBJECT(wl->bdUndoButton3A), "clicked", G_CALLBACK(query_cb), wl);
+     gtk_table_attach(GTK_TABLE(table), wl->bdUndoButton3A, 3, 4, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+
+   hbox = gtk_hbox_new(FALSE, 4);
+
+   gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+
+   wl->bdEntry3B = gtk_entry_new();
+   gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry3B), 9);
+   g_signal_connect(G_OBJECT(wl->bdEntry3B), "activate", G_CALLBACK(entry_tracker_cb), wl);
+   gtk_box_pack_start(GTK_BOX(hbox), wl->bdEntry3B, FALSE, FALSE, 0);
+
+   wl->bdButton3B = gtk_button_new_with_label(_utf("query medium"));
+   g_signal_connect(G_OBJECT(wl->bdButton3B), "clicked", G_CALLBACK(query_cb), wl);
+   gtk_box_pack_start(GTK_BOX(hbox), wl->bdButton3B, FALSE, FALSE, 0);
+
+   icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+   wl->bdUndoButton3B = gtk_button_new();
+   gtk_container_add(GTK_CONTAINER(wl->bdUndoButton3B), icon);
+   g_signal_connect(G_OBJECT(wl->bdUndoButton3B), "clicked", G_CALLBACK(query_cb), wl);
+   gtk_box_pack_start(GTK_BOX(hbox), wl->bdUndoButton3B, FALSE, FALSE, 0);
+
+   AddHelpWidget(lwoh, hbox);
+
+   AddHelpParagraph(lwoh, _("<b>Three layered BDXL medium size</b>\n\n"
+			    "This is the maximum capacity assumed for three layered BDXL media. "
+			    "Images exceeding the smaller media sizes but smaller "
+			    "than this value will be augmented with error correction information "
+			    "so that they will fit on the specified BD.\n\n"
+			    "You can enter the medium size in sectors of 2K each, "
+			    "or press the \"query medium\" button to use the size "
+			    "of a blank medium currently inserted in the selected drive.\n"
+			    "Use the arrow button to revert to the last saved value.\n\n"
+			    "Please note that augmented images will at most triple "
+			    "in size as the highest possible redundancy is 200%%.\n"
+			    "Even if this limit is not reached the augmented image "
+			    "may be a few sectors smaller than specified for "
+			    "technical reasons."));
+
    /* Fill in values from the closure */
 
    g_snprintf(value, 40, "%lld", (long long int)Closure->cdSize);
@@ -1076,6 +1169,9 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize2);
    gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), value);
    gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+   g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize3);
+   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
 
    /* custom value selection */
 

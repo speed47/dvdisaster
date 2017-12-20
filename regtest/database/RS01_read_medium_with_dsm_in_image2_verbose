@@ -184,7 +184,7 @@ Completing image rs01-tmp.iso. Only missing sectors will be read.
 * Since the image was already created defective it can not be
 * repaired by dvdisaster. Also it will not be possible to create
 * error correction data for it. Sorry for the bad news.
-Read position:  21.0% (nn.nx)* Unrecoverable sector found!
+* Unrecoverable sector found!
 * 
 * Sector 4411 is marked unreadable and seems to come
 * from a different medium.
@@ -201,6 +201,10 @@ Read position:  21.0% (nn.nx)* Unrecoverable sector
 * Since the image was already created defective it can not be
 * repaired by dvdisaster. Also it will not be possible to create
 * error correction data for it. Sorry for the bad news.
-Read position:  21.1% (nn.nx)CRC NOT created.
 
 3 sectors read.     
+CrcBuf contents, image path none (medium):
+  crcSize: 21000, dataSectors: 21000, coveredSectors: 21000, allSectors: 21000
+  md5State: invalid
+  fp sector: 16; 15c0fd35a0cfa0f83b9ccbd8604c2592
+  missing crcs: 20997

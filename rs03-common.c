@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -26,7 +26,7 @@
 
 
 /***
- *** Read and buffer CRC information from RS03 file 
+ *** Read and buffer CRC information from RS03 error correction data 
  ***/
 
 CrcBuf *RS03GetCrcBuf(Image *image)
@@ -48,13 +48,14 @@ CrcBuf *RS03GetCrcBuf(Image *image)
       csc = (RS03CksumClosure*)image->eccFileMethod->ckSumClosure;
 
       lay = CalcRS03Layout(image, ECC_FILE); 
-      cbuf = CreateCrcBuf((lay->ndata-1)*lay->sectorsPerLayer);
+      cbuf = CreateCrcBuf(image);
    }
    else 
    {  eh = image->eccHeader;
       csc = (RS03CksumClosure*)image->eccMethod->ckSumClosure;
       lay = CalcRS03Layout(image, ECC_IMAGE); 
-      cbuf = CreateCrcBuf((lay->ndata-1)*lay->sectorsPerLayer);
+      cbuf = CreateCrcBuf(image);
+      cbuf->coveredSectors=lay->firstCrcPos;
    }
 
    csc->signatureErrors=0;
@@ -153,7 +154,7 @@ CrcBuf *RS03GetCrcBuf(Image *image)
 
 	 /* Sort crc into appropriate place if CRC block is valid */
 
-	 if(crc_valid)
+	 if(crc_valid && block_idx[i] < cbuf->crcSize)  // Cave padding sectors!
 	 {  cbuf->crcbuf[block_idx[i]] = crc_buf[i];
 	    SetBit(cbuf->valid,block_idx[i]);
 	 }
@@ -163,6 +164,17 @@ CrcBuf *RS03GetCrcBuf(Image *image)
    }
 
    FreeAlignedBuffer(ab);
+
+   /* The ecc header records only the md5 sum of the data portion (if at all),
+      but not that of the whole image, so flag the md5 sums as missing. */
+
+   cbuf->md5State = MD5_BUILDING;
+
+   if(eh->methodFlags[0] & MFLAG_DATA_MD5)
+   {  memcpy(cbuf->dataMD5sum, eh->mediumSum, 16);
+      cbuf->md5State |= MD5_DATA_COMPLETE;
+   }
+
    return cbuf;
 }
 
@@ -522,7 +534,9 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       lay->mediumCapacity = DVD_DL_SIZE;       /* Double layered DVD */
 	    else if(get_roots(dataSectors, BD_SL_SIZE) >= 8)
 	       lay->mediumCapacity = BD_SL_SIZE;        /* Single layered BD */
-	    else  lay->mediumCapacity = BD_DL_SIZE;     /* Double layered BD */
+	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8)
+	       lay->mediumCapacity = BD_DL_SIZE;        /* Double layered BD */
+	    else lay->mediumCapacity = BDXL_TL_SIZE;
 	 }
       }
 

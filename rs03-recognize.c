@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -409,7 +409,7 @@ int RS03RecognizeImage(Image *image)
 
    Verbose("RS03RecognizeImage: No EH, entering exhaustive search\n");
 
-   if(Closure->debugMode && Closure->mediumSize)
+   if(Closure->debugMode && Closure->mediumSize > 170)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
       Verbose("Warning: image size set to %lld for debugging!\n", Closure->mediumSize);
    }
@@ -418,7 +418,8 @@ int RS03RecognizeImage(Image *image)
       else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < BD_SL_SIZE)  layer_size = BD_SL_SIZE/GF_FIELDMAX; 
-      else                                 layer_size = BD_DL_SIZE/GF_FIELDMAX; 
+      else if(image_sectors < BD_DL_SIZE)  layer_size = BD_DL_SIZE/GF_FIELDMAX;
+      else                                 layer_size = BDXL_TL_SIZE/GF_FIELDMAX; 
    }
 
    Verbose(".. trying layer size %lld\n", layer_size);

@@ -1,0 +1,1312 @@
+26a706312ac087ba5100b93c6ae83a15
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 24990 sectors, Ecc, created 16-07-2006.
+
+Creating new rs03i-tmp.iso image.
+Reading CRC information from ecc data (RS03) ... done.
+* CRC error, sector: 10000
+Sector 15792, try 1: Medium Error; Unrecovered read error.
+Sector 15792: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15808, try 1: Medium Error; Unrecovered read error.
+Sector 15808: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15824, try 1: Medium Error; Unrecovered read error.
+Sector 15824: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15840, try 1: Medium Error; Unrecovered read error.
+Sector 15840: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15856, try 1: Medium Error; Unrecovered read error.
+Sector 15856: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15872, try 1: Medium Error; Unrecovered read error.
+Sector 15872: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15888, try 1: Medium Error; Unrecovered read error.
+Sector 15888: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15904, try 1: Medium Error; Unrecovered read error.
+Sector 15904: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15920, try 1: Medium Error; Unrecovered read error.
+Sector 15920: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15936, try 1: Medium Error; Unrecovered read error.
+Sector 15936: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15952, try 1: Medium Error; Unrecovered read error.
+Sector 15952: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15968, try 1: Medium Error; Unrecovered read error.
+Sector 15968: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 15984, try 1: Medium Error; Unrecovered read error.
+Sector 15984: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16000, try 1: Medium Error; Unrecovered read error.
+Sector 16000: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16016, try 1: Medium Error; Unrecovered read error.
+Sector 16016: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16032, try 1: Medium Error; Unrecovered read error.
+Sector 16032: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16048, try 1: Medium Error; Unrecovered read error.
+Sector 16048: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16064, try 1: Medium Error; Unrecovered read error.
+Sector 16064: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16080, try 1: Medium Error; Unrecovered read error.
+Sector 16080: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16096, try 1: Medium Error; Unrecovered read error.
+Sector 16096: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16112, try 1: Medium Error; Unrecovered read error.
+Sector 16112: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16128, try 1: Medium Error; Unrecovered read error.
+Sector 16128: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16144, try 1: Medium Error; Unrecovered read error.
+Sector 16144: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16160, try 1: Medium Error; Unrecovered read error.
+Sector 16160: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16176, try 1: Medium Error; Unrecovered read error.
+Sector 16176: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 16192, try 1: Medium Error; Unrecovered read error.
+Sector 16192: Medium Error; Unrecovered read error. Skipping 15 sectors.
+
+Trying to complete image, reading pass 2 of 3.
+Sectors 15792 - 15807: Medium Error; Unrecovered read error.
+* CRC error, sector: 10000
+Sector 15800, try 1: Medium Error; Unrecovered read error.
+Sector 15800: Medium Error; Unrecovered read error.
+Sector 15801, try 1: Medium Error; Unrecovered read error.
+Sector 15801: Medium Error; Unrecovered read error.
+Sector 15802, try 1: Medium Error; Unrecovered read error.
+Sector 15802: Medium Error; Unrecovered read error.
+Sector 15803, try 1: Medium Error; Unrecovered read error.
+Sector 15803: Medium Error; Unrecovered read error.
+Sector 15804, try 1: Medium Error; Unrecovered read error.
+Sector 15804: Medium Error; Unrecovered read error.
+Sector 15805, try 1: Medium Error; Unrecovered read error.
+Sector 15805: Medium Error; Unrecovered read error.
+Sector 15806, try 1: Medium Error; Unrecovered read error.
+Sector 15806: Medium Error; Unrecovered read error.
+Sector 15807, try 1: Medium Error; Unrecovered read error.
+Sector 15807: Medium Error; Unrecovered read error.
+Sectors 15808 - 15823: Medium Error; Unrecovered read error.
+Sector 15808, try 1: Medium Error; Unrecovered read error.
+Sector 15808: Medium Error; Unrecovered read error.
+Sector 15809, try 1: Medium Error; Unrecovered read error.
+Sector 15809: Medium Error; Unrecovered read error.
+Sector 15810, try 1: Medium Error; Unrecovered read error.
+Sector 15810: Medium Error; Unrecovered read error.
+Sector 15811, try 1: Medium Error; Unrecovered read error.
+Sector 15811: Medium Error; Unrecovered read error.
+Sector 15812, try 1: Medium Error; Unrecovered read error.
+Sector 15812: Medium Error; Unrecovered read error.
+Sector 15813, try 1: Medium Error; Unrecovered read error.
+Sector 15813: Medium Error; Unrecovered read error.
+Sector 15814, try 1: Medium Error; Unrecovered read error.
+Sector 15814: Medium Error; Unrecovered read error.
+Sector 15815, try 1: Medium Error; Unrecovered read error.
+Sector 15815: Medium Error; Unrecovered read error.
+Sector 15816, try 1: Medium Error; Unrecovered read error.
+Sector 15816: Medium Error; Unrecovered read error.
+Sector 15817, try 1: Medium Error; Unrecovered read error.
+Sector 15817: Medium Error; Unrecovered read error.
+Sector 15818, try 1: Medium Error; Unrecovered read error.
+Sector 15818: Medium Error; Unrecovered read error.
+Sector 15819, try 1: Medium Error; Unrecovered read error.
+Sector 15819: Medium Error; Unrecovered read error.
+Sector 15820, try 1: Medium Error; Unrecovered read error.
+Sector 15820: Medium Error; Unrecovered read error.
+Sector 15821, try 1: Medium Error; Unrecovered read error.
+Sector 15821: Medium Error; Unrecovered read error.
+Sector 15822, try 1: Medium Error; Unrecovered read error.
+Sector 15822: Medium Error; Unrecovered read error.
+Sector 15823, try 1: Medium Error; Unrecovered read error.
+Sector 15823: Medium Error; Unrecovered read error.
+Sectors 15824 - 15839: Medium Error; Unrecovered read error.
+Sector 15824, try 1: Medium Error; Unrecovered read error.
+Sector 15824: Medium Error; Unrecovered read error.
+Sector 15825, try 1: Medium Error; Unrecovered read error.
+Sector 15825: Medium Error; Unrecovered read error.
+Sector 15826, try 1: Medium Error; Unrecovered read error.
+Sector 15826: Medium Error; Unrecovered read error.
+Sector 15827, try 1: Medium Error; Unrecovered read error.
+Sector 15827: Medium Error; Unrecovered read error.
+Sector 15828, try 1: Medium Error; Unrecovered read error.
+Sector 15828: Medium Error; Unrecovered read error.
+Sector 15829, try 1: Medium Error; Unrecovered read error.
+Sector 15829: Medium Error; Unrecovered read error.
+Sector 15830, try 1: Medium Error; Unrecovered read error.
+Sector 15830: Medium Error; Unrecovered read error.
+Sector 15831, try 1: Medium Error; Unrecovered read error.
+Sector 15831: Medium Error; Unrecovered read error.
+Sector 15832, try 1: Medium Error; Unrecovered read error.
+Sector 15832: Medium Error; Unrecovered read error.
+Sector 15833, try 1: Medium Error; Unrecovered read error.
+Sector 15833: Medium Error; Unrecovered read error.
+Sector 15834, try 1: Medium Error; Unrecovered read error.
+Sector 15834: Medium Error; Unrecovered read error.
+Sector 15835, try 1: Medium Error; Unrecovered read error.
+Sector 15835: Medium Error; Unrecovered read error.
+Sector 15836, try 1: Medium Error; Unrecovered read error.
+Sector 15836: Medium Error; Unrecovered read error.
+Sector 15837, try 1: Medium Error; Unrecovered read error.
+Sector 15837: Medium Error; Unrecovered read error.
+Sector 15838, try 1: Medium Error; Unrecovered read error.
+Sector 15838: Medium Error; Unrecovered read error.
+Sector 15839, try 1: Medium Error; Unrecovered read error.
+Sector 15839: Medium Error; Unrecovered read error.
+Sectors 15840 - 15855: Medium Error; Unrecovered read error.
+Sector 15840, try 1: Medium Error; Unrecovered read error.
+Sector 15840: Medium Error; Unrecovered read error.
+Sector 15841, try 1: Medium Error; Unrecovered read error.
+Sector 15841: Medium Error; Unrecovered read error.
+Sector 15842, try 1: Medium Error; Unrecovered read error.
+Sector 15842: Medium Error; Unrecovered read error.
+Sector 15843, try 1: Medium Error; Unrecovered read error.
+Sector 15843: Medium Error; Unrecovered read error.
+Sector 15844, try 1: Medium Error; Unrecovered read error.
+Sector 15844: Medium Error; Unrecovered read error.
+Sector 15845, try 1: Medium Error; Unrecovered read error.
+Sector 15845: Medium Error; Unrecovered read error.
+Sector 15846, try 1: Medium Error; Unrecovered read error.
+Sector 15846: Medium Error; Unrecovered read error.
+Sector 15847, try 1: Medium Error; Unrecovered read error.
+Sector 15847: Medium Error; Unrecovered read error.
+Sector 15848, try 1: Medium Error; Unrecovered read error.
+Sector 15848: Medium Error; Unrecovered read error.
+Sector 15849, try 1: Medium Error; Unrecovered read error.
+Sector 15849: Medium Error; Unrecovered read error.
+Sector 15850, try 1: Medium Error; Unrecovered read error.
+Sector 15850: Medium Error; Unrecovered read error.
+Sector 15851, try 1: Medium Error; Unrecovered read error.
+Sector 15851: Medium Error; Unrecovered read error.
+Sector 15852, try 1: Medium Error; Unrecovered read error.
+Sector 15852: Medium Error; Unrecovered read error.
+Sector 15853, try 1: Medium Error; Unrecovered read error.
+Sector 15853: Medium Error; Unrecovered read error.
+Sector 15854, try 1: Medium Error; Unrecovered read error.
+Sector 15854: Medium Error; Unrecovered read error.
+Sector 15855, try 1: Medium Error; Unrecovered read error.
+Sector 15855: Medium Error; Unrecovered read error.
+Sectors 15856 - 15871: Medium Error; Unrecovered read error.
+Sector 15856, try 1: Medium Error; Unrecovered read error.
+Sector 15856: Medium Error; Unrecovered read error.
+Sector 15857, try 1: Medium Error; Unrecovered read error.
+Sector 15857: Medium Error; Unrecovered read error.
+Sector 15858, try 1: Medium Error; Unrecovered read error.
+Sector 15858: Medium Error; Unrecovered read error.
+Sector 15859, try 1: Medium Error; Unrecovered read error.
+Sector 15859: Medium Error; Unrecovered read error.
+Sector 15860, try 1: Medium Error; Unrecovered read error.
+Sector 15860: Medium Error; Unrecovered read error.
+Sector 15861, try 1: Medium Error; Unrecovered read error.
+Sector 15861: Medium Error; Unrecovered read error.
+Sector 15862, try 1: Medium Error; Unrecovered read error.
+Sector 15862: Medium Error; Unrecovered read error.
+Sector 15863, try 1: Medium Error; Unrecovered read error.
+Sector 15863: Medium Error; Unrecovered read error.
+Sector 15864, try 1: Medium Error; Unrecovered read error.
+Sector 15864: Medium Error; Unrecovered read error.
+Sector 15865, try 1: Medium Error; Unrecovered read error.
+Sector 15865: Medium Error; Unrecovered read error.
+Sector 15866, try 1: Medium Error; Unrecovered read error.
+Sector 15866: Medium Error; Unrecovered read error.
+Sector 15867, try 1: Medium Error; Unrecovered read error.
+Sector 15867: Medium Error; Unrecovered read error.
+Sector 15868, try 1: Medium Error; Unrecovered read error.
+Sector 15868: Medium Error; Unrecovered read error.
+Sector 15869, try 1: Medium Error; Unrecovered read error.
+Sector 15869: Medium Error; Unrecovered read error.
+Sector 15870, try 1: Medium Error; Unrecovered read error.
+Sector 15870: Medium Error; Unrecovered read error.
+Sector 15871, try 1: Medium Error; Unrecovered read error.
+Sector 15871: Medium Error; Unrecovered read error.
+Sectors 15872 - 15887: Medium Error; Unrecovered read error.
+Sector 15872, try 1: Medium Error; Unrecovered read error.
+Sector 15872: Medium Error; Unrecovered read error.
+Sector 15873, try 1: Medium Error; Unrecovered read error.
+Sector 15873: Medium Error; Unrecovered read error.
+Sector 15874, try 1: Medium Error; Unrecovered read error.
+Sector 15874: Medium Error; Unrecovered read error.
+Sector 15875, try 1: Medium Error; Unrecovered read error.
+Sector 15875: Medium Error; Unrecovered read error.
+Sector 15876, try 1: Medium Error; Unrecovered read error.
+Sector 15876: Medium Error; Unrecovered read error.
+Sector 15877, try 1: Medium Error; Unrecovered read error.
+Sector 15877: Medium Error; Unrecovered read error.
+Sector 15878, try 1: Medium Error; Unrecovered read error.
+Sector 15878: Medium Error; Unrecovered read error.
+Sector 15879, try 1: Medium Error; Unrecovered read error.
+Sector 15879: Medium Error; Unrecovered read error.
+Sector 15880, try 1: Medium Error; Unrecovered read error.
+Sector 15880: Medium Error; Unrecovered read error.
+Sector 15881, try 1: Medium Error; Unrecovered read error.
+Sector 15881: Medium Error; Unrecovered read error.
+Sector 15882, try 1: Medium Error; Unrecovered read error.
+Sector 15882: Medium Error; Unrecovered read error.
+Sector 15883, try 1: Medium Error; Unrecovered read error.
+Sector 15883: Medium Error; Unrecovered read error.
+Sector 15884, try 1: Medium Error; Unrecovered read error.
+Sector 15884: Medium Error; Unrecovered read error.
+Sector 15885, try 1: Medium Error; Unrecovered read error.
+Sector 15885: Medium Error; Unrecovered read error.
+Sector 15886, try 1: Medium Error; Unrecovered read error.
+Sector 15886: Medium Error; Unrecovered read error.
+Sector 15887, try 1: Medium Error; Unrecovered read error.
+Sector 15887: Medium Error; Unrecovered read error.
+Sectors 15888 - 15903: Medium Error; Unrecovered read error.
+Sector 15888, try 1: Medium Error; Unrecovered read error.
+Sector 15888: Medium Error; Unrecovered read error.
+Sector 15889, try 1: Medium Error; Unrecovered read error.
+Sector 15889: Medium Error; Unrecovered read error.
+Sector 15890, try 1: Medium Error; Unrecovered read error.
+Sector 15890: Medium Error; Unrecovered read error.
+Sector 15891, try 1: Medium Error; Unrecovered read error.
+Sector 15891: Medium Error; Unrecovered read error.
+Sector 15892, try 1: Medium Error; Unrecovered read error.
+Sector 15892: Medium Error; Unrecovered read error.
+Sector 15893, try 1: Medium Error; Unrecovered read error.
+Sector 15893: Medium Error; Unrecovered read error.
+Sector 15894, try 1: Medium Error; Unrecovered read error.
+Sector 15894: Medium Error; Unrecovered read error.
+Sector 15895, try 1: Medium Error; Unrecovered read error.
+Sector 15895: Medium Error; Unrecovered read error.
+Sector 15896, try 1: Medium Error; Unrecovered read error.
+Sector 15896: Medium Error; Unrecovered read error.
+Sector 15897, try 1: Medium Error; Unrecovered read error.
+Sector 15897: Medium Error; Unrecovered read error.
+Sector 15898, try 1: Medium Error; Unrecovered read error.
+Sector 15898: Medium Error; Unrecovered read error.
+Sector 15899, try 1: Medium Error; Unrecovered read error.
+Sector 15899: Medium Error; Unrecovered read error.
+Sector 15900, try 1: Medium Error; Unrecovered read error.
+Sector 15900: Medium Error; Unrecovered read error.
+Sector 15901, try 1: Medium Error; Unrecovered read error.
+Sector 15901: Medium Error; Unrecovered read error.
+Sector 15902, try 1: Medium Error; Unrecovered read error.
+Sector 15902: Medium Error; Unrecovered read error.
+Sector 15903, try 1: Medium Error; Unrecovered read error.
+Sector 15903: Medium Error; Unrecovered read error.
+Sectors 15904 - 15919: Medium Error; Unrecovered read error.
+Sector 15904, try 1: Medium Error; Unrecovered read error.
+Sector 15904: Medium Error; Unrecovered read error.
+Sector 15905, try 1: Medium Error; Unrecovered read error.
+Sector 15905: Medium Error; Unrecovered read error.
+Sector 15906, try 1: Medium Error; Unrecovered read error.
+Sector 15906: Medium Error; Unrecovered read error.
+Sector 15907, try 1: Medium Error; Unrecovered read error.
+Sector 15907: Medium Error; Unrecovered read error.
+Sector 15908, try 1: Medium Error; Unrecovered read error.
+Sector 15908: Medium Error; Unrecovered read error.
+Sector 15909, try 1: Medium Error; Unrecovered read error.
+Sector 15909: Medium Error; Unrecovered read error.
+Sector 15910, try 1: Medium Error; Unrecovered read error.
+Sector 15910: Medium Error; Unrecovered read error.
+Sector 15911, try 1: Medium Error; Unrecovered read error.
+Sector 15911: Medium Error; Unrecovered read error.
+Sector 15912, try 1: Medium Error; Unrecovered read error.
+Sector 15912: Medium Error; Unrecovered read error.
+Sector 15913, try 1: Medium Error; Unrecovered read error.
+Sector 15913: Medium Error; Unrecovered read error.
+Sector 15914, try 1: Medium Error; Unrecovered read error.
+Sector 15914: Medium Error; Unrecovered read error.
+Sector 15915, try 1: Medium Error; Unrecovered read error.
+Sector 15915: Medium Error; Unrecovered read error.
+Sector 15916, try 1: Medium Error; Unrecovered read error.
+Sector 15916: Medium Error; Unrecovered read error.
+Sector 15917, try 1: Medium Error; Unrecovered read error.
+Sector 15917: Medium Error; Unrecovered read error.
+Sector 15918, try 1: Medium Error; Unrecovered read error.
+Sector 15918: Medium Error; Unrecovered read error.
+Sector 15919, try 1: Medium Error; Unrecovered read error.
+Sector 15919: Medium Error; Unrecovered read error.
+Sectors 15920 - 15935: Medium Error; Unrecovered read error.
+Sector 15920, try 1: Medium Error; Unrecovered read error.
+Sector 15920: Medium Error; Unrecovered read error.
+Sector 15921, try 1: Medium Error; Unrecovered read error.
+Sector 15921: Medium Error; Unrecovered read error.
+Sector 15922, try 1: Medium Error; Unrecovered read error.
+Sector 15922: Medium Error; Unrecovered read error.
+Sector 15923, try 1: Medium Error; Unrecovered read error.
+Sector 15923: Medium Error; Unrecovered read error.
+Sector 15924, try 1: Medium Error; Unrecovered read error.
+Sector 15924: Medium Error; Unrecovered read error.
+Sector 15925, try 1: Medium Error; Unrecovered read error.
+Sector 15925: Medium Error; Unrecovered read error.
+Sector 15926, try 1: Medium Error; Unrecovered read error.
+Sector 15926: Medium Error; Unrecovered read error.
+Sector 15927, try 1: Medium Error; Unrecovered read error.
+Sector 15927: Medium Error; Unrecovered read error.
+Sector 15928, try 1: Medium Error; Unrecovered read error.
+Sector 15928: Medium Error; Unrecovered read error.
+Sector 15929, try 1: Medium Error; Unrecovered read error.
+Sector 15929: Medium Error; Unrecovered read error.
+Sector 15930, try 1: Medium Error; Unrecovered read error.
+Sector 15930: Medium Error; Unrecovered read error.
+Sector 15931, try 1: Medium Error; Unrecovered read error.
+Sector 15931: Medium Error; Unrecovered read error.
+Sector 15932, try 1: Medium Error; Unrecovered read error.
+Sector 15932: Medium Error; Unrecovered read error.
+Sector 15933, try 1: Medium Error; Unrecovered read error.
+Sector 15933: Medium Error; Unrecovered read error.
+Sector 15934, try 1: Medium Error; Unrecovered read error.
+Sector 15934: Medium Error; Unrecovered read error.
+Sector 15935, try 1: Medium Error; Unrecovered read error.
+Sector 15935: Medium Error; Unrecovered read error.
+Sectors 15936 - 15951: Medium Error; Unrecovered read error.
+Sector 15936, try 1: Medium Error; Unrecovered read error.
+Sector 15936: Medium Error; Unrecovered read error.
+Sector 15937, try 1: Medium Error; Unrecovered read error.
+Sector 15937: Medium Error; Unrecovered read error.
+Sector 15938, try 1: Medium Error; Unrecovered read error.
+Sector 15938: Medium Error; Unrecovered read error.
+Sector 15939, try 1: Medium Error; Unrecovered read error.
+Sector 15939: Medium Error; Unrecovered read error.
+Sector 15940, try 1: Medium Error; Unrecovered read error.
+Sector 15940: Medium Error; Unrecovered read error.
+Sector 15941, try 1: Medium Error; Unrecovered read error.
+Sector 15941: Medium Error; Unrecovered read error.
+Sector 15942, try 1: Medium Error; Unrecovered read error.
+Sector 15942: Medium Error; Unrecovered read error.
+Sector 15943, try 1: Medium Error; Unrecovered read error.
+Sector 15943: Medium Error; Unrecovered read error.
+Sector 15944, try 1: Medium Error; Unrecovered read error.
+Sector 15944: Medium Error; Unrecovered read error.
+Sector 15945, try 1: Medium Error; Unrecovered read error.
+Sector 15945: Medium Error; Unrecovered read error.
+Sector 15946, try 1: Medium Error; Unrecovered read error.
+Sector 15946: Medium Error; Unrecovered read error.
+Sector 15947, try 1: Medium Error; Unrecovered read error.
+Sector 15947: Medium Error; Unrecovered read error.
+Sector 15948, try 1: Medium Error; Unrecovered read error.
+Sector 15948: Medium Error; Unrecovered read error.
+Sector 15949, try 1: Medium Error; Unrecovered read error.
+Sector 15949: Medium Error; Unrecovered read error.
+Sector 15950, try 1: Medium Error; Unrecovered read error.
+Sector 15950: Medium Error; Unrecovered read error.
+Sector 15951, try 1: Medium Error; Unrecovered read error.
+Sector 15951: Medium Error; Unrecovered read error.
+Sectors 15952 - 15967: Medium Error; Unrecovered read error.
+Sector 15952, try 1: Medium Error; Unrecovered read error.
+Sector 15952: Medium Error; Unrecovered read error.
+Sector 15953, try 1: Medium Error; Unrecovered read error.
+Sector 15953: Medium Error; Unrecovered read error.
+Sector 15954, try 1: Medium Error; Unrecovered read error.
+Sector 15954: Medium Error; Unrecovered read error.
+Sector 15955, try 1: Medium Error; Unrecovered read error.
+Sector 15955: Medium Error; Unrecovered read error.
+Sector 15956, try 1: Medium Error; Unrecovered read error.
+Sector 15956: Medium Error; Unrecovered read error.
+Sector 15957, try 1: Medium Error; Unrecovered read error.
+Sector 15957: Medium Error; Unrecovered read error.
+Sector 15958, try 1: Medium Error; Unrecovered read error.
+Sector 15958: Medium Error; Unrecovered read error.
+Sector 15959, try 1: Medium Error; Unrecovered read error.
+Sector 15959: Medium Error; Unrecovered read error.
+Sector 15960, try 1: Medium Error; Unrecovered read error.
+Sector 15960: Medium Error; Unrecovered read error.
+Sector 15961, try 1: Medium Error; Unrecovered read error.
+Sector 15961: Medium Error; Unrecovered read error.
+Sector 15962, try 1: Medium Error; Unrecovered read error.
+Sector 15962: Medium Error; Unrecovered read error.
+Sector 15963, try 1: Medium Error; Unrecovered read error.
+Sector 15963: Medium Error; Unrecovered read error.
+Sector 15964, try 1: Medium Error; Unrecovered read error.
+Sector 15964: Medium Error; Unrecovered read error.
+Sector 15965, try 1: Medium Error; Unrecovered read error.
+Sector 15965: Medium Error; Unrecovered read error.
+Sector 15966, try 1: Medium Error; Unrecovered read error.
+Sector 15966: Medium Error; Unrecovered read error.
+Sector 15967, try 1: Medium Error; Unrecovered read error.
+Sector 15967: Medium Error; Unrecovered read error.
+Sectors 15968 - 15983: Medium Error; Unrecovered read error.
+Sector 15968, try 1: Medium Error; Unrecovered read error.
+Sector 15968: Medium Error; Unrecovered read error.
+Sector 15969, try 1: Medium Error; Unrecovered read error.
+Sector 15969: Medium Error; Unrecovered read error.
+Sector 15970, try 1: Medium Error; Unrecovered read error.
+Sector 15970: Medium Error; Unrecovered read error.
+Sector 15971, try 1: Medium Error; Unrecovered read error.
+Sector 15971: Medium Error; Unrecovered read error.
+Sector 15972, try 1: Medium Error; Unrecovered read error.
+Sector 15972: Medium Error; Unrecovered read error.
+Sector 15973, try 1: Medium Error; Unrecovered read error.
+Sector 15973: Medium Error; Unrecovered read error.
+Sector 15974, try 1: Medium Error; Unrecovered read error.
+Sector 15974: Medium Error; Unrecovered read error.
+Sector 15975, try 1: Medium Error; Unrecovered read error.
+Sector 15975: Medium Error; Unrecovered read error.
+Sector 15976, try 1: Medium Error; Unrecovered read error.
+Sector 15976: Medium Error; Unrecovered read error.
+Sector 15977, try 1: Medium Error; Unrecovered read error.
+Sector 15977: Medium Error; Unrecovered read error.
+Sector 15978, try 1: Medium Error; Unrecovered read error.
+Sector 15978: Medium Error; Unrecovered read error.
+Sector 15979, try 1: Medium Error; Unrecovered read error.
+Sector 15979: Medium Error; Unrecovered read error.
+Sector 15980, try 1: Medium Error; Unrecovered read error.
+Sector 15980: Medium Error; Unrecovered read error.
+Sector 15981, try 1: Medium Error; Unrecovered read error.
+Sector 15981: Medium Error; Unrecovered read error.
+Sector 15982, try 1: Medium Error; Unrecovered read error.
+Sector 15982: Medium Error; Unrecovered read error.
+Sector 15983, try 1: Medium Error; Unrecovered read error.
+Sector 15983: Medium Error; Unrecovered read error.
+Sectors 15984 - 15999: Medium Error; Unrecovered read error.
+Sector 15984, try 1: Medium Error; Unrecovered read error.
+Sector 15984: Medium Error; Unrecovered read error.
+Sector 15985, try 1: Medium Error; Unrecovered read error.
+Sector 15985: Medium Error; Unrecovered read error.
+Sector 15986, try 1: Medium Error; Unrecovered read error.
+Sector 15986: Medium Error; Unrecovered read error.
+Sector 15987, try 1: Medium Error; Unrecovered read error.
+Sector 15987: Medium Error; Unrecovered read error.
+Sector 15988, try 1: Medium Error; Unrecovered read error.
+Sector 15988: Medium Error; Unrecovered read error.
+Sector 15989, try 1: Medium Error; Unrecovered read error.
+Sector 15989: Medium Error; Unrecovered read error.
+Sector 15990, try 1: Medium Error; Unrecovered read error.
+Sector 15990: Medium Error; Unrecovered read error.
+Sector 15991, try 1: Medium Error; Unrecovered read error.
+Sector 15991: Medium Error; Unrecovered read error.
+Sector 15992, try 1: Medium Error; Unrecovered read error.
+Sector 15992: Medium Error; Unrecovered read error.
+Sector 15993, try 1: Medium Error; Unrecovered read error.
+Sector 15993: Medium Error; Unrecovered read error.
+Sector 15994, try 1: Medium Error; Unrecovered read error.
+Sector 15994: Medium Error; Unrecovered read error.
+Sector 15995, try 1: Medium Error; Unrecovered read error.
+Sector 15995: Medium Error; Unrecovered read error.
+Sector 15996, try 1: Medium Error; Unrecovered read error.
+Sector 15996: Medium Error; Unrecovered read error.
+Sector 15997, try 1: Medium Error; Unrecovered read error.
+Sector 15997: Medium Error; Unrecovered read error.
+Sector 15998, try 1: Medium Error; Unrecovered read error.
+Sector 15998: Medium Error; Unrecovered read error.
+Sector 15999, try 1: Medium Error; Unrecovered read error.
+Sector 15999: Medium Error; Unrecovered read error.
+Sectors 16000 - 16015: Medium Error; Unrecovered read error.
+Sector 16000, try 1: Medium Error; Unrecovered read error.
+Sector 16000: Medium Error; Unrecovered read error.
+Sector 16001, try 1: Medium Error; Unrecovered read error.
+Sector 16001: Medium Error; Unrecovered read error.
+Sector 16002, try 1: Medium Error; Unrecovered read error.
+Sector 16002: Medium Error; Unrecovered read error.
+Sector 16003, try 1: Medium Error; Unrecovered read error.
+Sector 16003: Medium Error; Unrecovered read error.
+Sector 16004, try 1: Medium Error; Unrecovered read error.
+Sector 16004: Medium Error; Unrecovered read error.
+Sector 16005, try 1: Medium Error; Unrecovered read error.
+Sector 16005: Medium Error; Unrecovered read error.
+Sector 16006, try 1: Medium Error; Unrecovered read error.
+Sector 16006: Medium Error; Unrecovered read error.
+Sector 16007, try 1: Medium Error; Unrecovered read error.
+Sector 16007: Medium Error; Unrecovered read error.
+Sector 16008, try 1: Medium Error; Unrecovered read error.
+Sector 16008: Medium Error; Unrecovered read error.
+Sector 16009, try 1: Medium Error; Unrecovered read error.
+Sector 16009: Medium Error; Unrecovered read error.
+Sector 16010, try 1: Medium Error; Unrecovered read error.
+Sector 16010: Medium Error; Unrecovered read error.
+Sector 16011, try 1: Medium Error; Unrecovered read error.
+Sector 16011: Medium Error; Unrecovered read error.
+Sector 16012, try 1: Medium Error; Unrecovered read error.
+Sector 16012: Medium Error; Unrecovered read error.
+Sector 16013, try 1: Medium Error; Unrecovered read error.
+Sector 16013: Medium Error; Unrecovered read error.
+Sector 16014, try 1: Medium Error; Unrecovered read error.
+Sector 16014: Medium Error; Unrecovered read error.
+Sector 16015, try 1: Medium Error; Unrecovered read error.
+Sector 16015: Medium Error; Unrecovered read error.
+Sectors 16016 - 16031: Medium Error; Unrecovered read error.
+Sector 16016, try 1: Medium Error; Unrecovered read error.
+Sector 16016: Medium Error; Unrecovered read error.
+Sector 16017, try 1: Medium Error; Unrecovered read error.
+Sector 16017: Medium Error; Unrecovered read error.
+Sector 16018, try 1: Medium Error; Unrecovered read error.
+Sector 16018: Medium Error; Unrecovered read error.
+Sector 16019, try 1: Medium Error; Unrecovered read error.
+Sector 16019: Medium Error; Unrecovered read error.
+Sector 16020, try 1: Medium Error; Unrecovered read error.
+Sector 16020: Medium Error; Unrecovered read error.
+Sector 16021, try 1: Medium Error; Unrecovered read error.
+Sector 16021: Medium Error; Unrecovered read error.
+Sector 16022, try 1: Medium Error; Unrecovered read error.
+Sector 16022: Medium Error; Unrecovered read error.
+Sector 16023, try 1: Medium Error; Unrecovered read error.
+Sector 16023: Medium Error; Unrecovered read error.
+Sector 16024, try 1: Medium Error; Unrecovered read error.
+Sector 16024: Medium Error; Unrecovered read error.
+Sector 16025, try 1: Medium Error; Unrecovered read error.
+Sector 16025: Medium Error; Unrecovered read error.
+Sector 16026, try 1: Medium Error; Unrecovered read error.
+Sector 16026: Medium Error; Unrecovered read error.
+Sector 16027, try 1: Medium Error; Unrecovered read error.
+Sector 16027: Medium Error; Unrecovered read error.
+Sector 16028, try 1: Medium Error; Unrecovered read error.
+Sector 16028: Medium Error; Unrecovered read error.
+Sector 16029, try 1: Medium Error; Unrecovered read error.
+Sector 16029: Medium Error; Unrecovered read error.
+Sector 16030, try 1: Medium Error; Unrecovered read error.
+Sector 16030: Medium Error; Unrecovered read error.
+Sector 16031, try 1: Medium Error; Unrecovered read error.
+Sector 16031: Medium Error; Unrecovered read error.
+Sectors 16032 - 16047: Medium Error; Unrecovered read error.
+Sector 16032, try 1: Medium Error; Unrecovered read error.
+Sector 16032: Medium Error; Unrecovered read error.
+Sector 16033, try 1: Medium Error; Unrecovered read error.
+Sector 16033: Medium Error; Unrecovered read error.
+Sector 16034, try 1: Medium Error; Unrecovered read error.
+Sector 16034: Medium Error; Unrecovered read error.
+Sector 16035, try 1: Medium Error; Unrecovered read error.
+Sector 16035: Medium Error; Unrecovered read error.
+Sector 16036, try 1: Medium Error; Unrecovered read error.
+Sector 16036: Medium Error; Unrecovered read error.
+Sector 16037, try 1: Medium Error; Unrecovered read error.
+Sector 16037: Medium Error; Unrecovered read error.
+Sector 16038, try 1: Medium Error; Unrecovered read error.
+Sector 16038: Medium Error; Unrecovered read error.
+Sector 16039, try 1: Medium Error; Unrecovered read error.
+Sector 16039: Medium Error; Unrecovered read error.
+Sector 16040, try 1: Medium Error; Unrecovered read error.
+Sector 16040: Medium Error; Unrecovered read error.
+Sector 16041, try 1: Medium Error; Unrecovered read error.
+Sector 16041: Medium Error; Unrecovered read error.
+Sector 16042, try 1: Medium Error; Unrecovered read error.
+Sector 16042: Medium Error; Unrecovered read error.
+Sector 16043, try 1: Medium Error; Unrecovered read error.
+Sector 16043: Medium Error; Unrecovered read error.
+Sector 16044, try 1: Medium Error; Unrecovered read error.
+Sector 16044: Medium Error; Unrecovered read error.
+Sector 16045, try 1: Medium Error; Unrecovered read error.
+Sector 16045: Medium Error; Unrecovered read error.
+Sector 16046, try 1: Medium Error; Unrecovered read error.
+Sector 16046: Medium Error; Unrecovered read error.
+Sector 16047, try 1: Medium Error; Unrecovered read error.
+Sector 16047: Medium Error; Unrecovered read error.
+Sectors 16048 - 16063: Medium Error; Unrecovered read error.
+Sector 16048, try 1: Medium Error; Unrecovered read error.
+Sector 16048: Medium Error; Unrecovered read error.
+Sector 16049, try 1: Medium Error; Unrecovered read error.
+Sector 16049: Medium Error; Unrecovered read error.
+Sector 16050, try 1: Medium Error; Unrecovered read error.
+Sector 16050: Medium Error; Unrecovered read error.
+Sector 16051, try 1: Medium Error; Unrecovered read error.
+Sector 16051: Medium Error; Unrecovered read error.
+Sector 16052, try 1: Medium Error; Unrecovered read error.
+Sector 16052: Medium Error; Unrecovered read error.
+Sector 16053, try 1: Medium Error; Unrecovered read error.
+Sector 16053: Medium Error; Unrecovered read error.
+Sector 16054, try 1: Medium Error; Unrecovered read error.
+Sector 16054: Medium Error; Unrecovered read error.
+Sector 16055, try 1: Medium Error; Unrecovered read error.
+Sector 16055: Medium Error; Unrecovered read error.
+Sector 16056, try 1: Medium Error; Unrecovered read error.
+Sector 16056: Medium Error; Unrecovered read error.
+Sector 16057, try 1: Medium Error; Unrecovered read error.
+Sector 16057: Medium Error; Unrecovered read error.
+Sector 16058, try 1: Medium Error; Unrecovered read error.
+Sector 16058: Medium Error; Unrecovered read error.
+Sector 16059, try 1: Medium Error; Unrecovered read error.
+Sector 16059: Medium Error; Unrecovered read error.
+Sector 16060, try 1: Medium Error; Unrecovered read error.
+Sector 16060: Medium Error; Unrecovered read error.
+Sector 16061, try 1: Medium Error; Unrecovered read error.
+Sector 16061: Medium Error; Unrecovered read error.
+Sector 16062, try 1: Medium Error; Unrecovered read error.
+Sector 16062: Medium Error; Unrecovered read error.
+Sector 16063, try 1: Medium Error; Unrecovered read error.
+Sector 16063: Medium Error; Unrecovered read error.
+Sectors 16064 - 16079: Medium Error; Unrecovered read error.
+Sector 16064, try 1: Medium Error; Unrecovered read error.
+Sector 16064: Medium Error; Unrecovered read error.
+Sector 16065, try 1: Medium Error; Unrecovered read error.
+Sector 16065: Medium Error; Unrecovered read error.
+Sector 16066, try 1: Medium Error; Unrecovered read error.
+Sector 16066: Medium Error; Unrecovered read error.
+Sector 16067, try 1: Medium Error; Unrecovered read error.
+Sector 16067: Medium Error; Unrecovered read error.
+Sector 16068, try 1: Medium Error; Unrecovered read error.
+Sector 16068: Medium Error; Unrecovered read error.
+Sector 16069, try 1: Medium Error; Unrecovered read error.
+Sector 16069: Medium Error; Unrecovered read error.
+Sector 16070, try 1: Medium Error; Unrecovered read error.
+Sector 16070: Medium Error; Unrecovered read error.
+Sector 16071, try 1: Medium Error; Unrecovered read error.
+Sector 16071: Medium Error; Unrecovered read error.
+Sector 16072, try 1: Medium Error; Unrecovered read error.
+Sector 16072: Medium Error; Unrecovered read error.
+Sector 16073, try 1: Medium Error; Unrecovered read error.
+Sector 16073: Medium Error; Unrecovered read error.
+Sector 16074, try 1: Medium Error; Unrecovered read error.
+Sector 16074: Medium Error; Unrecovered read error.
+Sector 16075, try 1: Medium Error; Unrecovered read error.
+Sector 16075: Medium Error; Unrecovered read error.
+Sector 16076, try 1: Medium Error; Unrecovered read error.
+Sector 16076: Medium Error; Unrecovered read error.
+Sector 16077, try 1: Medium Error; Unrecovered read error.
+Sector 16077: Medium Error; Unrecovered read error.
+Sector 16078, try 1: Medium Error; Unrecovered read error.
+Sector 16078: Medium Error; Unrecovered read error.
+Sector 16079, try 1: Medium Error; Unrecovered read error.
+Sector 16079: Medium Error; Unrecovered read error.
+Sectors 16080 - 16095: Medium Error; Unrecovered read error.
+Sector 16080, try 1: Medium Error; Unrecovered read error.
+Sector 16080: Medium Error; Unrecovered read error.
+Sector 16081, try 1: Medium Error; Unrecovered read error.
+Sector 16081: Medium Error; Unrecovered read error.
+Sector 16082, try 1: Medium Error; Unrecovered read error.
+Sector 16082: Medium Error; Unrecovered read error.
+Sector 16083, try 1: Medium Error; Unrecovered read error.
+Sector 16083: Medium Error; Unrecovered read error.
+Sector 16084, try 1: Medium Error; Unrecovered read error.
+Sector 16084: Medium Error; Unrecovered read error.
+Sector 16085, try 1: Medium Error; Unrecovered read error.
+Sector 16085: Medium Error; Unrecovered read error.
+Sector 16086, try 1: Medium Error; Unrecovered read error.
+Sector 16086: Medium Error; Unrecovered read error.
+Sector 16087, try 1: Medium Error; Unrecovered read error.
+Sector 16087: Medium Error; Unrecovered read error.
+Sector 16088, try 1: Medium Error; Unrecovered read error.
+Sector 16088: Medium Error; Unrecovered read error.
+Sector 16089, try 1: Medium Error; Unrecovered read error.
+Sector 16089: Medium Error; Unrecovered read error.
+Sector 16090, try 1: Medium Error; Unrecovered read error.
+Sector 16090: Medium Error; Unrecovered read error.
+Sector 16091, try 1: Medium Error; Unrecovered read error.
+Sector 16091: Medium Error; Unrecovered read error.
+Sector 16092, try 1: Medium Error; Unrecovered read error.
+Sector 16092: Medium Error; Unrecovered read error.
+Sector 16093, try 1: Medium Error; Unrecovered read error.
+Sector 16093: Medium Error; Unrecovered read error.
+Sector 16094, try 1: Medium Error; Unrecovered read error.
+Sector 16094: Medium Error; Unrecovered read error.
+Sector 16095, try 1: Medium Error; Unrecovered read error.
+Sector 16095: Medium Error; Unrecovered read error.
+Sectors 16096 - 16111: Medium Error; Unrecovered read error.
+Sector 16096, try 1: Medium Error; Unrecovered read error.
+Sector 16096: Medium Error; Unrecovered read error.
+Sector 16097, try 1: Medium Error; Unrecovered read error.
+Sector 16097: Medium Error; Unrecovered read error.
+Sector 16098, try 1: Medium Error; Unrecovered read error.
+Sector 16098: Medium Error; Unrecovered read error.
+Sector 16099, try 1: Medium Error; Unrecovered read error.
+Sector 16099: Medium Error; Unrecovered read error.
+Sector 16100, try 1: Medium Error; Unrecovered read error.
+Sector 16100: Medium Error; Unrecovered read error.
+Sector 16101, try 1: Medium Error; Unrecovered read error.
+Sector 16101: Medium Error; Unrecovered read error.
+Sector 16102, try 1: Medium Error; Unrecovered read error.
+Sector 16102: Medium Error; Unrecovered read error.
+Sector 16103, try 1: Medium Error; Unrecovered read error.
+Sector 16103: Medium Error; Unrecovered read error.
+Sector 16104, try 1: Medium Error; Unrecovered read error.
+Sector 16104: Medium Error; Unrecovered read error.
+Sector 16105, try 1: Medium Error; Unrecovered read error.
+Sector 16105: Medium Error; Unrecovered read error.
+Sector 16106, try 1: Medium Error; Unrecovered read error.
+Sector 16106: Medium Error; Unrecovered read error.
+Sector 16107, try 1: Medium Error; Unrecovered read error.
+Sector 16107: Medium Error; Unrecovered read error.
+Sector 16108, try 1: Medium Error; Unrecovered read error.
+Sector 16108: Medium Error; Unrecovered read error.
+Sector 16109, try 1: Medium Error; Unrecovered read error.
+Sector 16109: Medium Error; Unrecovered read error.
+Sector 16110, try 1: Medium Error; Unrecovered read error.
+Sector 16110: Medium Error; Unrecovered read error.
+Sector 16111, try 1: Medium Error; Unrecovered read error.
+Sector 16111: Medium Error; Unrecovered read error.
+Sectors 16112 - 16127: Medium Error; Unrecovered read error.
+Sector 16112, try 1: Medium Error; Unrecovered read error.
+Sector 16112: Medium Error; Unrecovered read error.
+Sector 16113, try 1: Medium Error; Unrecovered read error.
+Sector 16113: Medium Error; Unrecovered read error.
+Sector 16114, try 1: Medium Error; Unrecovered read error.
+Sector 16114: Medium Error; Unrecovered read error.
+Sector 16115, try 1: Medium Error; Unrecovered read error.
+Sector 16115: Medium Error; Unrecovered read error.
+Sector 16116, try 1: Medium Error; Unrecovered read error.
+Sector 16116: Medium Error; Unrecovered read error.
+Sector 16117, try 1: Medium Error; Unrecovered read error.
+Sector 16117: Medium Error; Unrecovered read error.
+Sector 16118, try 1: Medium Error; Unrecovered read error.
+Sector 16118: Medium Error; Unrecovered read error.
+Sector 16119, try 1: Medium Error; Unrecovered read error.
+Sector 16119: Medium Error; Unrecovered read error.
+Sector 16120, try 1: Medium Error; Unrecovered read error.
+Sector 16120: Medium Error; Unrecovered read error.
+Sector 16121, try 1: Medium Error; Unrecovered read error.
+Sector 16121: Medium Error; Unrecovered read error.
+Sector 16122, try 1: Medium Error; Unrecovered read error.
+Sector 16122: Medium Error; Unrecovered read error.
+Sector 16123, try 1: Medium Error; Unrecovered read error.
+Sector 16123: Medium Error; Unrecovered read error.
+Sector 16124, try 1: Medium Error; Unrecovered read error.
+Sector 16124: Medium Error; Unrecovered read error.
+Sector 16125, try 1: Medium Error; Unrecovered read error.
+Sector 16125: Medium Error; Unrecovered read error.
+Sector 16126, try 1: Medium Error; Unrecovered read error.
+Sector 16126: Medium Error; Unrecovered read error.
+Sector 16127, try 1: Medium Error; Unrecovered read error.
+Sector 16127: Medium Error; Unrecovered read error.
+Sectors 16128 - 16143: Medium Error; Unrecovered read error.
+Sector 16128, try 1: Medium Error; Unrecovered read error.
+Sector 16128: Medium Error; Unrecovered read error.
+Sector 16129, try 1: Medium Error; Unrecovered read error.
+Sector 16129: Medium Error; Unrecovered read error.
+Sector 16130, try 1: Medium Error; Unrecovered read error.
+Sector 16130: Medium Error; Unrecovered read error.
+Sector 16131, try 1: Medium Error; Unrecovered read error.
+Sector 16131: Medium Error; Unrecovered read error.
+Sector 16132, try 1: Medium Error; Unrecovered read error.
+Sector 16132: Medium Error; Unrecovered read error.
+Sector 16133, try 1: Medium Error; Unrecovered read error.
+Sector 16133: Medium Error; Unrecovered read error.
+Sector 16134, try 1: Medium Error; Unrecovered read error.
+Sector 16134: Medium Error; Unrecovered read error.
+Sector 16135, try 1: Medium Error; Unrecovered read error.
+Sector 16135: Medium Error; Unrecovered read error.
+Sector 16136, try 1: Medium Error; Unrecovered read error.
+Sector 16136: Medium Error; Unrecovered read error.
+Sector 16137, try 1: Medium Error; Unrecovered read error.
+Sector 16137: Medium Error; Unrecovered read error.
+Sector 16138, try 1: Medium Error; Unrecovered read error.
+Sector 16138: Medium Error; Unrecovered read error.
+Sector 16139, try 1: Medium Error; Unrecovered read error.
+Sector 16139: Medium Error; Unrecovered read error.
+Sector 16140, try 1: Medium Error; Unrecovered read error.
+Sector 16140: Medium Error; Unrecovered read error.
+Sector 16141, try 1: Medium Error; Unrecovered read error.
+Sector 16141: Medium Error; Unrecovered read error.
+Sector 16142, try 1: Medium Error; Unrecovered read error.
+Sector 16142: Medium Error; Unrecovered read error.
+Sector 16143, try 1: Medium Error; Unrecovered read error.
+Sector 16143: Medium Error; Unrecovered read error.
+Sectors 16144 - 16159: Medium Error; Unrecovered read error.
+Sector 16144, try 1: Medium Error; Unrecovered read error.
+Sector 16144: Medium Error; Unrecovered read error.
+Sector 16145, try 1: Medium Error; Unrecovered read error.
+Sector 16145: Medium Error; Unrecovered read error.
+Sector 16146, try 1: Medium Error; Unrecovered read error.
+Sector 16146: Medium Error; Unrecovered read error.
+Sector 16147, try 1: Medium Error; Unrecovered read error.
+Sector 16147: Medium Error; Unrecovered read error.
+Sector 16148, try 1: Medium Error; Unrecovered read error.
+Sector 16148: Medium Error; Unrecovered read error.
+Sector 16149, try 1: Medium Error; Unrecovered read error.
+Sector 16149: Medium Error; Unrecovered read error.
+Sector 16150, try 1: Medium Error; Unrecovered read error.
+Sector 16150: Medium Error; Unrecovered read error.
+Sector 16151, try 1: Medium Error; Unrecovered read error.
+Sector 16151: Medium Error; Unrecovered read error.
+Sector 16152, try 1: Medium Error; Unrecovered read error.
+Sector 16152: Medium Error; Unrecovered read error.
+Sector 16153, try 1: Medium Error; Unrecovered read error.
+Sector 16153: Medium Error; Unrecovered read error.
+Sector 16154, try 1: Medium Error; Unrecovered read error.
+Sector 16154: Medium Error; Unrecovered read error.
+Sector 16155, try 1: Medium Error; Unrecovered read error.
+Sector 16155: Medium Error; Unrecovered read error.
+Sector 16156, try 1: Medium Error; Unrecovered read error.
+Sector 16156: Medium Error; Unrecovered read error.
+Sector 16157, try 1: Medium Error; Unrecovered read error.
+Sector 16157: Medium Error; Unrecovered read error.
+Sector 16158, try 1: Medium Error; Unrecovered read error.
+Sector 16158: Medium Error; Unrecovered read error.
+Sector 16159, try 1: Medium Error; Unrecovered read error.
+Sector 16159: Medium Error; Unrecovered read error.
+Sectors 16160 - 16175: Medium Error; Unrecovered read error.
+Sector 16160, try 1: Medium Error; Unrecovered read error.
+Sector 16160: Medium Error; Unrecovered read error.
+Sector 16161, try 1: Medium Error; Unrecovered read error.
+Sector 16161: Medium Error; Unrecovered read error.
+Sector 16162, try 1: Medium Error; Unrecovered read error.
+Sector 16162: Medium Error; Unrecovered read error.
+Sector 16163, try 1: Medium Error; Unrecovered read error.
+Sector 16163: Medium Error; Unrecovered read error.
+Sector 16164, try 1: Medium Error; Unrecovered read error.
+Sector 16164: Medium Error; Unrecovered read error.
+Sector 16165, try 1: Medium Error; Unrecovered read error.
+Sector 16165: Medium Error; Unrecovered read error.
+Sector 16166, try 1: Medium Error; Unrecovered read error.
+Sector 16166: Medium Error; Unrecovered read error.
+Sector 16167, try 1: Medium Error; Unrecovered read error.
+Sector 16167: Medium Error; Unrecovered read error.
+Sector 16168, try 1: Medium Error; Unrecovered read error.
+Sector 16168: Medium Error; Unrecovered read error.
+Sector 16169, try 1: Medium Error; Unrecovered read error.
+Sector 16169: Medium Error; Unrecovered read error.
+Sector 16170, try 1: Medium Error; Unrecovered read error.
+Sector 16170: Medium Error; Unrecovered read error.
+Sector 16171, try 1: Medium Error; Unrecovered read error.
+Sector 16171: Medium Error; Unrecovered read error.
+Sector 16172, try 1: Medium Error; Unrecovered read error.
+Sector 16172: Medium Error; Unrecovered read error.
+Sector 16173, try 1: Medium Error; Unrecovered read error.
+Sector 16173: Medium Error; Unrecovered read error.
+Sector 16174, try 1: Medium Error; Unrecovered read error.
+Sector 16174: Medium Error; Unrecovered read error.
+Sector 16175, try 1: Medium Error; Unrecovered read error.
+Sector 16175: Medium Error; Unrecovered read error.
+Sectors 16176 - 16191: Medium Error; Unrecovered read error.
+Sector 16176, try 1: Medium Error; Unrecovered read error.
+Sector 16176: Medium Error; Unrecovered read error.
+Sector 16177, try 1: Medium Error; Unrecovered read error.
+Sector 16177: Medium Error; Unrecovered read error.
+Sector 16178, try 1: Medium Error; Unrecovered read error.
+Sector 16178: Medium Error; Unrecovered read error.
+Sector 16179, try 1: Medium Error; Unrecovered read error.
+Sector 16179: Medium Error; Unrecovered read error.
+Sector 16180, try 1: Medium Error; Unrecovered read error.
+Sector 16180: Medium Error; Unrecovered read error.
+Sector 16181, try 1: Medium Error; Unrecovered read error.
+Sector 16181: Medium Error; Unrecovered read error.
+Sector 16182, try 1: Medium Error; Unrecovered read error.
+Sector 16182: Medium Error; Unrecovered read error.
+Sector 16183, try 1: Medium Error; Unrecovered read error.
+Sector 16183: Medium Error; Unrecovered read error.
+Sector 16184, try 1: Medium Error; Unrecovered read error.
+Sector 16184: Medium Error; Unrecovered read error.
+Sector 16185, try 1: Medium Error; Unrecovered read error.
+Sector 16185: Medium Error; Unrecovered read error.
+Sector 16186, try 1: Medium Error; Unrecovered read error.
+Sector 16186: Medium Error; Unrecovered read error.
+Sector 16187, try 1: Medium Error; Unrecovered read error.
+Sector 16187: Medium Error; Unrecovered read error.
+Sector 16188, try 1: Medium Error; Unrecovered read error.
+Sector 16188: Medium Error; Unrecovered read error.
+Sector 16189, try 1: Medium Error; Unrecovered read error.
+Sector 16189: Medium Error; Unrecovered read error.
+Sector 16190, try 1: Medium Error; Unrecovered read error.
+Sector 16190: Medium Error; Unrecovered read error.
+Sector 16191, try 1: Medium Error; Unrecovered read error.
+Sector 16191: Medium Error; Unrecovered read error.
+Sectors 16192 - 16207: Medium Error; Unrecovered read error.
+Sector 16192, try 1: Medium Error; Unrecovered read error.
+Sector 16192: Medium Error; Unrecovered read error.
+Sector 16193, try 1: Medium Error; Unrecovered read error.
+Sector 16193: Medium Error; Unrecovered read error.
+Sector 16194, try 1: Medium Error; Unrecovered read error.
+Sector 16194: Medium Error; Unrecovered read error.
+Sector 16195, try 1: Medium Error; Unrecovered read error.
+Sector 16195: Medium Error; Unrecovered read error.
+Sector 16196, try 1: Medium Error; Unrecovered read error.
+Sector 16196: Medium Error; Unrecovered read error.
+Sector 16197, try 1: Medium Error; Unrecovered read error.
+Sector 16197: Medium Error; Unrecovered read error.
+Sector 16198, try 1: Medium Error; Unrecovered read error.
+Sector 16198: Medium Error; Unrecovered read error.
+Sector 16199, try 1: Medium Error; Unrecovered read error.
+Sector 16199: Medium Error; Unrecovered read error.
+
+Trying to complete image, reading pass 3 of 3.
+Sector 15800, try 1: Medium Error; Unrecovered read error.
+Sector 15800: Medium Error; Unrecovered read error.
+Sector 15801, try 1: Medium Error; Unrecovered read error.
+* CRC error, sector: 10000
+Sector 15801: Medium Error; Unrecovered read error.
+Sector 15802, try 1: Medium Error; Unrecovered read error.
+Sector 15802: Medium Error; Unrecovered read error.
+Sector 15803, try 1: Medium Error; Unrecovered read error.
+Sector 15803: Medium Error; Unrecovered read error.
+Sector 15804, try 1: Medium Error; Unrecovered read error.
+Sector 15804: Medium Error; Unrecovered read error.
+Sector 15805, try 1: Medium Error; Unrecovered read error.
+Sector 15805: Medium Error; Unrecovered read error.
+Sector 15806, try 1: Medium Error; Unrecovered read error.
+Sector 15806: Medium Error; Unrecovered read error.
+Sector 15807, try 1: Medium Error; Unrecovered read error.
+Sector 15807: Medium Error; Unrecovered read error.
+Sectors 15808 - 15823: Medium Error; Unrecovered read error.
+Sector 15808, try 1: Medium Error; Unrecovered read error.
+Sector 15808: Medium Error; Unrecovered read error.
+Sector 15809, try 1: Medium Error; Unrecovered read error.
+Sector 15809: Medium Error; Unrecovered read error.
+Sector 15810, try 1: Medium Error; Unrecovered read error.
+Sector 15810: Medium Error; Unrecovered read error.
+Sector 15811, try 1: Medium Error; Unrecovered read error.
+Sector 15811: Medium Error; Unrecovered read error.
+Sector 15812, try 1: Medium Error; Unrecovered read error.
+Sector 15812: Medium Error; Unrecovered read error.
+Sector 15813, try 1: Medium Error; Unrecovered read error.
+Sector 15813: Medium Error; Unrecovered read error.
+Sector 15814, try 1: Medium Error; Unrecovered read error.
+Sector 15814: Medium Error; Unrecovered read error.
+Sector 15815, try 1: Medium Error; Unrecovered read error.
+Sector 15815: Medium Error; Unrecovered read error.
+Sector 15816, try 1: Medium Error; Unrecovered read error.
+Sector 15816: Medium Error; Unrecovered read error.
+Sector 15817, try 1: Medium Error; Unrecovered read error.
+Sector 15817: Medium Error; Unrecovered read error.
+Sector 15818, try 1: Medium Error; Unrecovered read error.
+Sector 15818: Medium Error; Unrecovered read error.
+Sector 15819, try 1: Medium Error; Unrecovered read error.
+Sector 15819: Medium Error; Unrecovered read error.
+Sector 15820, try 1: Medium Error; Unrecovered read error.
+Sector 15820: Medium Error; Unrecovered read error.
+Sector 15821, try 1: Medium Error; Unrecovered read error.
+Sector 15821: Medium Error; Unrecovered read error.
+Sector 15822, try 1: Medium Error; Unrecovered read error.
+Sector 15822: Medium Error; Unrecovered read error.
+Sector 15823, try 1: Medium Error; Unrecovered read error.
+Sector 15823: Medium Error; Unrecovered read error.
+Sectors 15824 - 15839: Medium Error; Unrecovered read error.
+Sector 15824, try 1: Medium Error; Unrecovered read error.
+Sector 15824: Medium Error; Unrecovered read error.
+Sector 15825, try 1: Medium Error; Unrecovered read error.
+Sector 15825: Medium Error; Unrecovered read error.
+Sector 15826, try 1: Medium Error; Unrecovered read error.
+Sector 15826: Medium Error; Unrecovered read error.
+Sector 15827, try 1: Medium Error; Unrecovered read error.
+Sector 15827: Medium Error; Unrecovered read error.
+Sector 15828, try 1: Medium Error; Unrecovered read error.
+Sector 15828: Medium Error; Unrecovered read error.
+Sector 15829, try 1: Medium Error; Unrecovered read error.
+Sector 15829: Medium Error; Unrecovered read error.
+Sector 15830, try 1: Medium Error; Unrecovered read error.
+Sector 15830: Medium Error; Unrecovered read error.
+Sector 15831, try 1: Medium Error; Unrecovered read error.
+Sector 15831: Medium Error; Unrecovered read error.
+Sector 15832, try 1: Medium Error; Unrecovered read error.
+Sector 15832: Medium Error; Unrecovered read error.
+Sector 15833, try 1: Medium Error; Unrecovered read error.
+Sector 15833: Medium Error; Unrecovered read error.
+Sector 15834, try 1: Medium Error; Unrecovered read error.
+Sector 15834: Medium Error; Unrecovered read error.
+Sector 15835, try 1: Medium Error; Unrecovered read error.
+Sector 15835: Medium Error; Unrecovered read error.
+Sector 15836, try 1: Medium Error; Unrecovered read error.
+Sector 15836: Medium Error; Unrecovered read error.
+Sector 15837, try 1: Medium Error; Unrecovered read error.
+Sector 15837: Medium Error; Unrecovered read error.
+Sector 15838, try 1: Medium Error; Unrecovered read error.
+Sector 15838: Medium Error; Unrecovered read error.
+Sector 15839, try 1: Medium Error; Unrecovered read error.
+Sector 15839: Medium Error; Unrecovered read error.
+Sectors 15840 - 15855: Medium Error; Unrecovered read error.
+Sector 15840, try 1: Medium Error; Unrecovered read error.
+Sector 15840: Medium Error; Unrecovered read error.
+Sector 15841, try 1: Medium Error; Unrecovered read error.
+Sector 15841: Medium Error; Unrecovered read error.
+Sector 15842, try 1: Medium Error; Unrecovered read error.
+Sector 15842: Medium Error; Unrecovered read error.
+Sector 15843, try 1: Medium Error; Unrecovered read error.
+Sector 15843: Medium Error; Unrecovered read error.
+Sector 15844, try 1: Medium Error; Unrecovered read error.
+Sector 15844: Medium Error; Unrecovered read error.
+Sector 15845, try 1: Medium Error; Unrecovered read error.
+Sector 15845: Medium Error; Unrecovered read error.
+Sector 15846, try 1: Medium Error; Unrecovered read error.
+Sector 15846: Medium Error; Unrecovered read error.
+Sector 15847, try 1: Medium Error; Unrecovered read error.
+Sector 15847: Medium Error; Unrecovered read error.
+Sector 15848, try 1: Medium Error; Unrecovered read error.
+Sector 15848: Medium Error; Unrecovered read error.
+Sector 15849, try 1: Medium Error; Unrecovered read error.
+Sector 15849: Medium Error; Unrecovered read error.
+Sector 15850, try 1: Medium Error; Unrecovered read error.
+Sector 15850: Medium Error; Unrecovered read error.
+Sector 15851, try 1: Medium Error; Unrecovered read error.
+Sector 15851: Medium Error; Unrecovered read error.
+Sector 15852, try 1: Medium Error; Unrecovered read error.
+Sector 15852: Medium Error; Unrecovered read error.
+Sector 15853, try 1: Medium Error; Unrecovered read error.
+Sector 15853: Medium Error; Unrecovered read error.
+Sector 15854, try 1: Medium Error; Unrecovered read error.
+Sector 15854: Medium Error; Unrecovered read error.
+Sector 15855, try 1: Medium Error; Unrecovered read error.
+Sector 15855: Medium Error; Unrecovered read error.
+Sectors 15856 - 15871: Medium Error; Unrecovered read error.
+Sector 15856, try 1: Medium Error; Unrecovered read error.
+Sector 15856: Medium Error; Unrecovered read error.
+Sector 15857, try 1: Medium Error; Unrecovered read error.
+Sector 15857: Medium Error; Unrecovered read error.
+Sector 15858, try 1: Medium Error; Unrecovered read error.
+Sector 15858: Medium Error; Unrecovered read error.
+Sector 15859, try 1: Medium Error; Unrecovered read error.
+Sector 15859: Medium Error; Unrecovered read error.
+Sector 15860, try 1: Medium Error; Unrecovered read error.
+Sector 15860: Medium Error; Unrecovered read error.
+Sector 15861, try 1: Medium Error; Unrecovered read error.
+Sector 15861: Medium Error; Unrecovered read error.
+Sector 15862, try 1: Medium Error; Unrecovered read error.
+Sector 15862: Medium Error; Unrecovered read error.
+Sector 15863, try 1: Medium Error; Unrecovered read error.
+Sector 15863: Medium Error; Unrecovered read error.
+Sector 15864, try 1: Medium Error; Unrecovered read error.
+Sector 15864: Medium Error; Unrecovered read error.
+Sector 15865, try 1: Medium Error; Unrecovered read error.
+Sector 15865: Medium Error; Unrecovered read error.
+Sector 15866, try 1: Medium Error; Unrecovered read error.
+Sector 15866: Medium Error; Unrecovered read error.
+Sector 15867, try 1: Medium Error; Unrecovered read error.
+Sector 15867: Medium Error; Unrecovered read error.
+Sector 15868, try 1: Medium Error; Unrecovered read error.
+Sector 15868: Medium Error; Unrecovered read error.
+Sector 15869, try 1: Medium Error; Unrecovered read error.
+Sector 15869: Medium Error; Unrecovered read error.
+Sector 15870, try 1: Medium Error; Unrecovered read error.
+Sector 15870: Medium Error; Unrecovered read error.
+Sector 15871, try 1: Medium Error; Unrecovered read error.
+Sector 15871: Medium Error; Unrecovered read error.
+Sectors 15872 - 15887: Medium Error; Unrecovered read error.
+Sector 15872, try 1: Medium Error; Unrecovered read error.
+Sector 15872: Medium Error; Unrecovered read error.
+Sector 15873, try 1: Medium Error; Unrecovered read error.
+Sector 15873: Medium Error; Unrecovered read error.
+Sector 15874, try 1: Medium Error; Unrecovered read error.
+Sector 15874: Medium Error; Unrecovered read error.
+Sector 15875, try 1: Medium Error; Unrecovered read error.
+Sector 15875: Medium Error; Unrecovered read error.
+Sector 15876, try 1: Medium Error; Unrecovered read error.
+Sector 15876: Medium Error; Unrecovered read error.
+Sector 15877, try 1: Medium Error; Unrecovered read error.
+Sector 15877: Medium Error; Unrecovered read error.
+Sector 15878, try 1: Medium Error; Unrecovered read error.
+Sector 15878: Medium Error; Unrecovered read error.
+Sector 15879, try 1: Medium Error; Unrecovered read error.
+Sector 15879: Medium Error; Unrecovered read error.
+Sector 15880, try 1: Medium Error; Unrecovered read error.
+Sector 15880: Medium Error; Unrecovered read error.
+Sector 15881, try 1: Medium Error; Unrecovered read error.
+Sector 15881: Medium Error; Unrecovered read error.
+Sector 15882, try 1: Medium Error; Unrecovered read error.
+Sector 15882: Medium Error; Unrecovered read error.
+Sector 15883, try 1: Medium Error; Unrecovered read error.
+Sector 15883: Medium Error; Unrecovered read error.
+Sector 15884, try 1: Medium Error; Unrecovered read error.
+Sector 15884: Medium Error; Unrecovered read error.
+Sector 15885, try 1: Medium Error; Unrecovered read error.
+Sector 15885: Medium Error; Unrecovered read error.
+Sector 15886, try 1: Medium Error; Unrecovered read error.
+Sector 15886: Medium Error; Unrecovered read error.
+Sector 15887, try 1: Medium Error; Unrecovered read error.
+Sector 15887: Medium Error; Unrecovered read error.
+Sectors 15888 - 15903: Medium Error; Unrecovered read error.
+Sector 15888, try 1: Medium Error; Unrecovered read error.
+Sector 15888: Medium Error; Unrecovered read error.
+Sector 15889, try 1: Medium Error; Unrecovered read error.
+Sector 15889: Medium Error; Unrecovered read error.
+Sector 15890, try 1: Medium Error; Unrecovered read error.
+Sector 15890: Medium Error; Unrecovered read error.
+Sector 15891, try 1: Medium Error; Unrecovered read error.
+Sector 15891: Medium Error; Unrecovered read error.
+Sector 15892, try 1: Medium Error; Unrecovered read error.
+Sector 15892: Medium Error; Unrecovered read error.
+Sector 15893, try 1: Medium Error; Unrecovered read error.
+Sector 15893: Medium Error; Unrecovered read error.
+Sector 15894, try 1: Medium Error; Unrecovered read error.
+Sector 15894: Medium Error; Unrecovered read error.
+Sector 15895, try 1: Medium Error; Unrecovered read error.
+Sector 15895: Medium Error; Unrecovered read error.
+Sector 15896, try 1: Medium Error; Unrecovered read error.
+Sector 15896: Medium Error; Unrecovered read error.
+Sector 15897, try 1: Medium Error; Unrecovered read error.
+Sector 15897: Medium Error; Unrecovered read error.
+Sector 15898, try 1: Medium Error; Unrecovered read error.
+Sector 15898: Medium Error; Unrecovered read error.
+Sector 15899, try 1: Medium Error; Unrecovered read error.
+Sector 15899: Medium Error; Unrecovered read error.
+Sectors 16096 - 16111: Medium Error; Unrecovered read error.
+Sector 16100, try 1: Medium Error; Unrecovered read error.
+Sector 16100: Medium Error; Unrecovered read error.
+Sector 16101, try 1: Medium Error; Unrecovered read error.
+Sector 16101: Medium Error; Unrecovered read error.
+Sector 16102, try 1: Medium Error; Unrecovered read error.
+Sector 16102: Medium Error; Unrecovered read error.
+Sector 16103, try 1: Medium Error; Unrecovered read error.
+Sector 16103: Medium Error; Unrecovered read error.
+Sector 16104, try 1: Medium Error; Unrecovered read error.
+Sector 16104: Medium Error; Unrecovered read error.
+Sector 16105, try 1: Medium Error; Unrecovered read error.
+Sector 16105: Medium Error; Unrecovered read error.
+Sector 16106, try 1: Medium Error; Unrecovered read error.
+Sector 16106: Medium Error; Unrecovered read error.
+Sector 16107, try 1: Medium Error; Unrecovered read error.
+Sector 16107: Medium Error; Unrecovered read error.
+Sector 16108, try 1: Medium Error; Unrecovered read error.
+Sector 16108: Medium Error; Unrecovered read error.
+Sector 16109, try 1: Medium Error; Unrecovered read error.
+Sector 16109: Medium Error; Unrecovered read error.
+Sector 16110, try 1: Medium Error; Unrecovered read error.
+Sector 16110: Medium Error; Unrecovered read error.
+Sector 16111, try 1: Medium Error; Unrecovered read error.
+Sector 16111: Medium Error; Unrecovered read error.
+Sectors 16112 - 16127: Medium Error; Unrecovered read error.
+Sector 16112, try 1: Medium Error; Unrecovered read error.
+Sector 16112: Medium Error; Unrecovered read error.
+Sector 16113, try 1: Medium Error; Unrecovered read error.
+Sector 16113: Medium Error; Unrecovered read error.
+Sector 16114, try 1: Medium Error; Unrecovered read error.
+Sector 16114: Medium Error; Unrecovered read error.
+Sector 16115, try 1: Medium Error; Unrecovered read error.
+Sector 16115: Medium Error; Unrecovered read error.
+Sector 16116, try 1: Medium Error; Unrecovered read error.
+Sector 16116: Medium Error; Unrecovered read error.
+Sector 16117, try 1: Medium Error; Unrecovered read error.
+Sector 16117: Medium Error; Unrecovered read error.
+Sector 16118, try 1: Medium Error; Unrecovered read error.
+Sector 16118: Medium Error; Unrecovered read error.
+Sector 16119, try 1: Medium Error; Unrecovered read error.
+Sector 16119: Medium Error; Unrecovered read error.
+Sector 16120, try 1: Medium Error; Unrecovered read error.
+Sector 16120: Medium Error; Unrecovered read error.
+Sector 16121, try 1: Medium Error; Unrecovered read error.
+Sector 16121: Medium Error; Unrecovered read error.
+Sector 16122, try 1: Medium Error; Unrecovered read error.
+Sector 16122: Medium Error; Unrecovered read error.
+Sector 16123, try 1: Medium Error; Unrecovered read error.
+Sector 16123: Medium Error; Unrecovered read error.
+Sector 16124, try 1: Medium Error; Unrecovered read error.
+Sector 16124: Medium Error; Unrecovered read error.
+Sector 16125, try 1: Medium Error; Unrecovered read error.
+Sector 16125: Medium Error; Unrecovered read error.
+Sector 16126, try 1: Medium Error; Unrecovered read error.
+Sector 16126: Medium Error; Unrecovered read error.
+Sector 16127, try 1: Medium Error; Unrecovered read error.
+Sector 16127: Medium Error; Unrecovered read error.
+Sectors 16128 - 16143: Medium Error; Unrecovered read error.
+Sector 16128, try 1: Medium Error; Unrecovered read error.
+Sector 16128: Medium Error; Unrecovered read error.
+Sector 16129, try 1: Medium Error; Unrecovered read error.
+Sector 16129: Medium Error; Unrecovered read error.
+Sector 16130, try 1: Medium Error; Unrecovered read error.
+Sector 16130: Medium Error; Unrecovered read error.
+Sector 16131, try 1: Medium Error; Unrecovered read error.
+Sector 16131: Medium Error; Unrecovered read error.
+Sector 16132, try 1: Medium Error; Unrecovered read error.
+Sector 16132: Medium Error; Unrecovered read error.
+Sector 16133, try 1: Medium Error; Unrecovered read error.
+Sector 16133: Medium Error; Unrecovered read error.
+Sector 16134, try 1: Medium Error; Unrecovered read error.
+Sector 16134: Medium Error; Unrecovered read error.
+Sector 16135, try 1: Medium Error; Unrecovered read error.
+Sector 16135: Medium Error; Unrecovered read error.
+Sector 16136, try 1: Medium Error; Unrecovered read error.
+Sector 16136: Medium Error; Unrecovered read error.
+Sector 16137, try 1: Medium Error; Unrecovered read error.
+Sector 16137: Medium Error; Unrecovered read error.
+Sector 16138, try 1: Medium Error; Unrecovered read error.
+Sector 16138: Medium Error; Unrecovered read error.
+Sector 16139, try 1: Medium Error; Unrecovered read error.
+Sector 16139: Medium Error; Unrecovered read error.
+Sector 16140, try 1: Medium Error; Unrecovered read error.
+Sector 16140: Medium Error; Unrecovered read error.
+Sector 16141, try 1: Medium Error; Unrecovered read error.
+Sector 16141: Medium Error; Unrecovered read error.
+Sector 16142, try 1: Medium Error; Unrecovered read error.
+Sector 16142: Medium Error; Unrecovered read error.
+Sector 16143, try 1: Medium Error; Unrecovered read error.
+Sector 16143: Medium Error; Unrecovered read error.
+Sectors 16144 - 16159: Medium Error; Unrecovered read error.
+Sector 16144, try 1: Medium Error; Unrecovered read error.
+Sector 16144: Medium Error; Unrecovered read error.
+Sector 16145, try 1: Medium Error; Unrecovered read error.
+Sector 16145: Medium Error; Unrecovered read error.
+Sector 16146, try 1: Medium Error; Unrecovered read error.
+Sector 16146: Medium Error; Unrecovered read error.
+Sector 16147, try 1: Medium Error; Unrecovered read error.
+Sector 16147: Medium Error; Unrecovered read error.
+Sector 16148, try 1: Medium Error; Unrecovered read error.
+Sector 16148: Medium Error; Unrecovered read error.
+Sector 16149, try 1: Medium Error; Unrecovered read error.
+Sector 16149: Medium Error; Unrecovered read error.
+Sector 16150, try 1: Medium Error; Unrecovered read error.
+Sector 16150: Medium Error; Unrecovered read error.
+Sector 16151, try 1: Medium Error; Unrecovered read error.
+Sector 16151: Medium Error; Unrecovered read error.
+Sector 16152, try 1: Medium Error; Unrecovered read error.
+Sector 16152: Medium Error; Unrecovered read error.
+Sector 16153, try 1: Medium Error; Unrecovered read error.
+Sector 16153: Medium Error; Unrecovered read error.
+Sector 16154, try 1: Medium Error; Unrecovered read error.
+Sector 16154: Medium Error; Unrecovered read error.
+Sector 16155, try 1: Medium Error; Unrecovered read error.
+Sector 16155: Medium Error; Unrecovered read error.
+Sector 16156, try 1: Medium Error; Unrecovered read error.
+Sector 16156: Medium Error; Unrecovered read error.
+Sector 16157, try 1: Medium Error; Unrecovered read error.
+Sector 16157: Medium Error; Unrecovered read error.
+Sector 16158, try 1: Medium Error; Unrecovered read error.
+Sector 16158: Medium Error; Unrecovered read error.
+Sector 16159, try 1: Medium Error; Unrecovered read error.
+Sector 16159: Medium Error; Unrecovered read error.
+Sectors 16160 - 16175: Medium Error; Unrecovered read error.
+Sector 16160, try 1: Medium Error; Unrecovered read error.
+Sector 16160: Medium Error; Unrecovered read error.
+Sector 16161, try 1: Medium Error; Unrecovered read error.
+Sector 16161: Medium Error; Unrecovered read error.
+Sector 16162, try 1: Medium Error; Unrecovered read error.
+Sector 16162: Medium Error; Unrecovered read error.
+Sector 16163, try 1: Medium Error; Unrecovered read error.
+Sector 16163: Medium Error; Unrecovered read error.
+Sector 16164, try 1: Medium Error; Unrecovered read error.
+Sector 16164: Medium Error; Unrecovered read error.
+Sector 16165, try 1: Medium Error; Unrecovered read error.
+Sector 16165: Medium Error; Unrecovered read error.
+Sector 16166, try 1: Medium Error; Unrecovered read error.
+Sector 16166: Medium Error; Unrecovered read error.
+Sector 16167, try 1: Medium Error; Unrecovered read error.
+Sector 16167: Medium Error; Unrecovered read error.
+Sector 16168, try 1: Medium Error; Unrecovered read error.
+Sector 16168: Medium Error; Unrecovered read error.
+Sector 16169, try 1: Medium Error; Unrecovered read error.
+Sector 16169: Medium Error; Unrecovered read error.
+Sector 16170, try 1: Medium Error; Unrecovered read error.
+Sector 16170: Medium Error; Unrecovered read error.
+Sector 16171, try 1: Medium Error; Unrecovered read error.
+Sector 16171: Medium Error; Unrecovered read error.
+Sector 16172, try 1: Medium Error; Unrecovered read error.
+Sector 16172: Medium Error; Unrecovered read error.
+Sector 16173, try 1: Medium Error; Unrecovered read error.
+Sector 16173: Medium Error; Unrecovered read error.
+Sector 16174, try 1: Medium Error; Unrecovered read error.
+Sector 16174: Medium Error; Unrecovered read error.
+Sector 16175, try 1: Medium Error; Unrecovered read error.
+Sector 16175: Medium Error; Unrecovered read error.
+Sectors 16176 - 16191: Medium Error; Unrecovered read error.
+Sector 16176, try 1: Medium Error; Unrecovered read error.
+Sector 16176: Medium Error; Unrecovered read error.
+Sector 16177, try 1: Medium Error; Unrecovered read error.
+Sector 16177: Medium Error; Unrecovered read error.
+Sector 16178, try 1: Medium Error; Unrecovered read error.
+Sector 16178: Medium Error; Unrecovered read error.
+Sector 16179, try 1: Medium Error; Unrecovered read error.
+Sector 16179: Medium Error; Unrecovered read error.
+Sector 16180, try 1: Medium Error; Unrecovered read error.
+Sector 16180: Medium Error; Unrecovered read error.
+Sector 16181, try 1: Medium Error; Unrecovered read error.
+Sector 16181: Medium Error; Unrecovered read error.
+Sector 16182, try 1: Medium Error; Unrecovered read error.
+Sector 16182: Medium Error; Unrecovered read error.
+Sector 16183, try 1: Medium Error; Unrecovered read error.
+Sector 16183: Medium Error; Unrecovered read error.
+Sector 16184, try 1: Medium Error; Unrecovered read error.
+Sector 16184: Medium Error; Unrecovered read error.
+Sector 16185, try 1: Medium Error; Unrecovered read error.
+Sector 16185: Medium Error; Unrecovered read error.
+Sector 16186, try 1: Medium Error; Unrecovered read error.
+Sector 16186: Medium Error; Unrecovered read error.
+Sector 16187, try 1: Medium Error; Unrecovered read error.
+Sector 16187: Medium Error; Unrecovered read error.
+Sector 16188, try 1: Medium Error; Unrecovered read error.
+Sector 16188: Medium Error; Unrecovered read error.
+Sector 16189, try 1: Medium Error; Unrecovered read error.
+Sector 16189: Medium Error; Unrecovered read error.
+Sector 16190, try 1: Medium Error; Unrecovered read error.
+Sector 16190: Medium Error; Unrecovered read error.
+Sector 16191, try 1: Medium Error; Unrecovered read error.
+Sector 16191: Medium Error; Unrecovered read error.
+Sector 16192, try 1: Medium Error; Unrecovered read error.
+Sector 16192: Medium Error; Unrecovered read error.
+Sector 16193, try 1: Medium Error; Unrecovered read error.
+Sector 16193: Medium Error; Unrecovered read error.
+Sector 16194, try 1: Medium Error; Unrecovered read error.
+Sector 16194: Medium Error; Unrecovered read error.
+Sector 16195, try 1: Medium Error; Unrecovered read error.
+Sector 16195: Medium Error; Unrecovered read error.
+Sector 16196, try 1: Medium Error; Unrecovered read error.
+Sector 16196: Medium Error; Unrecovered read error.
+Sector 16197, try 1: Medium Error; Unrecovered read error.
+Sector 16197: Medium Error; Unrecovered read error.
+Sector 16198, try 1: Medium Error; Unrecovered read error.
+Sector 16198: Medium Error; Unrecovered read error.
+Sector 16199, try 1: Medium Error; Unrecovered read error.
+Sector 16199: Medium Error; Unrecovered read error.
+
+1 CRC errors, 200 unreadable sectors.

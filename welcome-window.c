@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -77,11 +77,12 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
-	 AboutText(box, _("- New multithreaded codec (RS03)."));
-	 AboutText(box, _("- Completely reworked online manual."));
-	 AboutText(box, _("- Switched license to GPLv3.\n"));
+	 AboutText(box, _("- Added support for BDXL-TL 100GB media"));
+	 AboutText(box, _("- Optimized ecc generation when medium was previously read\n"));
 
 	 AboutText(box, _("<i>Please note:</i>\n"
+			  "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
+			  "It may contain unfinished features.\n"
 			  "Adaptive reading is <span color=\"#800000\">unavailable</span> in this version.\n"
 			  "It will be re-introduced in one of the next releases."));
 	 

@@ -17,7 +17,7 @@ Sector 3001, try 1: Medium Error; Unrecovered read error.
 Sector 3001: Medium Error; Unrecovered read error.
 Sector 3002, try 1: Medium Error; Unrecovered read error.
 Sector 3002: Medium Error; Unrecovered read error.
-Read position:  14.3% (nn.nx)Sector 3003, try 1: Medium Error; Unrecovered read error.
+Sector 3003, try 1: Medium Error; Unrecovered read error.
 Sector 3003: Medium Error; Unrecovered read error.
 Sector 3004, try 1: Medium Error; Unrecovered read error.
 Sector 3004: Medium Error; Unrecovered read error.
@@ -106,7 +106,7 @@ Sector 3044, try 1: Medium Error; Unrecovered read error.
 Sector 3044: Medium Error; Unrecovered read error.
 Sector 3045, try 1: Medium Error; Unrecovered read error.
 Sector 3045: Medium Error; Unrecovered read error.
-Read position:  14.6% (nn.nx)Read position:  14.7% (nn.nx)Read position:  14.8% (nn.nx)Read position:  14.9% (nn.nx)Read position:  97.4% (nn.nx)Read position:  97.5% (nn.nx)Read position:  97.6% (nn.nx)Read position:  97.7% (nn.nx)Read position:  97.8% (nn.nx)Read position:  97.9% (nn.nx)Read position:  98.0% (nn.nx)Read position:  98.1% (nn.nx)Read position:  98.2% (nn.nx)Read position:  98.3% (nn.nx)Read position:  98.4% (nn.nx)Read position:  98.5% (nn.nx)Read position:  98.6% (nn.nx)Read position:  98.7% (nn.nx)Read position:  98.8% (nn.nx)Read position:  98.9% (nn.nx)Read position:  99.0% (nn.nx)Sectors 20800 - 20815: Medium Error; Unrecovered read error.
+Sectors 20800 - 20815: Medium Error; Unrecovered read error.
 Sector 20800, try 1: Medium Error; Unrecovered read error.
 Sector 20800: Medium Error; Unrecovered read error.
 Sector 20801, try 1: Medium Error; Unrecovered read error.
@@ -263,7 +263,7 @@ Sector 20874, try 1: Medium Error; Unrecovered read error.
 Sector 20874: Medium Error; Unrecovered read error.
 Sector 20875, try 1: Medium Error; Unrecovered read error.
 Sector 20875: Medium Error; Unrecovered read error.
-Read position:  99.5% (nn.nx)Read position:  99.6% (nn.nx)Read position:  99.7% (nn.nx)Read position:  99.8% (nn.nx)Read position:  99.9% (nn.nx)Read position: 100.0% (nn.nx)
+
 Trying to complete image, reading pass 2 of 3.
 Sector 3000, try 1: Medium Error; Unrecovered read error.
 Sector 3000: Medium Error; Unrecovered read error.

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -41,9 +41,9 @@ typedef struct
    struct MD5Context crcCtxt;   /* Image section checksums (RS02) */
    struct MD5Context eccCtxt;   /* Ecc layer checksum (RS02) */
    struct MD5Context metaCtxt;  /* Ecc meta checksum (RS02) */
-   int doMD5sums;               /* whether we should calculate the above */
+   int doChecksumsFromImage;    /* calculate sector CRC and MD5 from image */
+   int doChecksumsFromCodec;    /* let codec compute its own/additional checksums */
    int savedSectorSkip;
-   CrcBuf *crcBuf;              /* CRC sums retrieved from above */
    char *volumeLabel;
 
    /* Data exchange between reader and worker */

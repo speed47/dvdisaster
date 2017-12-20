@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -123,7 +123,7 @@ int CurveLogY(Curve *curve, gdouble y) /* not really a log */
    hfact = (gdouble)(curve->bottomLY - curve->topLY);
  
    if(y==1) return curve->bottomLY - ((log(2)/log(curve->logMaxY)) * hfact)/2;
-            return curve->bottomLY - (log(y)/log(curve->logMaxY)) * hfact;
+   else     return curve->bottomLY - (log(y)/log(curve->logMaxY)) * hfact;
 }
 
 /***

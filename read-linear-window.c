@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -281,7 +281,7 @@ static void update_geometry(void)
    Closure->readLinearSpiral->mx = a->width - 15 - Closure->readLinearSpiral->diameter / 2;
    Closure->readLinearSpiral->my = a->height / 2;
 
-   if(Closure->crcAvailable || Closure->crcErrors)
+   if(Closure->crcBuf && Closure->crcBuf->crcCached)
    {  int w,h;
 
       SetText(Closure->readLinearCurve->layout, _("Sectors with CRC errors"), &w, &h);
@@ -324,7 +324,7 @@ static void redraw_curve(void)
    DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		   _("Successfully read"), Closure->greenSector, x, pos++);
 
-   if(Closure->crcAvailable || Closure->crcErrors)
+   if(Closure->crcBuf && Closure->crcBuf->crcCached)
      DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		     _("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
 

@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2015-12-16" "0.79.5" "protection for optical media"
+.TH DVDISASTER 1 "2010-02-06" "0.80" "protection for optical media"
 
 .SH NAME
 DVDISASTER \- data loss/scratch/aging protection for optical media
@@ -48,6 +48,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-internal-rereads
 .IR n \|]
 .RB [\| \-\-medium-info \|]
+.RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
@@ -58,6 +59,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-read-medium
 .IR n \|]
 .RB [\| \-\-read-raw \|]
+.RB [\| \-\-regtest \|]
 .RB [\| \-\-resource-file
 .IR n \|]
 .RB [\| \-\-speed-warning
@@ -205,28 +207,31 @@ RS01 error correction flles additionally support:
 .RS
 RS02 images:
 .RS
-\-n CD\ \ \ augments image suitable for CD media.
+\-n CD\ \ \ \ augments image suitable for CD media.
 .RE
 .RS
-\-n DVD\ \ augments image suitable for DVD media.
+\-n DVD\ \ \ augments image suitable for DVD media.
 .RE
 .RS
-\-n DVD9 augments image suitable for DVD9 media.
+\-n DVD9\  augments image suitable for DVD9 media.
 .RE
 .RS
-\-n BD\ \ \ augments image suitable for BD media.
+\-n BD\ \ \ \ augments image suitable for BD media.
 .RE
 .RS
-\-n BD2\  augments image suitable for two layered BD media.
+\-n BD2\ \  augments image suitable for two layered BD media.
 .RE
 .RS
-\-n x\ \ \ \ augments image using approx. x sectors in total.
+\-n BDXL3 augments image suitable for three layered BDXL media.
 .RE
 .RS
-\-n x%\ \ \ augments image with approx. x% redundancy. 
+\-n x\ \ \ \ \ augments image using approx. x sectors in total.
 .RE
 .RS
-\-n xr\ \ \ augments image with x roots error correction data.
+\-n x%\ \ \ \ augments image with approx. x% redundancy. 
+.RE
+.RS
+\-n xr\ \ \ \ augments image with x roots error correction data.
 .RE
 .RE
 
@@ -347,6 +352,9 @@ this setting anyways. Use \-1 to leave the drive at its default setting.
 .B \-\-medium-info
 Prints information about the currently inserted medium.
 .TP
+.B \-\-no-progress
+Suppresses the progress percentage indicator.
+.TP
 .B \-\-old-ds-marker
 Marks missing sectors in a manner which is compatible with
 dvdisaster 0.70 or older.
@@ -383,6 +391,9 @@ read the whole medium up to n times.
 .TP
 .B \-\-read-raw
 performs read in raw mode if possible.
+.TP
+.B \-\-regtest
+modifies some outputs for better processing with the regression test scripts.
 .TP
 .B \-\-resource-file n
 Specifies the path to the configuration file (default: $HOME/.dvdisaster)

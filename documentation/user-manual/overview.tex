@@ -101,8 +101,8 @@ please see the \tlnk{reporting-defects}{reporting defects} section.
 
 \paragraph{Recovery of aged media.} 
 The medium processed here has become discolored and partly unreadable in its outer region.
-A reading attempt yields about 23.000 unreadable sectors of 342.000 sectors total;
-resulting in about 7,2\% defective sectors. Figure \ref{recover-linear} shows the
+A reading attempt yields about 23.600 unreadable sectors of 360056 sectors total;
+resulting in about 6,6\% defective sectors. Figure \ref{recover-linear} shows the
 dvdisaster window after the reading attempt. The distribution of reading speed and
 read errors over the medium is graphically shown.
 The still readable sectors are stored in an ISO image called {\em medium.iso}.
@@ -114,7 +114,7 @@ The still readable sectors are stored in an ISO image called {\em medium.iso}.
 \end{figure}
 
 \paragraph{Repairing the defective image.} 
-The image which has been just read is incomplete since about 23.000 sectors could
+The image which has been just read is incomplete since about 23.600 sectors could
 not be read. These sectors are now reconstructed using the error correction data
 created with dvdisaster. During the recovery a maximum of 20 errors per error
 correction block is encountered (see figure \ref{fix-image}).
@@ -129,7 +129,7 @@ than a normal backup, though). Like an ordinary backup, the ecc data needs
 to be created before the medium goes defective.
 
 So if you have a defective medium but never created ecc data for it, you will
-not be able to recover the defective sectors (23.000 in the above example).
+not be able to recover the defective sectors (23.600 in the above example).
 The data located at the end of the medium will be lost, while you will probably
 be able to extract some files which are located at the beginning of the medium.
 \newpage

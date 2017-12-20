@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -78,9 +78,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
       }
 
-      if(Closure->crcImageName && strcmp(Closure->imageName, Closure->crcImageName))
-	ClearCrcCache();
-
       g_free(Closure->eccName);
       Closure->eccName = g_strdup(gtk_entry_get_text(GTK_ENTRY(Closure->eccEntry)));
       if(Closure->autoSuffix)
@@ -130,7 +127,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
         break;
 
       case ACTION_READ:
-	ClearCrcCache();
 	AllowActions(FALSE);
 
 	if(Closure->adaptiveRead) 
@@ -166,8 +162,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
       case ACTION_FIX:
       { Image *image;
 
-	ClearCrcCache();
-
 	image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
 	image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
 	if(ReportImageEccInconsistencies(image)) /* abort if no method found */
@@ -189,7 +183,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
         break;
 
       case ACTION_SCAN:
-	ClearCrcCache();
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->notebook), 1);
 	Closure->additionalSpiralColor = -1;
 	ResetLinearReadWindow();

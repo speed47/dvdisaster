@@ -1,90 +1,103 @@
+# dvdisaster changelog -*-text-*-
+ 
+0.79.6 20-11-2017
+- The Verify/Test option will now output dvdisaster version
+  numbers always in x.yy.zz format, as the old scheme
+  using x.yy (devel|pre|rc|pl)-zz is no longer used.
+- The "medium info" tool will now correctly show the blank
+  capacity (was previously always shown as zero)	
+- added support for BDXL-TL (triple layer, 100GB)
+- Sector CRC sums and the image MD5 sum are collected during
+  reading the medium and can be re-used by the ecc data creation
+  process. Speeds up ecc generation and enables RS03 image
+  checksums when generating ecc data was preceeded by a read.
 
 0.79.5 16-12-2015
-	This is pretty much a relaunch of the project,
-	the internet site and the accompanying documentation.
-	There are too much changes for a detailed report.
+       This is pretty much a relaunch of the project,
+       the internet site and the accompanying documentation.
+       There are too much changes for a detailed report.
 
-	The most prominent feature of this version is that
-	the multithreaded RS03 codec reached production
-	quality, and all required features have been implemented.
-	A few things will be added with the next releases:
-	- adaptive reading is currently disabled as it does
-	  not support RS03 yet and would crash or misbehave
-	  on RS03 error correction data
-	- a heuristic for an exhaustive re-discovery of RS03
-	  structures in a badly damaged medium is missing in
-	  the decoder
-	But these things should not keep you from using RS03,
-	as the encoder is complete and future decoder enhancements
-	do not affect already created RS03 data.
-	
+The most prominent feature of this version is that
+the multithreaded RS03 codec reached production
+quality, and all required features have been implemented.
+A few things will be added with the next releases:
+- adaptive reading is currently disabled as it does
+  not support RS03 yet and would crash or misbehave
+  on RS03 error correction data
+- a heuristic for an exhaustive re-discovery of RS03
+  structures in a badly damaged medium is missing in
+  the decoder
+But these things should not keep you from using RS03,
+as the encoder is complete and future decoder enhancements
+do not affect already created RS03 data.
+
 0.79.4 07-10-2012 (not released)
        ## 0.79.4 is a technical release in order to freeze
        ## and archive some parts of the source code.
        ## Do not use for anything prodictive. 
        ## The next useful release will be 0.79.5.
-	- optical drives would only be detected for /dev/pass[0-9]
-	  on FreeBSD. Fixed to work with arbitrary /dev/pass
-	  numbers. Thanks to Bill Eisele for reporting this.
-	  A similar problem was found and fixed for Linux.
-	- blocked menu selection when any other action is in progress
-	  (thanks to D. Herbold for reporting the resulting defects).
-	- made actions properly shut down (e.g. remove incomplete ecc data)
-	  when closing the window or pushing the "Quit" button.
-        - changed sources for clean compile on gcc 4.4.3
-	- added #include <zlib.h> for libpng 1.5 compatibility
-	  (thanks to Thomas Klausner for hinting at this!)
-	- introduced internal Image object for unified access to
-	  optical media and on disk ISO images; lots of internal
-	  changes and fixes due to that
-	- added --ignore-iso-size option
-	- Jindřich Šesták took over the Czech translation,
-	  provided up-to-date HTML documents and manual pages,
-	  made all (!) language versions of the manual validate
-	  cleanly, and fixed several other issues in the HTML/PHP
-	  sources.
-	- fixed bug in pngpack; thanks to Jindřich Šesták for
-	  noting this!
-	- added remaining patches from Jindřich for Czech 
-	  online manual. Big Thanks!
-	- more comprehensive and unified version information 
-	  for banner, --version, log window and log file to
-	  aid in working on bug reports
-	- hardcoded icons to defeat theming
-	- changed glib.h include for compatibility with glib 2.32
-	- removed Darwin / Mac OS X support
-	- synced with dvdisaster 0.72.4 fixes
-	- completed RS01 and RS03 specification in the
-	  papers subdir
+- optical drives would only be detected for /dev/pass[0-9]
+  on FreeBSD. Fixed to work with arbitrary /dev/pass
+  numbers. Thanks to Bill Eisele for reporting this.
+  A similar problem was found and fixed for Linux.
+- blocked menu selection when any other action is in progress
+  (thanks to D. Herbold for reporting the resulting defects).
+- made actions properly shut down (e.g. remove incomplete ecc data)
+  when closing the window or pushing the "Quit" button.
+- changed sources for clean compile on gcc 4.4.3
+- added #include <zlib.h> for libpng 1.5 compatibility
+  (thanks to Thomas Klausner for hinting at this!)
+- introduced internal Image object for unified access to
+  optical media and on disk ISO images; lots of internal
+  changes and fixes due to that
+- added --ignore-iso-size option
+- Jindřich Šesták took over the Czech translation,
+  provided up-to-date HTML documents and manual pages,
+  made all (!) language versions of the manual validate
+  cleanly, and fixed several other issues in the HTML/PHP
+  sources.
+- fixed bug in pngpack; thanks to Jindřich Šesták for
+  noting this!
+- added remaining patches from Jindřich for Czech 
+  online manual. Big Thanks!
+- more comprehensive and unified version information 
+  for banner, --version, log window and log file to
+  aid in working on bug reports
+- hardcoded icons to defeat theming
+- changed glib.h include for compatibility with glib 2.32
+- removed Darwin / Mac OS X support
+- synced with dvdisaster 0.72.4 fixes
+- completed RS01 and RS03 specification in the
+  papers subdir
 
 0.79.3	21-11-2010
-        - Switched Linux SCSI driver default to SG_IO ioctl().
-	- Michael Klein provided Altivec optimization for
-	  the RS03 encoder and valuable hints for general
-	  RS03 encoding speedup
-	- included Debian patches 04-manpage.patch,
-	  06-remove-encoding-from-desktop-file.patch,
-	  07-fix-spelling-errors-in-binaries.patch
-        - fixed and documented -n command line options for RS02.
-	  Thanks to Jack Giles for noting this.
-	- reworked configure for current NetBSD release
-	- removed inofficial Solaris support
+- Switched Linux SCSI driver default to SG_IO ioctl().
+- Michael Klein provided Altivec optimization for
+  the RS03 encoder and valuable hints for general
+  RS03 encoding speedup
+- included Debian patches 04-manpage.patch,
+  06-remove-encoding-from-desktop-file.patch,
+  07-fix-spelling-errors-in-binaries.patch
+- fixed and documented -n command line options for RS02.
+  Thanks to Jack Giles for noting this.
+- reworked configure for current NetBSD release
+- removed inofficial Solaris support
 
 0.79.2  28-02-2010
-	Semantic Changes
-	The new missing sector marking method is now the default.
-	When interchanging images with dvdisaster 0.70 or older,
-	use --old-ds-marker or the respective setting under
-	Image/Image format in the preferences setting.
-	
-	Changes
-	- RS03 encoding will check for defective sectors now
-	- fixed crash when aborting RS03 encoding
-	- made the new missing sector marking method the default
-	- confirmation dialogues for overwriting images and ecc files
-	  are now configurable via preferences
+Semantic Changes
+The new missing sector marking method is now the default.
+When interchanging images with dvdisaster 0.70 or older,
+use --old-ds-marker or the respective setting under
+Image/Image format in the preferences setting.
 
-0.79.1 07-02-2010	
+Changes
+- RS03 encoding will check for defective sectors now
+- fixed crash when aborting RS03 encoding
+- made the new missing sector marking method the default
+- confirmation dialogues for overwriting images and ecc files
+  are now configurable via preferences
+
+0.79.1 07-02-2010
        A word of caution: This version is still evolving and some parts
        are not yet implemented. It may contain severe bugs and fail in 
        non-obvious ways, even in functions which worked in previous versions. 
@@ -92,856 +105,856 @@
        not keep images and error correction data for archival purposes;
        that's what the stable version 0.72 is for.
 
-	Semantic Changes
-	- query-size option replaced with -a/--assume option.
-	  command line default is now NOT to do exhaustive search
-	  for RS02 information; add -a RS02 to enable it
-	  (old behaviour: exhaustive check was on; required
-	   --query-size=udf to disable it)
-	- same changes in the preferences dialogues: 
-	  "Image size" field replaced with 
-	  "Error correction data recognization" options.
+Semantic Changes
+- query-size option replaced with -a/--assume option.
+  command line default is now NOT to do exhaustive search
+  for RS02 information; add -a RS02 to enable it
+  (old behaviour: exhaustive check was on; required
+   --query-size=udf to disable it)
+- same changes in the preferences dialogues: 
+  "Image size" field replaced with 
+  "Error correction data recognization" options.
 
-	Changes
-	- added MIN_TRANSFER_LEN and length sanity check as workaround 
-	  for buggy drive chipsets (thanks to R.G. for reporting this
-	  and helping with debugging output)
-	- added -tq command line option as suggested by Mikhail Arefiev
-	- fixed alignment brokeness between 32bit and 64bit systems
-	  in ecc header and crc sectors
-	- added RS03 encoding (GUI)
-	- added RS03 verifying (CLI and GUI)
-	- fixed RS02/RS03 crash when encoding invoked without image file
-	- added commandline RS03 encoding (singlethreaded/multithreaded)
-	- added RS03 decoding and verifying (CLI and GUI)
-	- fixed "typical uses" links in welcome screen (Thanks to C. Steigies)
-	- added warning when same files are selected for .iso
-	  and error correction data (Thanks to A. Postkutscher
-	  for suggesting this!)
-	- removed ASPI driver and ASPI/SPTI splitting logic
-	- removed 2GB file splitting
+Changes
+- added MIN_TRANSFER_LEN and length sanity check as workaround 
+  for buggy drive chipsets (thanks to R.G. for reporting this
+  and helping with debugging output)
+- added -tq command line option as suggested by Mikhail Arefiev
+- fixed alignment brokeness between 32bit and 64bit systems
+  in ecc header and crc sectors
+- added RS03 encoding (GUI)
+- added RS03 verifying (CLI and GUI)
+- fixed RS02/RS03 crash when encoding invoked without image file
+- added commandline RS03 encoding (singlethreaded/multithreaded)
+- added RS03 decoding and verifying (CLI and GUI)
+- fixed "typical uses" links in welcome screen (Thanks to C. Steigies)
+- added warning when same files are selected for .iso
+  and error correction data (Thanks to A. Postkutscher
+  for suggesting this!)
+- removed ASPI driver and ASPI/SPTI splitting logic
+- removed 2GB file splitting
 
 0.72 (pl4) 07-04-2012
-        - fixed crash in scsi layer for FreeBSD
-	- fixed double free when reading mode page 1 fails
-	- fixed DMA misalignment when reading mode page 1
-	- changed #includes for glibc for compatibility with 2.32
-	- dropped Darwin/Mac OS X support
-	- removed dependency on installed md5sum command
-	- changed libpng test in configure to utilize pkg-config
-	- fixed some minor flaws for NetBSD
+- fixed crash in scsi layer for FreeBSD
+- fixed double free when reading mode page 1 fails
+- fixed DMA misalignment when reading mode page 1
+- changed #includes for glibc for compatibility with 2.32
+- dropped Darwin/Mac OS X support
+- removed dependency on installed md5sum command
+- changed libpng test in configure to utilize pkg-config
+- fixed some minor flaws for NetBSD
 
 0.72 (pl3) 05-10-2011
-        - Volodymyr Bychkoviak found a problem when verifying 
-	  RS01 files which are larger than 2GB and provided a bugfix.
-	- Backported improved Windows locale detection from 0.79 branch.
-	- made package compile under OS X 10.6; updated OS X toolchain
-	  to Gtk 2.24.
+- Volodymyr Bychkoviak found a problem when verifying 
+  RS01 files which are larger than 2GB and provided a bugfix.
+- Backported improved Windows locale detection from 0.79 branch.
+- made package compile under OS X 10.6; updated OS X toolchain
+  to Gtk 2.24.
 
 0.72 (pl-2) 31-10-2010
-        - changed sources for clean compile on gcc 4.4.3
-        - Using the CDROM_SEND_PACKET ioctl() will hang parallel
-	  SCSI adapters. Added tests to determine the SCSI bus type,
-	  and switch to the SG_IO ioctl() when in doubt.
-	  Thanks to S. Seidl and R. Manfredi for the respective bug reports.
-        - fixed recognition of dvdisaster 0.79 RS03-augmented image 
-	- minor cosmetic changes for regression test compatibility
-	  with 0.79
+- changed sources for clean compile on gcc 4.4.3
+- Using the CDROM_SEND_PACKET ioctl() will hang parallel
+  SCSI adapters. Added tests to determine the SCSI bus type,
+  and switch to the SG_IO ioctl() when in doubt.
+  Thanks to S. Seidl and R. Manfredi for the respective bug reports.
+- fixed recognition of dvdisaster 0.79 RS03-augmented image 
+- minor cosmetic changes for regression test compatibility
+  with 0.79
 
 0.72 (pl-1) 08-08-2009
-	- Pablo Almeida provided a Portuguese translation
-	  for the screen text.
-	- workaround for freeze on Win XP for certain drive/CD-RW pairs
+- Pablo Almeida provided a Portuguese translation
+  for the screen text.
+- workaround for freeze on Win XP for certain drive/CD-RW pairs
 
 0.72 04-07-2009
-	- Igor Gorbounov completed the Russian translation
-	- fixed lockups in the spiral under Mac OS X
-	- fixed crash when calling dvdisaster on command line without
-	  specifying a file name on Mac OS X
+- Igor Gorbounov completed the Russian translation
+- fixed lockups in the spiral under Mac OS X
+- fixed crash when calling dvdisaster on command line without
+  specifying a file name on Mac OS X
 
 0.72 (rc-2)
-	- fixed lockups in the spiral under Mac OS X
-	- fixed crash when calling dvdisaster on command line without
-	  specifying a file name on Mac OS X
+- fixed lockups in the spiral under Mac OS X
+- fixed crash when calling dvdisaster on command line without
+  specifying a file name on Mac OS X
 
 0.72 (rc-1) 11-04-2009
-        - Documentation and locale cleanup for en, de
-	- added app bundle creation for Mac OS X
-	- Graphical bug: red/green sector markings were incorrect when doing
-	  linear reading with high sector skip numbers. Fixed.
-	  Speed curve will no longer travel below the x axis.
-	- fixed rare crash while linear reading due to a race condition
-	  by improper ClearCrcCache() usage.
-	- fixed bogus dead sector warning in the linear reader 
-	  after encountering unreadable sectors
-	- made adaptive reading pursue raw reading more aggressively;
-	  effectively trading in place re-reads for seeks over
-	  the medium.
-	- --help output for --defective-dump was complete nonsense. Fixed.
-	- detection of read errors at the end of track at once disks
-	  would sometimes cut off too many sectors when doing multiple
-	  reading passes and a carefully crafted number of extra read
-	  errors occurred. Fixed.
-	- fixed crash in command line mode when doing multiple 
-	  reading passes.
+- Documentation and locale cleanup for en, de
+- added app bundle creation for Mac OS X
+- Graphical bug: red/green sector markings were incorrect when doing
+  linear reading with high sector skip numbers. Fixed.
+  Speed curve will no longer travel below the x axis.
+- fixed rare crash while linear reading due to a race condition
+  by improper ClearCrcCache() usage.
+- fixed bogus dead sector warning in the linear reader 
+  after encountering unreadable sectors
+- made adaptive reading pursue raw reading more aggressively;
+  effectively trading in place re-reads for seeks over
+  the medium.
+- --help output for --defective-dump was complete nonsense. Fixed.
+- detection of read errors at the end of track at once disks
+  would sometimes cut off too many sectors when doing multiple
+  reading passes and a carefully crafted number of extra read
+  errors occurred. Fixed.
+- fixed crash in command line mode when doing multiple 
+  reading passes.
 
 ------ 0.72 released ------
 
 0.71 (devel-28) 08-03-2009
-	- changed SSE2 handling; now only the interesting part of
-	  dvdisaster are compiled with -msse2 and selection between
-	  normal and SSE2 code versions are done at run time.
-	  (Don't waste your time searching for SSE2 code in 0.7x -
-	   there is none; but we need the option to configure for it
-	   in preparation of 0.80)
-	   Thanks to Karsten H., Nathan S. and Tobias G. for bringing 
-	   this issue to my attention!
-	- changed treatment of CRC failures: old behaviour was to 
-	  store a defective sector marker; now the actual sector
-	  contents are written to the image file.
-	- starting a scan/after automatically loading a medium
-	  would not always work. Fixed.
-	- command line mode will no longer scan for available 
-	  devices when one is already given via -d.
-	  Thanks to Raphael M. for noting this.
-	- fixed build failure on FreeBSD; updated atapicam loading
-	  instructions.
-	- opening the preferences dialog produced a GTK warning. Fixed.
-        - log window would crash during update or when closed and
-	  re-opened repeatedly. Fixed the bunch of race conditions
-	  causing this.
-        - provided better defaults for the raw sector cache directory
-	  under Windows.
+- changed SSE2 handling; now only the interesting part of
+  dvdisaster are compiled with -msse2 and selection between
+  normal and SSE2 code versions are done at run time.
+  (Don't waste your time searching for SSE2 code in 0.7x -
+   there is none; but we need the option to configure for it
+   in preparation of 0.80)
+   Thanks to Karsten H., Nathan S. and Tobias G. for bringing 
+   this issue to my attention!
+- changed treatment of CRC failures: old behaviour was to 
+  store a defective sector marker; now the actual sector
+  contents are written to the image file.
+- starting a scan/after automatically loading a medium
+  would not always work. Fixed.
+- command line mode will no longer scan for available 
+  devices when one is already given via -d.
+  Thanks to Raphael M. for noting this.
+- fixed build failure on FreeBSD; updated atapicam loading
+  instructions.
+- opening the preferences dialog produced a GTK warning. Fixed.
+- log window would crash during update or when closed and
+  re-opened repeatedly. Fixed the bunch of race conditions
+  causing this.
+- provided better defaults for the raw sector cache directory
+  under Windows.
 
 0.71 (devel-27) 18-01-2009
-        - Verifying RS02 images would sometimes show slightly incorrect
-	  numbers of recoverable sectors in the "Prognosis: " line. Fixed.
-        - showing media info would sometimes go wild when called
-	  on empty drive. Will now report missing media correctly.
-        - fixed infinite loop on disk full state
-        - fixed failure on writing ecc files with now possible larger
-	  cache settings in command line mode
-	- increased encoder cache size to 8GB for RS01 and RS02
-        - some fine-tuning in recover-raw.c; added recognition of
-	  bad sectors whose data portion is actually good; added
-	  trivial correction by resetting the sync pattern
-        - corrected a data flow anomaly and missing parentheses in
-	  heuristic-lec.c
-        - Blank capacity of DVD-RAM could not be queried. Fixed.
-	- Phew. English and German documentation finished.
-	- fixed crash when using ancient CD-ROM drives.
-	  Thanks to mschaeff to bringing this to my attention!
-	- more robust handling for incomplete/unfinalized media; should produce 
-	  less dreaded "couldn't query [several possiblilities] length" 
-	  errors now ;-)
-	- added on-the-fly checkum verification for RS02
-	- skipped color glitch in the GUI; skipped sectors would not always be marked
-	  blue in the spiral
-	- reading media in multiple passes could crash on finish due to a
-	  race condition on very fast systems; fixed. 
-	- started support for a new missing sector marker
+- Verifying RS02 images would sometimes show slightly incorrect
+  numbers of recoverable sectors in the "Prognosis: " line. Fixed.
+- showing media info would sometimes go wild when called
+  on empty drive. Will now report missing media correctly.
+- fixed infinite loop on disk full state
+- fixed failure on writing ecc files with now possible larger
+  cache settings in command line mode
+- increased encoder cache size to 8GB for RS01 and RS02
+- some fine-tuning in recover-raw.c; added recognition of
+  bad sectors whose data portion is actually good; added
+  trivial correction by resetting the sync pattern
+- corrected a data flow anomaly and missing parentheses in
+  heuristic-lec.c
+- Blank capacity of DVD-RAM could not be queried. Fixed.
+- Phew. English and German documentation finished.
+- fixed crash when using ancient CD-ROM drives.
+  Thanks to mschaeff to bringing this to my attention!
+- more robust handling for incomplete/unfinalized media; should produce 
+  less dreaded "couldn't query [several possiblilities] length" 
+  errors now ;-)
+- added on-the-fly checkum verification for RS02
+- skipped color glitch in the GUI; skipped sectors would not always be marked
+  blue in the spiral
+- reading media in multiple passes could crash on finish due to a
+  race condition on very fast systems; fixed. 
+- started support for a new missing sector marker
 
 0.71 (devel-26) 30-03-2008
-	- Changed media type detection to a (hopefully) even more robust
-	  approach. Please report if this breaks compatibility with prior
-	  working drive/media combinations. 
-	- removed HD DVD support
-	- added medium info window
-	- fixed size determination of blank CD media
-	- added BD sizes to preferences dialog
-	- more BD tweaking
+- Changed media type detection to a (hopefully) even more robust
+  approach. Please report if this breaks compatibility with prior
+  working drive/media combinations. 
+- removed HD DVD support
+- added medium info window
+- fixed size determination of blank CD media
+- added BD sizes to preferences dialog
+- more BD tweaking
 
 0.71 (devel-25) 04-03-2008
-	- replaced treatment of localized file names with a different
-	  approach; the previous one broke large file support under Windows.
-	  Thanks to Markus G. for bringing this to my attention!
-	- fixed failure when trying to re-read incomplete image using split files
+- replaced treatment of localized file names with a different
+  approach; the previous one broke large file support under Windows.
+  Thanks to Markus G. for bringing this to my attention!
+- fixed failure when trying to re-read incomplete image using split files
 
 0.71 (devel-24) 24-02-2008
-	- enlarged scsi timeout for Linux as newer Kernels seem
-          to freeze on timeout
-	- fixed filename handling (e.g. German umlaut corruption) under Windows
-	  (thanks to T.Barth for noting this!)
-        - fixed thread handling in command line mode so that combining
-          several actions in one call work again
-	- added thumbnail decimation and real argv[] processing to pngpack
-	- started rework of online documentation for PHP;
-	  package creation is currently broken
-	- fixed adaptive reading crash when invoked with partial image
-	  and no ecc data (thanks to Jörg and Wolfgang for noting this!)
-	- fixed log file creation inconsistency (thanks to mschaeff!)
-	- started with raw sector editor
-	- added --with-embedded-src-path as proposed by Klaus Heinz
-	- relaxed MSF test for incoming sectors so that read errors
-	  within the MSF can be corrected
-	- phased in new documentation
-	- cleaned up CVS for new documentation
+- enlarged scsi timeout for Linux as newer Kernels seem
+  to freeze on timeout
+- fixed filename handling (e.g. German umlaut corruption) under Windows
+  (thanks to T.Barth for noting this!)
+- fixed thread handling in command line mode so that combining
+  several actions in one call work again
+- added thumbnail decimation and real argv[] processing to pngpack
+- started rework of online documentation for PHP;
+  package creation is currently broken
+- fixed adaptive reading crash when invoked with partial image
+  and no ecc data (thanks to Jörg and Wolfgang for noting this!)
+- fixed log file creation inconsistency (thanks to mschaeff!)
+- started with raw sector editor
+- added --with-embedded-src-path as proposed by Klaus Heinz
+- relaxed MSF test for incoming sectors so that read errors
+  within the MSF can be corrected
+- phased in new documentation
+- cleaned up CVS for new documentation
 
 0.71 (devel-23) 06-05-2007
-	- started C2 scanning support for CD media
-	- added Bernd Hellers umount patch for MacOS
-	- Andrei did it again and provided improved RAW recovery heuristics :-)
-	- fixed expose event loop within preferences
-	- fixed widget mutator race conditions within preferences
+- started C2 scanning support for CD media
+- added Bernd Hellers umount patch for MacOS
+- Andrei did it again and provided improved RAW recovery heuristics :-)
+- fixed expose event loop within preferences
+- fixed widget mutator race conditions within preferences
 
 0.71 (devel-22) 22-04-2007
-	- added Russian translation from Igor Gorbounov
-	- added more mode page / raw reading selections:
-	  20h and 21h and internal drive retries are selectable
-	- fixed raw sector caching when read attempts = 1
-	- fixed unnecessary ecc attempts when no new raw sectors were read
-	- suppressed addition of sectors with same contents to raw sector cache
-	- fixed non-working raw sector cache dir selection under Windows
+- added Russian translation from Igor Gorbounov
+- added more mode page / raw reading selections:
+  20h and 21h and internal drive retries are selectable
+- fixed raw sector caching when read attempts = 1
+- fixed unnecessary ecc attempts when no new raw sectors were read
+- suppressed addition of sectors with same contents to raw sector cache
+- fixed non-working raw sector cache dir selection under Windows
 
 0.71 (devel-21) 09-04-2007
-	- added larger cluster size for BD and HD DVD
+- added larger cluster size for BD and HD DVD
 
 0.71 (devel-20) 08-04-2007
-	- started HD DVD and BD support
-	- fixed scale steps for HD DVD and BD (thanks to Andrei for 
-	  noting this :-)
-	- completing the alpha testing documentation
+- started HD DVD and BD support
+- fixed scale steps for HD DVD and BD (thanks to Andrei for 
+  noting this :-)
+- completing the alpha testing documentation
 
 0.71 (devel-19) 25-03-2007
-	- fixed missing CRC sum test in adaptive reading for RS02
-	  (thanks to Marcus J. for pointing this out!)
-	- updated english and german manualpages
-	- added verbose logging and log file saving in the GUI
+- fixed missing CRC sum test in adaptive reading for RS02
+  (thanks to Marcus J. for pointing this out!)
+- updated english and german manualpages
+- added verbose logging and log file saving in the GUI
 
 0.71 (devel-18) 18-03-2007
-	- fixed read linear thread handling in CLI mode
-	- closed more memory leaks
-	- added selection for both SPTI and ASPI drives
-	  in the GUI under Windows	
-	- fixed color glitches in the spiral during linear reading
+- fixed read linear thread handling in CLI mode
+- closed more memory leaks
+- added selection for both SPTI and ASPI drives
+  in the GUI under Windows
+- fixed color glitches in the spiral during linear reading
 
 0.71 (devel-17) 04-03-2007
-	- fixed read linear reading crash in CLI mode
-	- fixed UDF parser, raw reading on big endian archs
-	- fixed broken Windows build, upgraded to InnoSetup 5.1.11,
-	  personalized setup graphics. Thanks to Lubos Stanek for the
-	  artwork ideas.
-	- fixed crash in HeuristicLEC/DecodePQ
+- fixed read linear reading crash in CLI mode
+- fixed UDF parser, raw reading on big endian archs
+- fixed broken Windows build, upgraded to InnoSetup 5.1.11,
+  personalized setup graphics. Thanks to Lubos Stanek for the
+  artwork ideas.
+- fixed crash in HeuristicLEC/DecodePQ
 
 0.71 (devel-16) 25-02-2007
-	- added Solaris port; this is for testing only and will not
-	  be officially supported.
-	- corrected output of --version
-	- added version information to the documentation headline
-	- fixed user break detection during sector re-reading
-	- improved resize behaviour of preferences online help
+- added Solaris port; this is for testing only and will not
+  be officially supported.
+- corrected output of --version
+- added version information to the documentation headline
+- fixed user break detection during sector re-reading
+- improved resize behaviour of preferences online help
 
 0.71 (devel-15) 21-02-2007
-	- added NetBSD port (thanks to Sergey Svishchev!)
-	- added test for regular files on LargeOpen();
-	  thanks to Alex S. for noting this issue!
+- added NetBSD port (thanks to Sergey Svishchev!)
+- added test for regular files on LargeOpen();
+  thanks to Alex S. for noting this issue!
 
 0.71 (devel-14) 18-02-2007
-	- added defective sector caching
-	- added multiple reading passes
+- added defective sector caching
+- added multiple reading passes
 
-0.71 (devel-13)	20-01-2007
-	- Fixed crash when using command line mode with --query-size=ecc and
-	  rewriteable DVD without RS02 ecc data. Thanks to Vincent L. for 
-	  reporting this!
-	- Fixed crash caused by drives reporting unreasonable media sizes.
-	  Thanks to Rafal K. and Klaus-Maria P. for reporting this!
-	- added ADIP extraction for better medium type determination
+0.71 (devel-13)20-01-2007
+- Fixed crash when using command line mode with --query-size=ecc and
+  rewriteable DVD without RS02 ecc data. Thanks to Vincent L. for 
+  reporting this!
+- Fixed crash caused by drives reporting unreasonable media sizes.
+  Thanks to Rafal K. and Klaus-Maria P. for reporting this!
+- added ADIP extraction for better medium type determination
 
 0.71 (devel-12) 07-01-2007
-	- Fixed a DEAD SERIOUS race condition in the linear reader while
-	  completing existing images (0.71 devel-9 to devel-11 are affected).
-	- Changelog had 0.71 misrepresented as 0.72. Fixed.
-	- Linear reading wrote some dead sector markers twice. That did not hurt,
-	  but was unnecessary. Fixed.
-	- Earlier versions of 0.71 had linear reading count unreable sectors also
-	  as CRC failures. Fixed.
-	- Adaptive reading: Fixed garbled contents of "size mismatch" dialog;
-	  move fingerprint check before size check 
-	- When limiting the reading range for adaptive reading sector 0 would
-	  not be marked as missing. Fixed.
-	- added multiple media read entry in the preferences,
-	  but it is not functional yet.
+- Fixed a DEAD SERIOUS race condition in the linear reader while
+  completing existing images (0.71 devel-9 to devel-11 are affected).
+- Changelog had 0.71 misrepresented as 0.72. Fixed.
+- Linear reading wrote some dead sector markers twice. That did not hurt,
+  but was unnecessary. Fixed.
+- Earlier versions of 0.71 had linear reading count unreable sectors also
+  as CRC failures. Fixed.
+- Adaptive reading: Fixed garbled contents of "size mismatch" dialog;
+  move fingerprint check before size check 
+- When limiting the reading range for adaptive reading sector 0 would
+  not be marked as missing. Fixed.
+- added multiple media read entry in the preferences,
+  but it is not functional yet.
 
 0.71 (devel-11) 01-01-2007  Happy new year :-)
-	- more segfault hunting on the raw reader
-	- Added dialog for skipping RS02 detection of DVD RW
-	- Added appearance preferences (thanks to Christian N. for explaining
-	  the need for this!)
-	- Preferences restructuring completed; Help texts need more work, though
-	- Added automatic media ejection after successful read
-	- Added automatic media loading when Read/Scan is attempted while
-	  the drive tray is left open
+- more segfault hunting on the raw reader
+- Added dialog for skipping RS02 detection of DVD RW
+- Added appearance preferences (thanks to Christian N. for explaining
+  the need for this!)
+- Preferences restructuring completed; Help texts need more work, though
+- Added automatic media ejection after successful read
+- Added automatic media loading when Read/Scan is attempted while
+  the drive tray is left open
 
 0.71 (devel-10) 26-11-2006
-	- more fine tuning of the raw reader
-	- removed preferences and command line sections from documentation
-	- removed NSIS support
+- more fine tuning of the raw reader
+- removed preferences and command line sections from documentation
+- removed NSIS support
 
 0.71 (devel-9) 19-11-2006
-	- added multi threading to the linear reader
-	- Fixed program hanging on CD-Audio/Multisession media.
-	  They are unsupported, but we must not crash on them.
-	  Thanks to Robert Hruby for reporting this problem!
+- added multi threading to the linear reader
+- Fixed program hanging on CD-Audio/Multisession media.
+  They are unsupported, but we must not crash on them.
+  Thanks to Robert Hruby for reporting this problem!
 
 0.71 (devel-8) 12-11-2006
-	- added support for CD XA21 sectors in raw reading and frame recovery
-	- added automatic word wrapping to preferences help system
+- added support for CD XA21 sectors in raw reading and frame recovery
+- added automatic word wrapping to preferences help system
 
 0.71 (devel-7) 01-11-2006
-	- renamed Level2_L_EC; "unrolled" store_[p|q]_conditional
-	- completed migration of "General" preferences documentation from HTML docs into
-	  preferences GUI
+- renamed Level2_L_EC; "unrolled" store_[p|q]_conditional
+- completed migration of "General" preferences documentation from HTML docs into
+  preferences GUI
 
 0.71 (devel-6) 29-10-2006
-	- completed migration of "Read and Scan" preferences documentation from 
-	  HTML docs into preferences GUI
-	- re-inserted heuristical L-EC from Andrei Grecu
+- completed migration of "Read and Scan" preferences documentation from 
+  HTML docs into preferences GUI
+- re-inserted heuristical L-EC from Andrei Grecu
 
 0.71 (devel-5) 22-10-2006
-	- more fine-tuning on the plain RAW reading capabilities
-	- removed some rarely used error messages from localization
-	  to relieve the translators
+- more fine-tuning on the plain RAW reading capabilities
+- removed some rarely used error messages from localization
+  to relieve the translators
 
 0.71 (devel-4) 17-10-2006
-	- rearranged raw reading and number of reading attempts
+- rearranged raw reading and number of reading attempts
 
 0.71 (devel-3) 01-10-2006
-	- added recognition of wrong sectors (e.g. the respective sector was not
-	  requested)
+- added recognition of wrong sectors (e.g. the respective sector was not
+  requested)
 
 0.71 (devel-2)
-	- added experimental l-ec to raw reading algorithm. Won't work reliably yet.
+- added experimental l-ec to raw reading algorithm. Won't work reliably yet.
 
 0.71 (devel-1)
-	- added CD raw reading and majority algorithm
-	- started transfer of preferences documentation from HTML manual
-	  to new online help system
+- added CD raw reading and majority algorithm
+- started transfer of preferences documentation from HTML manual
+  to new online help system
 
 0.70 (pl6) 04-03-2008
-	- rolled back the Windows filename encoding fixes;
-	  they caused large file support to be broken
-	  Thanks to Markus G. for bringing this to my attention!
+- rolled back the Windows filename encoding fixes;
+  they caused large file support to be broken
+  Thanks to Markus G. for bringing this to my attention!
 
 0.70 (pl5) 24-02-2008 various backports from 0.71.24:
-	- enlarged scsi timeout for Linux as newer Kernels seem
-          to freeze on timeout
-	- Windows filename encoding fixes
+- enlarged scsi timeout for Linux as newer Kernels seem
+  to freeze on timeout
+- Windows filename encoding fixes
 
 0.70 (pl4) 20-01-2007
-	- Adaptive reading: Fixed garbled contents of "size mismatch" dialog;
-	  move fingerprint check before size check 
-	- When limiting the reading range for adaptive reading sector 0 would
-	  not be marked as missing. Fixed.
-	- Fixed crash when using command line mode with --query-size=ecc and
-	  rewriteable DVD without RS02 ecc data. Thanks to Vincent L. for 
-	  reporting this!
-	- Fixed crash caused by drives reporting unreasonable media sizes.
-	  Thanks to Rafal K. and Klaus-Maria P. for reporting this!
-	- added ADIP extraction for better medium type determination
+- Adaptive reading: Fixed garbled contents of "size mismatch" dialog;
+  move fingerprint check before size check 
+- When limiting the reading range for adaptive reading sector 0 would
+  not be marked as missing. Fixed.
+- Fixed crash when using command line mode with --query-size=ecc and
+  rewriteable DVD without RS02 ecc data. Thanks to Vincent L. for 
+  reporting this!
+- Fixed crash caused by drives reporting unreasonable media sizes.
+  Thanks to Rafal K. and Klaus-Maria P. for reporting this!
+- added ADIP extraction for better medium type determination
 
 0.70 (pl3) 10-12-2006
-	- Fixed program hanging on CD-Audio/Multisession media.
-	  They are unsupported, but we must not crash on them.
-	  Thanks to Robert Hruby for reporting this problem!
-	- Added dialog for skipping RS02 detection of DVD RW
+- Fixed program hanging on CD-Audio/Multisession media.
+  They are unsupported, but we must not crash on them.
+  Thanks to Robert Hruby for reporting this problem!
+- Added dialog for skipping RS02 detection of DVD RW
 
 0.70 (pl2) 03-10-2006
-	- fixed crash by inappropriate g_free() on Pango layout (thanks to Dmitry
-	  for pointing this out)
-	- fixed pngpack decoding failure on big endian machines (thanks again to
-	  Dmitry)
-	- fixed type mismatch compiler warning on 64bit archs
+- fixed crash by inappropriate g_free() on Pango layout (thanks to Dmitry
+  for pointing this out)
+- fixed pngpack decoding failure on big endian machines (thanks again to
+  Dmitry)
+- fixed type mismatch compiler warning on 64bit archs
 
 0.70 (pl-1) 30-07-2006
-	- fixed a bug in read-adaptive for RS02 which would sometimes prevent it 
-	  from properly restarting a previously interrupted reading session.
-	- fixed a bug in read-adaptive for RS02 which would cause it to read 
-	  insufficient data for error correction in some circumstances.
-	- clarified higher redundancy requirements for RS02 in
-	  background30.html (thanks to M. Buchholtz for pointing this out)
-	- made Windows console and GUI versions refuse being run in the wrong mode
-	  (thanks to xaros2000 for noting this inconsistency)
-	- wrong values and units fixed in the error message for creating RS02
-	  images with too small medium size.
-	- -n/--redundancy will accept CD,DVD,DVD9 for the default medium sizes
-	  (thanks to mschaeff for suggesting this)
-	- added output of required sectors to adaptive reading GUI 
-	- changed --random-image to create a valid ISO image
-	- added --marked-image debugging option
+- fixed a bug in read-adaptive for RS02 which would sometimes prevent it 
+  from properly restarting a previously interrupted reading session.
+- fixed a bug in read-adaptive for RS02 which would cause it to read 
+  insufficient data for error correction in some circumstances.
+- clarified higher redundancy requirements for RS02 in
+  background30.html (thanks to M. Buchholtz for pointing this out)
+- made Windows console and GUI versions refuse being run in the wrong mode
+  (thanks to xaros2000 for noting this inconsistency)
+- wrong values and units fixed in the error message for creating RS02
+  images with too small medium size.
+- -n/--redundancy will accept CD,DVD,DVD9 for the default medium sizes
+  (thanks to mschaeff for suggesting this)
+- added output of required sectors to adaptive reading GUI 
+- changed --random-image to create a valid ISO image
+- added --marked-image debugging option
 
 ------ 0.70 released ------
 
 0.70 09-07-2006
-	- cleaned up source distribution
-	- some more touch-ups on the manual pages
-	- fixed a bug reading the CD TOC which would cause
-	  temporary hangs in Windows XP for certain combinations
-	  of faulty drive firmware, CD-RW and SPTI.
+- cleaned up source distribution
+- some more touch-ups on the manual pages
+- fixed a bug reading the CD TOC which would cause
+  temporary hangs in Windows XP for certain combinations
+  of faulty drive firmware, CD-RW and SPTI.
 
 0.70 (rc-1) 08-07-2006
-	- fixed the adaptive reading bug
-	- updated German and English manual pages
+- fixed the adaptive reading bug
+- updated German and English manual pages
 
 0.67 (devel-19) 02-07-2006
-	- completed German and English manual
-	- image and error correction file entries can be empty
-	- there is a yet unidentified bug in conjunction with
-	  adaptive reading and RS02 fixing left
+- completed German and English manual
+- image and error correction file entries can be empty
+- there is a yet unidentified bug in conjunction with
+  adaptive reading and RS02 fixing left
 
 0.67 (devel-18) 25-06-2006
-	- started putting the NSIS scripts into place (not yet finished)
-	- adaptive reader left correctable sectors zero-filled in the image under
-	  some circumstances; these showed up as CRC errors during verify and fix.
-	  these are now correctly filled with the dead sector marker and therefore
-	  reported as missing.
-	- fixed crash when doing RS01 encode right after RS02 encode on same image
-	- added simple-md5sum as FreeBSD does not have md5sum by default,
-	  but we need it during the build process.
-	- fixed non-working online manual button under FreeBSD and Darwin
+- started putting the NSIS scripts into place (not yet finished)
+- adaptive reader left correctable sectors zero-filled in the image under
+  some circumstances; these showed up as CRC errors during verify and fix.
+  these are now correctly filled with the dead sector marker and therefore
+  reported as missing.
+- fixed crash when doing RS01 encode right after RS02 encode on same image
+- added simple-md5sum as FreeBSD does not have md5sum by default,
+  but we need it during the build process.
+- fixed non-working online manual button under FreeBSD and Darwin
 
 0.67 (devel-17) 18-06-2006
-	- added Swedish locale from Daniel Nylander
-	- fixed utf8 strlen problem in console output
-	- fixed missing output of last sector status during
-	  read and verify operations (only GUI output was affected;
-	  sectors were properly read) 
+- added Swedish locale from Daniel Nylander
+- fixed utf8 strlen problem in console output
+- fixed missing output of last sector status during
+  read and verify operations (only GUI output was affected;
+  sectors were properly read) 
 
 0.67 (devel-16) 15-06-2006
-	- removed race conditions in some GUI idle functions
+- removed race conditions in some GUI idle functions
 
 0.67 (devel-15) 11-06-2006
-	- fixed CreateBitmap() namespace collision under Windows
-	- fixed md5sum miscompare on source code check under Windows
-	- made RS02 image detection more robust for dealing with
-	  rewriteable media
+- fixed CreateBitmap() namespace collision under Windows
+- fixed md5sum miscompare on source code check under Windows
+- made RS02 image detection more robust for dealing with
+  rewriteable media
 
 0.67 (devel-14) 10-06-2006
-	- completed german localization
-	- fixed "fuzzy line" redraw bug in reading speed curve
+- completed german localization
+- fixed "fuzzy line" redraw bug in reading speed curve
 
 0.67 (devel-13) 04-06-2006
-	- some more fine tuning of adaptive reading for RS02
-	- remove some debugging output from locale and path search
-	- optimized image type detection for RS02 media
-	- added wininst directory for NSIS installer related files
+- some more fine tuning of adaptive reading for RS02
+- remove some debugging output from locale and path search
+- optimized image type detection for RS02 media
+- added wininst directory for NSIS installer related files
 
 0.67 (devel-12) 28-05-2006
-	- Major rewrite of adaptive reading strategy.
-	  RS02 images are now handled correctly so that reading
-	  stops when enough data for error correction has been
-	  gathered. 
+- Major rewrite of adaptive reading strategy.
+  RS02 images are now handled correctly so that reading
+  stops when enough data for error correction has been
+  gathered. 
 
 0.67 (devel-11) 27-05-2006
-	- added defect medium simulation via --sim-defects n command line
-	  option
+- added defect medium simulation via --sim-defects n command line
+  option
 
 0.67 (devel-10) 25-05-2006
-	- removed drive database
-	- Windows online manual crash fixed (thanks to Rob B.for helping
-	  to track this down!)
-	- online manual debugging code removed
-	- version.h replaced with bbc variable
-	- added changes to GNUMakefile.template from Lubos
+- removed drive database
+- Windows online manual crash fixed (thanks to Rob B.for helping
+  to track this down!)
+- online manual debugging code removed
+- version.h replaced with bbc variable
+- added changes to GNUMakefile.template from Lubos
 
 0.67 (devel-9) 15-05-2006
-	- replaced --parse-udf and --parse-ecc with --query-size
+- replaced --parse-udf and --parse-ecc with --query-size
 
 0.67 (devel-8) 14-05-2006
-	- added log file option to debug the online manual crashes
-	- again some fixes in the Windows initialization
+- added log file option to debug the online manual crashes
+- again some fixes in the Windows initialization
 
 0.67 (devel-7) 14-05-2006
-	- reviewed and fixed Windows path initalization codes
-	  (thanks to Lubos!)
-	
+- reviewed and fixed Windows path initalization codes
+  (thanks to Lubos!)
+
 0.67 (devel-6) 30-04-2006
-	- .dvdisaster and .iso/.ecc files are placed in user writeable places
-	  under Windows if possible
+- .dvdisaster and .iso/.ecc files are placed in user writeable places
+  under Windows if possible
 
 0.67 (devel-5) 23-04-2006
-	- Julian Einwag started working on the Mac OS X / Darwin SCSI layer.
-	  Thanks :-)
-	- fixed RS02 for big endian architectures
+- Julian Einwag started working on the Mac OS X / Darwin SCSI layer.
+  Thanks :-)
+- fixed RS02 for big endian architectures
 
 0.67 (devel-4) 17-04-2006
-	- completed graphical fix action for RS02. 
-	  RS02 is now fully integrated with the GUI.
+- completed graphical fix action for RS02. 
+  RS02 is now fully integrated with the GUI.
 
 0.67 (devel-3) 15-04-2006
-	- completed graphical compare action for RS02
-	- removed wording inconsistencies (footprint->fingerprint;
-	  trimming->truncating) as noted by Daniel N.
+- completed graphical compare action for RS02
+- removed wording inconsistencies (footprint->fingerprint;
+  trimming->truncating) as noted by Daniel N.
 
 0.67 (devel-2) 09-04-2006
-	- added named mutex as proposed by Lubos
-	- I felt silly so I changed the empty welcome window to actually
-	  display a welcome message ;-)
+- added named mutex as proposed by Lubos
+- I felt silly so I changed the empty welcome window to actually
+  display a welcome message ;-)
 
 0.67 (devel-1) 02-04-2006
-	- added preferences settings for RS02
-	- linked RS02 image creation with graphical user interface
-	- suppressed error message when adjusting reading range without medium in drive
+- added preferences settings for RS02
+- linked RS02 image creation with graphical user interface
+- suppressed error message when adjusting reading range without medium in drive
 
 0.66 (pl-2) 28-03-2006
-	- added .xpm icons in contrib
+- added .xpm icons in contrib
 
 0.66 (pl-1) 27-03-2006
-	- fixed broken makefile when configured with --buildroot
-	  (thanks to Lubos!)
+- fixed broken makefile when configured with --buildroot
+  (thanks to Lubos!)
 
 ------ 0.66 released ------
 
 0.66  25-03-2006
-	- last RS02 headers were omitted when they would end up in the last
-	  two image sectors. fixed.
-	- updated installation scripts for new documentation structure
-	- fixed writing of superflous bytes when repairing non-image files
-	  in RS01
-	- fixed garbling of error correction data when processing
-	  non-image files with RS02
-	- fixed handling of truncated images in RS02
-	- fixed incorrect erasure count in RS02 decoder
-	- fixed false CRC errors for unreadable CRC sectors in RS02 decoder
+- last RS02 headers were omitted when they would end up in the last
+  two image sectors. fixed.
+- updated installation scripts for new documentation structure
+- fixed writing of superflous bytes when repairing non-image files
+  in RS01
+- fixed garbling of error correction data when processing
+  non-image files with RS02
+- fixed handling of truncated images in RS02
+- fixed incorrect erasure count in RS02 decoder
+- fixed false CRC errors for unreadable CRC sectors in RS02 decoder
 
 0.66 (rc-7) 12-03-2006
-	- added homepage generation for SourceForge
-	- final rework of background20 in the documentation
-	- added --parse-ecc option
-	- added documentation for --parse-ecc: example90, example10, example30,
-	  example81, prefs-general.png, prefs-general1.png
-	- moved localized screenshots from images to lang/images
-	- added media checksum test for ecc header search
+- added homepage generation for SourceForge
+- final rework of background20 in the documentation
+- added --parse-ecc option
+- added documentation for --parse-ecc: example90, example10, example30,
+  example81, prefs-general.png, prefs-general1.png
+- moved localized screenshots from images to lang/images
+- added media checksum test for ecc header search
 
 0.66 (rc-6) 04-03-2006
-	- fixed image size miscalculation in RS02Common
-	- fixed layout miscalculation for certain border cases in RS02Common
-	- debug.c: added random removal of ecc headers;
-	  fixed range check in erasure calculation
-	- added media size recognition from RS02 headers in query_size()
-	  this will need some more thought.
+- fixed image size miscalculation in RS02Common
+- fixed layout miscalculation for certain border cases in RS02Common
+- debug.c: added random removal of ecc headers;
+  fixed range check in erasure calculation
+- added media size recognition from RS02 headers in query_size()
+  this will need some more thought.
 
 0.66 (rc-5) 03-03-2006
-	- changed ShellExecute() call which might have caused the 
-	  mysterious Help system crashes on Windows (I was never able
-	  to reproduce them)
-	- adapted --random-errors for ecc images
-	- fixed miscalculation of ecc header count for certain
-	  image lenghts in RS02
-	- fixed misreported CRC errors in RS02Compare when read errors
-	  are present in the CRC section
-	- dropped / rephrased "error correction images" in documentation
-	- reworked German part of background20, this is still work in progress
+- changed ShellExecute() call which might have caused the 
+  mysterious Help system crashes on Windows (I was never able
+  to reproduce them)
+- adapted --random-errors for ecc images
+- fixed miscalculation of ecc header count for certain
+  image lenghts in RS02
+- fixed misreported CRC errors in RS02Compare when read errors
+  are present in the CRC section
+- dropped / rephrased "error correction images" in documentation
+- reworked German part of background20, this is still work in progress
 
 0.66 (rc-4) 26-02-2006
-	- fixed documentation path in manuals
-	- added summary messages after RS02 repair
-	- added correct handling of truncated images in fix, compare
-	- added correct handling of images with trailing garbage
-	  in fix, compare
-	- fixed commandline crash in RS01 when image was 1 or 2 sectors
-	  too large
-	- added FAQ item 3.7 to documentation
-	- fixed spurious <td></td> in example40cs table
+- fixed documentation path in manuals
+- added summary messages after RS02 repair
+- added correct handling of truncated images in fix, compare
+- added correct handling of images with trailing garbage
+  in fix, compare
+- fixed commandline crash in RS01 when image was 1 or 2 sectors
+  too large
+- added FAQ item 3.7 to documentation
+- fixed spurious <td></td> in example40cs table
  
 0.66 (rc-3) 25-02-2006
-	- cleanup of the documentation HTML code (thanks to Lubos)
-	  . cleaned up misplaced </tr></td> tags
-	  . added missing alt="" within <img>
-	  . fixed several links
-	  . removed spurius <b> from command line argument tables
-	  . added missing </td></tr> to command line examples
-	  . fixed <u> tags
-	  . remove full stop from head lines
+- cleanup of the documentation HTML code (thanks to Lubos)
+  . cleaned up misplaced </tr></td> tags
+  . added missing alt="" within <img>
+  . fixed several links
+  . removed spurius <b> from command line argument tables
+  . added missing </td></tr> to command line examples
+  . fixed <u> tags
+  . remove full stop from head lines
 
 0.66 (rc-2) 21-02-2006
-	- released brake on RS02 encoding (improved HDD writing pattern)
+- released brake on RS02 encoding (improved HDD writing pattern)
 
 0.66 (rc-1) 19-02-2006
-	- command line version of RS02 codec 
-	- joined examples and command line section of manual
+- command line version of RS02 codec 
+- joined examples and command line section of manual
 
 0.65 (devel-4) 12-02-2006
-	- renamed .img files to .iso files to facilitate easier
-	  interoperability between RS02 ecc images and burning software
+- renamed .img files to .iso files to facilitate easier
+  interoperability between RS02 ecc images and burning software
 
 0.65 (devel-3) 11-02-2006
-	- Creation of image and ecc files can be resumed after going
-	  out of disc space (only in GUI mode)
-	- updated README
-	- created contrib directory; added desktop and rpm skeletons
-	  contributed by Lubos Stanek
-	- changed length query for SCSI opcode 0xad 
-	- changed length calculation for SCSI opcode 0x43
-	- enabled CRC testing when "Delete image file?" is answered
-	  positively
+- Creation of image and ecc files can be resumed after going
+  out of disc space (only in GUI mode)
+- updated README
+- created contrib directory; added desktop and rpm skeletons
+  contributed by Lubos Stanek
+- changed length query for SCSI opcode 0xad 
+- changed length calculation for SCSI opcode 0x43
+- enabled CRC testing when "Delete image file?" is answered
+  positively
 
 0.65 (devel-2) 29-01-2006
-	- added CRC testing during linear read and scan options
-	  (if the respective ecc file is present)
-	- added flags for marking development versions and release candidates	
-          in the ecc file versiom information
-	- removed some memory leaks in the windows version
+- added CRC testing during linear read and scan options
+  (if the respective ecc file is present)
+- added flags for marking development versions and release candidates
+  in the ecc file versiom information
+- removed some memory leaks in the windows version
 
 0.65 (devel-1) 22-01-2006
-	- fixed several places in Makefile to handle source tree from CVS properly
-	- reorganized documentation scripts to better separate HTML markup
-          from translated phrases (dictionary_xx functions)
-	- removed language selection from online manual
-	- separated documentation image archives by language
-	- fixed crash when documentation was not properly installed
-	- added --buildroot option to configure
-	  (thanks to D. Baumann and V. Kuhlmann for explaining the need for this!)
+- fixed several places in Makefile to handle source tree from CVS properly
+- reorganized documentation scripts to better separate HTML markup
+  from translated phrases (dictionary_xx functions)
+- removed language selection from online manual
+- separated documentation image archives by language
+- fixed crash when documentation was not properly installed
+- added --buildroot option to configure
+  (thanks to D. Baumann and V. Kuhlmann for explaining the need for this!)
 
 ------ 0.65 released ------
 
 0.65: 14-01-2006
-	- Czech translation by Lubos Stanek
-	- made invocation of external HTML viewer more flexible and robust
-	- started support for big endian archs (NOT completed yet!)
-	- modularized scsi and codec interface for easier future expansion
-	- made --random-errors use the internal random number generator
-	  and allow for independent selection of number of roots/erasures
-	- Error correction files can be larger than 2GB on FAT file systems
-	- changed medium fingerprint sector from 257 to 16 (ISO file system root block)
-	- Windows binaries are now shipped with Gtk+2.6 libraries
-	- CRC information is calculated and cached when reading the image
-	  so that we do not need to re-read the image in a subsequent create operation.
-	- tinkered with speed curve algorithm to get smoother lines
-	- made sector color markers during linear read more understandable (hopefully)
-	- configure will now correctly honor $LDFLAGS from the user environment
-	- added Gtk+ library localization files to Windows distribution
-	  (thanks to J. Meyer for reporting this problem!)
-	- fixed bug in the Errors/Ecc block graph which would make it scale incorrectly
-	  if uncorrectable errors are encountered (this was just a rendering problem
-	  with no influence on the actual error correction)
-	- added gdk pixbuf check to configure (thanks to W. Wershofen for noting this!)
-	- better error diagnosis for invalid ecc files (thanks to Lubos for noting this!)
-	- modified code to compile cleanly under gcc 4.02
+- Czech translation by Lubos Stanek
+- made invocation of external HTML viewer more flexible and robust
+- started support for big endian archs (NOT completed yet!)
+- modularized scsi and codec interface for easier future expansion
+- made --random-errors use the internal random number generator
+  and allow for independent selection of number of roots/erasures
+- Error correction files can be larger than 2GB on FAT file systems
+- changed medium fingerprint sector from 257 to 16 (ISO file system root block)
+- Windows binaries are now shipped with Gtk+2.6 libraries
+- CRC information is calculated and cached when reading the image
+  so that we do not need to re-read the image in a subsequent create operation.
+- tinkered with speed curve algorithm to get smoother lines
+- made sector color markers during linear read more understandable (hopefully)
+- configure will now correctly honor $LDFLAGS from the user environment
+- added Gtk+ library localization files to Windows distribution
+  (thanks to J. Meyer for reporting this problem!)
+- fixed bug in the Errors/Ecc block graph which would make it scale incorrectly
+  if uncorrectable errors are encountered (this was just a rendering problem
+  with no influence on the actual error correction)
+- added gdk pixbuf check to configure (thanks to W. Wershofen for noting this!)
+- better error diagnosis for invalid ecc files (thanks to Lubos for noting this!)
+- modified code to compile cleanly under gcc 4.02
 
 0.64.2: 01-11-2005
-	- fixed crash when using -u in command line mode
-	- changed packaging system to allow different package and version numbering systems
-	  Current naming scheme is:
-	  . package name = package directory    = 0.xx[.y]
-	  . version name (as advertised in GUI) = 0.xx[ (pl y)]
-	- fixed img file permissions for Linux version
-	- drive selection wasn't remembered between sessions under
-	  Gtk+-2.4 and higher: fixed
-	- Manual/Homepage fixed for some MSIE glitches
+- fixed crash when using -u in command line mode
+- changed packaging system to allow different package and version numbering systems
+  Current naming scheme is:
+  . package name = package directory    = 0.xx[.y]
+  . version name (as advertised in GUI) = 0.xx[ (pl y)]
+- fixed img file permissions for Linux version
+- drive selection wasn't remembered between sessions under
+  Gtk+-2.4 and higher: fixed
+- Manual/Homepage fixed for some MSIE glitches
 
 0.64.1: 23-10-2005
-	- fixed bug which activated automatic ecc file generation in scan mode
-	- fixed crash at startup when linked against Gtk+ 2.6
-	  (Thanks to Radu M. and Richard B. for noting this!)
+- fixed bug which activated automatic ecc file generation in scan mode
+- fixed crash at startup when linked against Gtk+ 2.6
+  (Thanks to Radu M. and Richard B. for noting this!)
 
 0.64: 18-10-2005
-	- reworked console and logging output:
-	  Got rid of \b usage in locale files, 
-	  making gawk filtering of diagnostic warning obsolete.
-	  More removal of read and CRC error reporting in GUI mode as buffering 
-	  them may result in going out of memory in worst case situations.
-	  Use the program in command line mode and apply file 
-          redirection if you still wish to see these messages.
-	- fixed a glitch in the linear read/scanning GUI 
-	  which prevented small unreadable areas to stay 
-	  marked red in the spiral 
-	- fixed bug which did not install the CREDITS.* files
-	- fixed configure to use the --prefix settings properly 
-	  (thanks to Daniel Baumann for pointing this out)
-	- added de/en/it man pages supplied by Daniel Baumann
-	- fixed non-working --spinup-delay command line arg
-        - added configurable --docsubdir at request of Daniel
-	- Changed linear reading strategy
-	  . Sector skipping after a read error is now done in all passes, 
-	    not just the first one (the previous behaviour turned out as 
-	    an arbitrary design decision which did not really make sense)
-	  . Re-reading passes are carried out in 16 sector chunks, too
-	- provided workaround for detecting CD media on Teac slimline
-	  drives (and possibly others) caused by silly firmware answers
-	- provided workaround for read errors which are reported
-	  as something else by sloppy firmware
-	- added debugging functions --random-image and --random-seed for creating
-	  images with "random" numbers. Images created with --random-seed n are
-	  bitwise mirrors of those created with --random-seed -n.
-	- hunted down some memory leaks
-	- turned warning dialogs into modal dialogs
-	- fixed some minor redraw flaws in adaptive read mode
-	- fixed automatic file removal bug when in FAT32 mode 
-	  (thanks to Peter H., Walter G and Stephan J. for noting this)
-	- fixed error handling in GUI mode: in some rare error situations,
-	  it would not bring up the intended error dialog, but either
-	  continue quietly or terminate the whole program.
-	- fixed empty drive pop down menu after changing drives in the system
-	  or sharing a dvdisaster installation between different Windows installations
-	- started support for parsing ISO file system structures
-	- added some recent drives to the drive data base
-	- rewrote the drive spinup code
-	- added function for automatically creating the .ecc file after
-	  successfully reading an image
-	- documentation partially rewritten
-	- added some code to make sure that the "read adaptive" spiral fits into the window
-	- removed flicker in the "read adaptive" mode text output 
+- reworked console and logging output:
+  Got rid of \b usage in locale files, 
+  making gawk filtering of diagnostic warning obsolete.
+  More removal of read and CRC error reporting in GUI mode as buffering 
+  them may result in going out of memory in worst case situations.
+  Use the program in command line mode and apply file 
+  redirection if you still wish to see these messages.
+- fixed a glitch in the linear read/scanning GUI 
+  which prevented small unreadable areas to stay 
+  marked red in the spiral 
+- fixed bug which did not install the CREDITS.* files
+- fixed configure to use the --prefix settings properly 
+  (thanks to Daniel Baumann for pointing this out)
+- added de/en/it man pages supplied by Daniel Baumann
+- fixed non-working --spinup-delay command line arg
+- added configurable --docsubdir at request of Daniel
+- Changed linear reading strategy
+  . Sector skipping after a read error is now done in all passes, 
+    not just the first one (the previous behaviour turned out as 
+    an arbitrary design decision which did not really make sense)
+  . Re-reading passes are carried out in 16 sector chunks, too
+- provided workaround for detecting CD media on Teac slimline
+  drives (and possibly others) caused by silly firmware answers
+- provided workaround for read errors which are reported
+  as something else by sloppy firmware
+- added debugging functions --random-image and --random-seed for creating
+  images with "random" numbers. Images created with --random-seed n are
+  bitwise mirrors of those created with --random-seed -n.
+- hunted down some memory leaks
+- turned warning dialogs into modal dialogs
+- fixed some minor redraw flaws in adaptive read mode
+- fixed automatic file removal bug when in FAT32 mode 
+  (thanks to Peter H., Walter G and Stephan J. for noting this)
+- fixed error handling in GUI mode: in some rare error situations,
+  it would not bring up the intended error dialog, but either
+  continue quietly or terminate the whole program.
+- fixed empty drive pop down menu after changing drives in the system
+  or sharing a dvdisaster installation between different Windows installations
+- started support for parsing ISO file system structures
+- added some recent drives to the drive data base
+- rewrote the drive spinup code
+- added function for automatically creating the .ecc file after
+  successfully reading an image
+- documentation partially rewritten
+- added some code to make sure that the "read adaptive" spiral fits into the window
+- removed flicker in the "read adaptive" mode text output 
 
 0.63: 01-08-2005
-	- added adaptive read strategy (thanks to Harald Bögeholz
-	  for the suggestion; see also the CREDITS file)
-	- added --fill-unreadble option for better compatibility with
-	  other tools (e.g. h2cdimage from c't magazine)
-	- cut down information written to the log window in GUI mode 
-	  as that could use up significant amounts of memory in worst 
-          case scenarios. Use command line mode if you are still interested
-	  in these messages.
-	- fixed code for clean compile with gcc 4.0.1
-	- added auto-suffix option for automatically adding .img/.ecc to files
-	  given without an extension (thanks to Marcus for the suggestion!)
-	- changed function test prototype in bash based configure from
-	  char* to char to work around misdetection of gcc's builtin gettext()
-	  (thanks to Heinz R. for pointing this out)
-	- fixed crash in About requester when LANG environment was not set
-	  (thanks to Andreas for the patch!) 
+- added adaptive read strategy (thanks to Harald Bögeholz
+  for the suggestion; see also the CREDITS file)
+- added --fill-unreadble option for better compatibility with
+  other tools (e.g. h2cdimage from c't magazine)
+- cut down information written to the log window in GUI mode 
+  as that could use up significant amounts of memory in worst 
+  case scenarios. Use command line mode if you are still interested
+  in these messages.
+- fixed code for clean compile with gcc 4.0.1
+- added auto-suffix option for automatically adding .img/.ecc to files
+  given without an extension (thanks to Marcus for the suggestion!)
+- changed function test prototype in bash based configure from
+  char* to char to work around misdetection of gcc's builtin gettext()
+  (thanks to Heinz R. for pointing this out)
+- fixed crash in About requester when LANG environment was not set
+  (thanks to Andreas for the patch!) 
 
 0.62: 03-07-2005
-	- added correct return codes to indicate whether reading
-	  succeeded or found bad sectors in command line mode
-	- added experimental support for splitting image files into 2GB chunks
-	  (mainly for use with VFAT an Win9x; avoid this mode if you can)
-	- added compare function to graphical user interface
-	- fixed 'make install' (thanks to Andreas for noting the problems)
-	- fixed german umlaut glitch in the foot line (thanks to GoldenFingaz
-	  for pointing this out)
-	- relaxed handling of image size mismatches
-	
+- added correct return codes to indicate whether reading
+  succeeded or found bad sectors in command line mode
+- added experimental support for splitting image files into 2GB chunks
+  (mainly for use with VFAT an Win9x; avoid this mode if you can)
+- added compare function to graphical user interface
+- fixed 'make install' (thanks to Andreas for noting the problems)
+- fixed german umlaut glitch in the foot line (thanks to GoldenFingaz
+  for pointing this out)
+- relaxed handling of image size mismatches
+
 0.61: 24-04-2005
-	- added preferences dialog
-	- decoupled command line settings from GUI settings so that
-	  command line arguments will not be remembered across sessions
-	  and GUI settings will not be used in command line mode.
-	- more image size detection fine tuning (this becomes a running gag, huh?)
-	- added --speed-warning option (thanks to Richard B. for the suggestion!)
-	- added --spinup-delay option
-	- removed startup-related downspike in the speed graph
+- added preferences dialog
+- decoupled command line settings from GUI settings so that
+  command line arguments will not be remembered across sessions
+  and GUI settings will not be used in command line mode.
+- more image size detection fine tuning (this becomes a running gag, huh?)
+- added --speed-warning option (thanks to Richard B. for the suggestion!)
+- added --spinup-delay option
+- removed startup-related downspike in the speed graph
 
 0.60: 09-04-2005
-	- first release with graphical user interface
-	- tinkered again with image size detection
-	- added debugging function for zeroing out the "unreadable sector"
-	  markers (thanks to Marcus J. for the suggestion!)
-	- made configure more compatible with autoconf behaviour 
-	  (thanks to Andreas for pointing out the differences!)
+- first release with graphical user interface
+- tinkered again with image size detection
+- added debugging function for zeroing out the "unreadable sector"
+  markers (thanks to Marcus J. for the suggestion!)
+- made configure more compatible with autoconf behaviour 
+  (thanks to Andreas for pointing out the differences!)
 
 0.55: 20-02-2005
-	- added Italian translation from Andrea Polverini (polve@polve.com)
-	- improved media type detection
-	- upward compatibility with the improved media footprint calculation
-	  from upcoming version 0.60
+- added Italian translation from Andrea Polverini (polve@polve.com)
+- improved media type detection
+- upward compatibility with the improved media footprint calculation
+  from upcoming version 0.60
 
 0.54: 01-01-2005
-	- Switched from Cygwin/cygwin1.dll to Mingw/msvcrt.dll,
-	  with some additional functionality taken over by glib2.
-	  This may cause some short-time inconvenience (please report
-	  all different behaviour relative to 0.53.1!),
-	  but will pay off in later versions. 
-	- Some code reorganization.
-	- Shortened the version number scheme to major.minor
-	- Removed visualization via gnuplot. Visualization will be
-	  re-introduced in version 0.60; please use version 0.53.1
-	  for visualization if needed.
-	- Reworked compilation instructions in documentation.
+- Switched from Cygwin/cygwin1.dll to Mingw/msvcrt.dll,
+  with some additional functionality taken over by glib2.
+  This may cause some short-time inconvenience (please report
+  all different behaviour relative to 0.53.1!),
+  but will pay off in later versions. 
+- Some code reorganization.
+- Shortened the version number scheme to major.minor
+- Removed visualization via gnuplot. Visualization will be
+  re-introduced in version 0.60; please use version 0.53.1
+  for visualization if needed.
+- Reworked compilation instructions in documentation.
 
 0.53.1: 27-12-2004
-	- encrypted discs will be rejected before any actual reading
-	  is attempted (avoids confusing error messages when running into
-	  the encrypted area).
+- encrypted discs will be rejected before any actual reading
+  is attempted (avoids confusing error messages when running into
+  the encrypted area).
 
 0.53.0: 23-12-2004
-	- introduction of GNU gettext
-	- German localization
-	- Makefile will automatically collect .c files
-	- Preparation for multiple codecs
-	- fixed incorrect media size calculation for +RW images
-	- fixed installation procedure (thanks to Kay D. !)
+- introduction of GNU gettext
+- German localization
+- Makefile will automatically collect .c files
+- Preparation for multiple codecs
+- fixed incorrect media size calculation for +RW images
+- fixed installation procedure (thanks to Kay D. !)
 
 0.52.1: 04-12-2004
-	- Fixed the handling of truncated image files (thanks to Harald B.!)
-	- Better diagnosis of images which are longer than supposed
-	  (should never happen, but one never knows)
+- Fixed the handling of truncated image files (thanks to Harald B.!)
+- Better diagnosis of images which are longer than supposed
+  (should never happen, but one never knows)
 
 0.52.0: 28-11-2004
-	- codec speedups and user selectable redundancy settings
+- codec speedups and user selectable redundancy settings
 
 0.51.1: 13-11-2004
-	- fixed bug which prevented dvdisaster from working
-	  under Windows XP without Cygwin being installed
-	  (thanks to Andrea and Harald B. for reporting this!)
-	- removed unnecessary open with write permission 
-	  within --test action
-	- Besides bringing scanning speed to a screeching halt on
-	  slow systems, calculation of the image md5sum during
-	  the --scan option wasn't very useful -- removed it.
-	- repaired a glitch which would derail the codec when
-	  fixing a truncated image
-	- added --dao option
-	- added a test predicting a TAO medium when fixing a
-	  damaged image
-	
+- fixed bug which prevented dvdisaster from working
+  under Windows XP without Cygwin being installed
+  (thanks to Andrea and Harald B. for reporting this!)
+- removed unnecessary open with write permission 
+  within --test action
+- Besides bringing scanning speed to a screeching halt on
+  slow systems, calculation of the image md5sum during
+  the --scan option wasn't very useful -- removed it.
+- repaired a glitch which would derail the codec when
+  fixing a truncated image
+- added --dao option
+- added a test predicting a TAO medium when fixing a
+  damaged image
+
 0.51.0: 06-11-2004
-	- added experimental ASPI support for Cygwin version
-	- added alternative "-end" syntax for specifying the sector range
-	- added -j/--jump option
-	- fixed minor bug which made -t option fail reading the CRC data
-	  on very small media images
-	
+- added experimental ASPI support for Cygwin version
+- added alternative "-end" syntax for specifying the sector range
+- added -j/--jump option
+- fixed minor bug which made -t option fail reading the CRC data
+  on very small media images
+
 0.50.0: 01-10-2004
-	- Experimental Cygwin support.
-	- Rewrote SCSI layer for portability.
-	- Introduced ./configure mechanism.
-	- Dropped --direct option for portability reasons.
-	- Changed behaviour of continuing the reading of incomplete images;
-	  if the image size is smaller than the medium size, reading will
-	  now continue at the last read sector. Previous versions would have
-	  tried all unread sectors before.
-	- Fixed a bug which would not fill in the missing sector markers
-	  on a sequence of non overlapping read intervals (such as doing
-	  -r0-100000; -r110000-media_end; the range 100001-109999 would
-	  have been simply zeroed out in previous versions).
+- Experimental Cygwin support.
+- Rewrote SCSI layer for portability.
+- Introduced ./configure mechanism.
+- Dropped --direct option for portability reasons.
+- Changed behaviour of continuing the reading of incomplete images;
+  if the image size is smaller than the medium size, reading will
+  now continue at the last read sector. Previous versions would have
+  tried all unread sectors before.
+- Fixed a bug which would not fill in the missing sector markers
+  on a sequence of non overlapping read intervals (such as doing
+  -r0-100000; -r110000-media_end; the range 100001-109999 would
+  have been simply zeroed out in previous versions).
 
 0.42.2: 23-09-2004
-	- changed the --fix semantics so that sectors with wrong CRC sums 
-	  will automatically be fixed (previous versions would just report
-	  them as bad when using the -t option)
-	- made --fix more verbose about CRC errors
+- changed the --fix semantics so that sectors with wrong CRC sums 
+  will automatically be fixed (previous versions would just report
+  them as bad when using the -t option)
+- made --fix more verbose about CRC errors
 
 0.42.1: 11-09-2004
-	- unrolled the inner codec loop; optimized some C expressions within
-	- code cleanup in the encoder
+- unrolled the inner codec loop; optimized some C expressions within
+- code cleanup in the encoder
 
 0.42.0: 08-09-2004 (no public release)
-	- changed the caching and code generation strategy in the RS encoder
-	- added program version information in the ecc file header
-	- updated the --print option to show the new header information
-	- made --fix option reject .ecc files from future program versions
+- changed the caching and code generation strategy in the RS encoder
+- added program version information in the ecc file header
+- updated the --print option to show the new header information
+- made --fix option reject .ecc files from future program versions
 
 0.41.2: 05-09-2004
-	- some speed optimizations in the encoder
-	- the --direct option now actually works 
-	- removed the #ifdef DEBUG clutter in ecc-rs01.c
-	- added the --byteset debugging function
+- some speed optimizations in the encoder
+- the --direct option now actually works 
+- removed the #ifdef DEBUG clutter in ecc-rs01.c
+- added the --byteset debugging function
 
-	NOTE: Debugging functions are intentionally undocumented and unsupported.
+NOTE: Debugging functions are intentionally undocumented and unsupported.
 
 0.41.1: 31-08-2004
-	- added CRC32 checksum for each image block in the .ecc file
+- added CRC32 checksum for each image block in the .ecc file
 
 0.41.0: 28-08-2004 (no public release)
-	- Replaced the matrix-based codec with one using polynomials.
+- Replaced the matrix-based codec with one using polynomials.
 
 0.40.8: 24-08-2004 (no public release)
-	- removed unused div_tab[] from ecc-rs01.c (which was incorrectly initialized anyways)
-	- fixed md5sum miscompare in print.c	
-	- added the --random-errors debugging function
+- removed unused div_tab[] from ecc-rs01.c (which was incorrectly initialized anyways)
+- fixed md5sum miscompare in print.c
+- added the --random-errors debugging function
 
-	NOTE: Debugging functions are intentionally undocumented and unsupported.
+NOTE: Debugging functions are intentionally undocumented and unsupported.
 
-0.40.7:	22-08-2004
-	First public release
+0.40.7:22-08-2004
+First public release

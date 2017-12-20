@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  The Reed-Solomon error correction draws a lot of inspiration - and even code -
  *  from Phil Karn's excellent Reed-Solomon library: http://www.ka9q.net/code/fec/
@@ -108,11 +108,11 @@ static void unlink_image(GtkWidget *label)
    }
    else 
    {  if(!Closure->guiMode)
-       PrintLog("\n");
+         PrintLog("\n");
 
-       ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
-		    _("Image file %s not deleted: %s\n"),
-		    Closure->imageName, strerror(errno));
+      ModalWarning(GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, NULL,
+		   _("Image file %s not deleted: %s\n"),
+		   Closure->imageName, strerror(errno));
    }
 }
 
@@ -279,7 +279,9 @@ void RS01Create(void)
 
    ec->timer   = g_timer_new();
 
-   if(Closure->crcCache)   /* use CRC values created during last read */
+   /* Try to use CRC values created during last read */
+
+   if(CrcBufValid(Closure->crcBuf, NULL, NULL))   
    {  guint32 crc_idx;
       int percent, last_percent = 0;
       char *msg = _("Writing sector checksums: %3d%%");
@@ -288,7 +290,7 @@ void RS01Create(void)
 	SetLabelText(GTK_LABEL(wl->encLabel1),
 		     _("<b>1. Writing image sector checksums:</b>"));
 
-      memcpy(image->mediumSum, Closure->md5Cache, 16);
+      memcpy(image->mediumSum, Closure->crcBuf->imageMD5sum, 16);
       MD5Init(&md5Ctxt);    /*  md5sum of CRC portion of ecc file */
 
       /* Write out the cached CRC sectors */
@@ -305,7 +307,7 @@ void RS01Create(void)
 	 else  ci = 1024;
 
 	 size   = ci*sizeof(guint32);
-	 crcbuf = &Closure->crcCache[crc_idx];
+	 crcbuf = &Closure->crcBuf->crcbuf[crc_idx];
 
 	 n = LargeWrite(image->eccFile, crcbuf, size);
 	 MD5Update(&md5Ctxt, (unsigned char*)crcbuf, size);
@@ -326,11 +328,18 @@ void RS01Create(void)
 
       PrintProgress(msg, 100);
    }
-   else   /* Scan image for missing sectors and calculate the checksums */
+
+   /* Cached crc buffer can not be used. 
+      Scan image for missing sectors and calculate the checksums.
+      Checksums are only computed locally and not provided in the cache. */
+   else   
    {  if(Closure->guiMode)
        SetLabelText(GTK_LABEL(wl->encLabel1),
 		    _("<b>1. Calculating image sector checksums:</b>"));
 
+      FreeCrcBuf(Closure->crcBuf);  /* just a defensive measure */
+      Closure->crcBuf = NULL;
+     
       RS01ScanImage(self, image, &md5Ctxt, CREATE_CRC);
 
       if(image->sectorsMissing)
@@ -375,6 +384,8 @@ void RS01Create(void)
    memcpy(eh->cookie, "*dvdisaster*", 12);
    memcpy(eh->method, "RS01", 4);
    eh->methodFlags[0] = 1;
+   if(!Closure->regtestMode)
+     eh->methodFlags[3] = Closure->releaseFlags;
    gint64_to_uchar(eh->sectors, image->sectorSize);
    eh->dataBytes       = ndata;
    eh->eccBytes        = nroots;

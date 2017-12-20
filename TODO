@@ -1,15 +1,13 @@
 
 Tentative to do/ release schedule
 
-Version 0.79: new RS03 codec 
+Version 0.79: new RS03 codec (encoding part)
  - lots of speed optimizations in error correction data encoding
- - multithreaded / multicore processor support for encoding
-   (decoding still single threaded)
+ - multithreaded / multicore processor support
  - add missing functionality, e.g. adaptive reading
  0.79.5: project re-launch
  0.79.6: re-introduce CRC and MD5 caching between reading
-         and ecc creation; cosmetical changes; support
-	 for 100G BD
+         and ecc creation; cosmetical changes
  0.79.7: re-introduce adaptive reading
 
 Version 0.80: milestone release

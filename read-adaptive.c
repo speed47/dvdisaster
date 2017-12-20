@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -142,7 +142,7 @@ CrcBuf *GetCRCFromRS01_obsolete(EccInfo *ei)   /* FIXME: obsolete */
    gint64 i,j,sec_idx;
 
    cb->crcbuf = g_malloc(ei->sectors * sizeof(guint32));
-   cb->size   = ei->sectors;
+   cb->crcSize   = ei->sectors;
    cb->valid  = CreateBitmap0(ei->sectors);
    buf = cb->crcbuf;
 
@@ -197,7 +197,7 @@ CrcBuf *GetCRCFromRS02_obsolete(void *layv, void *dhv, LargeFile *image)
    image_sectors = lay->eccSectors+lay->dataSectors;
  
    cb->crcbuf = g_malloc(image_sectors * sizeof(guint32));
-   cb->size   = image_sectors;
+   cb->crcSize   = image_sectors;
    cb->valid  = CreateBitmap0(image_sectors);
 
    /* Initialize ecc block index pointers.

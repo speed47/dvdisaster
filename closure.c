@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -225,17 +225,20 @@ void ReadDotfile()
       if(!strcmp(symbol, "last-image"))      { g_free(Closure->imageName);
 	                                       if(!strcmp(value, "none"))
 						    Closure->imageName = g_strdup("");
-					       else Closure->imageName = g_strdup(value); continue; 
+					       else Closure->imageName = g_strdup(value);
+					       continue; 
                                              }
       if(!strcmp(symbol, "last-ecc"))        { g_free(Closure->eccName);
 	                                       if(!strcmp(value, "none"))
 						    Closure->eccName = g_strdup("");
-                                               else Closure->eccName = g_strdup(value); continue; 
+                                               else Closure->eccName = g_strdup(value);
+					       continue; 
                                              }
       if(!strcmp(symbol, "adaptive-read"))   { Closure->adaptiveRead   = atoi(value); continue; }
       if(!strcmp(symbol, "auto-suffix"))     { Closure->autoSuffix  = atoi(value); continue; }
       if(!strcmp(symbol, "bd-size1"))        { Closure->bdSize1 = Closure->savedBDSize1 = atoll(value); continue; }
       if(!strcmp(symbol, "bd-size2"))        { Closure->bdSize2 = Closure->savedBDSize2 = atoll(value); continue; }
+      if(!strcmp(symbol, "bd-size3"))        { Closure->bdSize3 = Closure->savedBDSize3 = atoll(value); continue; }
       if(!strcmp(symbol, "cache-size"))      { Closure->cacheMiB = atoi(value); continue; }
       if(!strcmp(symbol, "cd-size"))         { Closure->cdSize = Closure->savedCDSize = atoll(value); continue; }
       if(!strcmp(symbol, "codec-threads"))   { Closure->codecThreads = atoi(value); continue; }
@@ -305,8 +308,8 @@ void ReadDotfile()
    }
 
    if(fclose(dotfile))
-     g_fprintf(stderr, "Error closing configuration file %s: %s\n", 
-	       Closure->dotFile, strerror(errno));
+     g_printf("Error closing configuration file %s: %s\n", 
+	      Closure->dotFile, strerror(errno));
 }
 
 static void update_dotfile()
@@ -325,7 +328,7 @@ static void update_dotfile()
 
    dotfile = portable_fopen(Closure->dotFile, "wb");
    if(!dotfile)
-   {  g_fprintf(stderr, "Could not open configuration file %s: %s\n", 
+   {  g_printf("Could not open configuration file %s: %s\n", 
 		Closure->dotFile, strerror(errno));
       return;
    }
@@ -344,6 +347,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "auto-suffix:       %d\n", Closure->autoSuffix);
    g_fprintf(dotfile, "bd-size1:          %lld\n", (long long int)Closure->bdSize1);
    g_fprintf(dotfile, "bd-size2:          %lld\n", (long long int)Closure->bdSize2);
+   g_fprintf(dotfile, "bd-size3:          %lld\n", (long long int)Closure->bdSize3);
    g_fprintf(dotfile, "cache-size:        %d\n", Closure->cacheMiB);
    g_fprintf(dotfile, "cd-size:           %lld\n", (long long int)Closure->cdSize);
    g_fprintf(dotfile, "codec-threads:     %d\n", Closure->codecThreads);
@@ -400,8 +404,8 @@ static void update_dotfile()
    save_colors(dotfile, "present-sector",     Closure->darkSector);
 
    if(fclose(dotfile))
-     g_fprintf(stderr, "Error closing configuration file %s: %s\n", 
-	       Closure->dotFile, strerror(errno));
+     g_printf("Error closing configuration file %s: %s\n", 
+	      Closure->dotFile, strerror(errno));
 }
 
 /***
@@ -419,7 +423,12 @@ void InitClosure()
 
    /* Extract the version string */
 
+#ifdef HAVE_UNSTABLE_RELEASE
+   Closure->cookedVersion = g_strdup_printf("%s (unstable)", VERSION);
+   Closure->releaseFlags = MFLAG_DEVEL;
+#else
    Closure->cookedVersion = g_strdup(VERSION);
+#endif
 
    /* Generate a more comprehensive version string */
 
@@ -491,6 +500,7 @@ void InitClosure()
    Closure->dvdSize2 = Closure->savedDVDSize2 = DVD_DL_SIZE;
    Closure->bdSize1  = Closure->savedBDSize1  = BD_SL_SIZE;
    Closure->bdSize2  = Closure->savedBDSize2  = BD_DL_SIZE;
+   Closure->bdSize3  = Closure->savedBDSize3  = BDXL_TL_SIZE;
 
    Closure->logString = g_string_sized_new(1024);
    Closure->logLock   = g_malloc0(sizeof(GMutex));
@@ -536,21 +546,6 @@ void LocalizedFileDefaults()
 }
 
 /*
- * Clear the CRC cache
- */
-
-void ClearCrcCache(void)
-{  if(Closure->crcCache)
-      g_free(Closure->crcCache);
-   if(Closure->crcImageName)
-      g_free(Closure->crcImageName);
-
-   Closure->crcCache = NULL;
-   Closure->crcImageName = NULL;
-   memset(Closure->md5Cache, 0, 16);
-}
-
-/*
  * Clean up properly 
  */
 
@@ -574,8 +569,6 @@ void FreeClosure()
 {
    if(Closure->guiMode)
      update_dotfile();
-
-   ClearCrcCache();
 
    cond_free(Closure->cookedVersion);
    cond_free(Closure->versionString);

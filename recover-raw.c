@@ -1,6 +1,6 @@
 
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -493,6 +493,8 @@ int ValidateRawSector(RawBuffer *rb, unsigned char *frame, char *msg)
 {  int lec_did_sth = FALSE;
    unsigned char saved_msf[4];
 
+   memset(saved_msf, 0, 4);  /* shut off compiler warning */ 
+   
    /* See if the buffer was returned unchanged. */
 
    if(CheckForMissingSector(frame, rb->lba, NULL, 0) != SECTOR_PRESENT)

@@ -251,6 +251,9 @@ and the expected size of the parity layers is:
 
 \smallskip
 
+% TODO: implement in codec
+\begin{comment}
+
 From these values we iteratively compute a $2^p$ which has about 20-40 multiples
 in the {\em preliminary ecc size} address space. This value will be used
 for interleaving the ecc header copies with the ecc layers:
@@ -263,6 +266,16 @@ p := 5
 while($\frac{preliminary\;ecc\;size}{2^p} > 40$)
 
 \quad p := p + 1}  
+\end{comment}
+
+From these values we compute a $2^p$ which has about 20-40 multiples
+in the {\em preliminary ecc size} address space. This value will be used
+for interleaving the ecc header copies with the ecc layers:
+
+\[ p = \left\lceil log_2\; \frac{preliminary\;ecc\;size}{40} \right\rceil \]
+
+%\[ p = \left\lceil \frac{log\; \frac{preliminary\;ecc\;size}{40}}{log\; 2} \right\rceil \]
+
 
 \smallskip
 

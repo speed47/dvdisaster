@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -240,6 +240,7 @@ enum
 };
 
 
+int QueryBlankCapacity(DeviceHandle*);
 gint64 CurrentMediumSize(int);
 void CloseDevice(DeviceHandle*);
 
