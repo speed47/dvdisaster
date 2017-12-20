@@ -1,10 +1,5 @@
-#!/usr/bin/dh-exec
+contrib/dvdisaster.desktop usr/share/applications
 usr/bin
+usr/share/icons
 usr/share/locale
 usr/share/man
-contrib/dvdisaster.desktop usr/share/applications
-contrib/dvdisaster16.png => usr/share/icons/hicolor/16x16/apps/dvdisaster.png
-contrib/dvdisaster24.png => usr/share/icons/hicolor/24x24/apps/dvdisaster.png
-contrib/dvdisaster32.png => usr/share/icons/hicolor/32x32/apps/dvdisaster.png
-contrib/dvdisaster48.png => usr/share/icons/hicolor/48x48/apps/dvdisaster.png
-contrib/dvdisaster64.png => usr/share/icons/hicolor/64x64/apps/dvdisaster.png

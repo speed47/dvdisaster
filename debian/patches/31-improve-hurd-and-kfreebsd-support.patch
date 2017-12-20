@@ -75,7 +75,7 @@ index 60c55f9..f30f5d3 100644
  
  
 diff --git a/closure.c b/closure.c
-index 632c103..7c8b3bd 100644
+index f408f7a..f4b1893 100644
 --- a/closure.c
 +++ b/closure.c
 @@ -50,7 +50,8 @@ static void get_base_dirs()

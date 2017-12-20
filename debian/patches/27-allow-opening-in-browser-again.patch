@@ -17,7 +17,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  create mode 100644 show-html.c
 
 diff --git a/closure.c b/closure.c
-index 0e2f889..632c103 100644
+index 40bb225..f408f7a 100644
 --- a/closure.c
 +++ b/closure.c
 @@ -467,6 +467,7 @@ void InitClosure()
@@ -37,7 +37,7 @@ index 0e2f889..632c103 100644
     cond_free(Closure->simulateCD);
     cond_free(Closure->dDumpDir);
 diff --git a/dvdisaster.h b/dvdisaster.h
-index db2031e..22eab5a 100644
+index bcfd4f5..ae874ae 100644
 --- a/dvdisaster.h
 +++ b/dvdisaster.h
 @@ -213,6 +213,7 @@ typedef struct _GlobalClosure

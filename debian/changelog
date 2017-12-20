@@ -1,3 +1,19 @@
+dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Use complete Debian revision number as build number, instead of
+    just the numeric part.
+  * Re-implement scripts/time-stamper.bash without direct calls to
+    dpkg-parsechangelog.
+  * Call ./configure script directly, instead of relying on debhelper,
+    to resolve incompatibilities with Bash-based script.
+  * Use alternative way of installing icons to remove dependency on
+    dh-exec.
+  * Drop redundant dependency on dpkg-dev.
+  * Reproducibly generate PDF documentation from TeX sources.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 23:04:38 +1000
+
 dvdisaster (0.79.5-3) unstable; urgency=medium
 
   * Team upload.

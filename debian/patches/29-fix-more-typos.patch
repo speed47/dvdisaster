@@ -40,7 +40,7 @@ index 51ff827..80fe9d3 100644
  \bigskip
  
 diff --git a/locale/cs.po b/locale/cs.po
-index ed1fc65..9010d21 100644
+index 24b1e7c..497a4a9 100644
 --- a/locale/cs.po
 +++ b/locale/cs.po
 @@ -1903,7 +1903,7 @@ msgid "Media ejection"
@@ -79,7 +79,7 @@ index a074339..000d5c3 100644
  
  #: preferences.c:2091
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index 04b33b5..00bcaee 100644
+index 012ce9e..4624071 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
 @@ -1839,7 +1839,7 @@ msgid "Media ejection"
@@ -92,7 +92,7 @@ index 04b33b5..00bcaee 100644
  
  #: preferences.c:2091
 diff --git a/locale/ru.po b/locale/ru.po
-index 6cd3789..1c677d4 100644
+index 912d6fb..66fc036 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
 @@ -1841,7 +1841,7 @@ msgid "Media ejection"

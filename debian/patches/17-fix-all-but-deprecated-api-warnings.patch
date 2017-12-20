@@ -22,7 +22,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  9 files changed, 38 insertions(+), 32 deletions(-)
 
 diff --git a/closure.c b/closure.c
-index 7568cba..0e2f889 100644
+index 51e91a2..40bb225 100644
 --- a/closure.c
 +++ b/closure.c
 @@ -196,7 +196,7 @@ void ReadDotfile()

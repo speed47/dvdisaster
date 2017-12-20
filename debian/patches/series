@@ -19,7 +19,7 @@
 25-fix-man-pages.patch
 26-fix-display-of-manual.pdf.patch
 27-allow-opening-in-browser-again.patch
-28-fudge-pdf-doc-ids.patch
+28-pdftex-reproducibility.patch
 29-fix-more-typos.patch
 30-hurd-kfreebsd-ftbfs.patch
 31-improve-hurd-and-kfreebsd-support.patch
