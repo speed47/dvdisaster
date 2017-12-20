@@ -1,3 +1,9 @@
+dvdisaster (0.79.6-1) UNRELEASED; urgency=medium
+
+  * New upstream development version [0.79.6].
+
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:34:22 +1100
+
 dvdisaster (0.79.5-4) unstable; urgency=medium
 
   * Use complete Debian revision number as build number, instead of
