@@ -13,6 +13,7 @@ dvdisaster (0.79.5-4) UNRELEASED; urgency=medium
   * Remove trailing white space from debian/changelog.
   * Remove unnecessary Testsuite header from debian/control.
   * Indicate compliance with Debian Policy 4.1.2.
+  * Suppress debian-watch-uses-insecure-uri Lintian warning.
 
  -- Carlos Maddela <e7appew@gmail.com>  Mon, 14 Aug 2017 23:04:38 +1000
 
