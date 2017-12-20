@@ -8,32 +8,31 @@ See the file "COPYING" for further information.
 Opening rs03i-tmp.iso: 19890 medium sectors.
 
 Fix mode(RS03i): Repairable sectors will be fixed in the image.
-Ecc progress:   0.0%Ecc progress:   1.2%Ecc progress:   2.5%Ecc progress:   3.8%Ecc progress:   5.1%Ecc progress:   6.4%Ecc progress:   7.6%Ecc progress:   8.9%Ecc progress:  10.2%Ecc progress:  11.5%Ecc progress:  12.8%Ecc progress:  14.1%Ecc progress:  15.3%Ecc progress:  16.6%Ecc progress:  17.9%Ecc progress:  19.2%Ecc progress:  20.5%Ecc progress:  21.7%Ecc progress:  23.0%Ecc progress:  24.3%Ecc progress:  25.6%Ecc progress:  26.9%Ecc progress:  28.2%Ecc progress:  29.4%Ecc progress:  30.7%Ecc progress:  32.0%Ecc progress:  33.3%Ecc progress:  34.6%Ecc progress:  35.8%Ecc progress:  37.1%Ecc progress:  38.4%Ecc progress:  39.7%    1 repaired sectors: 500d 
-Ecc progress:  41.0%    1 repaired sectors: 501d 
-Ecc progress:  42.3%    1 repaired sectors: 502d 
-Ecc progress:  43.5%    1 repaired sectors: 503d 
-Ecc progress:  44.8%    1 repaired sectors: 504d 
-Ecc progress:  46.1%    1 repaired sectors: 505d 
-Ecc progress:  47.4%    1 repaired sectors: 506d 
-Ecc progress:  48.7%    1 repaired sectors: 507d 
-Ecc progress:  50.0%    1 repaired sectors: 508d 
-Ecc progress:  51.2%    1 repaired sectors: 509d 
-Ecc progress:  52.5%    1 repaired sectors: 510d 
-Ecc progress:  53.8%    1 repaired sectors: 511d 
-Ecc progress:  55.1%    1 repaired sectors: 512d 
-Ecc progress:  56.4%    1 repaired sectors: 513d 
-Ecc progress:  57.6%    1 repaired sectors: 514d 
-Ecc progress:  58.9%    1 repaired sectors: 515d 
-Ecc progress:  60.2%    1 repaired sectors: 516d 
-Ecc progress:  61.5%    1 repaired sectors: 517d 
-Ecc progress:  62.8%    1 repaired sectors: 518d 
-Ecc progress:  64.1%    1 repaired sectors: 519d 
-Ecc progress:  65.3%    1 repaired sectors: 520d 
-Ecc progress:  66.6%    1 repaired sectors: 521d 
-Ecc progress:  67.9%    1 repaired sectors: 522d 
-Ecc progress:  69.2%    1 repaired sectors: 523d 
-Ecc progress:  70.5%    1 repaired sectors: 524d 
-Ecc progress:  71.7%Ecc progress:  73.0%Ecc progress:  74.3%Ecc progress:  75.6%Ecc progress:  76.9%Ecc progress:  78.2%Ecc progress:  79.4%Ecc progress:  80.7%Ecc progress:  82.0%Ecc progress:  83.3%Ecc progress:  84.6%Ecc progress:  85.8%Ecc progress:  87.1%Ecc progress:  88.4%Ecc progress:  89.7%Ecc progress:  91.0%Ecc progress:  92.3%Ecc progress:  93.5%Ecc progress:  94.8%Ecc progress:  96.1%Ecc progress:  97.4%Ecc progress:  98.7%Ecc progress: 100.0%
+    1 repaired sectors: 500d 
+    1 repaired sectors: 501d 
+    1 repaired sectors: 502d 
+    1 repaired sectors: 503d 
+    1 repaired sectors: 504d 
+    1 repaired sectors: 505d 
+    1 repaired sectors: 506d 
+    1 repaired sectors: 507d 
+    1 repaired sectors: 508d 
+    1 repaired sectors: 509d 
+    1 repaired sectors: 510d 
+    1 repaired sectors: 511d 
+    1 repaired sectors: 512d 
+    1 repaired sectors: 513d 
+    1 repaired sectors: 514d 
+    1 repaired sectors: 515d 
+    1 repaired sectors: 516d 
+    1 repaired sectors: 517d 
+    1 repaired sectors: 518d 
+    1 repaired sectors: 519d 
+    1 repaired sectors: 520d 
+    1 repaired sectors: 521d 
+    1 repaired sectors: 522d 
+    1 repaired sectors: 523d 
+    1 repaired sectors: 524d 
 Repaired sectors: 25 (25 data, 0 ecc)
 Good! All sectors are repaired.
 Erasure counts per ecc block:  avg =  1.0; worst = 1.

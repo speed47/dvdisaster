@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -649,7 +649,9 @@ void RS03Verify(Image *image)
    gint64 virtual_expected;
    gint64 expected_image_sectors;
    gint64 eccfile_sectors = 0,expected_eccfile_sectors = 0;
-   int major,minor,pl;
+   int major,minor,micro;
+   char *unstable="";
+
    char method[5];
    char *img_advice = NULL;
    char *ecc_advice = NULL;
@@ -768,39 +770,31 @@ void RS03Verify(Image *image)
 
    major = eh->creatorVersion/10000; 
    minor = (eh->creatorVersion%10000)/100;
-   pl    = eh->creatorVersion%100;
+   micro = eh->creatorVersion%100;
 
-   if(eh->creatorVersion%100)        
-   {  char *format, *color_format = NULL;
+   /* Suppress (unstable) output in debug mode to facilitate regression tests */
+   if((eh->methodFlags[3] & MFLAG_DEVEL) && !Closure->regtestMode)
+     unstable=" (unstable)";
 
-      if(eh->methodFlags[3] & MFLAG_DEVEL) 
-      {  format = "%s-%d.%d (devel-%d)";
-	 color_format = "%s-%d.%d <span %s>(devel-%d)</span>";
-      }
-      else if(eh->methodFlags[3] & MFLAG_RC) 
-      {  format = "%s-%d.%d (rc-%d)";
-	 color_format = "%s-%d.%d <span %s>(rc-%d)</span>";
-      }
-      else format = "%s-%d.%d (pl%d)";
+   if(micro)
+   {  char *format = "%s-%d.%d.%d%s";
 
-      PrintLog(format, _("- created by       : dvdisaster"), major, minor, pl);
+      PrintLog(format, _("- created by       : dvdisaster"), major, minor, micro, unstable);
       PrintLog("\n");
 
-      if(!color_format) color_format = format;
       if(Closure->guiMode)
-      {  if(!color_format)
-	      SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), color_format, 
-			   "dvdisaster", major, minor, Closure->redMarkup, pl);
-	 else SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format, 
-			   "dvdisaster", major, minor, pl);
+      {  SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format, 
+		      "dvdisaster", major, minor, micro, unstable);
       }
    }
    else
-   {  PrintLog(_("- created by       : dvdisaster-%d.%d\n"), 
-	       major, minor);
-
+   {  char *format = "%s-%d.%d%s";
+      PrintLog(format, _("- created by       : dvdisaster"), major, minor, unstable);
+      PrintLog("\n");
+      
       if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), "dvdisaster-%d.%d", major, minor);
+	SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format,
+		     "dvdisaster", major, minor, unstable);
    }
 
    /* Required dvdisaster version */
@@ -1164,7 +1158,7 @@ void RS03Verify(Image *image)
 	          add_verify_values(self, image_percent, new_missing, new_crc_errors); 
 	       }
 	       else
-	       {  SetLabelText(GTK_LABEL(wl->cmpEccSyndromes),"%d%% tested",percent);
+	       {  SetLabelText(GTK_LABEL(wl->cmpEccSyndromes),_("%d%% tested"),percent);
 	       }
 	    }
 

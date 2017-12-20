@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -202,7 +202,7 @@ static void print_greetings(FILE *where)
    if(greetings_shown) return;
 
    greetings_shown = 1;
-   g_fprintf(where, "%s\n%s.\n", Closure->versionString, _("Copyright 2004-2015 Carsten Gnoerlich"));
+   g_fprintf(where, "%s\n%s.\n", Closure->versionString, _("Copyright 2004-2017 Carsten Gnoerlich"));
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE
@@ -238,14 +238,14 @@ void PrintCLI(char *format, ...)
    }
 
    va_start(argp, format);
-   g_vfprintf(stdout, format, argp);
+   g_vprintf(format, argp);
    va_end(argp);
 
    fflush(stdout);
 }
 
 /*
- * Print progress to stderr.
+ * Print progress.
  * Returns cursor to first character in the line
  * if the message contains no newlines. 
  * Does nothing in GUI mode.
@@ -259,8 +259,11 @@ void PrintProgress(char *format, ...)
    if(Closure->guiMode)
      return;
   
-   print_greetings(stderr);
+   print_greetings(stdout);
 
+   if(Closure->noProgress)
+     return;
+  
    va_start(argp, format);
    g_vsnprintf(msg, 256, format, argp);
    n = g_utf8_strlen(msg,-1);
@@ -273,16 +276,16 @@ void PrintProgress(char *format, ...)
    Closure->progressLength = n;
 
    if(strchr(msg, '\n'))
-      g_fprintf(stderr, "%s", msg);
+      g_printf("%s", msg);
    else
    {  g_mutex_lock(&Closure->progressLock);
       Closure->bs[n] = 0;
-      g_fprintf(stderr, "%s%s", msg, Closure->bs);
+      g_printf("%s%s", msg, Closure->bs);
       Closure->bs[n] = '\b';
       g_mutex_unlock(&Closure->progressLock);
    }
 
-   fflush(stderr);
+   fflush(stdout);
 }
 
 /*
@@ -292,16 +295,19 @@ void PrintProgress(char *format, ...)
 void ClearProgress(void)
 {  int n = Closure->progressLength;
 
+   if(Closure->noProgress)
+     return;
+  
    g_mutex_lock(&Closure->progressLock);
    Closure->bs[n] = Closure->sp[n] = 0;
-   g_fprintf(stderr, "%s%s", Closure->sp, Closure->bs);
+   g_printf("%s%s", Closure->sp, Closure->bs);
    Closure->bs[n] = '\b';
    Closure->sp[n] = ' ';
    g_mutex_unlock(&Closure->progressLock);
 }
 
 /*
- * Print a message to both stderr and the log window
+ * Print a message to both stdout and the log window
  */
 
 void PrintLog(char *format, ...)
@@ -319,17 +325,17 @@ void PrintLog(char *format, ...)
       log_window_vprintf(format, argp);
    else 
    {
-      print_greetings(stderr);
-      g_vfprintf(stderr, format, argp);
+      print_greetings(stdout);
+      g_vprintf(format, argp);
 
-      fflush(stderr);
+      fflush(stdout);
    }
 
    va_end(argp);
 }
 
 /*
- * Print a message to both stderr and the log window,
+ * Print a message to both stdout and the log window,
  * prepending each line with an asterisk and space.
  */
 
@@ -368,10 +374,10 @@ void PrintLogWithAsterisks(char *format, ...)
       log_window_vprintf(new_format, argp);
    else 
    {
-      print_greetings(stderr);
-      g_vfprintf(stderr, new_format, argp);
+      print_greetings(stdout);
+      g_vprintf(new_format, argp);
 
-      fflush(stderr);
+      fflush(stdout);
    }
 
    va_end(argp);
@@ -400,10 +406,10 @@ void Verbose(char *format, ...)
       log_window_vprintf(format, argp);
    else 
    {
-      print_greetings(stderr);
-      g_vfprintf(stderr, format, argp);
+      print_greetings(stdout);
+      g_vprintf(format, argp);
 
-      fflush(stderr);
+      fflush(stdout);
    }
 
    va_end(argp);
@@ -422,7 +428,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
    int hours = (int)(elapsed / 3600.0);
    char *tmp1,*tmp2;
 
-   if(!Closure->verbose)
+   if(!Closure->verbose || Closure->fixedSpeedValues)
      return;
 
    va_start(argp, format);
@@ -435,9 +441,9 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
       log_window_append(tmp2);
    }
    else
-   {  g_fprintf(stderr, "%s", tmp2);
+   {  g_printf("%s", tmp2);
 
-      fflush(stderr);
+      fflush(stdout);
    }
 
    g_free(tmp1);
@@ -506,7 +512,7 @@ int GetLongestTranslation(char *first, ...)
 }
 
 /*
- * Issue a warning message to stderr and the log
+ * Issue a warning message to stdout and the log
  */
 
 static void vlog_warning(char *format, va_list argp)
@@ -545,9 +551,9 @@ static void vlog_warning(char *format, va_list argp)
    {  log_window_append(str->str);
    }
    else
-   {  print_greetings(stderr);
-      g_fprintf(stderr, "%s", str->str);
-      fflush(stderr);
+   {  print_greetings(stdout);
+      g_printf("%s", str->str);
+      fflush(stdout);
    }
 
    g_string_free(str, TRUE);
@@ -593,12 +599,12 @@ void Stop(char *format, ...)
    /*** CLI mode */
    
    if(!Closure->guiMode) 
-   {  g_fprintf(stderr, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
+   {  g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
-      g_vfprintf(stderr, format, argp);
+      g_vprintf(format, argp);
       va_end(argp);
-      g_fprintf(stderr, "\n\n");
-      fflush(stderr);
+      g_printf("\n\n");
+      fflush(stdout);
    }
 
    /*** GUI mode */

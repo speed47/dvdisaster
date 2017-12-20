@@ -29,5 +29,5 @@ Completing image rs01-tmp.iso. Only missing sectors will be read.
 * error correction data for it. Sorry for the bad news.
 * ... more unrecoverable sectors found ...
 * further messages are suppressed unless the -v option is given.
-Read position:  21.0% (nn.nx)Read position:  21.1% (nn.nx)
+
 3 sectors read.     

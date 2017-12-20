@@ -1,0 +1,16 @@
+95b221fd894f6adb6f6e8d3b89583fb6
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 24990 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+CRC error in sector 21020
+-> CRC-predicted error in sector 21020 at byte  400 (value ff '.', expected 6e 'n')
+    1 repaired sectors: 21020c 
+Repaired sectors: 1 (1 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.0; worst = 1.

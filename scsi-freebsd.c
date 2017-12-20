@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -215,7 +215,7 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
 
    if(cam_send_ccb(dh->camdev, ccb) < 0) 
    {  printf("cam_send failed\n");
-      cam_error_print(dh->camdev, ccb, CAM_ESF_ALL, CAM_EPF_ALL, stderr);
+      cam_error_print(dh->camdev, ccb, CAM_ESF_ALL, CAM_EPF_ALL, stdout);
       return -1;
    }
 

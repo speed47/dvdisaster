@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -563,7 +563,8 @@ void RS02Verify(Image *image)
    gint64 ecc_sector,expected_sectors;
    int ecc_md5_failure = FALSE;
    int ecc_slice;
-   int major,minor,pl;
+   int major,minor,micro;
+   char *unstable="";
    char method[5];
    char *img_advice = NULL;
    char *ecc_advice = NULL;
@@ -902,45 +903,36 @@ continue_with_ecc:
 
    major = eh->creatorVersion/10000; 
    minor = (eh->creatorVersion%10000)/100;
-   pl    = eh->creatorVersion%100;
+   micro = eh->creatorVersion%100;
 
-   if(eh->creatorVersion%100)        
-   {  char *format, *color_format = NULL;
+   /* Suppress (unstable) output in debug mode to facilitate regression tests */
+   if((eh->methodFlags[3] & MFLAG_DEVEL) && !Closure->regtestMode)
+     unstable=" (unstable)";
 
-      if(eh->methodFlags[3] & MFLAG_DEVEL) 
-      {  format = "%s-%d.%d (devel-%d)";
-	 color_format = "%s-%d.%d <span %s>(devel-%d)</span>";
-      }
-      else if(eh->methodFlags[3] & MFLAG_RC) 
-      {  format = "%s-%d.%d (rc-%d)";
-	 color_format = "%s-%d.%d <span %s>(rc-%d)</span>";
-      }
-      else format = "%s-%d.%d (pl%d)";
+   if(micro)        
+   {  char *format = "%s-%d.%d.%d%s";
 
-      PrintLog(format, _("created by dvdisaster"), major, minor, pl);
+      PrintLog(format, _("created by dvdisaster"), major, minor, micro, unstable);
       PrintLog("\n");
 
-      if(!color_format) color_format = format;
       if(Closure->guiMode)
-      {  if(!color_format)
-	      SwitchAndSetFootline(wl->cmpEccNotebook, 1,
-				   wl->cmpEccCreatedBy, 
-				   color_format, "dvdisaster",
-				   major, minor, Closure->redMarkup, pl);
-	 else SwitchAndSetFootline(wl->cmpEccNotebook, 1,
-				   wl->cmpEccCreatedBy, 
-				   format, "dvdisaster",
-				   major, minor, pl);
+      {  SwitchAndSetFootline(wl->cmpEccNotebook, 1,
+			      wl->cmpEccCreatedBy, 
+			      format, "dvdisaster",
+			      major, minor, micro, unstable);
       }
    }
    else
-   {  PrintLog(_("created by dvdisaster-%d.%d\n"), 
-	       major, minor);
+   {  char *format = "%s-%d.%d%s";
+
+      PrintLog(format, _("created by dvdisaster"), major, minor, unstable);
+      PrintLog("\n");
 
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpEccNotebook, 1,
-			     wl->cmpEccCreatedBy, "dvdisaster-%d.%d",
-			     major, minor);
+			     wl->cmpEccCreatedBy,
+			     format, "dvdisaster",
+			     major, minor, unstable);
    }
 
    /* Error correction method */

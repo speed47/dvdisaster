@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -1160,7 +1160,7 @@ static int query_type(DeviceHandle *dh, int probe_only)
  * and the blank disc capacity.
  */
 
-static int query_blank(DeviceHandle *dh)
+int QueryBlankCapacity(DeviceHandle *dh)
 {  AlignedBuffer *ab = CreateAlignedBuffer(4096);
    unsigned char *buf = ab->buf;
    unsigned char cmd[MAX_CDB_SIZE];
@@ -2027,7 +2027,7 @@ gint64 CurrentMediumSize(int get_blank_size)
    /* We can return either the image size or the size of  blank media. */
 
    if(get_blank_size)
-   {  if(!query_blank(image->dh))
+   {  if(!QueryBlankCapacity(image->dh))
       {  CloseImage(image);
 	 return 0;
       }
@@ -2263,22 +2263,6 @@ static int read_cd_sector(DeviceHandle *dh, unsigned char *buf, int lba, int nse
    cmd[11] = 0;    /* no special wishes for the control byte */
 
    ret = SendPacket(dh, cmd, 12, buf, 2048*nsectors, sense, DATA_READ);
-
-#if 0
-#define BORK 34999
-   if(lba<=BORK && BORK<lba+nsectors)  /* fixme */
-     {  int offset = 2048*(BORK-lba);
-      buf[offset+240]^=255;
-  }
-#endif
-
-#if 0
-#define BORK2 300
-   if(lba<=BORK2 && BORK2<lba+nsectors)  /* fixme */
-     {  int offset = 2048*(BORK2-lba);
-      buf[offset+240]^=255;
-  }
-#endif
 
    if(ret<0) RememberSense(sense->sense_key, sense->asc, sense->ascq);
    return ret;

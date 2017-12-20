@@ -219,11 +219,11 @@ Sector 199, try 1: Medium Error; Unrecovered read error.
 Sector 199: Medium Error; Unrecovered read error.
 Sector 200, try 1: Medium Error; Unrecovered read error.
 Sector 200: Medium Error; Unrecovered read error.
-Read position:   1.0% (nn.nx)Sectors 752 - 767: Medium Error; Unrecovered read error.
-Read position:   3.6% (nn.nx)Sector 766, try 1: Medium Error; Unrecovered read error.
+Sectors 752 - 767: Medium Error; Unrecovered read error.
+Sector 766, try 1: Medium Error; Unrecovered read error.
 Sector 766: Medium Error; Unrecovered read error.
-Read position:   3.7% (nn.nx)Sectors 2400 - 2415: Medium Error; Unrecovered read error.
+Sectors 2400 - 2415: Medium Error; Unrecovered read error.
 Sector 2410, try 1: Medium Error; Unrecovered read error.
 Sector 2410: Medium Error; Unrecovered read error.
-Read position:  11.5% (nn.nx)Read position:  11.6% (nn.nx)
+
 41 sectors read; 103 unreadable sectors.

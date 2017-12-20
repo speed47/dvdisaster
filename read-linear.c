@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -149,7 +149,6 @@ static void cleanup(gpointer data)
    if(rc->speedTimer) g_timer_destroy(rc->speedTimer);
    if(rc->readTimer)  g_timer_destroy(rc->readTimer);
    if(rc->readMap) FreeBitmap(rc->readMap);
-   if(rc->crcBuf) FreeCrcBuf(rc->crcBuf);
    if(rc->volumeLabel) g_free(rc->volumeLabel);
 
    if(rc->rendererMutex)
@@ -161,9 +160,8 @@ static void cleanup(gpointer data)
    memset(rc, sizeof(read_closure), 0xff); 
    g_free(rc);
 
-   ClearCrcCache(); /* cache handling is currently broken. Discard the cache! */
-   
-   /* Continue with ecc file creation after read */
+   /* Continue with ecc file creation after read.
+      NOTE: Images are NOT automatically augmented after a read. */
 
    if(Closure->readAndCreate && Closure->guiMode && !scan_mode && !aborted)  /* General prerequisites */
    {  if(   !strncmp(Closure->methodName, "RS01", 4)                         /* codec prerequisites */
@@ -182,12 +180,6 @@ static void cleanup(gpointer data)
      if(Closure->guiMode)
        AllowActions(TRUE);
 
-   if(!full_read && Closure->crcCache)
-     ClearCrcCache();
-
-   if(scan_mode)   /* we haven't created an image, so throw away the crc sums */
-     ClearCrcCache();
-   
    /* In GUI mode both the reader and worker are spawned sub threads;
       however in CLI mode the reader is the main thread and must not be terminated. */
 
@@ -417,31 +409,9 @@ static void fill_gap(read_closure *rc)
 
 static void prepare_crc_cache(read_closure *rc)
 {
-   Closure->crcAvailable = FALSE;
+   /*** Memory for the CRC32 sums is needed in two cases: */
 
-   /*** Memory for the CRC32 sums is needed in two cases
-        and comes in two flavors: */
-
-   /* a) A full image read is attempted. 
-         The image CRC32 and md5sum are calculated on the fly,
-         as they may be used for ecc creation later. 
-         In that case we use the old Closure->crcCache storage. */
-
-   if(   !rc->scanMode && !rc->rereading 
-      && rc->firstSector == 0 && rc->lastSector == rc->image->dh->sectors-1)
-   {  if(Closure->crcCache)
-	 g_printf("Internal problem: crcCache not clean\n");
-      Closure->crcCache = g_try_malloc(sizeof(guint32) * rc->image->dh->sectors);
-
-      if(Closure->crcCache)
-	Closure->crcImageName = g_strdup(Closure->imageName);
-
-      if(rc->eccMethod && rc->eccMethod->updateCksums && rc->eccMethod->finalizeCksums)
-	rc->doMD5sums = TRUE;  /* not all codecs support these actions! */
-      MD5Init(&rc->md5ctxt);
-   }
-
-   /* b) We have suitable ecc data and want to compare CRC32sums
+   /* a) We have suitable ecc data and want to compare CRC32sums
          against it while reading. Note that for augmented images
          the checksums may be incomplete due to unreadable CRC sectors,
          so we keep them in the CrcBuf struct which deals with lost
@@ -454,6 +424,9 @@ static void prepare_crc_cache(read_closure *rc)
       method_name[4] = 0;
       PrintCLI("%s (%s) ... ",_("Reading CRC information from ecc data"),
 	                      method_name);
+
+      // FIXME: reuse CrcBuf and write respective message
+
       if(Closure->guiMode)
 	 SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
 		      "<big>%s</big>\n<i>%s</i>", 
@@ -461,16 +434,22 @@ static void prepare_crc_cache(read_closure *rc)
 		      rc->image->dh->mediumDescr);
 
       if(rc->eccMethod->getCrcBuf)
-      {  rc->crcBuf = rc->eccMethod->getCrcBuf(rc->image);
-	 Closure->crcAvailable = TRUE;
+      {  Closure->crcBuf = rc->eccMethod->getCrcBuf(rc->image);
+	 Closure->crcBuf->crcCached = TRUE;
 	 if(Closure->guiMode)
 	    RedrawReadLinearWindow();
+
+	 /* Augmented image codecs provide the CRCs and md5sums for
+	    the data portion, but not for the full image.
+	    Request calculation of them from the image. */
+	 
+	 if(Closure->crcBuf->md5State & MD5_BUILDING)
+	   rc->doChecksumsFromImage = CRCBUF_UPDATE_MD5 | CRCBUF_UPDATE_CRC_AFTER_DATA;
       }
-	
-      else rc->crcBuf = NULL;
+      else Closure->crcBuf = NULL;
 
       if(rc->eccMethod->resetCksums)
-      {  rc->doMD5sums = TRUE;
+      {  rc->doChecksumsFromCodec = TRUE; // FIXME - remove?
 	 rc->eccMethod->resetCksums(rc->image);
       }
 
@@ -478,7 +457,15 @@ static void prepare_crc_cache(read_closure *rc)
 	 SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
 		      "<big>%s</big>\n<i>%s</i>", rc->msg, rc->image->dh->mediumDescr);
       PrintCLI(_("done.\n"));
+      return;
    }
+
+   /* b) No ecc is available, and a full image read is attempted. 
+         The image CRC32 and md5sum are calculated on the fly,
+         as they may be used for ecc creation later. */
+
+   Closure->crcBuf = CreateCrcBuf(rc->image); // FIXME: reuse, delete, ...
+   rc->doChecksumsFromImage = CRCBUF_UPDATE_ALL;
 }
 
 /*
@@ -649,7 +636,7 @@ static gpointer worker_thread(read_closure *rc)
       nsectors = rc->nSectors[rc->writePtr];
       g_mutex_unlock(rc->mutex);
 
-      /* Write out buffer, update checksums if not in scan mode */
+      /* Write out buffer */
 
       if(!rc->scanMode)
       {  int n;
@@ -666,33 +653,34 @@ static gpointer worker_thread(read_closure *rc)
 	                                      s, "store", strerror(errno));
 	    goto update_mutex;
 	 }
-
-	 /* On-the-fly CRC calculation */
-
-	 if(Closure->crcCache)
-	 {  for(i=0; i<nsectors; i++)
-	       Closure->crcCache[s+i] = Crc32(rc->alignedBuf[rc->writePtr]->buf+2048*i, 2048);
-	 }
       }
 
       /* Do on-the-fly CRC / md5sum testing. This is the only action carried out
          in scan mode, but also done while reading. */         
 
-      if(rc->eccMethod && rc->bufState[rc->writePtr] != BUF_DEAD)
+      if(rc->bufState[rc->writePtr] != BUF_DEAD)
       {
 	for(i=0; i<nsectors; i++)
 	{  unsigned char *buf = rc->alignedBuf[rc->writePtr]->buf+2048*i;
 	   gint64 sector = s+i;
 
+	   /* Update the global checksum buffer */
+
+	   if(rc->doChecksumsFromImage)
+	      AddSectorToCrcBuffer(Closure->crcBuf, rc->doChecksumsFromImage, sector, buf, 2048);
+	   
+	   if(!rc->eccMethod) /* Nothing to do when no ecc data available */
+	     continue;
+	   
 	   /* Have the codec update its internal checksums */
 
-	   if(rc->doMD5sums)
+	   if(rc->doChecksumsFromCodec)
 	      rc->eccMethod->updateCksums(rc->image, sector, buf);
 
 	   /* Check against CRCs in the ecc data */
 	   
-	   if(rc->crcBuf && sector < rc->crcBuf->size)
-	   {  switch(CheckAgainstCrcBuffer(rc->crcBuf, sector, buf))
+	   if(Closure->crcBuf && sector < Closure->crcBuf->coveredSectors)
+	   {  switch(CheckAgainstCrcBuffer(Closure->crcBuf, sector, buf))
 	      {  case CRC_BAD:
 		   ClearProgress();
 		   PrintCLI(_("* CRC error, sector: %lld\n"), (long long int)s+i);
@@ -781,7 +769,7 @@ void ReadMediumLinear(gpointer data)
 
    /*** Open Device and query medium properties:
         rc->image will point to the optical medium, 
-        and possibly the repsective ecc file.
+        and possibly the respective ecc file.
         The on disk image is maintained in rc->reader|writerImage. */
 
    rc->image = OpenImageFromDevice(Closure->device);
@@ -1017,8 +1005,8 @@ reread:
 	       if(err != SECTOR_PRESENT)
 		 ExplainMissingSector(sector_buf, rc->readPos+i, err, SOURCE_IMAGE, &unrecoverable_sectors);
 	       else
-	       {  if(!rc->crcBuf
-		     || CheckAgainstCrcBuffer(rc->crcBuf, rc->readPos+i, sector_buf) != CRC_BAD)
+	       {  if(!Closure->crcBuf
+		     || CheckAgainstCrcBuffer(Closure->crcBuf, rc->readPos+i, sector_buf) != CRC_BAD)
 		  {  ok++;  /* CRC unavailable or good */
 		     if(rc->readMap)
 		       SetBit(rc->readMap, rc->readPos+i);
@@ -1159,9 +1147,11 @@ reread:
 	    Do NOT free the CRC cache here to avoid race condition
 	    with the worker thread! */
 
-	 if(Closure->crcCache)
-	    rc->doMD5sums = FALSE;
-
+	 if(Closure->crcBuf)
+	 {  rc->doChecksumsFromCodec = FALSE;
+	    Closure->crcBuf->md5State = MD5_INVALID;
+	 }
+	 
 	 /* Determine number of sectors to skip forward. 
 	    Make sure not to skip past the media end
 	    and to land at a multiple of dh->clusterSize. */
@@ -1314,11 +1304,8 @@ step_counter:
 
    /*** Finalize on-the-fly checksum calculation */
 
-   if(rc->doMD5sums && rc->eccMethod)
+   if(rc->doChecksumsFromCodec && rc->eccMethod)
         md5_failure = rc->eccMethod->finalizeCksums(rc->image);
-   else ClearCrcCache();  /* deferred until here to avoid race condition */
-
-   Verbose("CRC %s.\n", Closure->crcCache ? "cached" : "NOT created");
 
    /*** Print summary */
 
@@ -1414,9 +1401,13 @@ step_counter:
 
    /*** Close and clean up */
 
+   if(Closure->readErrors || Closure->crcErrors) 
+     Closure->crcBuf->md5State = MD5_INVALID;
+     
    rc->unreportedError = FALSE;
    rc->earlyTermination = FALSE;
 
 terminate:
+   PrintCrcBuf(Closure->crcBuf);
    cleanup((gpointer)rc);
 }

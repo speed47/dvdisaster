@@ -19,7 +19,9 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79.5
+PACKAGE dvdisaster 0.79.6
+CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_UNSTABLE_RELEASE"
+
 
 # Check for some essential tools.
 
@@ -124,7 +126,6 @@ WITH_OPTION embedded-src-path yes "[yes | no]"
 PRINT_MESSAGE "\nDebugging options (do not use in production system):"
 
 WITH_OPTION memdebug no "[no | yes]"
-WITH_OPTION efence no "[no | yes]"
 
 if test "$cfg_with_efence" == "yes"; then
   if ! CHECK_LIBRARY efence malloc efence; then

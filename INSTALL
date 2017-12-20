@@ -111,11 +111,11 @@ Please change into a directory which is writeable
 for you and unpack the source code archive:
 
 user@host> cd /var/tmp
-user@host> tar xjf dvdisaster-0.79.5.tar.bz2
+user@host> tar xjf dvdisaster-0.79.6.tar.bz2
 
 Then change into the newly created directory:
 
-user@host> cd /var/tmp/dvdisaster-0.79.5
+user@host> cd /var/tmp/dvdisaster-0.79.6
 
 3.2. Configuring the package
 ----------------------------
@@ -199,8 +199,7 @@ please remove the directory you have created as described
 in section 3.1:
 
 user@host> cd /var/tmp
-user@host> rm -rf dvdisaster-0.79.5
-
+user@host> rm -rf dvdisaster-0.79.6
 
 5. Running the program
 ======================
@@ -228,16 +227,7 @@ Use camcontrol to find out which passthrough device
 is assigned to your drive:
 
 root@freebsd# camcontrol devlist
-<NAME OF YOUR DRIVE>  at scbus1 target 0 lun 0 (pass1,cd0)
-
-You can change permission permanently by adding the
-following line to /etc/devfs.conf:
-
-perm pass1 0660
-
-To make the change available immediately, restart devfs:
-
-root@freebsd# /etc/rc.d/devfs restart
+<NAME OF YOUR DRIVE>  at scbus1 target 0 lun 0 (pass0,cd0)
 
 
 Avoid copy-on-write filesystems

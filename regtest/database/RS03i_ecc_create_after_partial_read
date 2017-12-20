@@ -4,20 +4,255 @@ This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
+# *** OpenImageFromDevice(sim-cd) ***
+# InquireDevice returned: Simulated CD drive 1.00
 
 Device: sim-cd, Simulated CD drive 1.00
+# *** query_type(Simulated CD drive 1.00, 0) ***
+# *** get_configuration(Simulated CD drive 1.00) ***
+# 8 data len, 9 current
+-> profile 9: CD-R
+# trying READ DISC INFORMATION for size
+# size returned is 32
+# trying READ DISC INFORMATION for real info
+0000: 00 20 1e 00 00 00 00 00  00 00 00 00 00 00 00 00  . ...... ........ 
+0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ ........ 
+# status is 1e, disc type 0
+#CD: starting media probe
+#CD: querying size of READ TOC/PMA/ATIP (for TOC)
+#CD: size returned is 12
+#CD: querying real READ TOC/PMA/ATIP (for TOC)
+0000: 00 0a 00 00 00 14 00 00  00 00 00 00              ........ ....
+#CD: control is 0x14
+#CD: querying size of READ TOC/PMA/ATIP (for full TOC)
+# Warning: Realigning length from 26 to 24
+#CD: size returned is 24
+#CD: querying real READ TOC/PMA/ATIP (for full TOC)
+0000: 00 18 00 01 00 00 00 a0  00 00 00 00 00 00 00 00  ........ ........ 
+0010: 00 00 00 00 00 00 00 00                           ........ 
+#CD: 1 sessions
+#CD: CD medium detected, type: CD-R mode 1
+# query_type() returned.
+# deciding reading strategy...
 Using READ CD.
+GetImageFingerprint(16): read & cached
+
+ExamineUDF(Device: Simulated CD drive 1.00)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+# *** read_capacity(Simulated CD drive 1.00) ***
+ -> 20999
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: medium sim-cd
+try_sector: trying sector 21000
+try_sector: read error, trying next header
+try_sector: trying sector 20850
+try_sector: no cookie, skipping current modulo
+RS02Recognize: skipping exhaustive RS02 search
+...trying RS03
+RS03RecognizeImage: medium sim-cd
+FindRS03HeaderInImage: medium sim-cd
+RS03RecognizeImage: skipping exhaustive RS03 search
+...no augmented image detected.
+# Calling query_size()
+# *** query_size(Simulated CD drive 1.00) ***
+Medium size could NOT be determined from ECC header.
+Medium size obtained from ISO/UDF file system: 21000 sectors
+# returned: 21000 sectors
 Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
 
+GetImageFingerprint(16): cached
 Completing image rs03i-tmp.iso. Only missing sectors will be read.
-Read position:   4.9% (nn.nx)Read position:   5.0% (nn.nx)Read position:   5.1% (nn.nx)Read position:   5.2% (nn.nx)Read position:   5.3% (nn.nx)Read position:   5.4% (nn.nx)Read position:   5.5% (nn.nx)Read position:   5.6% (nn.nx)Read position:   5.7% (nn.nx)Read position:   5.8% (nn.nx)Read position:   5.9% (nn.nx)Read position:   6.0% (nn.nx)Read position:   6.1% (nn.nx)Read position:   6.2% (nn.nx)Read position:   6.3% (nn.nx)Read position:   6.4% (nn.nx)Read position:   6.5% (nn.nx)Read position:   6.6% (nn.nx)Read position:   6.7% (nn.nx)Read position:   6.8% (nn.nx)Read position:   6.9% (nn.nx)Read position:   7.0% (nn.nx)Read position:   7.1% (nn.nx)Read position:   7.2% (nn.nx)
-501 sectors read.     
 
-Opening rs03i-tmp.iso: 21000 medium sectors.
+501 sectors read.     
+CrcBuf contents, image path none (medium):
+  crcSize: 21000, dataSectors: 21000, coveredSectors: 21000, allSectors: 21000
+  md5State: invalid
+  fp sector: 16; 15c0fd35a0cfa0f83b9ccbd8604c2592
+  missing crcs: 20499
+
+Opening rs03i-tmp.iso
+ExamineUDF(File: rs03i-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs03i-tmp.iso
+try_sector: trying sector 21000
+try_sector: read error, trying next header
+try_sector: trying sector 20850
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4611686018427387904
+FindHeaderInMedium: Trying modulo 2305843009213693952
+FindHeaderInMedium: Trying modulo 1152921504606846976
+FindHeaderInMedium: Trying modulo 576460752303423488
+FindHeaderInMedium: Trying modulo 288230376151711744
+FindHeaderInMedium: Trying modulo 144115188075855872
+FindHeaderInMedium: Trying modulo 72057594037927936
+FindHeaderInMedium: Trying modulo 36028797018963968
+FindHeaderInMedium: Trying modulo 18014398509481984
+FindHeaderInMedium: Trying modulo 9007199254740992
+FindHeaderInMedium: Trying modulo 4503599627370496
+FindHeaderInMedium: Trying modulo 2251799813685248
+FindHeaderInMedium: Trying modulo 1125899906842624
+FindHeaderInMedium: Trying modulo 562949953421312
+FindHeaderInMedium: Trying modulo 281474976710656
+FindHeaderInMedium: Trying modulo 140737488355328
+FindHeaderInMedium: Trying modulo 70368744177664
+FindHeaderInMedium: Trying modulo 35184372088832
+FindHeaderInMedium: Trying modulo 17592186044416
+FindHeaderInMedium: Trying modulo 8796093022208
+FindHeaderInMedium: Trying modulo 4398046511104
+FindHeaderInMedium: Trying modulo 2199023255552
+FindHeaderInMedium: Trying modulo 1099511627776
+FindHeaderInMedium: Trying modulo 549755813888
+FindHeaderInMedium: Trying modulo 274877906944
+FindHeaderInMedium: Trying modulo 137438953472
+FindHeaderInMedium: Trying modulo 68719476736
+FindHeaderInMedium: Trying modulo 34359738368
+FindHeaderInMedium: Trying modulo 17179869184
+FindHeaderInMedium: Trying modulo 8589934592
+FindHeaderInMedium: Trying modulo 4294967296
+FindHeaderInMedium: Trying modulo 2147483648
+FindHeaderInMedium: Trying modulo 1073741824
+FindHeaderInMedium: Trying modulo 536870912
+FindHeaderInMedium: Trying modulo 268435456
+FindHeaderInMedium: Trying modulo 134217728
+FindHeaderInMedium: Trying modulo 67108864
+FindHeaderInMedium: Trying modulo 33554432
+FindHeaderInMedium: Trying modulo 16777216
+FindHeaderInMedium: Trying modulo 8388608
+FindHeaderInMedium: Trying modulo 4194304
+FindHeaderInMedium: Trying modulo 2097152
+FindHeaderInMedium: Trying modulo 1048576
+FindHeaderInMedium: Trying modulo 524288
+FindHeaderInMedium: Trying modulo 262144
+FindHeaderInMedium: Trying modulo 131072
+FindHeaderInMedium: Trying modulo 65536
+FindHeaderInMedium: Trying modulo 32768
+FindHeaderInMedium: Trying modulo 16384
+try_sector: trying sector 16384
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 8192
+Sector 16384 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 4096
+try_sector: trying sector 20480
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 2048
+Sector 20480 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 1024
+Sector 20480 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 512
+try_sector: trying sector 20992
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 256
+Sector 20992 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 128
+Sector 20992 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 64
+Sector 20992 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 32
+Sector 20992 cached; skipping modulo
+...trying RS03
+RS03RecognizeImage: file rs03i-tmp.iso
+FindRS03HeaderInImage: file rs03i-tmp.iso
+RS03RecognizeImage: No EH, entering exhaustive search
+Warning: image size set to 25000 for debugging!
+.. trying layer size 98
+Scanning layers for signatures.
+- layer slice 0
+** All layers tested -> no RS03 data found
+...no augmented image detected.
+GetImageFingerprint(16): read & cached
+: 21000 medium sectors.
+Calculated layout for RS03 image:
+data sectors      = 21000
+data padding      = 68
+layer size        = 98
+total sectors     = 24990
+medium capacity   = 25000
+header position   = 21000
+first CRC sector  = 21070
+first ECC sector  = 21168
+ndata             = 216
+nroots            = 39 (18.1%)
+
 41 MiB data, 7 MiB ecc (39 roots; 18.1% redundancy).
 * Warning: Using redundancies below 20%% may not give
 *          the expected data loss protection.
-Preparing image:   1%Preparing image:   2%Preparing image:   3%Preparing image:   4%Preparing image:   5%Preparing image:   6%Preparing image:   7%Preparing image:   8%Preparing image:   9%Preparing image:  10%Preparing image:  11%Preparing image:  12%Preparing image:  13%Preparing image:  14%Preparing image:  15%Preparing image:  16%Preparing image:  17%Preparing image:  18%Preparing image:  19%Preparing image:  20%Preparing image:  21%Preparing image:  22%Preparing image:  23%Preparing image:  24%Preparing image:  25%Preparing image:  26%Preparing image:  27%Preparing image:  28%Preparing image:  29%Preparing image:  30%Preparing image:  31%Preparing image:  32%Preparing image:  33%Preparing image:  34%Preparing image:  35%Preparing image:  36%Preparing image:  37%Preparing image:  38%Preparing image:  39%Preparing image:  40%Preparing image:  41%Preparing image:  42%Preparing image:  43%Preparing image:  44%Preparing image:  45%Preparing image:  46%Preparing image:  47%Preparing image:  48%Preparing image:  49%Preparing image:  50%Preparing image:  51%Preparing image:  52%Preparing image:  53%Preparing image:  54%Preparing image:  55%Preparing image:  56%Preparing image:  57%Preparing image:  58%Preparing image:  59%Preparing image:  60%Preparing image:  61%Preparing image:  62%Preparing image:  63%Preparing image:  64%Preparing image:  65%Preparing image:  66%Preparing image:  67%Preparing image:  68%Preparing image:  69%Preparing image:  70%Preparing image:  71%Preparing image:  72%Preparing image:  73%Preparing image:  74%Preparing image:  75%Preparing image:  76%Preparing image:  77%Preparing image:  78%Preparing image:  79%Preparing image:  80%Preparing image:  81%Preparing image:  82%Preparing image:  83%Preparing image:  84%Preparing image:  85%Preparing image:  86%Preparing image:  87%Preparing image:  88%Preparing image:  89%Preparing image:  90%Preparing image:  91%Preparing image:  92%Preparing image:  93%Preparing image:  94%Preparing image:  95%Preparing image:  96%Preparing image:  97%Preparing image:  98%Preparing image:  99%Preparing image: 100%
-Ecc generation:   1.0%Ecc generation:   2.0%Ecc generation:   3.0%Ecc generation:   4.0%Ecc generation:   5.1%Ecc generation:   6.1%Ecc generation:   7.1%Ecc generation:   8.1%Ecc generation:   9.1%Ecc generation:  10.2%Ecc generation:  11.2%Ecc generation:  12.2%Ecc generation:  13.2%Ecc generation:  14.2%Ecc generation:  15.3%Ecc generation:  16.3%Ecc generation:  17.3%Ecc generation:  18.3%Ecc generation:  19.3%Ecc generation:  20.4%Ecc generation:  21.4%Ecc generation:  22.4%Ecc generation:  23.4%Ecc generation:  24.4%Ecc generation:  25.5%Ecc generation:  26.5%Ecc generation:  27.5%Ecc generation:  28.5%Ecc generation:  29.5%Ecc generation:  30.6%Ecc generation:  31.6%Ecc generation:  32.6%Ecc generation:  33.6%Ecc generation:  34.6%Ecc generation:  35.7%Ecc generation:  36.7%Ecc generation:  37.7%Ecc generation:  38.7%Ecc generation:  39.7%Ecc generation:  40.8%Ecc generation:  41.8%Ecc generation:  42.8%Ecc generation:  43.8%Ecc generation:  44.8%Ecc generation:  45.9%Ecc generation:  46.9%Ecc generation:  47.9%Ecc generation:  48.9%Ecc generation:  50.0%Ecc generation:  51.0%Ecc generation:  52.0%Ecc generation:  53.0%Ecc generation:  54.0%Ecc generation:  55.1%Ecc generation:  56.1%Ecc generation:  57.1%Ecc generation:  58.1%Ecc generation:  59.1%Ecc generation:  60.2%Ecc generation:  61.2%Ecc generation:  62.2%Ecc generation:  63.2%Ecc generation:  64.2%Ecc generation:  65.3%Ecc generation:  66.3%Ecc generation:  67.3%Ecc generation:  68.3%Ecc generation:  69.3%Ecc generation:  70.4%Ecc generation:  71.4%Ecc generation:  72.4%Ecc generation:  73.4%Ecc generation:  74.4%Ecc generation:  75.5%Ecc generation:  76.5%Ecc generation:  77.5%Ecc generation:  78.5%Ecc generation:  79.5%Ecc generation:  80.6%Ecc generation:  81.6%Ecc generation:  82.6%Ecc generation:  83.6%Ecc generation:  84.6%Ecc generation:  85.7%Ecc generation:  86.7%Ecc generation:  87.7%Ecc generation:  88.7%Ecc generation:  89.7%Ecc generation:  90.8%Ecc generation:  91.8%Ecc generation:  92.8%Ecc generation:  93.8%Ecc generation:  94.8%Ecc generation:  95.9%Ecc generation:  96.9%Ecc generation:  97.9%Ecc generation:  98.9%Ecc generation: 100.0%Ecc generation: 100.0%
+CrcBufValid: NOT complete
+Cache allocation: 110592K+12288K+9984K=129M (data+parity+descrambling)
 Image has been augmented with error correction data.
 New image size is 48 MiB (24990 sectors).
+FreeCrcBuf - buffer cleared

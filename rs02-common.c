@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -35,7 +35,7 @@ CrcBuf *RS02GetCrcBuf(Image *image)
    RS02Layout *lay;
    CrcBuf *cb;
    gint64 block_idx[256];
-   gint64 image_sectors,crc_sector;
+   gint64 crc_sector;
    gint64 s,i;
    int crc_idx, crc_valid = FALSE;
 
@@ -43,9 +43,7 @@ CrcBuf *RS02GetCrcBuf(Image *image)
    if(csc->lay) g_free(csc->lay);
    lay = csc->lay = RS02LayoutFromImage(image);
 
-   //   image_sectors = lay->eccSectors+lay->dataSectors; // remove; semantics have changed
-   image_sectors = lay->dataSectors;
-   cb = CreateCrcBuf(image_sectors);
+   cb = CreateCrcBuf(image);
 
    /* Initialize ecc block index pointers.
       The first CRC set (of lay->ndata checksums) relates to
@@ -100,6 +98,12 @@ CrcBuf *RS02GetCrcBuf(Image *image)
 
    FreeAlignedBuffer(ab);
 
+   /* The ecc header records only the md5 sum of the data portion,
+      but not that of the whole image, so flag the md5 sums as missing. */
+
+   memcpy(cb->dataMD5sum, image->eccHeader->mediumSum, 16);
+   cb->md5State = MD5_BUILDING | MD5_DATA_COMPLETE;
+   
    return cb;
 }
 
@@ -414,7 +418,9 @@ RS02Layout *CalcRS02Layout(Image *image)
 	    lay->mediumCapacity = Closure->dvdSize2; /* Double layered DVD */
       else if(image->sectorSize < Closure->bdSize1)
 	    lay->mediumCapacity = Closure->bdSize1;  /* Single layered BD */
-      else  lay->mediumCapacity = Closure->bdSize2;  /* Double layered BD */
+      else if(image->sectorSize < Closure->bdSize2)
+	    lay->mediumCapacity = Closure->bdSize2;  /* Double layered BD */
+      else  lay->mediumCapacity = Closure->bdSize3;  /* Triple layered BDXL */
    }
 
    lay->dataSectors      = image->sectorSize;
