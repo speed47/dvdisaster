@@ -1,3 +1,9 @@
+dvdisaster (0.79.5-5) UNRELEASED; urgency=medium
+
+  * Update Vcs-* to salsa.debian.org
+
+ -- TANIGUCHI Takaki <takaki@debian.org>  Sat, 27 Jan 2018 23:29:51 +0900
+
 dvdisaster (0.79.5-4) unstable; urgency=medium
 
   * Use complete Debian revision number as build number, instead of
