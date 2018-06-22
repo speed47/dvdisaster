@@ -8,6 +8,8 @@ dvdisaster (0.79.5-6) UNRELEASED; urgency=medium
   * Indicate compliance with Debian Policy 4.1.4.
   * Add machine-readable upstream metadata.
   * Update debian/copyright.
+  * Update location of PDF manual registered with doc-base (required
+    as a result of DH compat level change).
 
  -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 03:03:56 +1000
 
