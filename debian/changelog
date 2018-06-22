@@ -1,4 +1,4 @@
-dvdisaster (0.79.6-2) UNRELEASED; urgency=medium
+dvdisaster (0.79.6-2) experimental; urgency=medium
 
   [ TANIGUCHI Takaki ]
   * Update Vcs-* to salsa.debian.org.
@@ -11,7 +11,7 @@ dvdisaster (0.79.6-2) UNRELEASED; urgency=medium
   * Update location of PDF manual registered with doc-base (required
     as a result of DH compat level change).
 
- -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 05:09:58 +1000
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 05:41:03 +1000
 
 dvdisaster (0.79.6-1) experimental; urgency=medium
 
