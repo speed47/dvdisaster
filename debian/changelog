@@ -1,4 +1,4 @@
-dvdisaster (0.79.5-6) UNRELEASED; urgency=medium
+dvdisaster (0.79.5-6) unstable; urgency=medium
 
   [ TANIGUCHI Takaki ]
   * change Vcs-* path
@@ -11,7 +11,7 @@ dvdisaster (0.79.5-6) UNRELEASED; urgency=medium
   * Update location of PDF manual registered with doc-base (required
     as a result of DH compat level change).
 
- -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 03:03:56 +1000
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 05:01:27 +1000
 
 dvdisaster (0.79.5-5) unstable; urgency=medium
 
