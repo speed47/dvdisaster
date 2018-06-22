@@ -7,6 +7,7 @@ dvdisaster (0.79.5-6) UNRELEASED; urgency=medium
   * Build with DH compat level 11.
   * Indicate compliance with Debian Policy 4.1.4.
   * Add machine-readable upstream metadata.
+  * Update debian/copyright.
 
  -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 03:03:56 +1000
 
