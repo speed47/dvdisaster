@@ -5,7 +5,7 @@ Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
            Rogério Brito <rbrito@ime.usp.br>,
            Carlos Maddela <e7appew@gmail.com>
-Build-Depends: debhelper (>= 10),
+Build-Depends: debhelper (>= 11),
                gettext,
                libbz2-dev,
                libcam-dev [kfreebsd-any],
@@ -15,9 +15,9 @@ Build-Depends: debhelper (>= 10),
 Build-Depends-Indep: texlive-fonts-recommended,
                      texlive-latex-base,
                      texlive-latex-extra
-Standards-Version: 4.1.2
-Vcs-Browser: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
-Vcs-Git: https://anonscm.debian.org/git/pkg-opt-media/dvdisaster.git
+Standards-Version: 4.1.4
+Vcs-Browser: https://salsa.debian.org/optical-media-team/dvdisaster
+Vcs-Git: https://salsa.debian.org/optical-media-team/dvdisaster.git
 Homepage: http://dvdisaster.net/
 
 Package: dvdisaster

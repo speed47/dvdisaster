@@ -1,6 +1,15 @@
 dvdisaster (0.79.6-2) UNRELEASED; urgency=medium
 
-  * 
+  [ TANIGUCHI Takaki ]
+  * Update Vcs-* to salsa.debian.org.
+
+  [ Carlos Maddela ]
+  * Build with DH compat level 11.
+  * Indicate compliance with Debian Policy 4.1.4.
+  * Add machine-readable upstream metadata.
+  * Update debian/copyright.
+  * Update location of PDF manual registered with doc-base (required
+    as a result of DH compat level change).
 
  -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 05:09:58 +1000
 
