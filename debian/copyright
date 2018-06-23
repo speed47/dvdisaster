@@ -9,9 +9,9 @@ License: GPL-3+
 
 Files: debian/*
 Copyright: 2005–2009, Daniel Baumann <daniel@debian.org>
-           2009–2012, TANIGUCHI Takaki <takaki@debian.org>
+           2009–2018, TANIGUCHI Takaki <takaki@debian.org>
            2009–2010, Rogério Brito <rbrito@ime.usp.br>
-           2016, Carlos Maddela <e7appew@gmail.com>
+           2016–2018, Carlos Maddela <e7appew@gmail.com>
 License: GPL-2+
 
 License: GPL-2+

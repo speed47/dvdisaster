@@ -1,0 +1,6 @@
+%YAML 1.1
+---
+# https://wiki.debian.org/UpstreamMetadata
+Contact: Carsten Gnörlich <carsten@dvdisaster.org>
+Name: dvdisaster
+Homepage: http://dvdisaster.net/
