@@ -12,10 +12,10 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/scsi-layer.c b/scsi-layer.c
-index d68533b..6717b12 100644
+index cad13d4..866b7ac 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
-@@ -2711,12 +2711,13 @@ Image* OpenImageFromDevice(char *device)
+@@ -2695,12 +2695,13 @@ Image* OpenImageFromDevice(char *device)
         	 return NULL;
        }
     }

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -99,7 +99,8 @@ void PrintMediumInfo(void *mi_ptr)
    image = OpenImageFromDevice(Closure->device);
    if(!image) return;
    dh = image->dh;
-
+   QueryBlankCapacity(dh);
+   
    /* Medium properties */
 
    PrintCLI(_("Physical medium info"));
@@ -182,9 +183,8 @@ void PrintMediumInfo(void *mi_ptr)
    {  EccHeader *eh = image->eccHeader;
       int major = eh->creatorVersion/10000; 
       int minor = (eh->creatorVersion%10000)/100;
-      int pl    = eh->creatorVersion%100;
+      int micro = eh->creatorVersion%100;
       char method[5];
-      char *format = "%d.%d";
  
       tab_width=GetLongestTranslation("Error correction data:",
 				      "Augmented image size:",
@@ -204,17 +204,11 @@ void PrintMediumInfo(void *mi_ptr)
       PrintCLIorLabel(mi->eccSize, _("%lld sectors (%lld MiB)\n"),
 		   image->expectedSectors, image->expectedSectors>>9);
 
+      print_tab("dvdisaster version:", tab_width);
 
-      if(eh->creatorVersion%100)        
-      {  
-	 if(eh->methodFlags[3] & MFLAG_DEVEL) 
-	    format = "%d.%d (devel-%d)\n";
-	 else if(eh->methodFlags[3] & MFLAG_RC) 
-	    format = "%d.%d (rc-%d)\n";
-	 else format = "%d.%d (pl%d)\n";
-      }
-      print_tab("dvdisaster version:",tab_width);
-      PrintCLIorLabel(mi->eccVersion, format, major, minor, pl);
+      if(micro)
+	   PrintCLIorLabel(mi->eccVersion, "%d.%d.%d", major, minor, micro);
+      else PrintCLIorLabel(mi->eccVersion, "%d.%d", major, minor);
    }
 
    /* Clean up */

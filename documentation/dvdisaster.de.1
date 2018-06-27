@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2015-12-16" "0.79.5" "Schutz f\[:u]r optische Datentr\[:a]ger"
+.TH DVDISASTER 1 "2010-02-07" "0.80" "Schutz f\[:u]r optische Datentr\[:a]ger"
 
 .SH NAME
 DVDISASTER \- Schutz f\[:u]r optische Datentr\[:a]ger gegen Datenverlust durch Alterung
@@ -49,6 +49,7 @@ oder Kratzer
 .RB [\| \-\-internal-rereads
 .IR n \|]
 .RB [\| \-\-medium-info \|]
+.RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
@@ -59,6 +60,7 @@ oder Kratzer
 .RB [\| \-\-read-medium
 .IR n \|]
 .RB [\| \-\-read-raw \|]
+.RB [\| \-\-regtest \|]
 .RB [\| \-\-resource-file
 .IR n \|]
 .RB [\| \-\-speed-warning
@@ -213,28 +215,31 @@ RS01-Fehlerkorrektur-Dateien unterst\[:u]tzen au\[ss]erdem:
 .RS
 RS02-Abbilder:
 .RS
-\-n CD\ \ \ erweitert Abbild auf CD-Gr\[:o]\[ss]e.
+\-n CD\ \ \ \ erweitert Abbild auf CD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n DVD\ \ erweitert Abbild auf DVD-Gr\[:o]\[ss]e.
+\-n DVD\ \ \ erweitert Abbild auf DVD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n DVD9 erweitert Abbild auf DVD9-Gr\[:o]\[ss]e.
+\-n DVD9\  erweitert Abbild auf DVD9-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n BD\ \ \ erweitert Abbild auf BD-Gr\[:o]\[ss]e.
+\-n BD\ \ \ \ erweitert Abbild auf BD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n BD2\  erweitert Abbild auf zweilagige BD-Gr\[:o]\[ss]e.
+\-n BD2\ \  erweitert Abbild auf zweilagige BD-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n x\ \ \ \ erweitert Abbild auf ca. x Sektoren L\[:a]nge.
+\-n BDXL3 erweitert Abbild auf dreilagige BDXL-Gr\[:o]\[ss]e.
 .RE
 .RS
-\-n x%\ \ \ erweitert Abbild mit ca. x% Redundanz. 
+\-n x\ \ \ \ \ erweitert Abbild auf ca. x Sektoren L\[:a]nge.
 .RE
 .RS
-\-n xr\ \ \ erweitert Abbild mit x Nullstellen Fehlerkorrektur-Daten.
+\-n x%\ \ \ \ erweitert Abbild mit ca. x% Redundanz. 
+.RE
+.RS
+\-n xr\ \ \ \ erweitert Abbild mit x Nullstellen Fehlerkorrektur-Daten.
 .RE
 .RE
 
@@ -364,6 +369,9 @@ die Standardeinstellungen des Laufwerks zu verwenden.
 .B \-\-medium-info
 Gibt Informationen \[:u]ber den Datentr\[:a]ger im ausgew\[:a]hlten Laufwerk aus.
 .TP
+.B \-\-no-progress
+Unterdr\[:u]ckt die Fortschrittsanzeige in Prozent.
+.TP
 .B \-\-old-ds-marker
 Markiert fehlende Sektoren in einer Weise, die mit dvdisaster
 0.70 oder noch fr\[:u]heren Versionen kompatibel ist.
@@ -402,6 +410,9 @@ liest den gesamten Datentr\[:a]ger bis zu n-mal.
 .TP
 .B \-\-read-raw
 liest in der "raw"\-Betriebsart sofern m\[:o]glich.
+.TP
+.B \-\-regtest
+ver\[:a]ndert einige Ausgaben so da\[ss] sie von den Regressionstest-Skripten besser verarbeitet werden k\[:o]nnen.
 .TP
 .B \-\-resource-file n
 Gibt den Pfad zur Konfigurationsdatei an (Voreinstellung: $HOME/.dvdisaster)

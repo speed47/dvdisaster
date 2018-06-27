@@ -21,8 +21,8 @@ CODEC_PREFIX=RS03i
 # Create master image
 
 if ! file_exists $MASTERISO; then
-    $NEWVER --debug -i$MASTERISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug -i$MASTERISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
     echo -e "$FILE_MSG"
     FILE_MSG=""
 fi
@@ -30,8 +30,8 @@ fi
 # Create large master image
 
 if ! file_exists $LARGEMASTERISO; then
-    $NEWVER --debug -i$LARGEMASTERISO --random-image 235219 >>$LOGFILE 2>&1
-    $NEWVER --debug --set-version $SETVERSION -i$LARGEMASTERISO -mRS03 -c >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug -i$LARGEMASTERISO --random-image 235219 >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$LARGEMASTERISO -mRS03 -c >>$LOGFILE 2>&1
     echo -e "$FILE_MSG"
     FILE_MSG=""
 fi
@@ -94,7 +94,7 @@ if try "image with 56 extra bytes" plus_56_bytes; then
   # recreate image to get rid of the ecc portion
   $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
   for i in $(seq 56); do echo -n "1" >>$TMPISO; done
-  $NEWVER --debug -i$TMPISO --set-version $SETVERSION -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug -i$TMPISO --set-version $SETVERSION -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
 
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   run_regtest plus_56_bytes "--debug -t -v -n$ECCSIZE" $TMPISO
@@ -176,10 +176,9 @@ fi
 
 if try "image is multiple of layer size" layer_multiple; then
   $NEWVER --debug -i $TMPISO --random-image 14508 >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
   
   run_regtest layer_multiple "-t" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Image size is exact multiple of layer size minus two sectors,
@@ -187,16 +186,15 @@ fi
 
 if try "image crafted to have no padding" no_padding; then
   $NEWVER --debug -i $TMPISO --random-image 14506 >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
   
   run_regtest no_padding "-t" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Augmented image is protected by an outer RS01 error correction file
 
 if try "with RS01 error correction file" with_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
 
     run_regtest with_rs01_file "-v -t" $MASTERISO $TMPECC
 fi
@@ -207,7 +205,7 @@ fi
 # user did probably have some intention specifying the ecc file.
 
 if try "with non-matching RS01 error correction file" with_wrong_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     run_regtest with_wrong_rs01_file "-v -t" $MASTERISO $TMPECC
@@ -216,7 +214,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "with RS03 error correction file" with_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
 
     run_regtest with_rs03_file "-v -t" $MASTERISO $TMPECC
 fi
@@ -231,7 +229,7 @@ if try "with non-matching RS03 error correction file" with_wrong_rs03_file; then
     $NEWVER --debug -i$TMPISO --byteset 16,240,1 >>$LOGFILE 2>&1
 
     # Create ecc file for "wrong" image
-    $NEWVER --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
 
     # Now test against original image
     run_regtest with_wrong_rs03_file "-v -t" $MASTERISO $TMPECC
@@ -493,7 +491,7 @@ fi
 if try "image with 8 roots, no ecc header" rediscover_8_roots; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*246-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header
   $NEWVER --debug -i$TMPISO --erase 346612 >>$LOGFILE 2>&1
 
@@ -505,7 +503,7 @@ fi
 if try "image with 8 roots, no ecc header (2)" rediscover_8_roots2; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*246-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$TMPISO --erase 346612-346620 >>$LOGFILE 2>&1
 
@@ -517,7 +515,7 @@ fi
 if try "image with 170 roots, no ecc header" rediscover_170_roots; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*84-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header
   $NEWVER --debug -i$TMPISO --erase 118354 >>$LOGFILE 2>&1
 
@@ -529,7 +527,7 @@ fi
 if try "image with 170 roots, no ecc header (2)" rediscover_170_roots2; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*84-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$TMPISO --erase 118354-118360 >>$LOGFILE 2>&1
 
@@ -542,7 +540,7 @@ fi
 if try "image with 170 roots, padding" rediscover_170_roots_padding; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*84-2-6000)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
 
   run_regtest rediscover_170_roots-padding "-tq -v" $TMPISO
 fi
@@ -552,7 +550,7 @@ fi
 if try "image with 170 roots, no ecc header, padding" rediscover_170_roots_padding2; then
 
   $NEWVER --debug -i$TMPISO --random-image $((LMI_LAYER_SIZE*84-2-6000)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$TMPISO --erase 112354 >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --erase 118356-118360 >>$LOGFILE 2>&1
@@ -599,6 +597,18 @@ if try "image with crc block from a file" with_ecc_file_crc_block; then
    run_regtest with_ecc_file_crc_block "--debug -t -v -n$ECCSIZE" $TMPISO
 fi
 
+# Image contains CRC error in the padding section
+# (padding is between sectors 21002 and 21069, inclusively)
+
+if try "image with crc error in padding area" with_crc_error_in_padding; then
+   cp $MASTERISO $TMPISO
+
+   # Manipulate a padding sector
+   $NEWVER -i$TMPISO --debug --byteset 21020,400,255 >>$LOGFILE 2>&1
+
+   run_regtest with_crc_error_in_padding "--debug -t -n$ECCSIZE" $TMPISO
+fi
+
 ### Creation tests
 
 echo "# Creation tests"
@@ -635,7 +645,6 @@ if try "creating augmented image with no read permission" ecc_no_read_perm; then
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_no_read_perm "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with no write permission on image
@@ -648,7 +657,6 @@ if try "creating augmented image with no write permission" ecc_no_write_perm; th
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_no_write_perm "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS03-augmented image 
@@ -661,35 +669,32 @@ if try "ecc creating from RS03-augmented image" ecc_from_rs03; then
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_rs03 "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS02-augmented image 
 
 if try "ecc creating from RS02-augmented image" ecc_from_rs02; then
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-   $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS02 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS02 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
 
    IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
    replace_config method-name RS03
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_rs02 "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS03-augmented image having a larger redundancy 
 
 if try "ecc creating from RS03-augmented image w/ higher red." ecc_from_larger_rs03; then
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-   $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
 
    IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
    replace_config method-name RS03
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_larger_rs03 "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS02-augmented image of a non-2048 multiple size
@@ -697,14 +702,13 @@ fi
 if try "ecc creating from RS02-augmented image w/ non block size." ecc_from_rs02_non_blocksize; then
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
    for i in $(seq 56); do echo -n "1" >>$TMPISO; done
-   $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS02 -n$ECCSIZE -c >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS02 -n$ECCSIZE -c >>$LOGFILE 2>&1
 
    IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
    replace_config method-name RS03
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_rs02_non_blocksize "-mRS03 -n$ECCSIZE -c -a RS03" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS03-augmented image of a non-2048 multiple size
@@ -712,14 +716,13 @@ fi
 if try "ecc creating from RS03-augmented image w/ non block size." ecc_from_rs03_non_blocksize; then
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
    for i in $(seq 56); do echo -n "1" >>$TMPISO; done
-   $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
 
    IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
    replace_config method-name RS03
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_rs03_non_blocksize "-mRS03 -n$ECCSIZE -c -a RS03" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create with already RS03-augmented image of a non-2048 multiple size, larger redundancy.
@@ -728,14 +731,13 @@ if try "ecc creating from RS03-augmented image w/ non block size, larger red." e
    $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE+1)) >>$LOGFILE 2>&1
    $NEWVER --debug -i$TMPISO --truncate=$ISOSIZE >>$LOGFILE 2>&1
    for i in $(seq 56); do echo -n "1" >>$TMPISO; done
-   $NEWVER --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n$((ECCSIZE+5000)) -c >>$LOGFILE 2>&1
 
    IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
    replace_config method-name RS03
    replace_config ecc-target 1
    extra_args="--debug --set-version $SETVERSION"
    run_regtest ecc_from_larger_rs03_non_blocksize "-mRS03 -n$ECCSIZE -c" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Create ecc file for image with 56 additional bytes
@@ -750,7 +752,6 @@ if try "image with 56 extra bytes" ecc_non_blocksize; then
   replace_config ecc-target 1
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_non_blocksize "-mRS03 -n$ECCSIZE -c" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Try to create ecc file from image with missing sectors
@@ -763,7 +764,6 @@ if try "creating ecc from image with missing sectors" ecc_missing_sectors; then
   replace_config ecc-target 1
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_missing_sectors "-mRS03 -n$ECCSIZE -c" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Create ecc file where image size is exact multiple of layer size,
@@ -778,7 +778,6 @@ if try "creating ecc, image is multiple of layer size" ecc_layer_multiple; then
   replace_config medium-size 20000
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_layer_multiple "-mRS03 -n20000 -c" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Create ecc file where image size is exact multiple of layer size minus two sectors,
@@ -793,95 +792,79 @@ if try "creating ecc crafted to have no padding" ecc_no_padding; then
   replace_config medium-size 20000
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_no_padding "-mRS03 -n20000 -c" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Read image and create ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "read image and create ecc in one call" ecc_create_after_read; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
 
-  rm -f $TMPISO $TMPECC
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
-  replace_config method-name RS03
-  replace_config ecc-target 1
-  replace_config medium-size 20000
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_create_after_read "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_create_after_read "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 # Complete image in a reading pass, then create an ecc file for it.
 # Cached checksums must be discarded before creating the ecc.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "create ecc after completing partial image" ecc_create_after_partial_read; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
   cp $SIMISO $TMPISO
   $NEWVER --debug -i$TMPISO --erase 1000-1500 >>$LOGFILE 2>&1
 
-  rm -f $TMPECC
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_create_after_partial_read "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_create_after_partial_read "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_rs01; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -mRS01 -c -n 10 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -mRS01 -c -n 10 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_recreate_after_read_rs01 "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_recreate_after_read_rs01 "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "read image with ecc (RS02) and create new ecc" ecc_recreate_after_read_rs02; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS02 -c -n24000 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS02 -c -n24000 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO $TMPECC
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_recreate_after_read_rs02 "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_recreate_after_read_rs02 "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "read image with ecc (RS03i) and create new ecc" ecc_recreate_after_read_rs03i; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -n23000 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -n23000 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO $TMPECC
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_recreate_after_read_rs03i "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_recreate_after_read_rs03i "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# NOTE: cache handling is currently disabled and will be fixed in 0.79.6!
 
 if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then
   $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -mRS03 -c -n 10 -o file >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -mRS03 -c -n 10 -o file >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  run_regtest ecc_recreate_after_read_rs03f "-r -mRS03 -c -n$ECCSIZE --spinup-delay=0" $TMPISO $TMPECC
+  run_regtest ecc_recreate_after_read_rs03f "-r -mRS03 -c -n$ECCSIZE -v --spinup-delay=0" $TMPISO $TMPECC
 fi
 
 ### Fixing tests
@@ -895,7 +878,6 @@ if try "trying fix with no read permission" fix_no_read_perm; then
   chmod 000 $TMPISO
 
   run_regtest fix_no_read_perm "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix with no write permission on image
@@ -905,7 +887,6 @@ if try "trying fix with no write permission" fix_no_write_perm; then
   chmod 400 $TMPISO
 
   run_regtest fix_no_write_perm "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix already good image
@@ -914,7 +895,6 @@ if try "trying fix with good image" fix_good_image; then
   cp $MASTERISO $TMPISO
 
   run_regtest fix_good_image "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix a truncated image
@@ -925,7 +905,6 @@ if try "trying fix with truncated image" fix_truncated_image; then
    $NEWVER --debug -i$TMPISO --truncate=$TRUNC_SIZE >>$LOGFILE 2>&1
 
    run_regtest fix_truncated_image "-f" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Fix an image with a few trailing bytes
@@ -935,7 +914,6 @@ if try "trying fix with trailing bytes" fix_trailing_bytes; then
    echo "some trailing garbage appended for testing" >>$TMPISO
 
    run_regtest fix_trailing_bytes "-f" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Fix an image with trailing garbage (TAO case)
@@ -945,7 +923,6 @@ if try "trying fix with trailing garbage (TAO case)" fix_trailing_tao; then
    dd if=/dev/zero count=2 bs=2048 >>$TMPISO 2>>$LOGFILE
 
    run_regtest fix_trailing_tao "-f" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Fix an image with trailing garbage (general case), without doing anything
@@ -975,7 +952,6 @@ if try "trying to fix correctable image" fix_correctable; then
   $NEWVER --debug -i$TMPISO --byteset 2000,0,111 >>$LOGFILE 2>&1
 
   run_regtest fix_correctable "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix image with missing sectors in several border locations
@@ -1001,7 +977,6 @@ if try "trying to fix image with missing sectors in border cases" fix_border_cas
   $NEWVER --debug -i$TMPISO --erase 24989 >>$LOGFILE 2>&1   # last sector, last ecc layer
 
   run_regtest fix_border_cases_erasures "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix image with CRC errors in several border locations
@@ -1027,7 +1002,6 @@ if try "trying to fix image with crc errors in border cases" fix_border_cases_cr
   $NEWVER --debug -i$TMPISO --byteset 24989,0,0 >>$LOGFILE 2>&1   # last sector, last ecc layer
 
   run_regtest fix_border_cases_crc_errors "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix ecc file where image size is exact multiple of layer size,
@@ -1035,12 +1009,11 @@ fi
 
 if try "fixing ecc, image is multiple of layer size" fix_layer_multiple; then
   $NEWVER --debug -i $TMPISO --random-image 14508 >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --erase 14510-14520 >>$LOGFILE 2>&1
   
   run_regtest fix_layer_multiple "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Fix ecc file where image size is exact multiple of layer size minus two sectors,
@@ -1048,11 +1021,10 @@ fi
 
 if try "fixing ecc crafted to have no padding" fix_no_padding; then
   $NEWVER --debug -i $TMPISO --random-image 14506 >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -mRS03 -n20000 -c -i $TMPISO >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
   
   run_regtest fix_no_padding "-f" $TMPISO
-  rm -f $TMPISO
 fi
 
 # Augmented image is protected by an outer RS01 error correction file
@@ -1061,7 +1033,7 @@ fi
 # correct (outer) ECC is applied.
 
 if try "fixing RS03 with RS01 error correction file" fix_with_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
 
     cp $MASTERISO $TMPISO
     $NEWVER --debug -i$TMPISO --byteset 24989,0,1 >>$LOGFILE 2>&1
@@ -1072,7 +1044,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "fixing RS03 with RS03 error correction file" fix_with_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $TMPISO
     $NEWVER --debug -i$TMPISO --byteset 24989,0,1 >>$LOGFILE 2>&1
@@ -1088,7 +1060,6 @@ if try "trying fix with missing header" fix_with_missing_header; then
 
    extra_args="--debug -n $ECCSIZE"
    run_regtest fix_with_missing_header "-f -v" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Fix image with iso missing header
@@ -1099,7 +1070,6 @@ if try "trying fix with missing iso header" fix_with_missing_iso_header; then
 
    extra_args="--debug -n $ECCSIZE"
    run_regtest fix_with_missing_iso_header "-f -v" $TMPISO
-   rm -f $TMPISO
 fi
 
 # Image contains Ecc header with the ecc file flag set
@@ -1143,6 +1113,19 @@ if try "image with crc block from a file" fix_with_ecc_file_crc_block; then
    run_regtest fix_with_ecc_file_crc_block "-f -v" $TMPISO
 fi
 
+# Image contains CRC error in the padding section
+# (padding is between sectors 21002 and 21069, inclusively)
+
+if try "image with crc error in padding area" fix_with_crc_error_in_padding; then
+   cp $MASTERISO $TMPISO
+
+   # Manipulate a padding sector
+   $NEWVER -i$TMPISO --debug --byteset 21020,400,255 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n $ECCSIZE"
+   run_regtest fix_with_crc_error_in_padding "-f" $TMPISO
+fi
+
 ### Scanning tests
 
 echo "# Scanning tests"
@@ -1152,7 +1135,6 @@ echo "# Scanning tests"
 if try "scanning good image" scan_good; then
   cp $MASTERISO $SIMISO
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_good "--spinup-delay=0 -s" $TMPISO
 fi
@@ -1162,7 +1144,6 @@ fi
 if try "scanning good image, verbose output" scan_good_verbose; then
   cp $MASTERISO $SIMISO
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_good_verbose "--spinup-delay=0 -s -v" $TMPISO
 fi
@@ -1176,7 +1157,6 @@ if try "scanning image being shorter than expected" scan_shorter; then
 
   $NEWVER --debug -i$SIMISO --truncate=$((REAL_ECCSIZE-44)) >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_shorter "--spinup-delay=0 -s" $TMPISO
 fi
@@ -1189,7 +1169,6 @@ if try "scanning image being longer than expected" scan_longer; then
 
   for i in $(seq 23); do cat fixed-random-sequence >>$SIMISO; done
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_longer "--spinup-delay=0 -s -v" $TMPISO
 fi
@@ -1203,7 +1182,6 @@ if try "scanning image, tao tail case" scan_tao_tail; then
   cat fixed-random-sequence >>$SIMISO
   $NEWVER --debug -i$SIMISO --erase 24990-24991 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_tao_tail "--spinup-delay=0 -s" $TMPISO
 fi
@@ -1216,7 +1194,6 @@ if try "scanning image, no tao tail case" scan_no_tao_tail; then
 
   $NEWVER --debug -i$SIMISO --erase 24988-24989 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_no_tao_tail "--spinup-delay=0 -s --dao" $TMPISO
 fi
@@ -1243,7 +1220,6 @@ if try "scanning image requiring a newer dvdisaster version" scan_incompatible_e
   $NEWVER --debug -i$SIMISO --byteset 21000,98,164 >>$LOGFILE 2>&1
   $NEWVER --debug -i$SIMISO --byteset 21000,99,44 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_incompatible_ecc "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1256,7 +1232,6 @@ if try "scanning image with a defective header" scan_bad_header; then
   cp $MASTERISO $SIMISO
   $NEWVER -i$SIMISO --debug --byteset 21000,1,1 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_bad_header "--spinup-delay=0 -s" $TMPISO
 fi
@@ -1270,7 +1245,6 @@ if try "scanning image with missing data sectors" scan_missing_data_sectors; the
    $NEWVER -i$SIMISO --debug --erase 21230 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1283,7 +1257,6 @@ if try "scanning image with missing crc sectors" scan_missing_crc_sectors; then
    $NEWVER -i$SIMISO --debug --erase 21077 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 21100-21120 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_missing_crc_sectors "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1296,7 +1269,6 @@ if try "scanning image with missing ecc sectors" scan_missing_ecc_sectors; then
    $NEWVER -i$SIMISO --debug --erase 21200 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 21340-21365 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_missing_ecc_sectors "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1307,7 +1279,6 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then
    cp $MASTERISO $SIMISO 
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1318,7 +1289,6 @@ if try "scanning image with bad crc byte" scan_crc_bad_byte; then
    cp $MASTERISO $SIMISO 
    $NEWVER -i$SIMISO --debug --byteset 21077,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_crc_bad_byte "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1329,7 +1299,6 @@ if try "scanning image with bad ecc byte" scan_ecc_bad_byte; then
    cp $MASTERISO $SIMISO 
    $NEWVER -i$SIMISO --debug --byteset 22000,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_ecc_bad_byte "--spinup-delay=0 -s " $TMPISO
 fi
@@ -1340,12 +1309,11 @@ fi
 # correct (outer) ECC is applied.
 
 if try "scanning with RS01 error correction file" scan_with_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest scan_with_rs01_file "--spinup-delay=0 -s " $TMPISO $TMPECC
 fi
@@ -1361,13 +1329,12 @@ fi
 # user did probably have some intentention specifying the ecc file.
 
 if try "scanning with non-matching RS01 error correction file" scan_with_wrong_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest scan_with_wrong_rs01_file "--spinup-delay=0 -s " $TMPISO $TMPECC
 fi
@@ -1375,12 +1342,11 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "scanning with RS03 error correction file" scan_with_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest scan_with_rs03_file "--spinup-delay=0 -s " $TMPISO $TMPECC
 fi
@@ -1388,13 +1354,12 @@ fi
 # Augmented image and non-matching RS03 error correction file
 
 if try "scanning with non-matching RS03 error correction file" scan_with_wrong_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest scan_with_wrong_rs03_file "--spinup-delay=0 -s " $TMPISO $TMPECC
 fi
@@ -1407,7 +1372,6 @@ if try "scanning with missing ecc header, no exhaustive search" scan_missing_hea
   cp $LARGEMASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase $LMI_HEADER >>$LOGFILE 2>&1
 
-  rm -f $TMPISO $TMPECC
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_missing_header_not_exhaustive "--spinup-delay=0 -s"  $TMPISO $TMPECC
 fi
@@ -1567,7 +1531,7 @@ fi
 if try "scanning with 8 roots, no ecc header" scan_rediscover_8_roots; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*246-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header
   $NEWVER --debug -i$SIMISO --erase 346612 >>$LOGFILE 2>&1
 
@@ -1582,7 +1546,7 @@ fi
 if try "scanning with 8 roots, no ecc header (2)" scan_rediscover_8_roots2; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*246-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$SIMISO --erase 346612-346620 >>$LOGFILE 2>&1
 
@@ -1597,7 +1561,7 @@ fi
 if try "scanning with 170 roots, no ecc header" scan_rediscover_170_roots; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*84-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header
   $NEWVER --debug -i$SIMISO --erase 118354 >>$LOGFILE 2>&1
 
@@ -1612,7 +1576,7 @@ fi
 if try "scanning with 170 roots, no ecc header (2)" scan_rediscover_170_roots2; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*84-2)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$SIMISO --erase 118354-118360 >>$LOGFILE 2>&1
 
@@ -1628,7 +1592,7 @@ fi
 if try "scanning with 170 roots, padding" scan_rediscover_170_roots_padding; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*84-2-6000)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
 
   replace_config examine-rs03 1
   replace_config medium-size 0
@@ -1641,7 +1605,7 @@ fi
 if try "scanning with 170 roots, no ecc header, padding" scan_rediscover_170_roots_padding2; then
 
   $NEWVER --debug -i$SIMISO --random-image $((LMI_LAYER_SIZE*84-2-6000)) >>$LOGFILE 2>&1
-  $NEWVER --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -c -x 2 >>$LOGFILE 2>&1
   # delete the header and some more CRC sectors
   $NEWVER --debug -i$SIMISO --erase 112354 >>$LOGFILE 2>&1
   $NEWVER --debug -i$SIMISO --erase 118356-118360 >>$LOGFILE 2>&1
@@ -1650,6 +1614,21 @@ if try "scanning with 170 roots, no ecc header, padding" scan_rediscover_170_roo
   replace_config medium-size 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_rediscover_170_roots-padding2 "--spinup-delay=0 -a RS03 -s -v"  $TMPISO $TMPECC
+fi
+
+# Image contains CRC error in the padding section
+# (padding is between sectors 21002 and 21069, inclusively)
+
+if try "scanning image with crc error in padding area" scan_with_crc_error_in_padding; then
+   cp $MASTERISO $SIMISO
+
+   # Manipulate a padding sector
+   $NEWVER -i$SIMISO --debug --byteset 21020,400,255 >>$LOGFILE 2>&1
+
+   replace_config examine-rs03 1
+   replace_config medium-size 0
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest scan_with_crc_error_in_padding "--spinup-delay=0 -a RS03 -s" $TMPISO
 fi
 
 ### Reading tests (linear)
@@ -1661,7 +1640,6 @@ echo "# Reading tests (linear)"
 if try "reading good image" read_good; then
   cp $MASTERISO $SIMISO
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_good "--spinup-delay=0 -r" $TMPISO
 fi
@@ -1671,7 +1649,6 @@ fi
 if try "reading good image, verbose output" read_good_verbose; then
   cp $MASTERISO $SIMISO
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_good_verbose "--spinup-delay=0 -r -v" $TMPISO
 fi
@@ -1695,7 +1672,6 @@ if try "reading image being shorter than expected" read_shorter; then
 
   $NEWVER --debug -i$SIMISO --truncate=$((REAL_ECCSIZE-44)) >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_shorter "--spinup-delay=0 -r" $TMPISO
 fi
@@ -1708,7 +1684,6 @@ if try "reading image being longer than expected" read_longer; then
 
   for i in $(seq 23); do cat fixed-random-sequence >>$SIMISO; done
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_longer "--spinup-delay=0 -r -v" $TMPISO
 fi
@@ -1722,7 +1697,6 @@ if try "reading image, tao tail case" read_tao_tail; then
   cat fixed-random-sequence >>$SIMISO
   $NEWVER --debug -i$SIMISO --erase 24990-24991 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_tao_tail "--spinup-delay=0 -r" $TMPISO
 fi
@@ -1736,7 +1710,6 @@ if try "reading image, no tao tail case" read_no_tao_tail; then
   cat fixed-random-sequence >>$SIMISO
   $NEWVER --debug -i$SIMISO --erase 24988-24989 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_no_tao_tail "--spinup-delay=0 -r --dao" $TMPISO
 fi
@@ -1763,7 +1736,6 @@ if try "reading image requiring a newer dvdisaster version" read_incompatible_ec
   $NEWVER --debug -i$SIMISO --byteset 21000,98,164 >>$LOGFILE 2>&1
   $NEWVER --debug -i$SIMISO --byteset 21000,99,44 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_incompatible_ecc "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1776,7 +1748,6 @@ if try "reading image with a defective header" read_bad_header; then
   cp $MASTERISO $SIMISO
   $NEWVER -i$SIMISO --debug --byteset 21000,1,1 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_bad_header "--spinup-delay=0 -r" $TMPISO
 fi
@@ -1789,7 +1760,6 @@ if try "reading image with a defective header, exhaustive" read_bad_header_exhau
   cp $MASTERISO $SIMISO
   $NEWVER -i$SIMISO --debug --byteset 21000,1,1 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_bad_header_exhaustive "--debug --spinup-delay=0 -r -v -aRS03 -n$ECCSIZE" $TMPISO
 fi
@@ -1803,7 +1773,6 @@ if try "reading image with missing data sectors" read_missing_data_sectors; then
    $NEWVER -i$SIMISO --debug --erase 21230 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_missing_data_sectors "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1816,7 +1785,6 @@ if try "reading image with missing crc sectors" read_missing_crc_sectors; then
    $NEWVER -i$SIMISO --debug --erase 21077 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 21100-21120 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_missing_crc_sectors "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1829,9 +1797,19 @@ if try "reading image with missing ecc sectors" read_missing_ecc_sectors; then
    $NEWVER -i$SIMISO --debug --erase 21200 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --erase 21340-21365 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_missing_ecc_sectors "--spinup-delay=0 -r " $TMPISO
+fi
+
+# Read image with missing iso header, exhaustive search, verbose.
+# Used for testing that the fingerprint sector is marked unreadable in the cache.
+
+if try "reading image with missing iso header" read_missing_iso_header; then
+   cp $MASTERISO $SIMISO
+   $NEWVER -i$SIMISO --debug --erase 16 >>$LOGFILE 2>&1
+
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest read_missing_iso_header "--spinup-delay=0 -r -v -aRS03 -n$ECCSIZE" $TMPISO
 fi
 
 # Image contains bad byte in the data section
@@ -1842,7 +1820,6 @@ if try "reading image with bad data byte" read_data_bad_byte; then
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --byteset 20999,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_data_bad_byte "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1853,7 +1830,6 @@ if try "reading image with bad crc byte" read_crc_bad_byte; then
    cp $MASTERISO $SIMISO 
    $NEWVER -i$SIMISO --debug --byteset 21077,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_crc_bad_byte "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1864,7 +1840,6 @@ if try "reading image with bad ecc byte" read_ecc_bad_byte; then
    cp $MASTERISO $SIMISO 
    $NEWVER -i$SIMISO --debug --byteset 22000,50,10 >>$LOGFILE 2>&1
 
-   rm -f $TMPISO
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest read_ecc_bad_byte "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1875,12 +1850,11 @@ fi
 # correct (outer) ECC is applied.
 
 if try "reading with RS01 error correction file" read_with_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest read_with_rs01_file "--spinup-delay=0 -r " $TMPISO $TMPECC
 fi
@@ -1896,13 +1870,12 @@ fi
 # user did probably have some intentention specifying the ecc file.
 
 if try "reading with non-matching RS01 error correction file" read_with_wrong_rs01_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -c -n normal >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest read_with_wrong_rs01_file "--spinup-delay=0 -r " $TMPISO $TMPECC
 fi
@@ -1910,12 +1883,11 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "reading with RS03 error correction file" read_with_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest read_with_rs03_file "--spinup-delay=0 -r " $TMPISO $TMPECC
 fi
@@ -1923,13 +1895,12 @@ fi
 # Augmented image and non-matching RS03 error correction file
 
 if try "reading with non-matching RS03 error correction file" read_with_wrong_rs03_file; then
-    $NEWVER --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 24989,0,1 >>$LOGFILE 2>&1
     
-    rm -f $TMPISO
     extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
     run_regtest read_with_wrong_rs03_file "--spinup-delay=0 -r " $TMPISO $TMPECC
 fi
@@ -1946,7 +1917,6 @@ if try "crc section with uncorrectable dead sector markers" read_crc_section_wit
   $NEWVER --debug -i$SIMISO --erase "21081:pass as dead sector marker" >>$LOGFILE 2>&1
   $NEWVER --debug -i$SIMISO --erase "21082:pass as dead sector marker" >>$LOGFILE 2>&1
 
-  rm -f $TMPISO
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_crc_section_with_uncorrectable_dsm  "--spinup-delay=0 -r " $TMPISO
 fi
@@ -1963,7 +1933,6 @@ if try "reading with missing ecc header, not exhaustive" read_with_missing_heade
       $NEWVER --debug -i$SIMISO --erase $i >>$LOGFILE 2>&1
   done
 
-  rm -f $TMPISO $TMPECC
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_missing_header "--spinup-delay=0 -r" $TMPISO $TMPECC
 fi
@@ -1980,7 +1949,6 @@ if try "reading with missing ecc header, exhaustive" read_with_missing_header_ex
       $NEWVER --debug -i$SIMISO --erase $i >>$LOGFILE 2>&1
   done
 
-  rm -f $TMPISO $TMPECC
   replace_config examine-rs03 1
   replace_config medium-size 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
@@ -1995,7 +1963,6 @@ if try "reading with missing iso header, exhaustive" read_with_missing_iso_heade
   cp $LARGEMASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 16 >>$LOGFILE 2>&1
 
-  rm -f $TMPISO $TMPECC
   replace_config examine-rs03 1
   replace_config medium-size 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
@@ -2016,7 +1983,6 @@ if try "image with ecc header from a file" read_with_ecc_file_header; then
    $NEWVER -i$SIMISO --debug --byteset 21000,98,137 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --byteset 21000,99,29 >>$LOGFILE 2>&1
       
-   rm -f $TMPISO
    replace_config examine-rs03 1
    replace_config medium-size 0
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values -n $ECCSIZE"
@@ -2042,11 +2008,59 @@ if try "image with crc block from a file" read_with_ecc_file_crc_block; then
    $NEWVER -i$SIMISO --debug --byteset 21070,1122,142 >>$LOGFILE 2>&1
    $NEWVER -i$SIMISO --debug --byteset 21070,1123,101 >>$LOGFILE 2>&1
       
-   rm -f $TMPISO
    replace_config examine-rs03 1
    replace_config medium-size 0
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values -n $ECCSIZE"
    run_regtest read_with_ecc_file_crc_block "--spinup-delay=0 -r -v -a RS03" $TMPISO
+fi
+
+# Do a second read attempt at an incomplete image;
+# see whether CRC errors are still discovered since CRC caching is a bit
+# complicated in this case.
+
+if try "re-reading medium with CRC error" read_second_pass_with_crc_error; then
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --byteset 15830,8,3 >>$LOGFILE 2>&1
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --erase 15800-16199 >>$LOGFILE 2>&1
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_second_pass_with_crc_error "--spinup-delay=0 -r" $TMPISO  $MASTERECC
+fi
+
+# Read medium in several passes; some sectors become readable in the third pass.
+# One sector keeps is CRC error over all passes.
+
+if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipass_ecc_partial_success; then
+
+  # Prepare an image matching the algorithm for simulating the defects
+  $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 15900-16099 --fill-unreadable=64 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+
+  # Prepare the image for reading
+  $NEWVER --debug -i$SIMISO --erase 15800-16199 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase "15900-16099:readable in pass 3" >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --byteset 10000,5,255 >>$LOGFILE 2>&1
+
+  replace_config read-medium 3
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC
+fi
+
+# Image contains CRC error in the padding section
+# (padding is between sectors 21002 and 21069, inclusively)
+
+if try "reading image with crc error in padding area" read_with_crc_error_in_padding; then
+   cp $MASTERISO $SIMISO
+
+   # Manipulate a padding sector
+   $NEWVER -i$SIMISO --debug --byteset 21020,400,255 >>$LOGFILE 2>&1
+
+   replace_config read-medium 3
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest read_with_crc_error_in_padding "--spinup-delay=0 -r" $TMPISO
 fi
 
 ### Reading tests (adaptive)

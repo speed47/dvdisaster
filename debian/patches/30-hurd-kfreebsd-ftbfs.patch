@@ -13,7 +13,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/rs03-create.c b/rs03-create.c
-index b2c6033..b14e326 100644
+index 9c7265d..678644c 100644
 --- a/rs03-create.c
 +++ b/rs03-create.c
 @@ -39,16 +39,19 @@

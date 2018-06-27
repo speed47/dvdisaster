@@ -17,10 +17,10 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  create mode 100644 show-html.c
 
 diff --git a/closure.c b/closure.c
-index 40bb225..f408f7a 100644
+index fa52f09..24c1e8c 100644
 --- a/closure.c
 +++ b/closure.c
-@@ -467,6 +467,7 @@ void InitClosure()
+@@ -474,6 +474,7 @@ void InitClosure()
     Closure->deviceNames = g_ptr_array_new();
     Closure->deviceNodes = g_ptr_array_new();
     Closure->viewer      = g_strdup("xdg-open");
@@ -28,7 +28,7 @@ index 40bb225..f408f7a 100644
     Closure->methodList  = g_ptr_array_new();
     Closure->methodName  = g_strdup("RS01");
     Closure->dDumpDir    = g_strdup(Closure->homeDir);
-@@ -598,6 +599,7 @@ void FreeClosure()
+@@ -589,6 +590,7 @@ void FreeClosure()
     cond_free(Closure->binDir);
     cond_free(Closure->docDir);
     cond_free(Closure->viewer);
@@ -37,10 +37,10 @@ index 40bb225..f408f7a 100644
     cond_free(Closure->simulateCD);
     cond_free(Closure->dDumpDir);
 diff --git a/dvdisaster.h b/dvdisaster.h
-index bcfd4f5..ae874ae 100644
+index 9acd094..f536040 100644
 --- a/dvdisaster.h
 +++ b/dvdisaster.h
-@@ -213,6 +213,7 @@ typedef struct _GlobalClosure
+@@ -229,6 +229,7 @@ typedef struct _GlobalClosure
     char *binDir;        /* place where the binary resides */
     char *docDir;        /* place where our documentation resides */
     char *viewer;        /* Name of preferred PDF viewer */
@@ -48,7 +48,7 @@ index bcfd4f5..ae874ae 100644
  
     GMutex progressLock; /* A mutex protected the stuff below */
     char bs[256];        /* A string of 255 backspace characters */
-@@ -1298,6 +1299,12 @@ int ProbeAltiVec(void);
+@@ -1348,6 +1349,12 @@ int ProbeAltiVec(void);
  
  void ShowPDF(char*);
  
@@ -62,7 +62,7 @@ index bcfd4f5..ae874ae 100644
   *** smart-lec.c
   ***/
 diff --git a/help-dialogs.c b/help-dialogs.c
-index 5065e76..3874463 100644
+index 75a615e..dc5b440 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
 @@ -599,7 +599,8 @@ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)

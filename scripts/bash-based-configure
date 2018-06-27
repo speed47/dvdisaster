@@ -1,5 +1,5 @@
 #  Bash based configure - library of test functions
-#  Copyright (C) 2004-2015 Carsten Gnörlich
+#  Copyright (C) 2004-2016 Carsten Gnörlich
 #
 #  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
 #  Project homepage: http://www.dvdisaster.org
@@ -658,7 +658,11 @@ function GET_BUILDTMP()
 {  
    BUILDTMP="$cfg_buildtmp"
    if test -z "$BUILDTMP"; then
+      if test -z "$DVDISASTER_BUILDTMP"; then
         BUILDTMP=$(pwd)
+      else
+        BUILDTMP="$DVDISASTER_BUILDTMP"
+      fi
    fi	
 
    if test -n "$cfg_help_mode"; then
@@ -667,7 +671,12 @@ function GET_BUILDTMP()
      return 0
    fi
 
-   echo "Build tmp: " $BUILDTMP
+   if ! test -e $BUILDTMP; then
+      mkdir $BUILDTMP
+      echo "Build tmp: " $BUILDTMP "(created)"
+   else  
+      echo "Build tmp: " $BUILDTMP
+   fi  
    echo "CFG_BUILDTMP = $BUILDTMP" >> Makefile.config
 }
 

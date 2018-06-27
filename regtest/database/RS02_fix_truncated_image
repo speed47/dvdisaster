@@ -6,147 +6,145 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs02-tmp.iso: 34722 medium sectors.
-Expanding image:   1%Expanding image:   2%Expanding image:   3%Expanding image:   4%Expanding image:   5%Expanding image:   6%Expanding image:   7%Expanding image:   8%Expanding image:   9%Expanding image:  10%Expanding image:  11%Expanding image:  12%Expanding image:  13%Expanding image:  14%Expanding image:  15%Expanding image:  16%Expanding image:  17%Expanding image:  18%Expanding image:  19%Expanding image:  20%Expanding image:  21%Expanding image:  22%Expanding image:  23%Expanding image:  24%Expanding image:  25%Expanding image:  26%Expanding image:  27%Expanding image:  28%Expanding image:  29%Expanding image:  30%Expanding image:  31%Expanding image:  32%Expanding image:  33%Expanding image:  34%Expanding image:  35%Expanding image:  36%Expanding image:  37%Expanding image:  38%Expanding image:  39%Expanding image:  40%Expanding image:  41%Expanding image:  42%Expanding image:  43%Expanding image:  44%Expanding image:  45%Expanding image:  46%Expanding image:  47%Expanding image:  48%Expanding image:  49%Expanding image:  50%Expanding image:  51%Expanding image:  52%Expanding image:  53%Expanding image:  54%Expanding image:  55%Expanding image:  56%Expanding image:  57%Expanding image:  58%Expanding image:  59%Expanding image:  60%Expanding image:  61%Expanding image:  62%Expanding image:  63%Expanding image:  64%Expanding image:  65%Expanding image:  66%Expanding image:  67%Expanding image:  68%Expanding image:  69%Expanding image:  70%Expanding image:  71%Expanding image:  72%Expanding image:  73%Expanding image:  74%Expanding image:  75%Expanding image:  76%Expanding image:  77%Expanding image:  78%Expanding image:  79%Expanding image:  80%Expanding image:  81%Expanding image:  82%Expanding image:  83%Expanding image:  84%Expanding image:  85%Expanding image:  86%Expanding image:  87%Expanding image:  88%Expanding image:  89%Expanding image:  90%Expanding image:  91%Expanding image:  92%Expanding image:  93%Expanding image:  94%Expanding image:  95%Expanding image:  96%Expanding image:  97%Expanding image:  98%Expanding image:  99%Expanding image: 100%
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.
     2 repaired sectors: 34792d 34931d 
-Ecc progress:   0.0%    1 repaired sectors: 34793d 
-Ecc progress:   0.7%    1 repaired sectors: 34794d 
-Ecc progress:   1.4%    1 repaired sectors: 34795d 
-Ecc progress:   2.1%    1 repaired sectors: 34796d 
-Ecc progress:   2.9%    1 repaired sectors: 34797d 
-Ecc progress:   3.6%    1 repaired sectors: 34798d 
-Ecc progress:   4.3%    1 repaired sectors: 34799d 
-Ecc progress:   5.1%    1 repaired sectors: 34800d 
-Ecc progress:   5.8%    1 repaired sectors: 34801d 
-Ecc progress:   6.5%    1 repaired sectors: 34802d 
-Ecc progress:   7.2%    1 repaired sectors: 34803d 
-Ecc progress:   8.0%    1 repaired sectors: 34804d 
-Ecc progress:   8.7%    1 repaired sectors: 34805d 
-Ecc progress:   9.4%    1 repaired sectors: 34806d 
-Ecc progress:  10.2%    1 repaired sectors: 34807d 
-Ecc progress:  10.9%    1 repaired sectors: 34808d 
-Ecc progress:  11.6%    1 repaired sectors: 34809d 
-Ecc progress:  12.4%    1 repaired sectors: 34810d 
-Ecc progress:  13.1%    1 repaired sectors: 34811d 
-Ecc progress:  13.8%    1 repaired sectors: 34812d 
-Ecc progress:  14.5%    1 repaired sectors: 34813d 
-Ecc progress:  15.3%    1 repaired sectors: 34814d 
-Ecc progress:  16.0%    1 repaired sectors: 34815d 
-Ecc progress:  16.7%    1 repaired sectors: 34818d 
-Ecc progress:  17.5%    1 repaired sectors: 34819d 
-Ecc progress:  18.2%    1 repaired sectors: 34820d 
-Ecc progress:  18.9%    1 repaired sectors: 34821d 
-Ecc progress:  19.7%    1 repaired sectors: 34822d 
-Ecc progress:  20.4%    1 repaired sectors: 34823d 
-Ecc progress:  21.1%    1 repaired sectors: 34824d 
-Ecc progress:  21.8%    1 repaired sectors: 34825d 
-Ecc progress:  22.6%    1 repaired sectors: 34826d 
-Ecc progress:  23.3%    1 repaired sectors: 34827d 
-Ecc progress:  24.0%    1 repaired sectors: 34828d 
-Ecc progress:  24.8%    1 repaired sectors: 34829d 
-Ecc progress:  25.5%    1 repaired sectors: 34830d 
-Ecc progress:  26.2%    1 repaired sectors: 34831d 
-Ecc progress:  27.0%    1 repaired sectors: 34832d 
-Ecc progress:  27.7%    1 repaired sectors: 34833d 
-Ecc progress:  28.4%    1 repaired sectors: 34834d 
-Ecc progress:  29.1%    1 repaired sectors: 34835d 
-Ecc progress:  29.9%    1 repaired sectors: 34836d 
-Ecc progress:  30.6%    1 repaired sectors: 34837d 
-Ecc progress:  31.3%    1 repaired sectors: 34838d 
-Ecc progress:  32.1%    1 repaired sectors: 34839d 
-Ecc progress:  32.8%    1 repaired sectors: 34840d 
-Ecc progress:  33.5%    1 repaired sectors: 34841d 
-Ecc progress:  34.3%    1 repaired sectors: 34842d 
-Ecc progress:  35.0%    1 repaired sectors: 34843d 
-Ecc progress:  35.7%    1 repaired sectors: 34844d 
-Ecc progress:  36.4%    1 repaired sectors: 34845d 
-Ecc progress:  37.2%    1 repaired sectors: 34846d 
-Ecc progress:  37.9%    1 repaired sectors: 34847d 
-Ecc progress:  38.6%    1 repaired sectors: 34848d 
-Ecc progress:  39.4%    1 repaired sectors: 34849d 
-Ecc progress:  40.1%    1 repaired sectors: 34850d 
-Ecc progress:  40.8%    1 repaired sectors: 34851d 
-Ecc progress:  41.6%    1 repaired sectors: 34852d 
-Ecc progress:  42.3%    1 repaired sectors: 34853d 
-Ecc progress:  43.0%    1 repaired sectors: 34854d 
-Ecc progress:  43.7%    1 repaired sectors: 34855d 
-Ecc progress:  44.5%    1 repaired sectors: 34856d 
-Ecc progress:  45.2%    1 repaired sectors: 34857d 
-Ecc progress:  45.9%    1 repaired sectors: 34858d 
-Ecc progress:  46.7%    1 repaired sectors: 34859d 
-Ecc progress:  47.4%    1 repaired sectors: 34860d 
-Ecc progress:  48.1%    2 repaired sectors: 34722d 34861d 
-Ecc progress:  48.9%    2 repaired sectors: 34723d 34862d 
-Ecc progress:  49.6%    2 repaired sectors: 34724d 34863d 
-Ecc progress:  50.3%    2 repaired sectors: 34725d 34864d 
-Ecc progress:  51.0%    2 repaired sectors: 34726d 34865d 
-Ecc progress:  51.8%    2 repaired sectors: 34727d 34866d 
-Ecc progress:  52.5%    2 repaired sectors: 34728d 34867d 
-Ecc progress:  53.2%    2 repaired sectors: 34729d 34868d 
-Ecc progress:  54.0%    2 repaired sectors: 34730d 34869d 
-Ecc progress:  54.7%    2 repaired sectors: 34731d 34870d 
-Ecc progress:  55.4%    2 repaired sectors: 34732d 34871d 
-Ecc progress:  56.2%    2 repaired sectors: 34733d 34872d 
-Ecc progress:  56.9%    2 repaired sectors: 34734d 34873d 
-Ecc progress:  57.6%    2 repaired sectors: 34735d 34874d 
-Ecc progress:  58.3%    2 repaired sectors: 34736d 34875d 
-Ecc progress:  59.1%    2 repaired sectors: 34737d 34876d 
-Ecc progress:  59.8%    2 repaired sectors: 34738d 34877d 
-Ecc progress:  60.5%    2 repaired sectors: 34739d 34878d 
-Ecc progress:  61.3%    2 repaired sectors: 34740d 34879d 
-Ecc progress:  62.0%    2 repaired sectors: 34741d 34880d 
-Ecc progress:  62.7%    2 repaired sectors: 34742d 34881d 
-Ecc progress:  63.5%    2 repaired sectors: 34743d 34882d 
-Ecc progress:  64.2%    2 repaired sectors: 34744d 34883d 
-Ecc progress:  64.9%    2 repaired sectors: 34745d 34884d 
-Ecc progress:  65.6%    2 repaired sectors: 34746d 34885d 
-Ecc progress:  66.4%    2 repaired sectors: 34747d 34886d 
-Ecc progress:  67.1%    2 repaired sectors: 34748d 34887d 
-Ecc progress:  67.8%    2 repaired sectors: 34749d 34888d 
-Ecc progress:  68.6%    2 repaired sectors: 34750d 34889d 
-Ecc progress:  69.3%    2 repaired sectors: 34751d 34890d 
-Ecc progress:  70.0%    2 repaired sectors: 34752d 34891d 
-Ecc progress:  70.8%    2 repaired sectors: 34753d 34892d 
-Ecc progress:  71.5%    2 repaired sectors: 34754d 34893d 
-Ecc progress:  72.2%    2 repaired sectors: 34755d 34894d 
-Ecc progress:  72.9%    2 repaired sectors: 34756d 34895d 
-Ecc progress:  73.7%    2 repaired sectors: 34757d 34896d 
-Ecc progress:  74.4%    2 repaired sectors: 34758d 34897d 
-Ecc progress:  75.1%    2 repaired sectors: 34759d 34898d 
-Ecc progress:  75.9%    2 repaired sectors: 34760d 34899d 
-Ecc progress:  76.6%    2 repaired sectors: 34761d 34900d 
-Ecc progress:  77.3%    2 repaired sectors: 34762d 34901d 
-Ecc progress:  78.1%    2 repaired sectors: 34763d 34902d 
-Ecc progress:  78.8%    2 repaired sectors: 34764d 34903d 
-Ecc progress:  79.5%    2 repaired sectors: 34765d 34904d 
-Ecc progress:  80.2%    2 repaired sectors: 34766d 34905d 
-Ecc progress:  81.0%    2 repaired sectors: 34767d 34906d 
-Ecc progress:  81.7%    2 repaired sectors: 34768d 34907d 
-Ecc progress:  82.4%    2 repaired sectors: 34769d 34908d 
-Ecc progress:  83.2%    2 repaired sectors: 34770d 34909d 
-Ecc progress:  83.9%    2 repaired sectors: 34771d 34910d 
-Ecc progress:  84.6%    2 repaired sectors: 34772d 34911d 
-Ecc progress:  85.4%    2 repaired sectors: 34773d 34912d 
-Ecc progress:  86.1%    2 repaired sectors: 34774d 34913d 
-Ecc progress:  86.8%    2 repaired sectors: 34775d 34914d 
-Ecc progress:  87.5%    2 repaired sectors: 34776d 34915d 
-Ecc progress:  88.3%    2 repaired sectors: 34777d 34916d 
-Ecc progress:  89.0%    2 repaired sectors: 34778d 34917d 
-Ecc progress:  89.7%    2 repaired sectors: 34779d 34918d 
-Ecc progress:  90.5%    2 repaired sectors: 34780d 34919d 
-Ecc progress:  91.2%    2 repaired sectors: 34781d 34920d 
-Ecc progress:  91.9%    2 repaired sectors: 34782d 34921d 
-Ecc progress:  92.7%    2 repaired sectors: 34783d 34922d 
-Ecc progress:  93.4%    2 repaired sectors: 34784d 34923d 
-Ecc progress:  94.1%    2 repaired sectors: 34785d 34924d 
-Ecc progress:  94.8%    2 repaired sectors: 34786d 34925d 
-Ecc progress:  95.6%    2 repaired sectors: 34787d 34926d 
-Ecc progress:  96.3%    2 repaired sectors: 34788d 34927d 
-Ecc progress:  97.0%    2 repaired sectors: 34789d 34928d 
-Ecc progress:  97.8%    2 repaired sectors: 34790d 34929d 
-Ecc progress:  98.5%    2 repaired sectors: 34791d 34930d 
-Ecc progress:  99.2%Ecc progress: 100.0%
+    1 repaired sectors: 34793d 
+    1 repaired sectors: 34794d 
+    1 repaired sectors: 34795d 
+    1 repaired sectors: 34796d 
+    1 repaired sectors: 34797d 
+    1 repaired sectors: 34798d 
+    1 repaired sectors: 34799d 
+    1 repaired sectors: 34800d 
+    1 repaired sectors: 34801d 
+    1 repaired sectors: 34802d 
+    1 repaired sectors: 34803d 
+    1 repaired sectors: 34804d 
+    1 repaired sectors: 34805d 
+    1 repaired sectors: 34806d 
+    1 repaired sectors: 34807d 
+    1 repaired sectors: 34808d 
+    1 repaired sectors: 34809d 
+    1 repaired sectors: 34810d 
+    1 repaired sectors: 34811d 
+    1 repaired sectors: 34812d 
+    1 repaired sectors: 34813d 
+    1 repaired sectors: 34814d 
+    1 repaired sectors: 34815d 
+    1 repaired sectors: 34818d 
+    1 repaired sectors: 34819d 
+    1 repaired sectors: 34820d 
+    1 repaired sectors: 34821d 
+    1 repaired sectors: 34822d 
+    1 repaired sectors: 34823d 
+    1 repaired sectors: 34824d 
+    1 repaired sectors: 34825d 
+    1 repaired sectors: 34826d 
+    1 repaired sectors: 34827d 
+    1 repaired sectors: 34828d 
+    1 repaired sectors: 34829d 
+    1 repaired sectors: 34830d 
+    1 repaired sectors: 34831d 
+    1 repaired sectors: 34832d 
+    1 repaired sectors: 34833d 
+    1 repaired sectors: 34834d 
+    1 repaired sectors: 34835d 
+    1 repaired sectors: 34836d 
+    1 repaired sectors: 34837d 
+    1 repaired sectors: 34838d 
+    1 repaired sectors: 34839d 
+    1 repaired sectors: 34840d 
+    1 repaired sectors: 34841d 
+    1 repaired sectors: 34842d 
+    1 repaired sectors: 34843d 
+    1 repaired sectors: 34844d 
+    1 repaired sectors: 34845d 
+    1 repaired sectors: 34846d 
+    1 repaired sectors: 34847d 
+    1 repaired sectors: 34848d 
+    1 repaired sectors: 34849d 
+    1 repaired sectors: 34850d 
+    1 repaired sectors: 34851d 
+    1 repaired sectors: 34852d 
+    1 repaired sectors: 34853d 
+    1 repaired sectors: 34854d 
+    1 repaired sectors: 34855d 
+    1 repaired sectors: 34856d 
+    1 repaired sectors: 34857d 
+    1 repaired sectors: 34858d 
+    1 repaired sectors: 34859d 
+    1 repaired sectors: 34860d 
+    2 repaired sectors: 34722d 34861d 
+    2 repaired sectors: 34723d 34862d 
+    2 repaired sectors: 34724d 34863d 
+    2 repaired sectors: 34725d 34864d 
+    2 repaired sectors: 34726d 34865d 
+    2 repaired sectors: 34727d 34866d 
+    2 repaired sectors: 34728d 34867d 
+    2 repaired sectors: 34729d 34868d 
+    2 repaired sectors: 34730d 34869d 
+    2 repaired sectors: 34731d 34870d 
+    2 repaired sectors: 34732d 34871d 
+    2 repaired sectors: 34733d 34872d 
+    2 repaired sectors: 34734d 34873d 
+    2 repaired sectors: 34735d 34874d 
+    2 repaired sectors: 34736d 34875d 
+    2 repaired sectors: 34737d 34876d 
+    2 repaired sectors: 34738d 34877d 
+    2 repaired sectors: 34739d 34878d 
+    2 repaired sectors: 34740d 34879d 
+    2 repaired sectors: 34741d 34880d 
+    2 repaired sectors: 34742d 34881d 
+    2 repaired sectors: 34743d 34882d 
+    2 repaired sectors: 34744d 34883d 
+    2 repaired sectors: 34745d 34884d 
+    2 repaired sectors: 34746d 34885d 
+    2 repaired sectors: 34747d 34886d 
+    2 repaired sectors: 34748d 34887d 
+    2 repaired sectors: 34749d 34888d 
+    2 repaired sectors: 34750d 34889d 
+    2 repaired sectors: 34751d 34890d 
+    2 repaired sectors: 34752d 34891d 
+    2 repaired sectors: 34753d 34892d 
+    2 repaired sectors: 34754d 34893d 
+    2 repaired sectors: 34755d 34894d 
+    2 repaired sectors: 34756d 34895d 
+    2 repaired sectors: 34757d 34896d 
+    2 repaired sectors: 34758d 34897d 
+    2 repaired sectors: 34759d 34898d 
+    2 repaired sectors: 34760d 34899d 
+    2 repaired sectors: 34761d 34900d 
+    2 repaired sectors: 34762d 34901d 
+    2 repaired sectors: 34763d 34902d 
+    2 repaired sectors: 34764d 34903d 
+    2 repaired sectors: 34765d 34904d 
+    2 repaired sectors: 34766d 34905d 
+    2 repaired sectors: 34767d 34906d 
+    2 repaired sectors: 34768d 34907d 
+    2 repaired sectors: 34769d 34908d 
+    2 repaired sectors: 34770d 34909d 
+    2 repaired sectors: 34771d 34910d 
+    2 repaired sectors: 34772d 34911d 
+    2 repaired sectors: 34773d 34912d 
+    2 repaired sectors: 34774d 34913d 
+    2 repaired sectors: 34775d 34914d 
+    2 repaired sectors: 34776d 34915d 
+    2 repaired sectors: 34777d 34916d 
+    2 repaired sectors: 34778d 34917d 
+    2 repaired sectors: 34779d 34918d 
+    2 repaired sectors: 34780d 34919d 
+    2 repaired sectors: 34781d 34920d 
+    2 repaired sectors: 34782d 34921d 
+    2 repaired sectors: 34783d 34922d 
+    2 repaired sectors: 34784d 34923d 
+    2 repaired sectors: 34785d 34924d 
+    2 repaired sectors: 34786d 34925d 
+    2 repaired sectors: 34787d 34926d 
+    2 repaired sectors: 34788d 34927d 
+    2 repaired sectors: 34789d 34928d 
+    2 repaired sectors: 34790d 34929d 
+    2 repaired sectors: 34791d 34930d 
 Repaired sectors: 208 (0 data, 208 ecc)
 Good! All sectors are repaired.
 Erasure counts per ecc block:  avg =  1.5; worst = 2.

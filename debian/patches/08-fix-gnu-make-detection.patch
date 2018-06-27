@@ -20,7 +20,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/bash-based-configure b/scripts/bash-based-configure
-index f68ecab..d62f5d7 100644
+index 6baffde..f1a8bd1 100644
 --- a/scripts/bash-based-configure
 +++ b/scripts/bash-based-configure
 @@ -313,13 +313,13 @@ function REQUIRE_GMAKE()

@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -45,6 +45,7 @@ typedef struct
    char *msg;
    int earlyTermination;
    GTimer *timer;
+   int checksumsReused;
 } ecc_closure;
 
 static void ecc_cleanup(gpointer data)
@@ -64,8 +65,10 @@ static void ecc_cleanup(gpointer data)
    /*** We must invalidate the CRC cache as it does only cover the
 	data portion of the image, not the full RS02 enhanced image. */
 
-   if(Closure->crcCache)
-     ClearCrcCache();
+   if(Closure->crcBuf)
+   {  FreeCrcBuf(Closure->crcBuf);
+      Closure->crcBuf = 0;
+   }
 
    /*** Clean up */
 
@@ -164,28 +167,28 @@ static void remove_old_ecc(ecc_closure *ec)
 */
 
 static void check_image(ecc_closure *ec)
-{  struct MD5Context image_md5;
-   RS02Layout *lay = ec->lay;
+{  RS02Layout *lay = ec->lay;
    Image *image = ec->image;
    gint64 sectors;
-   guint32 *crcptr;
    int last_percent, percent;
-
-   /* Discard old CRC cache no matter what it contains.
-    * We will create a new one a few lines below.
-    * Note that it is very unusual to augment an image with ecc data
-    * which was just read from an actual medium, so optimizing 
-    * for the cached CRCs is not necessary. 
+   
+   /* In the (unlikely) event that the image has just been read,
+      we can reuse the checksums generated in the reading pass.
+      Otherwise create a new buffer.
     */
 
-   if(Closure->crcCache) 
-     ClearCrcCache();    
+   if(CrcBufValid(Closure->crcBuf, NULL, NULL))   
+   {  ec->checksumsReused=TRUE;
+      memcpy(image->mediumSum, Closure->crcBuf->dataMD5sum, 16);
+      return;
+   }
+   else
+   {  FreeCrcBuf(Closure->crcBuf);
+      Closure->crcBuf = CreateCrcBuf(image);
+   }
 
    last_percent = 0;
-   MD5Init(&image_md5);
-   
-   Closure->crcCache = crcptr = g_malloc(sizeof(guint32) * lay->dataSectors);
-
+ 
    if(!LargeSeek(image->file, 0))
      Stop(_("Failed seeking to start of image: %s\n"), strerror(errno));
 
@@ -227,8 +230,7 @@ static void check_image(ecc_closure *ec)
       
       /* Update and cache the CRC sums */
 
-      *crcptr++ = Crc32(buf, 2048);
-      MD5Update(&image_md5, buf, n);
+      AddSectorToCrcBuffer(Closure->crcBuf, CRCBUF_UPDATE_ALL, sectors, buf, n);
 
       percent = (100*sectors)/(lay->eccSectors + lay->dataSectors);
 
@@ -242,7 +244,7 @@ static void check_image(ecc_closure *ec)
       }
    }
 
-   MD5Final(image->mediumSum, &image_md5);
+   memcpy(image->mediumSum, Closure->crcBuf->imageMD5sum, 16);
 }
 
 
@@ -297,7 +299,9 @@ static void expand_image(ecc_closure *ec)
 
       percent = (100*(sectors+lay->dataSectors)) / (lay->eccSectors + lay->dataSectors);
       if(last_percent != percent)
-      {  PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), percent);
+      {  if(ec->checksumsReused)
+	      PrintProgress(_("Preparing image (checksums taken from cache, adding space): %3d%%") ,percent);
+	 else PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), percent);
 
 	 if(Closure->guiMode)
 	   SetProgress(ec->wl->encPBar1, percent, 100);
@@ -306,7 +310,9 @@ static void expand_image(ecc_closure *ec)
       }
    }
 
-   PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), 100);
+   if(ec->checksumsReused)
+        PrintProgress(_("Preparing image (checksums taken from cache, adding space): %3d%%"), 100);
+   else PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), 100);
    PrintProgress("\n");
 
    if(Closure->guiMode)
@@ -355,10 +361,10 @@ static void write_crc(ecc_closure *ec)
       for(i=0; i<lay->ndata; i++)
       {  
 	 if(layer_index < lay->dataSectors)
-	 {  crc_buf[crc_idx++] = Closure->crcCache[layer_index];
+	 {  crc_buf[crc_idx++] = Closure->crcBuf->crcbuf[layer_index];
  
 	    if(layer_sector == lay->sectorsPerLayer - 1)
-	      *crc_boot_ptr++ = Closure->crcCache[layer_index];
+	      *crc_boot_ptr++ = Closure->crcBuf->crcbuf[layer_index];
 
             if(crc_idx >= 512)
 	    {  int n = LargeWrite(image->file, crc_buf, 2048);
@@ -414,6 +420,8 @@ static void prepare_header(ecc_closure *ec)
    memcpy(eh->cookie, "*dvdisaster*", 12);
    memcpy(eh->method, "RS02", 4);
    eh->methodFlags[0]  = 0;
+   if(!Closure->regtestMode)
+     eh->methodFlags[3]  = Closure->releaseFlags;
    memcpy(eh->mediumFP, image->imageFP, 16);
    memcpy(eh->mediumSum, image->mediumSum, 16);
    memcpy(eh->eccSum, ec->eccSum, 16);

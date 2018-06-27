@@ -14,7 +14,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index eae04f2..c89c552 100644
+index 758ac19..47551f7 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
 @@ -750,7 +750,7 @@ void AboutDialog()

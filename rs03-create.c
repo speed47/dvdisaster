@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -147,11 +147,14 @@ static void ecc_cleanup(gpointer data)
    }
 
    /*** We must invalidate the CRC cache as it does only cover the
-	data portion of the image, not the full RS03 enhanced image. */
+	data portion of the image, not the full RS03 enhanced image
+        in the augmented image case. */
 
-   if(Closure->crcCache)
-     ClearCrcCache();
-
+   if(Closure->eccTarget == ECC_IMAGE && Closure->crcBuf)
+   {  FreeCrcBuf(Closure->crcBuf);
+      Closure->crcBuf = 0;
+   }
+   
    /*** Clean up */
 
    if(ec->image) CloseImage(ec->image);
@@ -339,6 +342,8 @@ static void prepare_header(ecc_closure *ec)
    memcpy(eh->cookie, "*dvdisaster*", 12);
    memcpy(eh->method, "RS03", 4);
    eh->methodFlags[0]  = Closure->eccTarget == ECC_FILE ? MFLAG_ECC_FILE : 0;
+   if(!Closure->regtestMode)
+     eh->methodFlags[3]  = Closure->releaseFlags;
    memcpy(eh->mediumFP, image->imageFP, 16);
    memcpy(eh->mediumSum, image->mediumSum, 16);
    gint64_to_uchar(eh->sectors, lay->dataSectors);
@@ -353,6 +358,25 @@ static void prepare_header(ecc_closure *ec)
 
    eh->selfCRC = 0x4c5047;
 
+   if(CrcBufValid(Closure->crcBuf, NULL, NULL))   
+   {  if(Closure->eccTarget == ECC_FILE)  /* ecc files span the whole image */
+      {  if(Closure->crcBuf->md5State & MD5_IMAGE_COMPLETE)
+	 {  memcpy(eh->mediumSum, Closure->crcBuf->imageMD5sum, 16);
+	    eh->methodFlags[0] |= MFLAG_DATA_MD5;
+ 	    Verbose("CrcBuf present, ecc file: using image MD5 sum\n");
+	 }
+	 else Verbose("CrcBuf present, ecc file: image MD5 sum NOT available\n");
+      }
+      else  /* augmented images are stripped down to the data portion */
+      {  if(Closure->crcBuf->md5State & MD5_DATA_COMPLETE)
+	 {  memcpy(eh->mediumSum, Closure->crcBuf->dataMD5sum, 16);
+	    eh->methodFlags[0] |= MFLAG_DATA_MD5;
+	    Verbose("CrcBuf present, augmented image: using data MD5 sum\n");
+	 }
+	 else Verbose("CrcBuf present, augmented image: data MD5 sum NOT available\n");
+      }
+   }
+    
    memcpy(ec->eh_le, eh, sizeof(EccHeader));
 
 #ifdef HAVE_BIG_ENDIAN
@@ -504,6 +528,8 @@ static void prepare_crc_block(ecc_closure *ec, CrcBlock *cb)
    memcpy(cb->cookie, "*dvdisaster*", 12);
    memcpy(cb->method, "RS03", 4);
    cb->methodFlags[0]  = Closure->eccTarget == ECC_FILE ? MFLAG_ECC_FILE : 0; 
+   if(!Closure->regtestMode)
+     cb->methodFlags[3]  = Closure->releaseFlags;
    cb->creatorVersion  = Closure->version;
    cb->neededVersion   = NEEDED_VERSION;
    cb->fpSector        = FINGERPRINT_SECTOR;
@@ -990,7 +1016,7 @@ static gpointer encoder_thread(ecc_closure *ec)
 	 unsigned char *parity = ec->parity + 2048*nroots_aligned*layer_offset;
 
 	 /* Calculate the CRC32 layer (ndata-1) */
-#if 1
+
 	 if(layer < ndata-1) 
 	 {  /* The first ecc block CRC needs to be cached for wrap-around */
 
@@ -1010,7 +1036,6 @@ static gpointer encoder_thread(ecc_closure *ec)
 
 	 if(layer == ndata-1)
 	    prepare_crc_block(ec, (CrcBlock*)&ec->encoderCrc[512*layer_offset]);
-#endif
 
 	 /* Reed-Solomon part */       
 

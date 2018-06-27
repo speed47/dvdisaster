@@ -11,6 +11,6 @@ Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
 
 Completing image rs01-tmp.iso. Only missing sectors will be read.
 Reading CRC information from ecc data (RS01) ... done.
-Read position:  75.4% (nn.nx)                             * CRC error, sector: 15830
-Read position:  75.5% (nn.nx)Read position:  75.6% (nn.nx)Read position:  75.7% (nn.nx)Read position:  75.8% (nn.nx)Read position:  75.9% (nn.nx)Read position:  76.0% (nn.nx)Read position:  76.1% (nn.nx)Read position:  76.2% (nn.nx)Read position:  76.3% (nn.nx)Read position:  76.4% (nn.nx)Read position:  76.5% (nn.nx)Read position:  76.6% (nn.nx)Read position:  76.7% (nn.nx)Read position:  76.8% (nn.nx)Read position:  76.9% (nn.nx)Read position:  77.0% (nn.nx)Read position:  77.1% (nn.nx)Read position:  77.2% (nn.nx)
+* CRC error, sector: 15830
+
 400 sectors read.     

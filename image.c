@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -99,13 +99,15 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
    }
 
    image->eccFile = LargeOpen(filename, flags, mode);
+   if(errno == EACCES)
+        image->eccFileState = ECCFILE_NOPERM;
+   else image->eccFileState = ECCFILE_MISSING;
    
    if(!image->eccFile)
    {  if(new_image) 
       {  g_free(image);
-         return NULL;
+	 return NULL;
       }
-      image->eccFileState = ECCFILE_MISSING;
       return image;
    }
 
@@ -167,6 +169,21 @@ int ReportImageEccInconsistencies(Image *image)
      {  Stop(_("\nError correction file type unknown.\n"));
      }
   }
+
+  /* Permission denied for ecc file */
+
+  if(!image->eccFile && image->eccFileState == ECCFILE_NOPERM)
+  {  CloseImage(image);
+     if(Closure->guiMode)
+       {    CreateMessage(_("\nPermission denied on ecc file (perhaps not writeable?).\n"),
+			  GTK_MESSAGE_ERROR);
+	  return TRUE;
+     }
+     else
+     {  Stop(_("\nPermission denied on ecc file (perhaps not writeable?).\n"));
+     }
+  }
+
   
   /* Augmented image but unknown ecc method */
 

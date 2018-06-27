@@ -13,7 +13,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 18 insertions(+)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index 0f4e3b2..6214429 100644
+index 3f94920..d893d33 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
 @@ -423,6 +423,24 @@ char *find_file(char *file, size_t *size, char *lang)

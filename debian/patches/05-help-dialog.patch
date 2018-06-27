@@ -16,7 +16,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/help-dialogs.c b/help-dialogs.c
-index 4d6f9bb..eae04f2 100644
+index c486613..758ac19 100644
 --- a/help-dialogs.c
 +++ b/help-dialogs.c
 @@ -403,7 +403,7 @@ void ShowGPL()

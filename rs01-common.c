@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -66,12 +66,12 @@ CrcBuf *RS01GetCrcBuf(Image *image)
 {  LargeFile *file = image->eccFile;
    CrcBuf *cb;
    guint32 *buf;
-   guint64 image_sectors;
+   guint64 image_sectors_from_ecc, image_sectors_with_crc;
    guint64 crc_sectors,crc_remainder;
    guint64 i,j,sec_idx;
 
-   image_sectors = uchar_to_gint64(image->eccFileHeader->sectors);
-   cb = CreateCrcBuf(image_sectors);
+   image_sectors_from_ecc = uchar_to_gint64(image->eccFileHeader->sectors);
+   cb = CreateCrcBuf(image);
    buf = cb->crcbuf;
 
    /* Seek to beginning of CRC sums */
@@ -81,7 +81,10 @@ CrcBuf *RS01GetCrcBuf(Image *image)
 
    /* Read crc sums. A sector of 2048 bytes contains 512 CRC sums. */
 
-   crc_sectors = image_sectors / 512;
+   if(cb->allSectors < image_sectors_from_ecc)
+        image_sectors_with_crc = cb->allSectors;         // image is truncated
+   else image_sectors_with_crc = image_sectors_from_ecc; // get all CRC sectors from ECC
+   crc_sectors = image_sectors_with_crc / 512;
    sec_idx = 0;
 
    for(i=0; i<crc_sectors; i++)
@@ -93,15 +96,21 @@ CrcBuf *RS01GetCrcBuf(Image *image)
 	 SetBit(cb->valid, sec_idx);
    }
 
-   crc_remainder = sizeof(guint32)*(image_sectors % 512);
+   crc_remainder = sizeof(guint32)*(image_sectors_with_crc % 512);
    if(crc_remainder)
    {  if(LargeRead(file, buf, crc_remainder) != crc_remainder)
 	 Stop(_("Error reading CRC information: %s"),strerror(errno));
 
-      for( ; sec_idx<image_sectors; sec_idx++)
+     for( ; sec_idx<image_sectors_with_crc; sec_idx++)
 	 SetBit(cb->valid, sec_idx);
    }
 
+   /* Copy the md5sum */
+
+   memcpy(cb->dataMD5sum, image->eccFileHeader->mediumSum, 16);
+   memcpy(cb->imageMD5sum, image->eccFileHeader->mediumSum, 16);
+   cb->md5State = MD5_COMPLETE;
+   
    return cb;
 }
 

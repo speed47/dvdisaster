@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -85,11 +85,22 @@
 
 /* Some standard media sizes */
 
+/* WARNING: These values affect RS03 in non-obvious ways.
+ * If you create RS03 data with changed values, you MUST
+ * keep a dvdisaster version with the changed values for
+ * recovering images with that RS03 data. 
+ * dvdisaster compiled with default values may appear to 
+ * scan and verify such images correctly as long as they 
+ * are not damaged. But recovery WILL BREAK when 
+ * processing a damaged image. YOU HAVE BEEN WARNED. 
+ */
+
 #define CDR_SIZE         (351*1024)
-#define DVD_SL_SIZE      2295104  /* DVD+R/RW size used at least common denominator */
+#define DVD_SL_SIZE      2295104  /* DVD+R/RW size used as least common denominator */
 #define DVD_DL_SIZE 	 4171712  /* also seen: 4148992 4173824  */
 #define BD_SL_SIZE      11826176
 #define BD_DL_SIZE	23652352
+#define BDXL_TL_SIZE    47305728
 
 /* Maximum accepted media sizes (in 2K sectors) */
 
@@ -131,6 +142,7 @@
 typedef struct _GlobalClosure
 {  int version;         /* Integer number representing current program version */
    char *cookedVersion; /* version string formatted for GUI use */
+   gint8 releaseFlags;  /* flags marking release status */
    char *versionString; /* more detailed version string */
    char *device;        /* currently selected device to read from */
    GPtrArray *deviceNames;  /* List of drive names */
@@ -144,13 +156,15 @@ typedef struct _GlobalClosure
    gint64 cdSize;       /* Maximum cd size (for RS02 type images) */
    gint64 dvdSize1;     /* Maximum 1-layer dvd size (for augmented images) */
    gint64 dvdSize2;     /* Maximum 2-layer dvd size (for augmented images) */
-   gint64 bdSize1;      /* Maximum 1-layer dvd size (for augmented images) */
-   gint64 bdSize2;      /* Maximum 2-layer dvd size (for augmented images) */
+   gint64 bdSize1;      /* Maximum 1-layer bd size (for augmented images) */
+   gint64 bdSize2;      /* Maximum 2-layer bd size (for augmented images) */
+   gint64 bdSize3;      /* Maximum 3-layer bdxl size (for augmented images) */
    gint64 savedCDSize;  /* Undo values for above */
    gint64 savedDVDSize1;
    gint64 savedDVDSize2;
    gint64 savedBDSize1;
    gint64 savedBDSize2;
+   gint64 savedBDSize3;
    gint64 mediumSize;   /* Maximum medium size (for augmented images) */
    int cacheMiB;        /* Cache setting for the parity codec, in megabytes */
    int prefetchSectors; /* Prefetch setting per encoder thread */
@@ -171,11 +185,13 @@ typedef struct _GlobalClosure
    int spinupDelay;     /* Seconds to wait for drive to spin up */
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
+   int noProgress;      /* do not print the percentage progress indicator */
    int dsmVersion;      /* 1 means new style dead sector marker */
    int unlinkImage;     /* delete image after ecc file creation */
    int confirmDeletion; /* do not ask whether files should be deleted */
    int driveSpeed;      /* currently unused */
    int debugMode;       /* may activate additional features */
+   int regtestMode;     /* tweaks output for compatibility with regtests */
    int debugCDump;      /* dump as #include file instead of hexdump */
    int verbose;         /* may activate additional messages */
    int quickVerify;     /* do only non time-consuming verify actions */
@@ -226,11 +242,8 @@ typedef struct _GlobalClosure
    char *errorTitle;    /* Title to show in error dialogs */
    gint32 randomSeed;   /* for the random number generator */
 
-   guint32 *crcCache;              /* sectorwise CRC32 for last image read */
-   char    *crcImageName;          /* file name of cached image */
-   unsigned char md5Cache[16];     /* md5sum of last image read */
+   struct _CrcBuf *crcBuf;      /* crcBuf of last image read */
    
-
    /*** GUI-related things */
 
    int guiMode;              /* TRUE if GUI is active */
@@ -318,7 +331,6 @@ typedef struct _GlobalClosure
    GtkWidget *readLinearFootline;
    GtkWidget *readLinearFootlineBox;
    gint64 crcErrors, readErrors;  /* these are passed between threads and must therefore be global */
-   int    crcAvailable;           /* true when CRC data is available while reading/scanning */
 
    /*** Widgets for the adaptive reading action */
 
@@ -428,6 +440,7 @@ typedef struct _CrcBlock
 struct _RawBuffer *rawbuffer_forward;
 struct _DefectiveSectorHeader *dsh_forward;
 struct _DeviceHandle *dh_forward;
+struct _Image *dh_image;
 
 /***
  *** bitmap.c
@@ -443,7 +456,7 @@ Bitmap* CreateBitmap0(int);
 #define GetBit(bm,bit) (bm->bitmap[(bit)>>5] & (1<<((bit)&31))) 
 #define SetBit(bm,bit) bm->bitmap[(bit)>>5] |= (1<<((bit)&31)) 
 #define ClearBit(bm,bit) bm->bitmap[(bit)>>5] &= ~(1<<((bit)&31)) 
-int CountBits(Bitmap*);
+gint32 CountBits(Bitmap*);
 void FreeBitmap(Bitmap*);
 
 /***
@@ -466,7 +479,6 @@ void InitClosure(void);
 void LocalizedFileDefaults(void);
 void UpdateMarkup(char**, GdkColor*);
 void DefaultColors(void);
-void ClearCrcCache(void);
 void FreeClosure(void);
 void ReadDotfile(void);
 void WriteSignature(void);
@@ -483,10 +495,36 @@ guint32 EDCCrc32(unsigned char*, int);
  *** crcbuf.c
  ***/
 
+/* Flags for CrcBuf->md5State */
+
+#define MD5_INVALID 0
+#define MD5_BUILDING 1<<0
+#define MD5_DATA_COMPLETE 1<<1
+#define MD5_IMAGE_COMPLETE 1<<2
+#define MD5_COMPLETE (MD5_DATA_COMPLETE | MD5_IMAGE_COMPLETE)
+
 typedef struct _CrcBuf
-{  guint32 *crcbuf;
-   guint64 size;
+{  /* CRC32 of image sectors */
+   guint32 *crcbuf;
+   guint64 crcSize;
    Bitmap *valid;
+   gint32 crcCached;            /* CRC has been retrieved from ECC or previous run */
+  
+   /* MD5 sum of image sectors */
+   struct MD5Context *md5Ctxt;  /* context for building the image MD5 sum */
+   int md5State;                /* state of md5 sum */    
+   guint64 lastSector;          /* tracking of sector sequence */
+   unsigned char dataMD5sum[16];   /* md5sum of data portion from last image read */
+   unsigned char imageMD5sum[16];  /* md5sum of last image read */
+
+   /* Characteristics of image */
+   char *imageName;             /* file name of cached image */
+   guint64 dataSectors;         /* number of data sectors (minus ecc sectors) */ 
+   guint64 coveredSectors;      /* sectors covered by crc (EH, padding, ...) */ 
+   guint64 allSectors;          /* number of all image sectors */
+   guint8 mediumFP[16];         /* fingerprint of image */ 
+   gint32 fpSector;             /* sector which was fingerprinted */
+   gint32 fpValid;
 } CrcBuf;
 
 enum
@@ -496,10 +534,21 @@ enum
    CRC_OUTSIDE_BOUND
 };
 
-CrcBuf *CreateCrcBuf(guint64);
+/* Modes for AddSectorToCrcBuffer */
+
+#define CRCBUF_UPDATE_CRC 1<<0
+#define CRCBUF_UPDATE_MD5 1<<1
+#define CRCBUF_UPDATE_ALL 3
+#define CRCBUF_UPDATE_CRC_AFTER_DATA 1<<2
+
+CrcBuf *CreateCrcBuf(struct _Image*);
 void FreeCrcBuf(CrcBuf*);
 
 int CheckAgainstCrcBuffer(CrcBuf*, gint64, unsigned char*);
+int AddSectorToCrcBuffer(CrcBuf*, int, guint64, unsigned char*, int);
+int CrcBufValid(CrcBuf*, struct _Image*, EccHeader*);
+
+void PrintCrcBuf(CrcBuf*);
 
 /***
  *** curve.c
@@ -734,7 +783,7 @@ void CreateIconFactory();
 
 enum {IMAGE_NONE, IMAGE_FILE, IMAGE_MEDIUM};
 enum {FP_UNKNOWN, FP_UNREADABLE, FP_PRESENT};
-enum {ECCFILE_PRESENT, ECCFILE_MISSING, ECCFILE_INVALID, ECCFILE_DEFECTIVE_HEADER, ECCFILE_WRONG_CODEC};
+enum {ECCFILE_PRESENT, ECCFILE_NOPERM, ECCFILE_MISSING, ECCFILE_INVALID, ECCFILE_DEFECTIVE_HEADER, ECCFILE_WRONG_CODEC};
 
 typedef struct _Image
 {  int type;                   /* file or medium */
@@ -768,11 +817,12 @@ typedef struct _Image
    int fpState;               /* 0=unknown; 1=unreadable; 2=present */
 
   /*
-   * layout caching
+   * layout and checksum caching
    */
 
    void *cachedLayout;        /* Layout of different codecs */
-
+   CrcBuf *crcCache;          /* cached crc and md5 sums */
+  
    /*
     * optionally attached ecc file
     */

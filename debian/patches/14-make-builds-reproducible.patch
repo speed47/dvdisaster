@@ -21,7 +21,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  7 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/build.c b/build.c
-index 1666795..05a3b24 100644
+index 0e99b22..65b17cd 100644
 --- a/build.c
 +++ b/build.c
 @@ -25,4 +25,4 @@
@@ -31,10 +31,10 @@ index 1666795..05a3b24 100644
 -int  buildCount = BUILD;
 +const char *const buildCount = BUILD;
 diff --git a/closure.c b/closure.c
-index 7568cba..51e91a2 100644
+index 58ba86f..d633d53 100644
 --- a/closure.c
 +++ b/closure.c
-@@ -433,7 +433,7 @@ void InitClosure()
+@@ -442,7 +442,7 @@ void InitClosure()
    #define BITNESS_STRING ""
  #endif
  
@@ -44,10 +44,10 @@ index 7568cba..51e91a2 100644
  
     /* Replace the dot with a locale-resistant separator */
 diff --git a/dvdisaster.h b/dvdisaster.h
-index db2031e..bcfd4f5 100644
+index a466450..9acd094 100644
 --- a/dvdisaster.h
 +++ b/dvdisaster.h
-@@ -450,7 +450,7 @@ void FreeBitmap(Bitmap*);
+@@ -463,7 +463,7 @@ void FreeBitmap(Bitmap*);
   *** build.h
   ***/
  
@@ -57,10 +57,10 @@ index db2031e..bcfd4f5 100644
  /***
   *** cacheprobe.h
 diff --git a/locale/cs.po b/locale/cs.po
-index ed1fc65..24b1e7c 100644
+index 4f766a3..453ec07 100644
 --- a/locale/cs.po
 +++ b/locale/cs.po
-@@ -6476,11 +6476,11 @@ msgstr "<i>Novinky v této verzi:</i>"
+@@ -6511,11 +6511,11 @@ msgstr "<i>Novinky v této verzi:</i>"
  
  #~ msgid ""
  #~ "\n"
@@ -75,10 +75,10 @@ index ed1fc65..24b1e7c 100644
  
  #~ msgid "--prefetch-sectors must be in range 32...8096"
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index 04b33b5..012ce9e 100644
+index f3437f3..f7f6af0 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
-@@ -6200,11 +6200,11 @@ msgstr "<i>Novidades dessa versão:</i>"
+@@ -6232,11 +6232,11 @@ msgstr "<i>Novidades dessa versão:</i>"
  
  #~ msgid ""
  #~ "\n"
@@ -93,10 +93,10 @@ index 04b33b5..012ce9e 100644
  #~ msgid "--cache-size maximum is 8192MiB."
  #~ msgstr "--cache-size máximo é 8192MiB."
 diff --git a/locale/ru.po b/locale/ru.po
-index 6cd3789..912d6fb 100644
+index 1bc7324..9625a1f 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
-@@ -6215,11 +6215,11 @@ msgstr "<i>Новое в этой версии:</i>"
+@@ -6247,11 +6247,11 @@ msgstr "<i>Новое в этой версии:</i>"
  
  #~ msgid ""
  #~ "\n"

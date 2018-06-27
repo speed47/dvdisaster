@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -84,12 +84,12 @@ typedef struct
    /*** Widgets in the Preferences window */
 
    GtkWidget *radio1A, *radio1B, *radio2A, *radio2B;
-   GtkWidget *cdButtonA, *dvdButton1A, *dvdButton2A, *bdButton1A, *bdButton2A;
-   GtkWidget *cdButtonB, *dvdButton1B, *dvdButton2B, *bdButton1B, *bdButton2B;
-   GtkWidget *cdUndoButtonA, *dvdUndoButton1A, *dvdUndoButton2A, *bdUndoButton1A, *bdUndoButton2A;
-   GtkWidget *cdUndoButtonB, *dvdUndoButton1B, *dvdUndoButton2B, *bdUndoButton1B, *bdUndoButton2B;
-   GtkWidget *cdEntryA, *dvdEntry1A, *dvdEntry2A, *bdEntry1A, *bdEntry2A, *otherEntryA;
-   GtkWidget *cdEntryB, *dvdEntry1B, *dvdEntry2B, *bdEntry1B, *bdEntry2B, *otherEntryB;
+   GtkWidget *cdButtonA, *dvdButton1A, *dvdButton2A, *bdButton1A, *bdButton2A, *bdButton3A;
+   GtkWidget *cdButtonB, *dvdButton1B, *dvdButton2B, *bdButton1B, *bdButton2B, *bdButton3B;
+   GtkWidget *cdUndoButtonA, *dvdUndoButton1A, *dvdUndoButton2A, *bdUndoButton1A, *bdUndoButton2A, *bdUndoButton3A;
+   GtkWidget *cdUndoButtonB, *dvdUndoButton1B, *dvdUndoButton2B, *bdUndoButton1B, *bdUndoButton2B, *bdUndoButton3B;
+   GtkWidget *cdEntryA, *dvdEntry1A, *dvdEntry2A, *bdEntry1A, *bdEntry2A, *bdEntry3A, *otherEntryA;
+   GtkWidget *cdEntryB, *dvdEntry1B, *dvdEntry2B, *bdEntry1B, *bdEntry2B, *bdEntry3B, *otherEntryB;
    GtkWidget *cacheScaleA, *cacheScaleB;
    LabelWithOnlineHelp *cacheLwoh;
 

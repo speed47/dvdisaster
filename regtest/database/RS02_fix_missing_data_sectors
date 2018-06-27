@@ -8,66 +8,65 @@ See the file "COPYING" for further information.
 Opening rs02-tmp.iso: 34932 medium sectors.
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.
-Ecc progress:   0.0%Ecc progress:   0.7%Ecc progress:   1.4%Ecc progress:   2.1%Ecc progress:   2.9%Ecc progress:   3.6%Ecc progress:   4.3%Ecc progress:   5.1%Ecc progress:   5.8%Ecc progress:   6.5%Ecc progress:   7.2%Ecc progress:   8.0%Ecc progress:   8.7%Ecc progress:   9.4%Ecc progress:  10.2%Ecc progress:  10.9%Ecc progress:  11.6%Ecc progress:  12.4%Ecc progress:  13.1%Ecc progress:  13.8%Ecc progress:  14.5%Ecc progress:  15.3%Ecc progress:  16.0%Ecc progress:  16.7%Ecc progress:  17.5%Ecc progress:  18.2%Ecc progress:  18.9%Ecc progress:  19.7%Ecc progress:  20.4%Ecc progress:  21.1%Ecc progress:  21.8%Ecc progress:  22.6%Ecc progress:  23.3%Ecc progress:  24.0%Ecc progress:  24.8%Ecc progress:  25.5%Ecc progress:  26.2%Ecc progress:  27.0%Ecc progress:  27.7%Ecc progress:  28.4%Ecc progress:  29.1%Ecc progress:  29.9%    1 repaired sectors: 1000d 
-Ecc progress:  30.6%    1 repaired sectors: 1001d 
-Ecc progress:  31.3%    1 repaired sectors: 1002d 
-Ecc progress:  32.1%    1 repaired sectors: 1003d 
-Ecc progress:  32.8%    1 repaired sectors: 1004d 
-Ecc progress:  33.5%    1 repaired sectors: 1005d 
-Ecc progress:  34.3%    1 repaired sectors: 1006d 
-Ecc progress:  35.0%    1 repaired sectors: 1007d 
-Ecc progress:  35.7%    1 repaired sectors: 1008d 
-Ecc progress:  36.4%    1 repaired sectors: 1009d 
-Ecc progress:  37.2%    1 repaired sectors: 1010d 
-Ecc progress:  37.9%    1 repaired sectors: 1011d 
-Ecc progress:  38.6%    1 repaired sectors: 1012d 
-Ecc progress:  39.4%    1 repaired sectors: 1013d 
-Ecc progress:  40.1%    1 repaired sectors: 1014d 
-Ecc progress:  40.8%    1 repaired sectors: 1015d 
-Ecc progress:  41.6%    1 repaired sectors: 1016d 
-Ecc progress:  42.3%    1 repaired sectors: 1017d 
-Ecc progress:  43.0%    1 repaired sectors: 1018d 
-Ecc progress:  43.7%    1 repaired sectors: 1019d 
-Ecc progress:  44.5%    1 repaired sectors: 1020d 
-Ecc progress:  45.2%    1 repaired sectors: 1021d 
-Ecc progress:  45.9%    1 repaired sectors: 1022d 
-Ecc progress:  46.7%    1 repaired sectors: 1023d 
-Ecc progress:  47.4%    1 repaired sectors: 1024d 
-Ecc progress:  48.1%    1 repaired sectors: 1025d 
-Ecc progress:  48.9%    1 repaired sectors: 1026d 
-Ecc progress:  49.6%    1 repaired sectors: 1027d 
-Ecc progress:  50.3%    1 repaired sectors: 1028d 
-Ecc progress:  51.0%    1 repaired sectors: 1029d 
-Ecc progress:  51.8%    1 repaired sectors: 1030d 
-Ecc progress:  52.5%    1 repaired sectors: 1031d 
-Ecc progress:  53.2%    1 repaired sectors: 1032d 
-Ecc progress:  54.0%    1 repaired sectors: 1033d 
-Ecc progress:  54.7%    1 repaired sectors: 1034d 
-Ecc progress:  55.4%    1 repaired sectors: 1035d 
-Ecc progress:  56.2%    1 repaired sectors: 1036d 
-Ecc progress:  56.9%    1 repaired sectors: 1037d 
-Ecc progress:  57.6%    1 repaired sectors: 1038d 
-Ecc progress:  58.3%    1 repaired sectors: 1039d 
-Ecc progress:  59.1%    1 repaired sectors: 1040d 
-Ecc progress:  59.8%    1 repaired sectors: 1041d 
-Ecc progress:  60.5%    1 repaired sectors: 1042d 
-Ecc progress:  61.3%    1 repaired sectors: 1043d 
-Ecc progress:  62.0%    1 repaired sectors: 1044d 
-Ecc progress:  62.7%    1 repaired sectors: 1045d 
-Ecc progress:  63.5%    1 repaired sectors: 1046d 
-Ecc progress:  64.2%    1 repaired sectors: 1047d 
-Ecc progress:  64.9%    1 repaired sectors: 1048d 
-Ecc progress:  65.6%    1 repaired sectors: 1049d 
-Ecc progress:  66.4%Ecc progress:  67.1%Ecc progress:  67.8%Ecc progress:  68.6%Ecc progress:  69.3%Ecc progress:  70.0%Ecc progress:  70.8%Ecc progress:  71.5%Ecc progress:  72.2%Ecc progress:  72.9%Ecc progress:  73.7%Ecc progress:  74.4%Ecc progress:  75.1%Ecc progress:  75.9%Ecc progress:  76.6%Ecc progress:  77.3%Ecc progress:  78.1%Ecc progress:  78.8%Ecc progress:  79.5%Ecc progress:  80.2%Ecc progress:  81.0%Ecc progress:  81.7%Ecc progress:  82.4%Ecc progress:  83.2%Ecc progress:  83.9%Ecc progress:  84.6%Ecc progress:  85.4%Ecc progress:  86.1%Ecc progress:  86.8%    1 repaired sectors: 22450d 
-Ecc progress:  87.5%    1 repaired sectors: 22451d 
-Ecc progress:  88.3%    1 repaired sectors: 22452d 
-Ecc progress:  89.0%    1 repaired sectors: 22453d 
-Ecc progress:  89.7%    1 repaired sectors: 22454d 
-Ecc progress:  90.5%    1 repaired sectors: 22455d 
-Ecc progress:  91.2%    1 repaired sectors: 22456d 
-Ecc progress:  91.9%    1 repaired sectors: 22457d 
-Ecc progress:  92.7%Ecc progress:  93.4%Ecc progress:  94.1%Ecc progress:  94.8%Ecc progress:  95.6%Ecc progress:  96.3%    1 repaired sectors: 21230d 
-Ecc progress:  97.0%Ecc progress:  97.8%Ecc progress:  98.5%Ecc progress:  99.2%Ecc progress: 100.0%
+    1 repaired sectors: 1000d 
+    1 repaired sectors: 1001d 
+    1 repaired sectors: 1002d 
+    1 repaired sectors: 1003d 
+    1 repaired sectors: 1004d 
+    1 repaired sectors: 1005d 
+    1 repaired sectors: 1006d 
+    1 repaired sectors: 1007d 
+    1 repaired sectors: 1008d 
+    1 repaired sectors: 1009d 
+    1 repaired sectors: 1010d 
+    1 repaired sectors: 1011d 
+    1 repaired sectors: 1012d 
+    1 repaired sectors: 1013d 
+    1 repaired sectors: 1014d 
+    1 repaired sectors: 1015d 
+    1 repaired sectors: 1016d 
+    1 repaired sectors: 1017d 
+    1 repaired sectors: 1018d 
+    1 repaired sectors: 1019d 
+    1 repaired sectors: 1020d 
+    1 repaired sectors: 1021d 
+    1 repaired sectors: 1022d 
+    1 repaired sectors: 1023d 
+    1 repaired sectors: 1024d 
+    1 repaired sectors: 1025d 
+    1 repaired sectors: 1026d 
+    1 repaired sectors: 1027d 
+    1 repaired sectors: 1028d 
+    1 repaired sectors: 1029d 
+    1 repaired sectors: 1030d 
+    1 repaired sectors: 1031d 
+    1 repaired sectors: 1032d 
+    1 repaired sectors: 1033d 
+    1 repaired sectors: 1034d 
+    1 repaired sectors: 1035d 
+    1 repaired sectors: 1036d 
+    1 repaired sectors: 1037d 
+    1 repaired sectors: 1038d 
+    1 repaired sectors: 1039d 
+    1 repaired sectors: 1040d 
+    1 repaired sectors: 1041d 
+    1 repaired sectors: 1042d 
+    1 repaired sectors: 1043d 
+    1 repaired sectors: 1044d 
+    1 repaired sectors: 1045d 
+    1 repaired sectors: 1046d 
+    1 repaired sectors: 1047d 
+    1 repaired sectors: 1048d 
+    1 repaired sectors: 1049d 
+    1 repaired sectors: 22450d 
+    1 repaired sectors: 22451d 
+    1 repaired sectors: 22452d 
+    1 repaired sectors: 22453d 
+    1 repaired sectors: 22454d 
+    1 repaired sectors: 22455d 
+    1 repaired sectors: 22456d 
+    1 repaired sectors: 22457d 
+    1 repaired sectors: 21230d 
 Repaired sectors: 59 (59 data, 0 ecc)
 Good! All sectors are repaired.
 Erasure counts per ecc block:  avg =  1.0; worst = 1.

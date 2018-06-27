@@ -1,5 +1,5 @@
 /*  dvdisaster: Additional error correction for optical media.
- *  Copyright (C) 2004-2015 Carsten Gnoerlich.
+ *  Copyright (C) 2004-2017 Carsten Gnoerlich.
  *
  *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
  *  Project homepage: http://www.dvdisaster.org
@@ -73,6 +73,7 @@ typedef enum
    MODIFIER_IGNORE_FATAL_SENSE,
    MODIFIER_IGNORE_ISO_SIZE,
    MODIFIER_INTERNAL_REREADS,
+   MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
    MODIFIER_PREFETCH_SECTORS,
    MODIFIER_RANDOM_SEED,
@@ -80,6 +81,7 @@ typedef enum
    MODIFIER_READ_ATTEMPTS,
    MODIFIER_READ_MEDIUM,
    MODIFIER_READ_RAW,
+   MODIFIER_REGTEST,
    MODIFIER_RESOURCE_FILE,
    MODIFIER_SCREEN_SHOT,
    MODIFIER_SET_VERSION,
@@ -229,6 +231,7 @@ int main(int argc, char *argv[])
 	{"medium-info", 0, 0, MODE_MEDIUM_INFO },
 	{"merge-images", 1, 0, MODE_MERGE_IMAGES },
 	{"method", 2, 0, 'm' },
+	{"no-progress", 0, 0, MODIFIER_NO_PROGRESS },
 	{"old-ds-marker", 0, 0, MODIFIER_OLD_DS_MARKER },
 	{"prefetch-sectors", 1, 0, MODIFIER_PREFETCH_SECTORS },
         {"prefix", 1, 0, 'p'},
@@ -242,6 +245,7 @@ int main(int argc, char *argv[])
 	{"read-medium", 1, 0, MODIFIER_READ_MEDIUM },
 	{"read-sector", 1, 0, MODE_READ_SECTOR},
 	{"read-raw", 0, 0, MODIFIER_READ_RAW},
+	{"regtest", 0, 0, MODIFIER_REGTEST},
 	{"redundancy", 1, 0, 'n'},
 	{"resource-file", 1, 0, MODIFIER_RESOURCE_FILE},
 	{"scan", 2, 0,'s'},
@@ -318,6 +322,8 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = BD_SL_SIZE;
 		      else if(!strcmp(optarg, "BD2") || !strcmp(optarg, "bd2"))
 			   Closure->mediumSize = BD_DL_SIZE;
+		      else if(!strcmp(optarg, "BDXL3") || !strcmp(optarg, "bdxl3"))
+			   Closure->mediumSize = BDXL_TL_SIZE;
 		      else 
 		      {  int len = strlen(optarg);
 			 if(strchr("0123456789", optarg[len-1]))
@@ -479,6 +485,9 @@ int main(int argc, char *argv[])
 	    }
 	 }
 	   break;
+	 case MODIFIER_NO_PROGRESS:
+	    Closure->noProgress = 1;
+	    break;
 	 case MODIFIER_OLD_DS_MARKER:
 	    Closure->dsmVersion = 0;
 	    break;
@@ -524,6 +533,9 @@ int main(int argc, char *argv[])
 	   break;
          case MODIFIER_READ_RAW:
 	   Closure->readRaw = TRUE;
+	   break;
+         case MODIFIER_REGTEST:
+	   Closure->regtestMode = TRUE;
 	   break;
          case MODIFIER_RESOURCE_FILE:
 	   if(Closure->dotFile)
@@ -914,12 +926,14 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"));
       PrintCLI(_("  --medium-info          - print info about medium in drive\n"));
+      PrintCLI(_("  --no-progress          - do not print progress information\n"));
       PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
       PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
       PrintCLI(_("  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"));
       PrintCLI(_("  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"));
       PrintCLI(_("  --read-medium n        - read the whole medium up to n times\n"));
       PrintCLI(_("  --read-raw             - performs read in raw mode if possible\n"));
+      PrintCLI(_("  --regtest              - tweaks output for compatibility with regtests\n"));
       PrintCLI(_("  --resource-file p      - get resource file from given path\n"));
       PrintCLI(_("  --speed-warning n      - print warning if speed changes by more than n percent\n"));
       PrintCLI(_("  --spinup-delay n       - wait n seconds for drive to spin up\n"));

@@ -9,7 +9,7 @@ Description: Fix more typos in error messages and docs.
  'sucessful' → 'successful'
  'improvment' → 'improvement'
 Author: Carlos Maddela <e7appew@gmail.com>
-Last-Update: 2017-08-06
+Last-Update: 2017-12-21
 ---
 This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 ---
@@ -40,10 +40,10 @@ index 51ff827..80fe9d3 100644
  \bigskip
  
 diff --git a/locale/cs.po b/locale/cs.po
-index 24b1e7c..497a4a9 100644
+index 453ec07..d89ff4a 100644
 --- a/locale/cs.po
 +++ b/locale/cs.po
-@@ -1903,7 +1903,7 @@ msgid "Media ejection"
+@@ -1917,7 +1917,7 @@ msgid "Media ejection"
  msgstr "Vysunutí disku"
  
  #: preferences.c:2064 preferences.c:2065
@@ -53,10 +53,10 @@ index 24b1e7c..497a4a9 100644
  
  #: preferences.c:2091
 diff --git a/locale/de.po b/locale/de.po
-index bbbfdcc..bb5baa6 100644
+index 5b47778..8112b13 100644
 --- a/locale/de.po
 +++ b/locale/de.po
-@@ -1959,7 +1959,7 @@ msgid "Media ejection"
+@@ -1975,7 +1975,7 @@ msgid "Media ejection"
  msgstr "Datenträger auswerfen"
  
  #: preferences.c:2064 preferences.c:2065
@@ -66,10 +66,10 @@ index bbbfdcc..bb5baa6 100644
  
  #: preferences.c:2091
 diff --git a/locale/it.po b/locale/it.po
-index a074339..000d5c3 100644
+index f6e9dfd..b98f8d3 100644
 --- a/locale/it.po
 +++ b/locale/it.po
-@@ -1749,7 +1749,7 @@ msgid "Media ejection"
+@@ -1763,7 +1763,7 @@ msgid "Media ejection"
  msgstr ""
  
  #: preferences.c:2064 preferences.c:2065
@@ -79,10 +79,10 @@ index a074339..000d5c3 100644
  
  #: preferences.c:2091
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index 012ce9e..4624071 100644
+index f7f6af0..81ee14d 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
-@@ -1839,7 +1839,7 @@ msgid "Media ejection"
+@@ -1853,7 +1853,7 @@ msgid "Media ejection"
  msgstr "Ejeção da mídia"
  
  #: preferences.c:2064 preferences.c:2065
@@ -92,10 +92,10 @@ index 012ce9e..4624071 100644
  
  #: preferences.c:2091
 diff --git a/locale/ru.po b/locale/ru.po
-index 912d6fb..66fc036 100644
+index 9625a1f..6e980b9 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
-@@ -1841,7 +1841,7 @@ msgid "Media ejection"
+@@ -1855,7 +1855,7 @@ msgid "Media ejection"
  msgstr "Извлечь носитель"
  
  #: preferences.c:2064 preferences.c:2065
@@ -105,10 +105,10 @@ index 912d6fb..66fc036 100644
  
  #: preferences.c:2091
 diff --git a/locale/sv.po b/locale/sv.po
-index 9f70808..5cd4927 100644
+index c74a942..3011969 100644
 --- a/locale/sv.po
 +++ b/locale/sv.po
-@@ -1755,7 +1755,7 @@ msgid "Media ejection"
+@@ -1769,7 +1769,7 @@ msgid "Media ejection"
  msgstr ""
  
  #: preferences.c:2064 preferences.c:2065
@@ -118,7 +118,7 @@ index 9f70808..5cd4927 100644
  
  #: preferences.c:2091
 diff --git a/preferences.c b/preferences.c
-index f5ef889..5a24200 100644
+index 4899317..4309809 100644
 --- a/preferences.c
 +++ b/preferences.c
 @@ -2061,8 +2061,8 @@ void CreatePreferencesWindow(void)
@@ -133,11 +133,11 @@ index f5ef889..5a24200 100644
  
        for(i=0; i<2; i++)
 diff --git a/regtest/rs01.bash b/regtest/rs01.bash
-index 46bfac4..45f7611 100755
+index 3c03f61..cc11f6e 100755
 --- a/regtest/rs01.bash
 +++ b/regtest/rs01.bash
-@@ -1327,7 +1327,7 @@ if try "reading medium in 3 passes; 3rd pass recovers some" read_multipass_parti
-   run_regtest read_multipass_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
+@@ -1323,7 +1323,7 @@ if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipas
+   run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC
  fi
  
 -# Do a second sucessful read attempt at an incomplete image;
@@ -146,10 +146,10 @@ index 46bfac4..45f7611 100755
  # since CRC caching is a bit complicated in this case.
  
 diff --git a/scsi-layer.c b/scsi-layer.c
-index b70a4a4..515cc93 100644
+index 50f6c4c..22e825d 100644
 --- a/scsi-layer.c
 +++ b/scsi-layer.c
-@@ -2474,7 +2474,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
+@@ -2458,7 +2458,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
        if(Closure->readRaw && dh->rawBuffer)
  	recommended_attempts = dh->rawBuffer->recommendedAttempts;
  
@@ -159,7 +159,7 @@ index b70a4a4..515cc93 100644
  
  	 if(Closure->stopActions)  /* user break */
 diff --git a/smart-lec.c b/smart-lec.c
-index 0355879..e33ad8f 100644
+index 944b70d..534dd65 100644
 --- a/smart-lec.c
 +++ b/smart-lec.c
 @@ -1609,7 +1609,7 @@ static int smart_lec_iteration(sh_context *shc, char *message)
