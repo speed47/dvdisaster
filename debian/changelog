@@ -1,3 +1,9 @@
+dvdisaster (0.79.6-3) UNRELEASED; urgency=medium
+
+  * Merge changes from 0.79.5-7.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 08:52:02 +1100
+
 dvdisaster (0.79.6-2) experimental; urgency=medium
 
   [ TANIGUCHI Takaki ]

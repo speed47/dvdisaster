@@ -34,7 +34,7 @@ index a8c0d90..ca7f71f 100644
  over file level approaches.
  
 diff --git a/documentation/codec-specs/rs02.tex b/documentation/codec-specs/rs02.tex
-index c026772..073bf28 100644
+index fb88384..06e8126 100644
 --- a/documentation/codec-specs/rs02.tex
 +++ b/documentation/codec-specs/rs02.tex
 @@ -74,7 +74,7 @@ the parity data portion of the image might not be written to the medium.
@@ -47,7 +47,7 @@ index c026772..073bf28 100644
  
  Like the other dvdisaster codecs, RS02 is based on a  RS(255,k) Reed-Solomon code
 diff --git a/documentation/upstream-site/de/impressum.html b/documentation/upstream-site/de/impressum.html
-index d291df1..cb459bb 100644
+index 7c5ded3..d8bf4f8 100644
 --- a/documentation/upstream-site/de/impressum.html
 +++ b/documentation/upstream-site/de/impressum.html
 @@ -63,7 +63,7 @@ Carsten Gnörlich (Anschrift wie oben).
@@ -60,7 +60,7 @@ index d291df1..cb459bb 100644
  
  <!-- Page footer -->
 diff --git a/documentation/upstream-site/en/imprint.html b/documentation/upstream-site/en/imprint.html
-index b2d3e40..4db75f4 100644
+index d99324b..43641f2 100644
 --- a/documentation/upstream-site/en/imprint.html
 +++ b/documentation/upstream-site/en/imprint.html
 @@ -63,7 +63,7 @@ Carsten Gnörlich (see above for address).

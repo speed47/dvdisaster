@@ -13,7 +13,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/udf.c b/udf.c
-index ef02c6d..01a47a3 100644
+index 174fa36..9e345c2 100644
 --- a/udf.c
 +++ b/udf.c
 @@ -794,7 +794,7 @@ void FreeIsoHeader(IsoHeader *ih)
