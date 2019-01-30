@@ -3,6 +3,7 @@ dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
   * Add debian/gbp.conf to conform with DEP14 conventions.
   * Build with Debhelper compat level 12.
   * Set "Rules-Requires-Root: no".
+  * Simplify process by which mutable files are backed up and restored.
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 03:58:19 +1100
 

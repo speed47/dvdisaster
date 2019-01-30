@@ -13,6 +13,7 @@ export FORCE_SOURCE_DATE = 1
 MUTABLE_FILES := build.h $(wildcard locale/*.po) \
 	documentation/config/version.tex \
 	documentation/user-manual/manual.pdf
+BACKUP_TAR_FILE := debian/backup.tar
 
 BUILDROOT := $(CURDIR)/debian/tmp
 ICONS := $(wildcard contrib/dvdisaster*.png)
@@ -21,10 +22,17 @@ ICON_SIZES := $(patsubst contrib/dvdisaster%.png,%,$(ICONS))
 %:
 	dh $@
 
+override_dh_update_autotools_config:
+	dh_update_autotools_config
+	test -f $(BACKUP_TAR_FILE) || \
+		tar cpf $(BACKUP_TAR_FILE) $(MUTABLE_FILES)
+
+override_dh_clean:
+	dh_clean
+	test ! -f $(BACKUP_TAR_FILE) || \
+		tar xpf $(BACKUP_TAR_FILE) && rm -f $(BACKUP_TAR_FILE)
+
 override_dh_auto_configure:
-	for f in $(MUTABLE_FILES); do \
-		cp -an $$f $$f.orig; \
-	done
 	./configure \
 		--prefix=/usr \
 		--mandir=share/man \
@@ -32,12 +40,6 @@ override_dh_auto_configure:
 		--docdir=share/doc \
 		--docsubdir=dvdisaster-doc \
 		--with-embedded-src-path=no
-
-override_dh_clean:
-	dh_clean -X.orig
-	for f in $(MUTABLE_FILES); do \
-		test ! -f $$f.orig || mv -f $$f.orig $$f; \
-	done
 
 override_dh_auto_build-arch:
 	make all
