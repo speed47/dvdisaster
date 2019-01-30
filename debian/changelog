@@ -1,3 +1,9 @@
+dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
+
+  * Add debian/gbp.conf to conform with DEP14 conventions.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 03:58:19 +1100
+
 dvdisaster (0.79.5-6) unstable; urgency=medium
 
   [ TANIGUCHI Takaki ]
