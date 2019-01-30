@@ -12,9 +12,9 @@ Build-Depends: debhelper (>= 12),
                libgtk2.0-dev,
                libpng-dev,
                pkg-config
-Build-Depends-Indep: texlive-fonts-recommended,
-                     texlive-latex-base,
-                     texlive-latex-extra
+Build-Depends-Indep: texlive-fonts-recommended <!nodoc>,
+                     texlive-latex-base <!nodoc>,
+                     texlive-latex-extra  <!nodoc>
 Standards-Version: 4.1.4
 Vcs-Browser: https://salsa.debian.org/optical-media-team/dvdisaster
 Vcs-Git: https://salsa.debian.org/optical-media-team/dvdisaster.git
@@ -31,6 +31,7 @@ Description: data loss/scratch/aging protection for CD/DVD media
  used to recover unreadable sectors if the disc becomes damaged at a later time.
 
 Package: dvdisaster-doc
+Build-Profiles: <!nodoc>
 Section: doc
 Architecture: all
 Multi-Arch: foreign

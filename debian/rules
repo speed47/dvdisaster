@@ -47,7 +47,9 @@ override_dh_auto_build-arch:
 	dh_auto_build -a -- all
 
 override_dh_auto_build-indep:
-	dh_auto_build -i -- manual
+	dh_auto_build -i \
+		$(if $(findstring nodoc,$(DEB_BUILD_OPTIONS)),--no-act) \
+		-- manual
 
 override_dh_auto_install-arch:
 	dh_auto_install -a -- BUILDROOT=$(BUILDROOT)
