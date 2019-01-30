@@ -25,3 +25,5 @@
 31-improve-hurd-and-kfreebsd-support.patch
 32-display-compilation-commands.patch
 33-honour-LDFLAGS.patch
+34-gcc8-format-security.patch
+35-archived-homepage.patch

@@ -20,6 +20,26 @@ dvdisaster (0.79.6-1) experimental; urgency=medium
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:51:54 +1100
 
+dvdisaster (0.79.5-7) unstable; urgency=medium
+
+  * Add debian/gbp.conf to conform with DEP14 conventions.
+  * Build with Debhelper compat level 12.
+  * Set "Rules-Requires-Root: no".
+  * Simplify process by which mutable files are backed up and restored.
+  * Build as verbosely as possible.
+  * Fix location of manual.
+  * Fix dh_auto_build overrides to take advantage of parallel builds.
+  * Fix format security compilation warning in GCC-8.
+  * Change homepage to one archived at web.archive.org.
+    http://dvdisaster.net has been unavailable for a while now.
+    Not certain if this is permanent though, as the domain name still
+    exists for mail.
+  * Add support for nodoc build profile.
+  * Add more details to upstream metadata.
+  * Indicate compliance with Debian Policy 4.3.0.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 07:10:46 +1100
+
 dvdisaster (0.79.5-6) unstable; urgency=medium
 
   [ TANIGUCHI Takaki ]

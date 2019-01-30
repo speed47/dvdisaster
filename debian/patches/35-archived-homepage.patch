@@ -1,0 +1,108 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 31 Jan 2019 05:31:03 +1100
+Subject: Change homepage to one archived at web.archive.org.
+
+Description: Change homepage to one archived at web.archive.org.
+ http://dvdisaster.net has been unavailable for a while now.
+ Not certain if this is permanent though, as the domain name still
+ exists for mail.
+Author: Carlos Maddela <e7appew@gmail.com>
+Forwarded: not-needed
+Last-Update: 2019-01-31
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ documentation/codec-specs/rs01.tex            | 2 +-
+ documentation/codec-specs/rs02.tex            | 2 +-
+ documentation/upstream-site/de/impressum.html | 2 +-
+ documentation/upstream-site/en/imprint.html   | 2 +-
+ documentation/user-manual/background.tex      | 2 +-
+ documentation/user-manual/download.tex        | 4 ++--
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/documentation/codec-specs/rs01.tex b/documentation/codec-specs/rs01.tex
+index a8c0d90..ca7f71f 100644
+--- a/documentation/codec-specs/rs01.tex
++++ b/documentation/codec-specs/rs01.tex
+@@ -44,7 +44,7 @@ correction files must be protected with an image level
+ error correction layer (by using RS01,RS02 or RS03 on the medium), 
+ since only image level error correction avoids meta 
+ data sectors to become a single point of failure. See the
+-discussion at \url{http://dvdisaster.net/en/qa32.html} for
++discussion at \url{https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/qa32.html} for
+ more information on the advantages of image level data protection
+ over file level approaches.
+ 
+diff --git a/documentation/codec-specs/rs02.tex b/documentation/codec-specs/rs02.tex
+index c026772..073bf28 100644
+--- a/documentation/codec-specs/rs02.tex
++++ b/documentation/codec-specs/rs02.tex
+@@ -74,7 +74,7 @@ the parity data portion of the image might not be written to the medium.
+ Most current writing programs do however measure the .iso image by examining
+ its file size, and will transfer the parity data correctly. To be sure you
+ should follow the steps described under ``Testing image compatibility''
+-at the dvdisaster site (\url{http://dvdisaster.net/en/howtos92.html}) once
++at the dvdisaster site (\url{https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/howtos92.html}) once
+ before using each version of your optical media authoring software.
+ 
+ Like the other dvdisaster codecs, RS02 is based on a  RS(255,k) Reed-Solomon code
+diff --git a/documentation/upstream-site/de/impressum.html b/documentation/upstream-site/de/impressum.html
+index d291df1..cb459bb 100644
+--- a/documentation/upstream-site/de/impressum.html
++++ b/documentation/upstream-site/de/impressum.html
+@@ -63,7 +63,7 @@ Carsten Gnörlich (Anschrift wie oben).
+ Das Impressum gilt für die Internetpräsenz unter den Domänen<br>
+ <a href="http://dvdisaster.com">dvdisaster.com</a>, &nbsp;
+ <a href="http://dvdisaster.de">dvdisaster.de</a>, &nbsp;
+-<a href="http://dvdisaster.net">dvdisaster.net</a>, &nbsp;
++<a href="https://web.archive.org/web/20180428070843/http://dvdisaster.net">dvdisaster.net</a>, &nbsp;
+ <a href="http://dvdisaster.org">dvdisaster.org</a>.
+ 
+ <!-- Page footer -->
+diff --git a/documentation/upstream-site/en/imprint.html b/documentation/upstream-site/en/imprint.html
+index b2d3e40..4db75f4 100644
+--- a/documentation/upstream-site/en/imprint.html
++++ b/documentation/upstream-site/en/imprint.html
+@@ -63,7 +63,7 @@ Carsten Gnörlich (see above for address).
+ This notice covers the web sites under the domains<br>
+ <a href="http://dvdisaster.com">dvdisaster.com</a>, &nbsp;
+ <a href="http://dvdisaster.de">dvdisaster.de</a>, &nbsp;
+-<a href="http://dvdisaster.net">dvdisaster.net</a>, &nbsp;
++<a href="https://web.archive.org/web/20180428070843/http://dvdisaster.net">dvdisaster.net</a>, &nbsp;
+ <a href="http://dvdisaster.org">dvdisaster.org</a>.<br>
+     
+ <!-- Page footer -->
+diff --git a/documentation/user-manual/background.tex b/documentation/user-manual/background.tex
+index ba602ef..9aba84f 100644
+--- a/documentation/user-manual/background.tex
++++ b/documentation/user-manual/background.tex
+@@ -272,7 +272,7 @@ media with augmented images may not play correctly on all units \\
+ \end{tabular}
+ 
+ \paragraph{Further reading.} The specification for the dvdisaster codecs 
+-has been specified in a separate document called \href{http://dvdisaster.net/downloads/codecs.pdf}{codecs.pdf}. 
++has been specified in a separate document called \href{https://web.archive.org/web/20180428070843/http://dvdisaster.net/downloads/codecs.pdf}{codecs.pdf}. 
+ Good knowledge in coding theory and programming is required.
+ 
+ \subsection{The linear reading strategy}
+diff --git a/documentation/user-manual/download.tex b/documentation/user-manual/download.tex
+index 79df7be..a91a44a 100644
+--- a/documentation/user-manual/download.tex
++++ b/documentation/user-manual/download.tex
+@@ -15,7 +15,7 @@ the \href{http://www.gnu.org/licenses/gpl-3.0.txt}{GNU General Public License v3
+ 
+ \bigskip
+ 
+-The dvdisaster developer site (\url{http://dvdisaster.net}) contains
++The dvdisaster developer site (\url{https://web.archive.org/web/20180428070843/http://dvdisaster.net}) contains
+ the latest source code releases for the FreeBSD, GNU/Linux and NetBSD
+ operating systems. These are mostly aimed at maintainers of binary packages for
+ the beforementioned platforms. As an end user you might find it more convenient
+@@ -133,6 +133,6 @@ We cannot accept them for various reasons.
+ \smallskip
+ 
+ dvdisaster releases are always published with cryptographic signatures
+-and md5 checksums. See the \href{http://dvdisaster.net}{download site} for examples.
++and md5 checksums. See the \href{https://web.archive.org/web/20180428070843/http://dvdisaster.net}{download site} for examples.
+ Be very cautious if signatures and checksums are missing, invalid or not
+ matching those published at the sites mentioned above.

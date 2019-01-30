@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: Carsten Gnörlich <carsten@dvdisaster.org>
 Upstream-Name: dvdisaster
-Source: http://dvdisaster.net/
+Source: https://web.archive.org/web/20180428070843/http://dvdisaster.net/
 
 Files: *
 Copyright: 2004–2015, Carsten Gnörlich <carsten@dvdisaster.org>
