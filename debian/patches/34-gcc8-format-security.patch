@@ -1,0 +1,27 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Thu, 31 Jan 2019 05:10:21 +1100
+Subject: Fix format security warning in GCC-8.
+
+Description: Fix format security warning in GCC-8.
+Author: Carlos Maddela <e7appew@gmail.com>
+Forwarded: no
+Last-Update: 2019-01-31
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ udf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/udf.c b/udf.c
+index ef02c6d..01a47a3 100644
+--- a/udf.c
++++ b/udf.c
+@@ -794,7 +794,7 @@ void FreeIsoHeader(IsoHeader *ih)
+ 
+ void AddFile(IsoHeader *ih, char *name, guint64 size)
+ {  static int n;
+-   char iso[20], joliet[strlen(name)+3];
++   char iso[22], joliet[strlen(name)+3];
+ 
+    n++;
+    sprintf(iso,"RAN_%04d.DAT;1", n);
