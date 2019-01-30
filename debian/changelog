@@ -4,6 +4,7 @@ dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
   * Build with Debhelper compat level 12.
   * Set "Rules-Requires-Root: no".
   * Simplify process by which mutable files are backed up and restored.
+  * Build as verbosely as possible.
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 03:58:19 +1100
 
