@@ -1,4 +1,4 @@
-dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
+dvdisaster (0.79.5-7) unstable; urgency=medium
 
   * Add debian/gbp.conf to conform with DEP14 conventions.
   * Build with Debhelper compat level 12.
@@ -16,7 +16,7 @@ dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
   * Add more details to upstream metadata.
   * Indicate compliance with Debian Policy 4.3.0.
 
- -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 03:58:19 +1100
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 07:10:46 +1100
 
 dvdisaster (0.79.5-6) unstable; urgency=medium
 
