@@ -44,10 +44,10 @@ override_dh_auto_configure:
 		--with-embedded-src-path=no
 
 override_dh_auto_build-arch:
-	make all
+	dh_auto_build -a -- all
 
 override_dh_auto_build-indep:
-	make manual
+	dh_auto_build -i -- manual
 
 override_dh_auto_install-arch:
 	dh_auto_install -a -- BUILDROOT=$(BUILDROOT)
