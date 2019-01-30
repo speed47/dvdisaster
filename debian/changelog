@@ -8,6 +8,10 @@ dvdisaster (0.79.5-7) UNRELEASED; urgency=medium
   * Fix location of manual.
   * Fix dh_auto_build overrides to take advantage of parallel builds.
   * Fix format security compilation warning in GCC-8.
+  * Change homepage to one archived at web.archive.org.
+    http://dvdisaster.net has been unavailable for a while now.
+    Not certain if this is permanent though, as the domain name still
+    exists for mail.
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 03:58:19 +1100
 
