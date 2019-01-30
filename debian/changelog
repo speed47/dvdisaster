@@ -1,9 +1,9 @@
-dvdisaster (0.79.6-3) UNRELEASED; urgency=medium
+dvdisaster (0.79.6-3) experimental; urgency=medium
 
   * Merge changes from 0.79.5-7.
   * Update gbp.conf for debian/experimental branch.
 
- -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 08:52:02 +1100
+ -- Carlos Maddela <e7appew@gmail.com>  Thu, 31 Jan 2019 08:59:58 +1100
 
 dvdisaster (0.79.6-2) experimental; urgency=medium
 
