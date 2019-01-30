@@ -5,7 +5,7 @@ Maintainer: Optical Media Tools Team <pkg-opt-media-team@lists.alioth.debian.org
 Uploaders: TANIGUCHI Takaki <takaki@debian.org>,
            Rogério Brito <rbrito@ime.usp.br>,
            Carlos Maddela <e7appew@gmail.com>
-Build-Depends: debhelper (>= 11),
+Build-Depends: debhelper (>= 12),
                gettext,
                libbz2-dev,
                libcam-dev [kfreebsd-any],
