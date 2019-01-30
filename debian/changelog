@@ -20,6 +20,28 @@ dvdisaster (0.79.6-1) experimental; urgency=medium
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:51:54 +1100
 
+dvdisaster (0.79.5-6) unstable; urgency=medium
+
+  [ TANIGUCHI Takaki ]
+  * change Vcs-* path
+
+  [ Carlos Maddela ]
+  * Build with DH compat level 11.
+  * Indicate compliance with Debian Policy 4.1.4.
+  * Add machine-readable upstream metadata.
+  * Update debian/copyright.
+  * Update location of PDF manual registered with doc-base (required
+    as a result of DH compat level change).
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 23 Jun 2018 05:01:27 +1000
+
+dvdisaster (0.79.5-5) unstable; urgency=medium
+
+  * Update Vcs-* to salsa.debian.org
+  * Bump Standards-Version to 4.1.3
+
+ -- TANIGUCHI Takaki <takaki@debian.org>  Sat, 27 Jan 2018 23:34:08 +0900
+
 dvdisaster (0.79.5-4) unstable; urgency=medium
 
   * Use complete Debian revision number as build number, instead of
