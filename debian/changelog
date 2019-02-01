@@ -27,6 +27,12 @@ dvdisaster (0.79.6-1) experimental; urgency=medium
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:51:54 +1100
 
+dvdisaster (0.79.5-8) unstable; urgency=medium
+
+  * Fix parallel build of locale strings.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Fri, 01 Feb 2019 23:03:13 +1100
+
 dvdisaster (0.79.5-7) unstable; urgency=medium
 
   * Add debian/gbp.conf to conform with DEP14 conventions.

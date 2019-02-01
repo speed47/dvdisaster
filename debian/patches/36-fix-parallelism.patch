@@ -1,0 +1,54 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Fri, 1 Feb 2019 22:28:18 +1100
+Subject: Fix parallel build of locale strings.
+
+Description: Fix parallel build of locale strings.
+Author: Carlos Maddela <e7appew@gmail.com>
+Forwarded: no
+Last-Update: 2019-02-01
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ GNUmakefile.template   |  1 +
+ locale/create-makefile | 10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/GNUmakefile.template b/GNUmakefile.template
+index 4509c48..3aae04e 100644
+--- a/GNUmakefile.template
++++ b/GNUmakefile.template
+@@ -297,6 +297,7 @@ clean:
+ 	rm -f simple-md5sum
+ 	$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs clean;
+ 	$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual clean;
++	$(MAKE) --no-print-directory -C $(SRCDIR)/locale clean;
+ 
+ BUILD=`grep BUILD $(SRCDIR)/build.h | cut -d ' ' -f 3`
+ arch:	archclean time-stamp
+diff --git a/locale/create-makefile b/locale/create-makefile
+index 5ed31ed..83a4abf 100644
+--- a/locale/create-makefile
++++ b/locale/create-makefile
+@@ -30,15 +30,19 @@ locale: \$(LOCALEFILES)
+ 
+ # Create the locale files. 
+ 
++messages.pot: \$(CFILES)
++	@cd ..; xgettext --no-wrap -cTRANSLATORS: -o locale/messages.pot -k_ -k_utf \$(CFILES_NP)
++
++clean:
++	rm -f messages.pot
++
+ EOF
+ 
+ for i in $prefixes; do
+ cat >> Makefile <<EOF
+-$i.po: \$(CFILES)
++$i.po: messages.pot
+ 	@echo "Updating $i.po"
+-	@cd ..; xgettext --no-wrap -cTRANSLATORS: -o locale/messages.pot -k_ -k_utf \$(CFILES_NP)
+ 	@msgmerge -q -U --no-wrap --no-fuzzy-matching $i.po messages.pot
+-	@rm -f messages.pot
+ 
+ $i/LC_MESSAGES/dvdisaster.mo: $i.po
+ 	@echo "Updating $i.mo"
