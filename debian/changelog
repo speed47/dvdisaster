@@ -1,8 +1,8 @@
-dvdisaster (0.79.5-8) UNRELEASED; urgency=medium
+dvdisaster (0.79.5-8) unstable; urgency=medium
 
   * Fix parallel build of locale strings.
 
- -- Carlos Maddela <e7appew@gmail.com>  Fri, 01 Feb 2019 22:53:08 +1100
+ -- Carlos Maddela <e7appew@gmail.com>  Fri, 01 Feb 2019 23:03:13 +1100
 
 dvdisaster (0.79.5-7) unstable; urgency=medium
 
