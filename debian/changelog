@@ -1,8 +1,8 @@
-dvdisaster (0.79.6-5) UNRELEASED; urgency=medium
+dvdisaster (0.79.6-5) experimental; urgency=medium
 
   * Merge changes from 0.79.5-9.
 
- -- Carlos Maddela <e7appew@gmail.com>  Sat, 02 Feb 2019 16:02:40 +1100
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 02 Feb 2019 16:05:29 +1100
 
 dvdisaster (0.79.6-4) experimental; urgency=medium
 
