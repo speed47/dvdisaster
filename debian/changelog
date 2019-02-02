@@ -1,3 +1,10 @@
+dvdisaster (0.79.5-9) UNRELEASED; urgency=medium
+
+  * Make sure that the upstream changelog remains uncompressed so
+    that the application can display it.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 02 Feb 2019 13:32:34 +1100
+
 dvdisaster (0.79.5-8) unstable; urgency=medium
 
   * Fix parallel build of locale strings.
