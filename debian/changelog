@@ -33,6 +33,15 @@ dvdisaster (0.79.6-1) experimental; urgency=medium
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:51:54 +1100
 
+dvdisaster (0.79.5-9) unstable; urgency=medium
+
+  * Make sure that the upstream changelog remains uncompressed so
+    that the application can display it.
+  * Suggest to install dvdisaster-doc in error message, if the PDF manual
+    cannot be found.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 02 Feb 2019 15:20:23 +1100
+
 dvdisaster (0.79.5-8) unstable; urgency=medium
 
   * Fix parallel build of locale strings.

@@ -28,3 +28,4 @@
 34-gcc8-format-security.patch
 35-archived-homepage.patch
 36-fix-parallelism.patch
+37-suggest-dvdisaster-doc.patch
