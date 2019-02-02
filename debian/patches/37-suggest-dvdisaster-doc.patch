@@ -1,0 +1,137 @@
+From: Carlos Maddela <e7appew@gmail.com>
+Date: Sat, 2 Feb 2019 13:56:04 +1100
+Subject: Suggest to install dvdisaster-doc in error message
+
+Description: Suggest to install dvdisaster-doc in error message
+ if the PDF manual cannot be found.
+Author: Carlos Maddela <e7appew@gmail.com>
+Forwarded: not-needed
+Last-Update: 2019-02-02
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+---
+ locale/cs.po    | 2 ++
+ locale/de.po    | 2 ++
+ locale/it.po    | 2 ++
+ locale/pt_BR.po | 2 ++
+ locale/ru.po    | 2 ++
+ locale/sv.po    | 2 ++
+ show-manual.c   | 3 ++-
+ 7 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/locale/cs.po b/locale/cs.po
+index 497a4a9..4a12125 100644
+--- a/locale/cs.po
++++ b/locale/cs.po
+@@ -6046,10 +6046,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "Soubor dokumentace\n"
+ "%s\n"
+ "nebyl nalezen.\n"
++"Nainstalujte prosím balíček dvdisaster-doc.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/locale/de.po b/locale/de.po
+index bb5baa6..b2f2974 100644
+--- a/locale/de.po
++++ b/locale/de.po
+@@ -6185,10 +6185,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "Dokument-Datei\n"
+ "%s\n"
+ "nicht gefunden.\n"
++"Bitte installieren Sie das dvdisaster-doc-Paket.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/locale/it.po b/locale/it.po
+index 000d5c3..fb6dced 100644
+--- a/locale/it.po
++++ b/locale/it.po
+@@ -5598,10 +5598,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "File di documentazione\n"
+ "%s\n"
+ "non trovati.\n"
++"Si prega di installare il pacchetto dvdisaster-doc.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/locale/pt_BR.po b/locale/pt_BR.po
+index 4624071..3f1bf90 100644
+--- a/locale/pt_BR.po
++++ b/locale/pt_BR.po
+@@ -5919,10 +5919,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "Arquivo de documentação\n"
+ "%s\n"
+ "não encontrado.\n"
++"Por favor, instale o pacote dvdisaster-doc.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/locale/ru.po b/locale/ru.po
+index 66fc036..2b9d309 100644
+--- a/locale/ru.po
++++ b/locale/ru.po
+@@ -5927,10 +5927,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "Файл документации\n"
+ "%s\n"
+ "не найден.\n"
++"Пожалуйста, установите пакет dvdisaster-doc.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/locale/sv.po b/locale/sv.po
+index 5cd4927..4ef73c1 100644
+--- a/locale/sv.po
++++ b/locale/sv.po
+@@ -5617,10 +5617,12 @@ msgid ""
+ "Documentation file\n"
+ "%s\n"
+ "not found.\n"
++"Please install the dvdisaster-doc package.\n"
+ msgstr ""
+ "Dokumentationsfilen\n"
+ "%s\n"
+ "hittades inte.\n"
++"Installera dvdisaster-doc-paketet.\n"
+ 
+ #: show-manual.c:308
+ msgid "Please hang on until the viewer comes up!"
+diff --git a/show-manual.c b/show-manual.c
+index ecb0922..452354a 100644
+--- a/show-manual.c
++++ b/show-manual.c
+@@ -296,7 +296,8 @@ void ShowPDF(char *target)
+ 
+    if(!LargeStat(bi->path, &ignore))
+    {  
+-      CreateMessage(_("Documentation file\n%s\nnot found.\n"), GTK_MESSAGE_ERROR, bi->path);
++      CreateMessage(_("Documentation file\n%s\nnot found.\n"
++	       "Please install the dvdisaster-doc package.\n"), GTK_MESSAGE_ERROR, bi->path);
+       g_free(bi->path);
+       g_free(bi);
+       return;
