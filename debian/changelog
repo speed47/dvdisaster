@@ -38,6 +38,12 @@ dvdisaster (0.79.6-1) experimental; urgency=medium
   * Rebase patches.
 
  -- Carlos Maddela <e7appew@gmail.com>  Thu, 21 Dec 2017 05:51:54 +1100
+dvdisaster (0.79.5-9) UNRELEASED; urgency=medium
+
+  * Make sure that the upstream changelog remains uncompressed so
+    that the application can display it.
+
+ -- Carlos Maddela <e7appew@gmail.com>  Sat, 02 Feb 2019 13:32:34 +1100
 
 dvdisaster (0.79.5-9) unstable; urgency=medium
 
