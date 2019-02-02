@@ -20,10 +20,10 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  7 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/locale/cs.po b/locale/cs.po
-index 497a4a9..4a12125 100644
+index d89ff4a..b55c45a 100644
 --- a/locale/cs.po
 +++ b/locale/cs.po
-@@ -6046,10 +6046,12 @@ msgid ""
+@@ -6077,10 +6077,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -37,10 +37,10 @@ index 497a4a9..4a12125 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/locale/de.po b/locale/de.po
-index bb5baa6..b2f2974 100644
+index 8112b13..f54b083 100644
 --- a/locale/de.po
 +++ b/locale/de.po
-@@ -6185,10 +6185,12 @@ msgid ""
+@@ -6226,10 +6226,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -54,10 +54,10 @@ index bb5baa6..b2f2974 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/locale/it.po b/locale/it.po
-index 000d5c3..fb6dced 100644
+index b98f8d3..de60016 100644
 --- a/locale/it.po
 +++ b/locale/it.po
-@@ -5598,10 +5598,12 @@ msgid ""
+@@ -5629,10 +5629,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -71,10 +71,10 @@ index 000d5c3..fb6dced 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/locale/pt_BR.po b/locale/pt_BR.po
-index 4624071..3f1bf90 100644
+index 81ee14d..3659f11 100644
 --- a/locale/pt_BR.po
 +++ b/locale/pt_BR.po
-@@ -5919,10 +5919,12 @@ msgid ""
+@@ -5950,10 +5950,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -88,10 +88,10 @@ index 4624071..3f1bf90 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/locale/ru.po b/locale/ru.po
-index 66fc036..2b9d309 100644
+index 6e980b9..9c45692 100644
 --- a/locale/ru.po
 +++ b/locale/ru.po
-@@ -5927,10 +5927,12 @@ msgid ""
+@@ -5958,10 +5958,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -105,10 +105,10 @@ index 66fc036..2b9d309 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/locale/sv.po b/locale/sv.po
-index 5cd4927..4ef73c1 100644
+index 3011969..9cee323 100644
 --- a/locale/sv.po
 +++ b/locale/sv.po
-@@ -5617,10 +5617,12 @@ msgid ""
+@@ -5648,10 +5648,12 @@ msgid ""
  "Documentation file\n"
  "%s\n"
  "not found.\n"
@@ -122,7 +122,7 @@ index 5cd4927..4ef73c1 100644
  #: show-manual.c:308
  msgid "Please hang on until the viewer comes up!"
 diff --git a/show-manual.c b/show-manual.c
-index ecb0922..452354a 100644
+index 4abbe97..5ac8e97 100644
 --- a/show-manual.c
 +++ b/show-manual.c
 @@ -296,7 +296,8 @@ void ShowPDF(char *target)
