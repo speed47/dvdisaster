@@ -1,3 +1,9 @@
+dvdisaster (0.79.6-6) UNRELEASED; urgency=medium
+
+  * Use secure URI in debian/watch.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 06 Aug 2019 16:08:20 +0000
+
 dvdisaster (0.79.6-5) experimental; urgency=medium
 
   * Merge changes from 0.79.5-9.

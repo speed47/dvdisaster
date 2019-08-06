@@ -1,4 +1,4 @@
 version=3
 opts="pgpsigurlmangle=s/$/.gpg/" \
-https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html \
+https://web.archive.org/web/20180428070843/https://dvdisaster.net/en/index.html \
      (?:.*?/)?dvdisaster-(.*)\.tar\.bz2 debian uupdate
