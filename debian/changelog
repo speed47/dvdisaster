@@ -4,6 +4,7 @@ dvdisaster (0.79.6-6) UNRELEASED; urgency=medium
   * Update standards version, no changes needed.
   * Set debhelper-compat version in Build-Depends.
   * Update standards version to 4.4.1, no changes needed.
+  * Remove obsolete fields Name, Contact from debian/upstream/metadata.
 
  -- Debian Janitor <janitor@jelmer.uk>  Tue, 06 Aug 2019 16:08:20 +0000
 
