@@ -16,7 +16,7 @@ Build-Depends: debhelper (>= 12),
 Build-Depends-Indep: texlive-fonts-recommended <!nodoc>,
                      texlive-latex-base <!nodoc>,
                      texlive-latex-extra  <!nodoc>
-Standards-Version: 4.4.0
+Standards-Version: 4.4.1
 Vcs-Browser: https://salsa.debian.org/optical-media-team/dvdisaster
 Vcs-Git: https://salsa.debian.org/optical-media-team/dvdisaster.git
 Homepage: https://web.archive.org/web/20180428070843/http://dvdisaster.net/
