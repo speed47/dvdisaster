@@ -5,6 +5,7 @@ dvdisaster (0.79.6-6) UNRELEASED; urgency=medium
   * Set debhelper-compat version in Build-Depends.
   * Update standards version to 4.4.1, no changes needed.
   * Remove obsolete fields Name, Contact from debian/upstream/metadata.
+  * Fix day-of-week for changelog entries 0.71~devel23-4.
 
  -- Debian Janitor <janitor@jelmer.uk>  Tue, 06 Aug 2019 16:08:20 +0000
 
@@ -410,7 +411,7 @@ dvdisaster (0.71~devel23-4) unstable; urgency=low
 
   * Fixed clean target in rules (Closes: #442559).
 
- -- Daniel Baumann <daniel@debian.org>  Sun, 17 Sep 2007 00:37:00 +0200
+ -- Daniel Baumann <daniel@debian.org>  Mon, 17 Sep 2007 00:37:00 +0200
 
 dvdisaster (0.71~devel23-3) unstable; urgency=medium
 
