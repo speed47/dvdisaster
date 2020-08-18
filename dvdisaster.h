@@ -98,7 +98,7 @@
 #define CDR_SIZE         (351*1024)
 #define DVD_SL_SIZE      2295104  /* DVD+R/RW size used as least common denominator */
 #define DVD_DL_SIZE 	 4171712  /* also seen: 4148992 4173824  */
-#define BD_SL_SIZE      11826176
+#define BD_SL_SIZE      12219392
 #define BD_DL_SIZE	23652352
 #define BDXL_TL_SIZE    47305728
 
