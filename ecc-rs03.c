@@ -38,7 +38,7 @@ void register_rs03(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS03", 4);
+   strncpy(method->name, "RS03", 5);
    method->menuEntry = g_strdup(_("Multithreaded RS codec (RS03)"));
    method->description = g_strdup(_("Multithreaded Reed-Solomon codec for error correction files and augmented images"));
    method->create  = RS03Create;
@@ -55,6 +55,7 @@ void register_rs03(void)
    method->recognizeEccFile  = RS03RecognizeFile;
    method->recognizeEccImage = RS03RecognizeImage;
 
+#ifndef CLI
    /*** Linkage to rs03-window.c */
 
    method->createCreateWindow = CreateRS03EncWindow;
@@ -71,6 +72,7 @@ void register_rs03(void)
 
    method->createVerifyWindow = CreateRS03VerifyWindow;
    method->resetVerifyWindow  = ResetRS03VerifyWindow;
+#endif
 
    /*** Register ourself */
 
@@ -80,13 +82,17 @@ void register_rs03(void)
 }
 
 static void destroy(Method *method)
-{  RS03Widgets *wl = (RS03Widgets*)method->widgetList;
+{
+#ifndef CLI
+   RS03Widgets *wl = (RS03Widgets*)method->widgetList;
+#endif
    RS03CksumClosure *csc = (RS03CksumClosure*)method->ckSumClosure;
 
    if(csc->lay)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
+#ifndef CLI
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 
@@ -98,5 +104,6 @@ static void destroy(Method *method)
 
       g_free(wl);
    }
+#endif
 }
 

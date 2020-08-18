@@ -1,13 +1,13 @@
 # Portuguese translations for dvdisaster package.
-# Copyright (C) 2015 THE dvdisaster'S COPYRIGHT HOLDER
+# Copyright (C) 2012 THE dvdisaster'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dvdisaster package.
-# Carsten Gnörlich <carsten@dvdisaster.de>, 2015.
+# Carsten Gnörlich <carsten@dvdisaster.de>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.72.rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-17 09:59+0000\n"
+"POT-Creation-Date: 2020-08-19 18:17+0200\n"
 "PO-Revision-Date: 2010-06-09 11:13+0200\n"
 "Last-Translator: cg <cg@dvdisaster.org>\n"
 "Language-Team: Portuguese\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: closure.c:337
+#: closure.c:342
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -30,15 +30,15 @@ msgstr ""
 "# que será sobreescrevido toda vez que o dvdisaster rodar.\n"
 "\n"
 
-#: closure.c:546
+#: closure.c:552
 msgid "medium.iso"
 msgstr "midia.iso"
 
-#: closure.c:547
+#: closure.c:553
 msgid "medium.ecc"
 msgstr "midia.ecc"
 
-#: closure.c:548
+#: closure.c:554
 msgid "sector-"
 msgstr "setor-"
 
@@ -56,18 +56,18 @@ msgstr ""
 
 #: debug.c:103 debug.c:191 debug.c:239 debug.c:363 debug.c:707 debug.c:807
 #: debug.c:850 debug.c:1181 debug.c:1189 debug.c:1266 rs01-common.c:175
-#: rs02-common.c:239 rs02-create.c:350 rs02-create.c:997 rs02-fix.c:380
-#: rs02-verify.c:395 rs03-common.c:340 rs03-create.c:720 rs03-create.c:745
+#: rs02-common.c:239 rs02-create.c:377 rs02-create.c:1032 rs02-fix.c:414
+#: rs02-verify.c:404 rs03-common.c:340 rs03-create.c:749 rs03-create.c:774
 #: rs03-recognize.c:549
 #, c-format
 msgid "Failed seeking to sector %lld in image: %s"
 msgstr "Falha ao ir para o setor %lld da imagem: %s"
 
 #: debug.c:111 debug.c:196 debug.c:243 debug.c:368 debug.c:545 debug.c:662
-#: debug.c:713 debug.c:1193 debug.c:1270 debug.c:1310 rs02-create.c:373
-#: rs02-create.c:399 rs02-create.c:1000 rs03-create.c:725 rs03-create.c:749
-#: udf.c:827 udf.c:885 udf.c:942 udf.c:955 udf.c:960 udf.c:963 udf.c:966
-#: udf.c:969 udf.c:972 udf.c:975
+#: debug.c:713 debug.c:1193 debug.c:1270 debug.c:1310 rs02-create.c:400
+#: rs02-create.c:426 rs02-create.c:1035 rs03-create.c:754 rs03-create.c:778
+#: udf.c:830 udf.c:888 udf.c:945 udf.c:958 udf.c:963 udf.c:966 udf.c:969
+#: udf.c:972 udf.c:975 udf.c:978
 #, c-format
 msgid "Failed writing to sector %lld in image: %s"
 msgstr "Falha ao gravar no setor %lld da imagem: %s"
@@ -109,10 +109,10 @@ msgstr ""
 
 #: debug.c:443 debug.c:501 debug.c:565 debug.c:606 debug.c:689 debug.c:795
 #: debug.c:836 debug.c:882 debug.c:936 debug.c:1161 debug.c:1169 debug.c:1225
-#: debug.c:1230 raw-editor.c:363 read-adaptive.c:73 read-adaptive.c:93
-#: read-adaptive.c:1440 read-adaptive.c:1472 read-linear.c:267
-#: read-linear.c:269 read-linear.c:301 read-linear.c:303 rs01-create.c:278
-#: rs03-create.c:1288
+#: debug.c:1230 raw-editor.c:364 read-adaptive.c:73 read-adaptive.c:93
+#: read-adaptive.c:1528 read-adaptive.c:1564 read-linear.c:289
+#: read-linear.c:291 read-linear.c:327 read-linear.c:329 rs01-create.c:303
+#: rs03-create.c:1337
 #, c-format
 msgid ""
 "Can't open %s:\n"
@@ -147,8 +147,8 @@ msgstr "O valor do byte deve estar no intervalo [0..255]"
 msgid "Setting byte %d in sector %lld to value %d.\n"
 msgstr "Atribuindo ao byte %d no setor %lld o valor %d.\n"
 
-#: debug.c:477 debug.c:531 debug.c:694 rs02-create.c:193 rs02-verify.c:694
-#: rs03-verify.c:999
+#: debug.c:477 debug.c:531 debug.c:694 rs02-create.c:210 rs02-verify.c:721
+#: rs03-verify.c:1077
 #, c-format
 msgid "Failed seeking to start of image: %s\n"
 msgstr "Falha ao ir para o início da imagm: %s\n"
@@ -157,7 +157,7 @@ msgstr "Falha ao ir para o início da imagm: %s\n"
 msgid "Could not write the new byte value"
 msgstr "Impossível gravar o novo valor do byte"
 
-#: debug.c:524 read-adaptive.c:779
+#: debug.c:524 read-adaptive.c:809
 #, c-format
 msgid "Sectors must be in range [0..%lld].\n"
 msgstr "Os setores devem estar no intervalo [0..%lld].\n"
@@ -177,10 +177,10 @@ msgstr "O novo tamanho deve estar no intervalo [0..%lld].\n"
 msgid "Truncating image to %lld sectors.\n"
 msgstr "Truncando imagem para %lld setores.\n"
 
-#: debug.c:579 read-linear.c:1393 rs01-fix.c:212 rs01-fix.c:234 rs01-fix.c:250
-#: rs01-fix.c:284 rs02-create.c:108 rs02-create.c:154 rs02-fix.c:242
-#: rs02-fix.c:261 rs02-fix.c:274 rs03-create.c:240 rs03-create.c:319
-#: rs03-fix.c:266 rs03-fix.c:301 rs03-fix.c:322 rs03-fix.c:337
+#: debug.c:579 read-linear.c:1471 rs01-fix.c:230 rs01-fix.c:253 rs01-fix.c:275
+#: rs01-fix.c:315 rs02-create.c:117 rs02-create.c:171 rs02-fix.c:268
+#: rs02-fix.c:288 rs02-fix.c:306 rs03-create.c:249 rs03-create.c:338
+#: rs03-fix.c:298 rs03-fix.c:337 rs03-fix.c:359 rs03-fix.c:379
 #, c-format
 msgid "Could not truncate %s: %s\n"
 msgstr "Impossível truncar %s: %s\n"
@@ -204,7 +204,7 @@ msgstr ""
 "dvdistater --debug %s %lld --random-seed %d\n"
 "\n"
 
-#: debug.c:674 read-adaptive.c:380 read-linear.c:123 read-linear.c:126
+#: debug.c:674 read-adaptive.c:382 read-linear.c:133 read-linear.c:136
 #, c-format
 msgid ""
 "Error closing image file:\n"
@@ -232,7 +232,7 @@ msgid "%lld \"unreadable sector\" markers replaced.\n"
 msgstr "%lld marcadores \"setor-ilegível\" substituidos.\n"
 
 #: debug.c:811 debug.c:854 debug.c:1185 debug.c:1252 debug.c:1256 debug.c:1306
-#: rs01-common.c:191 rs02-common.c:244 rs02-create.c:210 rs02-fix.c:383
+#: rs01-common.c:191 rs02-common.c:244 rs02-create.c:229 rs02-fix.c:417
 #: rs03-common.c:345 rs03-recognize.c:554
 #, c-format
 msgid "Failed reading sector %lld in image: %s"
@@ -275,21 +275,21 @@ msgstr "Setor de destinho deve estar no intervalo [0..%lld]\n"
 msgid "Copying sector %lld from %s to sector %lld in %s.\n"
 msgstr "Copiando setor %lld de %s para o setor %lld em %s.\n"
 
-#: ds-marker.c:266
+#: ds-marker.c:267
 msgid "Stop reporting these errors"
 msgstr "Parar de reportar esses erros"
 
-#: ds-marker.c:267
+#: ds-marker.c:268
 msgid "Continue reporting"
 msgstr "Continuar reportando"
 
-#: ds-marker.c:293
+#: ds-marker.c:302
 msgid ""
 "* ... more unrecoverable sectors found ...\n"
 "* further messages are suppressed unless the -v option is given.\n"
 msgstr ""
 
-#: ds-marker.c:307
+#: ds-marker.c:318
 #, c-format
 msgid ""
 "\n"
@@ -304,7 +304,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ds-marker.c:308
+#: ds-marker.c:321
 #, c-format
 msgid ""
 "\n"
@@ -315,7 +315,7 @@ msgid ""
 "* "
 msgstr ""
 
-#: ds-marker.c:318
+#: ds-marker.c:331
 #, c-format
 msgid ""
 "Unrecoverable sector found!\n"
@@ -332,7 +332,7 @@ msgid ""
 "error correction data for it. Sorry for the bad news.\n"
 msgstr ""
 
-#: ds-marker.c:341
+#: ds-marker.c:358
 #, c-format
 msgid ""
 "Unrecoverable sector found!\n"
@@ -349,7 +349,7 @@ msgid ""
 "error correction data for it. Sorry for the bad news.\n"
 msgstr ""
 
-#: ds-marker.c:367
+#: ds-marker.c:388
 #, c-format
 msgid ""
 "Unrecoverable sector found!\n"
@@ -376,7 +376,7 @@ msgstr ""
 "Também não será possível criar dados de correção de erros para ela.\n"
 "Desculpe pelas más notícias.\n"
 
-#: ds-marker.c:390
+#: ds-marker.c:415
 #, c-format
 msgid ""
 "Unrecoverable sector found!\n"
@@ -392,83 +392,83 @@ msgstr ""
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:145 dvdisaster.c:157
+#: dvdisaster.c:147 dvdisaster.c:159
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:338
+#: dvdisaster.c:340
 msgid "-o/--ecc-target expects 'file' or 'image'"
 msgstr ""
 
-#: dvdisaster.c:364
+#: dvdisaster.c:366
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--threads devem ser de 1..%d\n"
 
-#: dvdisaster.c:378
-msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
-msgstr "--cache-size deve ser pelo menos 8MiB; 16MiB ou mais são recomendados."
-
 #: dvdisaster.c:380
+msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
+msgstr ""
+
+#: dvdisaster.c:382
 #, c-format
 msgid "--cache-size maximum is %dMiB."
 msgstr ""
 
-#: dvdisaster.c:403
+#: dvdisaster.c:405
 msgid "--encoding-algorithm: SSE2 not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:407
+#: dvdisaster.c:409
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, SSE2"
 msgstr ""
 
-#: dvdisaster.c:414
+#: dvdisaster.c:416
 msgid "--encoding-algorithm: AltiVec not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:418
+#: dvdisaster.c:420
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"
 msgstr ""
 
-#: dvdisaster.c:421
+#: dvdisaster.c:423
 msgid "--encoding-algorithm: valid types are 32bit, 64bit"
 msgstr ""
 
-#: dvdisaster.c:430
+#: dvdisaster.c:432
 msgid "--encoding-io-strategy: mmap not supported on this OS"
 msgstr ""
 
-#: dvdisaster.c:434
+#: dvdisaster.c:436
 msgid "--encoding-io-strategy: valid types are readwrite and mmap"
 msgstr ""
 
-#: dvdisaster.c:444
+#: dvdisaster.c:446
 msgid "Valid args for --driver: sg,cdrom"
 msgstr ""
 
-#: dvdisaster.c:446
+#: dvdisaster.c:448
 msgid "--driver is only supported on GNU/Linux"
 msgstr "--driver suportado apenas no GNU/Linux"
 
-#: dvdisaster.c:454
+#: dvdisaster.c:456
 msgid "--fixed-speed-values is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:498
+#: dvdisaster.c:500
 #, c-format
 msgid "--prefetch-sectors must be in range 32...%s"
 msgstr ""
 
-#: dvdisaster.c:552
+#: dvdisaster.c:554
 msgid "--set-version is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:659
+#: dvdisaster.c:661
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? valor de retorno de getopt %d ilegal\n"
 
-#: dvdisaster.c:750 main-window.c:150
+#: dvdisaster.c:754 main-window.c:151
 #, c-format
 msgid ""
 "\n"
@@ -479,7 +479,7 @@ msgstr ""
 "Método %s não disponível.\n"
 "Use -m sem parâmetros para uma lista de métodos.\n"
 
-#: dvdisaster.c:761 rs01-create.c:260 rs02-create.c:1038 rs03-create.c:1256
+#: dvdisaster.c:765 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1305
 #, c-format
 msgid ""
 "\n"
@@ -488,25 +488,25 @@ msgstr ""
 "\n"
 "Abrindo %s"
 
-#: dvdisaster.c:768 rs01-create.c:269 rs02-create.c:158 rs02-create.c:1048
-#: rs03-create.c:323 rs03-create.c:1271
+#: dvdisaster.c:772 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
+#: rs03-create.c:342 rs03-create.c:1320
 #, c-format
 msgid ": %lld medium sectors.\n"
 msgstr ": %lld setores da mídia.\n"
 
-#: dvdisaster.c:769 rs01-create.c:270 rs02-create.c:159 rs02-create.c:1049
-#: rs03-create.c:324 rs03-create.c:1272
+#: dvdisaster.c:773 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
+#: rs03-create.c:343 rs03-create.c:1321
 #, c-format
 msgid ": %lld medium sectors and %d bytes.\n"
 msgstr ": %lld setores da mídia e %d bytes.\n"
 
-#: dvdisaster.c:796 main-window.c:208
+#: dvdisaster.c:800 main-window.c:209
 msgid "RS01 method not available for comparing files."
 msgstr "Método RS01 não está disponível para comparar arquivos."
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:886
+#: dvdisaster.c:894
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -519,18 +519,8 @@ msgid ""
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
-"\n"
-"Exemplos de uso comum:\n"
-"  dvdisaster -r,--read   # Lê a mídia e grava sua imagem no disco rígido.\n"
-"                         # Use -rn-m para ler um certo intervalo de setores, ex.: -r100-200\n"
-"  dvdisaster -c,--create # Cria informação .ecc para a imagem da mídia.\n"
-"  dvdisaster -f,--fix    # Tenta consertar a imagem da mídia usando a informação .ecc.\n"
-"  dvdisaster -s,--scan   # Vasculha a mídia por erros de leitura.\n"
-"  dvdisaster -t,--test   # Testa a integridade dos arquivos .iso e .ecc.\n"
-"  dvdisaster -u,--unlink # Apaga arquivos .iso (quando outras ações estão completas)\n"
-"\n"
 
-#: dvdisaster.c:895
+#: dvdisaster.c:903
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -541,241 +531,241 @@ msgid ""
 "  -o,--ecc-target [file image] - where to put ecc data in RS03\n"
 msgstr ""
 
-#: dvdisaster.c:905
+#: dvdisaster.c:913
 msgid "Tweaking options (see manual before using!)\n"
 msgstr "Opções avançadas (leio o manual antes de usar!)\n"
 
-#: dvdisaster.c:906
+#: dvdisaster.c:914
 msgid "  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"
 msgstr ""
 
-#: dvdisaster.c:907
+#: dvdisaster.c:915
 msgid "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 msgstr "  -j,--jump n             - pula n setores adiante após um erro de leitura (padrão: 16)\n"
 
-#: dvdisaster.c:908
+#: dvdisaster.c:916
 msgid "  -m n                   - list/select error correction methods (default: RS01)\n"
 msgstr "  -m n                    - lista/seleciona métodos de correção de erros (Padrão: (RS01)\n"
 
-#: dvdisaster.c:909
+#: dvdisaster.c:917
 #, c-format
 msgid ""
 "  -n,--redundancy n%%     - error correction data redundancy\n"
 "                           allowed values depend on codec (see manual)\n"
 msgstr ""
 
-#: dvdisaster.c:911
+#: dvdisaster.c:919
 msgid "  -v,--verbose           - more diagnostic messages\n"
 msgstr "  -v,--verbose            - mais mensagens de diagnóstico\n"
 
-#: dvdisaster.c:912
+#: dvdisaster.c:920
 msgid "  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"
 msgstr ""
 
-#: dvdisaster.c:913
+#: dvdisaster.c:921
 msgid "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 msgstr "  --adaptive-read         - usa estratégia otimizada para leitura de mídia danificada\n"
 
-#: dvdisaster.c:914
+#: dvdisaster.c:922
 msgid "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 msgstr "  --auto-suffix           - adiciona sufixos .iso e .ecc aos arquivos automaticamente\n"
 
-#: dvdisaster.c:915
-msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
-msgstr "  --cache-size n          - tamanho do cache da imagem em MiB durante o modo -c (padrão: 32MiB)\n"
-
-#: dvdisaster.c:916
-msgid "  --dao                  - assume DAO disc; do not trim image end\n"
-msgstr "  --dao                   - assume que é um disco DAO; não cortar o fim da imagem\n"
-
-#: dvdisaster.c:917
-msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
-msgstr "  --defective-dump d      - diretório para salvar setores raw incompletos\n"
-
-#: dvdisaster.c:919
-msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
-msgstr ""
-
-#: dvdisaster.c:921
-msgid "  --eject                - eject medium after successful read\n"
-msgstr "  --eject                 - ejeta a mídia após uma leitura bem-sucedida\n"
-
-#: dvdisaster.c:922
-msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
-msgstr ""
-
 #: dvdisaster.c:923
-msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
+msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 msgstr ""
 
 #: dvdisaster.c:924
-msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
-msgstr "  --fill-unreadable n     - preenche setores ilegíveis com o byte n\n"
+msgid "  --dao                  - assume DAO disc; do not trim image end\n"
+msgstr "  --dao                   - assume que é um disco DAO; não cortar o fim da imagem\n"
 
 #: dvdisaster.c:925
-msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
-msgstr "  --ignore-fatal-sense    - continua a leitura após condição de erro possivelmente fatal\n"
-
-#: dvdisaster.c:926
-msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
-msgstr ""
+msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
+msgstr "  --defective-dump d      - diretório para salvar setores raw incompletos\n"
 
 #: dvdisaster.c:927
-msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
-msgstr "  --internal-rereads n    - o dispositivo pode tentar n re-leituras antes de reportar  um erro\n"
-
-#: dvdisaster.c:928
-msgid "  --medium-info          - print info about medium in drive\n"
+msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
 msgstr ""
 
 #: dvdisaster.c:929
-msgid "  --no-progress          - do not print progress information\n"
-msgstr ""
+msgid "  --eject                - eject medium after successful read\n"
+msgstr "  --eject                 - ejeta a mídia após uma leitura bem-sucedida\n"
 
 #: dvdisaster.c:930
-msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
+msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
 msgstr ""
 
 #: dvdisaster.c:931
-msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
+msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
 msgstr ""
 
 #: dvdisaster.c:932
-msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
-msgstr "  --raw-mode n            - modo para leitura de mídia CD em modo raw (20 ou 21)\n"
+msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
+msgstr "  --fill-unreadable n     - preenche setores ilegíveis com o byte n\n"
 
 #: dvdisaster.c:933
-msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
-msgstr "  --read-attempts n-m     - tenta de n a m leituras em um setor defeituoso\n"
+msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
+msgstr "  --ignore-fatal-sense    - continua a leitura após condição de erro possivelmente fatal\n"
 
 #: dvdisaster.c:934
-msgid "  --read-medium n        - read the whole medium up to n times\n"
-msgstr "  --read-medium n         - faz uma leitura em modo raw, se possível\n"
-
-#: dvdisaster.c:935
-msgid "  --read-raw             - performs read in raw mode if possible\n"
+msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
 msgstr ""
 
+#: dvdisaster.c:935
+msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
+msgstr "  --internal-rereads n    - o dispositivo pode tentar n re-leituras antes de reportar  um erro\n"
+
 #: dvdisaster.c:936
-msgid "  --regtest              - tweaks output for compatibility with regtests\n"
+msgid "  --medium-info          - print info about medium in drive\n"
 msgstr ""
 
 #: dvdisaster.c:937
-msgid "  --resource-file p      - get resource file from given path\n"
+msgid "  --no-progress          - do not print progress information\n"
 msgstr ""
 
 #: dvdisaster.c:938
+msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
+msgstr ""
+
+#: dvdisaster.c:939
+msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
+msgstr ""
+
+#: dvdisaster.c:940
+msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
+msgstr "  --raw-mode n            - modo para leitura de mídia CD em modo raw (20 ou 21)\n"
+
+#: dvdisaster.c:941
+msgid "  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"
+msgstr "  --read-attempts n-m     - tenta de n a m leituras em um setor defeituoso\n"
+
+#: dvdisaster.c:942
+msgid "  --read-medium n        - read the whole medium up to n times\n"
+msgstr "  --read-medium n         - faz uma leitura em modo raw, se possível\n"
+
+#: dvdisaster.c:943
+msgid "  --read-raw             - performs read in raw mode if possible\n"
+msgstr ""
+
+#: dvdisaster.c:944
+msgid "  --regtest              - tweaks output for compatibility with regtests\n"
+msgstr ""
+
+#: dvdisaster.c:945
+msgid "  --resource-file p      - get resource file from given path\n"
+msgstr ""
+
+#: dvdisaster.c:946
 msgid "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 msgstr "  --speed-warning n       - mostra um aviso se a velocidade variar mais do que n porcento\n"
 
-#: dvdisaster.c:939
+#: dvdisaster.c:947
 msgid "  --spinup-delay n       - wait n seconds for drive to spin up\n"
 msgstr "  --spinup-delay n        - aguarda n segundos para que o drive gire\n"
 
-#: dvdisaster.c:943
+#: dvdisaster.c:951
 msgid "Debugging options (purposefully undocumented and possibly harmful)\n"
 msgstr "Opções de depuração (propositalmente não-documentadas e possivelmente perigosas)\n"
 
-#: dvdisaster.c:944
+#: dvdisaster.c:952
 msgid "  --debug           - enables the following options\n"
 msgstr "  --debug           - habilita as opções seguintes\n"
 
-#: dvdisaster.c:945
+#: dvdisaster.c:953
 msgid "  --byteset s,i,b   - set byte i in sector s to b\n"
 msgstr "  --byteset s,i,b   - define o byte i no setores s ao b\n"
 
-#: dvdisaster.c:946
+#: dvdisaster.c:954
 msgid "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 msgstr "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 
-#: dvdisaster.c:947
+#: dvdisaster.c:955
 msgid "  --compare-images a,b  - compare sectors in images a and b\n"
 msgstr "  --compare-images a,b  - compara os setores nas imagens a e b\n"
 
-#: dvdisaster.c:948
+#: dvdisaster.c:956
 msgid "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
 msgstr "  --copy-sector a,n,b,m - copia o setor n da imagem a para o setor m da imagem b\n"
 
-#: dvdisaster.c:949
+#: dvdisaster.c:957
 msgid "  --erase sector    - erase the given sector\n"
 msgstr "  --erase setor     - apaga o setor escolhido\n"
 
-#: dvdisaster.c:950
+#: dvdisaster.c:958
 msgid "  --erase n-m       - erase sectors n - m, inclusively\n"
 msgstr "  --erase n-m       - apaga os setores n a m (inclusivo)\n"
 
-#: dvdisaster.c:951
+#: dvdisaster.c:959
 msgid "  --fixed-speed-values - output fixed speed values for better output diffing\n"
 msgstr ""
 
-#: dvdisaster.c:952
+#: dvdisaster.c:960
 msgid "  --marked-image n  - create image with n marked random sectors\n"
 msgstr "  --marked-image a,b  - mescla a imagem a com a b (a recebe os setores de b)\n"
 
-#: dvdisaster.c:953
+#: dvdisaster.c:961
 msgid "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
 msgstr ""
 
-#: dvdisaster.c:954
+#: dvdisaster.c:962
 msgid "  --random-errors e - seed image with (correctable) random errors\n"
 msgstr ""
 
-#: dvdisaster.c:955
+#: dvdisaster.c:963
 msgid "  --random-image n  - create image with n sectors of random numbers\n"
 msgstr "  --random-image n  - cria um arquivo de imagem com n setores de números aleatórios\n"
 
-#: dvdisaster.c:956
+#: dvdisaster.c:964
 msgid "  --random-seed n   - random seed for built-in random number generator\n"
 msgstr "  --random-seed n   - semente aleatória para o gerador de números aleatórios\n"
 
-#: dvdisaster.c:957
+#: dvdisaster.c:965
 msgid "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:958
+#: dvdisaster.c:966
 msgid "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:959
+#: dvdisaster.c:967
 msgid "  --screen-shot     - useful for generating screen shots\n"
 msgstr "  --screen-shot     - útil para gerar capturas de tela\n"
 
-#: dvdisaster.c:960
+#: dvdisaster.c:968
 msgid "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
 msgstr "  --send-cdb arg    - executa o cdb escolhido no drive; para o sistema se usado deforma errada\n"
 
-#: dvdisaster.c:961
+#: dvdisaster.c:969
 msgid "  --set-version     - set program version for debugging purposes (dangerous!)\n"
 msgstr ""
 
-#: dvdisaster.c:962
+#: dvdisaster.c:970
 msgid "  --show-header n   - assumes given sector is a ecc header and prints it\n"
 msgstr ""
 
-#: dvdisaster.c:963
+#: dvdisaster.c:971
 msgid "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 msgstr "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 
-#: dvdisaster.c:964
+#: dvdisaster.c:972
 msgid "  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"
 msgstr ""
 
-#: dvdisaster.c:965
+#: dvdisaster.c:973
 #, c-format
 msgid "  --sim-defects n   - simulate n%% defective sectors on medium\n"
 msgstr "  --sim-defects n   - simula n%% setores defeituosos na mídia\n"
 
-#: dvdisaster.c:966
+#: dvdisaster.c:974
 msgid "  --truncate n      - truncates image to n sectors\n"
 msgstr "  --truncate n      - trunca a imagem para n setores\n"
 
-#: dvdisaster.c:967
+#: dvdisaster.c:975
 msgid ""
 "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n"
 "\n"
 msgstr "  --zero-unreadable - substitui os marcadores \"setor-ilegível\" por zeros\n"
 
-#: dvdisaster.c:996
+#: dvdisaster.c:1005
 msgid "Optical drive 52X FW 1.02"
 msgstr "Drive ótico 52X FW 1.02"
 
@@ -810,11 +800,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: help-dialogs.c:386
+#: help-dialogs.c:387
 msgid "windowtitle|Log data"
 msgstr "Dados de log"
 
-#: help-dialogs.c:387
+#: help-dialogs.c:388
 msgid ""
 "<big>Log data</big>\n"
 "<i>Protocol of the current or previous action</i>"
@@ -822,11 +812,11 @@ msgstr ""
 "<big>Dados de log</big>\n"
 "<i>Protocolo da ação atual ou anterior</i>"
 
-#: help-dialogs.c:403
+#: help-dialogs.c:404
 msgid "windowtitle|GNU General Public License"
 msgstr "Licença Pública Geral GNU"
 
-#: help-dialogs.c:404
+#: help-dialogs.c:405
 msgid ""
 "<big>GNU General Public License</big>\n"
 "<i>The license terms of dvdisaster.</i>"
@@ -834,7 +824,7 @@ msgstr ""
 "<big>Licença Pública Geral GNU</big>\n"
 "<i>Os termos de licença do dvdisaster.</i>"
 
-#: help-dialogs.c:476
+#: help-dialogs.c:477
 #, c-format
 msgid ""
 "File\n"
@@ -845,7 +835,7 @@ msgstr ""
 "%s\n"
 "não presente"
 
-#: help-dialogs.c:486
+#: help-dialogs.c:487
 #, c-format
 msgid ""
 "File\n"
@@ -853,17 +843,17 @@ msgid ""
 "not accessible"
 msgstr ""
 
-#: help-dialogs.c:498
+#: help-dialogs.c:499
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
 msgstr ""
 
-#: help-dialogs.c:567
+#: help-dialogs.c:568
 msgid "windowtitle|Modifying dvdisaster"
 msgstr "Modificando o dvdisaster"
 
-#: help-dialogs.c:568
+#: help-dialogs.c:569
 msgid ""
 "<big>Modifying dvdisaster</big>\n"
 "<i>Your changes are not ours.</i>"
@@ -871,23 +861,21 @@ msgstr ""
 "<big>Modificando o dvdisaster</big>\n"
 "<i>Suas mudanças não são nossas.</i>"
 
-#: help-dialogs.c:707
+#: help-dialogs.c:708
 msgid "windowtitle|About dvdisaster"
 msgstr "windowtitle|Sobre o dvdisaster"
 
-#: help-dialogs.c:727
+#: help-dialogs.c:728
 msgid ""
 "Modified version Copyright 2017 (please fill in - [directions])\n"
 "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
-"Versão modificada Copyright 2017 (por favor, preencha - [instruções])\n"
-"Copyright 2004-2017 Carsten Gnoerlich"
 
-#: help-dialogs.c:731 misc.c:205
+#: help-dialogs.c:732 misc.c:213
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
-msgstr "Copyright 2004-2017 Carsten Gnoerlich"
+msgstr ""
 
-#: help-dialogs.c:738
+#: help-dialogs.c:739
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -899,7 +887,7 @@ msgstr ""
 "Ele cria dados de correção de erros que são usados para recuperar\n"
 "setores ilegíveis se o disco ficar danificado posteriormente.\n"
 
-#: help-dialogs.c:743
+#: help-dialogs.c:744
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -911,7 +899,7 @@ msgstr ""
 "\n"
 "Tradução para português por Pablo Almeida (pabloalmeidaff9@gmail.com)\n"
 
-#: help-dialogs.c:749
+#: help-dialogs.c:750
 msgid ""
 "\n"
 "This program is <b>not the original</b>. It is based on the\n"
@@ -927,7 +915,7 @@ msgstr ""
 "Por favor, não incomode os autores originais do dvdisaster\n"
 "([www.dvdisaster.org]) com problemas dessa versão.\n"
 
-#: help-dialogs.c:764
+#: help-dialogs.c:765
 msgid ""
 "\n"
 "e-mail: carsten@dvdisaster.org   -or-   cgnoerlich@fsfe.org"
@@ -935,7 +923,7 @@ msgstr ""
 "\n"
 "e-mail: carsten@dvdisaster.org   -ou-   cgnoerlich@fsfe.org"
 
-#: help-dialogs.c:766
+#: help-dialogs.c:767
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -943,31 +931,31 @@ msgstr ""
 "\n"
 "NetBSD port por: Sergey Svishcheg &lt;svs@ropnet.ru&gt;"
 
-#: image.c:152 image.c:156
+#: image.c:153 image.c:158
 #, c-format
 msgid "Image file %s not present or permission denied.\n"
 msgstr ""
 
-#: image.c:165 image.c:169
+#: image.c:168 image.c:173
 msgid ""
 "\n"
 "Error correction file type unknown.\n"
 msgstr ""
 
-#: image.c:178 image.c:183
+#: image.c:183 image.c:189
 msgid ""
 "\n"
 "Permission denied on ecc file (perhaps not writeable?).\n"
 msgstr ""
 
-#: image.c:193 image.c:198
+#: image.c:200 image.c:206
 msgid ""
 "\n"
 "No error correction file present.\n"
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:223
+#: large-io.c:228
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -982,12 +970,12 @@ msgstr ""
 "\n"
 "Você pode refazer essa operação após liberar espaço."
 
-#: main-window.c:67
+#: main-window.c:68
 #, c-format
 msgid "log: %s\n"
 msgstr ""
 
-#: main-window.c:94
+#: main-window.c:95
 msgid ""
 "The .iso image and error correction file\n"
 "must not be the same file!\n"
@@ -997,7 +985,7 @@ msgid ""
 "please leave the error correction file name blank."
 msgstr ""
 
-#: main-window.c:104
+#: main-window.c:105
 msgid ""
 "The error correction file type must not be \".iso\".\n"
 "\n"
@@ -1006,174 +994,174 @@ msgid ""
 "please leave the error correction file name blank."
 msgstr ""
 
-#: main-window.c:174
+#: main-window.c:175
 msgid "Internal error: No suitable method for repairing image."
 msgstr ""
 
-#: main-window.c:276
+#: main-window.c:277
 msgid "button|Read"
 msgstr "Ler"
 
-#: main-window.c:279
+#: main-window.c:280
 msgid "tooltip|Read Image"
 msgstr "Ler Imagem"
 
-#: main-window.c:279
+#: main-window.c:280
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
-msgstr "Lê uma imagem de CD/DVD e grava em um arquivo (ou tenta completar um arquivo de imagem existente)."
+msgstr ""
 
-#: main-window.c:293
+#: main-window.c:294
 msgid "button|Create"
 msgstr "Criar"
 
-#: main-window.c:296
+#: main-window.c:297
 msgid "tooltip|Create error correction data"
 msgstr "Cria dados de correção de erros"
 
-#: main-window.c:296
+#: main-window.c:297
 msgid "Creates error correction data. Requires an image file."
 msgstr "Cria dados de correção de erros. Requer um arquivo de imagem."
 
-#: main-window.c:300
+#: main-window.c:301
 msgid "button|Scan"
 msgstr "Escanear"
 
-#: main-window.c:303
+#: main-window.c:304
 msgid "tooltip|Scan medium"
 msgstr "Escaneia a mídia"
 
-#: main-window.c:303
+#: main-window.c:304
 msgid "Scans medium for unreadable sectors."
 msgstr "Escaneia na mídia setores ilegíveis."
 
-#: main-window.c:307
+#: main-window.c:308
 msgid "button|Fix"
 msgstr "Consertar"
 
-#: main-window.c:310
+#: main-window.c:311
 msgid "tooltip|Repair image"
 msgstr "Consertar imagem"
 
-#: main-window.c:310
+#: main-window.c:311
 msgid "Repairs an image. Requires an image file and error correction data."
 msgstr "Conserta uma imagem. Requer um arquivo de imagem e dados de correção de erros."
 
-#: main-window.c:314
+#: main-window.c:315
 msgid "button|Verify"
 msgstr "Verificar"
 
-#: main-window.c:317
+#: main-window.c:318
 msgid "tooltip|Consistency check"
 msgstr "Testar consistência"
 
-#: main-window.c:317
+#: main-window.c:318
 msgid "Tests consistency of error correction data and image file."
 msgstr "Testa a consistência dos dados de correção de erros e do arquivo de imagem."
 
-#: main-window.c:321
+#: main-window.c:322
 msgid "button|Stop"
 msgstr "Parar"
 
-#: main-window.c:324
+#: main-window.c:325
 msgid "tooltip|Abort action"
 msgstr "Cancela a ação"
 
-#: main-window.c:324
+#: main-window.c:325
 msgid "Aborts an ongoing action."
 msgstr "Cancela uma ação em andamento."
 
-#: main-window.c:481
+#: main-window.c:482
 msgid "tooltip|Protocol for current action"
 msgstr "Protocol para a ação atual"
 
-#: main-window.c:482
+#: main-window.c:483
 msgid "Displays additional information created during the current or last action."
 msgstr "Mostra informações adicionais criadas durante esta ou a última sessão."
 
-#: main-window.c:491
+#: main-window.c:492
 msgid "View log"
 msgstr "Ver log"
 
-#: medium-info.c:54
+#: medium-info.c:55
 msgid "Medium not present"
 msgstr "Mídia não presente"
 
-#: medium-info.c:106 medium-info.c:352
+#: medium-info.c:114 medium-info.c:444
 msgid "Physical medium info"
 msgstr "Informação da mídia física"
 
-#: medium-info.c:128 medium-info.c:134
+#: medium-info.c:160 medium-info.c:166
 msgid "empty"
 msgstr "vazia"
 
-#: medium-info.c:129
+#: medium-info.c:161
 msgid "appendable"
 msgstr "anexável"
 
-#: medium-info.c:130
+#: medium-info.c:162
 msgid "finalized"
 msgstr "finalizada"
 
-#: medium-info.c:131 scsi-layer.c:98
+#: medium-info.c:163 scsi-layer.c:98
 msgid "unknown"
 msgstr "desconhecida"
 
-#: medium-info.c:135
+#: medium-info.c:167
 msgid "incomplete"
 msgstr "incompleta"
 
-#: medium-info.c:136
+#: medium-info.c:168
 msgid "damaged"
 msgstr "danificada"
 
-#: medium-info.c:137 rs02-verify.c:671 rs02-verify.c:878 rs02-verify.c:879
-#: rs02-verify.c:880 rs03-verify.c:1254 rs03-verify.c:1256 rs03-verify.c:1257
+#: medium-info.c:169 rs02-verify.c:697 rs02-verify.c:915 rs02-verify.c:916
+#: rs02-verify.c:917 rs03-verify.c:1344 rs03-verify.c:1346 rs03-verify.c:1347
 msgid "complete"
 msgstr "completa"
 
-#: medium-info.c:142
+#: medium-info.c:180
 #, c-format
 msgid "%s (%d sessions; last session %s)\n"
-msgstr "%s (%d sessões; última sessão %s)\n"
+msgstr ""
 
-#: medium-info.c:148
+#: medium-info.c:192
 #, c-format
 msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
-msgstr "%lld setores (%lld MiB), da CAPACIDADE DE LEITURA\n"
+msgstr ""
 
-#: medium-info.c:151
+#: medium-info.c:201
 #, c-format
 msgid "%lld sectors (%lld MiB), from DVD structure\n"
-msgstr "%lld setores (%lld MiB), da estrutura do DVD\n"
+msgstr ""
 
-#: medium-info.c:155 medium-info.c:204
+#: medium-info.c:211 medium-info.c:283 medium-info.c:285
 #, c-format
 msgid "%lld sectors (%lld MiB)\n"
-msgstr "%lld setores (%lld MiB)\n"
+msgstr ""
 
-#: medium-info.c:167 medium-info.c:425
+#: medium-info.c:223 medium-info.c:517
 msgid "Filesystem info"
 msgstr "Informação do sistema de arquivos"
 
-#: medium-info.c:173
+#: medium-info.c:241
 #, c-format
 msgid "%d sectors (%lld MiB)\n"
-msgstr "%d setores (%lld MiB)\n"
+msgstr ""
 
-#: medium-info.c:194 medium-info.c:458
+#: medium-info.c:268 medium-info.c:550
 msgid "Augmented image info"
 msgstr "Informação da imagem aumentada"
 
-#: medium-info.c:200
+#: medium-info.c:275 medium-info.c:277
 #, c-format
 msgid "%s, %d roots, %4.1f%% redundancy.\n"
-msgstr "%s, %d raízes, %4.1f%% de redundância.\n"
+msgstr ""
 
-#: medium-info.c:283
+#: medium-info.c:375
 msgid "windowtitle|Medium info"
 msgstr "Informação da mídia"
 
-#: medium-info.c:298
+#: medium-info.c:390
 msgid ""
 "<big>Medium info</big>\n"
 "<i>Properties of the currently inserted medium</i>"
@@ -1181,83 +1169,83 @@ msgstr ""
 "<big>Informação da mídia</big>\n"
 "<i>Propriedades da mídia inserida atualmente</i>"
 
-#: medium-info.c:310
+#: medium-info.c:402
 msgid "Drive selection"
 msgstr "Seleção de drive"
 
-#: medium-info.c:317
+#: medium-info.c:409
 msgid "Drive:"
 msgstr "Drive:"
 
-#: medium-info.c:338 menubar.c:488
+#: medium-info.c:430 menubar.c:489
 msgid "No drives found"
 msgstr "Nenhum drive encontrado"
 
-#: medium-info.c:343
+#: medium-info.c:435
 msgid " "
 msgstr " "
 
-#: medium-info.c:346
+#: medium-info.c:438
 msgid "Update medium info"
 msgstr "Atualizar informação da mídia"
 
-#: medium-info.c:359
+#: medium-info.c:451
 msgid "Medium type:"
 msgstr "Tipo de mídia:"
 
-#: medium-info.c:367
+#: medium-info.c:459
 msgid "Book type:"
 msgstr "Tipo de livro:"
 
-#: medium-info.c:375 scsi-layer.c:2682
+#: medium-info.c:467 scsi-layer.c:2691
 msgid "Manuf.-ID:"
 msgstr "ID do Manufatorador:"
 
-#: medium-info.c:383
+#: medium-info.c:475
 msgid "Drive profile:"
 msgstr "Perfil do drive:"
 
-#: medium-info.c:391
+#: medium-info.c:483
 msgid "Disc status:"
 msgstr "Estado do disco:"
 
-#: medium-info.c:399
+#: medium-info.c:491
 msgid "Used sectors:"
 msgstr "Setores usados:"
 
-#: medium-info.c:415
+#: medium-info.c:507
 msgid "Blank capacity:"
 msgstr "Espaço livre:"
 
-#: medium-info.c:432
+#: medium-info.c:524
 msgid "Medium label:"
 msgstr "Rótulo da mídia:"
 
-#: medium-info.c:440
+#: medium-info.c:532
 msgid "File system size:"
 msgstr "Tamanho do sistema de arquivos:"
 
-#: medium-info.c:448
+#: medium-info.c:540
 msgid "Creation time:"
 msgstr "Hora da criação:"
 
-#: medium-info.c:465
+#: medium-info.c:557
 msgid "Error correction data:"
 msgstr "Dados de correção de erros:"
 
-#: medium-info.c:473
+#: medium-info.c:565
 msgid "Augmented image size:"
 msgstr "Tamanho da imagem aumentada:"
 
-#: medium-info.c:481
+#: medium-info.c:573
 msgid "dvdisaster version:"
 msgstr "Versão do dvdisaster:"
 
-#: menubar.c:126
+#: menubar.c:127
 msgid "windowtitle|Change log"
 msgstr "Log de mudanças"
 
-#: menubar.c:127
+#: menubar.c:128
 msgid ""
 "<big>Change log</big>\n"
 "<i>Major differences from earlier program versions.</i>"
@@ -1265,11 +1253,11 @@ msgstr ""
 "<big>Log de mudanças</big>\n"
 "<i>Principais diferenças das versões anteriores do programa.</i>"
 
-#: menubar.c:133
+#: menubar.c:134
 msgid "windowtitle|Credits"
 msgstr "Créditos"
 
-#: menubar.c:134
+#: menubar.c:135
 msgid ""
 "<big>Credits</big>\n"
 "<i>Thanks go out to...</i>"
@@ -1277,11 +1265,11 @@ msgstr ""
 "<big>Créditos</big>\n"
 "<i>Muito obrigado a...</i>"
 
-#: menubar.c:140
+#: menubar.c:141
 msgid "windowtitle|To do list"
 msgstr "Lista de afazeres"
 
-#: menubar.c:141
+#: menubar.c:142
 msgid ""
 "<big>To do list</big>\n"
 "<i>A sneak preview of coming features ... perhaps ;-)</i>"
@@ -1289,135 +1277,135 @@ msgstr ""
 "<big>Lista de afazeres</big>\n"
 "<i>Uma pequena prévia das funções que estão por vir ... ou não ;-)</i>"
 
-#: menubar.c:208
+#: menubar.c:209
 msgid "menu|Select Image"
 msgstr "Escolher Imagem"
 
-#: menubar.c:209
+#: menubar.c:210
 msgid "menu|Select Parity File"
 msgstr "Escolher Arquivo de Paridade"
 
-#: menubar.c:210
+#: menubar.c:211
 msgid "menu|Quit"
 msgstr "Sair"
 
-#: menubar.c:212
+#: menubar.c:213
 msgid "menu|File"
 msgstr "Arquivo"
 
-#: menubar.c:219
+#: menubar.c:220
 msgid "menu|Medium info"
 msgstr "Sobre a mídia"
 
-#: menubar.c:224
+#: menubar.c:225
 msgid "menu|Raw sector editor"
 msgstr "editor de setores Raw"
 
-#: menubar.c:226
+#: menubar.c:227
 msgid "menu|Tools"
 msgstr "Ferramentas"
 
-#: menubar.c:234
+#: menubar.c:235
 msgid "menu|About"
 msgstr "Sobre"
 
-#: menubar.c:235
+#: menubar.c:236
 msgid "menu|User manual"
 msgstr "Manual do usuário"
 
-#: menubar.c:239
+#: menubar.c:240
 msgid "menu|Credits"
 msgstr "Créditos"
 
-#: menubar.c:240
+#: menubar.c:241
 msgid "menu|Licence (GPL)"
 msgstr "Licença (GPL)"
 
-#: menubar.c:244
+#: menubar.c:245
 msgid "menu|Change log"
 msgstr "Log de mudanças"
 
-#: menubar.c:245
+#: menubar.c:246
 msgid "menu|To do list"
 msgstr "Lista de afazeres"
 
-#: menubar.c:247
+#: menubar.c:248
 msgid "menu|Help"
 msgstr "Ajuda"
 
-#: menubar.c:331
+#: menubar.c:332
 msgid "windowtitle|Image file selection"
 msgstr "Seleção de arquivo de imagem"
 
-#: menubar.c:368
+#: menubar.c:369
 msgid "windowtitle|Error correction file selection"
 msgstr "Seleção de arquivo de correção de erros"
 
-#: menubar.c:470 menubar.c:494
+#: menubar.c:471 menubar.c:495
 msgid "tooltip|Drive selection"
 msgstr "Seleção de Drive"
 
-#: menubar.c:470
+#: menubar.c:471
 msgid "Use the nearby drop-down list to select the input drive."
 msgstr "Use a lista \"drop-down\" ao lado para escolher o drive de entrada"
 
-#: menubar.c:494
+#: menubar.c:495
 msgid "Selects the input drive for reading images."
 msgstr "Seleciona o drive de entrada para ler imagens."
 
-#: menubar.c:524
+#: menubar.c:525
 msgid "tooltip|Image file selection"
 msgstr "Seleção do arquivo de imagem"
 
-#: menubar.c:524
+#: menubar.c:525
 msgid "Selects a new image file."
 msgstr "Seleciona um novo arquivo de imagem."
 
-#: menubar.c:525
+#: menubar.c:526
 msgid "tooltip|Current image file"
 msgstr "Arquivo de imagem atual"
 
-#: menubar.c:525
+#: menubar.c:526
 msgid "Shows the name of the current image file."
 msgstr "Mostra o nome do arquivo de imagem atual."
 
-#: menubar.c:549
+#: menubar.c:550
 msgid "tooltip|Error correction file selection"
 msgstr "Seleção do arquivo de correção de erros"
 
-#: menubar.c:549
+#: menubar.c:550
 msgid "Selects a new error correction file."
 msgstr "Seleciona um novo arquivo de correção de erros."
 
-#: menubar.c:550
+#: menubar.c:551
 msgid "tooltip|Current error correction file"
 msgstr "Arquivo de correção de erros atual"
 
-#: menubar.c:550
+#: menubar.c:551
 msgid "Shows the name of the current error correction file."
 msgstr "Mostra o nome do arquivo de correção de erros atual."
 
-#: menubar.c:561
+#: menubar.c:562
 msgid "tooltip|Preferences"
 msgstr "Preferências"
 
-#: menubar.c:561
+#: menubar.c:562
 msgid "Customize settings for creating images, error correction files and other stuff."
 msgstr "Personaliza configurações de criação de imagems, arquivos de correção de erros e outras coisas."
 
-#: menubar.c:571
+#: menubar.c:572
 msgid "tooltip|User manual"
 msgstr "Manual de usuário"
 
-#: menubar.c:571
+#: menubar.c:572
 msgid "Displays the user manual (external PDF viewer required)."
 msgstr ""
 
-#: menubar.c:581
+#: menubar.c:582
 msgid "tooltip|Quit"
 msgstr "Sair"
 
-#: menubar.c:581
+#: menubar.c:582
 msgid "Quit dvdisaster"
 msgstr "Sai do dvdisaster"
 
@@ -1431,7 +1419,7 @@ msgstr ""
 "Lista dos métodos disponíveis:\n"
 "\n"
 
-#: misc.c:211
+#: misc.c:219
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
 "is free software and you are welcome to redistribute it\n"
@@ -1445,11 +1433,11 @@ msgstr ""
 "\n"
 "Tradução para português por Pablo Almeida (pabloalmeidaff9@gmail.com)\n"
 
-#: misc.c:519
+#: misc.c:545
 msgid "Warning"
 msgstr "Alerta"
 
-#: misc.c:594 misc.c:602
+#: misc.c:628 misc.c:638
 msgid ""
 "\n"
 "*\n"
@@ -1461,11 +1449,11 @@ msgstr ""
 "* dvdisaster - impossível continuar:\n"
 "*\n"
 
-#: misc.c:1254
+#: misc.c:1301
 msgid "Do not ask again"
 msgstr ""
 
-#: misc.c:1275
+#: misc.c:1325
 #, c-format
 msgid ""
 "Image file already exists and does not match the medium:\n"
@@ -1475,7 +1463,7 @@ msgid ""
 "The existing image file will be deleted."
 msgstr ""
 
-#: misc.c:1294
+#: misc.c:1347
 #, c-format
 msgid ""
 "The error correction file is already present:\n"
@@ -1485,59 +1473,59 @@ msgid ""
 "Overwrite it?"
 msgstr ""
 
-#: preferences.c:451
+#: preferences.c:452
 msgid "Switched to the linear reading strategy."
 msgstr "Mudado para a estratégia de leitura linear"
 
-#: preferences.c:837
+#: preferences.c:838
 msgid "Color selection"
 msgstr "Seleção de Cores"
 
-#: preferences.c:1056
+#: preferences.c:1057
 msgid "Disabled automatic error correction file generation."
 msgstr "Geração de arquivos de correção de erros automática desativada."
 
-#: preferences.c:1219 preferences.c:2344 preferences.c:2353
+#: preferences.c:1220 preferences.c:2345 preferences.c:2354
 msgid "Raw sector caching"
 msgstr "Cache de setores Raw"
 
-#: preferences.c:1291
+#: preferences.c:1292
 msgid "Log file"
 msgstr "Arquivo de log"
 
-#: preferences.c:1313
+#: preferences.c:1314
 msgid "Delete the log file?"
 msgstr "Deletar o arquivo de log"
 
-#: preferences.c:1407
+#: preferences.c:1408
 msgid "Preferences"
 msgstr "Preferências"
 
-#: preferences.c:1437 rs03-preferences.c:512
+#: preferences.c:1438 rs03-preferences.c:513
 msgid "Image"
 msgstr "Imagem"
 
-#: preferences.c:1441
+#: preferences.c:1442
 msgid "Image creation"
 msgstr "Criação de imagem"
 
-#: preferences.c:1450
+#: preferences.c:1451
 msgid "Reading strategy"
 msgstr "Estratégia de leitura"
 
-#: preferences.c:1450
+#: preferences.c:1451
 msgid "Reading strategy: "
 msgstr "Estratégia de leitura: "
 
-#: preferences.c:1464
+#: preferences.c:1465
 msgid "Linear"
 msgstr "Linear"
 
-#: preferences.c:1472
+#: preferences.c:1473
 msgid "Adaptive (for defective media)"
 msgstr "Adaptativa (para mídias defeituosas)"
 
-#: preferences.c:1484
+#: preferences.c:1485
 msgid ""
 "<b>Reading strategy</b>\n"
 "\n"
@@ -1563,19 +1551,19 @@ msgstr ""
 "\n"
 "Usar a estratégia adaptativa sem dados de correção de erros é possível mas é recomendado usar a leitura linear nesse caso."
 
-#: preferences.c:1496
+#: preferences.c:1497
 msgid "Reading range"
 msgstr "Intervalo de leitura"
 
-#: preferences.c:1496
+#: preferences.c:1497
 msgid "Read/Scan from sector"
 msgstr "Ler/Escanear do setor"
 
-#: preferences.c:1521
+#: preferences.c:1522
 msgid "to sector"
 msgstr "ao setor"
 
-#: preferences.c:1539
+#: preferences.c:1540
 msgid ""
 "<b>Reading range</b>\n"
 "\n"
@@ -1593,19 +1581,19 @@ msgstr ""
 "\n"
 "Essas configurações são válidas apenas para a sessão atual e não serão salvas."
 
-#: preferences.c:1549
+#: preferences.c:1550
 msgid "Error correction data recognization"
 msgstr ""
 
-#: preferences.c:1558
+#: preferences.c:1559
 msgid "Exhaustive RS02 header search"
 msgstr ""
 
-#: preferences.c:1558
+#: preferences.c:1559
 msgid "Perform exhaustive search for RS02 headers"
 msgstr ""
 
-#: preferences.c:1578
+#: preferences.c:1579
 msgid ""
 "<b>Exhaustive RS02 header search</b>\n"
 "\n"
@@ -1616,15 +1604,15 @@ msgid ""
 "Leave this option <b>off</b> when you are processing media or images which are not augmented with RS02 data. Otherwise you will waste a lot of time searching for the RS02 signatures and increase wear on the drive."
 msgstr ""
 
-#: preferences.c:1597
+#: preferences.c:1598
 msgid "Recover RS03 signatures"
 msgstr ""
 
-#: preferences.c:1597
+#: preferences.c:1598
 msgid "Find and recover RS03 signatures"
 msgstr ""
 
-#: preferences.c:1617
+#: preferences.c:1618
 msgid ""
 "<b>Exhaustive RS03 header search</b>\n"
 "\n"
@@ -1635,19 +1623,19 @@ msgid ""
 "Leave this option <b>off</b> when you are processing media or images which are not augmented with RS03 data. Otherwise you will waste a lot of time searching for the RS03 signatures and increase wear on the drive."
 msgstr ""
 
-#: preferences.c:1636
+#: preferences.c:1637
 msgid "Image properties"
 msgstr "Propriedades da imagem"
 
-#: preferences.c:1645
+#: preferences.c:1646
 msgid "Ignore ISO/UDF meta data"
 msgstr ""
 
-#: preferences.c:1645
+#: preferences.c:1646
 msgid "Ignore image size recorded in ISO/UDF file system"
 msgstr ""
 
-#: preferences.c:1665
+#: preferences.c:1666
 msgid ""
 "<b>Ignore image size recorded in ISO/UDF filesystem</b>\n"
 "\n"
@@ -1660,15 +1648,15 @@ msgid ""
 "Do <b>not blindly turn this option on</b> as it will most likely create sub optimal or corrupted ISO images, especially if you plan to use the image for error correction data generation."
 msgstr ""
 
-#: preferences.c:1684
+#: preferences.c:1685
 msgid "DAO mode"
 msgstr "Modo DAO"
 
-#: preferences.c:1684
+#: preferences.c:1685
 msgid "Assume image to be written in DAO mode (don't truncate)"
 msgstr "Assumir que a imagem será gravada no modo DAO (não truncar)"
 
-#: preferences.c:1704
+#: preferences.c:1705
 msgid ""
 "<b>Assume DAO mode</b>\n"
 "\n"
@@ -1686,19 +1674,19 @@ msgstr ""
 "\n"
 "<b>Dica:</b> Para evitar esses problemas, considere usar o modo \"DAO / Disc at once\" (às vezes chamado de \"SAO / Session at once\") para gravar mídias de uma única sessão."
 
-#: preferences.c:1719
+#: preferences.c:1720
 msgid "Image format"
 msgstr "Formato da imagem"
 
-#: preferences.c:1728
+#: preferences.c:1729
 msgid "Missing sector tags"
 msgstr "Marcadores de setor desaparecido"
 
-#: preferences.c:1728
+#: preferences.c:1729
 msgid "Use old style missing sector tags (not recommended)"
 msgstr ""
 
-#: preferences.c:1748
+#: preferences.c:1749
 msgid ""
 "<b>Missing sector tagging</b>\n"
 "\n"
@@ -1707,15 +1695,15 @@ msgid ""
 "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
 msgstr ""
 
-#: preferences.c:1768
+#: preferences.c:1769
 msgid "Filling of unreadable sectors"
 msgstr "Preenchimento de setores ilegíveis"
 
-#: preferences.c:1769
+#: preferences.c:1770
 msgid "Fill unreadable sectors with byte:"
 msgstr "Preencher setores ilegíveis com o byte:"
 
-#: preferences.c:1808
+#: preferences.c:1809
 msgid ""
 "<b>Filling of unreadable sectors</b>\n"
 "\n"
@@ -1727,31 +1715,31 @@ msgstr ""
 "O dvdisaster marca setores ilegíveis com um padrão de preenchimento especial cuja possibilidade de ocorrer em mídias danificadas é muito baixa.\n"
 "Em outros softwares de recuperação de dados, é comum preencher setores ilegíveis com um certo valor de byte. Para permitir a interoperabilidade com tais programas, você pode especificar o valor de byte usado por eles:\n"
 
-#: preferences.c:1817
+#: preferences.c:1818
 msgid "0xb0 (176 decimal): for compatibility with h2cdimage published by \"c't\", a German periodical.\n"
 msgstr "0xb0 (176 decimal): para compatibilidade com o h2cdimage, publicado pela \"c't\", uma revista alemã.\n"
 
-#: preferences.c:1821
+#: preferences.c:1822
 msgid "<b>Note:</b> Using zero filling (0x00, decimal 0) is highly discouraged. Most media contain regular zero filled sectors which can not be told apart from unreadable sectors if zero filling is used."
 msgstr "<b>Nota:</b> Usar preenchimento com zeros (0x00, decimal 0) é altamente desencorajado. A maioria das mídias contêm setores normais preenchidos com zero que não podem ser diferenciados de setores ilegíveis se preechimento com zero for usado."
 
-#: preferences.c:1828
+#: preferences.c:1829
 msgid "Drive"
 msgstr "Drive"
 
-#: preferences.c:1832 preferences.c:1835
+#: preferences.c:1833 preferences.c:1836
 msgid "Drive initialisation"
 msgstr "Inicialização do drive"
 
-#: preferences.c:1836
+#: preferences.c:1837
 msgid "Wait"
 msgstr "Aguardar"
 
-#: preferences.c:1839
+#: preferences.c:1840
 msgid "seconds for drive to spin up"
 msgstr "segundos para o drive girar"
 
-#: preferences.c:1868
+#: preferences.c:1869
 msgid ""
 "<b>Drive initialisation</b>\n"
 "\n"
@@ -1761,23 +1749,23 @@ msgstr ""
 "\n"
 "Espera a quantidade especificada de segundos para deixar o drive rodar. Isso evita variações de velocidade no início da curva de leitura."
 
-#: preferences.c:1874
+#: preferences.c:1875
 msgid "Raw reading parameters"
 msgstr "Parâmetros de leitura Raw"
 
-#: preferences.c:1883
+#: preferences.c:1884
 msgid "Raw reading mode"
 msgstr "Modo de leitura Raw"
 
-#: preferences.c:1883
+#: preferences.c:1884
 msgid "Raw reading mode: "
 msgstr "Modo de leitura Raw: "
 
-#: preferences.c:1914
+#: preferences.c:1915
 msgid "other:"
 msgstr "outro: "
 
-#: preferences.c:1948
+#: preferences.c:1949
 msgid ""
 "<b>Raw reading mode</b>\n"
 "\n"
@@ -1800,19 +1788,19 @@ msgstr ""
 "\n"
 "<b>0x01</b> Alguns drives fazem a coisa certa quando esse valor é escolhido, apesar de que isso não faz sentido algum, de acordo com a especificação SCSI. Tente colocar esse valor no campo \"outro\" se nenhuma das outras alternativas funcionar. Veja a documentação de modos na página 01h, capítulo 6 do MMC3 or superior para informações adicionais."
 
-#: preferences.c:1974
+#: preferences.c:1975
 msgid "Internal read attempts"
 msgstr "Tentativas de leitura internas"
 
-#: preferences.c:1975
+#: preferences.c:1976
 msgid "Reread defective sectors"
 msgstr "Re-ler setores defeituosos"
 
-#: preferences.c:1978
+#: preferences.c:1979
 msgid "times"
 msgstr "vezes"
 
-#: preferences.c:2008
+#: preferences.c:2009
 msgid ""
 "<b>Internal read attempts</b>\n"
 "\n"
@@ -1828,15 +1816,15 @@ msgstr ""
 "Diminuir esse valor para 0 ou 1 pode acelerar o processamento de mídias danificadas e reduzir o desgaste do drive; porém, a maioria dos drives vai simplesmente ignorar o que você colocar aqui.\n"
 "Use o valor -1 para deixar o drive com sua configuração padrão."
 
-#: preferences.c:2021 preferences.c:2024
+#: preferences.c:2022 preferences.c:2025
 msgid "Fatal error handling"
 msgstr "Tratamento de erros fatais"
 
-#: preferences.c:2025
+#: preferences.c:2026
 msgid "Ignore fatal errors"
 msgstr "Ignorar erros fatais"
 
-#: preferences.c:2051
+#: preferences.c:2052
 msgid ""
 "<b>Fatal error handling</b>\n"
 "\n"
@@ -1848,15 +1836,15 @@ msgstr ""
 "Por padrão, o dvdisaster para de ler quando o drive relata um erro fatal. Isso previne outras tentativas de leitura inúteis e possível dano ao drive.\n"
 "Porém, alguns drives produzem mensagens fatais sem fundamento. Para tais drives, ignorar erros fatais pode ser necessário para fazer a leitura ininterrupta de mídias danificadas."
 
-#: preferences.c:2061
+#: preferences.c:2062
 msgid "Media ejection"
 msgstr "Ejeção da mídia"
 
-#: preferences.c:2064 preferences.c:2065
+#: preferences.c:2065 preferences.c:2066
 msgid "Eject medium after sucessful read"
 msgstr "Ejetar mídia após uma leitura completa"
 
-#: preferences.c:2091
+#: preferences.c:2092
 msgid ""
 "<b>Medium ejection</b>\n"
 "\n"
@@ -1869,23 +1857,23 @@ msgstr ""
 "\n"
 "Note que o ambiente de desktop pode prevenir que outras aplicações ejetem a mídia. Nesse caso, ejete a mídia através da interface de usuário do desktop."
 
-#: preferences.c:2101
+#: preferences.c:2102
 msgid "Read attempts"
 msgstr "Tentativas de leitura"
 
-#: preferences.c:2105
+#: preferences.c:2106
 msgid "Sector read errors"
 msgstr "Erros de leitura de setor"
 
-#: preferences.c:2114
+#: preferences.c:2115
 msgid "Raw reading"
 msgstr "Leitura Raw"
 
-#: preferences.c:2114
+#: preferences.c:2115
 msgid "Read and analyze raw sectors"
 msgstr "Ler e analisar setores Raw"
 
-#: preferences.c:2135
+#: preferences.c:2136
 msgid ""
 "<b>Raw reading</b> (affects CD media only)\n"
 "\n"
@@ -1913,16 +1901,16 @@ msgstr ""
 "- a leitura linear estiver configurada para pular 0 setores após um erro de leitura.\n"
 "O cache de setores Raw também depende de ativação de sua respectiva opção."
 
-#: preferences.c:2152
+#: preferences.c:2153
 msgid "Minimum number of reading attempts"
 msgstr "Número mínimo de tentativas de leitura"
 
-#: preferences.c:2154 preferences.c:2155 preferences.c:2160 preferences.c:2161
+#: preferences.c:2155 preferences.c:2156 preferences.c:2161 preferences.c:2162
 #, c-format
 msgid "Min. %d reading attempts per sector"
 msgstr "Mín. de %d tentativas de leitura por setor"
 
-#: preferences.c:2182
+#: preferences.c:2183
 msgid ""
 "<b>Minimum number of reading attempts</b>\n"
 "\n"
@@ -1936,16 +1924,16 @@ msgstr ""
 "\n"
 "Aumentar o número de tentativas de leitura pode melhorar a recuperação de dados em uma mídia ruim, mas também aumentará o tempo de processamento e o desgaste mecânico do drive."
 
-#: preferences.c:2191
+#: preferences.c:2192
 msgid "Maximum number of reading attempts"
 msgstr "Número máximo de tentativas de leitura"
 
-#: preferences.c:2193 preferences.c:2194 preferences.c:2199 preferences.c:2200
+#: preferences.c:2194 preferences.c:2195 preferences.c:2200 preferences.c:2201
 #, c-format
 msgid "Max. %d reading attempts per sector"
 msgstr "Máx. de %d tentativas de leitura por setor"
 
-#: preferences.c:2221
+#: preferences.c:2222
 msgid ""
 "<b>Maximum number of reading attempts</b>\n"
 "\n"
@@ -1953,27 +1941,22 @@ msgid ""
 "\n"
 "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
 msgstr ""
-"<b>Número máximo de tentativas de leitura</b>\n"
-"\n"
-"Quando o número mínimo de tentativas de leitura é alcançado, sem sucesso, o dvdisaster pode optar por fazer tentativas de leitura adicionais até este número.\n"
-"\n"
-"A decisão de fazer mais tentativas depende da qualidade dos dados obtidos até o momento, que, por sua vez, é influenciada pelas capacidades do seu drive de CD/DVD e sistema operacional. Então, dependendo das suas configurações, você pode ou não ver o dvdisaster usar o valor máximo."
 
-#: preferences.c:2235
+#: preferences.c:2236
 msgid "Treatment of unreadable areas"
 msgstr "Tratamento de áreas ilegíveis"
 
-#: preferences.c:2237 preferences.c:2239 preferences.c:2240 preferences.c:2248
+#: preferences.c:2238 preferences.c:2240 preferences.c:2241 preferences.c:2249
 #, c-format
 msgid "Skip %d sectors after read error"
 msgstr "Pular %d setores após um erro de leitura"
 
-#: preferences.c:2238 preferences.c:2243 preferences.c:2244 preferences.c:2249
+#: preferences.c:2239 preferences.c:2244 preferences.c:2245 preferences.c:2250
 #, c-format
 msgid "Stop reading when unreadable intervals &lt; %d"
 msgstr "Parar de ler quando intervalos de leitura ilegíveis &lt; %d"
 
-#: preferences.c:2275
+#: preferences.c:2276
 msgid ""
 "<b>Treatment of unreadable areas</b>\n"
 "\n"
@@ -1987,15 +1970,15 @@ msgstr ""
 "\n"
 "Efeitos na <b>estratégia de leitura linear</b>:"
 
-#: preferences.c:2282
+#: preferences.c:2283
 msgid "Skipping a large number of sectors (e.g. 1024) gives a quick overview of damaged areas, but will usually not collect enough data for repairing the image."
 msgstr "Pular um grande número de setores (ex.: 1024) dá uma rápida imagem das áreas danificadas, mas, geralmente, não coleta dados suficientes para consertar a imagem."
 
-#: preferences.c:2286
+#: preferences.c:2287
 msgid "Smaller values like 16, 32 or 64 are a good trade-off: The processing time will beconsiderably shortened, but still enough data for repairing the image is collected.\n"
 msgstr "Valores menores como 16, 32 ou 64 são um bom negócio: o tempo de processamento é consideravelmente diminuído, mas dados suficientes para consertar a imagem ainda são coletados.\n"
 
-#: preferences.c:2290
+#: preferences.c:2291
 msgid ""
 "The <b>adaptive reading strategy</b> uses this setting only if no error correction data is available. In that case the reading process will stop when no unread areas larger than the selected size remain. Values smaller than 128 <i>are not recommended</i> as they cause the drive to carry out lots of laser head repositioning during the final phase of the reading process. If adaptive reading with a setting of 128 is not sufficient, try reading the remaining sectors with an additional linear reading pass.\n"
 "\n"
@@ -2005,19 +1988,19 @@ msgstr ""
 "\n"
 "Em mídias DVD e BD, erros de leitura geralmente se estendem ao longo de pelo menos 16 setores por motivos técnicos. Portanto, escolher um valor menor do que 16 não é recomendado para DVDs e BDs."
 
-#: preferences.c:2303 preferences.c:2306
+#: preferences.c:2304 preferences.c:2307
 msgid "Media read attempts"
 msgstr "Tentativas de leitura da mídia"
 
-#: preferences.c:2307
+#: preferences.c:2308
 msgid "Read the whole medium "
 msgstr "Lê a mídia inteira "
 
-#: preferences.c:2322
+#: preferences.c:2323
 msgid " times"
 msgstr " vezes"
 
-#: preferences.c:2337
+#: preferences.c:2338
 msgid ""
 "<b>Media read attempts</b> for the linear reading strategy\n"
 "\n"
@@ -2031,15 +2014,15 @@ msgstr ""
 "\n"
 "Apenas os setores desaparecidos receberão tentativas adicionais de leitura."
 
-#: preferences.c:2354
+#: preferences.c:2355
 msgid "Keep uncorrectable raw sectors in the following directory:"
 msgstr "Manter setores raw irrecuperáveis no seguinte diretório:"
 
-#: preferences.c:2361 preferences.c:3154
+#: preferences.c:2362 preferences.c:3155
 msgid "Select"
 msgstr "Selecionar"
 
-#: preferences.c:2400
+#: preferences.c:2401
 msgid ""
 "<b>Raw sector caching</b>\n"
 "\n"
@@ -2059,78 +2042,75 @@ msgstr ""
 "Por favor, note que nem todos os drives e sistemas operacionais suportam leitura de dados parciais. Não é um erro do diretório de cache ficar vazio.\n"
 "O dvdisaster não removerá nenhum arquivo do diretório escolhido; você deve limpá-lo manualmente apóis uma recuperação bem-sucedida de mídia."
 
-#: preferences.c:2418
+#: preferences.c:2419
 msgid "Raw sector file prefix"
 msgstr "Prefixo de arquivos de setor Raw"
 
-#: preferences.c:2419
+#: preferences.c:2420
 msgid "Raw sector file prefix: "
 msgstr "Prefixo de arquivos de setor Raw: "
 
-#: preferences.c:2440
+#: preferences.c:2441
 msgid ""
 "<b>Raw sector file prefix</b>\n"
 "\n"
 "Use a different prefix for each disc you are trying to recover, e.g. \"disc1-\" and so on."
 msgstr ""
-"<b>Prefixo de arquivos de setor Raw</b>\n"
-"\n"
-"Usa um prefixo diferente para cada disco que você está tentando recuperar, por ex.: \"disco1-\" etc."
 
-#: preferences.c:2448
+#: preferences.c:2449
 msgid "Error correction"
 msgstr "Correção de erros"
 
-#: preferences.c:2450
+#: preferences.c:2451
 msgid "Error correction method"
 msgstr "Método de correção de erros"
 
-#: preferences.c:2451
+#: preferences.c:2452
 msgid "Storage method:"
 msgstr "Método de armazenamento:"
 
-#: preferences.c:2490
+#: preferences.c:2491
 msgid ""
 "<b>Error correction method</b>\n"
 "\n"
 "dvdisaster creates error correction data which is used to recover unreadable sectors if the disc becomes damaged later on. There are different codecs and ways available for storing the error correction information:\n"
 msgstr ""
 
-#: preferences.c:2496
+#: preferences.c:2497
 msgid ""
 "The RS01 codec\n"
 "RS01 is the recommended codec for storing error correction data in separate files.\n"
 msgstr ""
 
-#: preferences.c:2499
+#: preferences.c:2500
 msgid ""
 "The RS02 codec\n"
 "RS02 is the currently recommended codec for augmenting images with error correction data.\n"
 msgstr ""
 
-#: preferences.c:2503
+#: preferences.c:2504
 msgid ""
 "The RS03 codec (Warning: experimental)\n"
 "RS03 can either store error correction data in a separate file or augment the image with it. It provides multithreading to scale with multicore processors and contains some subtle improvements over RS01 and RS02. However it should not be used for productive work unless a stable version is released with dvdisaster V0.80."
 msgstr ""
 
-#: preferences.c:2541
+#: preferences.c:2542
 msgid "Files"
 msgstr "Arquivos"
 
-#: preferences.c:2545
+#: preferences.c:2546
 msgid "Local files (on hard disk)"
-msgstr "Arquivos locais (no disco rígido)"
+msgstr ""
 
-#: preferences.c:2552
+#: preferences.c:2553
 msgid "Automatic file suffixes"
 msgstr "Extensões de arquivo automáticas"
 
-#: preferences.c:2552
+#: preferences.c:2553
 msgid "Automatically add .iso and .ecc file suffixes"
 msgstr "Adicionar automaticamente extensões .iso e .ecc aos arquivos"
 
-#: preferences.c:2576
+#: preferences.c:2577
 msgid ""
 "<b>Automatically add file suffixes</b>\n"
 "\n"
@@ -2140,19 +2120,19 @@ msgstr ""
 "\n"
 "Quando esta opção está ativa, os nomes do arquivo receberão automaticamente extensões \".iso\" ou \".ecc\" se não houver nenhuma outra extensão presente."
 
-#: preferences.c:2582
+#: preferences.c:2583
 msgid "Automatic file creation and deletion"
 msgstr "Criação e exclusão automática de arquivos"
 
-#: preferences.c:2591
+#: preferences.c:2592
 msgid "Automatic .ecc file creation"
 msgstr "Criação automática de arquivos .ecc"
 
-#: preferences.c:2591
+#: preferences.c:2592
 msgid "Create error correction file after reading image"
 msgstr "Criar arquivos de correção de erros após ler a imagem"
 
-#: preferences.c:2614
+#: preferences.c:2615
 msgid ""
 "<b>Automatic error correction file creation</b>\n"
 "\n"
@@ -2162,15 +2142,15 @@ msgstr ""
 "\n"
 "Cria automaticamente um arquivo de correção de erros após ler uma imagem. Aliada à opção \"Remover imagem\", esta opção acelerará a geração de arquivos de correção de erros para uma série de mídias diferentes."
 
-#: preferences.c:2621
+#: preferences.c:2622
 msgid "Automatic image file removal"
 msgstr "Remoção automática de arquivos de imagem"
 
-#: preferences.c:2621
+#: preferences.c:2622
 msgid "Remove image after error correction file creation"
 msgstr "Remover a imagem após a criação de arquivos de correção de erros"
 
-#: preferences.c:2644
+#: preferences.c:2645
 msgid ""
 "<b>Automatic image file removal</b>\n"
 "\n"
@@ -2180,38 +2160,38 @@ msgstr ""
 "\n"
 "Esse essa opção estiver ativa, a imagem será apagada após uma geração bem-sucedida de seu respectivo arquivo de correção de erros."
 
-#: preferences.c:2650 preferences.c:2659
+#: preferences.c:2651 preferences.c:2660
 msgid "Confirm file overwriting"
 msgstr ""
 
-#: preferences.c:2659
+#: preferences.c:2660
 msgid "Ask before overwriting image and ecc files"
 msgstr ""
 
-#: preferences.c:2682
+#: preferences.c:2683
 msgid ""
 "<b>Ask before overwriting image and ecc files</b>\n"
 "\n"
 "dvdisaster will ask you for confirmation when it is going to overwrite an existing image or error correction file if this option is checked."
 msgstr ""
 
-#: preferences.c:2689
+#: preferences.c:2690
 msgid "Appearance"
 msgstr "Aparência"
 
-#: preferences.c:2701
+#: preferences.c:2702
 msgid "Sector coloring"
 msgstr "Colorização dos setores"
 
-#: preferences.c:2712 rs01-verify.c:121 rs02-verify.c:116 rs03-verify.c:126
+#: preferences.c:2713 rs01-verify.c:123 rs02-verify.c:118 rs03-verify.c:127
 msgid "Good sectors"
 msgstr "Setores bons"
 
-#: preferences.c:2712
+#: preferences.c:2713
 msgid "Good sector"
 msgstr "Setor bom"
 
-#: preferences.c:2736
+#: preferences.c:2737
 msgid ""
 "<b>Good sectors</b>\n"
 "\n"
@@ -2221,15 +2201,15 @@ msgstr ""
 "\n"
 "Essa cor indica setores bons."
 
-#: preferences.c:2741
+#: preferences.c:2742
 msgid "Checksum errors"
 msgstr "Erros de checksum"
 
-#: preferences.c:2741
+#: preferences.c:2742
 msgid "Checksum error"
 msgstr "Erro de checksum"
 
-#: preferences.c:2765
+#: preferences.c:2766
 msgid ""
 "<b>Checksum errors</b>\n"
 "\n"
@@ -2238,15 +2218,15 @@ msgstr ""
 "<b>Erros de checksum</b>\n"
 "Esta cor é usada para indicar setores com checksums (verificação de integridade) errados."
 
-#: preferences.c:2770
+#: preferences.c:2771
 msgid "Unreadable sectors"
 msgstr "Setores ilegíveis"
 
-#: preferences.c:2770
+#: preferences.c:2771
 msgid "Unreadable"
 msgstr "Ilegível"
 
-#: preferences.c:2794
+#: preferences.c:2795
 msgid ""
 "<b>Unreadable sectors</b>\n"
 "\n"
@@ -2256,15 +2236,15 @@ msgstr ""
 "\n"
 "Essa cor é usada para marcar setores ilegíveis."
 
-#: preferences.c:2799
+#: preferences.c:2800
 msgid "Present sectors"
 msgstr "Setores presentes"
 
-#: preferences.c:2799
+#: preferences.c:2800
 msgid "Present sector"
 msgstr "Setor presente"
 
-#: preferences.c:2823
+#: preferences.c:2824
 msgid ""
 "<b>Present sectors</b>\n"
 "\n"
@@ -2274,15 +2254,15 @@ msgstr ""
 "\n"
 "Setores que já estão presentes são marcados com esta cor."
 
-#: preferences.c:2828
+#: preferences.c:2829
 msgid "Ignored sectors"
 msgstr "Setores ignorado"
 
-#: preferences.c:2828
+#: preferences.c:2829
 msgid "Ignored sector"
 msgstr "Setor ignorado"
 
-#: preferences.c:2852
+#: preferences.c:2853
 msgid ""
 "<b>Ignored sectors</b>\n"
 "\n"
@@ -2292,15 +2272,15 @@ msgstr ""
 "\n"
 "Setores marcados com esta cor não serão processados na execução atual."
 
-#: preferences.c:2858
+#: preferences.c:2859
 msgid "Highlit sectors"
 msgstr "Setores destacados"
 
-#: preferences.c:2858
+#: preferences.c:2859
 msgid "Highlit sector"
 msgstr "Setor destacado"
 
-#: preferences.c:2882
+#: preferences.c:2883
 msgid ""
 "<b>Highlit sectors</b>\n"
 "\n"
@@ -2310,15 +2290,15 @@ msgstr ""
 "\n"
 "Essa cor é usada para setores destacados temporariamente durante a leitura adaptativa."
 
-#: preferences.c:2888
+#: preferences.c:2889
 msgid "Text colors"
 msgstr "Cores de texto"
 
-#: preferences.c:2898
+#: preferences.c:2899
 msgid "Positive text"
 msgstr "Texto positivo"
 
-#: preferences.c:2922
+#: preferences.c:2923
 msgid ""
 "<b>Positive text</b>\n"
 "\n"
@@ -2328,11 +2308,11 @@ msgstr ""
 "\n"
 "Boas notícias são mostradas nesta cor."
 
-#: preferences.c:2927
+#: preferences.c:2928
 msgid "Negative text"
 msgstr "Texto negativo"
 
-#: preferences.c:2951
+#: preferences.c:2952
 msgid ""
 "<b>Negative text</b>\n"
 "\n"
@@ -2342,15 +2322,15 @@ msgstr ""
 "\n"
 "Más notícias são mostradas nesta cor."
 
-#: preferences.c:2956
+#: preferences.c:2957
 msgid "Curve colors"
 msgstr "Cores da curva"
 
-#: preferences.c:2965
+#: preferences.c:2966
 msgid "Curve color"
 msgstr "Cor da curva"
 
-#: preferences.c:2989
+#: preferences.c:2990
 msgid ""
 "<b>Curve color and labels</b>\n"
 "\n"
@@ -2360,11 +2340,11 @@ msgstr ""
 "\n"
 "A curva da velocidade de leitura e suas marcações ao topo e à direita são mostradas nesta cor."
 
-#: preferences.c:2995 read-linear-window.c:444
+#: preferences.c:2996 read-linear-window.c:445
 msgid "C2 errors"
 msgstr "Erros C2"
 
-#: preferences.c:3019
+#: preferences.c:3020
 msgid ""
 "<b>C2 error color</b>\n"
 "\n"
@@ -2374,11 +2354,11 @@ msgstr ""
 "\n"
 "O gráfico de barras logarítimico que mostra os erros C2 é renderizado nesta cor durante as operações \"Ler\" e \"Escanear\"."
 
-#: preferences.c:3026
+#: preferences.c:3027
 msgid "Error correction load"
 msgstr "Carregamento da correção de erros"
 
-#: preferences.c:3050
+#: preferences.c:3051
 msgid ""
 "<b>Error correction load</b>\n"
 "\n"
@@ -2388,19 +2368,19 @@ msgstr ""
 "\n"
 "O gráfico em barras que mostra o carregamento da correção de erros é renderizado nesta cor durante a operação \"Consertar\"."
 
-#: preferences.c:3062
+#: preferences.c:3063
 msgid "Default color scheme"
 msgstr "Esquema de cores padrão"
 
-#: preferences.c:3070
+#: preferences.c:3071
 msgid "Dialog boxes"
 msgstr "Caixas de diálogo"
 
-#: preferences.c:3073
+#: preferences.c:3074
 msgid "Reverse OK / Cancel buttons"
 msgstr "Inverter botões Sim / Cancelar"
 
-#: preferences.c:3097
+#: preferences.c:3098
 msgid ""
 "<b>Reverse OK / Cancel buttons</b>\n"
 "\n"
@@ -2414,19 +2394,19 @@ msgstr ""
 "\n"
 "As mudanças se tornarão ativas após reiniciar o dvdisaster."
 
-#: preferences.c:3104
+#: preferences.c:3105
 msgid "Misc"
 msgstr "Outros"
 
-#: preferences.c:3108
+#: preferences.c:3109
 msgid "Logging"
 msgstr "Logs"
 
-#: preferences.c:3115
+#: preferences.c:3116
 msgid "Verbose logging"
 msgstr ""
 
-#: preferences.c:3139
+#: preferences.c:3140
 msgid ""
 "<b>Verbose logging</b>\n"
 "\n"
@@ -2436,19 +2416,19 @@ msgstr ""
 "\n"
 "Mais informações serão mostradas na janela de Log e/ou no arquivo de log. Útil para depuração, mas pode levar a um desempenho mais baixo."
 
-#: preferences.c:3146
+#: preferences.c:3147
 msgid "Logfile:"
 msgstr "Arquivo de Log"
 
-#: preferences.c:3147
+#: preferences.c:3148
 msgid "Copy log to file:"
 msgstr "Copiar relatório para o arquivo:"
 
-#: preferences.c:3155
+#: preferences.c:3156
 msgid "Delete"
 msgstr "Apagar"
 
-#: preferences.c:3201
+#: preferences.c:3202
 msgid ""
 "<b>Logfile</b>\n"
 "\n"
@@ -2473,224 +2453,224 @@ msgstr ""
 msgid "unknown asc/ascq code (0x%02x, 0x%02x)."
 msgstr "código asc/ascq desconhecido (0x%02x, 0x%02x)."
 
-#: raw-editor.c:296
+#: raw-editor.c:297
 msgid "windowtitle|Raw sector dump selection"
 msgstr "Seleção de despejo de setores Raw"
 
-#: raw-editor.c:327
+#: raw-editor.c:328
 #, c-format
 msgid "%s loaded, LBA %lld, %d samples."
 msgstr "%s carregado, LBA %lld, %d amostras."
 
-#: raw-editor.c:351
+#: raw-editor.c:352
 msgid "EDC checksum does not match - sector still defective!"
 msgstr "checksum EDC não combina - setor ainda defeituoso!"
 
-#: raw-editor.c:356
+#: raw-editor.c:357
 msgid "LBA does not match MSF code in sector!"
 msgstr "LBA não combina com o código MSF no setor!"
 
-#: raw-editor.c:383
+#: raw-editor.c:384
 msgid "Raw sector does not belong to the selected image!"
 msgstr "O setor Raw não pertence à imagem selecionada!"
 
-#: raw-editor.c:389 read-adaptive.c:1252 read-adaptive.c:1323
-#: read-adaptive.c:1643 read-adaptive.c:1841 read-linear.c:390
-#: read-linear.c:645 read-linear.c:989 rs01-fix.c:459 rs01-fix.c:719
-#: rs02-fix.c:749 rs03-fix.c:818
+#: raw-editor.c:390 read-adaptive.c:1327 read-adaptive.c:1407
+#: read-adaptive.c:1746 read-adaptive.c:1964 read-linear.c:426
+#: read-linear.c:703 read-linear.c:1042 rs01-fix.c:501 rs01-fix.c:761
+#: rs02-fix.c:786 rs03-fix.c:865
 #, c-format
 msgid "Failed seeking to sector %lld in image [%s]: %s"
 msgstr "Falha ao pular para o setor %lld na imagem [%s]: %s"
 
-#: raw-editor.c:396 read-adaptive.c:1266 read-adaptive.c:1329
-#: read-adaptive.c:1675 read-adaptive.c:1688 read-adaptive.c:1849
-#: read-linear.c:399 read-linear.c:652 rs01-fix.c:181 rs01-fix.c:466
+#: raw-editor.c:397 read-adaptive.c:1341 read-adaptive.c:1413
+#: read-adaptive.c:1778 read-adaptive.c:1793 read-adaptive.c:1972
+#: read-linear.c:435 read-linear.c:710 rs01-fix.c:195 rs01-fix.c:508
 #, c-format
 msgid "Failed writing to sector %lld in image [%s]: %s"
 msgstr "Falha ao gravar no setor %lld da imagem [%s]: %s"
 
-#: raw-editor.c:417
+#: raw-editor.c:418
 msgid "windowtitle|Load buffer from file"
 msgstr "Carregar buffer do arquivo"
 
-#: raw-editor.c:435
+#: raw-editor.c:436
 msgid "windowtitle|Save buffer to file"
 msgstr "Salvar buffer no arquivo"
 
-#: raw-editor.c:473
+#: raw-editor.c:474
 #, c-format
 msgid "Buffer loaded from %s."
 msgstr "Buffer lido de %s."
 
-#: raw-editor.c:488
+#: raw-editor.c:489
 #, c-format
 msgid "Buffer saved to %s."
 msgstr "Buffer salvo em %s."
 
-#: raw-editor.c:575
+#: raw-editor.c:576
 msgid "*** Well done: Sector has been recovered! ***"
 msgstr "*** Muito bem: O setor foi recuperado! ***"
 
-#: raw-editor.c:578
+#: raw-editor.c:579
 #, c-format
 msgid "Current buffer state: P %d/%d, Q %d/%d"
 msgstr "Estado atual do buffer: P %d/%d, Q %d/%d"
 
-#: raw-editor.c:689
+#: raw-editor.c:690
 #, c-format
 msgid "%c Vector %d has >2 erasures (nothing done)."
 msgstr "Vetor %c %d tem >2 rasuras (nada foi feito)."
 
-#: raw-editor.c:718
+#: raw-editor.c:719
 #, c-format
 msgid "%c Vector %d already good."
 msgstr "Vetor %c %d já está bom."
 
-#: raw-editor.c:726
+#: raw-editor.c:727
 #, c-format
 msgid "%c Vector %d corrected (%d erasures)."
 msgstr "Vetor %c %d corrigido (%d rasuras)."
 
-#: raw-editor.c:729
+#: raw-editor.c:730
 #, c-format
 msgid "%c Vector %d not correctable (%d erasures)."
 msgstr "Vetor %c %d não pode ser corrigido (%d rasuras)."
 
-#: raw-editor.c:744
+#: raw-editor.c:745
 #, c-format
 msgid "no replacements for P vector %d available"
 msgstr "nenhum substituto para o vetor P %d disponível"
 
-#: raw-editor.c:760
+#: raw-editor.c:761
 #, c-format
 msgid "Exchanged P vector %d with version %d (of %d)."
 msgstr "Feita a troca do vetor P %d com a versão %d (de %d)."
 
-#: raw-editor.c:782
+#: raw-editor.c:783
 #, c-format
 msgid "no replacements for Q vector %d available"
 msgstr "nenhum substituto para o vetor Q %d disponível"
 
-#: raw-editor.c:796
+#: raw-editor.c:797
 #, c-format
 msgid "Exchanged Q vector %d with version %d (of %d)."
 msgstr "Feita a troca do vetor Q %d com a versão %d (de %d)"
 
-#: raw-editor.c:857 raw-editor.c:870
+#: raw-editor.c:858 raw-editor.c:871
 #, c-format
 msgid "Showing sample %d (of %d)."
 msgstr "Mostrando amostra %d (de %d)."
 
-#: raw-editor.c:916
+#: raw-editor.c:917
 msgid "Sector with lowest P failures selected."
 msgstr "Setor com o menor número de falhas P selecionado."
 
-#: raw-editor.c:926
+#: raw-editor.c:927
 msgid "Sector with lowest Q failures selected."
 msgstr "Setor com o menor número de falhas Q selecionado."
 
-#: raw-editor.c:938
+#: raw-editor.c:939
 #, c-format
 msgid "Smart L-EC: %s"
 msgstr "Smart L-EC: %s"
 
-#: raw-editor.c:959
+#: raw-editor.c:960
 msgid "Raw sector editor"
 msgstr "Editor de setores Raw"
 
-#: raw-editor.c:981
+#: raw-editor.c:982
 msgid "Please load a raw sector file!"
 msgstr "Por favor, carregue um arquivo de setores Raw!"
 
-#: raw-editor.c:993
+#: raw-editor.c:994
 msgid "Browsing"
 msgstr "Navegando"
 
-#: raw-editor.c:1005
+#: raw-editor.c:1006
 msgid "button|Load"
 msgstr "Carregar"
 
-#: raw-editor.c:1010
+#: raw-editor.c:1011
 msgid "button|Save"
 msgstr "Salvar"
 
-#: raw-editor.c:1016
+#: raw-editor.c:1017
 msgid "button|Prev. sector"
 msgstr "Setor anterior"
 
-#: raw-editor.c:1021
+#: raw-editor.c:1022
 msgid "button|Next sector"
 msgstr "Próximo setor"
 
-#: raw-editor.c:1026
+#: raw-editor.c:1027
 msgid "button|Sort by P"
 msgstr "Ordenar por P"
 
-#: raw-editor.c:1031
+#: raw-editor.c:1032
 msgid "button|Sort by Q"
 msgstr "Ordenar por Q"
 
-#: raw-editor.c:1038
+#: raw-editor.c:1039
 msgid "Editing"
 msgstr "Editando"
 
-#: raw-editor.c:1050
+#: raw-editor.c:1051
 msgid "button|Load Buf"
 msgstr "Carregar Buf"
 
-#: raw-editor.c:1055
+#: raw-editor.c:1056
 msgid "button|Save Buf"
 msgstr "Salvar Buf"
 
-#: raw-editor.c:1060
+#: raw-editor.c:1061
 msgid "button|Tag diffs"
 msgstr ""
 
-#: raw-editor.c:1065
+#: raw-editor.c:1066
 msgid "button|Untag all"
 msgstr "Desmarcar tudo"
 
-#: raw-editor.c:1070
+#: raw-editor.c:1071
 msgid "button|Redo"
 msgstr "Refazer"
 
-#: raw-editor.c:1075
+#: raw-editor.c:1076
 msgid "button|Undo"
 msgstr "Desfazer"
 
-#: raw-editor.c:1082
+#: raw-editor.c:1083
 msgid "Correction"
 msgstr "Correção"
 
-#: raw-editor.c:1085
+#: raw-editor.c:1086
 msgid "button|P vector"
 msgstr "Vetor P"
 
-#: raw-editor.c:1090
+#: raw-editor.c:1091
 msgid "button|Q vector"
 msgstr "Vetor Q"
 
-#: raw-editor.c:1095
+#: raw-editor.c:1096
 msgid "button|Find other P"
 msgstr "Encontrar outro P"
 
-#: raw-editor.c:1100
+#: raw-editor.c:1101
 msgid "button|Find other Q"
 msgstr "Encontrar outro Q"
 
-#: raw-editor.c:1105
+#: raw-editor.c:1106
 msgid "button|Tag erasures"
 msgstr "Rasuras na marcação"
 
-#: raw-editor.c:1112
+#: raw-editor.c:1113
 msgid "Heuristics"
 msgstr "Heurísticas"
 
-#: raw-editor.c:1115
+#: raw-editor.c:1116
 msgid "button|Smart L-EC"
 msgstr "Smart L-EC"
 
-#: raw-sector-cache.c:35 raw-sector-cache.c:202 raw-sector-cache.c:336
+#: raw-sector-cache.c:35 raw-sector-cache.c:209 raw-sector-cache.c:354
 #: scsi-freebsd.c:131 scsi-freebsd.c:141 scsi-linux.c:115 scsi-linux.c:124
 #: scsi-netbsd.c:126 scsi-netbsd.c:136
 #, c-format
@@ -2698,13 +2678,13 @@ msgid "Could not open %s: %s"
 msgstr "Impossível abrir %s: %s"
 
 #: raw-sector-cache.c:60 raw-sector-cache.c:124 raw-sector-cache.c:130
-#: raw-sector-cache.c:134 raw-sector-cache.c:162 raw-sector-cache.c:260
+#: raw-sector-cache.c:134 raw-sector-cache.c:162 raw-sector-cache.c:267
 #, c-format
 msgid "Failed writing to defective sector file: %s"
 msgstr "Falha ao gravar no arquivo com setor defeituoso: %s"
 
-#: raw-sector-cache.c:80 raw-sector-cache.c:105 raw-sector-cache.c:216
-#: raw-sector-cache.c:312 raw-sector-cache.c:352
+#: raw-sector-cache.c:80 raw-sector-cache.c:105 raw-sector-cache.c:223
+#: raw-sector-cache.c:324 raw-sector-cache.c:370
 #, c-format
 msgid "Failed reading from defective sector file: %s"
 msgstr "Falha ao ler do arquivo com setor defeituoso: %s"
@@ -2714,7 +2694,7 @@ msgid "Defective sector file is truncated"
 msgstr "Arquivo de setor defeituoso está truncado"
 
 #: raw-sector-cache.c:112 raw-sector-cache.c:138 raw-sector-cache.c:150
-#: raw-sector-cache.c:209 raw-sector-cache.c:224
+#: raw-sector-cache.c:216 raw-sector-cache.c:231
 #, c-format
 msgid "Failed seeking in defective sector file: %s"
 msgstr "Falha ao pular para o arquivo de setor defeituoso: %s"
@@ -2723,17 +2703,17 @@ msgstr "Falha ao pular para o arquivo de setor defeituoso: %s"
 msgid "Fingerprints of medium and defective sector cache do not match!"
 msgstr "Impressões Digitais da mídia e do cache de setores defeituosos não combinam!"
 
-#: raw-sector-cache.c:196
+#: raw-sector-cache.c:203
 #, c-format
 msgid " [Creating new cache file %s]\n"
 msgstr " [Criando novo arquivo de cache %s]\n"
 
-#: raw-sector-cache.c:268
+#: raw-sector-cache.c:280
 #, c-format
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
 msgstr " [Anexados %d/%d setores ao arquivo de cache %s; LBA=%lld, ssize=%d, %d setores]\n"
 
-#: read-adaptive.c:55 rs01-create.c:1025
+#: read-adaptive.c:55 rs01-create.c:1080
 #, c-format
 msgid ""
 "Error closing error correction file:\n"
@@ -2755,7 +2735,7 @@ msgstr ""
 "Impossível ler o cabeçalho do ecc:\n"
 "%s"
 
-#: read-adaptive.c:119 read-linear.c:838
+#: read-adaptive.c:119
 #, c-format
 msgid ""
 "* Warning: This ecc file requires dvdisaster-%d.%d!\n"
@@ -2765,33 +2745,33 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-adaptive.c:152 rs01-common.c:80 rs01-common.c:231 rs01-create.c:299
-#: rs01-verify.c:810
+#: read-adaptive.c:152 rs01-common.c:80 rs01-common.c:238 rs01-create.c:326
+#: rs01-verify.c:891
 #, c-format
 msgid "Failed skipping the ecc header: %s"
 msgstr "Falha ao pular o cabeçalho ecc: %s"
 
 #: read-adaptive.c:161 read-adaptive.c:171 rs01-common.c:92 rs01-common.c:102
-#: rs01-common.c:341
+#: rs01-common.c:350
 #, c-format
 msgid "Error reading CRC information: %s"
 msgstr "Erro ao ler informação de CRC: %s"
 
-#: read-adaptive.c:373 read-adaptive.c:1620
+#: read-adaptive.c:374 read-adaptive.c:1723
 msgid "Aborted by unrecoverable error."
 msgstr "Abortado por erro irrecuperável."
 
-#: read-adaptive.c:504
+#: read-adaptive.c:510
 #, c-format
 msgid "Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"
 msgstr "Reparáveis: %2d.%1d%% (corrigíveis: %lld; lendo agora [%lld..%lld], tamanho %lld)"
 
-#: read-adaptive.c:509
+#: read-adaptive.c:515
 #, c-format
 msgid "Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"
 msgstr "Reparáveis: %2d.%1d%% (desaparecidos: %lld; lendo agora [%lld..%lld], tamanho %lld)"
 
-#: read-adaptive.c:653 read-linear.c:845
+#: read-adaptive.c:670
 #, c-format
 msgid ""
 "* Warning: This image requires dvdisaster-%d.%d!\n"
@@ -2800,21 +2780,21 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-adaptive.c:682
+#: read-adaptive.c:699
 #, c-format
 msgid "Stopping when unreadable intervals < %d."
 msgstr "Para quando intervalos ilegíveis forem < %d."
 
-#: read-adaptive.c:684 read-adaptive.c:690
+#: read-adaptive.c:701 read-adaptive.c:707
 #, c-format
 msgid "Adaptive reading: %s\n"
 msgstr "Leitura adaptativa: %s\n"
 
-#: read-adaptive.c:689
+#: read-adaptive.c:706
 msgid "Trying to collect enough data for error correction."
 msgstr "Tentando coletar dados suficientes para correção de erros."
 
-#: read-adaptive.c:724
+#: read-adaptive.c:742
 #, c-format
 msgid ""
 "Medium contains %lld sectors more as recorded in the .ecc file\n"
@@ -2825,13 +2805,13 @@ msgstr ""
 "(Mídia: %lld setores; esperado do arquivo .ecc: %lld setores).\n"
 "Apenas os primeiros %lld setores da mídia serão processados.\n"
 
-#: read-adaptive.c:731 read-adaptive.c:747 read-adaptive.c:811
-#: read-adaptive.c:898 read-adaptive.c:960 read-adaptive.c:1273
-#: read-adaptive.c:1550
+#: read-adaptive.c:751 read-adaptive.c:771 read-adaptive.c:844
+#: read-adaptive.c:939 read-adaptive.c:1009 read-adaptive.c:1350
+#: read-adaptive.c:1647
 msgid "Aborted by user request!"
 msgstr "Abortado a pedido do usuário!"
 
-#: read-adaptive.c:741
+#: read-adaptive.c:763
 #, c-format
 msgid ""
 "Medium contains %lld sectors less as recorded in the .ecc file\n"
@@ -2840,12 +2820,12 @@ msgstr ""
 "A mídia contém %lld setores a menos do que foram gravados no arquivo .ecc\n"
 "(Mídia: %lld setores; esperado do arquivo .ecc: %lld setores).\n"
 
-#: read-adaptive.c:781
+#: read-adaptive.c:811
 #, c-format
 msgid "Limiting sector range to [%lld,%lld].\n"
 msgstr "Limitando o intervalo de setores a [%lld,%lld].\n"
 
-#: read-adaptive.c:806
+#: read-adaptive.c:837
 #, c-format
 msgid ""
 "Sector %d is missing. Can not compare medium and ecc fingerprints.\n"
@@ -2854,7 +2834,7 @@ msgstr ""
 "Setor %d está desaparecido. Não é possível comparar as impressões digitais da mídia e do ecc.\n"
 "Certifique-se de que a mídia e o arquivo ecc pertencem um ao outro.\n"
 
-#: read-adaptive.c:819
+#: read-adaptive.c:853
 msgid ""
 "Fingerprints of medium and ecc file do not match.\n"
 "Medium and ecc file do not belong together.\n"
@@ -2862,15 +2842,15 @@ msgstr ""
 "Impressões digitais da mídia e do arquivo ecc não batem.\n"
 "A mídia e o arquivo ecc não pertencem um ao outro.\n"
 
-#: read-adaptive.c:860 read-linear.c:332
+#: read-adaptive.c:896 read-linear.c:360
 msgid "Image file does not match the optical disc."
-msgstr "O arquivo de imagem não combina com o CD/DVD/BD."
+msgstr ""
 
-#: read-adaptive.c:866
+#: read-adaptive.c:903
 msgid "Reading aborted. Please select a different image file."
 msgstr "Leitura abortada. Por favor, selecione um arquivo de imagem diferente."
 
-#: read-adaptive.c:892
+#: read-adaptive.c:931
 #, c-format
 msgid ""
 "Image file is %lld sectors longer than inserted medium\n"
@@ -2879,74 +2859,74 @@ msgstr ""
 "O arquivo de imagem tem %lld setores a mais do que a mídia inserida\n"
 "(Imagem: %lld setores; mídia: %lld setores).\n"
 
-#: read-adaptive.c:916 read-adaptive.c:920
+#: read-adaptive.c:959 read-adaptive.c:965
 msgid "Loading CRC data."
 msgstr "Carregando dados CRC"
 
-#: read-adaptive.c:952
+#: read-adaptive.c:999
 msgid "Analysing existing image file"
 msgstr "Analisando arquivo de imagem existente"
 
-#: read-adaptive.c:969 rs01-common.c:271 rs02-verify.c:725
+#: read-adaptive.c:1019 rs01-common.c:280 rs02-verify.c:754
 #, c-format
 msgid "premature end in image (only %d bytes): %s\n"
 msgstr "fim prematuro da imagem (apenas %d bytes): %s\n"
 
-#: read-adaptive.c:1047
+#: read-adaptive.c:1106
 #, c-format
 msgid "Analysing existing image file: %2d%%"
 msgstr "Analisando arquivo de imagem existente: %2d%%"
 
-#: read-adaptive.c:1075
+#: read-adaptive.c:1135
 msgid "Determining correctable sectors"
 msgstr "Determinando setores corrigíveis"
 
-#: read-adaptive.c:1150
+#: read-adaptive.c:1215
 #, c-format
 msgid "Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"
 msgstr "Analisando arquivo de imagem existente: %lld legíveis, %lld corrigíveis, %lld ainda desaparecidos.\n"
 
-#: read-adaptive.c:1152
+#: read-adaptive.c:1217
 #, c-format
 msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
 msgstr "Analisando arquivo de imagem existente: %lld legíveis, %lld ainda desaparecidos.\n"
 
-#: read-adaptive.c:1202 read-linear.c:725
+#: read-adaptive.c:1274 read-linear.c:784
 msgid "Ignore once"
 msgstr "Ignorar uma vez"
 
-#: read-adaptive.c:1203 read-linear.c:726
+#: read-adaptive.c:1275 read-linear.c:785
 msgid "Ignore always"
 msgstr "Ignorar sempre"
 
-#: read-adaptive.c:1204 read-linear.c:727
+#: read-adaptive.c:1276 read-linear.c:786
 msgid "Abort"
 msgstr "Abortar"
 
-#: read-adaptive.c:1239
+#: read-adaptive.c:1312
 #, c-format
 msgid "Filling image area [%lld..%lld]"
 msgstr "Preenchendo área da imagem [%lld..%lld]"
 
-#: read-adaptive.c:1360 read-linear.c:209
+#: read-adaptive.c:1444 read-linear.c:223
 msgid "Reading aborted"
 msgstr "Leitura abortada"
 
-#: read-adaptive.c:1363 read-linear.c:213
+#: read-adaptive.c:1448 read-linear.c:228
 msgid "Preparing for reading the medium image."
 msgstr "Preparando para ler a imagem da mídia"
 
-#: read-adaptive.c:1364 read-linear.c:206 read-linear.c:214
+#: read-adaptive.c:1449 read-linear.c:219 read-linear.c:229
 msgid "Medium: not yet determined"
 msgstr "Mídia: ainda não determinada"
 
-#: read-adaptive.c:1375
+#: read-adaptive.c:1461
 msgid ""
 "Adaptive reading is unavailable in this version.\n"
 "It will be re-introduced in one of the next versions."
 msgstr ""
 
-#: read-adaptive.c:1384
+#: read-adaptive.c:1470
 msgid ""
 "* Warning: Using adaptive reading without error correction data\n"
 "*          has little advantage over linear reading, but may\n"
@@ -2955,20 +2935,20 @@ msgid ""
 "*          Please consider using linear reading instead.\n"
 msgstr ""
 
-#: read-adaptive.c:1442 read-linear.c:271
+#: read-adaptive.c:1530 read-linear.c:293
 #, c-format
 msgid "Creating new %s image.\n"
 msgstr "Criando nova imagem %s.\n"
 
-#: read-adaptive.c:1446 read-linear.c:264
+#: read-adaptive.c:1535 read-linear.c:286
 msgid "Reading new medium image."
 msgstr "Lendo a imagem da nova mídia."
 
-#: read-adaptive.c:1466 read-linear.c:293
+#: read-adaptive.c:1557 read-linear.c:319
 msgid "Completing existing medium image."
 msgstr "Completando a imagem da mídia existente."
 
-#: read-adaptive.c:1499 read-adaptive.c:1811
+#: read-adaptive.c:1591 read-adaptive.c:1922
 msgid ""
 "\n"
 "Sufficient data for reconstructing the image is available.\n"
@@ -2976,7 +2956,7 @@ msgstr ""
 "\n"
 "Dados suficientes para reconstruir a imagem estão disponíveis.\n"
 
-#: read-adaptive.c:1606 read-linear.c:1053
+#: read-adaptive.c:1707 read-linear.c:1109
 #, c-format
 msgid ""
 "Sector %lld: %s\n"
@@ -2987,7 +2967,7 @@ msgstr ""
 "Impossível se recuperar do erro acima.\n"
 "Use a opção --ignore-fatal-sense para passar direto."
 
-#: read-adaptive.c:1611 read-linear.c:1058
+#: read-adaptive.c:1713 read-linear.c:1115
 #, c-format
 msgid ""
 "Sector %lld: %s\n"
@@ -3000,27 +2980,27 @@ msgstr ""
 "Pode não ser possível se recuperar desse erro.\n"
 "A leitura deve proceder e ignorar esse erro?"
 
-#: read-adaptive.c:1666 rs01-fix.c:412 rs02-fix.c:430 rs03-fix.c:478
+#: read-adaptive.c:1769 rs01-fix.c:451 rs02-fix.c:464 rs03-fix.c:522
 #, c-format
 msgid "CRC error in sector %lld\n"
 msgstr "Erro de CRC no setor %lld\n"
 
-#: read-adaptive.c:1830 scsi-layer.c:1742
+#: read-adaptive.c:1948 scsi-layer.c:1742
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Setores %lld-%lld: %s\n"
 
-#: read-adaptive.c:1833 read-linear.c:1243 scsi-layer.c:1741
+#: read-adaptive.c:1956 read-linear.c:1312 scsi-layer.c:1741
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Setor %lld: %s\n"
 
-#: read-adaptive.c:1960
+#: read-adaptive.c:2087
 #, c-format
 msgid "Only %2d.%1d%% of the image are readable or correctable"
 msgstr "Apenas %2d.%1d%% da imagem é legível ou corrigível"
 
-#: read-adaptive.c:1963
+#: read-adaptive.c:2090
 #, c-format
 msgid ""
 "\n"
@@ -3031,7 +3011,7 @@ msgstr ""
 "%s\n"
 "(%lld legíveis, %lld corrigíveis, %lld ainda desaparecidos).\n"
 
-#: read-adaptive.c:1977
+#: read-adaptive.c:2106
 msgid ""
 "\n"
 "Good! All sectors have been read.\n"
@@ -3039,12 +3019,12 @@ msgstr ""
 "\n"
 "Legal! Todos os setores foram lidos.\n"
 
-#: read-adaptive.c:1986
+#: read-adaptive.c:2117
 #, c-format
 msgid "No unreadable intervals with >= %d sectors left."
 msgstr "Nenhum sobrou nenhum intervalo com mais de %d setores."
 
-#: read-adaptive.c:1989
+#: read-adaptive.c:2120
 #, c-format
 msgid ""
 "\n"
@@ -3055,42 +3035,42 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% da imagem foi lido (%lld setores).\n"
 
-#: read-adaptive-window.c:80
+#: read-adaptive-window.c:81
 msgid "Adaptive reading:"
 msgstr "Leitura adaptiva:"
 
-#: read-adaptive-window.c:108
+#: read-adaptive-window.c:109
 msgid "Sectors processed"
 msgstr "Setores processados"
 
-#: read-adaptive-window.c:111 scsi-layer.c:1723
+#: read-adaptive-window.c:112 scsi-layer.c:1723
 msgid "readable"
 msgstr "legível"
 
-#: read-adaptive-window.c:115
+#: read-adaptive-window.c:116
 msgid "correctable"
 msgstr "corrigível"
 
-#: read-adaptive-window.c:119
+#: read-adaptive-window.c:120
 msgid "missing"
 msgstr "desaparecidos"
 
-#: read-adaptive-window.c:129
+#: read-adaptive-window.c:130
 #, c-format
 msgid "Readable: %d.%d%% / %d.%d%% required"
 msgstr "Legível: %d.%d%% / %d.%d%% necessários"
 
-#: read-adaptive-window.c:136
+#: read-adaptive-window.c:137
 #, c-format
 msgid "Total recoverable: %d.%d%%"
 msgstr "Total recuperável: %d.%d%%"
 
-#: read-linear.c:117
+#: read-linear.c:126
 #, c-format
 msgid "<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."
 msgstr "<span %s>Abortado devido a erro irrecuperável.</span> %lld setores lidos, %lld setores ilegíveis pulados até agora."
 
-#: read-linear.c:171
+#: read-linear.c:182
 msgid ""
 "Automatic error correction file creation\n"
 "is only possible after a full reading pass.\n"
@@ -3098,77 +3078,77 @@ msgstr ""
 "Criação automática de arquivos de criação de erros\n"
 "só é possível após um processo de leitura completo.\n"
 
-#: read-linear.c:201
+#: read-linear.c:213
 msgid "Scanning aborted"
 msgstr "Busca abortada"
 
-#: read-linear.c:205 read-linear.c:236
+#: read-linear.c:218 read-linear.c:252
 msgid "Scanning medium for read errors."
 msgstr "Escaneando a mídia para erros de leitura."
 
-#: read-linear.c:243 read-linear.c:276
+#: read-linear.c:260 read-linear.c:299
 msgid "Reading CRC information"
 msgstr "Lendo informações de CRC"
 
-#: read-linear.c:339
+#: read-linear.c:368
 #, c-format
 msgid "<span %s>Reading aborted.</span> Please select a different image file."
 msgstr "<span %s>Leitura abortada.</span> Por favor, selecione um arquivo de imagem diferente."
 
-#: read-linear.c:358
+#: read-linear.c:388
 #, c-format
 msgid "Completing image %s. Continuing with sector %lld.\n"
 msgstr "Completando a imagem %s. Continuando com o setor %lld.\n"
 
-#: read-linear.c:364
+#: read-linear.c:396
 #, c-format
 msgid "Completing image %s. Only missing sectors will be read.\n"
 msgstr "Completando a imagem %s. Apenas setores desaparecidos serão lidos.\n"
 
-#: read-linear.c:425 read-linear.c:433
+#: read-linear.c:461 read-linear.c:470
 msgid "Reading CRC information from ecc data"
 msgstr "Lendo informação de CRC dos dados ecc"
 
-#: read-linear.c:459
+#: read-linear.c:501
 msgid "done.\n"
 msgstr "pronto.\n"
 
-#: read-linear.c:479 scsi-layer.c:2066
+#: read-linear.c:522 scsi-layer.c:2066
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Aguardando %d segundos para que o drive gire...\n"
 
-#: read-linear.c:501 read-linear-window.c:103
+#: read-linear.c:548 read-linear-window.c:104
 #, c-format
 msgid "Unreadable / skipped sectors: %lld"
 msgstr "Setores ilegíveis / pulados: %lld"
 
-#: read-linear.c:581
+#: read-linear.c:639
 #, c-format
 msgid "Sector %lld: Speed increased to %4.1fx\n"
 msgstr "Setor %lld: Velocidade aumentada para %4.1fx\n"
 
-#: read-linear.c:584
+#: read-linear.c:642
 #, c-format
 msgid "Sector %lld: Speed dropped to %4.1fx\n"
 msgstr "Setor %lld: Velocidade caiu para %4.1fx\n"
 
-#: read-linear.c:590
+#: read-linear.c:648
 #, c-format
 msgid "Read position: %3d.%1d%% (nn.nx)"
 msgstr ""
 
-#: read-linear.c:592
+#: read-linear.c:650
 #, c-format
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Posição de leitura: %3d.%1d%% (%4.1fx)"
 
-#: read-linear.c:686 rs01-common.c:347 rs02-verify.c:770 rs03-verify.c:1126
+#: read-linear.c:744 rs01-common.c:356 rs02-verify.c:799 rs03-verify.c:1206
 #, c-format
 msgid "* CRC error, sector: %lld\n"
 msgstr "* Erro de CRC, setor: %lld\n"
 
-#: read-linear.c:814
+#: read-linear.c:874
 #, c-format
 msgid ""
 "This ecc file requires dvdisaster-%d.%d!\n"
@@ -3179,7 +3159,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-linear.c:822
+#: read-linear.c:882
 #, c-format
 msgid ""
 "This image requires dvdisaster-%d.%d!\n"
@@ -3189,37 +3169,37 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-linear.c:830 rs01-create.c:718 rs01-fix.c:202 rs01-fix.c:224
-#: rs01-fix.c:269 rs01-fix.c:299 rs01-fix.c:316 rs01-fix.c:369
-#: rs01-verify.c:435 rs01-verify.c:829 rs02-create.c:118 rs02-fix.c:235
-#: rs02-fix.c:254 rs02-fix.c:339 rs02-verify.c:715 rs03-create.c:250
-#: rs03-fix.c:251 rs03-fix.c:292 rs03-fix.c:313 rs03-fix.c:386
-#: rs03-verify.c:533 rs03-verify.c:1021
+#: read-linear.c:892 rs01-create.c:769 rs01-fix.c:219 rs01-fix.c:243
+#: rs01-fix.c:295 rs01-fix.c:332 rs01-fix.c:352 rs01-fix.c:407
+#: rs01-verify.c:457 rs01-verify.c:916 rs02-create.c:130 rs02-fix.c:260
+#: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:743 rs03-create.c:262
+#: rs03-fix.c:278 rs03-fix.c:327 rs03-fix.c:350 rs03-fix.c:429
+#: rs03-verify.c:551 rs03-verify.c:1100
 #, c-format
 msgid "<span %s>Aborted by user request!</span>"
 msgstr "<span %s>Abortado pelo usuário!</span>"
 
-#: read-linear.c:944 read-linear.c:1068
+#: read-linear.c:996 read-linear.c:1126
 #, c-format
 msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
 msgstr "<span %s>Abortado pelo usuário!</span> %lld setores lidos, %lld setores ilegíveis/pulados até agora."
 
-#: read-linear.c:1001
+#: read-linear.c:1054
 #, c-format
 msgid "unexpected read error in image for sector %lld"
 msgstr "erro de leitura inesperado na imagem no setor %lld"
 
-#: read-linear.c:1083
+#: read-linear.c:1142
 #, c-format
 msgid "Sector %lld: %3d C2 errors.%s\n"
 msgstr "Setor %lld: %3d erros C2.%s\n"
 
-#: read-linear.c:1215
+#: read-linear.c:1279
 #, c-format
 msgid "Sector %lld: %s Skipping %d sectors.\n"
 msgstr "Setor %lld: %s Pulando %d setores.\n"
 
-#: read-linear.c:1278
+#: read-linear.c:1350
 #, c-format
 msgid ""
 "<big>Trying to complete image, reading pass %d of %d.</big>\n"
@@ -3228,7 +3208,7 @@ msgstr ""
 "<big>Tentando completar a imagem, processo de leitura %d de %d.</big>\n"
 "%s"
 
-#: read-linear.c:1280
+#: read-linear.c:1354
 #, c-format
 msgid ""
 "\n"
@@ -3237,66 +3217,66 @@ msgstr ""
 "\n"
 "Tentando completar a imagem, processo de leitura %d de %d.\n"
 
-#: read-linear.c:1317
+#: read-linear.c:1391
 #, c-format
 msgid "%lld sectors read.     "
 msgstr "%lld setores lidos.      "
 
-#: read-linear.c:1318
+#: read-linear.c:1392
 #, c-format
 msgid "%lld sectors read; %lld unreadable sectors."
 msgstr "%lld setores lidos; %lld setores ilegíveis."
 
-#: read-linear.c:1330
+#: read-linear.c:1404
 #, c-format
 msgid "All sectors successfully read, but wrong image length (%lld sectors difference)"
 msgstr "Todos os setores lidos com sucesso, mas o tamanho da imagem está errado (diferença de %lld setores)"
 
-#: read-linear.c:1336
+#: read-linear.c:1410
 msgid "All sectors successfully read, but wrong ecc md5sum."
 msgstr ""
 
-#: read-linear.c:1342
+#: read-linear.c:1416
 msgid "All sectors successfully read, but incomplete or damaged checksums."
 msgstr ""
 
-#: read-linear.c:1343
+#: read-linear.c:1417
 msgid "All sectors successfully read. Checksums match."
 msgstr "Todos os setores lidos com sucesso. Checksums combinam."
 
-#: read-linear.c:1345
+#: read-linear.c:1419
 msgid "All sectors successfully read."
 msgstr "Todos os setores lidos com sucesso."
 
-#: read-linear.c:1350
+#: read-linear.c:1424
 #, c-format
 msgid "%lld unreadable sectors."
 msgstr "%lld setores ilegíveis."
 
-#: read-linear.c:1353
+#: read-linear.c:1427
 #, c-format
 msgid "%lld CRC errors and a md5sum mismatch in the CRC section."
 msgstr ""
 
-#: read-linear.c:1355
+#: read-linear.c:1429
 #, c-format
 msgid "%lld CRC errors."
 msgstr "%lld erros de CRC."
 
-#: read-linear.c:1357
+#: read-linear.c:1431
 #, c-format
 msgid "%lld CRC errors, %lld unreadable sectors."
 msgstr "%lld erros de CRC, %lld setores ilegíveis."
 
-#: read-linear.c:1365
+#: read-linear.c:1440
 msgid "Scanning finished: "
 msgstr "Scan terminado: "
 
-#: read-linear.c:1367
+#: read-linear.c:1442
 msgid "Reading finished: "
 msgstr "Leitura terminada: "
 
-#: read-linear.c:1379
+#: read-linear.c:1456
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
@@ -3307,7 +3287,7 @@ msgstr ""
 "Isso está certo se o CD foi gravado no modo TAO (track at once).\n"
 "A imagem será truncada desta forma. Veja o manual para detalhes.\n"
 
-#: read-linear.c:1385
+#: read-linear.c:1463
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
@@ -3320,37 +3300,37 @@ msgstr ""
 "A imagem será truncada para a forma. Veja o manual para detalhes.\n"
 "Use a opção --dao para impedir o programa de truncar a imagem.\n"
 
-#: read-linear-window.c:96
+#: read-linear-window.c:97
 #, c-format
 msgid "Current Speed: %d.%dx"
 msgstr "Velocidade atual: %d.%dx"
 
-#: read-linear-window.c:253 read-linear-window.c:322
+#: read-linear-window.c:254 read-linear-window.c:323
 msgid "Already present"
 msgstr "Já presente"
 
-#: read-linear-window.c:287 read-linear-window.c:329 rs01-verify.c:124
-#: rs02-verify.c:119 rs03-verify.c:129
+#: read-linear-window.c:288 read-linear-window.c:330 rs01-verify.c:126
+#: rs02-verify.c:121 rs03-verify.c:130
 msgid "Sectors with CRC errors"
 msgstr "Setores com erros de CRC"
 
-#: read-linear-window.c:310
+#: read-linear-window.c:311
 msgid "Medium state"
 msgstr "Estado da mídia"
 
-#: read-linear-window.c:318
+#: read-linear-window.c:319
 msgid "Not touched this time"
 msgstr "Não tocados dessa vez"
 
-#: read-linear-window.c:325
+#: read-linear-window.c:326
 msgid "Successfully read"
 msgstr "Lidos com sucesso"
 
-#: read-linear-window.c:332
+#: read-linear-window.c:333
 msgid "Unreadable / skipped"
 msgstr "Ilegíveis / pulados"
 
-#: read-linear-window.c:443
+#: read-linear-window.c:444
 msgid "Speed"
 msgstr "Velocidade"
 
@@ -3359,27 +3339,27 @@ msgstr "Velocidade"
 msgid "Sector %lld dumped to %s\n"
 msgstr "Setor %lld despejado em %s\n"
 
-#: rs01-common.c:245 rs02-verify.c:801 rs03-verify.c:1149
+#: rs01-common.c:252 rs02-verify.c:833 rs03-verify.c:1232
 #, c-format
 msgid "- testing sectors  : %3d%%"
 msgstr "- testando setores  : %3d%%"
 
-#: rs01-common.c:246
+#: rs01-common.c:253
 #, c-format
 msgid "Scanning image sectors: %3d%%"
 msgstr "Escaneando os setores: %3d%%"
 
-#: rs01-common.c:299 rs02-verify.c:757
+#: rs01-common.c:308 rs02-verify.c:786
 #, c-format
 msgid "* missing sector   : %lld\n"
 msgstr "* setor desaparecido   : %lld\n"
 
-#: rs01-common.c:300 rs02-verify.c:758
+#: rs01-common.c:309 rs02-verify.c:787
 #, c-format
 msgid "* missing sectors  : %lld - %lld\n"
 msgstr "* setores desaparecidos  : %lld - %lld\n"
 
-#: rs01-common.c:318 rs01-common.c:385 rs01-create.c:316
+#: rs01-common.c:327 rs01-common.c:399 rs01-create.c:343
 #, c-format
 msgid "Error writing CRC information: %s"
 msgstr "Erro ao gravar informações de CRC: %s"
@@ -3399,7 +3379,7 @@ msgstr "Tamanho do arquivo ecc %lldm do intervalo útil [%lld .. %lld]"
 msgid "Redundancy %d out of useful range [8..100]."
 msgstr "Redundância %d do intervalo útil [8..100]"
 
-#: rs01-create.c:103 rs01-create.c:107
+#: rs01-create.c:107 rs01-create.c:112
 #, c-format
 msgid ""
 "\n"
@@ -3408,27 +3388,27 @@ msgstr ""
 "\n"
 "Arquivo de imagem %s apagado.\n"
 
-#: rs01-create.c:114
+#: rs01-create.c:123
 #, c-format
 msgid "Image file %s not deleted: %s\n"
 msgstr "Arquivo de imagem %s não apagado: %s\n"
 
-#: rs01-create.c:148 rs01-fix.c:77 rs02-create.c:60 rs02-fix.c:54
-#: rs03-create.c:144 rs03-fix.c:53
+#: rs01-create.c:160 rs01-fix.c:81 rs02-create.c:63 rs02-fix.c:57
+#: rs03-create.c:147 rs03-fix.c:57
 #, c-format
 msgid "<span %s>Aborted by unrecoverable error.</span>"
 msgstr "<span %s>Abortado por um erro irrecuperável.</span>"
 
-#: rs01-create.c:210
+#: rs01-create.c:231
 msgid "Error correction file creation aborted"
 msgstr "Criação do arquivo de correção de erros abortada"
 
-#: rs01-create.c:233
+#: rs01-create.c:254
 #, c-format
 msgid "Encoding with Method RS01: %d roots, %4.1f%% redundancy."
 msgstr "Codificando com o Método RS01: %d raízes, %4.1f%% de redundância."
 
-#: rs01-create.c:239 rs03-create.c:1308
+#: rs01-create.c:261 rs03-create.c:1358
 #, c-format
 msgid ""
 "<big>Creating the error correction file.</big>\n"
@@ -3437,66 +3417,63 @@ msgstr ""
 "<big>Criando o arquivo de correção de erros.</big>\n"
 "<i>%s</i>"
 
-#: rs01-create.c:251 rs03-create.c:276
+#: rs01-create.c:275 rs03-create.c:290
 #, c-format
 msgid "<span %s>Aborted to keep existing ecc file.</span>"
 msgstr ""
 
-#: rs01-create.c:266 rs02-create.c:1043 rs03-create.c:1265
+#: rs01-create.c:291 rs02-create.c:1080 rs03-create.c:1314
 #, c-format
 msgid "Image file %s: %s."
 msgstr ""
 
-#: rs01-create.c:274 rs03-create.c:1284
+#: rs01-create.c:299 rs03-create.c:1333
 msgid "No error correction file specified!\n"
 msgstr ""
 
-#: rs01-create.c:287
+#: rs01-create.c:312
 #, c-format
 msgid "Writing sector checksums: %3d%%"
 msgstr "Gravando checksum dos setores: %3d%%"
 
-#: rs01-create.c:291
+#: rs01-create.c:317
 msgid "<b>1. Writing image sector checksums:</b>"
 msgstr "<b>1. Gravando checksums dos setores da imagem:</b>"
 
-#: rs01-create.c:338 rs01-window.c:130
+#: rs01-create.c:369 rs01-window.c:131
 msgid "<b>1. Calculating image sector checksums:</b>"
 msgstr "<b>1. Calculando checksums dos setores da imagem:</b>"
 
-#: rs01-create.c:355 rs01-create.c:497 rs01-create.c:590
+#: rs01-create.c:388 rs01-create.c:538 rs01-create.c:636
 #, c-format
 msgid "<span %s>Aborted by user request!</span> (partial error correction file removed)"
 msgstr "<span %s>Abortado pelo usuário!</span> (arquivos de correção de erros parciais removidos)"
 
-#: rs01-create.c:364
+#: rs01-create.c:401
 #, c-format
 msgid "%lld sectors unread or missing due to errors.\n"
 msgstr "%lld setores não lidos ou desaparecidos graças a erros.\n"
 
-#: rs01-create.c:418
+#: rs01-create.c:458
 #, c-format
 msgid "Failed skipping ecc+crc header: %s"
 msgstr "Falha ao pular o cabeçalho ecc+crc: %s"
 
-#: rs01-create.c:445 rs02-create.c:523
+#: rs01-create.c:485 rs02-create.c:553
 #, c-format
 msgid ""
 "Failed allocating memory for I/O cache.\n"
 "Cache size is currently %d MiB.\n"
 "Try reducing it.\n"
 msgstr ""
-"Falha ao alocar memória para o cache de E/S.\n"
-"Tamanho do cache é atualmente %d MiB.\n"
-"Tente reduzí-lo.\n"
 
-#: rs01-create.c:574 rs01-create.c:699 rs01-create.c:994 rs02-create.c:970
-#: rs03-create.c:1111
+#: rs01-create.c:619 rs01-create.c:749 rs01-create.c:1049 rs02-create.c:1005
+#: rs03-create.c:1150
 #, c-format
 msgid "Ecc generation: %3d.%1d%%"
 msgstr "Geração de ecc: %3d.%1d%%"
 
-#: rs01-create.c:1007
+#: rs01-create.c:1062
 #, c-format
 msgid ""
 "could not write to ecc file \"%s\":\n"
@@ -3505,7 +3482,7 @@ msgstr ""
 "impossível gravar no arquivo ecc \"%s\":\n"
 "%s"
 
-#: rs01-create.c:1022
+#: rs01-create.c:1077
 #, c-format
 msgid ""
 "Can't write ecc header:\n"
@@ -3514,12 +3491,12 @@ msgstr ""
 "Impossível gravar no cabeçalho ecc:\n"
 "%s"
 
-#: rs01-create.c:1030 rs02-create.c:1134 rs03-create.c:1364
+#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1415
 #, c-format
 msgid "Ecc generation: 100.0%%\n"
 msgstr "Geração de ecc: 100.0%%\n"
 
-#: rs01-create.c:1031 rs03-create.c:1371
+#: rs01-create.c:1086 rs03-create.c:1422
 #, c-format
 msgid ""
 "Error correction file \"%s\" created.\n"
@@ -3528,7 +3505,7 @@ msgstr ""
 "Arquivo de correção de erros \"%s\" criado.\n"
 "Lembre-se de manter este arquivo em uma mídia confiável.\n"
 
-#: rs01-create.c:1039 rs03-create.c:1397
+#: rs01-create.c:1095 rs03-create.c:1451
 msgid ""
 "The error correction file has been successfully created.\n"
 "Make sure to keep this file on a reliable medium."
@@ -3536,26 +3513,26 @@ msgstr ""
 "O arquivo de correção de erros foi criado com sucesso.\n"
 "Lembre-se de manter este arquivo em uma mídia confiável."
 
-#: rs01-fix.c:39 rs02-fix.c:414
+#: rs01-fix.c:39 rs02-fix.c:448
 #, c-format
 msgid "Failed seeking in crc area: %s"
 msgstr "Falha ao buscar na área de crc: %s"
 
-#: rs01-fix.c:44 rs02-fix.c:417 rs02-verify.c:435
+#: rs01-fix.c:44 rs02-fix.c:451 rs02-verify.c:444
 #, c-format
 msgid "problem reading crc data: %s"
 msgstr "problema ao ler dados de crc: %s"
 
-#: rs01-fix.c:136 rs02-fix.c:172 rs03-fix.c:167
+#: rs01-fix.c:148 rs02-fix.c:190 rs03-fix.c:189
 msgid "Repairing of image aborted"
 msgstr "Conserto da imagem abortado"
 
-#: rs01-fix.c:142
+#: rs01-fix.c:154
 #, c-format
 msgid "Error correction file using Method RS01, %d roots, %4.1f%% redundancy."
 msgstr "Arquivo de correção de erros usando o Método RS01, %d raízes, %4.1f de redundância."
 
-#: rs01-fix.c:148 rs02-fix.c:178 rs02-fix.c:208 rs03-fix.c:177 rs03-fix.c:227
+#: rs01-fix.c:161 rs02-fix.c:197 rs02-fix.c:229 rs03-fix.c:200 rs03-fix.c:252
 #, c-format
 msgid ""
 "<big>Repairing the image.</big>\n"
@@ -3564,16 +3541,14 @@ msgstr ""
 "<big>Consertando a imagem.</big>\n"
 "<i>%s</i>"
 
-#: rs01-fix.c:152 rs02-fix.c:213 rs03-fix.c:232
+#: rs01-fix.c:166 rs02-fix.c:235 rs03-fix.c:258
 #, c-format
 msgid ""
 "\n"
 "Fix mode(%s): Repairable sectors will be fixed in the image.\n"
 msgstr ""
-"\n"
-"Modo de conserto(%s): Setores recuperáveis serão consertados na imagem.\n"
 
-#: rs01-fix.c:187
+#: rs01-fix.c:201
 #, c-format
 msgid ""
 "The image file is %lld sectors longer as noted in the\n"
@@ -3590,7 +3565,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: rs01-fix.c:194 rs02-fix.c:227 rs03-fix.c:284
+#: rs01-fix.c:209 rs02-fix.c:250 rs03-fix.c:317
 #, c-format
 msgid ""
 "Image file is %lld sectors longer than expected.\n"
@@ -3601,17 +3576,17 @@ msgstr ""
 "Assumindo que é uma mídia de modo TAO.\n"
 "%lld setores serão removidos do fim da imagem.\n"
 
-#: rs01-fix.c:219 rs02-fix.c:249 rs03-fix.c:308
+#: rs01-fix.c:238 rs02-fix.c:276 rs03-fix.c:345
 msgid "Is it okay to remove the superfluous sectors?"
 msgstr "Tudo bem se os setores supérfluos forem removidos?"
 
-#: rs01-fix.c:236 rs01-fix.c:252 rs02-fix.c:263 rs02-fix.c:276 rs03-fix.c:324
-#: rs03-fix.c:339
+#: rs01-fix.c:255 rs01-fix.c:277 rs02-fix.c:290 rs02-fix.c:308 rs03-fix.c:361
+#: rs03-fix.c:381
 #, c-format
 msgid "Image has been truncated by %lld sectors.\n"
 msgstr "A imagem foi truncada para %lld setores.\n"
 
-#: rs01-fix.c:243 rs02-fix.c:270 rs03-fix.c:331
+#: rs01-fix.c:268 rs02-fix.c:302 rs03-fix.c:373
 msgid ""
 "Add the --truncate option to the program call\n"
 "to have the superfluous sectors removed."
@@ -3619,7 +3594,7 @@ msgstr ""
 "Adicione a opção --truncate à chamada do programa\n"
 "para que os setores supérfluos sejam removidos."
 
-#: rs01-fix.c:261 rs03-fix.c:243
+#: rs01-fix.c:287 rs03-fix.c:270
 #, c-format
 msgid ""
 "The image file is %d bytes longer than noted\n"
@@ -3630,7 +3605,7 @@ msgstr ""
 "no arquivo ecc. Os bytes supérfluos devem ser\n"
 "removidos do arquivo da imagem?\n"
 
-#: rs01-fix.c:277 rs03-fix.c:259
+#: rs01-fix.c:308 rs03-fix.c:291
 #, c-format
 msgid ""
 "The image file is %d bytes longer than noted\n"
@@ -3643,12 +3618,12 @@ msgstr ""
 "Adicione a opção --truncate à chamada do programa\n"
 "para que os setores supérfluos sejam removidos."
 
-#: rs01-fix.c:286 rs03-fix.c:268
+#: rs01-fix.c:317 rs03-fix.c:300
 #, c-format
 msgid "Image has been truncated by %d bytes.\n"
 msgstr "A imagem foi truncada em %d bytes.\n"
 
-#: rs01-fix.c:294
+#: rs01-fix.c:325
 msgid ""
 "Image file appears to be truncated.\n"
 "Consider completing it with another reading pass before going on.\n"
@@ -3656,7 +3631,7 @@ msgstr ""
 "O arquivo de imagem parece estar truncado.\n"
 "Considere completá-lo com outro processo de leitura antes de prosseguir.\n"
 
-#: rs01-fix.c:310
+#: rs01-fix.c:344
 #, c-format
 msgid ""
 "Sector %d is missing. Can not compare image and ecc fingerprints.\n"
@@ -3665,7 +3640,7 @@ msgstr ""
 "O setor %d está desaparecido. Impossível comparar a imagem e as impressões digitais do ecc.\n"
 "Certifique-se de que a imagem e o arquivo ecc pertencem um ao outro.\n"
 
-#: rs01-fix.c:323
+#: rs01-fix.c:360
 msgid ""
 "Fingerprints of image and ecc file do not match.\n"
 "Image and ecc file do not belong together.\n"
@@ -3673,17 +3648,17 @@ msgstr ""
 "As impressões digitais da imagem e do arquivo ecc não combinam.\n"
 "A imagem e o arquivo ecc não pertencem um ao outro.\n"
 
-#: rs01-fix.c:437
+#: rs01-fix.c:479
 #, c-format
 msgid "* %3d unrepairable sectors: "
 msgstr "* %3d setores irrecuperáveis: "
 
-#: rs01-fix.c:485
+#: rs01-fix.c:527
 #, c-format
 msgid "Failed seeking in ecc area: %s"
 msgstr "Falha ao buscar na área ecc: %s"
 
-#: rs01-fix.c:489
+#: rs01-fix.c:531
 #, c-format
 msgid ""
 "Can't read ecc file:\n"
@@ -3692,27 +3667,27 @@ msgstr ""
 "Impossível ler o arquivo ecc:\n"
 "%s"
 
-#: rs01-fix.c:685
+#: rs01-fix.c:727
 #, c-format
 msgid "-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
 msgstr "-> Erro localizado no setor %lld, byte %4d (valor: %02x '%c', esperado: %02x '%c')\n"
 
-#: rs01-fix.c:692
+#: rs01-fix.c:734
 #, c-format
 msgid "Unexpected byte error in sector %lld, byte %d\n"
 msgstr "Erro de byte inesperado no setor %lld, byte %d\n"
 
-#: rs01-fix.c:698
+#: rs01-fix.c:740
 #, c-format
 msgid "Bad error location %d; corrupted .ecc file?\n"
 msgstr "Localização errada do erro %d; arquivo .ecc corrompido?\n"
 
-#: rs01-fix.c:708 rs02-fix.c:715 rs03-fix.c:772
+#: rs01-fix.c:750 rs02-fix.c:752 rs03-fix.c:819
 #, c-format
 msgid "  %3d repaired sectors: "
 msgstr "  %3d setores recuperados: "
 
-#: rs01-fix.c:727 rs02-fix.c:757 rs03-fix.c:823
+#: rs01-fix.c:769 rs02-fix.c:794 rs03-fix.c:870
 #, c-format
 msgid ""
 "could not write medium sector %lld:\n"
@@ -3721,175 +3696,175 @@ msgstr ""
 "impossível gravar o setor %lld da mídia:\n"
 "%s"
 
-#: rs01-fix.c:752 rs02-fix.c:794 rs03-fix.c:876
+#: rs01-fix.c:798 rs02-fix.c:835 rs03-fix.c:927
 #, c-format
 msgid "Ecc progress: %3d.%1d%%"
 msgstr "Progresso do ecc: %3d.%1d%%"
 
-#: rs01-fix.c:764 rs02-fix.c:808 rs03-fix.c:888
+#: rs01-fix.c:810 rs02-fix.c:849 rs03-fix.c:939
 #, c-format
 msgid "Ecc progress: 100.0%%\n"
 msgstr "Progresso do Ecc: 100.0%%\n"
 
-#: rs01-fix.c:765
+#: rs01-fix.c:811
 #, c-format
 msgid "Repaired sectors: %lld     \n"
 msgstr "Setores recuperados: %lld     \n"
 
-#: rs01-fix.c:767 rs02-fix.c:813 rs03-fix.c:893
+#: rs01-fix.c:813 rs02-fix.c:854 rs03-fix.c:944
 #, c-format
 msgid "Unrepaired sectors: %lld\n"
 msgstr "Setores não-recuparados: %lld\n"
 
-#: rs01-fix.c:770 rs02-fix.c:816 rs03-fix.c:896
+#: rs01-fix.c:817 rs02-fix.c:858 rs03-fix.c:948
 #, c-format
 msgid "Image sectors could not be fully restored (%lld repaired; <span %s>%lld unrepaired</span>)"
 msgstr "Os setores da imagem não puderam ser completamente recuparados (%lld recuperados; <span %s>%lld não recuperados</span>)"
 
-#: rs01-fix.c:776 rs02-fix.c:822 rs03-fix.c:903
+#: rs01-fix.c:824 rs02-fix.c:865 rs03-fix.c:956
 msgid "Good! All sectors are already present."
 msgstr "Legal! Todos os setores já estão presentes."
 
-#: rs01-fix.c:780 rs02-fix.c:826 rs03-fix.c:908
+#: rs01-fix.c:828 rs02-fix.c:869 rs03-fix.c:961
 msgid "Good! All sectors are repaired."
 msgstr "Legal! Todos os setores foram consertados."
 
-#: rs01-fix.c:785 rs02-fix.c:831 rs03-fix.c:914
+#: rs01-fix.c:833 rs02-fix.c:874 rs03-fix.c:967
 #, c-format
 msgid "Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"
 msgstr "Contagem de rasuras por bloco ecc:  média =  %.1f; pior = %d.\n"
 
-#: rs01-fix.c:790 rs02-fix.c:836 rs03-fix.c:919
+#: rs01-fix.c:839 rs02-fix.c:880 rs03-fix.c:973
 msgid "Repair results:"
 msgstr "Resultados da recuperação:"
 
-#: rs01-verify.c:46 rs01-verify.c:403 rs03-verify.c:60
+#: rs01-verify.c:48 rs01-verify.c:417 rs03-verify.c:61
 msgid "n/a"
 msgstr "indisponível"
 
-#: rs01-verify.c:127 rs01-verify.c:148 rs02-verify.c:122 rs02-verify.c:143
-#: rs03-verify.c:132 rs03-verify.c:153
+#: rs01-verify.c:129 rs01-verify.c:150 rs02-verify.c:124 rs02-verify.c:145
+#: rs03-verify.c:133 rs03-verify.c:154
 msgid "Missing sectors"
 msgstr "Setores desaparecidos"
 
-#: rs01-verify.c:191 rs02-verify.c:180
+#: rs01-verify.c:193 rs02-verify.c:182
 msgid "Image file summary"
 msgstr "Sumário do arquivo de imagem"
 
-#: rs01-verify.c:200 rs03-verify.c:281
+#: rs01-verify.c:202 rs03-verify.c:282
 msgid "No image present."
 msgstr "Nenhuma imagem presente."
 
-#: rs01-verify.c:210 rs01-verify.c:300 rs02-verify.c:190 rs02-verify.c:296
-#: rs03-verify.c:292
+#: rs01-verify.c:212 rs01-verify.c:302 rs02-verify.c:192 rs02-verify.c:298
+#: rs03-verify.c:293
 msgid "Medium sectors:"
 msgstr "Setores da mídia:"
 
-#: rs01-verify.c:218
+#: rs01-verify.c:220
 msgid "Checksum errors:"
 msgstr "Erros de checksum:"
 
-#: rs01-verify.c:226
+#: rs01-verify.c:228
 msgid "Missing Sectors:"
 msgstr "Setores desaparecidos:"
 
-#: rs01-verify.c:234 rs01-verify.c:308
+#: rs01-verify.c:236 rs01-verify.c:310
 msgid "Image checksum:"
 msgstr "Checksum da imagem:"
 
-#: rs01-verify.c:246 rs02-verify.c:242 rs03-verify.c:261
+#: rs01-verify.c:248 rs02-verify.c:244 rs03-verify.c:262
 msgid "Image state"
 msgstr "Estado da imagem"
 
-#: rs01-verify.c:257
+#: rs01-verify.c:259
 msgid "Error correction file summary"
 msgstr "Sumário da correção de erros"
 
-#: rs01-verify.c:276 rs02-verify.c:272 rs03-verify.c:221
+#: rs01-verify.c:278 rs02-verify.c:274 rs03-verify.c:222
 msgid "Created by:"
 msgstr "Criada por:"
 
-#: rs01-verify.c:284 rs02-verify.c:280 rs03-verify.c:212
+#: rs01-verify.c:286 rs02-verify.c:282 rs03-verify.c:213
 msgid "Method:"
 msgstr "Método:"
 
-#: rs01-verify.c:292 rs02-verify.c:288 rs03-verify.c:230
+#: rs01-verify.c:294 rs02-verify.c:290 rs03-verify.c:231
 msgid "Requires:"
 msgstr "Requer:"
 
-#: rs01-verify.c:316 rs03-verify.c:248
+#: rs01-verify.c:318 rs03-verify.c:249
 msgid "Fingerprint:"
 msgstr "Impressão digital:"
 
-#: rs01-verify.c:324
+#: rs01-verify.c:326
 msgid "Ecc blocks:"
 msgstr "Blocos ecc:"
 
-#: rs01-verify.c:332 rs02-verify.c:48 rs02-verify.c:320
+#: rs01-verify.c:334 rs02-verify.c:50 rs02-verify.c:322
 msgid "Ecc checksum:"
 msgstr "Checksum do Ecc:"
 
-#: rs01-verify.c:387
+#: rs01-verify.c:398
 msgid "Comparison aborted"
 msgstr "Comparação abortada"
 
-#: rs01-verify.c:393 rs01-verify.c:524
+#: rs01-verify.c:405 rs01-verify.c:560
 msgid "Comparing image and error correction files."
 msgstr "Comparando a imagem e os arquivos de correção de erros."
 
-#: rs01-verify.c:394 rs03-verify.c:698 rs03-verify.c:707
+#: rs01-verify.c:406 rs03-verify.c:741 rs03-verify.c:752
 msgid "- Checking image file -"
 msgstr "- Verificando o arquivo de imagem -"
 
-#: rs01-verify.c:409 rs01-verify.c:530 rs01-verify.c:544
+#: rs01-verify.c:424 rs01-verify.c:567 rs01-verify.c:583
 msgid "not present\n"
 msgstr "não está presente\n"
 
-#: rs01-verify.c:417 rs02-verify.c:599
+#: rs01-verify.c:434 rs02-verify.c:622
 #, c-format
 msgid "present, contains %lld medium sectors.\n"
 msgstr "está presente, contém %lld setores na mídia.\n"
 
-#: rs01-verify.c:422
+#: rs01-verify.c:441
 #, c-format
 msgid "present, contains %lld medium sectors and %d bytes.\n"
 msgstr "está presente, contém %lld setores na mídia e %d bytes.\n"
 
-#: rs01-verify.c:425 rs01-verify.c:670 rs01-verify.c:689
+#: rs01-verify.c:445 rs01-verify.c:726 rs01-verify.c:749
 #, c-format
 msgid "%lld sectors + %d bytes"
 msgstr "%lld setores + %d bytes"
 
-#: rs01-verify.c:448
+#: rs01-verify.c:471
 #, c-format
 msgid "* truncated image  : %lld sectors too short\n"
 msgstr "* imagem truncada  : %lld setores a menos\n"
 
-#: rs01-verify.c:451
+#: rs01-verify.c:475
 #, c-format
 msgid "<span %s>%lld (%lld sectors too short)</span>"
 msgstr "<span %s>%lld (%lld setores a menos)</span>"
 
-#: rs01-verify.c:472
+#: rs01-verify.c:499
 #, c-format
 msgid "* image too long   : %lld excess sectors\n"
 msgstr "* imagem grande demais   : %lld setores em excesso\n"
 
-#: rs01-verify.c:475
+#: rs01-verify.c:503
 #, c-format
 msgid "<span %s>%lld (%lld excess sectors)</span>"
 msgstr "<span %s>%lld (%lld setores em excesso)</span>"
 
-#: rs01-verify.c:478 rs01-verify.c:515
+#: rs01-verify.c:506 rs01-verify.c:549
 #, c-format
 msgid "<span %s>Bad image.</span>"
 msgstr "<span %s>Imagem ruim.</span>"
 
-#: rs01-verify.c:483 rs02-verify.c:682 rs03-verify.c:986
+#: rs01-verify.c:512 rs02-verify.c:709 rs03-verify.c:1064
 msgid "* quick mode        : image NOT scanned\n"
 msgstr ""
 
-#: rs01-verify.c:491
+#: rs01-verify.c:520
 #, c-format
 msgid ""
 "- good image       : all sectors present\n"
@@ -3898,12 +3873,12 @@ msgstr ""
 "- imagem boa       : todos os setores presentes\n"
 "- md5sum da imagem : %s\n"
 
-#: rs01-verify.c:494 rs02-verify.c:891 rs03-verify.c:1289
+#: rs01-verify.c:524 rs02-verify.c:928 rs03-verify.c:1388
 #, c-format
 msgid "<span %s>Good image.</span>"
 msgstr "<span %s>Imagem boa.</span>"
 
-#: rs01-verify.c:499
+#: rs01-verify.c:530
 #, c-format
 msgid ""
 "* suspicious image : all sectors present, but %lld CRC errors\n"
@@ -3912,73 +3887,73 @@ msgstr ""
 "* imagem suspeita  : todos os setores presentes, mas %lld erros de CRC\n"
 "- md5sum da imagem : %s\n"
 
-#: rs01-verify.c:503
+#: rs01-verify.c:535
 #, c-format
 msgid "<span %s>Image complete, but contains checksum errors!</span>"
 msgstr "<span %s>Imagem completa, mas contém erros de checksum!</span>"
 
-#: rs01-verify.c:510 rs02-verify.c:858
+#: rs01-verify.c:543 rs02-verify.c:894
 #, c-format
 msgid "* BAD image        : %lld sectors missing\n"
 msgstr "* Imagem RUIM     : %lld setores desaparecidos\n"
 
-#: rs01-verify.c:511 rs02-verify.c:862 rs03-verify.c:1235
+#: rs01-verify.c:544 rs02-verify.c:898 rs03-verify.c:1324
 #, c-format
 msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
 msgstr "* Imagem RUIM     : %lld setores desaparecidos, %lld erros de CRC\n"
 
-#: rs01-verify.c:525 rs03-verify.c:1193
+#: rs01-verify.c:561 rs03-verify.c:1279
 msgid "- Checking ecc file -"
 msgstr "- Verificando arquivo ecc -"
 
-#: rs01-verify.c:533 rs01-verify.c:561
+#: rs01-verify.c:571 rs01-verify.c:601
 msgid "No error correction file present."
 msgstr "Nenhum arquivo de correção de erros presente."
 
-#: rs01-verify.c:541
+#: rs01-verify.c:580
 msgid "permission denied\n"
 msgstr ""
 
-#: rs01-verify.c:547
+#: rs01-verify.c:586
 msgid "invalid\n"
 msgstr ""
 
-#: rs01-verify.c:550
+#: rs01-verify.c:589
 msgid "defective header (unusable)\n"
 msgstr ""
 
-#: rs01-verify.c:553
+#: rs01-verify.c:592
 msgid "unknown codec (unusable)\n"
 msgstr ""
 
-#: rs01-verify.c:556
+#: rs01-verify.c:595
 msgid "unusable\n"
 msgstr ""
 
-#: rs01-verify.c:584 rs01-verify.c:596 rs02-verify.c:915 rs02-verify.c:928
+#: rs01-verify.c:625 rs01-verify.c:639 rs02-verify.c:953 rs02-verify.c:968
 msgid "created by dvdisaster"
 msgstr "criado pelo dvdisaster"
 
-#: rs01-verify.c:606
+#: rs01-verify.c:651
 msgid "created by dvdisaster-0.41.x.\n"
 msgstr "criado pelo dvdisaster-0.41.x.\n"
 
-#: rs01-verify.c:616 rs02-verify.c:942 rs03-verify.c:760
+#: rs01-verify.c:663 rs02-verify.c:984 rs03-verify.c:810
 #, c-format
 msgid "- method           : %4s, %d roots, %4.1f%% redundancy.\n"
 msgstr "- método          : %4s, %d raízes, %4.1f%% de redundância.\n"
 
-#: rs01-verify.c:620 rs02-verify.c:947 rs03-verify.c:765
+#: rs01-verify.c:668 rs02-verify.c:990 rs03-verify.c:816
 #, c-format
 msgid "%4s, %d roots, %4.1f%% redundancy"
 msgstr "%4s, %d raízes, %4.1f%% de redundância"
 
-#: rs01-verify.c:627 rs02-verify.c:954
+#: rs01-verify.c:676 rs02-verify.c:998
 #, c-format
 msgid "- requires         : dvdisaster-%d.%d (good)\n"
 msgstr "- requer          : dvdisaster-%d.%d (bom)\n"
 
-#: rs01-verify.c:636 rs02-verify.c:965
+#: rs01-verify.c:687 rs02-verify.c:1011
 #, c-format
 msgid ""
 "* requires         : dvdisaster-%d.%d (BAD)\n"
@@ -3989,202 +3964,202 @@ msgstr ""
 "* Cuidado          : A saída seguinte pode estar incorreta.\n"
 "*                  : Por favor, visite http://www.dvdisaster.org para uma atualização.\n"
 
-#: rs01-verify.c:649 rs02-verify.c:979 rs03-verify.c:828
+#: rs01-verify.c:701 rs02-verify.c:1026 rs03-verify.c:887
 #, c-format
 msgid "<span %s>Please upgrade your version of dvdisaster!</span>"
 msgstr "<span %s>Por favor, atualize sua versão do dvdisaster!</span>"
 
-#: rs01-verify.c:661
+#: rs01-verify.c:714
 #, c-format
 msgid "- medium sectors   : %lld\n"
 msgstr "- setores da mídia   : %lld\n"
 
-#: rs01-verify.c:666
+#: rs01-verify.c:721
 #, c-format
 msgid "- medium sectors   : %lld sectors + %d bytes\n"
 msgstr "- setores da mídia   : %lld setores + %d bytes\n"
 
-#: rs01-verify.c:680
+#: rs01-verify.c:737
 #, c-format
 msgid "- medium sectors   : %lld (good)\n"
 msgstr "- setores da mídia   : %lld (bom)\n"
 
-#: rs01-verify.c:685
+#: rs01-verify.c:744
 #, c-format
 msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
 msgstr "- setores da mídia   : %lld setores + %d bytes (good)\n"
 
-#: rs01-verify.c:697 rs02-verify.c:995
+#: rs01-verify.c:758 rs02-verify.c:1045
 #, c-format
 msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
 msgstr "* setores da mídia   : %lld (RUIM, talvez uma confusão entre TAO/DAO)\n"
 
-#: rs01-verify.c:708 rs02-verify.c:997
+#: rs01-verify.c:771 rs02-verify.c:1047
 #, c-format
 msgid "* medium sectors   : %lld (BAD)\n"
 msgstr "* setores da mídia   : %lld (RUIM)\n"
 
-#: rs01-verify.c:713 rs01-verify.c:724
+#: rs01-verify.c:777 rs01-verify.c:790
 #, c-format
 msgid "<span %s>Image size does not match error correction file.</span>"
 msgstr "<span %s>O tamanho da imagem não bate com o arquivo de correção de erros.</span>"
 
-#: rs01-verify.c:717
+#: rs01-verify.c:782
 #, c-format
 msgid "* medium sectors   : %lld sectors + %d bytes (BAD)\n"
 msgstr "* setores da mídia   : %lld setores + %d bytes (BAD)\n"
 
-#: rs01-verify.c:721
+#: rs01-verify.c:787
 #, c-format
 msgid "<span %s>%lld sectors + %d bytes</span>"
 msgstr "<span %s>%lld setores + %d bytes</span>"
 
-#: rs01-verify.c:737
+#: rs01-verify.c:804
 #, c-format
 msgid "- image md5sum     : %s (good)\n"
 msgstr "- md5sum da imagem     : %s (bom)\n"
 
-#: rs01-verify.c:738
+#: rs01-verify.c:805
 #, c-format
 msgid "* image md5sum     : %s (BAD)\n"
 msgstr "* md5sum da imagem     : %s (RUIM)\n"
 
-#: rs01-verify.c:748
+#: rs01-verify.c:817
 #, c-format
 msgid "- image md5sum     : %s\n"
 msgstr "- md5sum da imagem     : %s\n"
 
-#: rs01-verify.c:756 rs03-verify.c:852
+#: rs01-verify.c:827 rs03-verify.c:914
 msgid "* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"
 msgstr "* impressão digital combina: IMPOSSÍVEL - o setor relacionado está desaparecido na imagem!\n"
 
-#: rs01-verify.c:758 rs03-verify.c:855
+#: rs01-verify.c:830 rs03-verify.c:918
 #, c-format
 msgid "<span %s>missing sector prevents calculation</span>"
 msgstr "<span %s>setor desaparecido previne cálculo</span>"
 
-#: rs01-verify.c:763 rs03-verify.c:860
+#: rs01-verify.c:836 rs03-verify.c:924
 msgid "* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"
 msgstr "* impressão digital combina: ENGANO - .iso e .ecc não pertencem um ao outro!\n"
 
-#: rs01-verify.c:767 rs03-verify.c:864
+#: rs01-verify.c:841 rs03-verify.c:929
 #, c-format
 msgid "<span %s>mismatch</span>"
 msgstr "<span %s>engano</span>"
 
-#: rs01-verify.c:770 rs03-verify.c:867
+#: rs01-verify.c:844 rs03-verify.c:932
 #, c-format
 msgid "<span %s>Image and error correction files do not belong together!</span>"
 msgstr "<span %s>Imagem e arquivos de correção de erros não pertencem um ao outro!</span>"
 
-#: rs01-verify.c:774 rs03-verify.c:871
+#: rs01-verify.c:849 rs03-verify.c:937
 msgid "- fingerprint match: good\n"
 msgstr "- impressão digital combina: bom\n"
 
-#: rs01-verify.c:776 rs03-verify.c:873
+#: rs01-verify.c:852 rs03-verify.c:940
 msgid "good"
 msgstr "bom"
 
-#: rs01-verify.c:784
+#: rs01-verify.c:861
 msgid "* quick mode        : ecc file NOT scanned\n"
 msgstr ""
 
-#: rs01-verify.c:792
+#: rs01-verify.c:869
 #, c-format
 msgid "- ecc blocks       : %lld (good)\n"
 msgstr "- blocos ecc      : %lld (bom)\n"
 
-#: rs01-verify.c:797
+#: rs01-verify.c:876
 #, c-format
 msgid "* ecc blocks       : %lld (BAD, expected %lld)\n"
 msgstr "* blocos ecc      : %lld (RUIM, esperado %lld)\n"
 
-#: rs01-verify.c:799
+#: rs01-verify.c:879
 #, c-format
 msgid "<span %s>%lld (bad, expected %lld)</span>"
 msgstr "<span %s>%lld (ruim, esperado: %lld)</span>"
 
-#: rs01-verify.c:821
+#: rs01-verify.c:905
 #, c-format
 msgid "- ecc md5sum       : %3d%%"
 msgstr "- md5sum do ecc   : %3d%%"
 
-#: rs01-verify.c:838
+#: rs01-verify.c:926
 msgid "* ecc md5sum       : BAD, ecc file may be damaged!\n"
 msgstr "* md5sum do ecc   : BAD, o arquivo ecc pode estar corrompido!\n"
 
-#: rs01-verify.c:840
+#: rs01-verify.c:929
 #, c-format
 msgid "<span %s>bad</span>"
 msgstr "<span %s>ruim</span>"
 
-#: rs01-verify.c:842
+#: rs01-verify.c:931
 #, c-format
 msgid "<span %s>Error correction file may be damaged!</span>"
 msgstr "<span %s>Arquivo de correção de erros podem estar corrompido!</span>"
 
-#: rs01-verify.c:846 rs02-verify.c:1066
+#: rs01-verify.c:936 rs02-verify.c:1128
 #, c-format
 msgid "- ecc md5sum       : %s (good)\n"
 msgstr "- md5sum do ecc   : %s (bom)\n"
 
-#: rs01-verify.c:860
+#: rs01-verify.c:953
 #, c-format
 msgid "<span %s>Good error correction file.</span>"
 msgstr "<span %s>Arquivo de correção de erros bom.</span>"
 
-#: rs01-window.c:139 rs02-window.c:88 rs03-window.c:93
+#: rs01-window.c:140 rs02-window.c:89 rs03-window.c:94
 msgid "<b>2. Creating error correction data:</b>"
 msgstr "<b>2. Criando dados de correção de erros:</b>"
 
-#: rs01-window.c:163
+#: rs01-window.c:164
 msgid "Show reading speed curve"
 msgstr "Mostrar curva de velocidade de leitura"
 
-#: rs01-window.c:202 rs02-window.c:140 rs03-window.c:173
+#: rs01-window.c:203 rs02-window.c:141 rs03-window.c:174
 #, c-format
 msgid "Repaired: %lld"
 msgstr "Consertado: %lld"
 
-#: rs01-window.c:203 rs02-window.c:141 rs03-window.c:174
+#: rs01-window.c:204 rs02-window.c:142 rs03-window.c:175
 #, c-format
 msgid "Unrepairable: <span %s>%lld</span>"
 msgstr "Irrecuperável: <span %s>%lld</span>"
 
-#: rs01-window.c:204 rs02-window.c:142 rs03-window.c:175
+#: rs01-window.c:205 rs02-window.c:143 rs03-window.c:176
 #, c-format
 msgid "Progress: %3d.%1d%%"
 msgstr "Progresso: %3d.%1d%%"
 
-#: rs01-window.c:413 rs02-window.c:347 rs03-window.c:380
+#: rs01-window.c:414 rs02-window.c:348 rs03-window.c:381
 msgid "Errors/Ecc block"
 msgstr "Erros/Bloco ecc"
 
-#: rs01-window.c:449 rs02-window.c:377 rs03-preferences.c:317
-#: rs03-preferences.c:327
+#: rs01-window.c:450 rs02-window.c:378 rs03-preferences.c:318
+#: rs03-preferences.c:328
 #, c-format
 msgid "%4.1f%% redundancy (%d roots)"
 msgstr "%4.1f%% de redundância (%d raízes)"
 
-#: rs01-window.c:466 rs01-window.c:869 rs01-window.c:875 rs01-window.c:876
-#: rs02-window.c:394 rs02-window.c:1246 rs02-window.c:1252 rs02-window.c:1253
+#: rs01-window.c:467 rs01-window.c:870 rs01-window.c:876 rs01-window.c:877
+#: rs02-window.c:395 rs02-window.c:1247 rs02-window.c:1253 rs02-window.c:1254
 #, c-format
 msgid "%d MiB of file cache"
-msgstr "%d MiB de cache de arquivos"
+msgstr ""
 
-#: rs01-window.c:668 rs03-preferences.c:556
+#: rs01-window.c:669 rs03-preferences.c:557
 msgid "Redundancy for new error correction files"
 msgstr "Redundância para novos arquivos de correção de erros"
 
-#: rs01-window.c:677 rs03-preferences.c:583
+#: rs01-window.c:678 rs03-preferences.c:584
 msgid "Normal redundancy"
 msgstr "Redundância normal"
 
-#: rs01-window.c:677 rs03-preferences.c:583
+#: rs01-window.c:678 rs03-preferences.c:584
 msgid "Normal"
 msgstr "Normal"
 
-#: rs01-window.c:699 rs03-preferences.c:605
+#: rs01-window.c:700 rs03-preferences.c:606
 #, c-format
 msgid ""
 "<b>Normal redundancy</b>\n"
@@ -4197,15 +4172,15 @@ msgstr ""
 "O padrão \"normal\" cria uma redundância de 14.3%%.\n"
 "Ele invoca o código otimizado do programa para acelerar a criação de arquivos de correção de erros."
 
-#: rs01-window.c:706 rs03-preferences.c:612
+#: rs01-window.c:707 rs03-preferences.c:613
 msgid "High redundancy"
 msgstr "Redundância alta"
 
-#: rs01-window.c:706 rs03-preferences.c:612
+#: rs01-window.c:707 rs03-preferences.c:613
 msgid "High"
 msgstr "Alta"
 
-#: rs01-window.c:728 rs03-preferences.c:634
+#: rs01-window.c:729 rs03-preferences.c:635
 #, c-format
 msgid ""
 "<b>High redundancy</b>\n"
@@ -4218,15 +4193,15 @@ msgstr ""
 "O padrão \"alta\" cria uma redundância de 33.5%%.\n"
 "Ele invoca o código otimizado do programa para acelerar criação de arquivos de correção de erros."
 
-#: rs01-window.c:736 rs03-preferences.c:642
+#: rs01-window.c:737 rs03-preferences.c:643
 msgid "Other redundancy"
 msgstr "Outra redundância"
 
-#: rs01-window.c:736 rs03-preferences.c:642
+#: rs01-window.c:737 rs03-preferences.c:643
 msgid "Other"
 msgstr "Outra"
 
-#: rs01-window.c:774 rs03-preferences.c:680
+#: rs01-window.c:775 rs03-preferences.c:681
 #, c-format
 msgid ""
 "<b>Other redundancy</b>\n"
@@ -4239,19 +4214,19 @@ msgstr ""
 "Especifica a redundância em porcentagem.\n"
 "Um arquivo de correção de erros com x%% de redundância será aproximadamente x%% porcento do tamanho arquivo de imagem correspondente."
 
-#: rs01-window.c:782 rs03-preferences.c:688
+#: rs01-window.c:783 rs03-preferences.c:689
 msgid "Space-delimited redundancy"
 msgstr "Redundância delimitada por espaço"
 
-#: rs01-window.c:782 rs02-window.c:1178 rs03-preferences.c:688
+#: rs01-window.c:783 rs02-window.c:1179 rs03-preferences.c:689
 msgid "Use at most"
 msgstr "Usar no máximo"
 
-#: rs01-window.c:806 rs03-preferences.c:712
+#: rs01-window.c:807 rs03-preferences.c:713
 msgid "MiB for error correction data"
-msgstr "MiB para dados de correção de erros"
+msgstr ""
 
-#: rs01-window.c:823 rs03-preferences.c:729
+#: rs01-window.c:824 rs03-preferences.c:730
 msgid ""
 "<b>Space-delimited redundancy</b>\n"
 "\n"
@@ -4259,50 +4234,42 @@ msgid ""
 "\n"
 "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
 msgstr ""
-"<b>Redundância delimitada por espaço</b>\n"
-"\n"
-"Especifica o tamanho máximo do arquivo de correção de erros em MiB. O dvdisaster escolherá uma configuração de redundância compatível para que o tamanho total do arquivo de correção de erros não exceda o tamanho limite dado.\n"
-"\n"
-"<b>Nota:</b> Quando usa-se a mesma configuração de tamanho para imagens de tamanhos muito diferentes, imagens menores recebem mais redundância do que as maiores. Isso geralmente não é o que você quer."
 
-#: rs01-window.c:866 rs02-window.c:1243
+#: rs01-window.c:867 rs02-window.c:1244
 msgid "Memory utilization"
 msgstr "Utilização de memória"
 
-#: rs01-window.c:870 rs02-window.c:1247
+#: rs01-window.c:871 rs02-window.c:1248
 msgid "File cache"
 msgstr "Cache de arquivos"
 
-#: rs01-window.c:882 rs02-window.c:1259 rs03-preferences.c:908
+#: rs01-window.c:883 rs02-window.c:1260 rs03-preferences.c:909
 msgid "Use"
 msgstr "Usar"
 
-#: rs01-window.c:910 rs02-window.c:1287
+#: rs01-window.c:911 rs02-window.c:1288
 msgid ""
 "<b>File cache</b>\n"
 "\n"
 "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MiB is suitable for most systems."
 msgstr ""
-"<b>Cache de arquivos</b>\n"
-"\n"
-"O dvdisaster otimiza o acesso à imagem e arquivos de correção de erros mantendo seu próprio cache. O padrão de 32MiB é adequada à maioria dos sistemas."
 
-#: rs02-common.c:572 rs02-common.c:584 rs02-verify.c:626 rs03-common.c:620
+#: rs02-common.c:578 rs02-common.c:590 rs02-verify.c:651 rs03-common.c:620
 #, c-format
 msgid "Failed seeking to ecc header at %lld: %s\n"
 msgstr "Falha ao buscar no cabeçalho ecc em %lld: %s\n"
 
-#: rs02-common.c:576 rs02-common.c:588 rs03-common.c:624
+#: rs02-common.c:582 rs02-common.c:594 rs03-common.c:624
 #, c-format
 msgid "Failed writing ecc header at %lld: %s\n"
 msgstr "Falha ao gravar no cabeçalho ecc em %lld: %s\n"
 
-#: rs02-create.c:112 rs03-create.c:244
+#: rs02-create.c:122 rs03-create.c:254
 #, c-format
 msgid "<span %s>Aborted by user request!</span> (partial ecc data removed from image)"
 msgstr "<span %s>Abortado pelo usuário!</span> (dados ecc parciais removidos da imagem)"
 
-#: rs02-create.c:141 rs03-create.c:294
+#: rs02-create.c:156 rs03-create.c:311
 #, c-format
 msgid ""
 "Image \"%s\" already contains error correction information.\n"
@@ -4311,11 +4278,11 @@ msgstr ""
 "Imagem \"%s\" já contém informações de correção de erros.\n"
 "Truncando a imagem para a parte com os dados (%lld setores).\n"
 
-#: rs02-create.c:156 rs03-create.c:321
+#: rs02-create.c:173 rs03-create.c:340
 msgid "Image size is now"
 msgstr ""
 
-#: rs02-create.c:217
+#: rs02-create.c:236
 msgid ""
 "Image contains unread(able) sectors.\n"
 "Error correction information can only be\n"
@@ -4325,7 +4292,7 @@ msgstr ""
 "As informações de correção de erros só podem ser\n"
 "anexadas a imagens completas (não danificadas).\n"
 
-#: rs02-create.c:221
+#: rs02-create.c:240
 #, c-format
 msgid ""
 "Sector %lld in the image is marked unreadable\n"
@@ -4350,33 +4317,33 @@ msgstr ""
 "Informações de correção de erros só podem ser\n"
 "anexadas a imagens completas (não danificadas).\n"
 
-#: rs02-create.c:238 rs02-create.c:304 rs02-create.c:315
+#: rs02-create.c:257 rs02-create.c:327 rs02-create.c:340
 #, c-format
 msgid "Preparing image (checksums, adding space): %3d%%"
 msgstr "Preparando imagem (checksums, adicionando espaço): %3d%%"
 
-#: rs02-create.c:273 rs02-create.c:283 rs02-fix.c:90 rs03-create.c:427
-#: rs03-create.c:438 rs03-fix.c:87
+#: rs02-create.c:294 rs02-create.c:304 rs02-fix.c:96 rs03-create.c:447
+#: rs03-create.c:458 rs03-fix.c:94
 #, c-format
 msgid "Failed seeking to end of image: %s\n"
 msgstr "Falha ao ir ao fim da imagem: %s\n"
 
-#: rs02-create.c:277 rs02-create.c:298 rs02-fix.c:103 rs03-create.c:412
-#: rs03-fix.c:105
+#: rs02-create.c:298 rs02-create.c:321 rs02-fix.c:109 rs03-create.c:432
+#: rs03-fix.c:112
 #, c-format
 msgid "Failed expanding the image: %s\n"
 msgstr "Falha ao expandir a imagem: %s\n"
 
-#: rs02-create.c:303 rs02-create.c:314
+#: rs02-create.c:326 rs02-create.c:339
 #, c-format
 msgid "Preparing image (checksums taken from cache, adding space): %3d%%"
 msgstr ""
 
-#: rs02-create.c:1034 rs03-create.c:1247
+#: rs02-create.c:1071 rs03-create.c:1294
 msgid "Error correction data creation aborted"
 msgstr "Criação de dados de correção de erros abortada"
 
-#: rs02-create.c:1062 rs02-create.c:1080 rs03-create.c:1251 rs03-create.c:1304
+#: rs02-create.c:1102 rs02-create.c:1122 rs03-create.c:1299 rs03-create.c:1354
 #, c-format
 msgid ""
 "<big>Augmenting the image with error correction data.</big>\n"
@@ -4385,25 +4352,23 @@ msgstr ""
 "<big>Aumentando a imagem com os dados de correção de erros.</big>\n"
 "<i>%s</i>"
 
-#: rs02-create.c:1063 rs03-create.c:1252
+#: rs02-create.c:1103 rs03-create.c:1300
 msgid "- checking image -"
 msgstr "- verificando a imagem -"
 
-#: rs02-create.c:1076
+#: rs02-create.c:1118
 #, c-format
 msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr "Codificando com o Método RS02: %lld MiB de dados, %lld MiB de ecc (%d raízes; %4.1f%% de redundância)."
+msgstr ""
 
-#: rs02-create.c:1084
+#: rs02-create.c:1127
 #, c-format
 msgid ""
 "Augmenting image with Method RS02:\n"
 " %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
-"Aumentando a imagem com o Método RS02:\n"
-" %lld MiB de dados, %lld MiB de ecc (%d raízes; %4.1f%% de redundância)."
 
-#: rs02-create.c:1093
+#: rs02-create.c:1136
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
@@ -4412,7 +4377,7 @@ msgid ""
 "not an option, please create a separate error correction file."
 msgstr ""
 
-#: rs02-create.c:1103 rs03-create.c:1343
+#: rs02-create.c:1146 rs03-create.c:1394
 #, c-format
 msgid ""
 "Using redundancies below 20%%%% may not give\n"
@@ -4421,30 +4386,28 @@ msgstr ""
 "Usar redundâncias abaixo de 20%%%% pode não dar\n"
 "a proteção contra perda de dados esperada.\n"
 
-#: rs02-create.c:1135 rs02-create.c:1144 rs03-create.c:1366 rs03-create.c:1391
+#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1417 rs03-create.c:1445
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
 "New image size is %lld MiB (%lld sectors).\n"
 msgstr ""
-"A imagem foi aumentada com dados de correção de erros.\n"
-"O tamanho da nova imagem é %lld MiB (%lld setores).\n"
 
-#: rs02-fix.c:109 rs02-fix.c:117 rs03-fix.c:111 rs03-fix.c:119
+#: rs02-fix.c:119 rs02-fix.c:130 rs03-fix.c:122 rs03-fix.c:133
 #, c-format
 msgid "Expanding image: %3d%%"
 msgstr "Expandindo a imagem: %3d%%"
 
-#: rs02-fix.c:179 rs03-fix.c:178
+#: rs02-fix.c:198 rs03-fix.c:201
 msgid "Opening files..."
 msgstr "Abrindo arquivos..."
 
-#: rs02-fix.c:203
+#: rs02-fix.c:224
 #, c-format
 msgid "Image contains error correction data: Method RS02, %d roots, %4.1f%% redundancy."
 msgstr "A imagem contém dados de correção de erros: Método RS02, %d raízes, %4.1f%% de redundância."
 
-#: rs02-fix.c:220 rs03-fix.c:277
+#: rs02-fix.c:242 rs03-fix.c:309
 #, c-format
 msgid ""
 "The image file is %lld sectors longer as noted in the\n"
@@ -4461,39 +4424,39 @@ msgstr ""
 "\n"
 "%s"
 
-#: rs02-fix.c:462 rs03-fix.c:512
+#: rs02-fix.c:499 rs03-fix.c:559
 #, c-format
 msgid "* Ecc block %lld: %3d unrepairable sectors: "
 msgstr "* Bloco ecc %lld: %3d setores irrecuperáveis: "
 
-#: rs02-fix.c:684
+#: rs02-fix.c:721
 #, c-format
 msgid "-> CRC-predicted error in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
 msgstr "-> Erro de CRC previsto no setor %lld, byte %4d (valor: %02x '%c', esperado: %02x '%c')\n"
 
-#: rs02-fix.c:687
+#: rs02-fix.c:724
 #, c-format
 msgid "-> Non-predicted error in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
 msgstr "-> Erro não previsto no setor %lld no byte %4d (valor: %02x '%c', esperado: %02x '%c')\n"
 
-#: rs02-fix.c:810 rs03-fix.c:890
+#: rs02-fix.c:851 rs03-fix.c:941
 #, c-format
 msgid "Repaired sectors: %lld (%lld data, %lld ecc)\n"
 msgstr "Setores recuperados: %lld (%lld dados, %lld ecc)\n"
 
-#: rs02-recognize.c:48
+#: rs02-recognize.c:50
 msgid "Skip RS02 test"
 msgstr "Pular o teste RS02"
 
-#: rs02-recognize.c:49
+#: rs02-recognize.c:51
 msgid "Continue searching"
 msgstr "Continuar a busca"
 
-#: rs02-recognize.c:54
+#: rs02-recognize.c:56
 msgid "Disable RS02 initialization in the preferences"
 msgstr "Desativar a inicialização RS02 nas preferências"
 
-#: rs02-recognize.c:272
+#: rs02-recognize.c:279
 msgid ""
 "Faster medium initialization\n"
 "\n"
@@ -4507,107 +4470,107 @@ msgstr ""
 "Aperte \"Pular o teste RS02\" se você está certo de que essa mídia não foi\n"
 "aumentada com dados de correção de erros RS02."
 
-#: rs02-verify.c:46 rs02-verify.c:198 rs02-verify.c:304 rs03-verify.c:58
-#: rs03-verify.c:239 rs03-verify.c:301
+#: rs02-verify.c:48 rs02-verify.c:200 rs02-verify.c:306 rs03-verify.c:59
+#: rs03-verify.c:240 rs03-verify.c:302
 msgid "Data checksum:"
 msgstr "Checksum dos dados:"
 
-#: rs02-verify.c:47 rs02-verify.c:312
+#: rs02-verify.c:49 rs02-verify.c:314
 msgid "CRC checksum:"
 msgstr "Checksum do CRC:"
 
-#: rs02-verify.c:206
+#: rs02-verify.c:208
 msgid "Ecc headers:"
 msgstr "Cabeçalhos Ecc:"
 
-#: rs02-verify.c:214 rs03-verify.c:310
+#: rs02-verify.c:216 rs03-verify.c:311
 msgid "Data section:"
 msgstr "Seção de dados:"
 
-#: rs02-verify.c:222 rs03-verify.c:319
+#: rs02-verify.c:224 rs03-verify.c:320
 msgid "Crc section:"
 msgstr "Seção de Crc"
 
-#: rs02-verify.c:230 rs03-verify.c:328
+#: rs02-verify.c:232 rs03-verify.c:329
 msgid "Ecc section:"
 msgstr "Seção de ecc:"
 
-#: rs02-verify.c:253
+#: rs02-verify.c:255
 msgid "Error correction data"
 msgstr "Dados de correção de erros"
 
-#: rs02-verify.c:503 rs03-verify.c:449
+#: rs02-verify.c:513 rs03-verify.c:458
 #, c-format
 msgid "- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"
 msgstr "- contagem de rasuras   : méd = %.1f; pior = %d por bloco ecc.\n"
 
-#: rs02-verify.c:506 rs03-verify.c:452
+#: rs02-verify.c:516 rs03-verify.c:461
 #, c-format
 msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
 msgstr "- prognóstico     : %lld de %lld setores recuperáveis (%d.%d%%)\n"
 
-#: rs02-verify.c:512 rs03-verify.c:456
+#: rs02-verify.c:523 rs03-verify.c:466
 msgid "Erasure counts:"
 msgstr "Contagem de rasuras:"
 
-#: rs02-verify.c:513 rs03-verify.c:457
+#: rs02-verify.c:524 rs03-verify.c:467
 msgid "Prognosis:"
 msgstr "Prognóstico:"
 
-#: rs02-verify.c:516 rs03-verify.c:460
+#: rs02-verify.c:527 rs03-verify.c:470
 #, c-format
 msgid "<span %s>avg =  %.1f; worst = %d per ecc block.</span>"
 msgstr "<span %s>méd = %.1f; pior = %d por bloco ecc.</span>"
 
-#: rs02-verify.c:521 rs03-verify.c:465
+#: rs02-verify.c:532 rs03-verify.c:475
 #, c-format
 msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
 msgstr "<span %s>%lld de %lld setores recuperáveis (%d.%d%%)</span>"
 
-#: rs02-verify.c:576 rs03-verify.c:666
+#: rs02-verify.c:595 rs03-verify.c:704
 msgid "Check aborted"
 msgstr "Verificação abortada"
 
-#: rs02-verify.c:595 rs03-verify.c:706
+#: rs02-verify.c:617 rs03-verify.c:751
 msgid "Checking the image file."
 msgstr "Verificando o arquivo de imagem."
 
-#: rs02-verify.c:596
+#: rs02-verify.c:618
 msgid "Image contains error correction data."
 msgstr "A imagem contém dados de correção de erros"
 
-#: rs02-verify.c:609 rs03-verify.c:968
+#: rs02-verify.c:633 rs03-verify.c:1045
 #, c-format
 msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
 msgstr "<span %s>O arquivo de imagem é %lld setores menor do que o esperado.</span>"
 
-#: rs02-verify.c:610 rs03-verify.c:971
+#: rs02-verify.c:634 rs03-verify.c:1048
 #, c-format
 msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
 msgstr "<span %s>O arquivo de imagem é %lld setores maior do que o esperado.</span>"
 
-#: rs02-verify.c:630
+#: rs02-verify.c:655
 #, c-format
 msgid "Failed reading ecc header at %lld: %s\n"
 msgstr "Falha ao ler o cabeçalho ecc em %lld: %s\n"
 
-#: rs02-verify.c:673
+#: rs02-verify.c:699
 #, c-format
 msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
 msgstr "<span %s>%lld bons, %lld erros de CRC, %lld desaparecidos</span>"
 
-#: rs02-verify.c:806 rs02-verify.c:827 rs03-verify.c:1167 rs03-verify.c:1206
+#: rs02-verify.c:839 rs02-verify.c:862 rs03-verify.c:1251 rs03-verify.c:1294
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
 msgstr "<span %s>%lld setores desaparecidos; %lld erros de CRC</span>"
 
-#: rs02-verify.c:810 rs02-verify.c:814 rs02-verify.c:831 rs02-verify.c:835
-#: rs03-verify.c:1175 rs03-verify.c:1214
+#: rs02-verify.c:843 rs02-verify.c:847 rs02-verify.c:866 rs02-verify.c:870
+#: rs03-verify.c:1259 rs03-verify.c:1302
 #, c-format
 msgid "<span %s>%lld sectors missing</span>"
 msgstr "<span %s>%lld setores desaparecidos</span>"
 
-#: rs02-verify.c:849
+#: rs02-verify.c:885
 #, c-format
 msgid ""
 "- good image       : all sectors present\n"
@@ -4616,46 +4579,46 @@ msgstr ""
 "- imagem boa       : todos os setores presentes\n"
 "- md5sum dos dados : %s\n"
 
-#: rs02-verify.c:855
+#: rs02-verify.c:891
 msgid "* suspicious image : contains damaged ecc headers\n"
 msgstr ""
 
-#: rs02-verify.c:860 rs03-verify.c:1232
+#: rs02-verify.c:896 rs03-verify.c:1321
 #, c-format
 msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
 msgstr "* imagem suspeita : todos os setores presentes, mas %lld erros de CRC\n"
 
-#: rs02-verify.c:866
+#: rs02-verify.c:902
 #, c-format
 msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
 msgstr "  ... cabeçalhos ecc    : %lld bons, %lld erros de CRC, %lld desaparecidos\n"
 
-#: rs02-verify.c:868 rs03-verify.c:1238
+#: rs02-verify.c:904 rs03-verify.c:1327
 #, c-format
 msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
 msgstr "  ... seção de dados   : %lld setores desaparecidos; %lld erros de CRC\n"
 
-#: rs02-verify.c:871 rs03-verify.c:1241
+#: rs02-verify.c:907 rs03-verify.c:1330
 #, c-format
 msgid "  ... data md5sum    : %s\n"
 msgstr "  ... md5sum dos dados    : %s\n"
 
-#: rs02-verify.c:872 rs03-verify.c:1247
+#: rs02-verify.c:908 rs03-verify.c:1336
 #, c-format
 msgid "  ... crc section    : %lld sectors missing\n"
 msgstr "  ... seção de crc    : %lld setores desaparecidos\n"
 
-#: rs02-verify.c:873 rs03-verify.c:1249
+#: rs02-verify.c:909 rs03-verify.c:1338
 #, c-format
 msgid "  ... ecc section    : %lld sectors missing\n"
 msgstr "  ... seção ecc      : %lld setores desaparecidos\n"
 
-#: rs02-verify.c:895 rs03-verify.c:1293
+#: rs02-verify.c:932 rs03-verify.c:1392
 #, c-format
 msgid "<span %s>Damaged image.</span>"
 msgstr "<span %s>Imagem danificada.</span>"
 
-#: rs02-verify.c:902
+#: rs02-verify.c:940
 msgid ""
 "\n"
 "Error correction data: "
@@ -4663,88 +4626,88 @@ msgstr ""
 "\n"
 "Dados de correção de erros: "
 
-#: rs02-verify.c:986
+#: rs02-verify.c:1034
 #, c-format
 msgid "- medium sectors   : %lld / %lld (good)\n"
 msgstr "- setores da mídia   : %lld / %lld (bom)\n"
 
-#: rs02-verify.c:1003
+#: rs02-verify.c:1054
 #, c-format
 msgid "<span %s>Image size does not match recorded size.</span>"
 msgstr "<span %s>Tamanho da imagem não bate com o tamanho registrado.</span>"
 
-#: rs02-verify.c:1017
+#: rs02-verify.c:1069
 #, c-format
 msgid "- data md5sum      : %s (good)\n"
 msgstr "- md5sum dos dados  : %s (bom)\n"
 
-#: rs02-verify.c:1018
+#: rs02-verify.c:1070
 #, c-format
 msgid "* data md5sum      : %s (BAD)\n"
 msgstr "* md5sum dos dados  : %s (RUIM)\n"
 
-#: rs02-verify.c:1029 rs03-verify.c:842
+#: rs02-verify.c:1083 rs03-verify.c:902
 #, c-format
 msgid "- data md5sum      : %s\n"
 msgstr "- md5sum dos dados  : %s\n"
 
-#: rs02-verify.c:1041
+#: rs02-verify.c:1097
 #, c-format
 msgid "- crc md5sum       : %s (good)\n"
 msgstr "- md5sum do crc    : %s (bom)\n"
 
-#: rs02-verify.c:1046
+#: rs02-verify.c:1104
 #, c-format
 msgid "* crc md5sum       : %s (BAD)\n"
 msgstr "* md5sum do crc    : %s (RUIM)\n"
 
-#: rs02-verify.c:1054
+#: rs02-verify.c:1114
 #, c-format
 msgid "- crc md5sum       : %s\n"
 msgstr "- md5sum do crc    : %s\n"
 
-#: rs02-verify.c:1071
+#: rs02-verify.c:1135
 #, c-format
 msgid "* ecc md5sum       : %s (BAD)\n"
 msgstr "* md5sum do ecc   : %s (RUIM)\n"
 
-#: rs02-verify.c:1079
+#: rs02-verify.c:1145
 #, c-format
 msgid "- ecc md5sum       : %s\n"
 msgstr "- md5sum do ecc    : %s\n"
 
-#: rs02-verify.c:1098 rs03-verify.c:887
+#: rs02-verify.c:1167 rs03-verify.c:956
 #, c-format
 msgid "<span %s>Good error correction data.</span>"
 msgstr "<span %s>Dados de correção de erros bons.</span>"
 
-#: rs02-verify.c:1102 rs03-verify.c:1305
+#: rs02-verify.c:1171 rs03-verify.c:1406
 #, c-format
 msgid "<span %s>Full data recovery is likely.</span>"
 msgstr "<span %s>Recuperação dos dados completa é provável.</span>"
 
-#: rs02-verify.c:1105 rs03-verify.c:1308
+#: rs02-verify.c:1174 rs03-verify.c:1409
 #, c-format
 msgid "<span %s>Full data recovery is NOT possible.</span>"
 msgstr "<span %s>Recuperação completa dos dados NÃO É possível.</span>"
 
-#: rs02-window.c:79
+#: rs02-window.c:80
 msgid "<b>1. Preparing image:</b>"
 msgstr "<b>1. Preparando a imagem: </b>"
 
-#: rs02-window.c:745
+#: rs02-window.c:746
 msgid "Maximum image size"
 msgstr "Tamanho máximo da imagem"
 
-#: rs02-window.c:757
+#: rs02-window.c:758
 msgid "Using the smallest possible size from table"
 msgstr "Usando o menor tamanho possível da tabela"
 
-#: rs02-window.c:757
+#: rs02-window.c:758
 msgid "Use smallest possible size from following table (in sectors):"
 msgstr "Usar o menor tamanho possível da tabela seguinte (em setores):"
 
-#: rs02-window.c:781
+#: rs02-window.c:782
 msgid ""
 "<b>Determine augmented image size from table</b>\n"
 "\n"
@@ -4752,23 +4715,18 @@ msgid ""
 "\n"
 "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD and BD are given in the table. You can edit these sizes according to your needs."
 msgstr ""
-"<b>Determinar o tamanho da imagem aumentada da tabela</b>\n"
-"\n"
-"Imagens aumentadas preenchem espaço não usado da mídia com informações de correção de erros. Ative esta opção se você quer que a imagem aumentada se encaixe na menor mídia possível.\n"
-"\n"
-"Para que uma mídia adequada seja escolhida, a capacidade das mídias disponíveis devem ser conhecidas. Tamanhos padrão para CD e DVDs de duas camadas são dados na tabela. Você pode editar estes tamanhos de acordo com as suas necessidades."
 
-#: rs02-window.c:800
+#: rs02-window.c:801
 msgid "CD-R / CD-RW:"
 msgstr "CD-R / CR-RW:"
 
-#: rs02-window.c:811 rs02-window.c:830 rs02-window.c:871 rs02-window.c:890
-#: rs02-window.c:931 rs02-window.c:950 rs02-window.c:991 rs02-window.c:1010
-#: rs02-window.c:1050 rs02-window.c:1069 rs02-window.c:1109 rs02-window.c:1128
+#: rs02-window.c:812 rs02-window.c:831 rs02-window.c:872 rs02-window.c:891
+#: rs02-window.c:932 rs02-window.c:951 rs02-window.c:992 rs02-window.c:1011
+#: rs02-window.c:1051 rs02-window.c:1070 rs02-window.c:1110 rs02-window.c:1129
 msgid "query medium"
 msgstr "consultar mídia"
 
-#: rs02-window.c:842
+#: rs02-window.c:843
 #, c-format
 msgid ""
 "<b>CD medium size</b>\n"
@@ -4791,11 +4749,11 @@ msgstr ""
 "Por favor, note que imagens aumentadas, no máximo, triplicarão em tamanho, já que a redundância máxima possível é 200%%.\n"
 "Mesmo se esse limite não for alcançado, a imagem aumentada pode ser alguns setores menor do que o especificado por razões técnicas."
 
-#: rs02-window.c:860
+#: rs02-window.c:861
 msgid "DVD 1 layer:"
 msgstr "DVD de 1 camada:"
 
-#: rs02-window.c:902
+#: rs02-window.c:903
 #, c-format
 msgid ""
 "<b>Single layer DVD medium size</b>\n"
@@ -4818,11 +4776,11 @@ msgstr ""
 "Por favor, note que imagens aumentadas, no máximo, triplicarão em tamanho, já que a redundância máxima possível é 200%%.\n"
 "Mesmo se esse limite não for alcançado, a imagem aumentada pode ser alguns setores menor do que o especificado por razões técnicas."
 
-#: rs02-window.c:920
+#: rs02-window.c:921
 msgid "DVD 2 layers:"
 msgstr "DVD de 2 camadas:"
 
-#: rs02-window.c:962
+#: rs02-window.c:963
 #, c-format
 msgid ""
 "<b>Two layered DVD medium size</b>\n"
@@ -4845,11 +4803,11 @@ msgstr ""
 "Por favor, note que imagens aumentadas, no máximo, triplicarão em tamanho, já que a redundância máxima possível é 200%%.\n"
 "Mesmo se esse limite não for alcançado, a imagem aumentada pode ser alguns setores menor do que o especificado por razões técnicas."
 
-#: rs02-window.c:980
+#: rs02-window.c:981
 msgid "BD 1 layer:"
 msgstr "BD de uma camada:"
 
-#: rs02-window.c:1022
+#: rs02-window.c:1023
 #, c-format
 msgid ""
 "<b>Single layer BD medium size</b>\n"
@@ -4872,11 +4830,11 @@ msgstr ""
 "Por favor, note que imagens aumentadas, no máximo, triplicarão em tamanho, já que a redundância máxima possível é 200%%.\n"
 "Mesmo se esse limite não for alcançado, a imagem aumentada pode ser alguns setores menor do que o especificado por razões técnicas."
 
-#: rs02-window.c:1039
+#: rs02-window.c:1040
 msgid "BD 2 layers:"
 msgstr "BD de 2 camadas:"
 
-#: rs02-window.c:1081
+#: rs02-window.c:1082
 #, c-format
 msgid ""
 "<b>Two layered BD medium size</b>\n"
@@ -4899,11 +4857,11 @@ msgstr ""
 "Por favor, note que imagens aumentadas, no máximo, triplicarão em tamanho, já que a redundância máxima possível é 200%%.\n"
 "Mesmo se esse limite não for alcançado, a imagem aumentada pode ser alguns setores menor do que o especificado por razões técnicas."
 
-#: rs02-window.c:1098
+#: rs02-window.c:1099
 msgid "BDXL 3 layers:"
 msgstr ""
 
-#: rs02-window.c:1140
+#: rs02-window.c:1141
 #, c-format
 msgid ""
 "<b>Three layered BDXL medium size</b>\n"
@@ -4917,11 +4875,11 @@ msgid ""
 "Even if this limit is not reached the augmented image may be a few sectors smaller than specified for technical reasons."
 msgstr ""
 
-#: rs02-window.c:1198
+#: rs02-window.c:1199
 msgid "sectors."
 msgstr "setores."
 
-#: rs02-window.c:1211
+#: rs02-window.c:1212
 #, c-format
 msgid ""
 "<b>Use at most ... sectors</b>\n"
@@ -4959,27 +4917,27 @@ msgstr ""
 msgid "Medium size smaller than image size (%lld < %lld)"
 msgstr ""
 
-#: rs03-create.c:407
+#: rs03-create.c:427
 #, c-format
 msgid "Failed expanding the ecc file: %s\n"
 msgstr ""
 
-#: rs03-create.c:408
+#: rs03-create.c:428
 #, c-format
 msgid "Preparing ecc file: %3d%%"
 msgstr ""
 
-#: rs03-create.c:413
+#: rs03-create.c:433
 #, c-format
 msgid "Preparing image: %3d%%"
 msgstr ""
 
-#: rs03-create.c:652
+#: rs03-create.c:681
 #, c-format
 msgid "Failed mmap()ing layer %d: %s\n"
 msgstr ""
 
-#: rs03-create.c:681
+#: rs03-create.c:710
 #, c-format
 msgid ""
 "Incomplete image\n"
@@ -4991,7 +4949,7 @@ msgid ""
 "Exiting and removing partial error correction data."
 msgstr ""
 
-#: rs03-create.c:689
+#: rs03-create.c:718
 msgid ""
 "\n"
 "This image was probably mastered from defective source(s).\n"
@@ -4999,44 +4957,44 @@ msgid ""
 "\n"
 msgstr ""
 
-#: rs03-create.c:894
+#: rs03-create.c:929
 msgid "CPU bound"
 msgstr ""
 
-#: rs03-create.c:898
+#: rs03-create.c:933
 msgid "I/O bound"
 msgstr ""
 
-#: rs03-create.c:1105
+#: rs03-create.c:1142
 #, c-format
 msgid "%5.2fMiB/s current"
 msgstr ""
 
-#: rs03-create.c:1153
+#: rs03-create.c:1195
 #, c-format
 msgid "%d threads with %s encoding and %s I/O"
 msgstr ""
 
-#: rs03-create.c:1299
+#: rs03-create.c:1349
 #, c-format
 msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1317
+#: rs03-create.c:1368
 #, c-format
 msgid ""
 "Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
 "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1322
+#: rs03-create.c:1373
 #, c-format
 msgid ""
 "Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
 "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1333
+#: rs03-create.c:1384
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
@@ -5045,118 +5003,118 @@ msgid ""
 "an option, please create a separate error correction file."
 msgstr ""
 
-#: rs03-create.c:1377
+#: rs03-create.c:1428
 #, c-format
 msgid "Avg performance: %5.2fs (%5.2fMiB/s) total\n"
 msgstr ""
 
-#: rs03-create.c:1380
+#: rs03-create.c:1432
 #, c-format
 msgid "%5.2fMiB/s average"
 msgstr ""
 
-#: rs03-create.c:1382
+#: rs03-create.c:1434
 #, c-format
 msgid "%d times CPU bound; %d times I/O bound"
 msgstr ""
 
-#: rs03-fix.c:218
+#: rs03-fix.c:243
 #, c-format
 msgid "Error correction file using Method RS03, %d roots, %4.1f%% redundancy."
 msgstr ""
 
-#: rs03-fix.c:222
+#: rs03-fix.c:247
 #, c-format
 msgid "Image contains error correction data: Method RS03, %d roots, %4.1f%% redundancy."
 msgstr ""
 
-#: rs03-fix.c:678 rs03-fix.c:802
+#: rs03-fix.c:725 rs03-fix.c:849
 msgid "; ecc file: "
 msgstr ""
 
-#: rs03-fix.c:738
+#: rs03-fix.c:785
 #, c-format
 msgid "-> CRC-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n"
 msgstr ""
 
-#: rs03-fix.c:741
+#: rs03-fix.c:788
 #, c-format
 msgid "-> Non-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n"
 msgstr ""
 
-#: rs03-fix.c:834
+#: rs03-fix.c:881
 #, c-format
 msgid "Failed seeking to sector %lld in ecc file [%s]: %s"
 msgstr ""
 
-#: rs03-fix.c:839
+#: rs03-fix.c:886
 #, c-format
 msgid ""
 "could not write ecc file sector %lld:\n"
 "%s"
 msgstr ""
 
-#: rs03-preferences.c:344 rs03-preferences.c:781 rs03-preferences.c:787
-#: rs03-preferences.c:788
+#: rs03-preferences.c:345 rs03-preferences.c:782 rs03-preferences.c:788
+#: rs03-preferences.c:789
 #, c-format
 msgid "%d sectors"
 msgstr ""
 
-#: rs03-preferences.c:363 rs03-preferences.c:895 rs03-preferences.c:901
-#: rs03-preferences.c:902
+#: rs03-preferences.c:364 rs03-preferences.c:896 rs03-preferences.c:902
+#: rs03-preferences.c:903
 #, c-format
 msgid "%d threads"
 msgstr ""
 
-#: rs03-preferences.c:486 rs03-preferences.c:493
+#: rs03-preferences.c:487 rs03-preferences.c:494
 msgid "Error correction data storage"
 msgstr ""
 
-#: rs03-preferences.c:494
+#: rs03-preferences.c:495
 msgid "Store ECC data in: "
 msgstr ""
 
-#: rs03-preferences.c:506
+#: rs03-preferences.c:507
 msgid "File"
 msgstr ""
 
-#: rs03-preferences.c:533
+#: rs03-preferences.c:534
 msgid ""
 "<b>Error correction data storage</b>\n"
 "\n"
 "Select between two ways of storing the error correction information:\n"
 msgstr ""
 
-#: rs03-preferences.c:538
+#: rs03-preferences.c:539
 msgid ""
 "Augmented image (recommended)\n"
 "The error correction data will be stored along with the user data on the same medium. This requires the creation of an image file prior to writing the medium. The error correction data will be appended to that image and fill up the remaining space.\n"
 "Damaged sectors in the error correction information reduce the data recovery capacity, but do not make recovery impossible - a second medium for keeping or protecting the error correction information is not required.\n"
 msgstr ""
 
-#: rs03-preferences.c:548
+#: rs03-preferences.c:549
 msgid ""
 "Error correction file\n"
 "Error correction files are the only way of protecting existing media as they can be stored somewhere else. They are kept on a separate medium which must also be protected by dvdisaster. This prevents from losing the error correction files in case of a medium defect.\n"
 msgstr ""
 
-#: rs03-preferences.c:568
+#: rs03-preferences.c:569
 msgid "no settings for augmented images"
 msgstr ""
 
-#: rs03-preferences.c:774
+#: rs03-preferences.c:775
 msgid "I/O parameters"
 msgstr ""
 
-#: rs03-preferences.c:782
+#: rs03-preferences.c:783
 msgid "Sector preloading"
 msgstr ""
 
-#: rs03-preferences.c:794
+#: rs03-preferences.c:795
 msgid "Preload"
 msgstr ""
 
-#: rs03-preferences.c:821
+#: rs03-preferences.c:822
 msgid ""
 "<b>Sector preloading</b>\n"
 "\n"
@@ -5168,23 +5126,23 @@ msgid ""
 "A preload value of n will used approx. n MiB of RAM."
 msgstr ""
 
-#: rs03-preferences.c:833
+#: rs03-preferences.c:834
 msgid "I/O strategy"
 msgstr ""
 
-#: rs03-preferences.c:834
+#: rs03-preferences.c:835
 msgid "I/O strategy: "
 msgstr ""
 
-#: rs03-preferences.c:846
+#: rs03-preferences.c:847
 msgid "read/write"
 msgstr ""
 
-#: rs03-preferences.c:852
+#: rs03-preferences.c:853
 msgid "memory mapped"
 msgstr ""
 
-#: rs03-preferences.c:872
+#: rs03-preferences.c:873
 msgid ""
 "<b>I/O strategy</b>\n"
 "\n"
@@ -5195,11 +5153,11 @@ msgid ""
 "The <b>memory mapped</b> option uses the kernel's memory mapping scheme for direct access to the image file. This has the advantage of minimal overhead, but may be adversely affected by poor caching and preloading decisions made by the kernel (since the kernel does not know what dvdisaster is going to do with the data). This scheme performs well when encoding in a RAM-based file system (such as /dev/shm on GNU/Linux) and on very fast media with low latency such as SSDs."
 msgstr ""
 
-#: rs03-preferences.c:892 rs03-preferences.c:896
+#: rs03-preferences.c:893 rs03-preferences.c:897
 msgid "Multithreading"
 msgstr ""
 
-#: rs03-preferences.c:936
+#: rs03-preferences.c:937
 msgid ""
 "<b>Multithreading</b>\n"
 "\n"
@@ -5210,35 +5168,35 @@ msgid ""
 "Performance will not scale linearly with the number of CPU cores. Hard disk performance is more limiting than raw CPU power. When using 4 cores or more, memory bandwidth may also affect performance."
 msgstr ""
 
-#: rs03-preferences.c:951 rs03-preferences.c:958
+#: rs03-preferences.c:952 rs03-preferences.c:959
 msgid "Encoding algorithm"
 msgstr ""
 
-#: rs03-preferences.c:959
+#: rs03-preferences.c:960
 msgid "Use: "
 msgstr ""
 
-#: rs03-preferences.c:971
+#: rs03-preferences.c:972
 msgid "32bit"
 msgstr ""
 
-#: rs03-preferences.c:977
+#: rs03-preferences.c:978
 msgid "64bit"
 msgstr ""
 
-#: rs03-preferences.c:984
+#: rs03-preferences.c:985
 msgid "SSE2"
 msgstr ""
 
-#: rs03-preferences.c:991
+#: rs03-preferences.c:992
 msgid "AltiVec"
 msgstr ""
 
-#: rs03-preferences.c:998
+#: rs03-preferences.c:999
 msgid "auto"
 msgstr ""
 
-#: rs03-preferences.c:1025
+#: rs03-preferences.c:1026
 msgid ""
 "<b>Encoding algorithm</b>\n"
 "\n"
@@ -5248,129 +5206,129 @@ msgid ""
 "Available extensions are SSE2 for x86 based processors and AltiVec on PowerPC processors. These extensions encode with 128bit wide operations and will usually provide the fastest encoding variant. If \"auto\" is selected, the SSE2/AltiVec algorithms will be selected if the processor supports them; otherwise the 64bit algorithm will be used."
 msgstr ""
 
-#: rs03-verify.c:192
+#: rs03-verify.c:193
 msgid "Error correction properties"
 msgstr ""
 
-#: rs03-verify.c:203
+#: rs03-verify.c:204
 msgid "Type:"
 msgstr ""
 
-#: rs03-verify.c:272
+#: rs03-verify.c:273
 msgid "Data integrity"
 msgstr ""
 
-#: rs03-verify.c:337 rs03-verify.c:1265
+#: rs03-verify.c:338 rs03-verify.c:1357
 msgid "Ecc block test:"
 msgstr ""
 
-#: rs03-verify.c:492 rs03-verify.c:697 rs03-verify.c:1192
+#: rs03-verify.c:506 rs03-verify.c:740 rs03-verify.c:1278
 msgid "Checking the image and error correction files."
 msgstr ""
 
-#: rs03-verify.c:493
+#: rs03-verify.c:507
 msgid "- Checking ecc blocks (deep verify) -"
 msgstr ""
 
-#: rs03-verify.c:508
+#: rs03-verify.c:524
 #, c-format
 msgid "<span %s>Out of memory; try reducing sector prefetch!</span>"
 msgstr ""
 
-#: rs03-verify.c:510
+#: rs03-verify.c:527
 msgid "* Ecc block test   : out of memory; try reducing sector prefetch!\n"
 msgstr ""
 
-#: rs03-verify.c:591 rs03-verify.c:1161
+#: rs03-verify.c:612 rs03-verify.c:1245
 #, c-format
 msgid "%d%% tested"
 msgstr ""
 
-#: rs03-verify.c:593
+#: rs03-verify.c:615
 #, c-format
 msgid "- Ecc block test   : %d%% tested"
 msgstr ""
 
-#: rs03-verify.c:599
+#: rs03-verify.c:623
 #, c-format
 msgid "<span %s>%lld good, %lld bad; %d%% tested</span>"
 msgstr ""
 
-#: rs03-verify.c:601
+#: rs03-verify.c:626
 #, c-format
 msgid "* Ecc block test   : %lld good, %lld bad; %d%% tested"
 msgstr ""
 
-#: rs03-verify.c:611
+#: rs03-verify.c:638
 msgid "pass"
 msgstr ""
 
-#: rs03-verify.c:613
+#: rs03-verify.c:641
 msgid "- Ecc block test   : pass\n"
 msgstr ""
 
-#: rs03-verify.c:618
+#: rs03-verify.c:648
 #, c-format
 msgid "<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"
 msgstr ""
 
-#: rs03-verify.c:620
+#: rs03-verify.c:651
 #, c-format
 msgid "* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"
 msgstr ""
 
-#: rs03-verify.c:700
+#: rs03-verify.c:744
 #, c-format
 msgid "%s present.\n"
 msgstr ""
 
-#: rs03-verify.c:718
+#: rs03-verify.c:764
 msgid ""
 "\n"
 "Error correction properties:\n"
 msgstr ""
 
-#: rs03-verify.c:730
+#: rs03-verify.c:776
 #, c-format
 msgid "Ecc file is %lld sectors shorter than expected."
 msgstr ""
 
-#: rs03-verify.c:732
+#: rs03-verify.c:778
 #, c-format
 msgid "Ecc file is %lld sectors longer than expected."
 msgstr ""
 
-#: rs03-verify.c:738
+#: rs03-verify.c:786
 #, c-format
 msgid "* Warning          : %s\n"
 msgstr ""
 
-#: rs03-verify.c:747
+#: rs03-verify.c:795
 msgid "- type             : Error correction file\n"
 msgstr ""
 
-#: rs03-verify.c:748
+#: rs03-verify.c:796
 msgid "- type             : Augmented image\n"
 msgstr ""
 
-#: rs03-verify.c:752
+#: rs03-verify.c:801
 msgid "Error correction file"
 msgstr ""
 
-#: rs03-verify.c:753
+#: rs03-verify.c:802
 msgid "Augmented image"
 msgstr ""
 
-#: rs03-verify.c:782 rs03-verify.c:792
+#: rs03-verify.c:834 rs03-verify.c:846
 msgid "- created by       : dvdisaster"
 msgstr ""
 
-#: rs03-verify.c:812
+#: rs03-verify.c:868
 #, c-format
 msgid "- requires         : dvdisaster-%s\n"
 msgstr ""
 
-#: rs03-verify.c:818
+#: rs03-verify.c:876
 #, c-format
 msgid ""
 "* requires         : dvdisaster-%s (BAD)\n"
@@ -5378,143 +5336,143 @@ msgid ""
 "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"
 msgstr ""
 
-#: rs03-verify.c:840
+#: rs03-verify.c:900
 msgid "none available"
 msgstr ""
 
-#: rs03-verify.c:896
+#: rs03-verify.c:966
 msgid ""
 "\n"
 "Data integrity:\n"
 msgstr ""
 
-#: rs03-verify.c:923
+#: rs03-verify.c:995
 #, c-format
 msgid "%lld in image; %lld in ecc file"
 msgstr ""
 
-#: rs03-verify.c:926
+#: rs03-verify.c:998
 #, c-format
 msgid "%lld sectors + %d bytes in image; %lld in ecc file"
 msgstr ""
 
-#: rs03-verify.c:931
+#: rs03-verify.c:1004
 #, c-format
 msgid "- sectors          : %lld in image; "
 msgstr ""
 
-#: rs03-verify.c:932
+#: rs03-verify.c:1005
 #, c-format
 msgid "- sectors          : %lld sectors + %d bytes in image; "
 msgstr ""
 
-#: rs03-verify.c:934
+#: rs03-verify.c:1007
 #, c-format
 msgid "%lld in ecc file\n"
 msgstr ""
 
-#: rs03-verify.c:938
+#: rs03-verify.c:1013
 #, c-format
 msgid "%lld total / %lld data"
 msgstr ""
 
-#: rs03-verify.c:940
+#: rs03-verify.c:1016
 #, c-format
 msgid "- medium sectors   : %lld total / %lld data\n"
 msgstr ""
 
-#: rs03-verify.c:956
+#: rs03-verify.c:1033
 #, c-format
 msgid "<span %s>%s (%s expected)</span>"
 msgstr ""
 
-#: rs03-verify.c:961
+#: rs03-verify.c:1038
 #, c-format
 msgid "<span %s>Image file is %d bytes shorter than expected.</span>"
 msgstr ""
 
-#: rs03-verify.c:963
+#: rs03-verify.c:1040
 #, c-format
 msgid "<span %s>Image file is %d bytes longer than expected.</span>"
 msgstr ""
 
-#: rs03-verify.c:976
+#: rs03-verify.c:1054
 #, c-format
 msgid "* sectors          : %s (%s expected); %lld sectors in ecc file\n"
 msgstr ""
 
-#: rs03-verify.c:979
+#: rs03-verify.c:1057
 #, c-format
 msgid "* medium sectors   : %s (%s expected)\n"
 msgstr ""
 
-#: rs03-verify.c:1003
+#: rs03-verify.c:1081
 #, c-format
 msgid "Failed seeking to start of ecc file: %s\n"
 msgstr ""
 
-#: rs03-verify.c:1101
+#: rs03-verify.c:1181
 msgid " (in ecc file)"
 msgstr ""
 
-#: rs03-verify.c:1109
+#: rs03-verify.c:1189
 #, c-format
 msgid "* missing sector   : %lld%s\n"
 msgstr ""
 
-#: rs03-verify.c:1110
+#: rs03-verify.c:1190
 #, c-format
 msgid "* missing sectors  : %lld - %lld%s\n"
 msgstr ""
 
-#: rs03-verify.c:1171 rs03-verify.c:1210
+#: rs03-verify.c:1255 rs03-verify.c:1298
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld signature errors</span>"
 msgstr ""
 
-#: rs03-verify.c:1195
+#: rs03-verify.c:1281
 msgid "Error correction file:"
 msgstr ""
 
-#: rs03-verify.c:1226
+#: rs03-verify.c:1315
 #, c-format
 msgid ""
 "- good image/file  : all sectors present\n"
 "- data md5sum      : %s\n"
 msgstr ""
 
-#: rs03-verify.c:1230
+#: rs03-verify.c:1319
 #, c-format
 msgid "* BAD image/file   : %lld sectors missing\n"
 msgstr ""
 
-#: rs03-verify.c:1244
+#: rs03-verify.c:1333
 #, c-format
 msgid "  ... crc section    : %lld sectors missing; %lld signature errors\n"
 msgstr ""
 
-#: rs03-verify.c:1271
+#: rs03-verify.c:1366
 #, c-format
 msgid "<span %s>Skipped; not useful on known defective image</span>"
 msgstr ""
 
-#: rs03-verify.c:1274
+#: rs03-verify.c:1370
 msgid "* Ecc block test   : skipped; not useful on defective image\n"
 msgstr ""
 
-#: rs03-window.c:84
+#: rs03-window.c:85
 msgid "<b>1. Reserving space:</b>"
 msgstr ""
 
-#: rs03-window.c:103
+#: rs03-window.c:104
 msgid "<b>Encoder info:</b>"
 msgstr ""
 
-#: rs03-window.c:112
+#: rs03-window.c:113
 msgid "<b>Performance:</b>"
 msgstr ""
 
-#: rs03-window.c:121
+#: rs03-window.c:122
 msgid "<b>State:</b>"
 msgstr ""
 
@@ -5553,7 +5511,7 @@ msgstr "A CONSULTA falhou. Há algo de errado com o drive %s.\n"
 #: scsi-layer.c:139
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
-msgstr "O dispositivo %s (%s) não é um drive de CDROM."
+msgstr ""
 
 #: scsi-layer.c:140
 #, c-format
@@ -5799,37 +5757,37 @@ msgstr ""
 "%s\n"
 "Impossível destravar a mídia.\n"
 
-#: scsi-layer.c:2188
+#: scsi-layer.c:2191
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Aguardando 10 segundos pelo drive: %d\n"
 
-#: scsi-layer.c:2465
+#: scsi-layer.c:2474
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Setores %lld - %lld: %s\n"
 
-#: scsi-layer.c:2479
+#: scsi-layer.c:2488
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Setor %lld, tentativa %d: %s Setor retornado: %d.\n"
 
-#: scsi-layer.c:2485
+#: scsi-layer.c:2494
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Setor %lld, tentativa %d: %s\n"
 
-#: scsi-layer.c:2496
+#: scsi-layer.c:2505
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Setor %lld, tentativa %d: sucesso\n"
 
-#: scsi-layer.c:2567
+#: scsi-layer.c:2576
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Dispositivo %s: nenhuma mídia presente\n"
 
-#: scsi-layer.c:2572
+#: scsi-layer.c:2581
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5840,7 +5798,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: scsi-layer.c:2578
+#: scsi-layer.c:2587
 #, c-format
 msgid ""
 "\n"
@@ -5849,52 +5807,52 @@ msgstr ""
 "\n"
 "Dispositivo: %s, %s\n"
 
-#: scsi-layer.c:2585
+#: scsi-layer.c:2594
 msgid "Drive failed to report media type."
 msgstr "O drive falhou ao informar o tipo de mídia."
 
-#: scsi-layer.c:2596 scsi-layer.c:2694
+#: scsi-layer.c:2605 scsi-layer.c:2703
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Este software não suporta mídias do tipo \"%s\""
 
-#: scsi-layer.c:2604
+#: scsi-layer.c:2613
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Este software não suporta mídias em multisessão (%d sessões)."
 
-#: scsi-layer.c:2635 scsi-layer.c:2644
+#: scsi-layer.c:2644 scsi-layer.c:2653
 msgid "Using READ CD"
 msgstr "Usando READ CD"
 
-#: scsi-layer.c:2636
+#: scsi-layer.c:2645
 msgid ", RAW reading"
 msgstr ", leitura RAW"
 
-#: scsi-layer.c:2639
+#: scsi-layer.c:2648
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ""
 
-#: scsi-layer.c:2642
+#: scsi-layer.c:2651
 msgid ", C2 scanning"
 msgstr ", escaneando C2"
 
-#: scsi-layer.c:2649
+#: scsi-layer.c:2658
 msgid "Using READ(10).\n"
 msgstr "Usando READ(10).\n"
 
-#: scsi-layer.c:2671
+#: scsi-layer.c:2680
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Mídia: %s, %lld setores%s"
 
-#: scsi-layer.c:2675
+#: scsi-layer.c:2684
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Mídia \"%s\": %s, %lld setores%s criou %s"
 
-#: scsi-layer.c:2701
+#: scsi-layer.c:2710
 msgid "This software does not support encrypted media.\n"
 msgstr "Este software não suporta mídias criptografadas.\n"
 
@@ -5917,15 +5875,15 @@ msgstr ""
 "* Sistema operacional não suportado - nenhuma camada SCSI disponível.\n"
 "* Nenhum drive pode ser usado.\n"
 
-#: show-manual.c:67
+#: show-manual.c:68
 msgid "windowtitle|Choose a PDF viewer"
 msgstr ""
 
-#: show-manual.c:104
+#: show-manual.c:105
 msgid "windowtitle|PDF viewer required"
 msgstr ""
 
-#: show-manual.c:120
+#: show-manual.c:121
 msgid ""
 "<b>Could not find a suitable PDF viewer.</b>\n"
 "\n"
@@ -5936,15 +5894,15 @@ msgid ""
 "use the \"Search\" button for a file dialog.\n"
 msgstr ""
 
-#: show-manual.c:133
+#: show-manual.c:134
 msgid "Search"
 msgstr "Buscar"
 
-#: show-manual.c:283
+#: show-manual.c:284
 msgid "Documentation not installed."
 msgstr "Documentação não instalada."
 
-#: show-manual.c:299
+#: show-manual.c:300
 #, c-format
 msgid ""
 "Documentation file\n"
@@ -5955,7 +5913,7 @@ msgstr ""
 "%s\n"
 "não encontrado.\n"
 
-#: show-manual.c:308
+#: show-manual.c:309
 msgid "Please hang on until the viewer comes up!"
 msgstr ""
 
@@ -5967,15 +5925,15 @@ msgstr "Sem título"
 msgid "Example disc"
 msgstr "Disco de exemplo"
 
-#: welcome-window.c:80
+#: welcome-window.c:81
 msgid "- Added support for BDXL-TL 100GB media"
 msgstr ""
 
-#: welcome-window.c:81
+#: welcome-window.c:82
 msgid "- Optimized ecc generation when medium was previously read\n"
 msgstr ""
 
-#: welcome-window.c:83
+#: welcome-window.c:84
 msgid ""
 "<i>Please note:</i>\n"
 "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
@@ -5984,44 +5942,30 @@ msgid ""
 "It will be re-introduced in one of the next releases."
 msgstr ""
 
-#: welcome-window.c:91
+#: welcome-window.c:92
 msgid "Show this message again"
 msgstr "Mostrar essa mensagem no futuro"
 
-#: welcome-window.c:137
+#: welcome-window.c:138
 msgid "<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"
 msgstr "<span weight=\"bold\" size=\"xx-large\">Bem-vindo(a) ao dvdisaster!</span>"
 
-#: welcome-window.c:139
+#: welcome-window.c:140
 msgid ""
 "\n"
 "dvdisaster creates error correction data to protect\n"
 "optical media (CD,DVD,BD) against data loss.\n"
 msgstr ""
 
-#: welcome-window.c:142
+#: welcome-window.c:143
 msgid ""
 "Please see the [manual] for typical uses of dvdisaster.\n"
 "\n"
 msgstr ""
 
-#: welcome-window.c:145
+#: welcome-window.c:146
 msgid "<i>New in this Version:</i>"
 msgstr "<i>Novidades dessa versão:</i>"
-
-#~ msgid "created by dvdisaster-%d.%d\n"
-#~ msgstr "criado pelo dvdisaster-%d.%d\n"
-
-#~ msgid ""
-#~ "NOTE: This is the Windows console version of dvdisaster.\n"
-#~ "The version providing a graphical user interface is called\n"
-#~ "dvdisaster-win.exe (also contained in this installation).\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NOTA: Essa é a versão para console do Windows do dvdisaster.\n"
-#~ "O nome da versão que oferece uma interface gráfica de usuário\n"
-#~ "é dvdisaster-win.exe (também contido nesta instalação).\n"
-#~ "\n"
 
 #~ msgid ""
 #~ "Number of roots must be 8..100;\n"
@@ -6030,37 +5974,12 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "O número de raízes deve ser de 8 a 100;\n"
 #~ "o número de raízes deve ser maior que zero e menor do que o número de raízes.\n"
 
-#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
-#~ msgstr "  --random-errors r,e  - semeia a imagem com erros aleatórios (recuperáveis)\n"
-
 #~ msgid ""
 #~ "\n"
 #~ "Generating random correctable erasures (for %d roots, max erasures = %d).\n"
 #~ msgstr ""
 #~ "\n"
 #~ "Gerando rasuras recuperáveis aleatórias (%d raízes, rasuras máximas = %d).\n"
-
-#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
-#~ msgstr "Usar novo estilo de marcador de setor desaparecido (Cuidado: problemas de compatibilidade!)"
-
-#~ msgid ""
-#~ "<b>Missing sector tagging</b>\n"
-#~ "\n"
-#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
-#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
-#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
-#~ msgstr ""
-#~ "<b>Marcação de setor desaparecido</b>\n"
-#~ "\n"
-#~ "Setores desaparecidos são marcados com uma sequência de código especial na imagem. Se esse valor estiver desativado, um código melhorado que pode detectar certos conteúdos intencionalmente danificados. Isso inclui mídias que foram criadas a partir de imagens parcialmente recuperadas e imagens contendo arquivos desse tipo de mídia parcial.\n"
-#~ "Porém, apenas dvdisaster 0.72 ou superiores reconhecem essas marcações. Você NÃO DEVE processar as imagens resultantes com versões mais velhas do dvdisaster pois elas não enxergariam nenhum setor desaparecido das imagens resultantes.\n"
-#~ "Nota: dvdisaster >= 0.72 detectará e reconhecerá automaticamente ambos os formatos de marcações; mudar esse valor afetará apenas a criação de novas imagens."
-
-#~ msgid "All sectors successfully read, but wrong image checksum."
-#~ msgstr "Todos os setores lidos com sucesso, mas o checksum da imagem está errado"
-
-#~ msgid "All sectors successfully read, %s!"
-#~ msgstr "Todos os setores lidos com sucesso, %s!"
 
 #~ msgid ""
 #~ "Unrecoverable sector found!\n"
@@ -6112,12 +6031,55 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "ela não pode ser recuperada pelo dvdisaster. Também não será possível criar\n"
 #~ "dados de correção de erros para ela. Desculpe pelas más notícias.\n"
 
+#~ msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
+#~ msgstr "--cache-size deve ser pelo menos 8MB; 16MB ou mais são recomendados."
+
 #~ msgid ""
-#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
-#~ "Please visit http://www.dvdisaster.org for an upgrade."
+#~ "dvdisaster is not properly installed.\n"
+#~ "Please execute the installer program (%s) again.\n"
 #~ msgstr ""
-#~ "Esse arquivo .ecc requer dvdisaster V%d.%d.%d ou superior.\n"
-#~ "Por favor, visite http://www.dvdisaster.org para atualizar."
+#~ "dvdisaster não está corretamente instalado.\n"
+#~ "Por favor, execute o programa instalador (%s) novamente.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Common usage examples:\n"
+#~ "  dvdisaster -r,--read   # Read the medium image to hard disc.\n"
+#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
+#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
+#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
+#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
+#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
+#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Exemplos de uso comum:\n"
+#~ "  dvdisaster -r,--read   # Lê a mídia e grava sua imagem no disco rígido.\n"
+#~ "                         # Use -rn-m para ler um certo intervalo de setores, ex.: -r100-200\n"
+#~ "  dvdisaster -c,--create # Cria informação .ecc para a imagem da mídia.\n"
+#~ "  dvdisaster -f,--fix    # Tenta consertar a imagem da mídia usando a informação .ecc.\n"
+#~ "  dvdisaster -s,--scan   # Vasculha a mídia por erros de leitura.\n"
+#~ "  dvdisaster -t,--test   # Testa a integridade dos arquivos .iso e .ecc.\n"
+#~ "  dvdisaster -u,--unlink # Apaga arquivos .iso (quando outras ações estão completas)\n"
+#~ "\n"
+
+#~ msgid "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
+#~ msgstr "  --cache-size n          - tamanho do cache da imagem em MB durante o modo -c (padrão: 32MB)\n"
+
+#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
+#~ msgstr "  --random-errors r,e  - semeia a imagem com erros aleatórios (recuperáveis)\n"
+
+#~ msgid ""
+#~ "NOTE: This is the Windows console version of dvdisaster.\n"
+#~ "The version providing a graphical user interface is called\n"
+#~ "dvdisaster-win.exe (also contained in this installation).\n"
+#~ "\n"
+#~ msgstr ""
+#~ "NOTA: Essa é a versão para console do Windows do dvdisaster.\n"
+#~ "O nome da versão que oferece uma interface gráfica de usuário\n"
+#~ "é dvdisaster-win.exe (também contido nesta instalação).\n"
+#~ "\n"
 
 #~ msgid ": not present.\n"
 #~ msgstr ": não está presente.\n"
@@ -6129,8 +6091,209 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "impossível ler o setor %lld da imagem (apenas %d bytes):\n"
 #~ "%s"
 
+#~ msgid ""
+#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
+#~ "Please visit http://www.dvdisaster.org for an upgrade."
+#~ msgstr ""
+#~ "Esse arquivo .ecc requer dvdisaster V%d.%d.%d ou superior.\n"
+#~ "Por favor, visite http://www.dvdisaster.org para atualizar."
+
+#~ msgid ""
+#~ "Modified version Copyright 2012 (please fill in - [directions])\n"
+#~ "Copyright 2004-2012 Carsten Gnoerlich"
+#~ msgstr ""
+#~ "Versão modificada Copyright 2012 (por favor, preencha - [instruções])\n"
+#~ "Copyright 2004-2012 Carsten Gnoerlich"
+
+#~ msgid "Copyright 2004-2012 Carsten Gnoerlich"
+#~ msgstr "Copyright 2004-2012 Carsten Gnoerlich"
+
+#~ msgid "Reads a CD/DVD image into a file (or tries to complete an existing image file)."
+#~ msgstr "Lê uma imagem de CD/DVD e grava em um arquivo (ou tenta completar um arquivo de imagem existente)."
+
+#~ msgid ""
+#~ "<b>dvdisaster is not properly installed</b>\n"
+#~ "\n"
+#~ "Please execute the installer program (%s) again.\n"
+#~ msgstr ""
+#~ "<b>o dvdisaster não está corretamente instalado</b>\n"
+#~ "\n"
+#~ "Por favor, execute o programa instalador (%s) novamente.\n"
+
+#~ msgid "%s (%d sessions; last session %s)"
+#~ msgstr "%s (%d sessões; última sessão %s)"
+
+#~ msgid "%lld sectors (%lld MB), from READ CAPACITY"
+#~ msgstr "%lld setores (%lld MB), da CAPACIDADE DE LEITURA"
+
+#~ msgid "%lld sectors (%lld MB), from DVD structure"
+#~ msgstr "%lld setores (%lld MB), da estrutura do DVD"
+
+#~ msgid "%lld sectors (%lld MB)"
+#~ msgstr "%lld setores (%lld MB)"
+
+#~ msgid "%d sectors (%lld MB)"
+#~ msgstr "%d setores (%lld MB)"
+
+#~ msgid "%s, %d roots, %4.1f%% redundancy."
+#~ msgstr "%s, %d raízes, %4.1f%% de redundância."
+
 #~ msgid "Displays the user manual (external HTML browser required)."
 #~ msgstr "Mostra o manual de usuário (requer browser de HTML externo)."
+
+#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
+#~ msgstr "Usar novo estilo de marcador de setor desaparecido (Cuidado: problemas de compatibilidade!)"
+
+#~ msgid ""
+#~ "<b>Missing sector tagging</b>\n"
+#~ "\n"
+#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
+#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
+#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
+#~ msgstr ""
+#~ "<b>Marcação de setor desaparecido</b>\n"
+#~ "\n"
+#~ "Setores desaparecidos são marcados com uma sequência de código especial na imagem. Se esse valor estiver desativado, um código melhorado que pode detectar certos conteúdos intencionalmente danificados. Isso inclui mídias que foram criadas a partir de imagens parcialmente recuperadas e imagens contendo arquivos desse tipo de mídia parcial.\n"
+#~ "Porém, apenas dvdisaster 0.72 ou superiores reconhecem essas marcações. Você NÃO DEVE processar as imagens resultantes com versões mais velhas do dvdisaster pois elas não enxergariam nenhum setor desaparecido das imagens resultantes.\n"
+#~ "Nota: dvdisaster >= 0.72 detectará e reconhecerá automaticamente ambos os formatos de marcações; mudar esse valor afetará apenas a criação de novas imagens."
+
+#~ msgid ""
+#~ "<b>Maximum number of reading attempts</b>\n"
+#~ "\n"
+#~ "When the minimum number of reading attempts is reached without success, dvdisaster might choose to perform additional reading attempts upto this number.\n"
+#~ "\n"
+#~ "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your CD/DVD drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
+#~ msgstr ""
+#~ "<b>Número máximo de tentativas de leitura</b>\n"
+#~ "\n"
+#~ "Quando o número mínimo de tentativas de leitura é alcançado, sem sucesso, o dvdisaster pode optar por fazer tentativas de leitura adicionais até este número.\n"
+#~ "\n"
+#~ "A decisão de fazer mais tentativas depende da qualidade dos dados obtidos até o momento, que, por sua vez, é influenciada pelas capacidades do seu drive de CD/DVD e sistema operacional. Então, dependendo das suas configurações, você pode ou não ver o dvdisaster usar o valor máximo."
+
+#~ msgid ""
+#~ "<b>Raw sector file prefix</b>\n"
+#~ "\n"
+#~ "Use a different prefix for each disk you are trying to recover, e.g. \"disk1-\" and so on."
+#~ msgstr ""
+#~ "<b>Prefixo de arquivos de setor Raw</b>\n"
+#~ "\n"
+#~ "Usa um prefixo diferente para cada disco que você está tentando recuperar, por ex.: \"disco1-\" etc."
+
+#~ msgid "Local files (on hard disc)"
+#~ msgstr "Arquivos locais (no disco rígido)"
+
+#~ msgid "Image file does not match the CD/DVD."
+#~ msgstr "O arquivo de imagem não combina com o CD/DVD."
+
+#~ msgid "Reading CRC information from ecc file"
+#~ msgstr "Lendo informações de CRC do arquivo ecc"
+
+#~ msgid "All sectors successfully read, but wrong image checksum."
+#~ msgstr "Todos os setores lidos com sucesso, mas o checksum da imagem está errado"
+
+#~ msgid "All sectors successfully read, %s!"
+#~ msgstr "Todos os setores lidos com sucesso, %s!"
+
+#~ msgid ""
+#~ "Failed allocating memory for I/O cache.\n"
+#~ "Cache size is currently %d MB.\n"
+#~ "Try reducing it.\n"
+#~ msgstr ""
+#~ "Falha ao alocar memória para o cache de E/S.\n"
+#~ "Tamanho do cache é atualmente %d MB.\n"
+#~ "Tente reduzí-lo.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Fix mode: Repairable sectors will be fixed in the image.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Modo de conserto: Setores recuperáveis serão consertados na imagem.\n"
+
+#~ msgid "created by dvdisaster-%d.%d\n"
+#~ msgstr "criado pelo dvdisaster-%d.%d\n"
+
+#~ msgid "%d MB of file cache"
+#~ msgstr "%d MB de cache de arquivos"
+
+#~ msgid "MB for error correction data"
+#~ msgstr "MB para dados de correção de erros"
+
+#~ msgid ""
+#~ "<b>Space-delimited redundancy</b>\n"
+#~ "\n"
+#~ "Specifies the maximum size of the error correction file in MB. dvdisaster will choose a suitable redundancy setting so that the overall size of the error correction file does not exceed the given limit.\n"
+#~ "\n"
+#~ "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
+#~ msgstr ""
+#~ "<b>Redundância delimitada por espaço</b>\n"
+#~ "\n"
+#~ "Especifica o tamanho máximo do arquivo de correção de erros em MB. O dvdisaster escolherá uma configuração de redundância compatível para que o tamanho total do arquivo de correção de erros não exceda o tamanho limite dado.\n"
+#~ "\n"
+#~ "<b>Nota:</b> Quando usa-se a mesma configuração de tamanho para imagens de tamanhos muito diferentes, imagens menores recebem mais redundância do que as maiores. Isso geralmente não é o que você quer."
+
+#~ msgid ""
+#~ "<b>File cache</b>\n"
+#~ "\n"
+#~ "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MB is suitable for most systems."
+#~ msgstr ""
+#~ "<b>Cache de arquivos</b>\n"
+#~ "\n"
+#~ "O dvdisaster otimiza o acesso à imagem e arquivos de correção de erros mantendo seu próprio cache. O padrão de 32MB é adequada à maioria dos sistemas."
+
+#~ msgid "Encoding with Method RS02: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr "Codificando com o Método RS02: %lld MB de dados, %lld MB de ecc (%d raízes; %4.1f%% de redundância)."
+
+#~ msgid ""
+#~ "Augmenting image with Method RS02:\n"
+#~ " %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr ""
+#~ "Aumentando a imagem com o Método RS02:\n"
+#~ " %lld MB de dados, %lld MB de ecc (%d raízes; %4.1f%% de redundância)."
+
+#~ msgid ""
+#~ "Image has been augmented with error correction data.\n"
+#~ "New image size is %lld MB (%lld sectors).\n"
+#~ msgstr ""
+#~ "A imagem foi aumentada com dados de correção de erros.\n"
+#~ "O tamanho da nova imagem é %lld MB (%lld setores).\n"
+
+#~ msgid ""
+#~ "<b>Determine augmented image size from table</b>\n"
+#~ "\n"
+#~ "Augmented images fill up unused medium space with error correction information. Activate this option if you want the augmented image to fit on the smallest possible medium.\n"
+#~ "\n"
+#~ "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD are given in the table. You can edit these sizes according to your needs."
+#~ msgstr ""
+#~ "<b>Determinar o tamanho da imagem aumentada da tabela</b>\n"
+#~ "\n"
+#~ "Imagens aumentadas preenchem espaço não usado da mídia com informações de correção de erros. Ative esta opção se você quer que a imagem aumentada se encaixe na menor mídia possível.\n"
+#~ "\n"
+#~ "Para que uma mídia adequada seja escolhida, a capacidade das mídias disponíveis devem ser conhecidas. Tamanhos padrão para CD e DVDs de duas camadas são dados na tabela. Você pode editar estes tamanhos de acordo com as suas necessidades."
+
+#~ msgid ""
+#~ "No CD/DVD drives found in /dev.\n"
+#~ "No drives will be pre-selected.\n"
+#~ msgstr ""
+#~ "Nenhum drive de CD/DVD encontrado em /dev.\n"
+#~ "Nenhum drive será pré-selecionado.\n"
+
+#~ msgid "Device %s (%s) is not a CDROM drive."
+#~ msgstr "O dispositivo %s (%s) não é um drive de CDROM."
+
+#~ msgid ""
+#~ "No CD/DVD drives found.\n"
+#~ "No drives will be pre-selected.\n"
+#~ msgstr ""
+#~ "Nenhum drive de CD/DVD encontrado.\n"
+#~ "Nenhum drive será pré-selecionado.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Illegal device name \"%s\" (use devices \"C:\" ... \"Z:\")"
+#~ msgstr ""
+#~ "\n"
+#~ "Nome de dispositivo ilegal: \"%s\" (use dispositivos de \"C:\" ... a \"Z:\")"
 
 #~ msgid "windowtitle|Choose a browser"
 #~ msgstr "Escolha um browser"
@@ -6159,30 +6322,6 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ msgstr "Por favor, espere até que o browser abra!"
 
 #~ msgid ""
-#~ "Please see the manual for [typical uses] of dvdisaster.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Por favor, leia o manual para [usos típicos] do dvdisaster.\n"
-#~ "\n"
-
-#~ msgid "Reading CRC information from ecc file"
-#~ msgstr "Lendo informações de CRC do arquivo ecc"
-
-#~ msgid ""
-#~ "No CD/DVD drives found in /dev.\n"
-#~ "No drives will be pre-selected.\n"
-#~ msgstr ""
-#~ "Nenhum drive de CD/DVD encontrado em /dev.\n"
-#~ "Nenhum drive será pré-selecionado.\n"
-
-#~ msgid ""
-#~ "No CD/DVD drives found.\n"
-#~ "No drives will be pre-selected.\n"
-#~ msgstr ""
-#~ "Nenhum drive de CD/DVD encontrado.\n"
-#~ "Nenhum drive será pré-selecionado.\n"
-
-#~ msgid ""
 #~ "\n"
 #~ "dvdisaster creates error correction data to protect\n"
 #~ "CD and DVD media against data loss.\n"
@@ -6192,27 +6331,11 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "mídias CD e DVD contra perda de dados.\n"
 
 #~ msgid ""
-#~ "dvdisaster is not properly installed.\n"
-#~ "Please execute the installer program (%s) again.\n"
+#~ "Please see the manual for [typical uses] of dvdisaster.\n"
+#~ "\n"
 #~ msgstr ""
-#~ "dvdisaster não está corretamente instalado.\n"
-#~ "Por favor, execute o programa instalador (%s) novamente.\n"
-
-#~ msgid ""
-#~ "<b>dvdisaster is not properly installed</b>\n"
+#~ "Por favor, leia o manual para [usos típicos] do dvdisaster.\n"
 #~ "\n"
-#~ "Please execute the installer program (%s) again.\n"
-#~ msgstr ""
-#~ "<b>o dvdisaster não está corretamente instalado</b>\n"
-#~ "\n"
-#~ "Por favor, execute o programa instalador (%s) novamente.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Illegal device name \"%s\" (use devices \"C:\" ... \"Z:\")"
-#~ msgstr ""
-#~ "\n"
-#~ "Nome de dispositivo ilegal: \"%s\" (use dispositivos de \"C:\" ... a \"Z:\")"
 
 #~ msgid ""
 #~ "\n"
@@ -6238,8 +6361,8 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "\n"
 #~ "dvdisaster, versão %s build %d\n"
 
-#~ msgid "--cache-size maximum is 8192MiB."
-#~ msgstr "--cache-size máximo é 8192MiB."
+#~ msgid "--cache-size maximum is 8192MB."
+#~ msgstr "--cache-size máximo é 8192MB."
 
 #~ msgid ""
 #~ "  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
@@ -6473,7 +6596,7 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "  -v,--verbose           - more diagnostic messages\n"
 #~ "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 #~ "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
-#~ "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
+#~ "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
 #~ "  --dao                  - assume DAO disc; do not trim image end\n"
 #~ "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 #~ "  --eject                - eject medium after successful read\n"

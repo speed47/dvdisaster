@@ -31,7 +31,9 @@
 typedef struct
 {  Image *image;
    Method *self;
+#ifndef CLI
    RS02Widgets *wl;
+#endif
    RS02Layout *lay;
    GaloisTables *gt;
    ReedSolomonTables *rt;
@@ -54,6 +56,7 @@ static void ecc_cleanup(gpointer data)
 
    UnregisterCleanup();
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(ec->earlyTermination && ec->wl)
         SetLabelText(GTK_LABEL(ec->wl->encFootline),
@@ -61,6 +64,7 @@ static void ecc_cleanup(gpointer data)
 		     Closure->redMarkup); 
       AllowActions(TRUE);
    }
+#endif
 
    /*** We must invalidate the CRC cache as it does only cover the
 	data portion of the image, not the full RS02 enhanced image. */
@@ -88,8 +92,10 @@ static void ecc_cleanup(gpointer data)
 
    g_free(ec);
 
+#ifndef CLI
    if(Closure->guiMode)
      g_thread_exit(0);
+#endif
 }
 
 /***
@@ -101,23 +107,30 @@ static void ecc_cleanup(gpointer data)
  */
 
 static void abort_encoding(ecc_closure *ec, int truncate)
-{  RS02Widgets *wl = ec->wl;
+{
+#ifndef CLI
+   RS02Widgets *wl = ec->wl;
+#endif
 
    if(truncate && ec->lay)
    {  if(!LargeTruncate(ec->image->file, (gint64)(2048*ec->lay->dataSectors)))
 	Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
+#ifndef CLI
       if(Closure->stopActions == STOP_CURRENT_ACTION)
 	 SetLabelText(GTK_LABEL(wl->encFootline), 
 		      _("<span %s>Aborted by user request!</span> (partial ecc data removed from image)"),
 		      Closure->redMarkup); 
+#endif
    }
+#ifndef CLI
    else
    {  if(Closure->stopActions == STOP_CURRENT_ACTION)
 	 SetLabelText(GTK_LABEL(wl->encFootline), 
 		      _("<span %s>Aborted by user request!</span>"),
 		      Closure->redMarkup); 
    }
+#endif
 
    ec->earlyTermination = FALSE;   /* suppress respective error message */
 
@@ -136,12 +149,16 @@ static void remove_old_ecc(ecc_closure *ec)
       guint64 data_bytes;
       int answer;
 
+#ifndef CLI
       if(Closure->confirmDeletion  || !Closure->guiMode)
-	answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+#endif
+	answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			      _("Image \"%s\" already contains error correction information.\n"
 				"Truncating image to data part (%lld sectors).\n"),
 			      Closure->imageName, data_sectors);
+#ifndef CLI
       else answer = TRUE;
+#endif
 
       if(!answer)
 	abort_encoding(ec, FALSE);
@@ -196,8 +213,10 @@ static void check_image(ecc_closure *ec)
    {  unsigned char buf[2048];
       int expected,n,err;
 
+#ifndef CLI
       if(Closure->stopActions) /* User hit the Stop button */
 	abort_encoding(ec, FALSE);
+#endif
 
       if(sectors < image->sectorSize-1) expected = 2048;
       else  
@@ -237,8 +256,10 @@ static void check_image(ecc_closure *ec)
       if(last_percent != percent) 
       {  PrintProgress(_("Preparing image (checksums, adding space): %3d%%") ,percent);
 
+#ifndef CLI
 	 if(Closure->guiMode)
 	   SetProgress(ec->wl->encPBar1, percent, 100);
+#endif
 	   
 	 last_percent = percent;
       }
@@ -287,8 +308,10 @@ static void expand_image(ecc_closure *ec)
    {  unsigned char buf[2048];
       int n;
 
+#ifndef CLI
       if(Closure->stopActions) /* User hit the Stop button */
 	abort_encoding(ec, TRUE);
+#endif
 
       CreateMissingSector(buf, lay->dataSectors+sectors, 
 			  image->imageFP, FINGERPRINT_SECTOR, 
@@ -303,8 +326,10 @@ static void expand_image(ecc_closure *ec)
 	      PrintProgress(_("Preparing image (checksums taken from cache, adding space): %3d%%") ,percent);
 	 else PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), percent);
 
+#ifndef CLI
 	 if(Closure->guiMode)
 	   SetProgress(ec->wl->encPBar1, percent, 100);
+#endif
 
 	 last_percent = percent; 
       }
@@ -315,8 +340,10 @@ static void expand_image(ecc_closure *ec)
    else PrintProgress(_("Preparing image (checksums, adding space): %3d%%"), 100);
    PrintProgress("\n");
 
+#ifndef CLI
    if(Closure->guiMode)
      SetProgress(ec->wl->encPBar1, 100, 100);
+#endif
 }
 
 /*
@@ -468,10 +495,12 @@ static gint32 *enc_alpha_to;
 
    /*** Show the second progress bar */
 
+#ifndef CLI
    if(Closure->guiMode)
    {  ShowWidget(ec->wl->encPBar2);
       ShowWidget(ec->wl->encLabel2);
    }
+#endif
 
    /*** Adjust image bounds to include the CRC sectors */
 
@@ -578,8 +607,10 @@ static gint32 *enc_alpha_to;
       {  int offset = 0;
          unsigned char *par_idx = ec->parity;
 
+#ifndef CLI
 	 if(Closure->stopActions) /* User hit the Stop button */
 	   abort_encoding(ec, TRUE);
+#endif
 
          /* Read the next data sectors of this layer. */
 
@@ -966,9 +997,12 @@ static gint32 *enc_alpha_to;
 	 percent = (1000*progress)/max_percent;
 	 if(last_percent != percent) 
 	 {
+#ifndef CLI
 	     if(Closure->guiMode)
 	          SetProgress(ec->wl->encPBar2, percent, 1000);
-	     else PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
+	     else
+#endif
+                  PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
 
 	    last_percent = percent;
 	 }
@@ -1026,7 +1060,9 @@ static gint32 *enc_alpha_to;
 
 void RS02Create(void)
 {  Method *self = FindMethod("RS02");
+#ifndef CLI
    RS02Widgets *wl = (RS02Widgets*)self->widgetList;
+#endif
    Image *image = NULL;
    RS02Layout *lay;
    ecc_closure *ec = g_malloc0(sizeof(ecc_closure));
@@ -1054,14 +1090,18 @@ void RS02Create(void)
 
    ec->image = image;
    ec->self = self;
+#ifndef CLI
    ec->wl = wl;
+#endif
    ec->eh = g_malloc0(sizeof(EccHeader));
    ec->timer   = g_timer_new();
 
+#ifndef CLI
    if(Closure->guiMode)  /* Preliminary fill text for the head line */
      SetLabelText(GTK_LABEL(wl->encHeadline),
 		  _("<big>Augmenting the image with error correction data.</big>\n<i>%s</i>"), 
 		  _("- checking image -"));
+#endif
 
    /*** If the image already contains error correction information, remove it. */
 
@@ -1073,6 +1113,7 @@ void RS02Create(void)
 
    /*** Announce what we are going to do */
 
+#ifndef CLI
    if(Closure->guiMode)  /* Preliminary fill text for the head line */
    {  ec->msg = g_strdup_printf(_("Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
 				lay->dataSectors/512, lay->eccSectors/512, lay->nroots, lay->redundancy);
@@ -1082,6 +1123,7 @@ void RS02Create(void)
 		   ec->msg);
    }
    else
+#endif
    {  ec->msg = g_strdup_printf(_("Augmenting image with Method RS02:\n %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
 				 lay->dataSectors/512, lay->eccSectors/512, lay->nroots, lay->redundancy);
 
@@ -1100,9 +1142,9 @@ void RS02Create(void)
    if(lay->redundancy < 20)
    {  int answer;
 
-      answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Using redundancies below 20%%%% may not give\n"
-			      "the expected data loss protection.\n"));
+			      "the expected data loss protection.\n"), NULL);
 
       if(!answer)
 	abort_encoding(ec, FALSE);
@@ -1138,6 +1180,7 @@ void RS02Create(void)
 	    (lay->dataSectors + lay->eccSectors)/512,
 	    lay->dataSectors+lay->eccSectors);
    
+#ifndef CLI
    if(Closure->guiMode)
    {  SetProgress(wl->encPBar2, 100, 100);
 
@@ -1147,6 +1190,7 @@ void RS02Create(void)
 		   (lay->dataSectors + lay->eccSectors)/512,
 		   lay->dataSectors+lay->eccSectors);
    }
+#endif
 
    /*** Clean up */
 

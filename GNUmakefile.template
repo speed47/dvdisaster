@@ -39,9 +39,9 @@ INTL_LIBS   = $(CFG_INTL_LIBS)
 CAM_LFLAGS = $(CFG_CAM_LFLAGS)
 CAM_LIBS   = $(CFG_CAM_LIBS)
 
-GTK_CFLAGS   = $(CFG_GTK2_CFLAGS)
-GTK_LIBS     = $(CFG_GTK2_LIBS)
-GTK_BINDIR   = $(CFG_GTK2_BINDIR)
+GTK_CFLAGS   = $(CFG_GTK2_CFLAGS) $(CFG_GLIB2_CFLAGS)
+GTK_LIBS     = $(CFG_GTK2_LIBS) $(CFG_GLIB2_LIBS)
+GTK_BINDIR   = $(CFG_GTK2_BINDIR) $(CFG_GLIB2_BINDIR)
 
 EFENCE_LFLAGS = $(CFG_EFENCE_LFLAGS)
 EFENCE_LIBS   = $(CFG_EFENCE_LIBS)
@@ -80,7 +80,7 @@ all: time-stamp dvdisaster
 time-stamp:
 	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/build.h
 
-dvdisaster: inlined-icons.h $(OFILES) 
+dvdisaster: $(ICONS) $(OFILES) 
 	@echo "Linking  : dvdisaster"
 	@$(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \

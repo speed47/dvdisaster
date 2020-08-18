@@ -29,6 +29,8 @@
  *** Recognize RS02 error correction data in the image
  ***/
 
+#ifndef CLI
+
 /*
  * Dialog components for disabling RS02 search
  */
@@ -59,6 +61,7 @@ static void insert_buttons(GtkDialog *dialog)
    gtk_widget_show(align);
    gtk_widget_show(check);
 } 
+#endif
 
 /*
  * See whether a given header is valid for RS02
@@ -247,8 +250,10 @@ int RS02Recognize(Image *image)
       while(pos > 0)
       {  int result;
 	
+#ifndef CLI
 	 if(Closure->stopActions)
 	   goto bail_out;
+#endif
 
 	 if(GetBit(try_next_header, pos))
 	 {  Verbose("Sector %lld cached; skipping\n", pos);
@@ -267,7 +272,9 @@ int RS02Recognize(Image *image)
 	       SetBit(try_next_header, pos);
 	       read_count++;
 	       if(!answered_continue && read_count > 5)
-	       {  if(Closure->guiMode)
+	       {
+#ifndef CLI
+                  if(Closure->guiMode)
     		  {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
 					      _("Faster medium initialization\n\n"
 						"Searching this medium for error correction data may take a long time.\n"
@@ -277,6 +284,7 @@ int RS02Recognize(Image *image)
 		    if(answer) goto bail_out;
 		    answered_continue = TRUE;
 		  }
+#endif
 	       }
 	       goto check_next_header;
 	    case TRY_NEXT_MODULO:
@@ -297,7 +305,9 @@ int RS02Recognize(Image *image)
       header_modulo >>= 1;
    }
 
+#ifndef CLI
 bail_out:
+#endif
    FreeBitmap(try_next_header);
    FreeBitmap(try_next_modulo);
    FreeAlignedBuffer(ab);

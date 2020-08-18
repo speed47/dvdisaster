@@ -23,6 +23,7 @@
 #ifndef RS02INCLUDES_H
 #define RS02INCLUDES_H
 
+#ifndef CLI
 /* Data structs from rs02-window.c */
 
 typedef struct
@@ -102,6 +103,7 @@ typedef struct
    int    dataBytes;
    int    percent, lastPercent;
 } RS02Widgets;
+#endif
 
 /*
  * local working closure for internal checksums
@@ -120,6 +122,7 @@ typedef struct
  * These are exported via the Method struct 
  */
 
+#ifndef CLI
 void CreateRS02EncWindow(Method*, GtkWidget*);
 void CreateRS02FixWindow(Method*, GtkWidget*);
 void CreateRS02PrefsPage(Method*, GtkWidget*);
@@ -130,6 +133,7 @@ void ReadRS02Preferences(Method*);
 
 void ResetRS02VerifyWindow(Method*);
 void CreateRS02VerifyWindow(Method*, GtkWidget*);
+#endif
 
 /*
  * These are exported (resp. only used) in ecc-rs02.c and rs02*.c
@@ -184,11 +188,13 @@ void RS02Fix(Image*);
 
 int  RS02Recognize(Image*);
 
+#ifndef CLI
 /* rs02-window.c */
 
 void RS02AddFixValues(RS02Widgets*, int, int);
 void RS02SetFixMaxValues(RS02Widgets*, int, int, gint64);
 void RS02UpdateFixResults(RS02Widgets*, gint64, gint64);
+#endif
 
 /* rs02-verify.c */
 

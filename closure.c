@@ -89,6 +89,7 @@ find_dotfile:
  * Update color string for the <span color="#f00baa">...</span> string
  */
 
+#ifndef CLI
 void UpdateMarkup(char **string, GdkColor *color)
 {  int hexval;
  
@@ -173,6 +174,7 @@ static void get_color(GdkColor *color, char *value)
    color->green = hex&0xff00;
    color->blue  = (hex<<8)&0xff00;
 }
+#endif
 
 /***
  *** Save and restore user settings to/from the .dvdisaster file
@@ -196,7 +198,8 @@ void ReadDotfile()
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      fgets(line, MAX_LINE_LEN, dotfile);
+      if (fgets(line, MAX_LINE_LEN, dotfile) == NULL)
+         break;
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -288,6 +291,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
       if(!strcmp(symbol, "welcome-msg"))     { Closure->welcomeMessage = atoi(value); continue; }
 
+#ifndef CLI
       if(!strcmp(symbol, "positive-text"))   { get_color(Closure->greenText, value); 
 	                                       UpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 	                                       continue; 
@@ -305,6 +309,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "ignored-sector"))  { get_color(Closure->blueSector, value); continue; }
       if(!strcmp(symbol, "highlit-sector"))  { get_color(Closure->whiteSector, value); continue; }
       if(!strcmp(symbol, "present-sector"))  { get_color(Closure->darkSector, value); continue; }
+#endif
    }
 
    if(fclose(dotfile))
@@ -391,6 +396,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);
    g_fprintf(dotfile, "welcome-msg:       %d\n\n", Closure->welcomeMessage);
 
+#ifndef CLI
    save_colors(dotfile, "positive-text",      Closure->greenText);
    save_colors(dotfile, "negative-text",      Closure->redText);
    save_colors(dotfile, "bar-color",          Closure->barColor);
@@ -402,6 +408,7 @@ static void update_dotfile()
    save_colors(dotfile, "ignored-sector",     Closure->blueSector);
    save_colors(dotfile, "highlit-sector",     Closure->whiteSector);
    save_colors(dotfile, "present-sector",     Closure->darkSector);
+#endif
 
    if(fclose(dotfile))
      g_printf("Error closing configuration file %s: %s\n", 
@@ -502,6 +509,7 @@ void InitClosure()
    Closure->bdSize2  = Closure->savedBDSize2  = BD_DL_SIZE;
    Closure->bdSize3  = Closure->savedBDSize3  = BDXL_TL_SIZE;
 
+#ifndef CLI
    Closure->logString = g_string_sized_new(1024);
    Closure->logLock   = g_malloc0(sizeof(GMutex));
      g_mutex_init(Closure->logLock);
@@ -523,6 +531,7 @@ void InitClosure()
    Closure->darkSector  = g_malloc0(sizeof(GdkColor));
 
    DefaultColors();
+#endif
 
    memset(Closure->bs, '\b', 255);
    memset(Closure->sp, ' ', 255);
@@ -567,7 +576,10 @@ void cond_free_ptr_array(GPtrArray *a)
     
 void FreeClosure()
 {
+#ifndef CLI
    if(Closure->guiMode)
+#endif
+/* in CLI-only mode, always update dotfile */
      update_dotfile();
 
    cond_free(Closure->cookedVersion);
@@ -594,6 +606,7 @@ void FreeClosure()
    cond_free(Closure->dDumpDir);
    cond_free(Closure->dDumpPrefix);
 
+#ifndef CLI
    if(Closure->prefsContext)
      FreePreferences(Closure->prefsContext);
 
@@ -644,6 +657,7 @@ void FreeClosure()
 
    if(Closure->readAdaptiveErrorMsg)
      g_free(Closure->readAdaptiveErrorMsg);
+#endif
 
    g_free(Closure);
 }

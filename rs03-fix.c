@@ -30,7 +30,10 @@
  ***/
 
 typedef struct
-{  RS03Widgets *wl;
+{
+#ifndef CLI
+   RS03Widgets *wl;
+#endif
    RS03Layout *lay;
    GaloisTables *gt;
    ReedSolomonTables *rt;
@@ -46,6 +49,7 @@ static void fix_cleanup(gpointer data)
 
    UnregisterCleanup();
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(fc->earlyTermination)
          SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -54,6 +58,7 @@ static void fix_cleanup(gpointer data)
 			      Closure->redMarkup); 
       AllowActions(TRUE);
    }
+#endif
 
    /** Clean up */
 
@@ -71,8 +76,10 @@ static void fix_cleanup(gpointer data)
 
    g_free(fc);
 
+#ifndef CLI
    if(Closure->guiMode)
      g_thread_exit(0);
+#endif
 }
 
 /*
@@ -106,17 +113,24 @@ static void expand_image(Image *image, EccHeader *eh, gint64 new_size)
 
       percent = (100*sectors) / new_sectors;
       if(last_percent != percent)
-      {  if(Closure->guiMode)
+      {
+#ifndef CLI
+         if(Closure->guiMode)
 	  ;
-	 else PrintProgress(_("Expanding image: %3d%%"), percent);
+	 else
+#endif
+              PrintProgress(_("Expanding image: %3d%%"), percent);
 	 last_percent = percent; 
       }
    }
 
+#ifndef CLI
    if(Closure->guiMode)
      ;
    else 
-   {  PrintProgress(_("Expanding image: %3d%%"), 100);
+#endif
+   {
+      PrintProgress(_("Expanding image: %3d%%"), 100);
       PrintProgress("\n");
    }
 }
@@ -126,8 +140,11 @@ static void expand_image(Image *image, EccHeader *eh, gint64 new_size)
  ***/
 
 void RS03Fix(Image *image)
-{  Method *self = FindMethod("RS03");
+{
+#ifndef CLI
+   Method *self = FindMethod("RS03");
    RS03Widgets *wl = (RS03Widgets*)self->widgetList;
+#endif
    RS03Layout *lay;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
    EccHeader *eh;
@@ -157,12 +174,17 @@ void RS03Fix(Image *image)
    gint64 damaged_eccblocks=0;
    gint64 damaged_eccsecs=0;
    gint64 expected_sectors;
-   char *t=NULL,*msg;
+   char *t=NULL;
+#ifndef CLI
+   char *msg;
+#endif
 
    /*** Register the cleanup procedure for GUI mode */
 
    fc->image = image;
+#ifndef CLI
    fc->wl = wl;
+#endif
    fc->earlyTermination = TRUE;
    RegisterCleanup(_("Repairing of image aborted"), fix_cleanup, fc);
 
@@ -172,10 +194,12 @@ void RS03Fix(Image *image)
 
    /*** Open the image file */
 
+#ifndef CLI
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->fixHeadline),
 		  _("<big>Repairing the image.</big>\n<i>%s</i>"),
 		  _("Opening files..."));
+#endif
 
    /* Calculate the layout and optinally open thee ecc file */
 
@@ -213,6 +237,7 @@ void RS03Fix(Image *image)
 
    /*** Announce what we are going to do */
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(eh->methodFlags[0] & MFLAG_ECC_FILE)
         msg = g_strdup_printf(_("Error correction file using Method RS03, %d roots, %4.1f%% redundancy."),
@@ -228,6 +253,7 @@ void RS03Fix(Image *image)
       RS03SetFixMaxValues(wl, eh->dataBytes, eh->eccBytes, expected_sectors);
       g_free(msg);
    }    
+#endif
 
    PrintLog(_("\nFix mode(%s): Repairable sectors will be fixed in the image.\n"),
 	    eh->methodFlags[0] & MFLAG_ECC_FILE ? "RS03f" : "RS03i");
@@ -238,6 +264,7 @@ void RS03Fix(Image *image)
    {  int difference = image->inLast - eh->inLast;
       guint64 expected_image_size = 2048*(expected_sectors-1)+eh->inLast;
 
+#ifndef CLI
       if(Closure->guiMode)
       {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("The image file is %d bytes longer than noted\n"
@@ -254,8 +281,13 @@ void RS03Fix(Image *image)
 	    goto terminate;
 	 }
       }
+#endif
 
+#ifndef CLI
       if(!Closure->guiMode && !Closure->truncate)
+#else
+      if(!Closure->truncate)
+#endif
         Stop(_("The image file is %d bytes longer than noted\n"
 	       "in the ecc file.\n"
                "Add the --truncate option to the program call\n"
@@ -280,17 +312,21 @@ void RS03Fix(Image *image)
 		     "the error correction information.\n\n%s");
 
      if(diff>0 && diff<=2)
-     {  int answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+     {  int answer;
+        answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("Image file is %lld sectors longer than expected.\n"
 				    "Assuming this is a TAO mode medium.\n"
 				    "%lld sectors will be removed from the image end.\n"),
 				  diff, diff);
 
         if(!answer)
-        {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
+        {
+#ifndef CLI
+           SwitchAndSetFootline(fc->wl->fixNotebook, 1,
 				fc->wl->fixFootline,
 				_("<span %s>Aborted by user request!</span>"),
 				Closure->redMarkup); 
+#endif
 	   fc->earlyTermination = FALSE;  /* suppress respective error message */
 	   goto terminate;
 	}
@@ -301,6 +337,7 @@ void RS03Fix(Image *image)
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
      }
      
+#ifndef CLI
      if(diff>2 && Closure->guiMode)
      {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				 trans,
@@ -323,8 +360,13 @@ void RS03Fix(Image *image)
 
        PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
      }
+#endif
 
+#ifndef CLI
      if(diff>2 && !Closure->guiMode)
+#else
+     if(diff>2)
+#endif
      {  if(!Closure->truncate)
 	   Stop(trans, 
 		diff,
@@ -379,6 +421,7 @@ void RS03Fix(Image *image)
 
      /* See if user hit the Stop button */
 
+#ifndef CLI
      if(Closure->stopActions) 
      {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -388,6 +431,7 @@ void RS03Fix(Image *image)
          fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
      }
+#endif
 
      /* Fill cache with the next batch of cache_size ecc blocks. */
 
@@ -506,7 +550,10 @@ void RS03Fix(Image *image)
      /* Trivially reject uncorrectable ecc block */
 
      if(erasure_count>lay->nroots)   /* uncorrectable */
-     {  if(!Closure->guiMode)
+     {
+#ifndef CLI
+        if(!Closure->guiMode)
+#endif
 	{  int sep_printed = 0;
 
            PrintCLI(_("* Ecc block %lld: %3d unrepairable sectors: "), s, erasure_count);
@@ -865,7 +912,9 @@ skip:
      percent = (1000*s)/lay->sectorsPerLayer;
 
      if(last_percent != percent) 
-     {  if(Closure->guiMode)
+     {
+#ifndef CLI
+        if(Closure->guiMode)
 	{  
 	   RS03AddFixValues(wl, percent, local_plot_max);
 	   local_plot_max = 0;
@@ -873,7 +922,9 @@ skip:
 	   //if(last_corrected != corrected || last_uncorrected != uncorrected) 
 	   RS03UpdateFixResults(wl, corrected, uncorrected);
 	}
-        else PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+        else
+#endif
+             PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 
@@ -891,11 +942,13 @@ skip:
 			      corrected, data_corr, ecc_corr);
    if(uncorrected > 0) 
    {  PrintLog(_("Unrepaired sectors: %lld\n"), uncorrected);      
+#ifndef CLI
       if(Closure->guiMode)
         SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			     _("Image sectors could not be fully restored "
 			       "(%lld repaired; <span %s>%lld unrepaired</span>)"),
 			     corrected, Closure->redMarkup, uncorrected);
+#endif
       exitCode = 2;
    }
    else
@@ -914,9 +967,11 @@ skip:
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
+#ifndef CLI
    if(Closure->guiMode && t)
      SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			  "%s %s", _("Repair results:"), t);
+#endif
 
    Verbose("\nSummary of processed sectors:\n");
    Verbose("%lld damaged sectors\n", damaged_sectors);

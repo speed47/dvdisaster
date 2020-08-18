@@ -25,6 +25,7 @@
 #include "scsi-layer.h"
 #include "udf.h"
 
+#ifndef CLI
 /*
  * Local data
  */
@@ -65,6 +66,7 @@ static void print_defaults(medium_info *mi)
    SetLabelText(mi->eccSize, "-");
    SetLabelText(mi->eccVersion, "-");
 }
+#endif
 
 static void print_tab(char *label, int tab_width)
 {  char *translation=_(label);
@@ -83,18 +85,24 @@ static void print_tab(char *label, int tab_width)
 void PrintMediumInfo(void *mi_ptr)
 {  Image *image;
    DeviceHandle *dh;
+#ifndef CLI
    medium_info *mi=(medium_info*)mi_ptr;
+#endif
    char *disc_status;
    char *sess_status;
    int tab_width=30;
 
+#ifndef CLI
    if(!mi) /* create dummy medium_info in CLI mode so that PrintCLIorLabel() won't crash */
    {  mi=alloca(sizeof(medium_info));
       memset(mi, 0, sizeof(medium_info));
    }
+#endif
 
+#ifndef CLI
    if(Closure->guiMode)
       print_defaults(mi);
+#endif
 
    image = OpenImageFromDevice(Closure->device);
    if(!image) return;
@@ -116,13 +124,37 @@ void PrintMediumInfo(void *mi_ptr)
 				   NULL)+1;
 
    print_tab("Medium type:",tab_width);
-   PrintCLIorLabel(mi->physicalType, "%s\n", dh->typeDescr);
+   PrintCLIorLabel(
+#ifndef CLI
+mi->physicalType,
+#else
+NULL,
+#endif
+   "%s\n", dh->typeDescr);
    print_tab("Book type:",tab_width);
-   PrintCLIorLabel(mi->bookType, "%s\n", dh->bookDescr);
+   PrintCLIorLabel(
+#ifndef CLI
+mi->bookType,
+#else
+NULL,
+#endif
+   "%s\n", dh->bookDescr);
    print_tab("Manuf.-ID:",tab_width);
-   PrintCLIorLabel(mi->manufID, "%s\n", dh->manuID);
+   PrintCLIorLabel(
+#ifndef CLI
+mi->manufID,
+#else
+NULL,
+#endif
+   "%s\n", dh->manuID);
    print_tab("Drive profile:",tab_width);
-   PrintCLIorLabel(mi->profileDescr, "%s\n", dh->profileDescr);
+   PrintCLIorLabel(
+#ifndef CLI
+mi->profileDescr,
+#else
+NULL,
+#endif
+   "%s\n", dh->profileDescr);
 
    switch(dh->discStatus&3)
    {  case 0: disc_status = g_strdup(_("empty")); break;
@@ -139,20 +171,44 @@ void PrintMediumInfo(void *mi_ptr)
 
 
    print_tab("Disc status:",tab_width);
-   PrintCLIorLabel(mi->discStatus, _("%s (%d sessions; last session %s)\n"),
+   PrintCLIorLabel(
+#ifndef CLI
+mi->discStatus,
+#else
+NULL,
+#endif
+   _("%s (%d sessions; last session %s)\n"),
 		disc_status, dh->sessions, sess_status);
    g_free(disc_status);
    g_free(sess_status);
 
    print_tab("Used sectors:",tab_width);
-   PrintCLIorLabel(mi->usedCapacity1, _("%lld sectors (%lld MiB), from READ CAPACITY\n"),
+   PrintCLIorLabel(
+#ifndef CLI
+mi->usedCapacity1,
+#else
+NULL,
+#endif
+   _("%lld sectors (%lld MiB), from READ CAPACITY\n"),
 		dh->readCapacity+1, (dh->readCapacity+1)>>9);
    print_tab(" ",tab_width);
-   PrintCLIorLabel(mi->usedCapacity2, _("%lld sectors (%lld MiB), from DVD structure\n"),
+   PrintCLIorLabel(
+#ifndef CLI
+mi->usedCapacity2,
+#else
+NULL,
+#endif
+   _("%lld sectors (%lld MiB), from DVD structure\n"),
 		dh->userAreaSize, dh->userAreaSize>>9);
 
    print_tab("Blank capacity:",tab_width);
-   PrintCLIorLabel(mi->blankCapacity, _("%lld sectors (%lld MiB)\n"),
+   PrintCLIorLabel(
+#ifndef CLI
+mi->blankCapacity,
+#else
+NULL,
+#endif
+   _("%lld sectors (%lld MiB)\n"),
 		dh->blankCapacity, (dh->blankCapacity)>>9);
 
    /* Filesystem properties */
@@ -168,12 +224,30 @@ void PrintMediumInfo(void *mi_ptr)
       PrintCLI("\n\n");
 
       print_tab("Medium label:",tab_width);
-      PrintCLIorLabel(mi->isoLabel, "%s\n", image->isoInfo->volumeLabel);
+      PrintCLIorLabel(
+#ifndef CLI
+mi->isoLabel,
+#else
+NULL,
+#endif
+      "%s\n", image->isoInfo->volumeLabel);
       print_tab("File system size:",tab_width);
-      PrintCLIorLabel(mi->isoSize, _("%d sectors (%lld MiB)\n"),
+      PrintCLIorLabel(
+#ifndef CLI
+mi->isoSize,
+#else
+NULL,
+#endif
+       _("%d sectors (%lld MiB)\n"),
 		   image->isoInfo->volumeSize, (gint64)image->isoInfo->volumeSize>>9);
       print_tab("Creation time:",tab_width);
-      PrintCLIorLabel(mi->isoTime, "%s\n", image->isoInfo->creationDate);
+      PrintCLIorLabel(
+#ifndef CLI
+mi->isoTime,
+#else
+NULL,
+#endif
+      "%s\n", image->isoInfo->creationDate);
    }
 
    /* Augmented image properties
@@ -197,18 +271,35 @@ void PrintMediumInfo(void *mi_ptr)
       memcpy(method, eh->method, 4);
       method[4] = 0;
       print_tab("Error correction data:",tab_width);
+#ifndef CLI
       PrintCLIorLabel(mi->eccState, _("%s, %d roots, %4.1f%% redundancy.\n"), 
+#else
+      PrintCLIorLabel(NULL, _("%s, %d roots, %4.1f%% redundancy.\n"), 
+#endif
 		   method, eh->eccBytes,
 		    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
       print_tab("Augmented image size:",tab_width);
+#ifndef CLI
       PrintCLIorLabel(mi->eccSize, _("%lld sectors (%lld MiB)\n"),
+#else
+      PrintCLIorLabel(NULL, _("%lld sectors (%lld MiB)\n"),
+#endif
 		   image->expectedSectors, image->expectedSectors>>9);
 
       print_tab("dvdisaster version:", tab_width);
 
       if(micro)
+#ifndef CLI
 	   PrintCLIorLabel(mi->eccVersion, "%d.%d.%d", major, minor, micro);
-      else PrintCLIorLabel(mi->eccVersion, "%d.%d", major, minor);
+#else
+	   PrintCLIorLabel(NULL, "%d.%d.%d", major, minor, micro);
+#endif
+      else
+#ifndef CLI
+           PrintCLIorLabel(mi->eccVersion, "%d.%d", major, minor);
+#else
+           PrintCLIorLabel(NULL, "%d.%d", major, minor);
+#endif
    }
 
    /* Clean up */
@@ -219,6 +310,7 @@ void PrintMediumInfo(void *mi_ptr)
 /***
  *** GUI callbacks 
  ***/
+#ifndef CLI
 
 /*
  * Callback for drive selection
@@ -496,3 +588,4 @@ void CreateMediumInfoWindow()
   PrintMediumInfo(mi);
 }
 
+#endif

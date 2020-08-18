@@ -52,8 +52,11 @@ char *sgettext(char *msgid)
 }
 
 char *sgettext_utf8(char *msgid)
-{  static gchar ringbuf[20][1024];
+{
+#ifndef CLI
+   static gchar ringbuf[20][1024];
    static int ringptr;
+#endif
    char *msgval;
 
 #ifdef WITH_NLS_YES
@@ -72,6 +75,7 @@ char *sgettext_utf8(char *msgid)
 
    /*** If we are running the GUI, convert to UTF8 for Gtk+ */
 
+#ifndef CLI
    if(Closure->guiMode)
    {  char *msg_utf8 = g_locale_to_utf8(msgval, -1, NULL, NULL, NULL);
 
@@ -81,6 +85,7 @@ char *sgettext_utf8(char *msgid)
       
       return ringbuf[ringptr];
    }
+#endif
 
    return msgval;
 }
@@ -138,6 +143,8 @@ void CalcSectors(guint64 size, guint64 *sectors, int *in_last)
  * Append message to the log window.
  */
 
+#ifndef CLI
+
 #define MAX_LOG_WIN_SIZE 10240
 
 static void clamp_gstring(GString *string)
@@ -191,6 +198,7 @@ static void log_window_append(char *text)
    
    g_free(utf_tmp);
 }
+#endif
 
 /*
  * Output of the greetings is delayed until the first message is printed.
@@ -228,6 +236,7 @@ void PrintCLI(char *format, ...)
       va_end(argp);
    }
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(Closure->verbose)
       {  va_start(argp, format);
@@ -236,6 +245,7 @@ void PrintCLI(char *format, ...)
       }
       return;
    }
+#endif
 
    va_start(argp, format);
    g_vprintf(format, argp);
@@ -256,8 +266,10 @@ void PrintProgress(char *format, ...)
    va_list argp;
    int n;
 
+#ifndef CLI
    if(Closure->guiMode)
      return;
+#endif
   
    print_greetings(stdout);
 
@@ -321,9 +333,11 @@ void PrintLog(char *format, ...)
 
    va_start(argp, format);
 
+#ifndef CLI
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
    else 
+#endif
    {
       print_greetings(stdout);
       g_vprintf(format, argp);
@@ -370,9 +384,11 @@ void PrintLogWithAsterisks(char *format, ...)
 
    va_start(argp, format);
 
+#ifndef CLI
    if(Closure->guiMode)
       log_window_vprintf(new_format, argp);
    else 
+#endif
    {
       print_greetings(stdout);
       g_vprintf(new_format, argp);
@@ -402,9 +418,11 @@ void Verbose(char *format, ...)
 
    va_start(argp, format);
 
+#ifndef CLI
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
    else 
+#endif
    {
       print_greetings(stdout);
       g_vprintf(format, argp);
@@ -436,11 +454,13 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
    tmp2 = g_strdup_printf("%02d:%02d:%04.1f %s", hours, minutes, seconds, tmp1);
    va_end(argp);
 
+#ifndef CLI
    if(Closure->guiMode)
    { 
       log_window_append(tmp2);
    }
    else
+#endif
    {  g_printf("%s", tmp2);
 
       fflush(stdout);
@@ -455,7 +475,11 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
  * or show it in the given label
  */
 
+#ifndef CLI
 void PrintCLIorLabel(GtkLabel *label, char *format, ...)
+#else
+void PrintCLIorLabel(void *unused, char *format, ...)
+#endif
 {  va_list argp;
 
    if(Closure->logFileEnabled)
@@ -466,6 +490,7 @@ void PrintCLIorLabel(GtkLabel *label, char *format, ...)
 
    va_start(argp, format);
       
+#ifndef CLI
    if(Closure->guiMode)
    {  char *c,*tmp;
 	
@@ -483,6 +508,7 @@ void PrintCLIorLabel(GtkLabel *label, char *format, ...)
       g_free(tmp);
    }
    else
+#endif
    {  g_vprintf(format, argp);
 
       fflush(stdout);
@@ -531,12 +557,18 @@ static void vlog_warning(char *format, va_list argp)
    prefix[len] = 0;
 
    str = g_string_sized_new(256);
+#ifndef CLI
    g_string_append_printf(str,"* %s:%c", warn, Closure->guiMode ? '\n' : ' ');
+#else
+   g_string_append_printf(str,"* %s: ", warn);
+#endif
    do
    {  c = strchr(line,'\n');
       if(c) *c=0;
+#ifndef CLI
       if(Closure->guiMode) g_string_append_printf(str,"* %s\n",line);
       else
+#endif
       {  if(line != body)
 	       g_string_append_printf(str,"%s%s\n",prefix,line);
          else  g_string_append_printf(str,"%s\n",line);
@@ -547,10 +579,12 @@ static void vlog_warning(char *format, va_list argp)
    if(Closure->logFileEnabled)
       PrintLogFile("%s", str->str);
 
+#ifndef CLI
    if(Closure->guiMode)
    {  log_window_append(str->str);
    }
    else
+#endif
    {  print_greetings(stdout);
       g_printf("%s", str->str);
       fflush(stdout);
@@ -598,7 +632,9 @@ void Stop(char *format, ...)
 
    /*** CLI mode */
    
+#ifndef CLI
    if(!Closure->guiMode) 
+#endif
    {  g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
       g_vprintf(format, argp);
@@ -609,6 +645,7 @@ void Stop(char *format, ...)
 
    /*** GUI mode */
    
+#ifndef CLI
    else
    {  char *titled,*msg,*utf_msg;
       int idx;
@@ -634,6 +671,7 @@ void Stop(char *format, ...)
       g_free(msg);
       g_free(utf_msg);
    }
+#endif
 
    /* The cleanup procedure is supposed to terminate any running
       threads except for the main thread.
@@ -667,7 +705,9 @@ void Stop(char *format, ...)
 
    /* see above: possibly unreachable in GUI mode! */
 
+#ifndef CLI
    if(!Closure->guiMode)
+#endif
    {    FreeClosure();
         exit(EXIT_FAILURE);
    }
@@ -737,6 +777,7 @@ void CallIdleFunc(gboolean (*idle_func)(gpointer), gpointer data)
 /***
  *** Graphical user interface convenience
  ***/
+#ifndef CLI
 
 /* 
  * Show the given widget
@@ -1055,6 +1096,9 @@ int ModalDialog(GtkMessageType mt, GtkButtonsType bt,
 
 int ModalWarning(GtkMessageType mt, GtkButtonsType bt, 
 		 void(*button_fn)(GtkDialog*), char *msg, ...)
+#else
+int ModalWarning(char *msg, ...)
+#endif
 {  va_list argp;
    int result = 1;  
 
@@ -1062,11 +1106,13 @@ int ModalWarning(GtkMessageType mt, GtkButtonsType bt,
    vlog_warning(msg, argp);
    va_end(argp);
    
+#ifndef CLI
    if(Closure->guiMode)
    { va_start(argp, msg);
      result = vmodal_dialog(mt, bt, button_fn, msg, argp);
      va_end(argp);
    }
+#endif
 
    return result;
 }
@@ -1075,6 +1121,7 @@ int ModalWarning(GtkMessageType mt, GtkButtonsType bt,
  * Set the text in the pango layout and retrieve its extents.
  */
 
+#ifndef CLI
 void SetText(PangoLayout *layout, char *text, int *w, int *h)
 {  PangoRectangle rect;
    char *t = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
@@ -1261,16 +1308,19 @@ static void insert_button(GtkDialog *dialog)
    ReverseCancelOK(GTK_DIALOG(dialog));
 } 
 
+#endif
 int ConfirmImageDeletion(char *file)
-{  int answer;
-
+{
+#ifndef CLI
    if(!Closure->guiMode)  /* Always delete it in command line mode */
+#endif
       return TRUE;
 
+#ifndef CLI
    if(!Closure->confirmDeletion) /* I told you so... */
       return TRUE;
 
-   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+   int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
 			insert_button,
 			_("Image file already exists and does not match the medium:\n\n"
 			  "%s\n\n"
@@ -1278,18 +1328,21 @@ int ConfirmImageDeletion(char *file)
 			file);
 
    return answer == GTK_RESPONSE_OK;
+#endif
 }
 
 int ConfirmEccDeletion(char *file)
-{  int answer;
-
+{
+#ifndef CLI
    if(!Closure->guiMode)  /* Always delete it in command line mode */
+#endif
       return TRUE;
 
+#ifndef CLI
    if(!Closure->confirmDeletion) /* I told you so... */
       return TRUE;
 
-   answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+   int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
 			insert_button,
 			_("The error correction file is already present:\n\n"
 			  "%s\n\n"
@@ -1297,5 +1350,6 @@ int ConfirmEccDeletion(char *file)
 			file);
 
    return answer == GTK_RESPONSE_OK;
+#endif
 }
 

@@ -96,7 +96,9 @@ typedef enum
 int main(int argc, char *argv[])
 {  int mode = MODE_NONE; 
    int sequence = MODE_NONE;
+#ifndef CLI
    int devices_queried = FALSE;
+#endif
    char *debug_arg = NULL;
    char *read_range = NULL;
 #ifdef WITH_NLS_YES
@@ -724,7 +726,9 @@ int main(int argc, char *argv[])
    if(!Closure->device && mode == MODE_SEQUENCE 
       && (sequence & (1<<MODE_READ | 1<<MODE_SCAN))) 
    {  Closure->device = DefaultDevice();
+#ifndef CLI
       devices_queried = TRUE;
+#endif
    }
 
    /*** Dispatch action depending on mode.
@@ -879,7 +883,11 @@ int main(int argc, char *argv[])
 
    /*** If no mode was selected, print the help screen. */
 
+#ifndef CLI
    if(mode == MODE_HELP)
+#else
+   if(mode == MODE_HELP || mode == MODE_NONE)
+#endif
    {  
      /* TRANSLATORS: Program options like -r and --read are not to be translated
 	to avoid confusion when discussing the program in international forums. */
@@ -971,6 +979,7 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
    }
 
+#ifndef CLI
    /* If no mode was selected at the command line, 
       start the graphical user interface. */
 
@@ -1001,6 +1010,7 @@ int main(int argc, char *argv[])
       ReadDotfile();
       CreateMainWindow(&argc, &argv);
    }
+#endif
 
    FreeClosure();
    exit(exitCode);

@@ -54,7 +54,10 @@ static void read_crc(LargeFile *ecc, guint32 *buf, int first_sector, int n_secto
  */
 
 typedef struct
-{  RS01Widgets *wl;
+{  
+#ifndef CLI
+   RS01Widgets *wl;
+#endif
    GaloisTables *gt;
    ReedSolomonTables *rt;
    Image *image;
@@ -70,6 +73,7 @@ static void fix_cleanup(gpointer data)
 
    UnregisterCleanup();
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(fc->earlyTermination)
          SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -78,6 +82,7 @@ static void fix_cleanup(gpointer data)
 			      Closure->redMarkup); 
       AllowActions(TRUE);
    }
+#endif
 
    /** Clean up */
 
@@ -96,8 +101,10 @@ static void fix_cleanup(gpointer data)
  
    g_free(fc);
 
+#ifndef CLI
    if(Closure->guiMode)
       g_thread_exit(0);
+#endif
 }
 
 /*
@@ -105,8 +112,11 @@ static void fix_cleanup(gpointer data)
  */
 
 void RS01Fix(Image *image)
-{  Method *method = FindMethod("RS01");
+{
+#ifndef CLI
+   Method *method = FindMethod("RS01");
    RS01Widgets *wl = (RS01Widgets*)method->widgetList;
+#endif
    GaloisTables *gt;
    ReedSolomonTables *rt;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
@@ -131,7 +141,9 @@ void RS01Fix(Image *image)
    /*** Register the cleanup procedure for GUI mode */
 
    fc->image = image;
+#ifndef CLI
    fc->wl = wl;
+#endif
    fc->earlyTermination = TRUE;
    RegisterCleanup(_("Repairing of image aborted"), fix_cleanup, fc);
 
@@ -143,11 +155,13 @@ void RS01Fix(Image *image)
 			     eh->eccBytes, 
 			     ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
+#ifndef CLI
    if(Closure->guiMode)
    {  SetLabelText(GTK_LABEL(wl->fixHeadline),
 		  _("<big>Repairing the image.</big>\n<i>%s</i>"),fc->msg);
       RS01SetFixMaxValues(wl, eh->dataBytes, eh->eccBytes, image->sectorSize);
    }    
+#endif
 
    PrintLog(_("\nFix mode(%s): Repairable sectors will be fixed in the image.\n"),
 	    "RS01");
@@ -190,17 +204,21 @@ void RS01Fix(Image *image)
 		     "the image and ecc files do not belong together.\n\n%s");
 
      if(diff>0 && diff<=2)
-     {  int answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+     {
+        int answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("Image file is %lld sectors longer than expected.\n"
 				    "Assuming this is a TAO mode medium.\n"
 				    "%lld sectors will be removed from the image end.\n"),
 				  diff, diff);
 
         if(!answer)
-        {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
+        {
+#ifndef CLI
+           SwitchAndSetFootline(fc->wl->fixNotebook, 1,
 				fc->wl->fixFootline,
 				_("<span %s>Aborted by user request!</span>"),
 				Closure->redMarkup); 
+#endif
 	   fc->earlyTermination = FALSE;  /* suppress respective error message */
 	   goto terminate;
 	}
@@ -212,6 +230,7 @@ void RS01Fix(Image *image)
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
      }
      
+#ifndef CLI
      if(diff>2 && Closure->guiMode)
      {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				 trans,
@@ -235,8 +254,14 @@ void RS01Fix(Image *image)
 
        PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
      }
+#endif
 
-     if(diff>2 && !Closure->guiMode)
+     if(diff>2 &&
+#ifndef CLI
+	!Closure->guiMode)
+#else
+        1)
+#endif
      {  if(!Closure->truncate)
 	   Stop(trans, 
 		diff,
@@ -256,6 +281,7 @@ void RS01Fix(Image *image)
    if(image->sectorSize == image->expectedSectors && image->inLast > eh->inLast)
    {  int difference = image->inLast - eh->inLast;
 
+#ifndef CLI
       if(Closure->guiMode)
       {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("The image file is %d bytes longer than noted\n"
@@ -272,8 +298,13 @@ void RS01Fix(Image *image)
 	    goto terminate;
 	 }
       }
+#endif
 
+#ifndef CLI
       if(!Closure->guiMode && !Closure->truncate)
+#else
+      if(!Closure->truncate)
+#endif
         Stop(_("The image file is %d bytes longer than noted\n"
 	       "in the ecc file.\n"
                "Add the --truncate option to the program call\n"
@@ -290,14 +321,17 @@ void RS01Fix(Image *image)
    if(image->sectorSize < image->expectedSectors)
    {  int answer;
 
-      answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Image file appears to be truncated.\n"
-			      "Consider completing it with another reading pass before going on.\n"));
+			      "Consider completing it with another reading pass before going on.\n"), NULL);
       if(!answer)
-      {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
+      {
+#ifndef CLI
+         SwitchAndSetFootline(fc->wl->fixNotebook, 1,
 			      fc->wl->fixFootline,
 			      _("<span %s>Aborted by user request!</span>"),
 			      Closure->redMarkup); 
+#endif
 	 fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
       }
@@ -306,15 +340,18 @@ void RS01Fix(Image *image)
    if(image->fpState != FP_PRESENT)
    {  int answer;
 
-      answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Sector %d is missing. Can not compare image and ecc fingerprints.\n"
 			      "Double check that image and ecc file belong together.\n"),
 			    eh->fpSector);
       if(!answer)
-      {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
+      {
+#ifndef CLI
+         SwitchAndSetFootline(fc->wl->fixNotebook, 1,
 			      fc->wl->fixFootline,
 			      _("<span %s>Aborted by user request!</span>"),
 			      Closure->redMarkup); 
+#endif
 	 fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
       }
@@ -362,6 +399,7 @@ void RS01Fix(Image *image)
 
    for(si=0; si<s; si++)
    { 
+#ifndef CLI
      if(Closure->stopActions) /* User hit the Stop button */
      {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -371,6 +409,7 @@ void RS01Fix(Image *image)
          fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
      }
+#endif
 
      /* Read the next batch of (cache_size * ndata) medium sectors
         if the cache ran empty. */
@@ -433,7 +472,10 @@ void RS01Fix(Image *image)
         and try to correct them. */
 
      if(erasure_count>nroots)   /* uncorrectable */
-     {  if(!Closure->guiMode)
+     {
+#ifndef CLI
+        if(!Closure->guiMode)
+#endif
 	{  PrintCLI(_("* %3d unrepairable sectors: "), erasure_count);
 
 	   for(i=0; i<erasure_count; i++)
@@ -742,14 +784,18 @@ skip:
      percent = (1000*(si+1))/s;
 
      if(last_percent != percent) 
-     {  if(Closure->guiMode)
+     {
+#ifndef CLI
+        if(Closure->guiMode)
 	{  
 	   RS01AddFixValues(wl, percent, local_plot_max);
 	   local_plot_max = 0;
 
 	   RS01UpdateFixResults(wl, corrected, uncorrected);
 	}
-        else PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+        else
+#endif
+           PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 
@@ -765,11 +811,13 @@ skip:
    if(corrected > 0) PrintLog(_("Repaired sectors: %lld     \n"),corrected);
    if(uncorrected > 0) 
    {  PrintLog(_("Unrepaired sectors: %lld\n"), uncorrected);      
+#ifndef CLI
       if(Closure->guiMode)
         SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			     _("Image sectors could not be fully restored "
 			       "(%lld repaired; <span %s>%lld unrepaired</span>)"),
 			     corrected, Closure->redMarkup, uncorrected);
+#endif
    }
    else
    {  if(!corrected)
@@ -785,9 +833,11 @@ skip:
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sec/(double)damaged_ecc,worst_ecc);
 
+#ifndef CLI
    if(Closure->guiMode && t)
      SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			  "%s %s", _("Repair results:"), t);
+#endif
 
 
    /*** Clean up */

@@ -430,14 +430,19 @@ RS02Layout *CalcRS02Layout(Image *image)
 
    /* See if user wants to pick a certain redundancy */
 
+#ifndef CLI
    if(!Closure->guiMode && Closure->redundancy)
+#else
+   if(Closure->redundancy)
+#endif
    {  int len = strlen(Closure->redundancy);
 
       switch(Closure->redundancy[len-1])
       {  case 'r':   /* pick number of roots */
-	 {  char buf[len];
+	 {  char buf[len+1];
  
-            strncpy(buf, Closure->redundancy, len-1);
+            memcpy(buf, Closure->redundancy, len);
+            buf[len] = '\0';
 	    requested_roots = atoi(buf);
 	    break;
 	 }
@@ -445,7 +450,8 @@ RS02Layout *CalcRS02Layout(Image *image)
 	 {  char buf[len];
 	    int percent;
  
-            strncpy(buf, Closure->redundancy, len-1);
+            memcpy(buf, Closure->redundancy, len-1);
+            buf[len-1] = '\0';
 	    percent = atoi(buf);
 
 	    for(requested_roots = 7; requested_roots < 171; requested_roots++)

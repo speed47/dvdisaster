@@ -19,6 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
+// DVDISASTER_GUI_FILE
 
 #include "dvdisaster.h"
 
@@ -414,7 +415,7 @@ void set_path(GtkWidget *entry, char *path)
    else
    {  char buf[PATH_MAX + strlen(path) + 2];
 
-      getcwd(buf, PATH_MAX);
+      if (getcwd(buf, PATH_MAX) == NULL) return;
       strcat(buf,"/");
 
       strcat(buf,path);

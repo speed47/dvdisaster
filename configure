@@ -4,8 +4,12 @@
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I." 
-RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall"
+RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Werror -Wno-deprecated-declarations -Wno-stringop-truncation"
 DEBUG_CFLAGS="-ggdb -Wall"
+
+if [ "$CLI_ONLY" = 1 ]; then
+  REQUIRED_CFLAGS="-DCLI $REQUIRED_CFLAGS"
+fi
 
 CFG_USE_CYGWIN="no"   # do not change
 
@@ -48,7 +52,9 @@ GET_BUILDTMP
 PRINT_MESSAGE "\nLooking for includes and libraries:"
 
 REQUIRE_GLIB2 2 32 0
-REQUIRE_GTK2 2 6 0 WITH_THREADS
+if [ "$CLI_ONLY" != 1 ]; then
+  REQUIRE_GTK2 2 6 0 WITH_THREADS
+fi
 echo
 
 if ! CHECK_INCLUDE locale.h locale || ! CHECK_INCLUDE libintl.h intl ; then
@@ -110,10 +116,12 @@ if ! EXECUTE_PROGRAM "xgettext --help" xgettext \
   cfg_force_with_nls=no
 fi
 
-if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
-  echo "* gdk-pixbuf not installed"
-  echo "* or path to gdk-pixbuf-csource is missing."
-  exit 1
+if [ "$CLI_ONLY" != 1 ]; then
+  if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
+    echo "* gdk-pixbuf not installed"
+    echo "* or path to gdk-pixbuf-csource is missing."
+    exit 1
+  fi
 fi
 
 # Evaluate the --with* customization options
@@ -151,6 +159,9 @@ cfiles="method-link.c"
 ofiles="$BUILDTMP/method-link.o"
 
 for cfile in *.c; do
+  if [ "$CLI_ONLY" = 1 ]; then
+    grep -q 'DVDISASTER_GUI_FILE' "$cfile" && continue
+  fi
   cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
   cfiles="$cfiles $cfile"
   ofiles="$ofiles $BUILDTMP/$cfile_prefix.o"
@@ -160,6 +171,9 @@ done
 echo
 echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
 echo "CFG_OFILES = $ofiles" >> Makefile.config
+if [ "$CLI_ONLY" != 1 ]; then
+  echo "ICONS = inlined-icons.h" >> Makefile.config
+fi
 
 # Create the method wrapper
 

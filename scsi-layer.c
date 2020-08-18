@@ -2168,8 +2168,11 @@ int TestUnitReady(DeviceHandle *dh)
       cmd[0] = 0x00;     /* TEST UNIT READY */
 
       if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_NONE) != -1)
-      {  if(Closure->guiMode)
+      {
+#ifndef CLI
+         if(Closure->guiMode)
 	    SetLabelText(Closure->status, "");
+#endif
 	 return TRUE;
       }
 
@@ -2184,11 +2187,13 @@ int TestUnitReady(DeviceHandle *dh)
 	    continue_waiting = TRUE;
 
       if(continue_waiting)
-      {  PrintCLIorLabel(Closure->status,
+      {  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			 _("Waiting 10 seconds for drive: %d\n"),9-i);
 
+#ifndef CLI
 	 if(Closure->stopActions)
 	    return FALSE;
+#endif
 
 	 g_usleep(G_USEC_PER_SEC);
 	 continue;
@@ -2198,8 +2203,10 @@ int TestUnitReady(DeviceHandle *dh)
       break;  /* Something is wrong with the drive */
    }
 
+#ifndef CLI
    if(Closure->guiMode)
       SetLabelText(Closure->status, "");
+#endif
 
    return FALSE;
 }
@@ -2452,8 +2459,10 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       if(status)  /* current try was unsucessful */
       {  int last_key, last_asc, last_ascq;
 
+#ifndef CLI
 	 if(Closure->stopActions)  /* user break */
 	    return status;
+#endif
 
 	 /* Do not attempt multiple re-reads if nsectors > 1 and sectorSkip == 0
 	    as these will be re-read with nsectors==1 anyways. */
@@ -2461,7 +2470,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 //       Why only apply this shortcut to raw reading?
 //	 if(dh->canReadDefective && nsectors > 1 && Closure->sectorSkip == 0)
 	 if(nsectors > 1 && Closure->sectorSkip == 0)
-	 {  PrintCLIorLabel(Closure->status,
+	 {  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			    _("Sectors %lld - %lld: %s\n"),
 			    s, s+nsectors-1, GetLastSenseString(FALSE));
 	    return status;
@@ -2475,13 +2484,13 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
 	 if(last_key == 3 && last_asc == 255 && last_ascq == 2 && dh->rawBuffer)
 	 {  unsigned char *frame = dh->rawBuffer->workBuf->buf;
-	    PrintCLIorLabel(Closure->status,
+	    PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			    _("Sector %lld, try %d: %s Sector returned: %d.\n"),
 			    s, retry, GetLastSenseString(FALSE),
 			    MSFtoLBA(frame[12], frame[13], frame[14]));
 	 }
 	 else
-	    PrintCLIorLabel(Closure->status,
+	    PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			    _("Sector %lld, try %d: %s\n"),
 			    s, retry, GetLastSenseString(FALSE));
 
@@ -2492,7 +2501,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       }
       else /* good return status */
       {  if(recommended_attempts > 1 && retry > 1)
-	  PrintCLIorLabel(Closure->status,
+	  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			  _("Sector %lld, try %d: success\n"), s, retry);
 
          break;

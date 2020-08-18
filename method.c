@@ -58,7 +58,7 @@ void ListMethods(void)
    for(i=0; i<Closure->methodList->len; i++)
    {  Method *method = g_ptr_array_index(Closure->methodList, i);
 
-      strncpy(name, method->name, 4);
+      strncpy(name, method->name, 5);
       PrintCLI("%s -- %s\n",name,method->description);
    }
 }

@@ -364,8 +364,11 @@ static IsoInfo* examine_iso(Image *image)
    /*** Iterate over the volume decriptors */
  
    for(sector=16; sector<32; sector++)
-   {  if(Closure->stopActions) 
+   {
+#ifndef CLI
+      if(Closure->stopActions) 
         continue;
+#endif
 
       if(ImageReadSectors(image, buf, sector, 1) != 1)
       {  Verbose("  Sector %2d: unreadable\n", sector);
@@ -794,7 +797,7 @@ void FreeIsoHeader(IsoHeader *ih)
 
 void AddFile(IsoHeader *ih, char *name, guint64 size)
 {  static int n;
-   char iso[20], joliet[strlen(name)+3];
+   char iso[30], joliet[strlen(name)+3];
 
    n++;
    sprintf(iso,"RAN_%04d.DAT;1", n);

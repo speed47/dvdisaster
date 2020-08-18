@@ -37,7 +37,7 @@ void register_rs01(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS01", 4);
+   strncpy(method->name, "RS01", 5);
    method->menuEntry = g_strdup(_("Error correction file (RS01)"));
    method->description = g_strdup(_("Classic Reed-Solomon method based on polynomial arithmetic"));
    method->create  = RS01Create;
@@ -53,6 +53,7 @@ void register_rs01(void)
    method->finalizeCksums    = RS01FinalizeCksums;
    method->expectedImageSize = RS01ExpectedImageSize;
 
+#ifndef CLI
    /*** Linkage to rs01-window.c */
 
    method->createCreateWindow = CreateRS01EWindow;
@@ -68,6 +69,7 @@ void register_rs01(void)
 
    method->createVerifyWindow = CreateRS01VerifyWindow;
    method->resetVerifyWindow  = ResetRS01VerifyWindow;
+#endif
 
    /*** Register ourself */
 
@@ -77,10 +79,14 @@ void register_rs01(void)
 }
 
 static void destroy(Method *method)
-{  RS01Widgets *wl = (RS01Widgets*)method->widgetList;
+{
+#ifndef CLI
+   RS01Widgets *wl = (RS01Widgets*)method->widgetList;
+#endif
 
    g_free(method->ckSumClosure);
 
+#ifndef CLI
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 
@@ -92,6 +98,7 @@ static void destroy(Method *method)
 
       g_free(wl);
    }
+#endif
 }
 
 

@@ -193,7 +193,14 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 			      (long long)rb->lba);
 
    if(!LargeStat(filename, &length))
-   {  PrintCLIorLabel(Closure->status,_(" [Creating new cache file %s]\n"), filename);
+   {  
+      PrintCLIorLabel(
+#ifndef CLI
+         Closure->status,
+#else
+         NULL,
+#endif
+         _(" [Creating new cache file %s]\n"), filename);
       init_defective_sector_file(filename, rb, &file, dsh);
    }
    else 
@@ -264,7 +271,12 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 
    LargeClose(file);
 
-   PrintCLIorLabel(Closure->status,
+   PrintCLIorLabel(
+#ifndef CLI
+      Closure->status,
+#else
+      NULL,
+#endif
 		   _(" [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"), 
 		   count, rb->samplesRead, filename, dsh->lba, dsh->sectorSize, dsh->nSectors);
 
@@ -313,7 +325,13 @@ int TryDefectiveSectorCache(RawBuffer *rb, unsigned char *outbuf)
 
       status = TryCDFrameRecovery(rb, outbuf);
       if(!status) 
-      {  PrintCLIorLabel(Closure->status,
+      {
+         PrintCLIorLabel(
+#ifndef CLI
+            Closure->status,
+#else
+            NULL,
+#endif
 			 " [Success after processing cached sector %d]\n", i+1);
 	 return status; 
       }

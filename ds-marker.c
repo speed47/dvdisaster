@@ -260,15 +260,20 @@ int CheckForMissingSectors(unsigned char *buf, guint64 sector,
  *** Dialogue for indicating problem with the missing sector
  ***/
 
+#ifndef CLI
 static void insert_buttons(GtkDialog *dialog)
 {  
    gtk_dialog_add_buttons(dialog, 
 			  _utf("Stop reporting these errors"), 1,
 			  _utf("Continue reporting"), 0, NULL);
 }
+#endif
 
 void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int source_type, int *number)
-{  int answer;
+{
+#ifndef CLI
+   int answer;
+#endif
    guint64 recorded_number;
    char *vol_label, *label_msg;
 
@@ -288,7 +293,11 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
    
    /* In CLI mode, only report the first unrecoverable sector unless verbose is given. */
 
+#ifndef CLI
    if(!Closure->guiMode && !Closure->verbose && *number > 0)
+#else
+   if(!Closure->verbose && *number > 0)
+#endif
    {  if(*number == 1)
 	 PrintLog(_("* ... more unrecoverable sectors found ...\n"
 		    "* further messages are suppressed unless the -v option is given.\n"));
@@ -303,9 +312,13 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 
    vol_label = get_volume_label(buf);
    if(vol_label)
-   {   if(Closure->guiMode)
+   {
+#ifndef CLI
+       if(Closure->guiMode)
 	    label_msg = g_strdup_printf(_("\n\nThe label of the original (defective) medium was:\n%s\n\n"), vol_label);
-       else label_msg = g_strdup_printf(_("\n* \n* The label of the original (defective) medium was:\n* \n*  %s\n* "), vol_label);
+       else
+#endif
+       label_msg = g_strdup_printf(_("\n* \n* The label of the original (defective) medium was:\n* \n*  %s\n* "), vol_label);
        g_free(vol_label);
    }
    else label_msg = g_strdup("\n");
@@ -326,14 +339,18 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 			  "repaired by dvdisaster. Also it will not be possible to create\n"
 			  "error correction data for it. Sorry for the bad news.\n");
 
+#ifndef CLI
 	    if(!Closure->guiMode)
+#endif
 	        PrintLogWithAsterisks(msg,sector, recorded_number, label_msg);
+#ifndef CLI
 	    else
 	    {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 				    sector, recorded_number, label_msg);
    
 	       if(answer) Closure->noMissingWarnings = TRUE;
 	    }
+#endif
 	 }
 	 break;
 
@@ -349,13 +366,17 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 			  "repaired by dvdisaster. Also it will not be possible to create\n"
 			  "error correction data for it. Sorry for the bad news.\n");
 
+#ifndef CLI
 	    if(!Closure->guiMode)
+#endif
 	         PrintLogWithAsterisks(msg,sector, label_msg);
+#ifndef CLI
 	    else
 	    {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 				    sector, label_msg);
 	       if(answer) Closure->noMissingWarnings = TRUE;
 	    }
+#endif
 	 }
 	 break;
       }
@@ -374,14 +395,18 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 		    "repaired by dvdisaster. Also it will not be possible to create\n"
 		    "error correction data for it. Sorry for the bad news.\n");
 			   
+#ifndef CLI
      if(!Closure->guiMode)
+#endif
           PrintLogWithAsterisks(msg, sector);
+#ifndef CLI
      else
      {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 			     sector);
       
         if(answer) Closure->noMissingWarnings = TRUE;
      }
+#endif
    }
 
    /* Error was found while reading an ecc file */
@@ -394,14 +419,18 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 		    "in the ecc file are missing and its error correction\n"
 		    "capacity will be reduced.\n");
 			   
+#ifndef CLI
      if(!Closure->guiMode)
+#endif
           PrintLogWithAsterisks(msg, sector);
+#ifndef CLI
      else
      {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 			     sector);
       
         if(answer) Closure->noMissingWarnings = TRUE;
      }
+#endif
    }
 
    g_free(label_msg);

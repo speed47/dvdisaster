@@ -38,7 +38,7 @@ void register_rs02(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS02", 4);
+   strncpy(method->name, "RS02", 5);
    method->menuEntry = g_strdup(_("Augmented image (RS02)"));
    method->description = g_strdup(_("Reed-Solomon method with improved tolerance for defective ecc data"));
    method->create  = RS02Create;
@@ -54,6 +54,7 @@ void register_rs02(void)
    method->finalizeCksums    = RS02FinalizeCksums;
    method->expectedImageSize = RS02ExpectedImageSize;
 
+#ifndef CLI
    /*** Linkage to rs02-window.c */
 
    method->createCreateWindow = CreateRS02EncWindow;
@@ -70,6 +71,7 @@ void register_rs02(void)
 
    method->createVerifyWindow = CreateRS02VerifyWindow;
    method->resetVerifyWindow  = ResetRS02VerifyWindow;
+#endif
 
    /*** Register ourself */
 
@@ -79,13 +81,17 @@ void register_rs02(void)
 }
 
 static void destroy(Method *method)
-{  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
+{
+#ifndef CLI
+   RS02Widgets *wl = (RS02Widgets*)method->widgetList;
+#endif
    RS02CksumClosure *csc = (RS02CksumClosure*)method->ckSumClosure;
 
    if(csc->lay)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
+#ifndef CLI
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 
@@ -97,5 +103,6 @@ static void destroy(Method *method)
 
       g_free(wl);
    }
+#endif
 }
 

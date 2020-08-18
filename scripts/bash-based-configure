@@ -1364,6 +1364,7 @@ EOF
 
    cat >conftest.c <<EOF
 #include <glib.h>
+#include <stdio.h>
 int main(int argc, char *argv[])
 { g_malloc(1024); 
 

@@ -19,6 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
+// DVDISASTER_GUI_FILE
 
 #include "dvdisaster.h"
 

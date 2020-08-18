@@ -40,7 +40,9 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
+#ifndef CLI
 #include <gtk/gtk.h>
+#endif
 
 #include <ctype.h>
 #include <errno.h>
@@ -81,6 +83,12 @@
 
 #ifndef HAVE_ROUND
  #define round(x) rint(x)
+#endif
+
+#ifdef CLI
+#define STATUS_LABEL_OR_NULL NULL
+#else
+#define STATUS_LABEL_OR_NULL Closure->status
 #endif
 
 /* Some standard media sizes */
@@ -244,12 +252,15 @@ typedef struct _GlobalClosure
 
    struct _CrcBuf *crcBuf;      /* crcBuf of last image read */
    
+#ifndef CLI
    /*** GUI-related things */
 
    int guiMode;              /* TRUE if GUI is active */
    int stopActions;          /* crude method to stop ongoing action(s) */
+#endif
    int noMissingWarnings;    /* suppress warnings about inconsistent missing sectors */
 
+#ifndef CLI
    GtkWidget *logWidget;     /* Dialog for the log display */
    GtkScrolledWindow *logScroll; /* and its scrolled window */
    GtkTextBuffer *logBuffer; /* Text buffer for the log output */
@@ -330,7 +341,9 @@ typedef struct _GlobalClosure
    GtkWidget *readLinearErrors;
    GtkWidget *readLinearFootline;
    GtkWidget *readLinearFootlineBox;
+#endif
    gint64 crcErrors, readErrors;  /* these are passed between threads and must therefore be global */
+#ifndef CLI
 
    /*** Widgets for the adaptive reading action */
 
@@ -340,6 +353,7 @@ typedef struct _GlobalClosure
    char *readAdaptiveSubtitle;
    char *readAdaptiveErrorMsg;
    int additionalSpiralColor;
+#endif
 
 } GlobalClosure;
 
@@ -477,8 +491,10 @@ int ProbeCacheLineSize();
 
 void InitClosure(void);
 void LocalizedFileDefaults(void);
+#ifndef CLI
 void UpdateMarkup(char**, GdkColor*);
 void DefaultColors(void);
+#endif
 void FreeClosure(void);
 void ReadDotfile(void);
 void WriteSignature(void);
@@ -550,6 +566,7 @@ int CrcBufValid(CrcBuf*, struct _Image*, EccHeader*);
 
 void PrintCrcBuf(CrcBuf*);
 
+#ifndef CLI
 /***
  *** curve.c
  ***/
@@ -593,6 +610,7 @@ int  CurveY(Curve*, gdouble);
 int  CurveLogY(Curve*, gdouble);
 void RedrawAxes(Curve*);
 void RedrawCurve(Curve*, int);
+#endif
 
 /***
  *** debug.c
@@ -659,7 +677,9 @@ void    PrintEccHeader(EccHeader*);
  *** fix-window.c
  ***/
 
+#ifndef CLI
 void CreateFixWindow(GtkWidget*);
+#endif
 
 /***
  *** galois.c
@@ -717,6 +737,7 @@ void FreeGaloisTables(GaloisTables*);
 ReedSolomonTables *CreateReedSolomonTables(GaloisTables*, gint32, gint32, int);
 void FreeReedSolomonTables(ReedSolomonTables*);
 
+#ifndef CLI
 /***
  *** help-dialogs.c
  ***/
@@ -757,6 +778,7 @@ void AboutDialog();
 void AboutText(GtkWidget*, char*, ...);
 void AboutLink(GtkWidget*, char*, char*);
 void AboutTextWithLink(GtkWidget*, char*, char*);
+#endif
 
 /***
  *** heuristic-lec.c
@@ -993,6 +1015,7 @@ int     forget(void*);
 
 void    check_memleaks(void);
 
+#ifndef CLI
 /***
  *** menubar.c
  ***/
@@ -1000,6 +1023,7 @@ void    check_memleaks(void);
 void AttachTooltip(GtkWidget*, char*, char*);
 GtkWidget* CreateMenuBar(GtkWidget*);
 GtkWidget* CreateToolBar(GtkWidget*);
+#endif
 
 /***
  *** method.c / method-link.c
@@ -1012,7 +1036,7 @@ GtkWidget* CreateToolBar(GtkWidget*);
 #define ECC_MD5_BAD (1<<2)
 
 typedef struct _Method
-{  char name[4];                     /* Method name tag */
+{  char name[5];                     /* Method name tag */
    guint32 properties;               /* see definition above */
    char *description;                /* Fulltext description */
    char *menuEntry;                  /* Text for use in preferences menu */
@@ -1027,6 +1051,7 @@ typedef struct _Method
    void (*updateCksums)(Image*, gint64, unsigned char*);/* checksum while reading an image */
    int  (*finalizeCksums)(Image*);
    void *ckSumClosure;                                   /* working closure for above */
+#ifndef CLI
    void (*createVerifyWindow)(struct _Method*, GtkWidget*);
    void (*createCreateWindow)(struct _Method*, GtkWidget*);
    void (*createFixWindow)(struct _Method*, GtkWidget*);
@@ -1036,9 +1061,12 @@ typedef struct _Method
    void (*resetFixWindow)(struct _Method*);
    void (*resetPrefsPage)(struct _Method*);
    void (*readPreferences)(struct _Method*);
+#endif
    void (*destroy)(struct _Method*);
+#ifndef CLI
    int  tabWindowIndex;              /* our position in the (invisible) notebook */
    void *widgetList;                 /* linkage to window system */
+#endif
 } Method;
 
 void BindMethods(void);        /* created by configure in method-link.c */
@@ -1068,7 +1096,11 @@ void Verbose(char*, ...);
 void PrintTimeToLog(GTimer*, char*, ...);
 void PrintProgress(char*, ...);
 void ClearProgress(void);
+#ifndef CLI
 void PrintCLIorLabel(GtkLabel*, char*, ...);
+#else
+void PrintCLIorLabel(void*, char*, ...);
+#endif
 int GetLongestTranslation(char*, ...);
 
 void LogWarning(char*, ...);
@@ -1078,6 +1110,7 @@ void UnregisterCleanup(void);
 
 GThread* CreateGThread(GThreadFunc, gpointer);
 
+#ifndef CLI
 void ShowWidget(GtkWidget*);
 void AllowActions(gboolean);
 
@@ -1088,7 +1121,13 @@ void SetProgress(GtkWidget*, int, int);
 
 int ModalDialog(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...);
 int ModalWarning(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...);
+#define ModalWarningOrCLI(a,b,c,d,...) ModalWarning(a,b,c,d,__VA_ARGS__)
+#else
+int ModalWarning(char*, ...);
+#define ModalWarningOrCLI(a,b,c,d,...) ModalWarning(d,__VA_ARGS__)
+#endif
 
+#ifndef CLI
 void SetText(PangoLayout*, char*, int*, int*);
 void SwitchAndSetFootline(GtkWidget*, int, GtkWidget*, char*, ...);
 
@@ -1097,10 +1136,12 @@ void TimedInsensitive(GtkWidget*, int);
 
 int GetLabelWidth(GtkLabel*, char*, ...);
 void LockLabelSize(GtkLabel*, char*, ...);
+#endif
 
 int ConfirmImageDeletion(char *);
 int ConfirmEccDeletion(char *);
 
+#ifndef CLI
 /***
  *** preferences.c
  ***/
@@ -1113,6 +1154,7 @@ void FreePreferences(void*);
 void UpdatePrefsExhaustiveSearch(void);
 void UpdatePrefsConfirmDeletion(void);
 void RegisterPreferencesHelpWindow(LabelWithOnlineHelp*);
+#endif
 
 /***
  *** print-sense.c
@@ -1125,7 +1167,7 @@ void GetLastSense(int*, int*, int*);
 
 /***
  *** random.c
- ***/
+ **/
 
 #define	MY_RAND_MAX	2147483647
 
@@ -1169,6 +1211,7 @@ void ReadDefectiveSectorFile(DefectiveSectorHeader *, struct _RawBuffer*, char*)
 
 void ReadMediumLinear(gpointer);
 
+#ifndef CLI
 /***
  *** read-linear-window.c
  ***/
@@ -1180,6 +1223,7 @@ void InitializeCurve(void*, int, int);
 void AddCurveValues(void*, int, int, int);
 void MarkExistingSectors(void);
 void RedrawReadLinearWindow(void);
+#endif
 
 /*** 
  *** read-adaptive.c
@@ -1189,6 +1233,7 @@ void GetReadingRange(gint64, gint64*, gint64*);
 
 void ReadMediumAdaptive(gpointer);
 
+#ifndef CLI
 /***
  *** read-adaptive-window.c
  ***/
@@ -1205,6 +1250,7 @@ void SetAdaptiveReadFootline(char*, GdkColor*);
 void UpdateAdaptiveResults(gint64, gint64, gint64, int);
 void ChangeSegmentColor(GdkColor*, int);
 void RemoveFillMarkers();
+#endif
 
 /***
  *** recover-raw.c
@@ -1362,6 +1408,7 @@ void *PrepareIterativeSmartLEC(RawBuffer*);
 void SmartLECIteration(void*, char*);
 void EndIterativeSmartLEC(void*);
 
+#ifndef CLI
 /***
  *** spiral.c
  ***/
@@ -1397,5 +1444,6 @@ void MoveSpiralCursor(Spiral*, int);
  ***/
 
 void CreateWelcomePage(GtkNotebook*);
+#endif
 
 #endif				/* DVDISASTER_H */
