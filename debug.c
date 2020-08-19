@@ -1023,7 +1023,7 @@ void RawSector(char *arg)
  *
  * ./dvdisaster --debug --send-cdb 12,00,00,00,24,00:24
  *
- * The first six bytes make up the cdb; cdbs with upto 12 bytes are possible.
+ * The first six bytes make up the cdb; cdbs with up to 12 bytes are possible.
  * The :24 arg is the allocation length. 
  * Note that the allocation length must match those specified in the cdb;
  * differing values may crash the system.

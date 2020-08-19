@@ -31,7 +31,9 @@
 
 static int query_type(DeviceHandle*, int);
 static gint64 query_size(Image*);
+#if 0
 static int query_copyright(DeviceHandle*);
+#endif
 
 static int read_dvd_sector(DeviceHandle*, unsigned char*, int, int);
 static int read_cd_sector(DeviceHandle*, unsigned char*, int, int);
@@ -908,6 +910,11 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 	    break;
 	 }
 
+	 if(layer_type & 0x01)
+	 {  dh->typeDescr = g_strdup("DVD-ROM");
+	    break;
+	 }
+
 	 if(layer_type & 0x06) /* strange thing: (re-)writeable but neither plus nor dash */ 
 	 {  dh->typeDescr = g_strdup("DVD-ROM (fake)");
 	    dh->subType = DVD;
@@ -1022,7 +1029,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
 
    if(!strncmp((char*)&buf[4+8], "BDO", 3))
    {  dh->typeDescr = g_strdup("BD-ROM");
-      dh->subType = UNSUPPORTED;
+      dh->subType = BD;
    }
 
    if(!strncmp((char*)&buf[4+8], "BDW", 3))
@@ -1644,6 +1651,7 @@ reset_mode_page:
  * Find out whether we are allowed to create an image from the DVD.
  */
 
+#if 0
 static int query_copyright(DeviceHandle *dh)
 {  Sense sense;
    AlignedBuffer *ab = CreateAlignedBuffer(2048);
@@ -1704,6 +1712,7 @@ static int query_copyright(DeviceHandle *dh)
 
    return result;
 }
+#endif
 
 /*
  * See whether a sector lies within the user area.
@@ -1996,12 +2005,13 @@ static gint64 query_size(Image *image)
  */
 
 gint64 CurrentMediumSize(int get_blank_size)
-{  Image *image;
+{
+#if defined(SYS_UNKNOWN) || defined(SYS_HURD)
+   return 0;
+#else
+   Image *image;
    gint64 size;
 
-#ifdef SYS_UNKNOWN
-   return 0;
-#endif
 
    image = OpenImageFromDevice(Closure->device);
    if(!image) return 0;
@@ -2042,6 +2052,7 @@ gint64 CurrentMediumSize(int get_blank_size)
    CloseImage(image);
 
    return size;
+#endif
 }
 
 /***
@@ -2456,7 +2467,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       if(Closure->readRaw && dh->rawBuffer)
 	recommended_attempts = dh->rawBuffer->recommendedAttempts;
 
-      if(status)  /* current try was unsucessful */
+      if(status)  /* current try was unsuccessful */
       {  int last_key, last_asc, last_ascq;
 
 #ifndef CLI
@@ -2704,12 +2715,13 @@ Image* OpenImageFromDevice(char *device)
        	 return NULL;
       }
    }
-
+/*
    if(dh->mainType == DVD && query_copyright(dh))
    {  CloseImage(image);
       Stop(_("This software does not support encrypted media.\n"));
       return NULL;
    }
+*/
 
    /* Create the bitmap of simulated defects */
 

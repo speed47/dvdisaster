@@ -27,9 +27,9 @@
 
 #define VERBOSE 1
 #ifdef VERBOSE
-  #define verbose(format,args...) printf(format, ## args)
+  #define verbose(format,...) printf(format, __VA_ARGS__)
 #else
-  #define verbose(format,args...)
+  #define verbose(format,...)
 #endif
 
 /***
@@ -432,7 +432,7 @@ static void update_pq_state(sh_context *shc)
 static void print_pq_state(sh_context *shc)
 {  int i;
 
-   verbose("PQ states: \n");
+   verbose("%s", "PQ states: \n");
 
    for(i=0; i<N_P_VECTORS; i++)
    {  if(shc->pState[i] == 1)
@@ -1354,7 +1354,7 @@ static void swap_p_for_new_improvement(sh_context *shc)
 		  count++;
 
 	    if(count < 2)
-	    {  verbose(" pruned");
+	    {  verbose("%s", " pruned");
 	       goto decrement;
 	    }
 
@@ -1417,7 +1417,7 @@ decrement:
 	    if(index >= n_q) break;
 	    selection[index]=0;
 
-	    verbose("\n");
+	    verbose("%s", "\n");
 	 }
       }
    }
@@ -1609,7 +1609,7 @@ static int smart_lec_iteration(sh_context *shc, char *message)
    shc->bestBonus = 0;
    shc->bestMalus = 100000;
    memcpy(shc->bestFrame, rb->recovered, rb->sampleSize);
-   sprintf(shc->msg, "smart_lec: no further improvment");
+   sprintf(shc->msg, "smart_lec: no further improvement");
 
    update_pq_state(shc);
    print_pq_state(shc);

@@ -1323,7 +1323,7 @@ if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipas
   run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC
 fi
 
-# Do a second sucessful read attempt at an incomplete image;
+# Do a second successful read attempt at an incomplete image;
 # see whether correct results are reported when ecc data is present
 # since CRC caching is a bit complicated in this case.
 

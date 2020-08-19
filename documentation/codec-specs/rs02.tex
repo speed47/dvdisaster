@@ -74,7 +74,7 @@ the parity data portion of the image might not be written to the medium.
 Most current writing programs do however measure the .iso image by examining
 its file size, and will transfer the parity data correctly. To be sure you
 should follow the steps described under ``Testing image compatibility''
-at the dvdisaster site (\url{http://dvdisaster.net/en/howtos92.html}) once
+at the dvdisaster site (\url{https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/howtos92.html}) once
 before using each version of your optical media authoring software.
 
 Like the other dvdisaster codecs, RS02 is based on a  RS(255,k) Reed-Solomon code
@@ -133,7 +133,7 @@ Its format is described in appendix \ref{eh}. For RS02, only the data fields
 marked with ``all'' or ``RS02'' are relevant; all other fields should be set to zero.
 
 Data layer $n$ does also contain the CRC32 checksums of each data sector
-upto the ecc header. If the .iso image contains $s$ sectors, 
+up to the ecc header. If the .iso image contains $s$ sectors,
 then the CRC field contains $4s$ bytes, rounded up
 to the nearest multiple of 2048. 
 CRC32 checksums are calculated over a whole CD sector comprising 2048 bytes.

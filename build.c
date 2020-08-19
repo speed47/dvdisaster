@@ -25,4 +25,4 @@
 /* build is incremented at each make;
    make recompile of dependent file as fast as possible */
 
-int  buildCount = BUILD;
+const char *const buildCount = BUILD;

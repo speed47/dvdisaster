@@ -136,11 +136,29 @@ case "$cfg_uname" in
 	}
 	;;
 
+  GNU/kFreeBSD*) cfg_system=kfreebsd
+	CFG_SYS_OPTIONS="-DSYS_KFREEBSD"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"GNU/kFreeBSD\\\""
+	CFG_EXE_SUFFIX=""
+	function add_linker_flags()
+	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+	}
+	;;
+
   NetBSD*) cfg_system=netbsd
         CFG_SYS_OPTIONS="-DSYS_NETBSD"
 	CFG_SYS_NAME="-DSYS_NAME=\\\"NetBSD\\\""
         CFG_EXE_SUFFIX=""
 	CFG_SYS_LDFLAGS="-lutil"
+	function add_linker_flags()
+	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+	}
+	;;
+
+  GNU*) cfg_system=hurd
+	CFG_SYS_OPTIONS="-DSYS_HURD"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"GNU/Hurd\\\""
+	CFG_EXE_SUFFIX=""
 	function add_linker_flags()
 	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
 	}
@@ -313,13 +331,13 @@ function REQUIRE_GMAKE()
 
    echo -n "Checking for gmake: "
 
-   if (gmake -v | grep "GNU Make") > /dev/null 2>&1 ;
+   if (gmake -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
      then echo "yes"
 	  echo "MAKE = `which gmake`" >>Makefile.config
 	  return 0
    fi;
 
-   if (make -v | grep "GNU Make") > /dev/null 2>&1 ;
+   if (make -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
      then echo "yes"
 	  echo "MAKE = `which make`" >>Makefile.config
 	  return 0

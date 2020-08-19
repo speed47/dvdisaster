@@ -44,7 +44,7 @@ correction files must be protected with an image level
 error correction layer (by using RS01,RS02 or RS03 on the medium), 
 since only image level error correction avoids meta 
 data sectors to become a single point of failure. See the
-discussion at \url{http://dvdisaster.net/en/qa32.html} for
+discussion at \url{https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/qa32.html} for
 more information on the advantages of image level data protection
 over file level approaches.
 
@@ -172,7 +172,7 @@ The $d_{i,j}$ denote the $i-th$ byte in the $j-th$ layer.
 In order to create the first ecc block, bytes $d_{1,1}$ to  $d_{1,n}$ are taken from the
 $n$ layers. Then the RS(255,k) code is calculated (see appendix \ref{rs} for its parameters)
 and the 
-resulting $k$ parity bytes $e_{1,1}$ upto $e_{k,1}$ are stored
+resulting $k$ parity bytes $e_{1,1}$ up to $e_{k,1}$ are stored
 in the ecc file. The resulting ecc block is marked grey in the
 figure. The next ecc blocks are calculated and stored accordingly.
 In total, the ecc section contains $k*ls$ bytes of parity information,

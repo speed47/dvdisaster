@@ -938,7 +938,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
       PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
       PrintCLI(_("  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"));
-      PrintCLI(_("  --read-attempts n-m    - attempts n upto m reads of a defective sector\n"));
+      PrintCLI(_("  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"));
       PrintCLI(_("  --read-medium n        - read the whole medium up to n times\n"));
       PrintCLI(_("  --read-raw             - performs read in raw mode if possible\n"));
       PrintCLI(_("  --regtest              - tweaks output for compatibility with regtests\n"));

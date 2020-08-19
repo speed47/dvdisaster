@@ -22,7 +22,8 @@
 
 #include "dvdisaster.h"
 
-#ifdef SYS_LINUX
+#if defined(SYS_LINUX)
+
 int ProbeCacheLineSize()
 {  int cl_size = 0;
 
@@ -36,9 +37,9 @@ int ProbeCacheLineSize()
 
    return cl_size;
 }
-#endif
 
-#ifdef SYS_FREEBSD
+#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+
 #include <sys/param.h>
 
 int ProbeCacheLineSize()
@@ -52,9 +53,9 @@ int ProbeCacheLineSize()
 
    return cl_size;
 }
-#endif
 
-#ifdef SYS_NETBSD
+#elif defined(SYS_NETBSD)
+
 #include <sys/param.h>
 
 int ProbeCacheLineSize()
@@ -68,13 +69,14 @@ int ProbeCacheLineSize()
 
    return cl_size;
 }
-#endif
 
-#ifdef SYS_UNKNOWN
+#else /* SYS_UNKNOWN and others. */
+
 int ProbeCacheLineSize()
 {
   return 64;
 }
+
 #endif
 
 

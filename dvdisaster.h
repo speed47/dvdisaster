@@ -120,7 +120,7 @@
 
 #define MAX_CODEC_THREADS 1024           /* not including IO and GUI */
 #define MAX_OLD_CACHE_SIZE  8096         /* old cache for RS01/RS02  */
-#define MAX_PREFETCH_CACHE_SIZE (512*1024)   /* upto 0.5TB RS03  */
+#define MAX_PREFETCH_CACHE_SIZE (512*1024)   /* up to 0.5TB RS03  */
 
 /* Choices for I/O strategy */
 
@@ -237,6 +237,7 @@ typedef struct _GlobalClosure
    char *binDir;        /* place where the binary resides */
    char *docDir;        /* place where our documentation resides */
    char *viewer;        /* Name of preferred PDF viewer */
+   char *browser;       /* Name of preferred browser */
 
    GMutex progressLock; /* A mutex protected the stuff below */
    char bs[256];        /* A string of 255 backspace characters */
@@ -390,7 +391,7 @@ typedef struct _LargeFile
 #define FINGERPRINT_SECTOR 16 /* Sector currently used to calculate the fingerprint. */
                               /* This is the ISO filesystem root sector which contains */
                               /* the volume label and creation time stamps. */
-                              /* Versions upto 0.64 used sector 257, */
+                              /* Versions up to 0.64 used sector 257, */
                               /* but that was not a wise choice for CD media.*/
 
 #define MFLAG_DEVEL (1<<0)    /* for methodFlags[3] */
@@ -477,7 +478,7 @@ void FreeBitmap(Bitmap*);
  *** build.h
  ***/
 
-int buildCount;
+extern const char *const buildCount;
 
 /***
  *** cacheprobe.h
@@ -1393,6 +1394,12 @@ int ProbeAltiVec(void);
  ***/
 
 void ShowPDF(char*);
+
+/***
+ *** show-html.c
+ ***/
+
+void ShowHTML(char*);
 
 /***
  *** smart-lec.c

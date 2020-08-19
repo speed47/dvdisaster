@@ -138,7 +138,7 @@ untranslated:
 	@$(MAKE) --no-print-directory -C locale check-untranslated
 
 simple-md5sum: md5.c
-	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
+	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
 
 version.tex:
 	@echo "\\newcommand{\\projectversion}{$(VERSION)}" >$(SRCDIR)/documentation/config/version.tex
@@ -239,9 +239,9 @@ install: dvdisaster manual
 	install -d $(BUILDROOT)$(MANDIR)/de/man1
 	cd documentation; \
 	  ESCAPED_DOCSUBDIR=`echo $(DOCSUBDIR) | sed -e 's/\//\\\\\//g'`; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.en.1 >dvdisaster.updated; \
+	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.en.1 >dvdisaster.updated; \
 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/man1/dvdisaster.1; \
-	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR\/html/" <dvdisaster.de.1 >dvdisaster.updated; \
+	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.de.1 >dvdisaster.updated; \
 	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/de/man1/dvdisaster.1; \
 	  rm dvdisaster.updated
 	if echo $(WITH_OPTIONS) | grep "NLS_YES" >/dev/null; then \
@@ -313,6 +313,7 @@ clean:
 	@rm -f simple-md5sum
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs clean;
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual clean;
+	@$(MAKE) --no-print-directory -C $(SRCDIR)/locale clean;
 
 BUILD=`grep BUILD $(SRCDIR)/build.h | cut -d ' ' -f 3`
 arch:	archclean time-stamp

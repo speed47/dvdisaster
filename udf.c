@@ -797,7 +797,7 @@ void FreeIsoHeader(IsoHeader *ih)
 
 void AddFile(IsoHeader *ih, char *name, guint64 size)
 {  static int n;
-   char iso[30], joliet[strlen(name)+3];
+   char iso[22], joliet[strlen(name)+3];
 
    n++;
    sprintf(iso,"RAN_%04d.DAT;1", n);

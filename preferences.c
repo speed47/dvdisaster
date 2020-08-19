@@ -2062,8 +2062,8 @@ void CreatePreferencesWindow(void)
       frame = gtk_frame_new(_utf("Media ejection"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Eject medium after sucessful read"), 
-				       _("Eject medium after sucessful read"));
+      lwoh = CreateLabelWithOnlineHelp(_("Eject medium after successful read"),
+				       _("Eject medium after successful read"));
       RegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
@@ -2222,7 +2222,7 @@ void CreatePreferencesWindow(void)
 		       _("<b>Maximum number of reading attempts</b>\n\n"
 			 "When the minimum number of reading attempts is reached "
 			 "without success, dvdisaster might choose to perform additional "
-			 "reading attempts upto this number.\n\n"
+			 "reading attempts up to this number.\n\n"
 
 			 "The decision to do more attempts depends on the quality of "
 			 "data gathered so far, which in turn is influenced by the "
@@ -2337,7 +2337,7 @@ void CreatePreferencesWindow(void)
       AddHelpParagraph(lwoh, 
 		       _("<b>Media read attempts</b> for the linear reading strategy\n\n"
 			 "If unreadable sectors remain after reading the medium from start to end, "
-			 "the medium is read again upto he given number of times.\n\n"
+			 "the medium is read again up to he given number of times.\n\n"
 			 "Only the missing sectors will be tried in the additional reading passes."));
 
       /** Defective sector caching */

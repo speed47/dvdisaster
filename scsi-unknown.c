@@ -25,7 +25,7 @@
 #include "scsi-layer.h"
 #include "udf.h"
 
-#ifdef SYS_UNKNOWN
+#if defined(SYS_UNKNOWN) || defined(SYS_HURD)
 
 /* Dummy routines so that we can compile on unknown architectures
    for which we don't have SCSI support yet. */
@@ -51,4 +51,4 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
    return -1;
 }
 
-#endif /* SYS_UNKNOWN */
+#endif /* defined(SYS_UNKNOWN) || defined(SYS_HURD) */

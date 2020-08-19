@@ -28,7 +28,7 @@
 #include <linux/cdrom.h>
 #endif
 
-#ifdef SYS_FREEBSD
+#if defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
 #include <camlib.h>
 #endif
 
@@ -49,19 +49,21 @@
  * Linux already has one 
  */
 
-#ifdef SYS_LINUX
+#if defined(SYS_LINUX)
+
 #define MAX_CDB_SIZE CDROM_PACKET_SIZE
 
 /* Now globally defined for all OSes here */
 //typedef struct request_sense Sense;
-#endif
 
-#ifdef SYS_FREEBSD
+#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
+
 #define MAX_CDB_SIZE SCSI_MAX_CDBLEN
-#endif
 
-#if defined(SYS_UNKNOWN) || defined(SYS_NETBSD)
+#else /* SYS_UNKNOWN and others. */
+
 #define MAX_CDB_SIZE 16   /* longest possible SCSI command */
+
 #endif
 
 /* 
@@ -101,8 +103,7 @@ typedef struct _DeviceHandle
     */
 #if defined(SYS_LINUX) || defined(SYS_NETBSD)
    int fd;                    /* device file descriptor */
-#endif
-#ifdef SYS_FREEBSD
+#elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
    struct cam_device *camdev; /* camlib device handle */
    union ccb *ccb;
 #endif

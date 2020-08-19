@@ -30,15 +30,19 @@ locale: \$(LOCALEFILES)
 
 # Create the locale files. 
 
+messages.pot: \$(CFILES)
+	@cd ..; xgettext --no-wrap -cTRANSLATORS: -o locale/messages.pot -k_ -k_utf \$(CFILES_NP)
+
+clean:
+	rm -f messages.pot
+
 EOF
 
 for i in $prefixes; do
 cat >> Makefile <<EOF
-$i.po: \$(CFILES)
+$i.po: messages.pot
 	@echo "Updating $i.po"
-	@cd ..; xgettext --no-wrap -cTRANSLATORS: -o locale/messages.pot -k_ -k_utf \$(CFILES_NP)
 	@msgmerge -q -U --no-wrap --no-fuzzy-matching $i.po messages.pot
-	@rm -f messages.pot
 
 $i/LC_MESSAGES/dvdisaster.mo: $i.po
 	@echo "Updating $i.mo"

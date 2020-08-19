@@ -25,7 +25,7 @@
 #include "scsi-layer.h"
 #include "udf.h"
 
-#ifdef SYS_FREEBSD
+#if defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
 
 /* SCSI wrappers for FreeBSD are still work in progress. */
 
@@ -241,4 +241,4 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
    return -1;
 }
 
-#endif /* SYS_FREEBSD */
+#endif /* defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) */

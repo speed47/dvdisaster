@@ -25,6 +25,10 @@
 
 #include <limits.h>
 
+#ifndef PATH_MAX
+  #define PATH_MAX 4096
+#endif
+
 /***
  *** Forward declarations
  ***/
@@ -415,7 +419,7 @@ void set_path(GtkWidget *entry, char *path)
    else
    {  char buf[PATH_MAX + strlen(path) + 2];
 
-      if (getcwd(buf, PATH_MAX) == NULL) return;
+      if (!getcwd(buf, PATH_MAX)) return;
       strcat(buf,"/");
 
       strcat(buf,path);

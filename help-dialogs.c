@@ -424,6 +424,24 @@ char *find_file(char *file, size_t *size, char *lang)
       lang_suffix[1] = lang[1];
    }
 
+   /* Test for absolute path first. */
+   if(*file == '/')
+   {
+      if(lang)
+	 path = g_strdup_printf("%s.%s", file, lang_suffix);
+      else
+	 path = g_strdup(file);
+
+      if(LargeStat(path, &stat_size))
+      {
+	 *size = stat_size;
+	 return path;
+      }
+
+      g_free(path);
+      return NULL;
+   }
+
    /* Try file in bin dir */
 
    if(Closure->binDir) 
@@ -582,7 +600,8 @@ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
    {  case GDK_BUTTON_PRESS: 
         if(!inside) return FALSE; /* Defect in certain Gtk versions? */
         if(!strcmp(label,"GPL")) ShowGPL(); 
-        else if(!strcmp(label,"MODIFYING")) show_modifying(); 
+        else if(!strcmp(label,"MODIFYING")) show_modifying();
+        else if(strlen(label) > 4 && !strncmp(label, "http", 4)) ShowHTML(g_strdup(label));
         else ShowPDF(g_strdup(label));
 	break; 
       case GDK_ENTER_NOTIFY: 
@@ -724,8 +743,10 @@ void AboutDialog()
    g_free(text);
 
 #ifdef MODIFIED_SOURCE
-   AboutTextWithLink(vbox, 
-		     _("Modified version Copyright 2017 (please fill in - [directions])\n"
+   AboutTextWithLink(vbox,
+		     _("[Modified version]\n"
+		       "Copyright 2019-2020 Stephane Lesimple\n"
+		       "Copyright 2005-2017 Debian Optical Media Tools Team\n"
 		       "Copyright 2004-2017 Carsten Gnoerlich"),
 		     "MODIFYING");
 #else
@@ -747,11 +768,12 @@ void AboutDialog()
 			"GPL");
 
 #ifdef MODIFIED_SOURCE
-   AboutTextWithLink(vbox, _("\nThis program is <b>not the original</b>. It is based on the\n"
-			     "source code of dvdisaster, but contains third-party changes.\n\n"
-			     "Please do not bother the original authors of dvdisaster\n"
-			     "([www.dvdisaster.org]) about issues with this version.\n"),
-		             "http://www.dvdisaster.org");
+   AboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
+			     "for Debian to support DVD-ROMs (with and without encryption),"
+			     "and subsequently patched again to support a CLI-only build, among other things.\n\n"
+			     "Please do not bother the original authors of dvdisaster or the Debian maintainer\n"
+			     "but submit bugreports against GitHun instead.\n"),
+			     "https://github.com/speed47/dvdisaster");
 
 #else
    lang = g_getenv("LANG");

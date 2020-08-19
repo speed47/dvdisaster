@@ -876,10 +876,10 @@ void RS03Fix(Image *image)
 	      if we were processing an augmented image. */
 
 	   if(lay->target == ECC_FILE && i >= ndata-1)
-	   {  
-              if(!LargeSeek(image->eccFile, (gint64)(2048*sec)))
-		 Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
-		      sec, "FW", strerror(errno));
+	   {
+		 if(!LargeSeek(image->eccFile, (gint64)(2048*sec)))
+		    Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
+			 sec, "FW", strerror(errno));
 
 	      n = LargeWrite(image->eccFile, cache_offset+fc->imgBlock[i], 2048);
 	      if(n != 2048)

@@ -31,24 +31,27 @@
 
 //#define VERBOSE 1
 #ifdef VERBOSE
-  #define verbose(format,args...) printf(format, ## args)
+  #define verbose(format,...) printf(format, __VA_ARGS__)
 #else
-  #define verbose(format,args...)
+  #define verbose(format,...)
 #endif
 
 #ifdef HAVE_MMAP
   #include <sys/mman.h>
 
-#ifdef SYS_LINUX
-  #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE) 
-#endif
+#if defined(SYS_LINUX)
 
-#ifdef SYS_FREEBSD
-  #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ) 
-#endif
+  #define MMAP_FLAGS (MAP_SHARED | MAP_POPULATE | MAP_NORESERVE)
 
-#ifdef SYS_NETBSD
-  #define MMAP_FLAGS (MAP_SHARED) 
+#elif defined(SYS_FREEBSD)
+
+  #define MMAP_FLAGS (MAP_SHARED | MAP_PREFAULT_READ)
+
+#else
+
+  /* SYS_NETBSD and others. */
+  #define MMAP_FLAGS (MAP_SHARED)
+
 #endif
 
 #endif
@@ -741,7 +744,7 @@ static void flush_crc(ecc_closure *ec, LargeFile *file_out)
 
    /* Write out the CRC layer */
       
-   verbose("IO: writing CRC layer\n");
+   verbose("%s", "IO: writing CRC layer\n");
    crc_sect = 2048*(ec->encoderChunk+lay->firstCrcPos);
    if(!LargeSeek(file_out, crc_sect))
    {  ec->abortImmediately = TRUE;
@@ -762,7 +765,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
 
    /* Write out the created parity. */
 
-   verbose("IO: writing parity...\n");
+   verbose("%s", "IO: writing parity...\n");
    for(k=0; k<lay->nroots; k++)
    {  gint64 idx=0;
 
@@ -779,7 +782,7 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
 	 }
       }
    }
-   verbose("IO: parity written.\n");
+   verbose("%s", "IO: parity written.\n");
 }
 
 static gpointer io_thread(ecc_closure *ec)
@@ -794,7 +797,7 @@ static gpointer io_thread(ecc_closure *ec)
    int parity_available = 0;
    int i;
 
-   verbose("Reader thread initializing\n");
+   verbose("%s", "Reader thread initializing\n");
 
    /*** Allocate local parity buffer aligned at 128bit boundary */
 
@@ -865,7 +868,7 @@ static gpointer io_thread(ecc_closure *ec)
       {  read_next_chunk(ec, chunk);
 	 //	 flush_crc(ec, file_out);  // FIXME
 	 needs_preload = 0;
-	 verbose("IO: first chunk loaded\n");
+	 verbose("%s", "IO: first chunk loaded\n");
 	 continue;
       }
 
@@ -914,7 +917,7 @@ static gpointer io_thread(ecc_closure *ec)
       cpu_bound = ec->buffersToEncode;
 #endif
       while(ec->buffersToEncode)
-      {  verbose("IO: Waiting for encoders to finish\n");
+      {  verbose("%s", "IO: Waiting for encoders to finish\n");
 	 g_cond_wait(ec->ioCond, ec->lock);
       }
       g_mutex_unlock(ec->lock);
@@ -958,7 +961,7 @@ static gpointer io_thread(ecc_closure *ec)
    ec->slicesFree = TRUE;  /* we have saved the slices; go ahead */
    g_cond_broadcast(ec->ioCond);
    while(ec->buffersToEncode)
-   {  verbose("IO: Waiting for encoders to finish last chunk\n");
+   {  verbose("%s", "IO: Waiting for encoders to finish last chunk\n");
       g_cond_wait(ec->ioCond, ec->lock);
    }
    g_mutex_unlock(ec->lock);
@@ -971,7 +974,7 @@ static gpointer io_thread(ecc_closure *ec)
    flush_crc(ec, file_out);
    flush_parity(ec, file_out);
 
-   verbose("IO: finished\n"); fflush(stdout);
+   verbose("%s", "IO: finished\n"); fflush(stdout);
    return NULL;
 }
 
@@ -1160,7 +1163,7 @@ static gpointer encoder_thread(ecc_closure *ec)
       ec->buffersToEncode-=enc_size;
       if(!ec->buffersToEncode)
       {  g_cond_broadcast(ec->ioCond);
-	 verbose("ENC: processed last buffer; telling IO process.\n");
+	 verbose("%s", "ENC: processed last buffer; telling IO process.\n");
 	 fflush(stdout);
       }
       g_mutex_unlock(ec->lock);
@@ -1264,7 +1267,7 @@ static void create_reed_solomon(ecc_closure *ec)
       verbose("SCHED: joined with worker %d\n", i);
       fflush(stdout);
    }
-   verbose("SCHED: scheduler finished.\n");
+   verbose("%s", "SCHED: scheduler finished.\n");
 }
 
 /***

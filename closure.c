@@ -50,7 +50,8 @@ static void get_base_dirs()
    /*** Otherwise try the installation directory. 
 	On Unices this is a hardcoded directory. */
 
-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD) || defined(SYS_UNKNOWN)
    if(DirStat(BINDIR))
      Closure->binDir = g_strdup(BINDIR);
 
@@ -198,8 +199,7 @@ void ReadDotfile()
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      if (fgets(line, MAX_LINE_LEN, dotfile) == NULL)
-         break;
+      if (!fgets(line, MAX_LINE_LEN, dotfile)) break;
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -439,7 +439,8 @@ void InitClosure()
 
    /* Generate a more comprehensive version string */
 
-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD)
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD)
   #ifdef HAVE_64BIT
     #define BITNESS_STRING " 64bit"
   #else
@@ -449,7 +450,7 @@ void InitClosure()
   #define BITNESS_STRING ""
 #endif
 
-   Closure->versionString = g_strdup_printf("dvdisaster %s build %d, %s%s",
+   Closure->versionString = g_strdup_printf("dvdisaster %s build %s, %s%s",
 					    Closure->cookedVersion, buildCount, SYS_NAME, BITNESS_STRING);
 
    /* Replace the dot with a locale-resistant separator */
@@ -481,6 +482,7 @@ void InitClosure()
    Closure->deviceNames = g_ptr_array_new();
    Closure->deviceNodes = g_ptr_array_new();
    Closure->viewer      = g_strdup("xdg-open");
+   Closure->browser      = g_strdup("xdg-open");
    Closure->methodList  = g_ptr_array_new();
    Closure->methodName  = g_strdup("RS01");
    Closure->dDumpDir    = g_strdup(Closure->homeDir);
@@ -601,6 +603,7 @@ void FreeClosure()
    cond_free(Closure->binDir);
    cond_free(Closure->docDir);
    cond_free(Closure->viewer);
+   cond_free(Closure->browser);
    cond_free(Closure->errorTitle);
    cond_free(Closure->simulateCD);
    cond_free(Closure->dDumpDir);
