@@ -9,6 +9,9 @@ DEBUG_CFLAGS="-ggdb -Wall"
 
 if [ "$CLI_ONLY" = 1 ]; then
   REQUIRED_CFLAGS="-DCLI $REQUIRED_CFLAGS"
+  echo '#define FLAVOR CLI' > build.h
+else
+  echo '#define FLAVOR GUI' > build.h
 fi
 
 CFG_USE_CYGWIN="no"   # do not change

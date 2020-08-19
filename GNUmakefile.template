@@ -75,6 +75,10 @@ ${BUILDTMP}/%.o : %.c
 
 all: time-stamp dvdisaster
 
+${BUILDTMP}/build.o : build.c build.h
+	@echo "Compiling:" build.o
+	@$(CC) $(COPTS) -c build.c -o $@
+
 # Building the dvdisaster binary
 
 time-stamp:
