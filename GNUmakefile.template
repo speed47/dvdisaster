@@ -286,10 +286,6 @@ distclean: clean
 	@echo "Removing configuration files"
 	@rm -f configure.log Makefile.config GNUmakefile locale/Makefile
 	@for i in locale/?? locale/??_??; do rm -rf $$i; done
-	@echo "all:" >>GNUmakefile
-	@echo -e "\t@echo" >>GNUmakefile
-	@echo -e "\t@echo \"Please create a Makefile by entering \\\"bash configure\\\" first\"" >>GNUmakefile
-	@echo -e "\t@echo" >>GNUmakefile
 
 # There might be a not executable simple-md5sum from a compiler run
 # under a different architecture, so make sure we have a working binary

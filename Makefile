@@ -4,8 +4,9 @@
 
 all:
 	@echo
-	@echo "dvdisaster requires GNU make to build."
-	@echo "Please try your command again using gmake."
+	@echo "Please run \`bash configure' first."
+	@echo "Note that dvdisaster requires GNU make to build."
+	@echo "Under non-Linux systems, it might be known as \`gmake'."
 	@echo
 
 show: all
