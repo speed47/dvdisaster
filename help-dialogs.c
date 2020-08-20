@@ -769,10 +769,10 @@ void AboutDialog()
 
 #ifdef MODIFIED_SOURCE
    AboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
-			     "for Debian to support DVD-ROMs (with and without encryption),"
+			     "for Debian to support DVD-ROMs (with and without encryption),\n"
 			     "and subsequently patched again to support a CLI-only build, among other things.\n\n"
-			     "Please do not bother the original authors of dvdisaster or the Debian maintainer\n"
-			     "but submit bugreports against GitHun instead.\n"),
+			     "Please do not bother the original authors of dvdisaster nor the Debian maintainer\n"
+			     "but submit bugreports against [GitHub] instead.\n"),
 			     "https://github.com/speed47/dvdisaster");
 
 #else

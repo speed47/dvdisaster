@@ -1,5 +1,27 @@
 # dvdisaster changelog -*-text-*-
  
+0.79.6.1 20-08-2020
+- This is an UNOFFICIAL version, not from the original author,
+  but based on the latest available pre-release, 0.79.6.
+  Changes will be kept minimal (this is not a hard fork),
+  to be able to merge in any new upstream version should it arise.
+  Version numbering will stay 0.79.6.xx, to avoid any confusion
+  if/when a new upstream version appears.
+- Most patches from the Debian maintainer have been applied,
+  up to Debian version 0.79.6-5. Patches that are purely Debian
+  specific have been omitted.
+- This release keeps the debian/ folder untouched,
+- Added support for BDXL-QL (quadruple layer, 128GB)
+- Added support to compile a CLI-only version, without
+  the GTK dependency (only glib2), compile with:
+  $ CLI_ONLY=1 ./configure
+  $ make clean all
+- A few tweaks and fixes around have been done while massively
+  amending the source files to make the CLI-only version possible.
+  This hopefully removes a few quirks without adding too many.
+
+THE ORIGINAL UPSTREAM CHANGELOG IS KEPT BELOW:
+
 0.79.6 20-11-2017
 - The Verify/Test option will now output dvdisaster version
   numbers always in x.yy.zz format, as the old scheme

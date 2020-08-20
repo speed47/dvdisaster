@@ -78,8 +78,16 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
-	 AboutText(box, _("- Added support for BDXL-TL 100GB media"));
-	 AboutText(box, _("- Optimized ecc generation when medium was previously read\n"));
+
+/*
+         AboutText(box, _("- Added support for BDXL-TL 100GB media"));
+         AboutText(box, _("- Optimized ecc generation when medium was previously read\n"));
+*/
+	 AboutText(box, _("<b>Unofficial version.</b>\n\n"
+			  "This is a modified version of the <b>0.79.6-5</b> Debian version,\n"
+			  "which is based on the 0.79.6 pre-release, with some enhancements.\n"
+			  "See the About box and changelog for more information.\n"
+			  "The warning message from the pre-release version is retained below.\n"));
 
 	 AboutText(box, _("<i>Please note:</i>\n"
 			  "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
