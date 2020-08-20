@@ -109,6 +109,7 @@
 #define BD_SL_SIZE      12219392
 #define BD_DL_SIZE	23652352
 #define BDXL_TL_SIZE    47305728
+#define BDXL_QL_SIZE    (128001769472/2048)
 
 /* Maximum accepted media sizes (in 2K sectors) */
 
@@ -167,12 +168,14 @@ typedef struct _GlobalClosure
    gint64 bdSize1;      /* Maximum 1-layer bd size (for augmented images) */
    gint64 bdSize2;      /* Maximum 2-layer bd size (for augmented images) */
    gint64 bdSize3;      /* Maximum 3-layer bdxl size (for augmented images) */
+   gint64 bdSize4;      /* Maximum 4-layer bdxl size (for augmented images) */
    gint64 savedCDSize;  /* Undo values for above */
    gint64 savedDVDSize1;
    gint64 savedDVDSize2;
    gint64 savedBDSize1;
    gint64 savedBDSize2;
    gint64 savedBDSize3;
+   gint64 savedBDSize4;
    gint64 mediumSize;   /* Maximum medium size (for augmented images) */
    int cacheMiB;        /* Cache setting for the parity codec, in megabytes */
    int prefetchSectors; /* Prefetch setting per encoder thread */

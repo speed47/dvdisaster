@@ -242,6 +242,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "bd-size1"))        { Closure->bdSize1 = Closure->savedBDSize1 = atoll(value); continue; }
       if(!strcmp(symbol, "bd-size2"))        { Closure->bdSize2 = Closure->savedBDSize2 = atoll(value); continue; }
       if(!strcmp(symbol, "bd-size3"))        { Closure->bdSize3 = Closure->savedBDSize3 = atoll(value); continue; }
+      if(!strcmp(symbol, "bd-size4"))        { Closure->bdSize4 = Closure->savedBDSize4 = atoll(value); continue; }
       if(!strcmp(symbol, "cache-size"))      { Closure->cacheMiB = atoi(value); continue; }
       if(!strcmp(symbol, "cd-size"))         { Closure->cdSize = Closure->savedCDSize = atoll(value); continue; }
       if(!strcmp(symbol, "codec-threads"))   { Closure->codecThreads = atoi(value); continue; }
@@ -353,6 +354,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "bd-size1:          %lld\n", (long long int)Closure->bdSize1);
    g_fprintf(dotfile, "bd-size2:          %lld\n", (long long int)Closure->bdSize2);
    g_fprintf(dotfile, "bd-size3:          %lld\n", (long long int)Closure->bdSize3);
+   g_fprintf(dotfile, "bd-size4:          %lld\n", (long long int)Closure->bdSize4);
    g_fprintf(dotfile, "cache-size:        %d\n", Closure->cacheMiB);
    g_fprintf(dotfile, "cd-size:           %lld\n", (long long int)Closure->cdSize);
    g_fprintf(dotfile, "codec-threads:     %d\n", Closure->codecThreads);
@@ -510,6 +512,7 @@ void InitClosure()
    Closure->bdSize1  = Closure->savedBDSize1  = BD_SL_SIZE;
    Closure->bdSize2  = Closure->savedBDSize2  = BD_DL_SIZE;
    Closure->bdSize3  = Closure->savedBDSize3  = BDXL_TL_SIZE;
+   Closure->bdSize4  = Closure->savedBDSize4  = BDXL_QL_SIZE;
 
 #ifndef CLI
    Closure->logString = g_string_sized_new(1024);

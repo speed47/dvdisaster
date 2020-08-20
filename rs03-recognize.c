@@ -419,7 +419,8 @@ int RS03RecognizeImage(Image *image)
       else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < BD_SL_SIZE)  layer_size = BD_SL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < BD_DL_SIZE)  layer_size = BD_DL_SIZE/GF_FIELDMAX;
-      else                                 layer_size = BDXL_TL_SIZE/GF_FIELDMAX; 
+      else if(image_sectors < BDXL_TL_SIZE)  layer_size = BDXL_TL_SIZE/GF_FIELDMAX;
+      else                                 layer_size = BDXL_QL_SIZE/GF_FIELDMAX; 
    }
 
    Verbose(".. trying layer size %lld\n", layer_size);

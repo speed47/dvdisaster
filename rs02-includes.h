@@ -85,12 +85,12 @@ typedef struct
    /*** Widgets in the Preferences window */
 
    GtkWidget *radio1A, *radio1B, *radio2A, *radio2B;
-   GtkWidget *cdButtonA, *dvdButton1A, *dvdButton2A, *bdButton1A, *bdButton2A, *bdButton3A;
-   GtkWidget *cdButtonB, *dvdButton1B, *dvdButton2B, *bdButton1B, *bdButton2B, *bdButton3B;
-   GtkWidget *cdUndoButtonA, *dvdUndoButton1A, *dvdUndoButton2A, *bdUndoButton1A, *bdUndoButton2A, *bdUndoButton3A;
-   GtkWidget *cdUndoButtonB, *dvdUndoButton1B, *dvdUndoButton2B, *bdUndoButton1B, *bdUndoButton2B, *bdUndoButton3B;
-   GtkWidget *cdEntryA, *dvdEntry1A, *dvdEntry2A, *bdEntry1A, *bdEntry2A, *bdEntry3A, *otherEntryA;
-   GtkWidget *cdEntryB, *dvdEntry1B, *dvdEntry2B, *bdEntry1B, *bdEntry2B, *bdEntry3B, *otherEntryB;
+   GtkWidget *cdButtonA, *dvdButton1A, *dvdButton2A, *bdButton1A, *bdButton2A, *bdButton3A, *bdButton4A;
+   GtkWidget *cdButtonB, *dvdButton1B, *dvdButton2B, *bdButton1B, *bdButton2B, *bdButton3B, *bdButton4B;
+   GtkWidget *cdUndoButtonA, *dvdUndoButton1A, *dvdUndoButton2A, *bdUndoButton1A, *bdUndoButton2A, *bdUndoButton3A, *bdUndoButton4A;
+   GtkWidget *cdUndoButtonB, *dvdUndoButton1B, *dvdUndoButton2B, *bdUndoButton1B, *bdUndoButton2B, *bdUndoButton3B, *bdUndoButton4B;
+   GtkWidget *cdEntryA, *dvdEntry1A, *dvdEntry2A, *bdEntry1A, *bdEntry2A, *bdEntry3A, *bdEntry4A, *otherEntryA;
+   GtkWidget *cdEntryB, *dvdEntry1B, *dvdEntry2B, *bdEntry1B, *bdEntry2B, *bdEntry3B, *bdEntry4B, *otherEntryB;
    GtkWidget *cacheScaleA, *cacheScaleB;
    LabelWithOnlineHelp *cacheLwoh;
 

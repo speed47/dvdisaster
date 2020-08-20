@@ -536,7 +536,9 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       lay->mediumCapacity = BD_SL_SIZE;        /* Single layered BD */
 	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8)
 	       lay->mediumCapacity = BD_DL_SIZE;        /* Double layered BD */
-	    else lay->mediumCapacity = BDXL_TL_SIZE;
+	    else if(get_roots(dataSectors, BDXL_TL_SIZE) >= 8)
+	       lay->mediumCapacity = BDXL_TL_SIZE;        /* Triple layered BDXL */
+	    else lay->mediumCapacity = BDXL_QL_SIZE;
 	 }
       }
 

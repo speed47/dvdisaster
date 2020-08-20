@@ -326,6 +326,8 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = BD_DL_SIZE;
 		      else if(!strcmp(optarg, "BDXL3") || !strcmp(optarg, "bdxl3"))
 			   Closure->mediumSize = BDXL_TL_SIZE;
+		      else if(!strcmp(optarg, "BDXL4") || !strcmp(optarg, "bdxl4"))
+			   Closure->mediumSize = BDXL_QL_SIZE;
 		      else 
 		      {  int len = strlen(optarg);
 			 if(strchr("0123456789", optarg[len-1]))

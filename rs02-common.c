@@ -420,7 +420,9 @@ RS02Layout *CalcRS02Layout(Image *image)
 	    lay->mediumCapacity = Closure->bdSize1;  /* Single layered BD */
       else if(image->sectorSize < Closure->bdSize2)
 	    lay->mediumCapacity = Closure->bdSize2;  /* Double layered BD */
-      else  lay->mediumCapacity = Closure->bdSize3;  /* Triple layered BDXL */
+      else if(image->sectorSize < Closure->bdSize3)
+	    lay->mediumCapacity = Closure->bdSize3;  /* Triple layered BDXL */
+      else  lay->mediumCapacity = Closure->bdSize4;  /* Quadruple layered BDXL */
    }
 
    lay->dataSectors      = image->sectorSize;
