@@ -178,6 +178,10 @@ function run_regtest()
 
      echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE 
      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +3  >>$NEWLOG 
+     ret=${PIPESTATUS[0]}
+     if [ $ret != 0 ]; then
+        echo "NON-ZERO EXIT STATUS: $ret" >>$NEWLOG
+     fi
 
      if ! test -r $REFLOG; then
 	 echo -e "FAIL\n$REFLOG missing in log file database"
