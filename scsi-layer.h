@@ -28,6 +28,11 @@
 #include <linux/cdrom.h>
 #endif
 
+#ifdef SYS_MINGW
+#include <windows.h>
+#include <winioctl.h>
+#endif
+
 #if defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
 #include <camlib.h>
 #endif
@@ -106,6 +111,8 @@ typedef struct _DeviceHandle
 #elif defined(SYS_FREEBSD) || defined(SYS_KFREEBSD)
    struct cam_device *camdev; /* camlib device handle */
    union ccb *ccb;
+#elif defined(SYS_MINGW)
+   HANDLE fd;                 /* Windows SPTI file handle for the device */
 #endif
 
   /*
@@ -225,6 +232,10 @@ typedef struct _DeviceHandle
  */
 
 DeviceHandle* OpenDevice(char*);
+
+#ifdef SYS_MINGW
+DeviceHandle* open_spti_device(char*);
+#endif
 
 int SendPacket(DeviceHandle*, unsigned char*, int, unsigned char*, int, Sense*, int);
 int SimulateSendPacket(DeviceHandle*, unsigned char*, int, unsigned char*, int, Sense*, int);

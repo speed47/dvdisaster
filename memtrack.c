@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef SYS_MINGW /* completely untested under Windows, and we don't need it for releases anyway */
+
 #define _GNU_SOURCE
 
 #if !defined(SYS_FREEBSD)   /* FreeBSD declares malloc() in stdlib.h */
@@ -85,7 +87,7 @@ void remember(void *ptr, int size, char *file, int line)
 
    g_mutex_lock(&phMutex);
 
-   hash_idx = (((long)ptr)>>3)&63;
+   hash_idx = (((long long)ptr)>>3)&63;
    if(phCnt[hash_idx] >= phMax[hash_idx])
    {  if(!phMax[hash_idx]) phMax[hash_idx] = 16;
       else                 phMax[hash_idx] *= 2;
@@ -348,3 +350,4 @@ void check_memleaks(void)
    else g_printf("dvdisaster: No memory leaks found.\n");
 }
 
+#endif

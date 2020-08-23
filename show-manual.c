@@ -23,11 +23,22 @@
 
 #include "dvdisaster.h"
 
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD)
 #include <sys/wait.h>
+#endif
+
+#ifdef SYS_MINGW
+#include "windows.h"
+#include "shellapi.h"
+#endif
 
 /***
  *** Ask user to specify his viewer
  ***/
+
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD)
 
 #define SEARCH_BUTTON 1
 
@@ -141,6 +152,7 @@ static void viewer_dialog(char *path)
 
    gtk_widget_show_all(dialog);
 }
+#endif /* SYS_ unix-like */
 
 /***
  *** Show the manual in an external viewer
@@ -164,6 +176,9 @@ static void msg_destroy_cb(GtkWidget *widget, gpointer data)
 
    bi->msg = NULL; 
 }
+
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD)
 
 /* 
  * The following list of viewers 
@@ -234,11 +249,34 @@ static gboolean viewer_timeout_func(gpointer data)
 
    return bi->seconds > 60 ? FALSE : TRUE;
 }
+#endif /* SYS_ unix-like */
+
+#ifdef SYS_MINGW
+static gboolean viewer_timeout_func(gpointer data)
+{  viewer_info *bi = (viewer_info*)data;
+   
+   bi->seconds++;
+
+   if(bi->seconds >= 10)
+   {  if(bi->msg)
+      {  gtk_widget_destroy(bi->msg);
+         bi->msg = NULL;
+      }
+      //if(bi->url) g_free(bi->url);
+      g_free(bi);
+      return FALSE;
+   }
+
+   return TRUE;
+}
+#endif /* SYS_MINGW */
 
 /*
  * Invoke the viewer
  */
 
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
+    defined(SYS_NETBSD) || defined(SYS_HURD)
 static void try_viewer(viewer_info *bi)
 {  pid_t pid;
 
@@ -274,6 +312,8 @@ static void try_viewer(viewer_info *bi)
       _exit(110); /* couldn't execute */
    }
 }
+#endif /* SYS_ unix-like */
+
 
 void ShowPDF(char *target)
 {  viewer_info *bi = g_malloc0(sizeof(viewer_info));
@@ -311,6 +351,15 @@ void ShowPDF(char *target)
 
    /* Try the first viwer */
 
+#ifdef SYS_MINGW
+   /* Okay, Billy wins big time here ;-) */
+
+   ShellExecute(NULL, "open", bi->path, NULL, NULL, SW_SHOWNORMAL);
+   g_timeout_add(1000, viewer_timeout_func, (gpointer)bi);
+#endif
+
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_DARWIN) || defined(SYS_NETBSD)
    viewer_index = 0;
    try_viewer(bi);
+#endif
 }

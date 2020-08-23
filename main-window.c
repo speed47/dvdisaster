@@ -61,7 +61,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
    if(action != ACTION_STOP)
    {  
       /* Clear the log buffer, request new log file time stamp */
-      
       if(action != ACTION_CREATE_CONT)
       {  g_mutex_lock(Closure->logLock);
 	 g_string_truncate(Closure->logString, 0);
@@ -69,7 +68,6 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 g_mutex_unlock(Closure->logLock);
 	 Closure->logFileStamped = FALSE;
       }
-
       /* Make sure we're using the current file selections */
    
       g_free(Closure->imageName);

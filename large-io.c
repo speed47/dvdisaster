@@ -109,6 +109,9 @@ LargeFile* LargeOpen(char *name, int flags, mode_t mode)
 #ifdef HAVE_O_LARGEFILE
    flags |= O_LARGEFILE;
 #endif
+#ifdef SYS_MINGW
+   flags |= O_BINARY;
+#endif
 
    cp_path = os_path(name);
    if(!cp_path) 

@@ -79,4 +79,4 @@ int ProbeCacheLineSize()
 
 #endif
 
-
+/* TODO MINGW: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-cache_descriptor */

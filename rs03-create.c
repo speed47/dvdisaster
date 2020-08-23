@@ -24,6 +24,10 @@
 
 #include "rs03-includes.h"
 
+#ifdef SYS_MINGW
+#include <windows.h>
+#endif
+
 /* Needed version must be consistent between CRC blocks and ECC headers
    since ECC headers may be reconstructed from CRC blocks. */
 
@@ -1220,7 +1224,15 @@ static void create_reed_solomon(ecc_closure *ec)
    ec->chunkBytes  = 2048*Closure->prefetchSectors;
    ec->chunkSize   = Closure->prefetchSectors;
 
+#ifdef SYS_MINGW
+   {
+      SYSTEM_INFO si;
+      GetSystemInfo(&si);
+      ec->pageSize = si.dwPageSize;
+   }
+#else
    ec->pageSize = sysconf(_SC_PAGE_SIZE);
+#endif
 
    /*** Allocate stuff shared by all threads */
 

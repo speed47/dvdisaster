@@ -22,6 +22,19 @@
 
 #include "dvdisaster.h"
 
+
+/*
+ * Those are now declared as extern in dvdisaster.h,
+ * and as such are accessible from everywhere.
+ * MinGW didn't link these being declared directly
+ * in dvdisaster.h (ended up having one copy of each
+ * struct for every .c including dvdisaster.h)
+ */
+struct _RawBuffer *rawbuffer_forward;
+struct _DefectiveSectorHeader *dsh_forward;
+struct _DeviceHandle *dh_forward;
+struct _Image *dh_image;
+
 /*
  * The all-famous main() loop 
  */

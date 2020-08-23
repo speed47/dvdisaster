@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-19 18:17+0200\n"
+"POT-Creation-Date: 2020-08-23 11:30+0200\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-Basepath: d:\\Preklady\\dvdisaster\\cvs\n"
 "X-Poedit-SearchPath-0: dvdisaster\n"
 
-#: closure.c:342
+#: closure.c:343
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -35,15 +35,15 @@ msgstr ""
 "# každém spuštění programu.\n"
 "\n"
 
-#: closure.c:552
+#: closure.c:560
 msgid "medium.iso"
 msgstr "disk.iso"
 
-#: closure.c:553
+#: closure.c:561
 msgid "medium.ecc"
 msgstr "disk.ecc"
 
-#: closure.c:554
+#: closure.c:562
 msgid "sector-"
 msgstr "sektor-"
 
@@ -62,15 +62,15 @@ msgstr ""
 #: debug.c:103 debug.c:191 debug.c:239 debug.c:363 debug.c:707 debug.c:807
 #: debug.c:850 debug.c:1181 debug.c:1189 debug.c:1266 rs01-common.c:175
 #: rs02-common.c:239 rs02-create.c:377 rs02-create.c:1032 rs02-fix.c:414
-#: rs02-verify.c:404 rs03-common.c:340 rs03-create.c:749 rs03-create.c:774
-#: rs03-recognize.c:549
+#: rs02-verify.c:404 rs03-common.c:340 rs03-create.c:756 rs03-create.c:781
+#: rs03-recognize.c:550
 #, c-format
 msgid "Failed seeking to sector %lld in image: %s"
 msgstr "Nezdařil se přechod na sektor %lld bitové kopie: %s"
 
 #: debug.c:111 debug.c:196 debug.c:243 debug.c:368 debug.c:545 debug.c:662
 #: debug.c:713 debug.c:1193 debug.c:1270 debug.c:1310 rs02-create.c:400
-#: rs02-create.c:426 rs02-create.c:1035 rs03-create.c:754 rs03-create.c:778
+#: rs02-create.c:426 rs02-create.c:1035 rs03-create.c:761 rs03-create.c:785
 #: udf.c:830 udf.c:888 udf.c:945 udf.c:958 udf.c:963 udf.c:966 udf.c:969
 #: udf.c:972 udf.c:975 udf.c:978
 #, c-format
@@ -121,7 +121,7 @@ msgstr "Vygeneruje až %d nahodilých opravitelných výmazů.\n"
 #: debug.c:1230 raw-editor.c:364 read-adaptive.c:73 read-adaptive.c:93
 #: read-adaptive.c:1528 read-adaptive.c:1564 read-linear.c:289
 #: read-linear.c:291 read-linear.c:327 read-linear.c:329 rs01-create.c:303
-#: rs03-create.c:1337
+#: rs03-create.c:1352
 #, c-format
 msgid ""
 "Can't open %s:\n"
@@ -186,9 +186,9 @@ msgstr "Nová délka musí být v rozsahu [0..%lld].\n"
 msgid "Truncating image to %lld sectors.\n"
 msgstr "Probíhá zkrácení bitové kopie na %lld sektorů.\n"
 
-#: debug.c:579 read-linear.c:1471 rs01-fix.c:230 rs01-fix.c:253 rs01-fix.c:275
+#: debug.c:579 read-linear.c:1472 rs01-fix.c:230 rs01-fix.c:253 rs01-fix.c:275
 #: rs01-fix.c:315 rs02-create.c:117 rs02-create.c:171 rs02-fix.c:268
-#: rs02-fix.c:288 rs02-fix.c:306 rs03-create.c:249 rs03-create.c:338
+#: rs02-fix.c:288 rs02-fix.c:306 rs03-create.c:256 rs03-create.c:345
 #: rs03-fix.c:298 rs03-fix.c:337 rs03-fix.c:359 rs03-fix.c:379
 #, c-format
 msgid "Could not truncate %s: %s\n"
@@ -242,7 +242,7 @@ msgstr "Nahrazeno %lld indikátorů \"nečitelných sektorů\".\n"
 
 #: debug.c:811 debug.c:854 debug.c:1185 debug.c:1252 debug.c:1256 debug.c:1306
 #: rs01-common.c:191 rs02-common.c:244 rs02-create.c:229 rs02-fix.c:417
-#: rs03-common.c:345 rs03-recognize.c:554
+#: rs03-common.c:345 rs03-recognize.c:555
 #, c-format
 msgid "Failed reading sector %lld in image: %s"
 msgstr "Čtení sektoru %lld bitové kopie %s se nezdařilo"
@@ -401,83 +401,83 @@ msgstr ""
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:147 dvdisaster.c:159
+#: dvdisaster.c:160 dvdisaster.c:172
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:340
+#: dvdisaster.c:355
 msgid "-o/--ecc-target expects 'file' or 'image'"
 msgstr "-o/--ecc-target očekává 'file' nebo 'image'"
 
-#: dvdisaster.c:366
+#: dvdisaster.c:381
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--threads musí být 1..%d\n"
 
-#: dvdisaster.c:380
+#: dvdisaster.c:395
 msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
 msgstr ""
 
-#: dvdisaster.c:382
+#: dvdisaster.c:397
 #, c-format
 msgid "--cache-size maximum is %dMiB."
 msgstr ""
 
-#: dvdisaster.c:405
+#: dvdisaster.c:420
 msgid "--encoding-algorithm: SSE2 not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:409
+#: dvdisaster.c:424
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, SSE2"
 msgstr ""
 
-#: dvdisaster.c:416
+#: dvdisaster.c:431
 msgid "--encoding-algorithm: AltiVec not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:420
+#: dvdisaster.c:435
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"
 msgstr ""
 
-#: dvdisaster.c:423
+#: dvdisaster.c:438
 msgid "--encoding-algorithm: valid types are 32bit, 64bit"
 msgstr ""
 
-#: dvdisaster.c:432
+#: dvdisaster.c:447
 msgid "--encoding-io-strategy: mmap not supported on this OS"
 msgstr ""
 
-#: dvdisaster.c:436
+#: dvdisaster.c:451
 msgid "--encoding-io-strategy: valid types are readwrite and mmap"
 msgstr ""
 
-#: dvdisaster.c:446
+#: dvdisaster.c:461
 msgid "Valid args for --driver: sg,cdrom"
 msgstr "Platné parametry pro --driver: sg,cdrom"
 
-#: dvdisaster.c:448
+#: dvdisaster.c:463
 msgid "--driver is only supported on GNU/Linux"
 msgstr "--driver je podporován pouze v GNU/Linux"
 
-#: dvdisaster.c:456
+#: dvdisaster.c:471
 msgid "--fixed-speed-values is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:500
+#: dvdisaster.c:515
 #, c-format
 msgid "--prefetch-sectors must be in range 32...%s"
 msgstr ""
 
-#: dvdisaster.c:554
+#: dvdisaster.c:569
 msgid "--set-version is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:661
+#: dvdisaster.c:676
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? neplatná návratová hodnota getopt %d\n"
 
-#: dvdisaster.c:754 main-window.c:151
+#: dvdisaster.c:769 main-window.c:149
 #, c-format
 msgid ""
 "\n"
@@ -488,7 +488,7 @@ msgstr ""
 "Metoda %s není k dispozici.\n"
 "Pro zobrazení seznamu metod použijte -m bez parametrů.\n"
 
-#: dvdisaster.c:765 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1305
+#: dvdisaster.c:780 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1320
 #, c-format
 msgid ""
 "\n"
@@ -497,25 +497,25 @@ msgstr ""
 "\n"
 "Otevírání %s"
 
-#: dvdisaster.c:772 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
-#: rs03-create.c:342 rs03-create.c:1320
+#: dvdisaster.c:787 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
+#: rs03-create.c:349 rs03-create.c:1335
 #, c-format
 msgid ": %lld medium sectors.\n"
 msgstr ": %lld sektorů disku.\n"
 
-#: dvdisaster.c:773 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
-#: rs03-create.c:343 rs03-create.c:1321
+#: dvdisaster.c:788 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
+#: rs03-create.c:350 rs03-create.c:1336
 #, c-format
 msgid ": %lld medium sectors and %d bytes.\n"
 msgstr ": %lld sektorů disku a %d bajtů.\n"
 
-#: dvdisaster.c:800 main-window.c:209
+#: dvdisaster.c:815 main-window.c:207
 msgid "RS01 method not available for comparing files."
 msgstr "Metoda RS01 není pro porovnání souborů dostupná."
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:894
+#: dvdisaster.c:909
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -529,7 +529,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: dvdisaster.c:903
+#: dvdisaster.c:918
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -546,23 +546,23 @@ msgstr ""
 "  -e,--ecc    eccsoubor - název souboru ECC          (výchozí: disk.ecc)\n"
 "  -o,--ecc-target [file|image] - kam uložit ecc data pro RS03\n"
 
-#: dvdisaster.c:913
+#: dvdisaster.c:928
 msgid "Tweaking options (see manual before using!)\n"
 msgstr "Možnosti optimalizace (před použitím si přečtěte návod!)\n"
 
-#: dvdisaster.c:914
+#: dvdisaster.c:929
 msgid "  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"
 msgstr "  -a,--assume x,y,...    - předpokl. bitovou kopii rozšířenou kodeky x,y,...\n"
 
-#: dvdisaster.c:915
+#: dvdisaster.c:930
 msgid "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 msgstr "  -j,--jump n            - po chybě čtení přeskočit n sektorů (výchozí: 16)\n"
 
-#: dvdisaster.c:916
+#: dvdisaster.c:931
 msgid "  -m n                   - list/select error correction methods (default: RS01)\n"
 msgstr "  -m n                   - vypsat/vybrat metody opravy chyb (výchozí: RS01)\n"
 
-#: dvdisaster.c:917
+#: dvdisaster.c:932
 #, c-format
 msgid ""
 "  -n,--redundancy n%%     - error correction data redundancy\n"
@@ -571,212 +571,212 @@ msgstr ""
 "  -n,--redundancy n%%     - redundance souboru pro opravu chyb\n"
 "                           povolené hodnoty závisí na kodeku (viz návod)\n"
 
-#: dvdisaster.c:919
+#: dvdisaster.c:934
 msgid "  -v,--verbose           - more diagnostic messages\n"
 msgstr "  -v,--verbose           - podrobnější diagnostický výpis\n"
 
-#: dvdisaster.c:920
+#: dvdisaster.c:935
 msgid "  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"
 msgstr "  -x,--threads n         - pro kódování/dekódování použít n vláken (pokud to kodek podporuje)\n"
 
-#: dvdisaster.c:921
+#: dvdisaster.c:936
 msgid "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 msgstr "  --adaptive-read        - použít optimalizovanou strategii čtení poškozených disků\n"
 
-#: dvdisaster.c:922
+#: dvdisaster.c:937
 msgid "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 msgstr "  --auto-suffix          - automaticky přidá k souborům přípony ISO a ECC\n"
 
-#: dvdisaster.c:923
+#: dvdisaster.c:938
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 msgstr ""
 
-#: dvdisaster.c:924
+#: dvdisaster.c:939
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
 msgstr "  --dao                  - předpokl. DAO disk; nezkracovat konec bitové kopie\n"
 
-#: dvdisaster.c:925
+#: dvdisaster.c:940
 msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr "  --defective-dump d     - adresář pro ukládání nezpracovaných sektorů\n"
 
-#: dvdisaster.c:927
+#: dvdisaster.c:942
 msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
 msgstr "  --driver=sg/cdrom      - použít (výchozí) sg nebo alternativní cdrom ovladač (viz návod!)\n"
 
-#: dvdisaster.c:929
+#: dvdisaster.c:944
 msgid "  --eject                - eject medium after successful read\n"
 msgstr "  --eject                - po úspěšném načtení vysune disk\n"
 
-#: dvdisaster.c:930
+#: dvdisaster.c:945
 msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
 msgstr ""
 
-#: dvdisaster.c:931
+#: dvdisaster.c:946
 msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
 msgstr ""
 
-#: dvdisaster.c:932
+#: dvdisaster.c:947
 msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 msgstr "  --fill-unreadable n    - vyplní nečitelné sektory bajtem n\n"
 
-#: dvdisaster.c:933
+#: dvdisaster.c:948
 msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
 msgstr "  --ignore-fatal-sense   - pokračovat ve čtení i po potenciálně neopravitelné chybě\n"
 
-#: dvdisaster.c:934
+#: dvdisaster.c:949
 msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
 msgstr "  --ignore-iso-size      - ignoruje údaj o velikosti bitové kopie z ISO/UDF (nebezpečné - čtěte manuál!)\n"
 
-#: dvdisaster.c:935
+#: dvdisaster.c:950
 msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
 msgstr "  --internal-rereads n   - mechanika může před nahlášením chyby zkusit n opakovaných čtení\n"
 
-#: dvdisaster.c:936
+#: dvdisaster.c:951
 msgid "  --medium-info          - print info about medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:937
+#: dvdisaster.c:952
 msgid "  --no-progress          - do not print progress information\n"
 msgstr ""
 
-#: dvdisaster.c:938
+#: dvdisaster.c:953
 msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
 msgstr "  --old-ds-marker        - použít označení chybějících sektorů kompatibilní s dvdisaster <= 0.70\n"
 
-#: dvdisaster.c:939
+#: dvdisaster.c:954
 msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
 msgstr ""
 
-#: dvdisaster.c:940
+#: dvdisaster.c:955
 msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
 msgstr "  --raw-mode n           - režim přímého čtení pro CD disky (20 nebo 21)\n"
 
-#: dvdisaster.c:941
+#: dvdisaster.c:956
 msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
 msgstr "  --read-attempts n-m    - zkusit n až m opakovaných čtení poškozeného sektoru\n"
 
-#: dvdisaster.c:942
+#: dvdisaster.c:957
 msgid "  --read-medium n        - read the whole medium up to n times\n"
 msgstr "  --read-medium n        - celý disk zkusit číst až n krát\n"
 
-#: dvdisaster.c:943
+#: dvdisaster.c:958
 msgid "  --read-raw             - performs read in raw mode if possible\n"
 msgstr "  --read-raw             - pokud je to možné, provede čtení v přímém režimu\n"
 
-#: dvdisaster.c:944
+#: dvdisaster.c:959
 msgid "  --regtest              - tweaks output for compatibility with regtests\n"
 msgstr ""
 
-#: dvdisaster.c:945
+#: dvdisaster.c:960
 msgid "  --resource-file p      - get resource file from given path\n"
 msgstr ""
 
-#: dvdisaster.c:946
+#: dvdisaster.c:961
 msgid "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 msgstr "  --speed-warning n      - vypíše upozornění pokud se rychlost změní o více než n procent\n"
 
-#: dvdisaster.c:947
+#: dvdisaster.c:962
 msgid "  --spinup-delay n       - wait n seconds for drive to spin up\n"
 msgstr "  --spinup-delay n       - počká n sekund na roztočení mechaniky\n"
 
-#: dvdisaster.c:951
+#: dvdisaster.c:966
 msgid "Debugging options (purposefully undocumented and possibly harmful)\n"
 msgstr "Možnosti ladění (záměrně nezdokumentované a eventuálně škodlivé)\n"
 
-#: dvdisaster.c:952
+#: dvdisaster.c:967
 msgid "  --debug           - enables the following options\n"
 msgstr "  --debug           - povolí použití následujících možností\n"
 
-#: dvdisaster.c:953
+#: dvdisaster.c:968
 msgid "  --byteset s,i,b   - set byte i in sector s to b\n"
 msgstr "  --byteset s,i,b   - nastaví bajt i sektoru s na b\n"
 
-#: dvdisaster.c:954
+#: dvdisaster.c:969
 msgid "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 msgstr "  --cdump           - vytvoří výpis ve formátu C #include místo hexadecimálního\n"
 
-#: dvdisaster.c:955
+#: dvdisaster.c:970
 msgid "  --compare-images a,b  - compare sectors in images a and b\n"
 msgstr "  --compare-images a,b  - porovná sektory bitových kopií a a b\n"
 
-#: dvdisaster.c:956
+#: dvdisaster.c:971
 msgid "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
 msgstr "  --copy-sector a,n,b,m - zkopíruje sektor n bitové kopie a do sektoru m bitové kopie b\n"
 
-#: dvdisaster.c:957
+#: dvdisaster.c:972
 msgid "  --erase sector    - erase the given sector\n"
 msgstr "  --erase sector    - smaže daný sektor\n"
 
-#: dvdisaster.c:958
+#: dvdisaster.c:973
 msgid "  --erase n-m       - erase sectors n - m, inclusively\n"
 msgstr "  --erase n-m       - smaže sektory n - m, včetně\n"
 
-#: dvdisaster.c:959
+#: dvdisaster.c:974
 msgid "  --fixed-speed-values - output fixed speed values for better output diffing\n"
 msgstr ""
 
-#: dvdisaster.c:960
+#: dvdisaster.c:975
 msgid "  --marked-image n  - create image with n marked random sectors\n"
 msgstr "  --marked-image n  - vytvoří bitovou kopii s n označenými náhodnými sektory\n"
 
-#: dvdisaster.c:961
+#: dvdisaster.c:976
 msgid "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
 msgstr "  --merge-images a,b  - sloučí bitové kopie a a b (a obdrží sektory z b)\n"
 
-#: dvdisaster.c:962
+#: dvdisaster.c:977
 msgid "  --random-errors e - seed image with (correctable) random errors\n"
 msgstr ""
 
-#: dvdisaster.c:963
+#: dvdisaster.c:978
 msgid "  --random-image n  - create image with n sectors of random numbers\n"
 msgstr "  --random-image n  - vytvoří bitovou kopii s n sektory náhodných čísel\n"
 
-#: dvdisaster.c:964
+#: dvdisaster.c:979
 msgid "  --random-seed n   - random seed for built-in random number generator\n"
 msgstr "  --random-seed n   - základ pro zabudovaný generátor náhodných čísel\n"
 
-#: dvdisaster.c:965
+#: dvdisaster.c:980
 msgid "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
 msgstr "  --raw-sector n    - zobrazí hexadecimální výpis daného nezpracovaného sektoru\n"
 
-#: dvdisaster.c:966
+#: dvdisaster.c:981
 msgid "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
 msgstr "  --read-sector n   - zobrazí hexadecimální výpis daného sektoru\n"
 
-#: dvdisaster.c:967
+#: dvdisaster.c:982
 msgid "  --screen-shot     - useful for generating screen shots\n"
 msgstr "  --screen-shot     - užitečné pro vytváření snímků obrazovky\n"
 
-#: dvdisaster.c:968
+#: dvdisaster.c:983
 msgid "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
 msgstr "  --send-cdb arg    - vykoná na mechanice dané cdb; při špatném použití může zabít systém\n"
 
-#: dvdisaster.c:969
+#: dvdisaster.c:984
 msgid "  --set-version     - set program version for debugging purposes (dangerous!)\n"
 msgstr ""
 
-#: dvdisaster.c:970
+#: dvdisaster.c:985
 msgid "  --show-header n   - assumes given sector is a ecc header and prints it\n"
 msgstr ""
 
-#: dvdisaster.c:971
+#: dvdisaster.c:986
 msgid "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 msgstr "  --show-sector n   - zobrazí hexadecimální výpis daného sektoru bitové kopie\n"
 
-#: dvdisaster.c:972
+#: dvdisaster.c:987
 msgid "  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"
 msgstr ""
 
-#: dvdisaster.c:973
+#: dvdisaster.c:988
 #, c-format
 msgid "  --sim-defects n   - simulate n%% defective sectors on medium\n"
 msgstr "  --sim-defects n   - nasimuluje na disku n%% poškozených sektorů\n"
 
-#: dvdisaster.c:974
+#: dvdisaster.c:989
 msgid "  --truncate n      - truncates image to n sectors\n"
 msgstr "  --truncate n      - zkrátí bitovou kopii na n sektorů\n"
 
-#: dvdisaster.c:975
+#: dvdisaster.c:990
 msgid ""
 "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n"
 "\n"
@@ -784,7 +784,7 @@ msgstr ""
 "  --zero-unreadable - nahradit značky pro \"nečitelné sektory\" nulami\n"
 "\n"
 
-#: dvdisaster.c:1005
+#: dvdisaster.c:1020
 msgid "Optical drive 52X FW 1.02"
 msgstr "Optická mechanika 52X FW 1.02"
 
@@ -843,7 +843,7 @@ msgstr ""
 "<big>GNU General Public License</big>\n"
 "<i>Licenční podmínky aplikace dvdisaster.</i>"
 
-#: help-dialogs.c:477
+#: help-dialogs.c:495
 #, c-format
 msgid ""
 "File\n"
@@ -854,7 +854,7 @@ msgstr ""
 "%s\n"
 "neexistuje"
 
-#: help-dialogs.c:487
+#: help-dialogs.c:505
 #, c-format
 msgid ""
 "File\n"
@@ -865,7 +865,7 @@ msgstr ""
 "%s\n"
 "není dostupný"
 
-#: help-dialogs.c:499
+#: help-dialogs.c:517
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
@@ -873,11 +873,11 @@ msgstr ""
 "\n"
 "<- Chyba: Textový soubor byl zkrácen"
 
-#: help-dialogs.c:568
+#: help-dialogs.c:586
 msgid "windowtitle|Modifying dvdisaster"
 msgstr "Úpravy dvdisaster"
 
-#: help-dialogs.c:569
+#: help-dialogs.c:587
 msgid ""
 "<big>Modifying dvdisaster</big>\n"
 "<i>Your changes are not ours.</i>"
@@ -885,21 +885,23 @@ msgstr ""
 "<big>Úpravy dvdisaster</big>\n"
 "<i>Vaše úpravy nejsou naše.</i>"
 
-#: help-dialogs.c:708
+#: help-dialogs.c:727
 msgid "windowtitle|About dvdisaster"
 msgstr "O aplikaci dvdisaster"
 
-#: help-dialogs.c:728
+#: help-dialogs.c:747
 msgid ""
-"Modified version Copyright 2017 (please fill in - [directions])\n"
+"[Modified version]\n"
+"Copyright 2019-2020 Stephane Lesimple\n"
+"Copyright 2005-2017 Debian Optical Media Tools Team\n"
 "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
 
-#: help-dialogs.c:732 misc.c:213
+#: help-dialogs.c:753 misc.c:213
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
 
-#: help-dialogs.c:739
+#: help-dialogs.c:760
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -911,7 +913,7 @@ msgstr ""
 "Vytvoří data pro opravu chyb, která je možné použít k obnovení\n"
 "nečitelných sektorů, pokud později dojde k poškození disku.\n"
 
-#: help-dialogs.c:744
+#: help-dialogs.c:765
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -921,23 +923,18 @@ msgstr ""
 "Jde o svobodný software a můžete jej šířit za dodržení\n"
 "podmínek [GNU General Public License].\n"
 
-#: help-dialogs.c:750
+#: help-dialogs.c:771
 msgid ""
 "\n"
-"This program is <b>not the original</b>. It is based on the\n"
-"source code of dvdisaster, but contains third-party changes.\n"
+"This version is <b>not the original</b>. It has been patched\n"
+"for Debian to support DVD-ROMs (with and without encryption),\n"
+"and subsequently patched again to support a CLI-only build, among other things.\n"
 "\n"
-"Please do not bother the original authors of dvdisaster\n"
-"([www.dvdisaster.org]) about issues with this version.\n"
+"Please do not bother the original authors of dvdisaster nor the Debian maintainer\n"
+"but submit bugreports against [GitHub] instead.\n"
 msgstr ""
-"\n"
-"Tento program <b>není originál</b>. Je založen na zdrojovém\n"
-"kódu dvdisaster, ale obsahuje úpravy třetí strany.\n"
-"\n"
-"Prosím neobtěžujte originální autory dvdisaster\n"
-"([www.dvdisaster.org]) problémy s touto verzí.\n"
 
-#: help-dialogs.c:765
+#: help-dialogs.c:787
 msgid ""
 "\n"
 "e-mail: carsten@dvdisaster.org   -or-   cgnoerlich@fsfe.org"
@@ -945,7 +942,7 @@ msgstr ""
 "\n"
 "e-mail: carsten@dvdisaster.org   -nebo-   cgnoerlich@fsfe.org"
 
-#: help-dialogs.c:767
+#: help-dialogs.c:789
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -982,7 +979,7 @@ msgstr ""
 "Není k dispozici soubor pro opravu chyb.\n"
 "V bitové kopii nebyla rozpoznána žádná data pro opravu chyb.\n"
 
-#: large-io.c:228
+#: large-io.c:232
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -997,12 +994,12 @@ msgstr ""
 "\n"
 "Poté co uvolníte nějaké místo, můžete operaci zopakovat."
 
-#: main-window.c:68
+#: main-window.c:67
 #, c-format
 msgid "log: %s\n"
 msgstr ""
 
-#: main-window.c:95
+#: main-window.c:93
 msgid ""
 "The .iso image and error correction file\n"
 "must not be the same file!\n"
@@ -1018,7 +1015,7 @@ msgstr ""
 "pro opravu chyb, ponechejte název souboru pro\n"
 "opravu chyb prázdný."
 
-#: main-window.c:105
+#: main-window.c:103
 msgid ""
 "The error correction file type must not be \".iso\".\n"
 "\n"
@@ -1032,91 +1029,91 @@ msgstr ""
 "ISO rozšířenou o data pro opravu chyb, ponechejte\n"
 "název souboru pro opravu chyb prázdný."
 
-#: main-window.c:175
+#: main-window.c:173
 msgid "Internal error: No suitable method for repairing image."
 msgstr ""
 
-#: main-window.c:277
+#: main-window.c:275
 msgid "button|Read"
 msgstr "Načíst"
 
-#: main-window.c:280
+#: main-window.c:278
 msgid "tooltip|Read Image"
 msgstr "Vytvořit bitovou kopii"
 
-#: main-window.c:280
+#: main-window.c:278
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
 msgstr ""
 
-#: main-window.c:294
+#: main-window.c:292
 msgid "button|Create"
 msgstr "Vytvořit"
 
-#: main-window.c:297
+#: main-window.c:295
 msgid "tooltip|Create error correction data"
 msgstr "Vytvořit data pro opravu"
 
-#: main-window.c:297
+#: main-window.c:295
 msgid "Creates error correction data. Requires an image file."
 msgstr "Vytvoří data pro opravu chyb. Vyžaduje soubor bitové kopie."
 
-#: main-window.c:301
+#: main-window.c:299
 msgid "button|Scan"
 msgstr "Zkontrolovat"
 
-#: main-window.c:304
+#: main-window.c:302
 msgid "tooltip|Scan medium"
 msgstr "Zkontrolovat disk"
 
-#: main-window.c:304
+#: main-window.c:302
 msgid "Scans medium for unreadable sectors."
 msgstr "Zkontroluje čitelnost disku."
 
-#: main-window.c:308
+#: main-window.c:306
 msgid "button|Fix"
 msgstr "Opravit"
 
-#: main-window.c:311
+#: main-window.c:309
 msgid "tooltip|Repair image"
 msgstr "Opravit bitovou kopii"
 
-#: main-window.c:311
+#: main-window.c:309
 msgid "Repairs an image. Requires an image file and error correction data."
 msgstr "Opraví bitovou kopii. Vyžaduje soubor bitové kopie a data pro opravu chyb."
 
-#: main-window.c:315
+#: main-window.c:313
 msgid "button|Verify"
 msgstr "Ověřit"
 
-#: main-window.c:318
+#: main-window.c:316
 msgid "tooltip|Consistency check"
 msgstr "Ověřit konzistenci"
 
-#: main-window.c:318
+#: main-window.c:316
 msgid "Tests consistency of error correction data and image file."
 msgstr "Otestuje konzistenci dat pro opravu chyb a souboru bitové kopie."
 
-#: main-window.c:322
+#: main-window.c:320
 msgid "button|Stop"
 msgstr "Zastavit"
 
-#: main-window.c:325
+#: main-window.c:323
 msgid "tooltip|Abort action"
 msgstr "Přerušit akci"
 
-#: main-window.c:325
+#: main-window.c:323
 msgid "Aborts an ongoing action."
 msgstr "Přeruší probíhající akci."
 
-#: main-window.c:482
+#: main-window.c:480
 msgid "tooltip|Protocol for current action"
 msgstr "Záznam výpisu probíhající akce"
 
-#: main-window.c:483
+#: main-window.c:481
 msgid "Displays additional information created during the current or last action."
 msgstr "Zobrazí další informace vypsané v průběhu probíhající nebo předchozích akcí."
 
-#: main-window.c:492
+#: main-window.c:490
 msgid "View log"
 msgstr "Zobrazit záznam"
 
@@ -1140,7 +1137,7 @@ msgstr "doplnitelný"
 msgid "finalized"
 msgstr "uzavřený"
 
-#: medium-info.c:163 scsi-layer.c:98
+#: medium-info.c:163 scsi-layer.c:100
 msgid "unknown"
 msgstr "neznámý"
 
@@ -1215,7 +1212,7 @@ msgstr "Výběr mechaniky"
 msgid "Drive:"
 msgstr "Mechanika:"
 
-#: medium-info.c:430 menubar.c:489
+#: medium-info.c:430 menubar.c:493
 msgid "No drives found"
 msgstr "Nebyly nalezeny žádné mechaniky"
 
@@ -1235,7 +1232,7 @@ msgstr "Typ disku:"
 msgid "Book type:"
 msgstr "Book type:"
 
-#: medium-info.c:467 scsi-layer.c:2691
+#: medium-info.c:467 scsi-layer.c:2703
 msgid "Manuf.-ID:"
 msgstr "ID výrobce:"
 
@@ -1279,11 +1276,11 @@ msgstr "Velikost rozšířené bitové kopie:"
 msgid "dvdisaster version:"
 msgstr "Verze dvdisaster:"
 
-#: menubar.c:127
+#: menubar.c:131
 msgid "windowtitle|Change log"
 msgstr "Seznam změn"
 
-#: menubar.c:128
+#: menubar.c:132
 msgid ""
 "<big>Change log</big>\n"
 "<i>Major differences from earlier program versions.</i>"
@@ -1291,11 +1288,11 @@ msgstr ""
 "<big>Seznam změn</big>\n"
 "<i>Seznam změn pro jednotlivé verze programu.</i>"
 
-#: menubar.c:134
+#: menubar.c:138
 msgid "windowtitle|Credits"
 msgstr "Poděkování"
 
-#: menubar.c:135
+#: menubar.c:139
 msgid ""
 "<big>Credits</big>\n"
 "<i>Thanks go out to...</i>"
@@ -1303,11 +1300,11 @@ msgstr ""
 "<big>Poděkování</big>\n"
 "<i>Poděkování náleží...</i>"
 
-#: menubar.c:141
+#: menubar.c:145
 msgid "windowtitle|To do list"
 msgstr "Seznam úkolů"
 
-#: menubar.c:142
+#: menubar.c:146
 msgid ""
 "<big>To do list</big>\n"
 "<i>A sneak preview of coming features ... perhaps ;-)</i>"
@@ -1315,135 +1312,135 @@ msgstr ""
 "<big>Seznam úkolů</big>\n"
 "<i>Letmý přehled nadcházejících vlastností ... možná ;-)</i>"
 
-#: menubar.c:209
+#: menubar.c:213
 msgid "menu|Select Image"
 msgstr "Vybrat bitovou kopii"
 
-#: menubar.c:210
+#: menubar.c:214
 msgid "menu|Select Parity File"
 msgstr "Vybrat soubor pro opravu chyb"
 
-#: menubar.c:211
+#: menubar.c:215
 msgid "menu|Quit"
 msgstr "Konec"
 
-#: menubar.c:213
+#: menubar.c:217
 msgid "menu|File"
 msgstr "Soubor"
 
-#: menubar.c:220
+#: menubar.c:224
 msgid "menu|Medium info"
 msgstr "Informace o disku"
 
-#: menubar.c:225
+#: menubar.c:229
 msgid "menu|Raw sector editor"
 msgstr "Editor sektorů"
 
-#: menubar.c:227
+#: menubar.c:231
 msgid "menu|Tools"
 msgstr "Nástroje"
 
-#: menubar.c:235
+#: menubar.c:239
 msgid "menu|About"
 msgstr "O programu"
 
-#: menubar.c:236
+#: menubar.c:240
 msgid "menu|User manual"
 msgstr "Uživatelská příručka"
 
-#: menubar.c:240
+#: menubar.c:244
 msgid "menu|Credits"
 msgstr "Poděkování"
 
-#: menubar.c:241
+#: menubar.c:245
 msgid "menu|Licence (GPL)"
 msgstr "Licence (GPL)"
 
-#: menubar.c:245
+#: menubar.c:249
 msgid "menu|Change log"
 msgstr "Seznam změn"
 
-#: menubar.c:246
+#: menubar.c:250
 msgid "menu|To do list"
 msgstr "Seznam úkolů"
 
-#: menubar.c:248
+#: menubar.c:252
 msgid "menu|Help"
 msgstr "Nápověda"
 
-#: menubar.c:332
+#: menubar.c:336
 msgid "windowtitle|Image file selection"
 msgstr "Výběr souboru bitové kopie"
 
-#: menubar.c:369
+#: menubar.c:373
 msgid "windowtitle|Error correction file selection"
 msgstr "Výběr souboru pro opravu chyb"
 
-#: menubar.c:471 menubar.c:495
+#: menubar.c:475 menubar.c:499
 msgid "tooltip|Drive selection"
 msgstr "Výběr mechaniky"
 
-#: menubar.c:471
+#: menubar.c:475
 msgid "Use the nearby drop-down list to select the input drive."
 msgstr "K výběru vstupní mechaniky použijte rozbalovací seznam."
 
-#: menubar.c:495
+#: menubar.c:499
 msgid "Selects the input drive for reading images."
 msgstr "Vyberte vstupní mechaniku pro načtení bitových kopií."
 
-#: menubar.c:525
+#: menubar.c:529
 msgid "tooltip|Image file selection"
 msgstr "Výběr souboru bitové kopie"
 
-#: menubar.c:525
+#: menubar.c:529
 msgid "Selects a new image file."
 msgstr "Vybere nový soubor bitové kopie."
 
-#: menubar.c:526
+#: menubar.c:530
 msgid "tooltip|Current image file"
 msgstr "Aktuální soubor bitové kopie"
 
-#: menubar.c:526
+#: menubar.c:530
 msgid "Shows the name of the current image file."
 msgstr "Zobrazuje název aktuálního souboru bitové kopie."
 
-#: menubar.c:550
+#: menubar.c:554
 msgid "tooltip|Error correction file selection"
 msgstr "Výběr souboru pro opravu chyb"
 
-#: menubar.c:550
+#: menubar.c:554
 msgid "Selects a new error correction file."
 msgstr "Vybere nový soubor pro opravu chyb."
 
-#: menubar.c:551
+#: menubar.c:555
 msgid "tooltip|Current error correction file"
 msgstr "Aktuální soubor pro opravu chyb"
 
-#: menubar.c:551
+#: menubar.c:555
 msgid "Shows the name of the current error correction file."
 msgstr "Zobrazuje název aktuálního souboru pro opravu chyb."
 
-#: menubar.c:562
+#: menubar.c:566
 msgid "tooltip|Preferences"
 msgstr "Nastavení"
 
-#: menubar.c:562
+#: menubar.c:566
 msgid "Customize settings for creating images, error correction files and other stuff."
 msgstr "Přizpůsobení možností vytváření bitových kopií, souborů pro opravu chyb atd..."
 
-#: menubar.c:572
+#: menubar.c:576
 msgid "tooltip|User manual"
 msgstr "Uživatelská příručka"
 
-#: menubar.c:572
+#: menubar.c:576
 msgid "Displays the user manual (external PDF viewer required)."
 msgstr ""
 
-#: menubar.c:582
+#: menubar.c:586
 msgid "tooltip|Quit"
 msgstr "Konec"
 
-#: menubar.c:582
+#: menubar.c:586
 msgid "Quit dvdisaster"
 msgstr "Ukončí dvdisaster"
 
@@ -2550,7 +2547,7 @@ msgstr "Sektor nepatří k vybrané bitové kopii!"
 
 #: raw-editor.c:390 read-adaptive.c:1327 read-adaptive.c:1407
 #: read-adaptive.c:1746 read-adaptive.c:1964 read-linear.c:426
-#: read-linear.c:703 read-linear.c:1042 rs01-fix.c:501 rs01-fix.c:761
+#: read-linear.c:703 read-linear.c:1043 rs01-fix.c:501 rs01-fix.c:761
 #: rs02-fix.c:786 rs03-fix.c:865
 #, c-format
 msgid "Failed seeking to sector %lld in image [%s]: %s"
@@ -2746,7 +2743,7 @@ msgstr "Chytré L-EC"
 
 #: raw-sector-cache.c:35 raw-sector-cache.c:209 raw-sector-cache.c:354
 #: scsi-freebsd.c:131 scsi-freebsd.c:141 scsi-linux.c:115 scsi-linux.c:124
-#: scsi-netbsd.c:126 scsi-netbsd.c:136
+#: scsi-netbsd.c:126 scsi-netbsd.c:136 scsi-win32.c:257
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Nepodařilo se otevřít %s: %s"
@@ -2965,15 +2962,15 @@ msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %l
 msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
 msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %lld chybí.\n"
 
-#: read-adaptive.c:1274 read-linear.c:784
+#: read-adaptive.c:1274 read-linear.c:785
 msgid "Ignore once"
 msgstr "Ignorovat jednou"
 
-#: read-adaptive.c:1275 read-linear.c:785
+#: read-adaptive.c:1275 read-linear.c:786
 msgid "Ignore always"
 msgstr "Ignorovat vždy"
 
-#: read-adaptive.c:1276 read-linear.c:786
+#: read-adaptive.c:1276 read-linear.c:787
 msgid "Abort"
 msgstr "Přerušit"
 
@@ -3030,7 +3027,7 @@ msgstr ""
 "\n"
 "K dispozici je dostatek dat pro rekonstrukci bitové kopie.\n"
 
-#: read-adaptive.c:1707 read-linear.c:1109
+#: read-adaptive.c:1707 read-linear.c:1110
 #, c-format
 msgid ""
 "Sector %lld: %s\n"
@@ -3041,7 +3038,7 @@ msgstr ""
 "Výše uvedenou chybu nelze opravit.\n"
 "Pro ignorování použijte parametr --ignore-fatal-sense."
 
-#: read-adaptive.c:1713 read-linear.c:1115
+#: read-adaptive.c:1713 read-linear.c:1116
 #, c-format
 msgid ""
 "Sector %lld: %s\n"
@@ -3059,12 +3056,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "Chyba CRC v sektoru %lld\n"
 
-#: read-adaptive.c:1948 scsi-layer.c:1742
+#: read-adaptive.c:1948 scsi-layer.c:1752
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Sektory %lld-%lld: %s\n"
 
-#: read-adaptive.c:1956 read-linear.c:1312 scsi-layer.c:1741
+#: read-adaptive.c:1956 read-linear.c:1313 scsi-layer.c:1751
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Sektor %lld: %s\n"
@@ -3117,7 +3114,7 @@ msgstr "Adaptivní čtení:"
 msgid "Sectors processed"
 msgstr "Zpracované sektory"
 
-#: read-adaptive-window.c:112 scsi-layer.c:1723
+#: read-adaptive-window.c:112 scsi-layer.c:1733
 msgid "readable"
 msgstr "čitelné"
 
@@ -3187,7 +3184,7 @@ msgstr "Probíhá načtení CRC informací z ecc dat"
 msgid "done.\n"
 msgstr "dokončeno.\n"
 
-#: read-linear.c:522 scsi-layer.c:2066
+#: read-linear.c:522 scsi-layer.c:2078
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Čekám %d sekund na roztočení disku...\n"
@@ -3217,12 +3214,12 @@ msgstr ""
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Pozice čtení: %3d.%1d%% (%4.1fx)"
 
-#: read-linear.c:744 rs01-common.c:356 rs02-verify.c:799 rs03-verify.c:1206
+#: read-linear.c:745 rs01-common.c:356
 #, c-format
-msgid "* CRC error, sector: %lld\n"
-msgstr "* Chyba CRC, sektor: %lld\n"
+msgid "* CRC error, sector: %lld, found %08x instead of %08x\n"
+msgstr ""
 
-#: read-linear.c:874
+#: read-linear.c:875
 #, c-format
 msgid ""
 "This ecc file requires dvdisaster-%d.%d!\n"
@@ -3233,7 +3230,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-linear.c:882
+#: read-linear.c:883
 #, c-format
 msgid ""
 "This image requires dvdisaster-%d.%d!\n"
@@ -3243,37 +3240,37 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-linear.c:892 rs01-create.c:769 rs01-fix.c:219 rs01-fix.c:243
+#: read-linear.c:893 rs01-create.c:769 rs01-fix.c:219 rs01-fix.c:243
 #: rs01-fix.c:295 rs01-fix.c:332 rs01-fix.c:352 rs01-fix.c:407
 #: rs01-verify.c:457 rs01-verify.c:916 rs02-create.c:130 rs02-fix.c:260
-#: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:743 rs03-create.c:262
+#: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:743 rs03-create.c:269
 #: rs03-fix.c:278 rs03-fix.c:327 rs03-fix.c:350 rs03-fix.c:429
 #: rs03-verify.c:551 rs03-verify.c:1100
 #, c-format
 msgid "<span %s>Aborted by user request!</span>"
 msgstr "<span %s>Zrušeno uživatelem!</span>"
 
-#: read-linear.c:996 read-linear.c:1126
+#: read-linear.c:997 read-linear.c:1127
 #, c-format
 msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
 msgstr "<span %s>Zrušeno uživatelem!</span> Načteno %lld sektorů, %lld sektorů nečitelných/přeskočeno."
 
-#: read-linear.c:1054
+#: read-linear.c:1055
 #, c-format
 msgid "unexpected read error in image for sector %lld"
 msgstr "neočekávaná chyba čtení bitové kopie u sektoru %lld"
 
-#: read-linear.c:1142
+#: read-linear.c:1143
 #, c-format
 msgid "Sector %lld: %3d C2 errors.%s\n"
 msgstr "Sektor %lld: %3d C2 chyb.%s\n"
 
-#: read-linear.c:1279
+#: read-linear.c:1280
 #, c-format
 msgid "Sector %lld: %s Skipping %d sectors.\n"
 msgstr "Sektor %lld: %s Přeskakuji %d sektorů.\n"
 
-#: read-linear.c:1350
+#: read-linear.c:1351
 #, c-format
 msgid ""
 "<big>Trying to complete image, reading pass %d of %d.</big>\n"
@@ -3282,7 +3279,7 @@ msgstr ""
 "<big>Pokus o doplnění bitové kopie, pokus o načtení %d z %d.</big>\n"
 "%s"
 
-#: read-linear.c:1354
+#: read-linear.c:1355
 #, c-format
 msgid ""
 "\n"
@@ -3291,66 +3288,66 @@ msgstr ""
 "\n"
 "Pokus o doplnění bitové kopie, pokus o načtení %d z %d.\n"
 
-#: read-linear.c:1391
+#: read-linear.c:1392
 #, c-format
 msgid "%lld sectors read.     "
 msgstr "Přečteno %lld sektorů.     "
 
-#: read-linear.c:1392
+#: read-linear.c:1393
 #, c-format
 msgid "%lld sectors read; %lld unreadable sectors."
 msgstr "%lld sektorů načteno; %lld nečitelných sektorů."
 
-#: read-linear.c:1404
+#: read-linear.c:1405
 #, c-format
 msgid "All sectors successfully read, but wrong image length (%lld sectors difference)"
 msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí délka bitové kopie (rozdíl %lld sektorů)"
 
-#: read-linear.c:1410
+#: read-linear.c:1411
 msgid "All sectors successfully read, but wrong ecc md5sum."
 msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí md5 kontrolní součet ecc."
 
-#: read-linear.c:1416
+#: read-linear.c:1417
 msgid "All sectors successfully read, but incomplete or damaged checksums."
 msgstr ""
 
-#: read-linear.c:1417
+#: read-linear.c:1418
 msgid "All sectors successfully read. Checksums match."
 msgstr "Všechny sektory byly úspěšně načteny. Kontrolní součet souhlasí."
 
-#: read-linear.c:1419
+#: read-linear.c:1420
 msgid "All sectors successfully read."
 msgstr "Všechny sektory byly úspěšně načteny."
 
-#: read-linear.c:1424
+#: read-linear.c:1425
 #, c-format
 msgid "%lld unreadable sectors."
 msgstr "%lld nečitelných sektorů."
 
-#: read-linear.c:1427
+#: read-linear.c:1428
 #, c-format
 msgid "%lld CRC errors and a md5sum mismatch in the CRC section."
 msgstr ""
 
-#: read-linear.c:1429
+#: read-linear.c:1430
 #, c-format
 msgid "%lld CRC errors."
 msgstr "%lld chyb CRC."
 
-#: read-linear.c:1431
+#: read-linear.c:1432
 #, c-format
 msgid "%lld CRC errors, %lld unreadable sectors."
 msgstr "%lld chyb CRC, %lld nečitelných sektorů"
 
-#: read-linear.c:1440
+#: read-linear.c:1441
 msgid "Scanning finished: "
 msgstr "Kontrola dokončena: "
 
-#: read-linear.c:1442
+#: read-linear.c:1443
 msgid "Reading finished: "
 msgstr "Čtení dokončeno: "
 
-#: read-linear.c:1456
+#: read-linear.c:1457
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
@@ -3361,7 +3358,7 @@ msgstr ""
 "To je v pořádku, pokud bylo CD zapsáno v režimu TAO (track at once).\n"
 "Bitová kopie bude příslušně zkrácena. Další podrobnosti najdete v příručce.\n"
 
-#: read-linear.c:1463
+#: read-linear.c:1464
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
@@ -3468,7 +3465,7 @@ msgid "Image file %s not deleted: %s\n"
 msgstr "Soubor bitové kopie %s nebyl smazán: %s\n"
 
 #: rs01-create.c:160 rs01-fix.c:81 rs02-create.c:63 rs02-fix.c:57
-#: rs03-create.c:147 rs03-fix.c:57
+#: rs03-create.c:154 rs03-fix.c:57
 #, c-format
 msgid "<span %s>Aborted by unrecoverable error.</span>"
 msgstr "<span %s>Zrušeno kvůli neopravitelné chybě.</span>"
@@ -3482,7 +3479,7 @@ msgstr "Tvorba souboru pro opravu chyb zrušena"
 msgid "Encoding with Method RS01: %d roots, %4.1f%% redundancy."
 msgstr "Kódování metodou RS01: %d bází, redundance %4.1f%%."
 
-#: rs01-create.c:261 rs03-create.c:1358
+#: rs01-create.c:261 rs03-create.c:1373
 #, c-format
 msgid ""
 "<big>Creating the error correction file.</big>\n"
@@ -3491,17 +3488,17 @@ msgstr ""
 "<big>Vytváření souboru pro opravu chyb.</big>\n"
 "<i>%s</i>"
 
-#: rs01-create.c:275 rs03-create.c:290
+#: rs01-create.c:275 rs03-create.c:297
 #, c-format
 msgid "<span %s>Aborted to keep existing ecc file.</span>"
 msgstr "<span %s>Zrušeno pro zachování původního ecc souboru.</span>"
 
-#: rs01-create.c:291 rs02-create.c:1080 rs03-create.c:1314
+#: rs01-create.c:291 rs02-create.c:1080 rs03-create.c:1329
 #, c-format
 msgid "Image file %s: %s."
 msgstr "Bitová kopie %s: %s."
 
-#: rs01-create.c:299 rs03-create.c:1333
+#: rs01-create.c:299 rs03-create.c:1348
 msgid "No error correction file specified!\n"
 msgstr ""
 
@@ -3542,7 +3539,7 @@ msgid ""
 msgstr ""
 
 #: rs01-create.c:619 rs01-create.c:749 rs01-create.c:1049 rs02-create.c:1005
-#: rs03-create.c:1150
+#: rs03-create.c:1157
 #, c-format
 msgid "Ecc generation: %3d.%1d%%"
 msgstr "Tvorba ecc: %3d.%1d%%"
@@ -3565,12 +3562,12 @@ msgstr ""
 "Nelze zapsat hlavičku ecc:\n"
 "%s"
 
-#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1415
+#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1430
 #, c-format
 msgid "Ecc generation: 100.0%%\n"
 msgstr "Tvorba ecc: 100.0%%\n"
 
-#: rs01-create.c:1086 rs03-create.c:1422
+#: rs01-create.c:1086 rs03-create.c:1437
 #, c-format
 msgid ""
 "Error correction file \"%s\" created.\n"
@@ -3579,7 +3576,7 @@ msgstr ""
 "Soubor pro opravu chyb \"%s\" byl vytvořen.\n"
 "Uchovávejte tento soubor na spolehlivém nosiči.\n"
 
-#: rs01-create.c:1095 rs03-create.c:1451
+#: rs01-create.c:1095 rs03-create.c:1466
 msgid ""
 "The error correction file has been successfully created.\n"
 "Make sure to keep this file on a reliable medium."
@@ -4216,7 +4213,7 @@ msgid "%4.1f%% redundancy (%d roots)"
 msgstr "%4.1f%% redundance (%d bází)"
 
 #: rs01-window.c:467 rs01-window.c:870 rs01-window.c:876 rs01-window.c:877
-#: rs02-window.c:395 rs02-window.c:1247 rs02-window.c:1253 rs02-window.c:1254
+#: rs02-window.c:395 rs02-window.c:1337 rs02-window.c:1343 rs02-window.c:1344
 #, c-format
 msgid "%d MiB of file cache"
 msgstr ""
@@ -4292,7 +4289,7 @@ msgstr ""
 msgid "Space-delimited redundancy"
 msgstr "Prostorově vymezená redundance"
 
-#: rs01-window.c:783 rs02-window.c:1179 rs03-preferences.c:689
+#: rs01-window.c:783 rs02-window.c:1269 rs03-preferences.c:689
 msgid "Use at most"
 msgstr "Použít nejvíce"
 
@@ -4309,41 +4306,41 @@ msgid ""
 "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
 msgstr ""
 
-#: rs01-window.c:867 rs02-window.c:1244
+#: rs01-window.c:867 rs02-window.c:1334
 msgid "Memory utilization"
 msgstr "Využití paměti"
 
-#: rs01-window.c:871 rs02-window.c:1248
+#: rs01-window.c:871 rs02-window.c:1338
 msgid "File cache"
 msgstr "Mezipaměť pro soubory"
 
-#: rs01-window.c:883 rs02-window.c:1260 rs03-preferences.c:909
+#: rs01-window.c:883 rs02-window.c:1350 rs03-preferences.c:909
 msgid "Use"
 msgstr "Použít"
 
-#: rs01-window.c:911 rs02-window.c:1288
+#: rs01-window.c:911 rs02-window.c:1378
 msgid ""
 "<b>File cache</b>\n"
 "\n"
 "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MiB is suitable for most systems."
 msgstr ""
 
-#: rs02-common.c:578 rs02-common.c:590 rs02-verify.c:651 rs03-common.c:620
+#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:651 rs03-common.c:622
 #, c-format
 msgid "Failed seeking to ecc header at %lld: %s\n"
 msgstr "Přechod na hlavičku ecc na %lld selhal: %s\n"
 
-#: rs02-common.c:582 rs02-common.c:594 rs03-common.c:624
+#: rs02-common.c:584 rs02-common.c:596 rs03-common.c:626
 #, c-format
 msgid "Failed writing ecc header at %lld: %s\n"
 msgstr "Selhal zápis hlavičky ecc na %lld: %s\n"
 
-#: rs02-create.c:122 rs03-create.c:254
+#: rs02-create.c:122 rs03-create.c:261
 #, c-format
 msgid "<span %s>Aborted by user request!</span> (partial ecc data removed from image)"
 msgstr "<span %s>Přerušeno uživatelem!</span> (neúplná ecc data z bitové kopie odstraněna)"
 
-#: rs02-create.c:156 rs03-create.c:311
+#: rs02-create.c:156 rs03-create.c:318
 #, c-format
 msgid ""
 "Image \"%s\" already contains error correction information.\n"
@@ -4352,7 +4349,7 @@ msgstr ""
 "Bitová kopie \"%s\" již obsahuje informace pro opravu chyb.\n"
 "Bitová kopie bude zkrácena po datovou část (%lld sektorů).\n"
 
-#: rs02-create.c:173 rs03-create.c:340
+#: rs02-create.c:173 rs03-create.c:347
 msgid "Image size is now"
 msgstr ""
 
@@ -4396,13 +4393,13 @@ msgstr ""
 msgid "Preparing image (checksums, adding space): %3d%%"
 msgstr "Příprava bitové kopie (kontrolní součty, přidání místa): %3d%%"
 
-#: rs02-create.c:294 rs02-create.c:304 rs02-fix.c:96 rs03-create.c:447
-#: rs03-create.c:458 rs03-fix.c:94
+#: rs02-create.c:294 rs02-create.c:304 rs02-fix.c:96 rs03-create.c:454
+#: rs03-create.c:465 rs03-fix.c:94
 #, c-format
 msgid "Failed seeking to end of image: %s\n"
 msgstr "Přechod na konec bitové kopie se nezdařil: %s\n"
 
-#: rs02-create.c:298 rs02-create.c:321 rs02-fix.c:109 rs03-create.c:432
+#: rs02-create.c:298 rs02-create.c:321 rs02-fix.c:109 rs03-create.c:439
 #: rs03-fix.c:112
 #, c-format
 msgid "Failed expanding the image: %s\n"
@@ -4413,11 +4410,11 @@ msgstr "Rozšíření bitové kopie se nezdařilo: %s\n"
 msgid "Preparing image (checksums taken from cache, adding space): %3d%%"
 msgstr ""
 
-#: rs02-create.c:1071 rs03-create.c:1294
+#: rs02-create.c:1071 rs03-create.c:1309
 msgid "Error correction data creation aborted"
 msgstr "Tvorba dat pro opravu chyba přerušena"
 
-#: rs02-create.c:1102 rs02-create.c:1122 rs03-create.c:1299 rs03-create.c:1354
+#: rs02-create.c:1102 rs02-create.c:1122 rs03-create.c:1314 rs03-create.c:1369
 #, c-format
 msgid ""
 "<big>Augmenting the image with error correction data.</big>\n"
@@ -4426,7 +4423,7 @@ msgstr ""
 "<big>Rozšíření bitové kopie daty pro opravu chyb.</big>\n"
 "<i>%s</i>"
 
-#: rs02-create.c:1103 rs03-create.c:1300
+#: rs02-create.c:1103 rs03-create.c:1315
 msgid "- checking image -"
 msgstr "- kontrola bitové kopie -"
 
@@ -4455,7 +4452,7 @@ msgstr ""
 "Pokud není možné zmenšení bitové kopie, nebo použití většího disku,\n"
 "vytvořte samostatný soubor pro opravu chyb."
 
-#: rs02-create.c:1146 rs03-create.c:1394
+#: rs02-create.c:1146 rs03-create.c:1409
 #, c-format
 msgid ""
 "Using redundancies below 20%%%% may not give\n"
@@ -4464,7 +4461,7 @@ msgstr ""
 "Použití redundance nižší než 20%%%% nemusí poskytnout\n"
 "dostatečnou ochranu proti ztrátě dat.\n"
 
-#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1417 rs03-create.c:1445
+#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1432 rs03-create.c:1460
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
@@ -4637,6 +4634,11 @@ msgstr "Nepodařilo se načíst ecc hlavičku na %lld: %s\n"
 msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
 msgstr "<span %s>%lld v pořádku, %lld chyb CRC, %lld chybí</span>"
 
+#: rs02-verify.c:799 rs03-verify.c:1206
+#, c-format
+msgid "* CRC error, sector: %lld\n"
+msgstr "* Chyba CRC, sektor: %lld\n"
+
 #: rs02-verify.c:839 rs02-verify.c:862 rs03-verify.c:1251 rs03-verify.c:1294
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
@@ -4773,19 +4775,19 @@ msgstr "<span %s>Úplná obnova dat není možná.</span>"
 msgid "<b>1. Preparing image:</b>"
 msgstr "<b>1. Příprava bitové kopie:</b>"
 
-#: rs02-window.c:746
+#: rs02-window.c:772
 msgid "Maximum image size"
 msgstr "Maximální velikost bitové kopie"
 
-#: rs02-window.c:758
+#: rs02-window.c:784
 msgid "Using the smallest possible size from table"
 msgstr "Použita nejmenší možná velikost z tabulky"
 
-#: rs02-window.c:758
+#: rs02-window.c:784
 msgid "Use smallest possible size from following table (in sectors):"
 msgstr "Použít nejmenší možnou velikost z následující tabulky (v sektorech):"
 
-#: rs02-window.c:782
+#: rs02-window.c:808
 msgid ""
 "<b>Determine augmented image size from table</b>\n"
 "\n"
@@ -4794,17 +4796,18 @@ msgid ""
 "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD and BD are given in the table. You can edit these sizes according to your needs."
 msgstr ""
 
-#: rs02-window.c:801
+#: rs02-window.c:827
 msgid "CD-R / CD-RW:"
 msgstr "CD-R / CD-RW:"
 
-#: rs02-window.c:812 rs02-window.c:831 rs02-window.c:872 rs02-window.c:891
-#: rs02-window.c:932 rs02-window.c:951 rs02-window.c:992 rs02-window.c:1011
-#: rs02-window.c:1051 rs02-window.c:1070 rs02-window.c:1110 rs02-window.c:1129
+#: rs02-window.c:838 rs02-window.c:857 rs02-window.c:898 rs02-window.c:917
+#: rs02-window.c:958 rs02-window.c:977 rs02-window.c:1018 rs02-window.c:1037
+#: rs02-window.c:1077 rs02-window.c:1096 rs02-window.c:1136 rs02-window.c:1155
+#: rs02-window.c:1197 rs02-window.c:1216
 msgid "query medium"
 msgstr "podle disku"
 
-#: rs02-window.c:843
+#: rs02-window.c:869
 #, c-format
 msgid ""
 "<b>CD medium size</b>\n"
@@ -4827,11 +4830,11 @@ msgstr ""
 "Uvědomte si, že rozšířené bitové kopie se mohou zvětšit maximálně třikrát, protože maximální možná redundance je 200%%.\n"
 "I pokud není tento limit dosažen, může být rozšířená bitová kopie z technických důvodů o něco menší."
 
-#: rs02-window.c:861
+#: rs02-window.c:887
 msgid "DVD 1 layer:"
 msgstr "1-vrstvé DVD:"
 
-#: rs02-window.c:903
+#: rs02-window.c:929
 #, c-format
 msgid ""
 "<b>Single layer DVD medium size</b>\n"
@@ -4854,11 +4857,11 @@ msgstr ""
 "Uvědomte si, že rozšířené bitové kopie se mohou zvětšit maximálně třikrát, protože maximální možná redundance je 200%%.\n"
 "I pokud není tento limit dosažen, může být rozšířená bitová kopie z technických důvodů o něco menší."
 
-#: rs02-window.c:921
+#: rs02-window.c:947
 msgid "DVD 2 layers:"
 msgstr "2-vrstvé DVD"
 
-#: rs02-window.c:963
+#: rs02-window.c:989
 #, c-format
 msgid ""
 "<b>Two layered DVD medium size</b>\n"
@@ -4881,11 +4884,11 @@ msgstr ""
 "Uvědomte si, že rozšířené bitové kopie se mohou zvětšit maximálně třikrát, protože maximální možná redundance je 200%%.\n"
 "I pokud není tento limit dosažen, může být rozšířená bitová kopie z technických důvodů o něco menší."
 
-#: rs02-window.c:981
+#: rs02-window.c:1007
 msgid "BD 1 layer:"
 msgstr "1-vrstvý BD"
 
-#: rs02-window.c:1023
+#: rs02-window.c:1049
 #, c-format
 msgid ""
 "<b>Single layer BD medium size</b>\n"
@@ -4908,11 +4911,11 @@ msgstr ""
 "Uvědomte si, že rozšířené bitové kopie se mohou zvětšit maximálně třikrát, protože maximální možná redundance je 200%%.\n"
 "I pokud není tento limit dosažen, může být rozšířená bitová kopie z technických důvodů o něco menší."
 
-#: rs02-window.c:1040
+#: rs02-window.c:1066
 msgid "BD 2 layers:"
 msgstr "2-vrstvý BD"
 
-#: rs02-window.c:1082
+#: rs02-window.c:1108
 #, c-format
 msgid ""
 "<b>Two layered BD medium size</b>\n"
@@ -4935,11 +4938,11 @@ msgstr ""
 "Uvědomte si, že rozšířené bitové kopie se mohou zvětšit maximálně třikrát, protože maximální možná redundance je 200%%.\n"
 "I pokud není tento limit dosažen, může být rozšířená bitová kopie z technických důvodů o něco menší."
 
-#: rs02-window.c:1099
+#: rs02-window.c:1125
 msgid "BDXL 3 layers:"
 msgstr ""
 
-#: rs02-window.c:1141
+#: rs02-window.c:1167
 #, c-format
 msgid ""
 "<b>Three layered BDXL medium size</b>\n"
@@ -4953,11 +4956,29 @@ msgid ""
 "Even if this limit is not reached the augmented image may be a few sectors smaller than specified for technical reasons."
 msgstr ""
 
-#: rs02-window.c:1199
+#: rs02-window.c:1186
+msgid "BDXL 4 layers:"
+msgstr ""
+
+#: rs02-window.c:1228
+#, c-format
+msgid ""
+"<b>Four layered BDXL medium size</b>\n"
+"\n"
+"This is the maximum capacity assumed for four layered BDXL media. Images exceeding the smaller media sizes but smaller than this value will be augmented with error correction information so that they will fit on the specified BD.\n"
+"\n"
+"You can enter the medium size in sectors of 2K each, or press the \"query medium\" button to use the size of a blank medium currently inserted in the selected drive.\n"
+"Use the arrow button to revert to the last saved value.\n"
+"\n"
+"Please note that augmented images will at most triple in size as the highest possible redundancy is 200%%.\n"
+"Even if this limit is not reached the augmented image may be a few sectors smaller than specified for technical reasons."
+msgstr ""
+
+#: rs02-window.c:1289
 msgid "sectors."
 msgstr "sektorů."
 
-#: rs02-window.c:1212
+#: rs02-window.c:1302
 #, c-format
 msgid ""
 "<b>Use at most ... sectors</b>\n"
@@ -4996,27 +5017,27 @@ msgstr "Redundance %d z použitelného rozsahu [8..170]."
 msgid "Medium size smaller than image size (%lld < %lld)"
 msgstr ""
 
-#: rs03-create.c:427
+#: rs03-create.c:434
 #, c-format
 msgid "Failed expanding the ecc file: %s\n"
 msgstr "Rozšíření ecc souboru selhalo: %s\n"
 
-#: rs03-create.c:428
+#: rs03-create.c:435
 #, c-format
 msgid "Preparing ecc file: %3d%%"
 msgstr "Tvorba ecc souboru: %3d%%"
 
-#: rs03-create.c:433
+#: rs03-create.c:440
 #, c-format
 msgid "Preparing image: %3d%%"
 msgstr "Příprava bitové kopie: %3d%%"
 
-#: rs03-create.c:681
+#: rs03-create.c:688
 #, c-format
 msgid "Failed mmap()ing layer %d: %s\n"
 msgstr ""
 
-#: rs03-create.c:710
+#: rs03-create.c:717
 #, c-format
 msgid ""
 "Incomplete image\n"
@@ -5035,7 +5056,7 @@ msgstr ""
 "být vytvořeny z kompletně čitelné bitové kopie.\n"
 "Operace přerušena a částečná data pro opravu chyb odstraněna."
 
-#: rs03-create.c:718
+#: rs03-create.c:725
 msgid ""
 "\n"
 "This image was probably mastered from defective source(s).\n"
@@ -5047,44 +5068,44 @@ msgstr ""
 "Pro více informací proveďte \"Ověření\".\n"
 "\n"
 
-#: rs03-create.c:929
+#: rs03-create.c:936
 msgid "CPU bound"
 msgstr "Omezeno CPU"
 
-#: rs03-create.c:933
+#: rs03-create.c:940
 msgid "I/O bound"
 msgstr "Omezeno V/V"
 
-#: rs03-create.c:1142
+#: rs03-create.c:1149
 #, c-format
 msgid "%5.2fMiB/s current"
 msgstr ""
 
-#: rs03-create.c:1195
+#: rs03-create.c:1202
 #, c-format
 msgid "%d threads with %s encoding and %s I/O"
 msgstr ""
 
-#: rs03-create.c:1349
+#: rs03-create.c:1364
 #, c-format
 msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1368
+#: rs03-create.c:1383
 #, c-format
 msgid ""
 "Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
 "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1373
+#: rs03-create.c:1388
 #, c-format
 msgid ""
 "Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
 "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
-#: rs03-create.c:1384
+#: rs03-create.c:1399
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
@@ -5097,17 +5118,17 @@ msgstr ""
 "Pokud není možné zmenšení bitové kopie nebo použití většího disku,\n"
 "vytvořte samostatný soubor pro opravu chyb."
 
-#: rs03-create.c:1428
+#: rs03-create.c:1443
 #, c-format
 msgid "Avg performance: %5.2fs (%5.2fMiB/s) total\n"
 msgstr ""
 
-#: rs03-create.c:1432
+#: rs03-create.c:1447
 #, c-format
 msgid "%5.2fMiB/s average"
 msgstr ""
 
-#: rs03-create.c:1434
+#: rs03-create.c:1449
 #, c-format
 msgid "%d times CPU bound; %d times I/O bound"
 msgstr "%d krát omezeno CPU; %d omezeno V/V"
@@ -5604,13 +5625,13 @@ msgstr ""
 "Nelze získat přístup k /dev pro výčet zařízení\n"
 "Nebudou předvybrány žádné mechaniky.\n"
 
-#: scsi-freebsd.c:102 scsi-linux.c:91
+#: scsi-freebsd.c:102 scsi-linux.c:91 scsi-win32.c:84
 msgid ""
 "No optical drives found in /dev.\n"
 "No drives will be pre-selected.\n"
 msgstr ""
 
-#: scsi-layer.c:102
+#: scsi-layer.c:104
 #, c-format
 msgid ""
 "Can open %s, but INQUIRY fails.\n"
@@ -5623,27 +5644,27 @@ msgstr ""
 "a pokoušíte se k ní přistupovat prostřednictvím /dev/cdrom nebo /dev/hd?.\n"
 "Místo toho použijte /dev/scd? nebo /dev/sr?, nebo zakažte emulaci ide-scsi.\n"
 
-#: scsi-layer.c:110
+#: scsi-layer.c:112
 #, c-format
 msgid "INQUIRY failed. Something is wrong with drive %s.\n"
 msgstr "Příkaz INQUIRY selhal. Něco není v pořádku s mechanikou %s.\n"
 
-#: scsi-layer.c:139
+#: scsi-layer.c:141
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
 msgstr ""
 
-#: scsi-layer.c:140
+#: scsi-layer.c:142
 #, c-format
 msgid "Device %s (%s) is a hard disk."
 msgstr "Zařízení %s (%s) je pevný disk."
 
-#: scsi-layer.c:431
+#: scsi-layer.c:433
 #, c-format
 msgid "Incomplete %s"
 msgstr "neúplný %s"
 
-#: scsi-layer.c:469
+#: scsi-layer.c:471
 #, c-format
 msgid ""
 "%s\n"
@@ -5652,16 +5673,16 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit délku TOC.\n"
 
-#: scsi-layer.c:474
+#: scsi-layer.c:476
 msgid "blank"
 msgstr "prázdný"
 
-#: scsi-layer.c:489 scsi-layer.c:550
+#: scsi-layer.c:491 scsi-layer.c:552
 #, c-format
 msgid "TOC info too long (%d), probably multisession.\n"
 msgstr "Informace TOC je příliš dlouhá (%d), pravděpodobně jde o multisession.\n"
 
-#: scsi-layer.c:504
+#: scsi-layer.c:506
 #, c-format
 msgid ""
 "%s\n"
@@ -5670,7 +5691,7 @@ msgstr ""
 "%s\n"
 "Nepodařilo se načíst TOC.\n"
 
-#: scsi-layer.c:531
+#: scsi-layer.c:533
 #, c-format
 msgid ""
 "%s\n"
@@ -5679,12 +5700,12 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit celou délku TOC.\n"
 
-#: scsi-layer.c:544
+#: scsi-layer.c:546
 #, c-format
 msgid "TOC info too short, length %d.\n"
 msgstr "Informace TOC příliš krátká, délka %d.\n"
 
-#: scsi-layer.c:566
+#: scsi-layer.c:568
 #, c-format
 msgid ""
 "%s\n"
@@ -5693,7 +5714,7 @@ msgstr ""
 "%s\n"
 "Nepodařilo se přečíst celou TOC.\n"
 
-#: scsi-layer.c:575
+#: scsi-layer.c:577
 #, c-format
 msgid ""
 "\n"
@@ -5702,11 +5723,11 @@ msgstr ""
 "\n"
 "Neočekávaný formát TOC (délka %d):\n"
 
-#: scsi-layer.c:583
+#: scsi-layer.c:585
 msgid "Consider sending a bug report.\n"
 msgstr "Zvažte zaslání hlášení o chybě.\n"
 
-#: scsi-layer.c:636
+#: scsi-layer.c:638
 #, c-format
 msgid ""
 "%s\n"
@@ -5715,12 +5736,12 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit délku struktury DVD.\n"
 
-#: scsi-layer.c:648
+#: scsi-layer.c:650
 #, c-format
 msgid "Could not query dvd physical structure - implausible packet length %d\n"
 msgstr "Nepodařilo se zjistit fyzickou strukturu DVD - nepřijatelná délka paketu %d\n"
 
-#: scsi-layer.c:666
+#: scsi-layer.c:668
 #, c-format
 msgid ""
 "%s\n"
@@ -5729,12 +5750,12 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit fyzickou strukturu DVD.\n"
 
-#: scsi-layer.c:695 scsi-layer.c:705
+#: scsi-layer.c:697 scsi-layer.c:707
 #, c-format
 msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
 msgstr "ČÍST STRUKTURU DVD: nepravděpodobná velikost disku, %lld-%lld=%lld sektorů\n"
 
-#: scsi-layer.c:965
+#: scsi-layer.c:973
 #, c-format
 msgid ""
 "%s\n"
@@ -5743,7 +5764,7 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit délku struktury BD disku.\n"
 
-#: scsi-layer.c:989
+#: scsi-layer.c:997
 #, c-format
 msgid ""
 "%s\n"
@@ -5752,7 +5773,7 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit strukturu BD disku.\n"
 
-#: scsi-layer.c:1671
+#: scsi-layer.c:1680
 #, c-format
 msgid ""
 "%s\n"
@@ -5761,12 +5782,12 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit délku struktury DVD pro kód formátu 1.\n"
 
-#: scsi-layer.c:1682
+#: scsi-layer.c:1691
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Získání copyright informací DVD se nezdařilo - nepřijatelná délka paketu %d\n"
 
-#: scsi-layer.c:1697
+#: scsi-layer.c:1706
 #, c-format
 msgid ""
 "%s\n"
@@ -5775,23 +5796,23 @@ msgstr ""
 "%s\n"
 "Získání copyright informací se nezdařilo.\n"
 
-#: scsi-layer.c:1757
+#: scsi-layer.c:1767
 msgid "is undecideable because of read error"
 msgstr "není rozhodnuto kvůli chybě čtení"
 
-#: scsi-layer.c:1763
+#: scsi-layer.c:1773
 msgid "looks GOOD"
 msgstr "vypadá DOBŘE"
 
-#: scsi-layer.c:1769
+#: scsi-layer.c:1779
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "má neformátovanou velikost (NEPOUŽITELNÉ)"
 
-#: scsi-layer.c:1774
+#: scsi-layer.c:1784
 msgid "is UNUSABLE"
 msgstr "je NEPOUŽITELNÝ"
 
-#: scsi-layer.c:1800
+#: scsi-layer.c:1810
 #, c-format
 msgid ""
 "%s\n"
@@ -5800,12 +5821,12 @@ msgstr ""
 "%s\n"
 "Dotaz na velikost disku selhal.\n"
 
-#: scsi-layer.c:1822
+#: scsi-layer.c:1832
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "ČÍST KAPACITU: nepravděpodobná velikost disku, %lld sektorů\n"
 
-#: scsi-layer.c:1898
+#: scsi-layer.c:1908
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -5818,7 +5839,7 @@ msgstr ""
 "ČÍST STRUKTURU DVD: %lld sektorů\n"
 "\n"
 
-#: scsi-layer.c:1903
+#: scsi-layer.c:1913
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -5826,15 +5847,15 @@ msgstr ""
 "Vyhodnocení oznámených velikostí disku:\n"
 "\n"
 
-#: scsi-layer.c:1958
+#: scsi-layer.c:1968
 msgid "Using value from READ CAPACITY"
 msgstr "Bude použita hodnota z READ CAPACITY"
 
-#: scsi-layer.c:1962
+#: scsi-layer.c:1972
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Bude použita hodnota z READ DVD STRUCTURE"
 
-#: scsi-layer.c:1972
+#: scsi-layer.c:1982
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -5845,7 +5866,7 @@ msgstr ""
 "Bude použita menší hodnota, protože je to správně pro >90%% všech mechanik,\n"
 "ale POKRAČUJTE NA VLASTNÍ NEBEZPEČÍ (bitová kopie může být neúplná/nepoužitelná)"
 
-#: scsi-layer.c:1977
+#: scsi-layer.c:1987
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -5854,7 +5875,7 @@ msgstr ""
 "Konečné rozhodnutí: %s\n"
 "\n"
 
-#: scsi-layer.c:1985
+#: scsi-layer.c:1995
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -5862,7 +5883,7 @@ msgstr ""
 "Selhalo určení velikosti bitové kopie.\n"
 "Zkuste použít jinou mechaniku."
 
-#: scsi-layer.c:2109 scsi-layer.c:2135
+#: scsi-layer.c:2121 scsi-layer.c:2147
 #, c-format
 msgid ""
 "%s\n"
@@ -5871,7 +5892,7 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo načíst/vysunout.\n"
 
-#: scsi-layer.c:2125
+#: scsi-layer.c:2137
 #, c-format
 msgid ""
 "%s\n"
@@ -5880,37 +5901,37 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo odemknout.\n"
 
-#: scsi-layer.c:2191
+#: scsi-layer.c:2203
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Čekám na roztočení mechaniky: %d\n"
 
-#: scsi-layer.c:2474
+#: scsi-layer.c:2486
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Sektory %lld - %lld: %s\n"
 
-#: scsi-layer.c:2488
+#: scsi-layer.c:2500
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Sektor %lld, pokus %d: %s Vrácený sektor: %d.\n"
 
-#: scsi-layer.c:2494
+#: scsi-layer.c:2506
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Sektor %lld, pokus %d: %s\n"
 
-#: scsi-layer.c:2505
+#: scsi-layer.c:2517
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Sektor %lld, pokus %d: úspěch\n"
 
-#: scsi-layer.c:2576
+#: scsi-layer.c:2588
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Mechanika %s: neobsahuje disk\n"
 
-#: scsi-layer.c:2581
+#: scsi-layer.c:2593
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5921,7 +5942,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: scsi-layer.c:2587
+#: scsi-layer.c:2599
 #, c-format
 msgid ""
 "\n"
@@ -5930,54 +5951,50 @@ msgstr ""
 "\n"
 "Zařízení: %s, %s\n"
 
-#: scsi-layer.c:2594
+#: scsi-layer.c:2606
 msgid "Drive failed to report media type."
 msgstr "Mechanika neohlásila typ disku."
 
-#: scsi-layer.c:2605 scsi-layer.c:2703
+#: scsi-layer.c:2617 scsi-layer.c:2715
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Tento program nepodporuje \"%s\" disky."
 
-#: scsi-layer.c:2613
+#: scsi-layer.c:2625
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Tento program nepodporuje multisession (%d sessions) disky."
 
-#: scsi-layer.c:2644 scsi-layer.c:2653
+#: scsi-layer.c:2656 scsi-layer.c:2665
 msgid "Using READ CD"
 msgstr "Je použito READ CD"
 
-#: scsi-layer.c:2645
+#: scsi-layer.c:2657
 msgid ", RAW reading"
 msgstr ", přímé čtení"
 
-#: scsi-layer.c:2648
+#: scsi-layer.c:2660
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", stránka režimu 1 ERP = %02xh"
 
-#: scsi-layer.c:2651
+#: scsi-layer.c:2663
 msgid ", C2 scanning"
 msgstr ", kontrola C2"
 
-#: scsi-layer.c:2658
+#: scsi-layer.c:2670
 msgid "Using READ(10).\n"
 msgstr "Je použit READ(10).\n"
 
-#: scsi-layer.c:2680
+#: scsi-layer.c:2692
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Disk: %s, %lld sektorů%s"
 
-#: scsi-layer.c:2684
+#: scsi-layer.c:2696
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Disk \"%s\": %s, %lld sektorů%s vytvořeno %s"
-
-#: scsi-layer.c:2710
-msgid "This software does not support encrypted media.\n"
-msgstr "Tento program nepodporuje zašifrované disky.\n"
 
 #: scsi-netbsd.c:103
 msgid ""
@@ -5998,34 +6015,59 @@ msgstr ""
 "* Nepodporovaný operační systém - není k dispozici SCSI vrstva.\n"
 "* Nemohou být použity žádné mechaniky.\n"
 
-#: show-manual.c:68
-msgid "windowtitle|Choose a PDF viewer"
-msgstr ""
-
-#: show-manual.c:105
-msgid "windowtitle|PDF viewer required"
-msgstr ""
-
-#: show-manual.c:121
+#: scsi-win32.c:168
+#, c-format
 msgid ""
-"<b>Could not find a suitable PDF viewer.</b>\n"
 "\n"
-"Which PDF viewer would you like to use\n"
+"Illegal device name \"%s\" (use devices \"C:\" ... \"Z:\")"
+msgstr ""
+"\n"
+"Neplatný název zařízení \"%s\" (použijte zařízení \"C:\" ... \"Z:\")"
+
+#: scsi-win32.c:268
+#, c-format
+msgid ""
+"\n"
+"Could not open device %s."
+msgstr ""
+"\n"
+"Nepodařilo se otevřít mechaniku %s."
+
+#: show-html.c:78
+msgid "windowtitle|Choose a browser"
+msgstr "Vybrat prohlížeč"
+
+#: show-html.c:115
+msgid "windowtitle|Browser required"
+msgstr "Vyžadován prohlížeč"
+
+#: show-html.c:131
+msgid ""
+"<b>Could not find a suitable browser.</b>\n"
+"\n"
+"Which browser would you like to use\n"
 "for reading the online documentation?\n"
 "\n"
-"Please enter its name (e.g. xpdf) or\n"
+"Please enter its name (e.g. mozilla) or\n"
 "use the \"Search\" button for a file dialog.\n"
 msgstr ""
+"<b>Nebyl nalezen vyhovující prohlížeč.</b>\n"
+"\n"
+"Který prohlížeč chcete použít\n"
+"ke čtení online dokumentace?\n"
+"\n"
+"Zadejte jeho název (např. mozilla) nebo použijte\n"
+"tlačítko \"Procházet\" a vyberte příslušný soubor.\n"
 
-#: show-manual.c:134
+#: show-html.c:144 show-manual.c:145
 msgid "Search"
 msgstr "Procházet"
 
-#: show-manual.c:284
+#: show-html.c:337 show-manual.c:324
 msgid "Documentation not installed."
 msgstr "Dokumentace není nainstalována."
 
-#: show-manual.c:300
+#: show-html.c:382 show-manual.c:340
 #, c-format
 msgid ""
 "Documentation file\n"
@@ -6036,7 +6078,30 @@ msgstr ""
 "%s\n"
 "nebyl nalezen.\n"
 
-#: show-manual.c:309
+#: show-html.c:391
+msgid "Please hang on until the browser comes up!"
+msgstr "Počkejte na spuštění prohlížeče!"
+
+#: show-manual.c:79
+msgid "windowtitle|Choose a PDF viewer"
+msgstr ""
+
+#: show-manual.c:116
+msgid "windowtitle|PDF viewer required"
+msgstr ""
+
+#: show-manual.c:132
+msgid ""
+"<b>Could not find a suitable PDF viewer.</b>\n"
+"\n"
+"Which PDF viewer would you like to use\n"
+"for reading the online documentation?\n"
+"\n"
+"Please enter its name (e.g. xpdf) or\n"
+"use the \"Search\" button for a file dialog.\n"
+msgstr ""
+
+#: show-manual.c:349
 msgid "Please hang on until the viewer comes up!"
 msgstr ""
 
@@ -6048,15 +6113,17 @@ msgstr "Bez názvu"
 msgid "Example disc"
 msgstr "Vzorový disk"
 
-#: welcome-window.c:81
-msgid "- Added support for BDXL-TL 100GB media"
+#: welcome-window.c:86
+msgid ""
+"<b>Unofficial version.</b>\n"
+"\n"
+"This is a modified version of the <b>0.79.6-5</b> Debian version,\n"
+"which is based on the 0.79.6 pre-release, with some enhancements.\n"
+"See the About box and changelog for more information.\n"
+"The warning message from the pre-release version is retained below.\n"
 msgstr ""
 
-#: welcome-window.c:82
-msgid "- Optimized ecc generation when medium was previously read\n"
-msgstr ""
-
-#: welcome-window.c:84
+#: welcome-window.c:92
 msgid ""
 "<i>Please note:</i>\n"
 "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
@@ -6065,30 +6132,48 @@ msgid ""
 "It will be re-introduced in one of the next releases."
 msgstr ""
 
-#: welcome-window.c:92
+#: welcome-window.c:100
 msgid "Show this message again"
 msgstr "Zobrazit i při příštím spuštění"
 
-#: welcome-window.c:138
+#: welcome-window.c:146
 msgid "<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"
 msgstr "<span weight=\"bold\" size=\"xx-large\">Vítá vás dvdisaster!</span>"
 
-#: welcome-window.c:140
+#: welcome-window.c:148
 msgid ""
 "\n"
 "dvdisaster creates error correction data to protect\n"
 "optical media (CD,DVD,BD) against data loss.\n"
 msgstr ""
 
-#: welcome-window.c:143
+#: welcome-window.c:151
 msgid ""
 "Please see the [manual] for typical uses of dvdisaster.\n"
 "\n"
 msgstr ""
 
-#: welcome-window.c:146
+#: welcome-window.c:154
 msgid "<i>New in this Version:</i>"
 msgstr "<i>Novinky v této verzi:</i>"
+
+#~ msgid ""
+#~ "\n"
+#~ "This program is <b>not the original</b>. It is based on the\n"
+#~ "source code of dvdisaster, but contains third-party changes.\n"
+#~ "\n"
+#~ "Please do not bother the original authors of dvdisaster\n"
+#~ "([www.dvdisaster.org]) about issues with this version.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Tento program <b>není originál</b>. Je založen na zdrojovém\n"
+#~ "kódu dvdisaster, ale obsahuje úpravy třetí strany.\n"
+#~ "\n"
+#~ "Prosím neobtěžujte originální autory dvdisaster\n"
+#~ "([www.dvdisaster.org]) problémy s touto verzí.\n"
+
+#~ msgid "This software does not support encrypted media.\n"
+#~ msgstr "Tento program nepodporuje zašifrované disky.\n"
 
 #~ msgid ""
 #~ "Number of roots must be 8..100;\n"
@@ -6548,46 +6633,6 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgstr ""
 #~ "Nebyly nalezeny žádné CD/DVD mechaniky.\n"
 #~ "Nebudou předvybrány žádné mechaniky.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Illegal device name \"%s\" (use devices \"C:\" ... \"Z:\")"
-#~ msgstr ""
-#~ "\n"
-#~ "Neplatný název zařízení \"%s\" (použijte zařízení \"C:\" ... \"Z:\")"
-
-#~ msgid ""
-#~ "\n"
-#~ "Could not open device %s."
-#~ msgstr ""
-#~ "\n"
-#~ "Nepodařilo se otevřít mechaniku %s."
-
-#~ msgid "windowtitle|Choose a browser"
-#~ msgstr "Vybrat prohlížeč"
-
-#~ msgid "windowtitle|Browser required"
-#~ msgstr "Vyžadován prohlížeč"
-
-#~ msgid ""
-#~ "<b>Could not find a suitable browser.</b>\n"
-#~ "\n"
-#~ "Which browser would you like to use\n"
-#~ "for reading the online documentation?\n"
-#~ "\n"
-#~ "Please enter its name (e.g. mozilla) or\n"
-#~ "use the \"Search\" button for a file dialog.\n"
-#~ msgstr ""
-#~ "<b>Nebyl nalezen vyhovující prohlížeč.</b>\n"
-#~ "\n"
-#~ "Který prohlížeč chcete použít\n"
-#~ "ke čtení online dokumentace?\n"
-#~ "\n"
-#~ "Zadejte jeho název (např. mozilla) nebo použijte\n"
-#~ "tlačítko \"Procházet\" a vyberte příslušný soubor.\n"
-
-#~ msgid "Please hang on until the browser comes up!"
-#~ msgstr "Počkejte na spuštění prohlížeče!"
 
 #~ msgid ""
 #~ "- Development frameworks for Windows and OS X updated.\n"

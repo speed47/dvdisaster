@@ -77,7 +77,11 @@
 
 /* File permissions for images */
 
+#ifdef SYS_MINGW
+#define IMG_PERMS (S_IRUSR | S_IWUSR)
+#else
 #define IMG_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+#endif
 
 /* Using round() is preferred over rint() on systems which have it */
 
@@ -452,13 +456,13 @@ typedef struct _CrcBlock
 } CrcBlock;
 
 /***
- *** forward declarations
+ *** dvdisaster.c
  ***/
 
-struct _RawBuffer *rawbuffer_forward;
-struct _DefectiveSectorHeader *dsh_forward;
-struct _DeviceHandle *dh_forward;
-struct _Image *dh_image;
+extern struct _RawBuffer *rawbuffer_forward;
+extern struct _DefectiveSectorHeader *dsh_forward;
+extern struct _DeviceHandle *dh_forward;
+extern struct _Image *dh_image;
 
 /***
  *** bitmap.c

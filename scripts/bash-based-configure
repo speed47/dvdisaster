@@ -18,7 +18,6 @@
 #  along with Bash based configure. If not, see <http://www.gnu.org/licenses/>.
 #/
 
-
 # Command overview:
 # 
 # PACKAGE               Define package name and version
