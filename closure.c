@@ -432,7 +432,10 @@ void InitClosure()
 
    /* Extract the version string */
 
-#ifdef HAVE_UNSTABLE_RELEASE
+#if defined(HAVE_UNSTABLE_RELEASE) && defined(PATCHLEVEL)
+   Closure->cookedVersion = g_strdup_printf("%s (unstable-unofficial patchlevel %d)", VERSION, PATCHLEVEL);
+   Closure->releaseFlags = MFLAG_DEVEL;
+#elif defined(HAVE_UNSTABLE_RELEASE)
    Closure->cookedVersion = g_strdup_printf("%s (unstable)", VERSION);
    Closure->releaseFlags = MFLAG_DEVEL;
 #else
