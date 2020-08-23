@@ -353,7 +353,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	    }
 
 	    if(crc != crcbuf[crcidx++] && !current_missing)
-	    {  PrintCLI(_("* CRC error, sector: %lld, found %08x instead of %08x\n"), crc, crcbuf[crcidx], s);
+	    {  PrintCLI(_("* CRC error, sector: %lld\n"), s);
 	       image->crcErrors++;
 	    }
 	 }
