@@ -45,7 +45,7 @@ fi
 
 ### Verification tests
 
-echo "# Verify tests"
+REGTEST_SECTION="Verify tests"
 
 # Test good files
 
@@ -518,7 +518,7 @@ fi
 
 ### Creation tests
 
-echo "# Creation tests"
+REGTEST_SECTION="Creation tests"
 
 # Create ecc file
 
@@ -715,7 +715,7 @@ fi
 
 ### Fixing tests
 
-echo "# Repair tests"
+REGTEST_SECTION="Repair tests"
 
 # Fix good image
 
@@ -997,7 +997,7 @@ fi
 
 ### Scanning tests
 
-echo "# Scanning tests"
+REGTEST_SECTION="Scanning tests"
 
 # Scan complete / optimal image
 
@@ -1092,7 +1092,9 @@ if try "scanning image requiring a newer dvdisaster version" scan_incompatible_e
   $NEWVER --debug -i$TMPECC --byteset 0,99,9 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  IGNORE_LOG_LINE='^\*          $'
   run_regtest scan_incompatible_ecc "--spinup-delay=0 -s" $TMPISO $TMPECC
+  unset IGNORE_LOG_LINE
 fi
 
 # Scan an image containing a defective ECC header.
@@ -1231,7 +1233,7 @@ fi
 
 ### Reading tests (linear)
 
-echo "# Reading tests (linear)"
+REGTEST_SECTION="Reading tests (linear)"
 
 # Read complete / optimal image
 
@@ -1337,7 +1339,9 @@ if try "reading image requiring a newer dvdisaster version" read_incompatible_ec
   $NEWVER --debug -i$TMPECC --byteset 0,99,9 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  IGNORE_LOG_LINE='^\*          $'
   run_regtest read_incompatible_ecc "--spinup-delay=0 -r " $TMPISO $TMPECC
+  unset IGNORE_LOG_LINE
 fi
 
 # Read an image containing a defective ECC header.
@@ -1482,10 +1486,10 @@ if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipas
   rm -f $TMPISO
   replace_config read-medium 3
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC
+  run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC SORTED
 fi
 
 
 ### Reading tests (adaptive)
 
-echo "# Reading tests (adaptive)"
+REGTEST_SECTION="Reading tests (adaptive)"

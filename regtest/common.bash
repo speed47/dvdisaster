@@ -120,10 +120,14 @@ function try()
 	   rm -f $SIMISO
        fi
        
-       echo -n "Test case: $1 - "
+       if test -z "$REGTEST_SECTION"; then
+	   REGTEST_SECTION="Test"
+       fi
+
+       echo -n "[ ] ${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - "
        return 0
    else
-#       echo "Skipping: $1 ($doit, ${CODEC_PREFIX}_$2)"
+       echo "[-] ${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - SKIPPED ($doit, ${CODEC_PREFIX}_$2)"
        return 1
    fi
 }
@@ -153,6 +157,7 @@ function run_regtest()
    local testparms="$2"
    local testiso="$3"
    local testecc="$4"
+   local options="$5"
    local testeccopt=""
    local image_md5=""
    local ecc_md5=""
@@ -196,13 +201,17 @@ function run_regtest()
 	 egrep -v "$IGNORE_LOG_LINE" $NEWLOG >$TMPLOG
 	 mv $TMPLOG $NEWLOG
      fi
+
+     filter=cat
+     echo "$options" | grep -qw SORTED && filter=sort
        
-     if ! diff <(tail -n +3 $REFLOG) <(sed -e "s/${SED_REMOVE_ISO_DIR}//g" $NEWLOG) >${DIFFLOG}; then
-	 echo "BAD; diffs found (<expected; >created):"
+     if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -e "s/${SED_REMOVE_ISO_DIR}//g" $NEWLOG | $filter) >${DIFFLOG}; then
+	 printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
 	 cat ${DIFFLOG}
 
 	 if test "$interactive_diff" == "yes"; then
 	   echo
+	   echo ">> The diff can also be seen with: vimdiff $REFLOG $NEWLOG"
 	   read -n 1 -p ">> Press 'a' to accept this diff; any other key to fail this test:" -e answer
 	   if test "$answer" == "a"; then
 	       cp $REFLOG $LOGDIR
@@ -241,6 +250,7 @@ function run_regtest()
        md5=$($MD5SUM ${testiso} | cut -d\  -f 1)
        if test "$image_md5" != "$md5"; then
 	   echo "BAD; md5 sum mismatch in image file:"
+	   printf "%b\r%b\n" "BAD; md5 sum mismatch in image file:" "[\e[31m✘\e[0m]"
 	   echo "... expected  image: $image_md5"
 	   echo "... generated image: $md5"
 	   pass="false"
@@ -250,7 +260,11 @@ function run_regtest()
    if test ${ecc_md5} != "ignore"; then
        md5=$($MD5SUM ${testecc} | cut -d\  -f 1)
        if test "$ecc_md5" != "$md5"; then
-	   echo "BAD; md5 sum mismatch in ecc file:"
+	   if [ "$pass" = false ]; then
+	      echo "BAD; md5 sum mismatch in ecc file:"
+	   else
+	      printf "%b\r%b\n" "BAD; md5 sum mismatch in ecc file:" "[\e[31m✘\e[0m]"
+	   fi
 	   echo "... expected  ecc: $ecc_md5"
 	   echo "... generated ecc: $md5"
 	   pass="false"
@@ -259,7 +273,7 @@ function run_regtest()
 
    case "${pass}" in
      true)
-      echo "GOOD"
+      printf "%b\r%b\n" "GOOD" "[\e[32m✓\e[0m]"
       ;;
      
      skip)

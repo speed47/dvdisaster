@@ -884,6 +884,7 @@ void ReadMediumLinear(gpointer data)
 				   "Please visit http://www.dvdisaster.org for an upgrade.\n\n"), 
 				 rc->eccHeader->neededVersion/10000,
 				 (rc->eccHeader->neededVersion%10000)/100);
+	PrintCLI("\n");
 	 
 	 if(!answer)
 	 {
@@ -900,8 +901,8 @@ void ReadMediumLinear(gpointer data)
    /*** See if user wants to limit the read range. */
 
    GetReadingRange(rc->image->dh->sectors, &rc->firstSector, &rc->lastSector);
-   if(rc->firstSector > 0)                 /* Mark skipped sectors */
 #ifndef CLI
+   if(rc->firstSector > 0)                 /* Mark skipped sectors */
       Closure->additionalSpiralColor = 0;  /* blue */
 #endif
 

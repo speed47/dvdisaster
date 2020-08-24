@@ -38,7 +38,7 @@ void register_rs03(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS03", 5);
+   strncpy(method->name, "RS03", 4);
    method->menuEntry = g_strdup(_("Multithreaded RS codec (RS03)"));
    method->description = g_strdup(_("Multithreaded Reed-Solomon codec for error correction files and augmented images"));
    method->create  = RS03Create;

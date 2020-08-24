@@ -37,7 +37,7 @@ void register_rs01(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS01", 5);
+   strncpy(method->name, "RS01", 4);
    method->menuEntry = g_strdup(_("Error correction file (RS01)"));
    method->description = g_strdup(_("Classic Reed-Solomon method based on polynomial arithmetic"));
    method->create  = RS01Create;

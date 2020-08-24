@@ -70,6 +70,7 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 {  unsigned char buf[2048];
    int real_size;
    int alloc_len;
+   char *nodelay;
 
    switch(cdb[0])
    {  
@@ -306,9 +307,12 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 		    }
 		 }
 
-		 fact = (int)(200.0*sin(-0.5+(double)lba/6280.0));
-		 delay = (500+fact)*alloc_len;
-		 usleep(delay);
+		 nodelay = getenv("DVDISASTER_SCSI_SIMULATED_NODELAY");
+		 if (!nodelay || strcmp(nodelay, "1")) {
+		   fact = (int)(200.0*sin(-0.5+(double)lba/6280.0));
+		   delay = (500+fact)*alloc_len;
+		   usleep(delay);
+		 }
 	   }
 	         return 0;
 	 break;

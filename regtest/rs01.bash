@@ -48,7 +48,7 @@ fi
 
 ### Verification tests
 
-echo "# Verify tests"
+REGTEST_SECTION="Verify tests"
 
 # Test good files
 if try "good image" good; then
@@ -310,7 +310,7 @@ fi
 
 ### Creation tests
 
-echo "# Creation tests"
+REGTEST_SECTION="Creation tests"
 
 # Create ecc file
 if try "ecc file creation" ecc_create; then
@@ -441,19 +441,19 @@ fi
 # Tests whether CRC and ECC information is taken from the read process,
 # not the wrong ecc file.
 
-if try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
+if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
   cp $MASTERISO $SIMISO
 
   $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE-777)) --random-seed 1337 >>$LOGFILE 2>&1
   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
 
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-#  run_regtest ecc_recreate_after_read_wrong_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
+  #run_regtest ecc_recreate_after_read_wrong_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
 
-### Fixing tests
+REGTEST_SECTION="Fixing tests"
 
-echo "# Repair tests"
+REGTEST_SECTION="Repair tests"
 
 # Fix good image
 
@@ -644,7 +644,7 @@ fi
 
 ### Scanning tests
 
-echo "# Scanning tests"
+REGTEST_SECTION="Scanning tests"
 
 # Scan image without error correction data available
 
@@ -878,7 +878,9 @@ if try "scanning image ecc file requiring a newer dvdisaster version" scan_with_
   $NEWVER --debug -i$TMPECC --byteset 0,90,15 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  IGNORE_LOG_LINE='^\*          $'
   run_regtest scan_with_incompatible_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $TMPECC
+  unset IGNORE_LOG_LINE
 fi
 
 # Scan an image with a simulated hardware failure and 
@@ -919,7 +921,7 @@ fi
 
 ### Reading tests (linear)
 
-echo "# Reading tests (linear)"
+REGTEST_SECTION="Reading tests (linear)"
 
 # Read image without error correction data available
 
@@ -1260,7 +1262,9 @@ if try "reading image ecc file requiring a newer dvdisaster version" read_with_i
   $NEWVER --debug -i$TMPECC --byteset 0,90,15 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  IGNORE_LOG_LINE='^\*          $'
   run_regtest read_with_incompatible_ecc "--spinup-delay=0 -r" $TMPISO  $TMPECC
+  unset IGNORE_LOG_LINE
 fi
 
 # Read an image with a simulated hardware failure and 
@@ -1320,7 +1324,7 @@ if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipas
 
   replace_config read-medium 3
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC
+  run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC SORTED
 fi
 
 # Do a second successful read attempt at an incomplete image;
@@ -1472,7 +1476,7 @@ fi
 
 ### Reading tests (adaptive)
 
-echo "# Reading tests (adaptive)"
+REGTEST_SECTION="Reading tests (adaptive)"
 
 echo "Currently not enabled!"
 exit 0

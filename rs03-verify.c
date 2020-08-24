@@ -424,7 +424,6 @@ static void cleanup(gpointer data)
  *** Prognosis for correctability
  ***/
 
-#ifndef CLI
 static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 {  int j,eccblock;
    int worst_ecc = 0;
@@ -483,13 +482,11 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
         return TRUE;
    else return FALSE;
 }
-#endif
 
 /***
  *** Error syndrome check
  ***/
 
-#ifndef CLI
 static int check_syndromes(verify_closure *vc)
 {  RS03Layout *lay = vc->lay;
    Image *image = vc->image;
@@ -655,7 +652,6 @@ static int check_syndromes(verify_closure *vc)
    }
    return ecc_bad;
 }
-#endif
 
 /***
  *** The verify action
@@ -1369,9 +1365,13 @@ void RS03Verify(Image *image)
 
      PrintLog(_("* Ecc block test   : skipped; not useful on defective image\n"));
    }
+   else
+   {
 #ifndef CLI
-   else syn_error = check_syndromes(vc);
+      syn_error =
 #endif
+         check_syndromes(vc);
+   }
 
    /*** Print image advice */
 
@@ -1398,8 +1398,11 @@ void RS03Verify(Image *image)
    /*** Print final results */
 
 #ifndef CLI
-   try_it = prognosis(vc, total_missing+data_crc_errors, lay->totalSectors); 
+   try_it =
+#endif
+      prognosis(vc, total_missing+data_crc_errors, lay->totalSectors); 
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(total_missing || data_crc_errors)
       {  if(try_it) SetLabelText(GTK_LABEL(wl->cmpImageResult),

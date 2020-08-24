@@ -471,7 +471,6 @@ static void read_crc(verify_closure *cc, RS02Layout *lay)
  * Prognosis for correctability
  */
 
-#ifndef CLI
 static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 {  int j,eccblock;
    int worst_ecc = 0;
@@ -542,7 +541,6 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
         return TRUE;
    else return FALSE;
 }
-#endif
 
 /*
  * The verify action
@@ -583,9 +581,9 @@ void RS02Verify(Image *image)
    int major,minor,micro;
    char *unstable="";
    char method[5];
-#ifndef CLI
    char *img_advice = NULL;
    char *ecc_advice = NULL;
+#ifndef CLI
    int try_it;
 #endif
    int unrecoverable_sectors = 0;
@@ -933,7 +931,13 @@ void RS02Verify(Image *image)
 			Closure->redMarkup);
       }
    }
+   else
 #endif
+   {
+      if(img_advice) 
+      {  PrintLog(img_advice);
+      }
+   }
 
    /*** Print some information on the ecc portion */
 continue_with_ecc:
@@ -1025,7 +1029,12 @@ continue_with_ecc:
         if(!ecc_advice) 
 	   ecc_advice = g_strdup_printf(_("<span %s>Please upgrade your version of dvdisaster!</span>"), Closure->redMarkup);
      }
+     else
 #endif
+     {
+        if(!ecc_advice) 
+	   ecc_advice = g_strdup(_("Please upgrade your version of dvdisaster!"));
+     }
    }
 
    /* Number of sectors medium is supposed to have */
@@ -1154,8 +1163,11 @@ continue_with_ecc:
    /*** Print final results */
 
 #ifndef CLI
-   try_it = prognosis(cc, total_missing + data_crc_errors - hdr_correctable, expected_sectors);
+   try_it =
+#endif
+      prognosis(cc, total_missing + data_crc_errors - hdr_correctable, expected_sectors);
 
+#ifndef CLI
    if(Closure->guiMode)
    {  if(ecc_advice) 
       {  SetLabelText(GTK_LABEL(wl->cmpEccResult), ecc_advice);
@@ -1175,7 +1187,13 @@ continue_with_ecc:
 				   Closure->redMarkup);
 	}
    }
+   else
 #endif
+   {  if(ecc_advice) 
+      {  PrintLog(ecc_advice);
+         g_free(ecc_advice);
+      }
+   }
 
    /*** Close and clean up */
 

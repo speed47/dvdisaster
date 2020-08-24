@@ -170,7 +170,6 @@ int RS02Recognize(Image *image)
    int read_count = 0;
    int answered_continue = FALSE;
    gint64 max_sectors = 0;
-
    switch(image->type)
    { case IMAGE_FILE:
        Verbose("RS02Recognize: file %s\n", image->file->path);

@@ -38,7 +38,7 @@ void register_rs02(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS02", 5);
+   strncpy(method->name, "RS02", 4);
    method->menuEntry = g_strdup(_("Augmented image (RS02)"));
    method->description = g_strdup(_("Reed-Solomon method with improved tolerance for defective ecc data"));
    method->create  = RS02Create;

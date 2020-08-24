@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.70.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-23 11:30+0200\n"
+"POT-Creation-Date: 2020-08-24 20:28+0200\n"
 "PO-Revision-Date: 2009-07-23 08:11+0300\n"
 "Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -146,7 +146,7 @@ msgstr "Байт должен иметь значение в диапазоне 
 msgid "Setting byte %d in sector %lld to value %d.\n"
 msgstr "Установка байта %d в секторе %lld в значение %d.\n"
 
-#: debug.c:477 debug.c:531 debug.c:694 rs02-create.c:210 rs02-verify.c:721
+#: debug.c:477 debug.c:531 debug.c:694 rs02-create.c:210 rs02-verify.c:719
 #: rs03-verify.c:1077
 #, c-format
 msgid "Failed seeking to start of image: %s\n"
@@ -953,7 +953,7 @@ msgid ""
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:232
+#: large-io.c:231
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -1112,8 +1112,8 @@ msgstr "неполный"
 msgid "damaged"
 msgstr "поврежденный"
 
-#: medium-info.c:169 rs02-verify.c:697 rs02-verify.c:915 rs02-verify.c:916
-#: rs02-verify.c:917 rs03-verify.c:1344 rs03-verify.c:1346 rs03-verify.c:1347
+#: medium-info.c:169 rs02-verify.c:695 rs02-verify.c:913 rs02-verify.c:914
+#: rs02-verify.c:915 rs03-verify.c:1344 rs03-verify.c:1346 rs03-verify.c:1347
 msgid "complete"
 msgstr "завершена"
 
@@ -1195,7 +1195,7 @@ msgstr "Тип носителя:"
 msgid "Book type:"
 msgstr "Формат (book type):"
 
-#: medium-info.c:467 scsi-layer.c:2703
+#: medium-info.c:467 scsi-layer.c:2702
 msgid "Manuf.-ID:"
 msgstr "Изгот.-ID:"
 
@@ -2673,7 +2673,7 @@ msgstr "Интеллектуальный L-EC"
 
 #: raw-sector-cache.c:35 raw-sector-cache.c:209 raw-sector-cache.c:354
 #: scsi-freebsd.c:131 scsi-freebsd.c:141 scsi-linux.c:115 scsi-linux.c:124
-#: scsi-netbsd.c:126 scsi-netbsd.c:136 scsi-win32.c:257
+#: scsi-netbsd.c:126 scsi-netbsd.c:136 scsi-win32.c:256
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Не удалось открыть %s: %s"
@@ -2868,7 +2868,7 @@ msgstr "Загрузка CRC данных."
 msgid "Analysing existing image file"
 msgstr "Анализ существующего файла образа"
 
-#: read-adaptive.c:1019 rs01-common.c:280 rs02-verify.c:754
+#: read-adaptive.c:1019 rs01-common.c:280 rs02-verify.c:752
 #, c-format
 msgid "premature end in image (only %d bytes): %s\n"
 msgstr "преждевременный конец образа (только %d байт): %s\n"
@@ -2892,15 +2892,15 @@ msgstr "Анализ существующего файла образа: %lld м
 msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
 msgstr "Анализ существующего файла образа: %lld можно прочитать, %lld еще отсутствуют.\n"
 
-#: read-adaptive.c:1274 read-linear.c:785
+#: read-adaptive.c:1274 read-linear.c:784
 msgid "Ignore once"
 msgstr "Игнорировать один раз"
 
-#: read-adaptive.c:1275 read-linear.c:786
+#: read-adaptive.c:1275 read-linear.c:785
 msgid "Ignore always"
 msgstr "Игнорировать всегда"
 
-#: read-adaptive.c:1276 read-linear.c:787
+#: read-adaptive.c:1276 read-linear.c:786
 msgid "Abort"
 msgstr "Прервать"
 
@@ -2986,12 +2986,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "CRC-ошибка в секторе %lld\n"
 
-#: read-adaptive.c:1948 scsi-layer.c:1752
+#: read-adaptive.c:1948 scsi-layer.c:1751
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Сектора %lld-%lld: %s\n"
 
-#: read-adaptive.c:1956 read-linear.c:1313 scsi-layer.c:1751
+#: read-adaptive.c:1956 read-linear.c:1313 scsi-layer.c:1750
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Сектор %lld: %s\n"
@@ -3044,7 +3044,7 @@ msgstr "Адаптивное чтение:"
 msgid "Sectors processed"
 msgstr "Обработанные сектора"
 
-#: read-adaptive-window.c:112 scsi-layer.c:1733
+#: read-adaptive-window.c:112 scsi-layer.c:1732
 msgid "readable"
 msgstr "можно прочитать"
 
@@ -3114,7 +3114,7 @@ msgstr "Чтение CRC-информации из ecc-данных"
 msgid "done.\n"
 msgstr "готово.\n"
 
-#: read-linear.c:522 scsi-layer.c:2078
+#: read-linear.c:522 scsi-layer.c:2077
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Задержка на %d секунд для раскручивания привода...\n"
@@ -3144,12 +3144,12 @@ msgstr ""
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Положение чтения: %3d.%1d%% (%4.1fx)"
 
-#: read-linear.c:745 rs01-common.c:356
+#: read-linear.c:744 rs01-common.c:356 rs02-verify.c:797 rs03-verify.c:1206
 #, c-format
-msgid "* CRC error, sector: %lld, found %08x instead of %08x\n"
-msgstr ""
+msgid "* CRC error, sector: %lld\n"
+msgstr "* CRC-ошибка, сектор: %lld\n"
 
-#: read-linear.c:875
+#: read-linear.c:874
 #, c-format
 msgid ""
 "This ecc file requires dvdisaster-%d.%d!\n"
@@ -3160,7 +3160,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: read-linear.c:883
+#: read-linear.c:882
 #, c-format
 msgid ""
 "This image requires dvdisaster-%d.%d!\n"
@@ -3173,7 +3173,7 @@ msgstr ""
 #: read-linear.c:893 rs01-create.c:769 rs01-fix.c:219 rs01-fix.c:243
 #: rs01-fix.c:295 rs01-fix.c:332 rs01-fix.c:352 rs01-fix.c:407
 #: rs01-verify.c:457 rs01-verify.c:916 rs02-create.c:130 rs02-fix.c:260
-#: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:743 rs03-create.c:269
+#: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:741 rs03-create.c:269
 #: rs03-fix.c:278 rs03-fix.c:327 rs03-fix.c:350 rs03-fix.c:429
 #: rs03-verify.c:551 rs03-verify.c:1100
 #, c-format
@@ -3340,7 +3340,7 @@ msgstr "Скорость"
 msgid "Sector %lld dumped to %s\n"
 msgstr "Сектор %lld помещен в %s\n"
 
-#: rs01-common.c:252 rs02-verify.c:833 rs03-verify.c:1232
+#: rs01-common.c:252 rs02-verify.c:831 rs03-verify.c:1232
 #, c-format
 msgid "- testing sectors  : %3d%%"
 msgstr "- проверка секторов  : %3d%%"
@@ -3350,12 +3350,12 @@ msgstr "- проверка секторов  : %3d%%"
 msgid "Scanning image sectors: %3d%%"
 msgstr "Просмотр секторов образа: %3d%%"
 
-#: rs01-common.c:308 rs02-verify.c:786
+#: rs01-common.c:308 rs02-verify.c:784
 #, c-format
 msgid "* missing sector   : %lld\n"
 msgstr "* недостающий сектор   : %lld\n"
 
-#: rs01-common.c:309 rs02-verify.c:787
+#: rs01-common.c:309 rs02-verify.c:785
 #, c-format
 msgid "* missing sectors  : %lld - %lld\n"
 msgstr "* недостающие сектора  : %lld - %lld\n"
@@ -3821,7 +3821,7 @@ msgstr "- Проверка файла образа -"
 msgid "not present\n"
 msgstr "отсутствует\n"
 
-#: rs01-verify.c:434 rs02-verify.c:622
+#: rs01-verify.c:434 rs02-verify.c:620
 #, c-format
 msgid "present, contains %lld medium sectors.\n"
 msgstr "присутствует, содержит %lld секторов носителя.\n"
@@ -3861,7 +3861,7 @@ msgstr "<span %s>%lld (%lld лишние сектора)</span>"
 msgid "<span %s>Bad image.</span>"
 msgstr "<span %s>Плохой образ.</span>"
 
-#: rs01-verify.c:512 rs02-verify.c:709 rs03-verify.c:1064
+#: rs01-verify.c:512 rs02-verify.c:707 rs03-verify.c:1064
 msgid "* quick mode        : image NOT scanned\n"
 msgstr ""
 
@@ -3874,7 +3874,7 @@ msgstr ""
 "- хороший образ    : все сектора есть\n"
 "- md5sum образа    : %s\n"
 
-#: rs01-verify.c:524 rs02-verify.c:928 rs03-verify.c:1388
+#: rs01-verify.c:524 rs02-verify.c:926 rs03-verify.c:1388
 #, c-format
 msgid "<span %s>Good image.</span>"
 msgstr "<span %s>Хороший образ.</span>"
@@ -3893,12 +3893,12 @@ msgstr ""
 msgid "<span %s>Image complete, but contains checksum errors!</span>"
 msgstr "<span %s>Образ завершен, но содержит ошибки контрольной суммы!</span>"
 
-#: rs01-verify.c:543 rs02-verify.c:894
+#: rs01-verify.c:543 rs02-verify.c:892
 #, c-format
 msgid "* BAD image        : %lld sectors missing\n"
 msgstr "* ПЛОХОЙ образ      : %lld секторов не хватает\n"
 
-#: rs01-verify.c:544 rs02-verify.c:898 rs03-verify.c:1324
+#: rs01-verify.c:544 rs02-verify.c:896 rs03-verify.c:1324
 #, c-format
 msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
 msgstr "* ПЛОХОЙ образ      : %lld секторов не хватает, %lld CRC-ошибок\n"
@@ -3931,7 +3931,7 @@ msgstr ""
 msgid "unusable\n"
 msgstr ""
 
-#: rs01-verify.c:625 rs01-verify.c:639 rs02-verify.c:953 rs02-verify.c:968
+#: rs01-verify.c:625 rs01-verify.c:639 rs02-verify.c:957 rs02-verify.c:972
 msgid "created by dvdisaster"
 msgstr "создано с помощью dvdisaster"
 
@@ -3939,22 +3939,22 @@ msgstr "создано с помощью dvdisaster"
 msgid "created by dvdisaster-0.41.x.\n"
 msgstr "создано с помощью dvdisaster-0.41.x.\n"
 
-#: rs01-verify.c:663 rs02-verify.c:984 rs03-verify.c:810
+#: rs01-verify.c:663 rs02-verify.c:988 rs03-verify.c:810
 #, c-format
 msgid "- method           : %4s, %d roots, %4.1f%% redundancy.\n"
 msgstr "- метод           : %4s, %d корней, избыточность %4.1f%%.\n"
 
-#: rs01-verify.c:668 rs02-verify.c:990 rs03-verify.c:816
+#: rs01-verify.c:668 rs02-verify.c:994 rs03-verify.c:816
 #, c-format
 msgid "%4s, %d roots, %4.1f%% redundancy"
 msgstr "%4s, %d корней, избыточность %4.1f%%"
 
-#: rs01-verify.c:676 rs02-verify.c:998
+#: rs01-verify.c:676 rs02-verify.c:1002
 #, c-format
 msgid "- requires         : dvdisaster-%d.%d (good)\n"
 msgstr "- требуется         : dvdisaster-%d.%d (хорошо)\n"
 
-#: rs01-verify.c:687 rs02-verify.c:1011
+#: rs01-verify.c:687 rs02-verify.c:1015
 #, c-format
 msgid ""
 "* requires         : dvdisaster-%d.%d (BAD)\n"
@@ -3965,7 +3965,7 @@ msgstr ""
 "* Внимание         : Следующий результат может быть неправильным.\n"
 "*                  : Посетите http://www.dvdisaster.org за обновлением.\n"
 
-#: rs01-verify.c:701 rs02-verify.c:1026 rs03-verify.c:887
+#: rs01-verify.c:701 rs02-verify.c:1030 rs03-verify.c:887
 #, c-format
 msgid "<span %s>Please upgrade your version of dvdisaster!</span>"
 msgstr "<span %s>Обновите Вашу версию программы dvdisaster!</span>"
@@ -3990,12 +3990,12 @@ msgstr "- сектора носителя   : %lld (хорошо)\n"
 msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
 msgstr "- сектора носителя   : %lld секторов + %d байт (хорошо)\n"
 
-#: rs01-verify.c:758 rs02-verify.c:1045
+#: rs01-verify.c:758 rs02-verify.c:1054
 #, c-format
 msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
 msgstr "* сектора носителя   : %lld (ПЛОХО, возможно, несоответствие TAO/DAO)\n"
 
-#: rs01-verify.c:771 rs02-verify.c:1047
+#: rs01-verify.c:771 rs02-verify.c:1056
 #, c-format
 msgid "* medium sectors   : %lld (BAD)\n"
 msgstr "* сектора носителя   : %lld (ПЛОХО)\n"
@@ -4099,7 +4099,7 @@ msgstr "<span %s>плохо</span>"
 msgid "<span %s>Error correction file may be damaged!</span>"
 msgstr "<span %s>Файл для исправления ошибок может быть поврежден!</span>"
 
-#: rs01-verify.c:936 rs02-verify.c:1128
+#: rs01-verify.c:936 rs02-verify.c:1137
 #, c-format
 msgid "- ecc md5sum       : %s (good)\n"
 msgstr "- ecc md5sum       : %s (хорошо)\n"
@@ -4255,7 +4255,7 @@ msgid ""
 "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MiB is suitable for most systems."
 msgstr ""
 
-#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:651 rs03-common.c:622
+#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:622
 #, c-format
 msgid "Failed seeking to ecc header at %lld: %s\n"
 msgstr "Не удалось перейти к ecc-заголовку в %lld: %s\n"
@@ -4457,7 +4457,7 @@ msgstr "Продолжить поиск"
 msgid "Disable RS02 initialization in the preferences"
 msgstr "Отключить инициализацию RS02 в настройках"
 
-#: rs02-recognize.c:279
+#: rs02-recognize.c:278
 msgid ""
 "Faster medium initialization\n"
 "\n"
@@ -4500,83 +4500,78 @@ msgstr "Раздел ecc:"
 msgid "Error correction data"
 msgstr "Данные для исправления ошибок"
 
-#: rs02-verify.c:513 rs03-verify.c:458
+#: rs02-verify.c:512 rs03-verify.c:458
 #, c-format
 msgid "- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"
 msgstr "- количество стертых областей    :  среднее =  %.1f; наихудшее = %d на ecc-блок.\n"
 
-#: rs02-verify.c:516 rs03-verify.c:461
+#: rs02-verify.c:515 rs03-verify.c:461
 #, c-format
 msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
 msgstr "- прогноз        : %lld из %lld секторов восстановимы (%d.%d%%)\n"
 
-#: rs02-verify.c:523 rs03-verify.c:466
+#: rs02-verify.c:522 rs03-verify.c:466
 msgid "Erasure counts:"
 msgstr "Количество стертых областей:"
 
-#: rs02-verify.c:524 rs03-verify.c:467
+#: rs02-verify.c:523 rs03-verify.c:467
 msgid "Prognosis:"
 msgstr "Прогноз:"
 
-#: rs02-verify.c:527 rs03-verify.c:470
+#: rs02-verify.c:526 rs03-verify.c:470
 #, c-format
 msgid "<span %s>avg =  %.1f; worst = %d per ecc block.</span>"
 msgstr "<span %s>срдн. =  %.1f; худш. = %d на ecc-блок.</span>"
 
-#: rs02-verify.c:532 rs03-verify.c:475
+#: rs02-verify.c:531 rs03-verify.c:475
 #, c-format
 msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
 msgstr "<span %s>%lld из %lld секторов можно восстановить (%d.%d%%)</span>"
 
-#: rs02-verify.c:595 rs03-verify.c:704
+#: rs02-verify.c:593 rs03-verify.c:704
 msgid "Check aborted"
 msgstr "Проверка прервана"
 
-#: rs02-verify.c:617 rs03-verify.c:751
+#: rs02-verify.c:615 rs03-verify.c:751
 msgid "Checking the image file."
 msgstr "Проверка файла образа."
 
-#: rs02-verify.c:618
+#: rs02-verify.c:616
 msgid "Image contains error correction data."
 msgstr "Образ содержит данные для исправления ошибок."
 
-#: rs02-verify.c:633 rs03-verify.c:1045
+#: rs02-verify.c:631 rs03-verify.c:1045
 #, c-format
 msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
 msgstr "<span %s>Файл образа на %lld секторов короче, чем ожидалось.</span>"
 
-#: rs02-verify.c:634 rs03-verify.c:1048
+#: rs02-verify.c:632 rs03-verify.c:1048
 #, c-format
 msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
 msgstr "<span %s>Файл образа на %lld секторов больше, чем ожидалось.</span>"
 
-#: rs02-verify.c:655
+#: rs02-verify.c:653
 #, c-format
 msgid "Failed reading ecc header at %lld: %s\n"
 msgstr "Не удалось прочитать ecc-заголовок в %lld: %s\n"
 
-#: rs02-verify.c:699
+#: rs02-verify.c:697
 #, c-format
 msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
 msgstr "<span %s>%lld ok, %lld CRC-ошибок, %lld не хватает</span>"
 
-#: rs02-verify.c:799 rs03-verify.c:1206
-#, c-format
-msgid "* CRC error, sector: %lld\n"
-msgstr "* CRC-ошибка, сектор: %lld\n"
-
-#: rs02-verify.c:839 rs02-verify.c:862 rs03-verify.c:1251 rs03-verify.c:1294
+#: rs02-verify.c:837 rs02-verify.c:860 rs03-verify.c:1251 rs03-verify.c:1294
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
 msgstr "<span %s>%lld секторов не хватает; %lld CRC-ошибок</span>"
 
-#: rs02-verify.c:843 rs02-verify.c:847 rs02-verify.c:866 rs02-verify.c:870
+#: rs02-verify.c:841 rs02-verify.c:845 rs02-verify.c:864 rs02-verify.c:868
 #: rs03-verify.c:1259 rs03-verify.c:1302
 #, c-format
 msgid "<span %s>%lld sectors missing</span>"
 msgstr "<span %s>%lld секторов не хватает</span>"
 
-#: rs02-verify.c:885
+#: rs02-verify.c:883
 #, c-format
 msgid ""
 "- good image       : all sectors present\n"
@@ -4585,46 +4580,46 @@ msgstr ""
 "- хороший образ      : все сектора есть\n"
 "- md5sum данных      : %s\n"
 
-#: rs02-verify.c:891
+#: rs02-verify.c:889
 msgid "* suspicious image : contains damaged ecc headers\n"
 msgstr "* подозрительный образ : содержит поврежденные ecc-заголовки\n"
 
-#: rs02-verify.c:896 rs03-verify.c:1321
+#: rs02-verify.c:894 rs03-verify.c:1321
 #, c-format
 msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
 msgstr "* подозрительный образ : все сектора есть, но %lld CRC-ошибок\n"
 
-#: rs02-verify.c:902
+#: rs02-verify.c:900
 #, c-format
 msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
 msgstr "  ... ecc-заголовков    : %lld ok, %lld CRC-ошибок, %lld не хватает\n"
 
-#: rs02-verify.c:904 rs03-verify.c:1327
+#: rs02-verify.c:902 rs03-verify.c:1327
 #, c-format
 msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
 msgstr "  ... раздел данных   : %lld секторов не хватает; %lld CRC-ошибок\n"
 
-#: rs02-verify.c:907 rs03-verify.c:1330
+#: rs02-verify.c:905 rs03-verify.c:1330
 #, c-format
 msgid "  ... data md5sum    : %s\n"
 msgstr "  ... md5sum данных   : %s\n"
 
-#: rs02-verify.c:908 rs03-verify.c:1336
+#: rs02-verify.c:906 rs03-verify.c:1336
 #, c-format
 msgid "  ... crc section    : %lld sectors missing\n"
 msgstr "  ... раздел crc    : %lld секторов не хватает\n"
 
-#: rs02-verify.c:909 rs03-verify.c:1338
+#: rs02-verify.c:907 rs03-verify.c:1338
 #, c-format
 msgid "  ... ecc section    : %lld sectors missing\n"
 msgstr "  ... раздел ecc    : %lld секторов не хватает\n"
 
-#: rs02-verify.c:932 rs03-verify.c:1392
+#: rs02-verify.c:930 rs03-verify.c:1392
 #, c-format
 msgid "<span %s>Damaged image.</span>"
 msgstr "<span %s>Поврежденный образ.</span>"
 
-#: rs02-verify.c:940
+#: rs02-verify.c:944
 msgid ""
 "\n"
 "Error correction data: "
@@ -4632,67 +4627,71 @@ msgstr ""
 "\n"
 "Данные для исправления ошибок: "
 
-#: rs02-verify.c:1034
+#: rs02-verify.c:1036
+msgid "Please upgrade your version of dvdisaster!"
+msgstr ""
+
+#: rs02-verify.c:1043
 #, c-format
 msgid "- medium sectors   : %lld / %lld (good)\n"
 msgstr "- секторов носителя   : %lld / %lld (хорошо)\n"
 
-#: rs02-verify.c:1054
+#: rs02-verify.c:1063
 #, c-format
 msgid "<span %s>Image size does not match recorded size.</span>"
 msgstr "<span %s>Размер образа не совпадает с записанным размером.</span>"
 
-#: rs02-verify.c:1069
+#: rs02-verify.c:1078
 #, c-format
 msgid "- data md5sum      : %s (good)\n"
 msgstr "- md5sum данных      : %s (хорошо)\n"
 
-#: rs02-verify.c:1070
+#: rs02-verify.c:1079
 #, c-format
 msgid "* data md5sum      : %s (BAD)\n"
 msgstr "* md5sum данных      : %s (ПЛОХО)\n"
 
-#: rs02-verify.c:1083 rs03-verify.c:902
+#: rs02-verify.c:1092 rs03-verify.c:902
 #, c-format
 msgid "- data md5sum      : %s\n"
 msgstr "- md5sum данных      : %s\n"
 
-#: rs02-verify.c:1097
+#: rs02-verify.c:1106
 #, c-format
 msgid "- crc md5sum       : %s (good)\n"
 msgstr "- crc md5sum       : %s (хорошо)\n"
 
-#: rs02-verify.c:1104
+#: rs02-verify.c:1113
 #, c-format
 msgid "* crc md5sum       : %s (BAD)\n"
 msgstr "* crc md5sum       : %s (ПЛОХО)\n"
 
-#: rs02-verify.c:1114
+#: rs02-verify.c:1123
 #, c-format
 msgid "- crc md5sum       : %s\n"
 msgstr "- crc md5sum       : %s\n"
 
-#: rs02-verify.c:1135
+#: rs02-verify.c:1144
 #, c-format
 msgid "* ecc md5sum       : %s (BAD)\n"
 msgstr "* ecc md5sum       : %s (ПЛОХО)\n"
 
-#: rs02-verify.c:1145
+#: rs02-verify.c:1154
 #, c-format
 msgid "- ecc md5sum       : %s\n"
 msgstr "- ecc md5sum       : %s\n"
 
-#: rs02-verify.c:1167 rs03-verify.c:956
+#: rs02-verify.c:1179 rs03-verify.c:956
 #, c-format
 msgid "<span %s>Good error correction data.</span>"
 msgstr "<span %s>Хорошие данные для исправления ошибок.</span>"
 
-#: rs02-verify.c:1171 rs03-verify.c:1406
+#: rs02-verify.c:1183 rs03-verify.c:1406
 #, c-format
 msgid "<span %s>Full data recovery is likely.</span>"
 msgstr "<span %s>Вероятно полное восстановление данных.</span>"
 
-#: rs02-verify.c:1174 rs03-verify.c:1409
+#: rs02-verify.c:1186 rs03-verify.c:1409
 #, c-format
 msgid "<span %s>Full data recovery is NOT possible.</span>"
 msgstr "<span %s>Полное восстановление данных НЕВОЗМОЖНО.</span>"
@@ -5640,7 +5639,7 @@ msgstr ""
 msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
 msgstr "READ DVD STRUCTURE: неправильный размер носителя, %lld-%lld=%lld секторов\n"
 
-#: scsi-layer.c:973
+#: scsi-layer.c:972
 #, c-format
 msgid ""
 "%s\n"
@@ -5649,7 +5648,7 @@ msgstr ""
 "%s\n"
 "Не удалось запросить размер структуры BD диска.\n"
 
-#: scsi-layer.c:997
+#: scsi-layer.c:996
 #, c-format
 msgid ""
 "%s\n"
@@ -5658,7 +5657,7 @@ msgstr ""
 "%s\n"
 "Не удалось запросить структуру BD диска.\n"
 
-#: scsi-layer.c:1680
+#: scsi-layer.c:1679
 #, c-format
 msgid ""
 "%s\n"
@@ -5667,12 +5666,12 @@ msgstr ""
 "%s\n"
 "Не удалось запросить размер dvd-структуры для кода формата 1.\n"
 
-#: scsi-layer.c:1691
+#: scsi-layer.c:1690
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Не удалось запросить информацию об авторских правах dvd - неправдоподобный размер пакета %d\n"
 
-#: scsi-layer.c:1706
+#: scsi-layer.c:1705
 #, c-format
 msgid ""
 "%s\n"
@@ -5681,23 +5680,23 @@ msgstr ""
 "%s\n"
 "Не удалось запросить информацию об авторских правах.\n"
 
-#: scsi-layer.c:1767
+#: scsi-layer.c:1766
 msgid "is undecideable because of read error"
 msgstr "не ясно из-за ошибок чтения"
 
-#: scsi-layer.c:1773
+#: scsi-layer.c:1772
 msgid "looks GOOD"
 msgstr "выглядит ПРАВИЛЬНО"
 
-#: scsi-layer.c:1779
+#: scsi-layer.c:1778
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "дает неформатированный размер (НЕПРИГОДНО)"
 
-#: scsi-layer.c:1784
+#: scsi-layer.c:1783
 msgid "is UNUSABLE"
 msgstr "НЕПРИГОДНО"
 
-#: scsi-layer.c:1810
+#: scsi-layer.c:1809
 #, c-format
 msgid ""
 "%s\n"
@@ -5706,12 +5705,12 @@ msgstr ""
 "%s\n"
 "Не удалось запросить размер носителя.\n"
 
-#: scsi-layer.c:1832
+#: scsi-layer.c:1831
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "READ CAPACITY: неправильный размер носителя, %lld секторов\n"
 
-#: scsi-layer.c:1908
+#: scsi-layer.c:1907
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -5724,7 +5723,7 @@ msgstr ""
 "READ DVD STRUCTURE: %lld секторов\n"
 "\n"
 
-#: scsi-layer.c:1913
+#: scsi-layer.c:1912
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -5732,15 +5731,15 @@ msgstr ""
 "Оценка полученных размеров носителя:\n"
 "\n"
 
-#: scsi-layer.c:1968
+#: scsi-layer.c:1967
 msgid "Using value from READ CAPACITY"
 msgstr "Используется значение из READ CAPACITY"
 
-#: scsi-layer.c:1972
+#: scsi-layer.c:1971
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Используется значение из READ DVD STRUCTURE"
 
-#: scsi-layer.c:1982
+#: scsi-layer.c:1981
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -5751,7 +5750,7 @@ msgstr ""
 "Использование значения меньшего, чем это, работает на >90%% приводов,\n"
 "но ПРОДОЛЖАЙТЕ НА СВОЙ РИСК (образ может быть неполным/непригодным)"
 
-#: scsi-layer.c:1987
+#: scsi-layer.c:1986
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -5760,7 +5759,7 @@ msgstr ""
 "Окончательное решение: %s\n"
 "\n"
 
-#: scsi-layer.c:1995
+#: scsi-layer.c:1994
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -5768,7 +5767,7 @@ msgstr ""
 "Не удалось определить размер образа.\n"
 "Попробуйте другой привод."
 
-#: scsi-layer.c:2121 scsi-layer.c:2147
+#: scsi-layer.c:2120 scsi-layer.c:2146
 #, c-format
 msgid ""
 "%s\n"
@@ -5777,7 +5776,7 @@ msgstr ""
 "%s\n"
 "Не удалось загрузить/выгрузить носитель.\n"
 
-#: scsi-layer.c:2137
+#: scsi-layer.c:2136
 #, c-format
 msgid ""
 "%s\n"
@@ -5786,37 +5785,37 @@ msgstr ""
 "%s\n"
 "Не удалось разблокировать носитель.\n"
 
-#: scsi-layer.c:2203
+#: scsi-layer.c:2202
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Выжидание 10 секунд для привода: %d\n"
 
-#: scsi-layer.c:2486
+#: scsi-layer.c:2485
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Сектора %lld - %lld: %s\n"
 
-#: scsi-layer.c:2500
+#: scsi-layer.c:2499
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Сектор %lld, попытка %d: %s Возвращен сектор: %d.\n"
 
-#: scsi-layer.c:2506
+#: scsi-layer.c:2505
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Сектор %lld, попытка %d: %s\n"
 
-#: scsi-layer.c:2517
+#: scsi-layer.c:2516
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Сектор %lld, попытка %d: успешно\n"
 
-#: scsi-layer.c:2588
+#: scsi-layer.c:2587
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Устройство %s: нет носителя\n"
 
-#: scsi-layer.c:2593
+#: scsi-layer.c:2592
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5827,7 +5826,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: scsi-layer.c:2599
+#: scsi-layer.c:2598
 #, c-format
 msgid ""
 "\n"
@@ -5836,47 +5835,47 @@ msgstr ""
 "\n"
 "Устройство: %s, %s\n"
 
-#: scsi-layer.c:2606
+#: scsi-layer.c:2605
 msgid "Drive failed to report media type."
 msgstr "Не удалось получить от привода сообщение о типе носителя."
 
-#: scsi-layer.c:2617 scsi-layer.c:2715
+#: scsi-layer.c:2616 scsi-layer.c:2714
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Эта программа не поддерживает \"%s\" тип носителя."
 
-#: scsi-layer.c:2625
+#: scsi-layer.c:2624
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Эта программа не поддерживает многосессионные (%d сессиий) носители."
 
-#: scsi-layer.c:2656 scsi-layer.c:2665
+#: scsi-layer.c:2655 scsi-layer.c:2664
 msgid "Using READ CD"
 msgstr "Используется READ CD"
 
-#: scsi-layer.c:2657
+#: scsi-layer.c:2656
 msgid ", RAW reading"
 msgstr ", чтение \"RAW\""
 
-#: scsi-layer.c:2660
+#: scsi-layer.c:2659
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", Mode page 1 ERP = %02xh"
 
-#: scsi-layer.c:2663
+#: scsi-layer.c:2662
 msgid ", C2 scanning"
 msgstr ", поиск ошибок C2"
 
-#: scsi-layer.c:2670
+#: scsi-layer.c:2669
 msgid "Using READ(10).\n"
 msgstr "Используется READ(10).\n"
 
-#: scsi-layer.c:2692
+#: scsi-layer.c:2691
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Носитель: %s, %lld секторов%s"
 
-#: scsi-layer.c:2696
+#: scsi-layer.c:2695
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Носитель \"%s\": %s, %lld секторов%s создан %s"
@@ -5909,7 +5908,7 @@ msgstr ""
 "\n"
 "Неправильное имя устройства \"%s\" (используйте устройства \"C:\" ... \"Z:\")"
 
-#: scsi-win32.c:268
+#: scsi-win32.c:266
 #, c-format
 msgid ""
 "\n"
