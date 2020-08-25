@@ -8,10 +8,10 @@ fi
 echo "#define FLAVOR $flavor" >$1
 echo "#define BUILDNUM $build" >>$1
 if git describe >/dev/null 2>/dev/null; then
-   gitver=$(git describe)
-   echo "#define BUILD \"$(git describe)-$flavor-speed47.build$build\"" >>$1
+   gitver=$(git describe --tags --dirty)
+   echo "#define BUILD \"$gitver-$flavor-speed47.build$build\"" >>$1
 else
-   echo "#define BUILD \"$flavor-speed47.build$build\"" >$1
+   echo "#define BUILD \"$gitver-speed47.build$build\"" >$1
 fi
 date=$(date +"%d.%m.%y (%A, %H:%M)")
 echo "#define BDATE \"$date\"" >>$1
