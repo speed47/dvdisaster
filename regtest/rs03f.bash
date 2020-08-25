@@ -1493,3 +1493,5 @@ fi
 ### Reading tests (adaptive)
 
 REGTEST_SECTION="Reading tests (adaptive)"
+
+exit $nbfailed

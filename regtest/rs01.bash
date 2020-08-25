@@ -659,7 +659,7 @@ fi
 
 if try "scanning image, device not existant" scan_no_device; then
 
-  extra_args="--debug -d /dev/sdz --sim-cd=$MASTERISO --fixed-speed-values"
+  extra_args="--debug -d $NON_EXISTENT_DEVICE --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_no_device "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
 fi
 
@@ -946,7 +946,7 @@ fi
 
 if try "reading image, device not existant" read_no_device; then
 
-  run_regtest read_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d /dev/sdz -r" $TMPISO  $ISODIR/no.ecc
+  run_regtest read_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $NON_EXISTENT_DEVICE -r" $TMPISO  $ISODIR/no.ecc
 fi
 
 # Read image from device with insufficient permissions
@@ -1499,7 +1499,7 @@ fi
 
 if try "reading image, device not existant" adaptive_no_device; then
 
-  run_regtest adaptive_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d /dev/sdz -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
+  run_regtest adaptive_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $NON_EXISTENT_DEVICE -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
 fi
 
 # Read image from device with insufficient permissions
@@ -1785,3 +1785,5 @@ if try "reading medium containing dead sector markers" adaptive_medium_with_dsm;
 
   run_regtest adaptive_medium_with_dsm "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
 fi
+
+exit $nbfailed

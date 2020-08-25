@@ -6,6 +6,7 @@ SETVERSION="0.80"
 DATABASE=./database
 RNDSEQ="./fixed-random-sequence"
 
+NON_EXISTENT_DEVICE=/dev/sdz
 ISODIR=/var/tmp/regtest
 if ! test -d $ISODIR; then
     echo "$ISODIR does not exist."
@@ -29,8 +30,16 @@ fi
 
 # Assemble sed expressions for removal of variable output contents
 
-SED_REMOVE_ISO_DIR=$(echo "${ISODIR}/" | sed -e "s/\//\\\\\//g")
-SED_REMOVE_DEV_SHM=$(echo "/dev/shm/"  | sed -e "s/\//\\\\\//g")
+SED_REMOVE_ISO_DIR="([a-zA-Z]:/[a-zA-Z0-9/]+)?${ISODIR}/"
+
+# For MSYS2
+
+if [ -n "$ORIGINAL_TEMP" ]; then
+    ISODIR="$ORIGINAL_TEMP"
+    # /c/ => C:/
+    SED_REMOVE_ISO_DIR="$(echo "$ISODIR" | cut -c2 | tr a-z A-Z):$(echo "$ISODIR" | cut -c3-)/"
+    NON_EXISTENT_DEVICE=V:
+fi
 
 # Usage
 
@@ -196,20 +205,20 @@ function run_regtest()
      # ignore the memory tracker line when no memory leaks
      # have been found
      
-     grep -v "dvdisaster: No memory leaks found." $NEWLOG >$TMPLOG
+     grep -va "dvdisaster: No memory leaks found." $NEWLOG >$TMPLOG
      mv $TMPLOG $NEWLOG
      
      # ignore log lines specified by user
      
      if test -n "$IGNORE_LOG_LINE"; then
-	 egrep -v "$IGNORE_LOG_LINE" $NEWLOG >$TMPLOG
+	 grep -Eva "$IGNORE_LOG_LINE" $NEWLOG >$TMPLOG
 	 mv $TMPLOG $NEWLOG
      fi
 
      filter=cat
      echo "$options" | grep -qw SORTED && filter=sort
        
-     if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -e "s/${SED_REMOVE_ISO_DIR}//g" $NEWLOG | $filter) >${DIFFLOG}; then
+     if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG | $filter) >${DIFFLOG}; then
 	 printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
 	 cat ${DIFFLOG}
 
@@ -220,7 +229,7 @@ function run_regtest()
 	   if test "$answer" == "a"; then
 	       cp $REFLOG $LOGDIR
 	       head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
-	       sed -e "s/${SED_REMOVE_ISO_DIR}//g" $NEWLOG >>$REFLOG
+	       sed -e "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
 	       pass="skip"
 	   else
 	       pass="false"

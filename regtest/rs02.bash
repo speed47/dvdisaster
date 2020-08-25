@@ -2139,3 +2139,4 @@ if try "reading RS02 image with non-matching RS03 ecc file" read_with_wrong_rs03
     run_regtest read_with_wrong_rs03_file "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r" $TMPISO $TMPECC
 fi
 
+exit $nbfailed
