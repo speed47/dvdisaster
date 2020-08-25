@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-24 20:28+0200\n"
+"POT-Creation-Date: 2020-08-25 21:12+0200\n"
 "PO-Revision-Date: 2006-06-14 23:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -148,7 +148,7 @@ msgid "Setting byte %d in sector %lld to value %d.\n"
 msgstr "Ställer in byte %d i sektor %lld till värdet %d.\n"
 
 #: debug.c:477 debug.c:531 debug.c:694 rs02-create.c:210 rs02-verify.c:719
-#: rs03-verify.c:1077
+#: rs03-verify.c:1073
 #, c-format
 msgid "Failed seeking to start of image: %s\n"
 msgstr "Misslyckades med att söka fram till början av avbild: %s\n"
@@ -855,7 +855,7 @@ msgid ""
 "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
 
-#: help-dialogs.c:753 misc.c:213
+#: help-dialogs.c:753 misc.c:218
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
 
@@ -930,7 +930,7 @@ msgid ""
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:231
+#: large-io.c:259
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -1090,7 +1090,7 @@ msgid "damaged"
 msgstr ""
 
 #: medium-info.c:169 rs02-verify.c:695 rs02-verify.c:913 rs02-verify.c:914
-#: rs02-verify.c:915 rs03-verify.c:1344 rs03-verify.c:1346 rs03-verify.c:1347
+#: rs02-verify.c:915 rs03-verify.c:1340 rs03-verify.c:1342 rs03-verify.c:1343
 msgid "complete"
 msgstr ""
 
@@ -1392,7 +1392,7 @@ msgstr ""
 "Lista på tillgängliga metoder:\n"
 "\n"
 
-#: misc.c:219
+#: misc.c:224
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
 "is free software and you are welcome to redistribute it\n"
@@ -1404,11 +1404,11 @@ msgstr ""
 "under villkoren för GNU GENERAL PUBLIC LICENSE.\n"
 "Se filen \"COPYING\" för ytterligare information.\n"
 
-#: misc.c:545
+#: misc.c:550
 msgid "Warning"
 msgstr "Varning"
 
-#: misc.c:628 misc.c:638
+#: misc.c:633 misc.c:643
 msgid ""
 "\n"
 "*\n"
@@ -1420,11 +1420,11 @@ msgstr ""
 "* dvdisaster - kan inte fortsätta:\n"
 "*\n"
 
-#: misc.c:1301
+#: misc.c:1306
 msgid "Do not ask again"
 msgstr ""
 
-#: misc.c:1325
+#: misc.c:1330
 #, c-format
 msgid ""
 "Image file already exists and does not match the medium:\n"
@@ -1434,7 +1434,7 @@ msgid ""
 "The existing image file will be deleted."
 msgstr ""
 
-#: misc.c:1347
+#: misc.c:1352
 #, c-format
 msgid ""
 "The error correction file is already present:\n"
@@ -2963,7 +2963,7 @@ msgstr ""
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Läsposition: %3d.%1d%% (%4.1fx)"
 
-#: read-linear.c:744 rs01-common.c:356 rs02-verify.c:797 rs03-verify.c:1206
+#: read-linear.c:744 rs01-common.c:356 rs02-verify.c:797 rs03-verify.c:1202
 #, c-format
 msgid "* CRC error, sector: %lld\n"
 msgstr "* CRC-fel, sektor: %lld\n"
@@ -2994,7 +2994,7 @@ msgstr ""
 #: rs01-verify.c:457 rs01-verify.c:916 rs02-create.c:130 rs02-fix.c:260
 #: rs02-fix.c:281 rs02-fix.c:372 rs02-verify.c:741 rs03-create.c:269
 #: rs03-fix.c:278 rs03-fix.c:327 rs03-fix.c:350 rs03-fix.c:429
-#: rs03-verify.c:551 rs03-verify.c:1100
+#: rs03-verify.c:548 rs03-verify.c:1096
 #, c-format
 msgid "<span %s>Aborted by user request!</span>"
 msgstr "<span %s>Avbruten av användaren!</span>"
@@ -3155,7 +3155,7 @@ msgstr "Hastighet"
 msgid "Sector %lld dumped to %s\n"
 msgstr ""
 
-#: rs01-common.c:252 rs02-verify.c:831 rs03-verify.c:1232
+#: rs01-common.c:252 rs02-verify.c:831 rs03-verify.c:1228
 #, c-format
 msgid "- testing sectors  : %3d%%"
 msgstr "- testar sektorer  : %3d%%"
@@ -3628,7 +3628,7 @@ msgstr "Jämförelse avbruten"
 msgid "Comparing image and error correction files."
 msgstr "Jämför avbild och felkorrigeringsfiler."
 
-#: rs01-verify.c:406 rs03-verify.c:741 rs03-verify.c:752
+#: rs01-verify.c:406 rs03-verify.c:737 rs03-verify.c:748
 msgid "- Checking image file -"
 msgstr "- Kontrollerar avbildsfil -"
 
@@ -3676,7 +3676,7 @@ msgstr "<span %s>%lld (%lld fler sektorer)</span>"
 msgid "<span %s>Bad image.</span>"
 msgstr "<span %s>Felaktig avbild.</span>"
 
-#: rs01-verify.c:512 rs02-verify.c:707 rs03-verify.c:1064
+#: rs01-verify.c:512 rs02-verify.c:707 rs03-verify.c:1060
 msgid "* quick mode        : image NOT scanned\n"
 msgstr ""
 
@@ -3713,12 +3713,12 @@ msgstr "<span %s>Avbild komplett, men innehåller fel i kontrollsummor!</span>"
 msgid "* BAD image        : %lld sectors missing\n"
 msgstr "* DÅLIG avbild     : %lld sektorer saknas\n"
 
-#: rs01-verify.c:544 rs02-verify.c:896 rs03-verify.c:1324
+#: rs01-verify.c:544 rs02-verify.c:896 rs03-verify.c:1320
 #, c-format
 msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
 msgstr "* DÅLIG avbild     : %lld sektorer saknas, %lld CRC-fel\n"
 
-#: rs01-verify.c:561 rs03-verify.c:1279
+#: rs01-verify.c:561 rs03-verify.c:1275
 msgid "- Checking ecc file -"
 msgstr "- Kontrollerar ecc-fil -"
 
@@ -3754,12 +3754,12 @@ msgstr "skapad av dvdisaster"
 msgid "created by dvdisaster-0.41.x.\n"
 msgstr "skapad av dvdisaster-0.41.x.\n"
 
-#: rs01-verify.c:663 rs02-verify.c:988 rs03-verify.c:810
+#: rs01-verify.c:663 rs02-verify.c:988 rs03-verify.c:806
 #, c-format
 msgid "- method           : %4s, %d roots, %4.1f%% redundancy.\n"
 msgstr "- metod            : %4s, %d rötter, %4.1f%% redundans.\n"
 
-#: rs01-verify.c:668 rs02-verify.c:994 rs03-verify.c:816
+#: rs01-verify.c:668 rs02-verify.c:994 rs03-verify.c:812
 #, c-format
 msgid "%4s, %d roots, %4.1f%% redundancy"
 msgstr "%4s, %d rötter, %4.1f%% redundans"
@@ -3780,7 +3780,7 @@ msgstr ""
 "* Varning          : Följande utdata kan vara felaktig.\n"
 "*                  : Besök http://www.dvdisaster.org för en uppgradering.\n"
 
-#: rs01-verify.c:701 rs02-verify.c:1030 rs03-verify.c:887
+#: rs01-verify.c:701 rs02-verify.c:1030 rs03-verify.c:883
 #, c-format
 msgid "<span %s>Please upgrade your version of dvdisaster!</span>"
 msgstr "<span %s>Uppgradera din version av dvdisaster!</span>"
@@ -3845,34 +3845,34 @@ msgstr "* md5sum avbild    : %s (DÅLIGT)\n"
 msgid "- image md5sum     : %s\n"
 msgstr "- md5sum avbild    : %s\n"
 
-#: rs01-verify.c:827 rs03-verify.c:914
+#: rs01-verify.c:827 rs03-verify.c:910
 msgid "* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"
 msgstr "* fingeravtrycksträff: INTE MÖJLIG - relaterad sektor saknas i avbild!\n"
 
-#: rs01-verify.c:830 rs03-verify.c:918
+#: rs01-verify.c:830 rs03-verify.c:914
 #, c-format
 msgid "<span %s>missing sector prevents calculation</span>"
 msgstr "<span %s>saknad sektor förhindrar beräkning</span>"
 
-#: rs01-verify.c:836 rs03-verify.c:924
+#: rs01-verify.c:836 rs03-verify.c:920
 msgid "* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"
 msgstr "* fingeravtrycksträff: STÄMMER INTE - .iso och .ecc hör inte ihop!\n"
 
-#: rs01-verify.c:841 rs03-verify.c:929
+#: rs01-verify.c:841 rs03-verify.c:925
 #, c-format
 msgid "<span %s>mismatch</span>"
 msgstr "<span %s>stämmer inte</span>"
 
-#: rs01-verify.c:844 rs03-verify.c:932
+#: rs01-verify.c:844 rs03-verify.c:928
 #, c-format
 msgid "<span %s>Image and error correction files do not belong together!</span>"
 msgstr "<span %s>Avbild och felkorrigeringsfiler hör inte ihop!</span>"
 
-#: rs01-verify.c:849 rs03-verify.c:937
+#: rs01-verify.c:849 rs03-verify.c:933
 msgid "- fingerprint match: good\n"
 msgstr "- fingeravtrycksträff: bra\n"
 
-#: rs01-verify.c:852 rs03-verify.c:940
+#: rs01-verify.c:852 rs03-verify.c:936
 msgid "good"
 msgstr "bra"
 
@@ -4288,39 +4288,39 @@ msgstr ""
 msgid "Error correction data"
 msgstr "Felkorrigeringsdata"
 
-#: rs02-verify.c:512 rs03-verify.c:458
+#: rs02-verify.c:512 rs03-verify.c:457
 #, c-format
 msgid "- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"
 msgstr ""
 
-#: rs02-verify.c:515 rs03-verify.c:461
+#: rs02-verify.c:515 rs03-verify.c:460
 #, c-format
 msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
 msgstr ""
 
-#: rs02-verify.c:522 rs03-verify.c:466
+#: rs02-verify.c:522 rs03-verify.c:465
 msgid "Erasure counts:"
 msgstr ""
 
-#: rs02-verify.c:523 rs03-verify.c:467
+#: rs02-verify.c:523 rs03-verify.c:466
 msgid "Prognosis:"
 msgstr ""
 
-#: rs02-verify.c:526 rs03-verify.c:470
+#: rs02-verify.c:526 rs03-verify.c:469
 #, c-format
 msgid "<span %s>avg =  %.1f; worst = %d per ecc block.</span>"
 msgstr ""
 
-#: rs02-verify.c:531 rs03-verify.c:475
+#: rs02-verify.c:531 rs03-verify.c:474
 #, c-format
 msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
 msgstr ""
 
-#: rs02-verify.c:593 rs03-verify.c:704
+#: rs02-verify.c:593 rs03-verify.c:700
 msgid "Check aborted"
 msgstr "Kontroll avbruten"
 
-#: rs02-verify.c:615 rs03-verify.c:751
+#: rs02-verify.c:615 rs03-verify.c:747
 msgid "Checking the image file."
 msgstr "Kontrollerar avbildsfilen."
 
@@ -4328,12 +4328,12 @@ msgstr "Kontrollerar avbildsfilen."
 msgid "Image contains error correction data."
 msgstr "Avbilden innehåller felkorrigeringsdata."
 
-#: rs02-verify.c:631 rs03-verify.c:1045
+#: rs02-verify.c:631 rs03-verify.c:1041
 #, c-format
 msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
 msgstr "<span %s>Avbildsfil är %lld sektorer mindre än förväntat.</span>"
 
-#: rs02-verify.c:632 rs03-verify.c:1048
+#: rs02-verify.c:632 rs03-verify.c:1044
 #, c-format
 msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
 msgstr "<span %s>Avbildsfilen är %lld sektorer större än förväntat.</span>"
@@ -4348,13 +4348,13 @@ msgstr "Misslyckades med att läsa ecc-huvud vid %lld: %s\n"
 msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
 msgstr "<span %s>%lld ok, %lld CRC-fel, %lld saknas</span>"
 
-#: rs02-verify.c:837 rs02-verify.c:860 rs03-verify.c:1251 rs03-verify.c:1294
+#: rs02-verify.c:837 rs02-verify.c:860 rs03-verify.c:1247 rs03-verify.c:1290
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
 msgstr "<span %s>%lld sektorer saknas; %lld CRC-fel</span>"
 
 #: rs02-verify.c:841 rs02-verify.c:845 rs02-verify.c:864 rs02-verify.c:868
-#: rs03-verify.c:1259 rs03-verify.c:1302
+#: rs03-verify.c:1255 rs03-verify.c:1298
 #, c-format
 msgid "<span %s>%lld sectors missing</span>"
 msgstr "<span %s>%lld sektorer saknas</span>"
@@ -4372,7 +4372,7 @@ msgstr ""
 msgid "* suspicious image : contains damaged ecc headers\n"
 msgstr ""
 
-#: rs02-verify.c:894 rs03-verify.c:1321
+#: rs02-verify.c:894 rs03-verify.c:1317
 #, c-format
 msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
 msgstr "* misstänkt avbild : alla sektorer tillgängliga men %lld CRC-fel\n"
@@ -4382,22 +4382,22 @@ msgstr "* misstänkt avbild : alla sektorer tillgängliga men %lld CRC-fel\n"
 msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
 msgstr "  ... ecc-huvuden    : %lld ok, %lld CRC-fel, %lld saknas\n"
 
-#: rs02-verify.c:902 rs03-verify.c:1327
+#: rs02-verify.c:902 rs03-verify.c:1323
 #, c-format
 msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
 msgstr "  ... datasektion    : %lld sektorer saknas; %lld CRC-fel\n"
 
-#: rs02-verify.c:905 rs03-verify.c:1330
+#: rs02-verify.c:905 rs03-verify.c:1326
 #, c-format
 msgid "  ... data md5sum    : %s\n"
 msgstr "  ... data md5sum    : %s\n"
 
-#: rs02-verify.c:906 rs03-verify.c:1336
+#: rs02-verify.c:906 rs03-verify.c:1332
 #, c-format
 msgid "  ... crc section    : %lld sectors missing\n"
 msgstr "  ... crc-sektion    : %lld sektorer saknas\n"
 
-#: rs02-verify.c:907 rs03-verify.c:1338
+#: rs02-verify.c:907 rs03-verify.c:1334
 #, c-format
 msgid "  ... ecc section    : %lld sectors missing\n"
 msgstr "  ... ecc-sektion    : %lld sektorer saknas\n"
@@ -4439,7 +4439,7 @@ msgstr "- data md5sum      : %s (bra)\n"
 msgid "* data md5sum      : %s (BAD)\n"
 msgstr "* data md5sum      : %s (DÅLIG)\n"
 
-#: rs02-verify.c:1092 rs03-verify.c:902
+#: rs02-verify.c:1092 rs03-verify.c:898
 #, c-format
 msgid "- data md5sum      : %s\n"
 msgstr "- data md5sum      : %s\n"
@@ -4469,17 +4469,17 @@ msgstr "* ecc md5sum       : %s (DÅLIG)\n"
 msgid "- ecc md5sum       : %s\n"
 msgstr "- ecc md5sum       : %s\n"
 
-#: rs02-verify.c:1179 rs03-verify.c:956
+#: rs02-verify.c:1179 rs03-verify.c:952
 #, c-format
 msgid "<span %s>Good error correction data.</span>"
 msgstr "<span %s>Bra felkorrigeringsdata.</span>"
 
-#: rs02-verify.c:1183 rs03-verify.c:1406
+#: rs02-verify.c:1183 rs03-verify.c:1409
 #, c-format
 msgid "<span %s>Full data recovery is likely.</span>"
 msgstr ""
 
-#: rs02-verify.c:1186 rs03-verify.c:1409
+#: rs02-verify.c:1186 rs03-verify.c:1412
 #, c-format
 msgid "<span %s>Full data recovery is NOT possible.</span>"
 msgstr ""
@@ -4979,117 +4979,117 @@ msgstr ""
 msgid "Data integrity"
 msgstr ""
 
-#: rs03-verify.c:338 rs03-verify.c:1357
+#: rs03-verify.c:338 rs03-verify.c:1353
 msgid "Ecc block test:"
 msgstr ""
 
-#: rs03-verify.c:506 rs03-verify.c:740 rs03-verify.c:1278
+#: rs03-verify.c:503 rs03-verify.c:736 rs03-verify.c:1274
 msgid "Checking the image and error correction files."
 msgstr ""
 
-#: rs03-verify.c:507
+#: rs03-verify.c:504
 msgid "- Checking ecc blocks (deep verify) -"
 msgstr ""
 
-#: rs03-verify.c:524
+#: rs03-verify.c:521
 #, c-format
 msgid "<span %s>Out of memory; try reducing sector prefetch!</span>"
 msgstr ""
 
-#: rs03-verify.c:527
+#: rs03-verify.c:524
 msgid "* Ecc block test   : out of memory; try reducing sector prefetch!\n"
 msgstr ""
 
-#: rs03-verify.c:612 rs03-verify.c:1245
+#: rs03-verify.c:609 rs03-verify.c:1241
 #, c-format
 msgid "%d%% tested"
 msgstr ""
 
-#: rs03-verify.c:615
+#: rs03-verify.c:612
 #, c-format
 msgid "- Ecc block test   : %d%% tested"
 msgstr ""
 
-#: rs03-verify.c:623
+#: rs03-verify.c:620
 #, c-format
 msgid "<span %s>%lld good, %lld bad; %d%% tested</span>"
 msgstr ""
 
-#: rs03-verify.c:626
+#: rs03-verify.c:623
 #, c-format
 msgid "* Ecc block test   : %lld good, %lld bad; %d%% tested"
 msgstr ""
 
-#: rs03-verify.c:638
+#: rs03-verify.c:635
 msgid "pass"
 msgstr ""
 
-#: rs03-verify.c:641
+#: rs03-verify.c:638
 msgid "- Ecc block test   : pass\n"
 msgstr ""
 
-#: rs03-verify.c:648
+#: rs03-verify.c:645
 #, c-format
 msgid "<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"
 msgstr ""
 
-#: rs03-verify.c:651
+#: rs03-verify.c:648
 #, c-format
 msgid "* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"
 msgstr ""
 
-#: rs03-verify.c:744
+#: rs03-verify.c:740
 #, c-format
 msgid "%s present.\n"
 msgstr ""
 
-#: rs03-verify.c:764
+#: rs03-verify.c:760
 msgid ""
 "\n"
 "Error correction properties:\n"
 msgstr ""
 
-#: rs03-verify.c:776
+#: rs03-verify.c:772
 #, c-format
 msgid "Ecc file is %lld sectors shorter than expected."
 msgstr ""
 
-#: rs03-verify.c:778
+#: rs03-verify.c:774
 #, c-format
 msgid "Ecc file is %lld sectors longer than expected."
 msgstr ""
 
-#: rs03-verify.c:786
+#: rs03-verify.c:782
 #, c-format
 msgid "* Warning          : %s\n"
 msgstr ""
 
-#: rs03-verify.c:795
+#: rs03-verify.c:791
 msgid "- type             : Error correction file\n"
 msgstr ""
 
-#: rs03-verify.c:796
+#: rs03-verify.c:792
 msgid "- type             : Augmented image\n"
 msgstr ""
 
-#: rs03-verify.c:801
+#: rs03-verify.c:797
 msgid "Error correction file"
 msgstr ""
 
-#: rs03-verify.c:802
+#: rs03-verify.c:798
 msgid "Augmented image"
 msgstr ""
 
-#: rs03-verify.c:834 rs03-verify.c:846
+#: rs03-verify.c:830 rs03-verify.c:842
 msgid "- created by       : dvdisaster"
 msgstr ""
 
-#: rs03-verify.c:868
+#: rs03-verify.c:864
 #, c-format
 msgid "- requires         : dvdisaster-%s\n"
 msgstr ""
 
-#: rs03-verify.c:876
+#: rs03-verify.c:872
 #, c-format
 msgid ""
 "* requires         : dvdisaster-%s (BAD)\n"
@@ -5097,127 +5097,127 @@ msgid ""
 "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"
 msgstr ""
 
-#: rs03-verify.c:900
+#: rs03-verify.c:896
 msgid "none available"
 msgstr ""
 
-#: rs03-verify.c:966
+#: rs03-verify.c:962
 msgid ""
 "\n"
 "Data integrity:\n"
 msgstr ""
 
-#: rs03-verify.c:995
+#: rs03-verify.c:991
 #, c-format
 msgid "%lld in image; %lld in ecc file"
 msgstr ""
 
-#: rs03-verify.c:998
+#: rs03-verify.c:994
 #, c-format
 msgid "%lld sectors + %d bytes in image; %lld in ecc file"
 msgstr ""
 
-#: rs03-verify.c:1004
+#: rs03-verify.c:1000
 #, c-format
 msgid "- sectors          : %lld in image; "
 msgstr ""
 
-#: rs03-verify.c:1005
+#: rs03-verify.c:1001
 #, c-format
 msgid "- sectors          : %lld sectors + %d bytes in image; "
 msgstr ""
 
-#: rs03-verify.c:1007
+#: rs03-verify.c:1003
 #, c-format
 msgid "%lld in ecc file\n"
 msgstr ""
 
-#: rs03-verify.c:1013
+#: rs03-verify.c:1009
 #, c-format
 msgid "%lld total / %lld data"
 msgstr ""
 
-#: rs03-verify.c:1016
+#: rs03-verify.c:1012
 #, c-format
 msgid "- medium sectors   : %lld total / %lld data\n"
 msgstr ""
 
-#: rs03-verify.c:1033
+#: rs03-verify.c:1029
 #, c-format
 msgid "<span %s>%s (%s expected)</span>"
 msgstr ""
 
-#: rs03-verify.c:1038
+#: rs03-verify.c:1034
 #, c-format
 msgid "<span %s>Image file is %d bytes shorter than expected.</span>"
 msgstr ""
 
-#: rs03-verify.c:1040
+#: rs03-verify.c:1036
 #, c-format
 msgid "<span %s>Image file is %d bytes longer than expected.</span>"
 msgstr ""
 
-#: rs03-verify.c:1054
+#: rs03-verify.c:1050
 #, c-format
 msgid "* sectors          : %s (%s expected); %lld sectors in ecc file\n"
 msgstr ""
 
-#: rs03-verify.c:1057
+#: rs03-verify.c:1053
 #, c-format
 msgid "* medium sectors   : %s (%s expected)\n"
 msgstr ""
 
-#: rs03-verify.c:1081
+#: rs03-verify.c:1077
 #, c-format
 msgid "Failed seeking to start of ecc file: %s\n"
 msgstr ""
 
-#: rs03-verify.c:1181
+#: rs03-verify.c:1177
 msgid " (in ecc file)"
 msgstr ""
 
-#: rs03-verify.c:1189
+#: rs03-verify.c:1185
 #, c-format
 msgid "* missing sector   : %lld%s\n"
 msgstr ""
 
-#: rs03-verify.c:1190
+#: rs03-verify.c:1186
 #, c-format
 msgid "* missing sectors  : %lld - %lld%s\n"
 msgstr ""
 
-#: rs03-verify.c:1255 rs03-verify.c:1298
+#: rs03-verify.c:1251 rs03-verify.c:1294
 #, c-format
 msgid "<span %s>%lld sectors missing; %lld signature errors</span>"
 msgstr ""
 
-#: rs03-verify.c:1281
+#: rs03-verify.c:1277
 msgid "Error correction file:"
 msgstr ""
 
-#: rs03-verify.c:1315
+#: rs03-verify.c:1311
 #, c-format
 msgid ""
 "- good image/file  : all sectors present\n"
 "- data md5sum      : %s\n"
 msgstr ""
 
-#: rs03-verify.c:1319
+#: rs03-verify.c:1315
 #, c-format
 msgid "* BAD image/file   : %lld sectors missing\n"
 msgstr ""
 
-#: rs03-verify.c:1333
+#: rs03-verify.c:1329
 #, c-format
 msgid "  ... crc section    : %lld sectors missing; %lld signature errors\n"
 msgstr ""
 
-#: rs03-verify.c:1366
+#: rs03-verify.c:1362
 #, c-format
 msgid "<span %s>Skipped; not useful on known defective image</span>"
 msgstr ""
 
-#: rs03-verify.c:1370
+#: rs03-verify.c:1366
 msgid "* Ecc block test   : skipped; not useful on defective image\n"
 msgstr ""
 
@@ -5629,11 +5629,9 @@ msgstr ""
 "\n"
 "Otillåtet enhetsnamn \"%s\" (använd enheterna \"C:\" ... \"Z:\")"
 
-#: scsi-win32.c:266
+#: scsi-win32.c:267
 #, c-format
-msgid ""
-"\n"
-"Could not open device %s."
+msgid "Could not open device %s."
 msgstr ""
 
 #: show-html.c:78
@@ -5716,17 +5714,18 @@ msgstr "Namnlös"
 msgid "Example disc"
 msgstr ""
 
-#: welcome-window.c:86
+#: welcome-window.c:82
 msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
-"This is a modified version of the <b>0.79.6-5</b> Debian version,\n"
-"which is based on the 0.79.6 pre-release, with some enhancements.\n"
+"This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
+"<b>Patchlevel 1</b> adds support for a full CLI version, BD-R TL/QL,\n"
+"and adds back support of Windows builds.\n"
 "See the About box and changelog for more information.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
 
-#: welcome-window.c:92
+#: welcome-window.c:89
 msgid ""
 "<i>Please note:</i>\n"
 "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
@@ -5735,28 +5734,28 @@ msgid ""
 "It will be re-introduced in one of the next releases."
 msgstr ""
 
-#: welcome-window.c:100
+#: welcome-window.c:97
 msgid "Show this message again"
 msgstr ""
 
-#: welcome-window.c:146
+#: welcome-window.c:143
 msgid "<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"
 msgstr ""
 
-#: welcome-window.c:148
+#: welcome-window.c:145
 msgid ""
 "\n"
 "dvdisaster creates error correction data to protect\n"
 "optical media (CD,DVD,BD) against data loss.\n"
 msgstr ""
 
-#: welcome-window.c:151
+#: welcome-window.c:148
 msgid ""
 "Please see the [manual] for typical uses of dvdisaster.\n"
 "\n"
 msgstr ""
 
-#: welcome-window.c:154
+#: welcome-window.c:151
 msgid "<i>New in this Version:</i>"
 msgstr ""
 

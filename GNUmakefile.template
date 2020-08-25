@@ -89,7 +89,7 @@ dvdisaster: $(ICONS) $(OFILES)
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
 	then windres -v winres.rc -O coff -o winres.o >/dev/null ; \
 	     $(CC) $(LOPTS) $(OFILES) $(LIBS) winres.o -o dvdisaster ; \
-	else @$(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
+	else $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
 	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
 	 || echo $(WITH_OPTIONS) | grep "NLS_NO" >/dev/null; \
