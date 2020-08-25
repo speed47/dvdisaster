@@ -1,0 +1,26 @@
+RS01_ecc_no_read_perm no
+RS01_ecc_no_write_perm no
+RS01_fix_no_read_perm no
+RS01_fix_no_read_perm_ecc no
+RS01_fix_no_write_perm no
+RS01_scan_with_no_permission_for_ecc no
+RS01_read_with_no_permission_for_ecc no
+RS01_adaptive_with_no_permission_for_ecc no
+RS02_ecc_no_read_perm no
+RS02_ecc_no_write_perm no
+RS02_fix_no_read_perm no
+RS02_fix_no_write_perm no
+RS03i_ecc_no_read_perm no
+RS03i_ecc_no_write_perm no
+RS03i_fix_no_read_perm no
+RS03i_fix_no_write_perm no
+RS03f_ecc_no_read_perm no
+RS03f_ecc_no_write_perm no
+RS03f_fix_no_read_perm no
+RS03f_fix_no_read_perm_ecc no
+RS03f_fix_no_write_perm no
+RS03f_fix_no_write_perm_ecc no
+
+RS01_scan_no_device_access no
+RS01_read_no_device_access no
+RS01_adaptive_no_device_access no

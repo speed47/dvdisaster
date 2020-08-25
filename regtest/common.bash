@@ -67,7 +67,6 @@ case "${param[0]}" in
 	doall="yes"
 	;;
     cont)
-	doall="yes"
 	cont_at="${param[1]}"
 	;;
 esac
@@ -104,8 +103,8 @@ function file_exists()
 
 function try()
 {  local doit=$(grep "${CODEC_PREFIX}_$2 " $CONFIGFILE)
-   if echo "$OS" | grep -q Windows && test -e "$CONFIGFILE_WIN" && grep -q "${CODEC_PREFIX}_$2" "$CONFIGFILE_WIN"; then
-       doit=$(grep "${CODEC_PREFIX}_$2" "$CONFIGFILE_WIN")
+   if echo "$OS" | grep -q Windows && test -e "$CONFIGFILE_WIN" && grep -q "${CODEC_PREFIX}_$2 " "$CONFIGFILE_WIN"; then
+       doit=$(grep "${CODEC_PREFIX}_$2 " "$CONFIGFILE_WIN")
    fi
 
    if test -z "$doit"; then
@@ -217,6 +216,10 @@ function run_regtest()
 
      filter=cat
      echo "$options" | grep -qw SORTED && filter=sort
+     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ]; then
+	     # for Windows
+	     sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
+     fi
        
      if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG | $filter) >${DIFFLOG}; then
 	 printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"

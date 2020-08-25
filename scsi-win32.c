@@ -264,7 +264,7 @@ DeviceHandle* OpenDevice(char *device)
         dh = open_spti_device(Closure->device);
 
       if(!dh)
-      {  Stop(_("\nCould not open device %s."), device);
+      {  Stop(_("Could not open device %s."), device);
          return NULL;
       }
    }
