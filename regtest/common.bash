@@ -1,4 +1,5 @@
 CONFIGFILE="./config.txt"
+CONFIGFILE_WIN="./config-win.txt"
 NEWVER=../dvdisaster
 SETVERSION="0.80"
 
@@ -94,6 +95,9 @@ function file_exists()
 
 function try()
 {  local doit=$(grep "${CODEC_PREFIX}_$2 " $CONFIGFILE)
+   if echo "$OS" | grep -q Windows && test -e "$CONFIGFILE_WIN" && grep -q "${CODEC_PREFIX}_$2" "$CONFIGFILE_WIN"; then
+       doit=$(grep "${CODEC_PREFIX}_$2" "$CONFIGFILE_WIN")
+   fi
 
    if test -z "$doit"; then
        echo "Config for ${CODEC_PREFIX}_$2 missing"
