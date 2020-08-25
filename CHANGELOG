@@ -1,21 +1,23 @@
 # dvdisaster changelog -*-text-*-
  
-0.79.6.1 20-08-2020
+0.79.6.patchlevel-1 20-08-2020 *UNOFFICIAL*
 - This is an UNOFFICIAL version, not from the original author,
-  but based on the latest available pre-release, 0.79.6.
+  based on the latest available pre-release, 0.79.6.
   Changes will be kept minimal (this is not a hard fork),
   to be able to merge in any new upstream version should it arise.
-  Version numbering will stay 0.79.6.xx, to avoid any confusion
-  if/when a new upstream version appears.
 - Most patches from the Debian maintainer have been applied,
   up to Debian version 0.79.6-5. Patches that are purely Debian
   specific have been omitted.
-- This release keeps the debian/ folder untouched,
+- This release keeps the debian/ folder untouched, with only
+  the patches/series file adjusted. Building the package has
+  not been tested.
 - Added support for BDXL-QL (quadruple layer, 128GB)
 - Added support to compile a CLI-only version, without
   the GTK dependency (only glib2), compile with:
-  $ CLI_ONLY=1 ./configure
-  $ make clean all
+  $ CLI_ONLY=1 ./configure && make clean all
+- Added support to compile a Windows version under MingW (tested
+  with MSYS2)
+- All regression tests are passing on Linux 64, Win 32 and Win 64.
 - A few tweaks and fixes around have been done while massively
   amending the source files to make the CLI-only version possible.
   This hopefully removes a few quirks without adding too many.
