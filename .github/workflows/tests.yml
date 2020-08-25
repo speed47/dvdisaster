@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
-      run: apt-get update && apt install -y libgtk2.0-dev libglib2.0-dev
+      run: sudo apt update && sudo apt install -y libgtk2.0-dev libglib2.0-dev
     - name: configure
       run: ./configure
     - name: make
