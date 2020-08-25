@@ -256,6 +256,7 @@ DeviceHandle* OpenDevice(char *device)
           Stop(_("Could not open %s: %s"), Closure->simulateCD, strerror(errno));
           return NULL;
        }
+       dh->device = g_strdup(device);
    }
    else {
       if(   (*device >= 'c' && *device <= 'z')
