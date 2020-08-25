@@ -22,6 +22,11 @@
 
 #include "dvdisaster.h"
 
+int canprint(char c)
+{
+   return ((isascii(c) && !iscntrl(c)) ? 1 : 0);
+}
+
 /***
  *** gettext() convenience
  ***/

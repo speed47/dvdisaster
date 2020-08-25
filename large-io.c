@@ -36,6 +36,34 @@
  * Also, individual behaviour may deviate from standard functions. 
  */
 
+#ifdef SYS_MINGW
+
+#include <windows.h>
+
+#define stat _stati64
+#define lseek _lseeki64
+
+/* The original windows ftruncate has off_size (32bit) */
+
+int large_ftruncate(int fd, gint64 size)
+{  gint32 handle;
+
+   if((handle=_get_osfhandle(fd)) == -1)
+     return -1;
+
+   if(_lseeki64(fd, size, SEEK_SET) == -1)
+     return -1;
+
+   if(SetEndOfFile((HANDLE)handle) == 0)
+     return -1;
+
+   return 0;
+}
+
+#else
+  #define large_ftruncate ftruncate
+#endif /* SYS_MINGW */
+
 /*
  * convert special chars in file names to correct OS encoding
  */
@@ -279,7 +307,7 @@ int LargeClose(LargeFile *lf)
 int LargeTruncate(LargeFile *lf, off_t length)
 {  int result;
 
-   result = (ftruncate(lf->fileHandle, length) == 0);
+   result = (large_ftruncate(lf->fileHandle, length) == 0);
 
    if(result)
      lf->size = length;
@@ -318,6 +346,19 @@ FILE *portable_fopen(char *path, char *modes)
 
    return file;
 }
+
+#ifdef SYS_MINGW
+int portable_mkdir(char *path)
+{  int status;
+   char *cp_path;
+
+   cp_path = os_path(path);
+   status = mkdir(cp_path);
+   g_free(cp_path);
+
+   return status;
+}
+#endif
 
 /***
  *** Convenience functions

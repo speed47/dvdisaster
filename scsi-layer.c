@@ -124,7 +124,7 @@ int InquireDevice(DeviceHandle *dh, int probe_only)
 	    if(i>0 && !isspace((int)ibuf[i-1])) /* separate the version string */
 	      ibuf[i++] = ' ';
 	 }
-         if(   isprint(ab->buf[j])         /* eliminate multiple spaces and unprintables */
+         if(   canprint(ab->buf[j])         /* eliminate multiple spaces and unprintables */
 	       && (!isspace(ab->buf[j]) || (i>0 && !isspace((int)ibuf[i-1]))))
 	 {    vbuf[i] = ab->buf[j];
 	      ibuf[i++] = ab->buf[j];
@@ -724,11 +724,11 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 
 	 Verbose("#DVD: physical info contains lead-in data\n");
 	 for(j=0; j<6; j++)
-	    dh->manuID[j] = isprint(buf[0x225+j]) ? buf[0x225+j] : ' ';
+	    dh->manuID[j] = canprint(buf[0x225+j]) ? buf[0x225+j] : ' ';
 	 dh->manuID[6] = ' ';
 
 	 for(j=0; j<6; j++)
-	    dh->manuID[j+7] = isprint(buf[0x22d+j]) ? buf[0x22d+j] : ' ';
+	    dh->manuID[j+7] = canprint(buf[0x22d+j]) ? buf[0x22d+j] : ' ';
 	 dh->manuID[13] = 0;
 
 	 for(j=11; j>=0; j--)
@@ -784,7 +784,7 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 	    Verbose("#DVD: assuming DVD plus; phy_info4/6 now 0x%x 0x%x\n", phy_info4, phy_info6);
 
 	    for(i=0; i<11; i++)
-	      dh->manuID[i] = isprint(buf[23+i]) ? buf[23+i] : ' ';
+	      dh->manuID[i] = canprint(buf[23+i]) ? buf[23+i] : ' ';
 	    dh->manuID[11] = 0;
 
 	    for(i=10; i>=0; i--)
@@ -828,11 +828,11 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 	    Verbose("#DVD: assuming DVD dash\n");
 
 	    for(i=0; i<6; i++)
-	      dh->manuID[i] = isprint(buf[21+i]) ? buf[21+i] : ' ';
+	      dh->manuID[i] = canprint(buf[21+i]) ? buf[21+i] : ' ';
 	    dh->manuID[6] = ' ';
 
 	    for(i=0; i<6; i++)
-	      dh->manuID[i+7] = isprint(buf[29+i]) ? buf[29+i] : ' ';
+	      dh->manuID[i+7] = canprint(buf[29+i]) ? buf[29+i] : ' ';
 	    dh->manuID[13] = 0;
 
 	    for(i=11; i>=0; i--)
@@ -1010,7 +1010,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
    for(i=0,j=-1; i<6; i++)  /* Disc Manufacturer ID */
    {  char c = buf[4+100+i];
 
-      if(isprint(c))
+      if(canprint(c))
       {  dh->manuID[i] = c; j=i;
       }
       else dh->manuID[i] = ' ';
@@ -1019,7 +1019,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
 
    for(i=0; i<3; i++)       /* Media type ID */
    {  char c = buf[4+106+i];
-      dh->manuID[++j] = isprint(c) ? c : ' ';
+      dh->manuID[++j] = canprint(c) ? c : ' ';
    }
    if(dh->manuID[j] == ',') 
         dh->manuID[j]=0;

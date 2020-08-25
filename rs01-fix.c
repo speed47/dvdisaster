@@ -726,8 +726,8 @@ void RS01Fix(Image *image)
 
 		       PrintCLI(_("-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"),
 				block_idx[location], bi, 
-				old, isprint(old) ? old : '.',
-				new, isprint(new) ? new : '.');
+				old, canprint(old) ? old : '.',
+				new, canprint(new) ? new : '.');
 		    }
 
 		    if(!erasure_map[location])

@@ -1089,6 +1089,7 @@ void CallMethodDestructors(void);
  *** misc.c 
  ***/
 
+int canprint(char);
 char* sgettext(char*);
 char* sgettext_utf8(char*);
 

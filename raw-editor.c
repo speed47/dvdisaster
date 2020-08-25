@@ -623,7 +623,7 @@ static void render_sector(raw_editor_context *rec)
 
          gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->foreground);
 
-	 sprintf(byte, "%c", isprint(buf[idx]) ? buf[idx] : '.');
+	 sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
 	 idx++;
 	 SetText(rec->layout, byte, &w, &h);
 	 gdk_draw_layout(d, Closure->drawGC, x, y, rec->layout);

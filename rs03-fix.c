@@ -800,8 +800,8 @@ void RS03Fix(Image *image)
 		 
 		 PrintCLI(msg,
 	                  sector, type, bi, 
-			  old, isprint(old) ? old : '.',
-			  new, isprint(new) ? new : '.');
+			  old, canprint(old) ? old : '.',
+			  new, canprint(new) ? new : '.');
 	      }
 
 	      fc->imgBlock[location][offset] ^= gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
