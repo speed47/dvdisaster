@@ -86,7 +86,11 @@ time-stamp:
 
 dvdisaster: $(ICONS) $(OFILES) 
 	@echo "Linking  : dvdisaster"
-	@$(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster
+	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
+	then windres -v winres.rc -O coff -o winres.o >/dev/null ; \
+	     $(CC) $(LOPTS) $(OFILES) $(LIBS) winres.o -o dvdisaster ; \
+	else @$(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
+	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
 	 || echo $(WITH_OPTIONS) | grep "NLS_NO" >/dev/null; \
 	then echo "not touching locale"; \
@@ -225,7 +229,7 @@ show:
 ######################################################################
 
 .PHONY : install uninstall clean distclean arch
-.PHONY : srcdist
+.PHONY : srcdist dist
 
 install: dvdisaster manual
 	@echo "Installing package..."
@@ -330,5 +334,14 @@ srcdist: INSTALL distclean manual manualclean
 	@cd .. ; tar -c -j -X $(PKGNAME)/NODIST -f $(TAR_PREFIX)/$(PKGNAME).tar.bz2 $(PKGNAME)
 	@cd .. ; gpg --homedir .gnupg --default-key 758BCC23 --detach-sign --output $(TAR_PREFIX)/$(PKGNAME).tar.bz2.gpg --armor $(TAR_PREFIX)/$(PKGNAME).tar.bz2 
 
-
-
+MINGWROOT = $(shell dirname $(CC))/..
+windist:
+	rm -rf dist
+	mkdir -p dist/lib dist/locale dist/share/themes
+	for i in libatk-1.0-*.dll libbrotlicommon.dll libbrotlidec.dll libbz2-*.dll libcairo-*.dll libdatrie-*.dll libexpat-*.dll libffi-*.dll libfontconfig-*.dll libfreetype-*.dll libfribidi-*.dll libgcc_s_*.dll libgdk_pixbuf-2.0-*.dll libgdk-win32-2.0-*.dll libgio-2.0-*.dll libglib-2.0-*.dll libgmodule-2.0-*.dll libgobject-2.0-*.dll libgraphite2.dll libgtk-win32-2.0-*.dll libharfbuzz-*.dll libiconv-*.dll libintl-*.dll libpango-1.0-*.dll libpangocairo-1.0-*.dll libpangoft2-1.0-*.dll libpangowin32-1.0-*.dll libpcre-*.dll libpixman-1-*.dll libpng16-*.dll libssp-*.dll libstdc++-*.dll libthai-*.dll libwinpthread-*.dll zlib1.dll; \
+		do cp -v $(MINGWROOT)/bin/$$i dist/ ; done
+	cp -v dvdisaster.exe dist/
+	cp -vr locale/*/ dist/locale/
+	cp -vr $(MINGWROOT)/share/themes/MS-Windows dist/share/themes/
+	cp -vr $(MINGWROOT)/lib/gtk-2.0 dist/lib/
+	find dist -type f -name "*.a" -delete

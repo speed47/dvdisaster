@@ -216,7 +216,7 @@ function run_regtest()
 
      filter=cat
      echo "$options" | grep -qw SORTED && filter=sort
-     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ]; then
+     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ]; then
 	     # for Windows
 	     sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
      fi
