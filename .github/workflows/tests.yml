@@ -1,6 +1,6 @@
 name: C/C++ CI
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -18,4 +18,4 @@ jobs:
     - name: check executability
       run: ./dvdisaster --version
     - name: regression tests
-      run: ./regtest/runtests.sh    
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
