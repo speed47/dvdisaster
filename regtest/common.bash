@@ -11,7 +11,7 @@ ISODIR=/var/tmp/regtest
 if ! test -d $ISODIR; then
     echo "$ISODIR does not exist."
     echo "Please create it manually, or edit common.bash"
-    exit 0
+    exit 1
 fi
 
 LOGDIR="/dev/shm"
@@ -45,7 +45,7 @@ fi
 
 if test "$1" == "--help" || test "$1" == "-h"; then
     echo "Usage: $0 [gui] [all|cont <test case>]"
-    exit 0;
+    exit 1;
 fi
 
 doall="no"
@@ -78,7 +78,7 @@ if test -x $NEWVER; then
     echo "OK"
 else
     echo "missing."
-    exit 0
+    exit 1
 fi
 
 ### Helper functions
