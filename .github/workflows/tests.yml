@@ -17,3 +17,5 @@ jobs:
       run: make
     - name: check executability
       run: ./dvdisaster --version
+    - name: regression tests
+      run: ./regtest/runtests.sh    
