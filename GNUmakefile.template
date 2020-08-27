@@ -67,13 +67,13 @@ OFILES = $(CFG_OFILES)
 # Compilation related
 ######################################################################
 
-.PHONY : all help show locale time-stamp
+.PHONY : all help show locale build.h
 
 ${BUILDTMP}/%.o : %.c
 	@echo "Compiling:" $?
 	@$(CC) $(COPTS) -c $? -o $@
 
-all: time-stamp dvdisaster
+all: dvdisaster
 
 ${BUILDTMP}/build.o : build.c build.h
 	@echo "Compiling:" build.o
@@ -81,10 +81,11 @@ ${BUILDTMP}/build.o : build.c build.h
 
 # Building the dvdisaster binary
 
-time-stamp:
+build.h:
+	@echo "Updating:" build.h
 	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/build.h
 
-dvdisaster: $(ICONS) $(OFILES) 
+dvdisaster: $(ICONS) $(OFILES) build.h
 	@echo "Linking  : dvdisaster"
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
 	then windres -v winres.rc -O coff -o winres.o >/dev/null ; \
@@ -324,7 +325,7 @@ clean:
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/locale clean;
 
 BUILD=`grep BUILD $(SRCDIR)/build.h | cut -d ' ' -f 3`
-arch:	archclean time-stamp
+arch:	archclean build.h
 	@cd .. ; tar -c -z -f $(TAR_PREFIX)/$(PKGNAME)-$(BUILD).tgz $(PKGNAME)
 
 INSTALL: documentation/install.template
