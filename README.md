@@ -27,8 +27,8 @@ augmented images, with the following added features:
 - RS03 can distribute work over multiple processor cores and is therefore much faster than
 RS01/RS02 on modern hardware.
 - RS03 error correction files are - contrary to RS01 - robust against damage. This should
-not delude you into careless handling of your error correction files though - the disadvan-
-tages of reading at the filesystem level are still valid.
+not delude you into careless handling of your error correction files though - the disadvantages
+of reading at the filesystem level are still valid.
 - RS03 augmented images do not require so-called master blocks holding important in-
 formation. This makes RS03 a bit more robust, but also more restrictive: The augmented
 image must completely fill the medium now while the size of augmented images can be
@@ -39,15 +39,16 @@ counterparts on images with equal size.
 
 # Unofficial version
 
-The last upstream version is dated 2017, and the official website is down.
+The last upstream version by Carsten Gnörlich is dated 2017, and could be found on the [official](https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html) [website](https://web.archive.org/web/20180509154525/http://dvdisaster.org/en/index.html) which is [now](http://www.dvdisaster.net) [down](http://www.dvdisaster.org). The original source code [repository](https://sourceforge.net/projects/dvdisaster/files/dvdisaster) doesn't have it, but [Debian sources](https://sources.debian.org/src/dvdisaster/) does, thanks to the maintainer there.
 The original README has been left untouched in this repository.
 This version is built on top of the latest upstream version, with the following notable enhancements:
 
-- Most Debian patches have been applied (The Debian version source code can be found [here](https://sources.debian.org/src/dvdisaster/))
-- Windows build added back (was dropped upstream a few versions before the last one)
-- A Linux CLI-only version can now be compiled, without depending on gtk
+- Most Debian patches have been applied, those specific to Debian have been omitted
+- Windows build supported again, it was dropped upstream a few versions back
+- A Linux CLI-only version is now supported, without depending on gtk (`CLI_ONLY=1 ./configure && make clean && make -j4`)
 - Regression tests confirmed working on Linux64 (normal and CLI-only), Windows32 and Windows64
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
 
 # Screenshots
-(todo)
+
+
