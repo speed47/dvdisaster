@@ -27,8 +27,8 @@ augmented images, with the following added features:
 - RS03 can distribute work over multiple processor cores and is therefore much faster than
 RS01/RS02 on modern hardware.
 - RS03 error correction files are - contrary to RS01 - robust against damage. This should
-not delude you into careless handling of your error correction files though - the disadvan-
-tages of reading at the filesystem level are still valid.
+not delude you into careless handling of your error correction files though - the disadvantages
+of reading at the filesystem level are still valid.
 - RS03 augmented images do not require so-called master blocks holding important in-
 formation. This makes RS03 a bit more robust, but also more restrictive: The augmented
 image must completely fill the medium now while the size of augmented images can be
@@ -39,15 +39,36 @@ counterparts on images with equal size.
 
 # Unofficial version
 
-The last upstream version is dated 2017, and the official website is down.
+The last upstream version by Carsten Gnörlich is dated 2017, and could be found on the [official](https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html) [website](https://web.archive.org/web/20180509154525/http://dvdisaster.org/en/index.html) which is [now](http://www.dvdisaster.net) [down](http://www.dvdisaster.org). The original source code [repository](https://sourceforge.net/projects/dvdisaster/files/dvdisaster) doesn't have it, but [Debian sources](https://sources.debian.org/src/dvdisaster/) does, thanks to the maintainer there.
 The original README has been left untouched in this repository.
 This version is built on top of the latest upstream version, with the following notable enhancements:
 
-- Most Debian patches have been applied (The Debian version source code can be found [here](https://sources.debian.org/src/dvdisaster/))
-- Windows build added back (was dropped upstream a few versions before the last one)
-- A Linux CLI-only version can now be compiled, without depending on gtk
+- Most Debian patches have been applied, those specific to Debian have been omitted
+- Windows build supported again, it was dropped upstream a few versions back
+- A Linux CLI-only version is now supported, without depending on gtk (`CLI_ONLY=1 ./configure && make clean && make -j4`)
 - Regression tests confirmed working on Linux64 (normal and CLI-only), Windows32 and Windows64
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
 
+# Rationale
+
+Even if the optical media era is sunsetting now, and has been for a few years, it's still of some value for off-site backups. In any case, we still have media in our hands that we want to be able to repair, should it be damaged, during the next years/decades. Repairing is actually pretty much the very reason of dvdisaster existence (as long as parity data has been added, of course).
+The idea of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile, should upstream development never resume (we hope it does!).
+This is also why precompiled Windows binaries and a precompiled static CLI-only Linux version are available here.
+
 # Screenshots
-(todo)
+
+### Scanning a damaged CD under Windows
+
+![dvdisaster_damaged_cd](https://user-images.githubusercontent.com/218502/91434313-edaaf880-e864-11ea-8e41-7b58a1e97a70.PNG)
+
+### Scanning a healthy BD-R (single layer) with Linux GUI
+
+![dvdisaster_bdr_read](https://user-images.githubusercontent.com/218502/91436728-fbfb1380-e868-11ea-8444-04ebc60809d8.PNG)
+
+### Creating an RS03 error correction file with Linux GUI
+
+![dvdisaster_bdr_create](https://user-images.githubusercontent.com/218502/91436740-00273100-e869-11ea-837a-af0d0733fe87.PNG)
+
+### Verifying a BD-R image with Linux GUI
+
+![dvdisaster_bdr_verify](https://user-images.githubusercontent.com/218502/91436731-fc93aa00-e868-11ea-93e6-b8c277620df7.PNG)
