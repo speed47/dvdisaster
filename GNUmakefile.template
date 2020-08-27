@@ -346,3 +346,6 @@ windist:
 	cp -vr $(MINGWROOT)/share/themes/MS-Windows dist/share/themes/
 	cp -vr $(MINGWROOT)/lib/gtk-2.0 dist/lib/
 	find dist -type f -name "*.a" -delete
+
+static: dvdisaster
+	$(CC) $(LOPTS) $(OFILES) $(LIBS) -pthread -static -o dvdisaster-static
