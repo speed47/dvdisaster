@@ -60,3 +60,15 @@ This is also why precompiled Windows binaries and a precompiled static CLI-only 
 ### Scanning a damaged CD under Windows
 
 ![dvdisaster_damaged_cd](https://user-images.githubusercontent.com/218502/91434313-edaaf880-e864-11ea-8e41-7b58a1e97a70.PNG)
+
+### Scanning a healthy BD-R (single layer) with Linux GUI
+
+![dvdisaster_bdr_read](https://user-images.githubusercontent.com/218502/91436728-fbfb1380-e868-11ea-8444-04ebc60809d8.PNG)
+
+### Creating an RS03 error correction file with Linux GUI
+
+![dvdisaster_bdr_create](https://user-images.githubusercontent.com/218502/91436740-00273100-e869-11ea-837a-af0d0733fe87.PNG)
+
+### Verifying a BD-R image with Linux GUI
+
+![dvdisaster_bdr_verify](https://user-images.githubusercontent.com/218502/91436731-fc93aa00-e868-11ea-93e6-b8c277620df7.PNG)
