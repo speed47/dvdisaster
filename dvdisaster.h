@@ -105,15 +105,29 @@
  * scan and verify such images correctly as long as they 
  * are not damaged. But recovery WILL BREAK when 
  * processing a damaged image. YOU HAVE BEEN WARNED. 
+ *
+ * NOTE: If you compile a custom version with modified values,
+ * you may then use `-n X --debug' (also works on an unmodified
+ * version) to ensure a proper recovery. 'X' being the number
+ * of sectors considered when augmenting the image, which is
+ * the immediately higher #define close to the unaugmented image size.
+ * HOWEVER you MUST to remember this 'X'! It's probably a good idea
+ * to write it down directly on the media you're protecting.
+ * This way you'll have it at hand when attempting repair.
+ * You might be tempted to do it for BD-Rs, using more space
+ * for parity data by disabling defect management.
+ * Do it at your own risk.
+ *
+ * WARNING! (read above)
  */
 
 #define CDR_SIZE         (351*1024)
 #define DVD_SL_SIZE      2295104  /* DVD+R/RW size used as least common denominator */
 #define DVD_DL_SIZE 	 4171712  /* also seen: 4148992 4173824  */
-#define BD_SL_SIZE      12219392
-#define BD_DL_SIZE	23652352
-#define BDXL_TL_SIZE    47305728
-#define BDXL_QL_SIZE    (128001769472/2048)
+#define BD_SL_SIZE      11826176  /* w/o defect mgmt: 12219392 */
+#define BD_DL_SIZE      23652352  /* w/o defect mgmt: 24438784 */
+#define BDXL_TL_SIZE    47305728  /* w/o defect mgmt: 48878592 */
+#define BDXL_QL_SIZE    60403712  /* w/o defect mgmt: 62500864 */
 
 /* Maximum accepted media sizes (in 2K sectors) */
 
