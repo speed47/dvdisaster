@@ -14,7 +14,7 @@
 - Added support for BDXL-QL (quadruple layer, 128GB)
 - Added support to compile a CLI-only version, without
   the GTK dependency (only glib2), compile with:
-  $ CLI_ONLY=1 ./configure && make clean all
+  $ CLI_ONLY=1 ./configure && make clean && make -j4
 - Added support to compile a Windows version under MingW (tested
   with MSYS2)
 - All regression tests are passing on Linux 64, Win 32 and Win 64.
