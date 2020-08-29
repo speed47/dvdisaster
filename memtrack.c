@@ -20,7 +20,7 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYS_MINGW /* completely untested under Windows, and we don't need it for releases anyway */
+#ifdef WITH_MEMDEBUG_YES
 
 #define _GNU_SOURCE
 
