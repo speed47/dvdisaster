@@ -39,12 +39,13 @@
 #ifdef SYS_MINGW
 
 #include <windows.h>
-#include <io.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <io.h> /* _lseeki64 */
+#include <sys/types.h> /* _stati64 */
+#include <sys/stat.h> /* _stati64 */
+#include <direct.h> /* _mkdir */
 
-#define stat _stati64
-#define lseek _lseeki64
+#define large_stat _stati64
+#define large_lseek _lseeki64
 
 /* The original windows ftruncate has off_size (32bit) */
 
@@ -65,6 +66,8 @@ int large_ftruncate(int fd, gint64 size)
 
 #else
   #define large_ftruncate ftruncate
+  #define large_stat stat
+  #define large_lseek lseek
 #endif /* SYS_MINGW */
 
 /*
@@ -93,7 +96,7 @@ int LargeStat(char *path, guint64 *length_return)
 
    if(!cp_path) return FALSE;
 
-   if(stat(cp_path, &mystat) == -1)
+   if(large_stat(cp_path, &mystat) == -1)
    {  g_free(cp_path);
       return FALSE;
    }
@@ -116,7 +119,7 @@ int DirStat(char *path)
 
    if(!cp_path) return FALSE;
 
-   if(stat(cp_path, &mystat) == -1)
+   if(large_stat(cp_path, &mystat) == -1)
    {  g_free(cp_path);
       return FALSE;
    }
@@ -151,7 +154,7 @@ LargeFile* LargeOpen(char *name, int flags, mode_t mode)
 
    /* Do not try to open directories etc. */
 
-   if(    (stat(cp_path, &mystat) == 0)
+   if(    (large_stat(cp_path, &mystat) == 0)
        && !S_ISREG(mystat.st_mode))
    {  g_free(cp_path), g_free(lf); return NULL;
    }
@@ -178,7 +181,7 @@ LargeFile* LargeOpen(char *name, int flags, mode_t mode)
 int LargeSeek(LargeFile *lf, off_t pos)
 {  
    lf->offset = pos;
-   if(lseek(lf->fileHandle, pos, SEEK_SET) != pos)
+   if(large_lseek(lf->fileHandle, pos, SEEK_SET) != pos)
       return FALSE;
 
    return TRUE;
