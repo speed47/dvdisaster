@@ -253,7 +253,7 @@ function run_regtest()
 	   xterm_pid=$!
        fi
 
-       LANG=en_EN.UTF-8 $NEWVER --regtest $extra_args --resource-file $LOGDIR/.dvdisaster-regtest >>$NEWLOG 2>&1
+       LANG=en_EN.UTF-8 timeout 15 $NEWVER --regtest $extra_args --resource-file $LOGDIR/.dvdisaster-regtest >>$NEWLOG 2>&1
        rm -f $LOGDIR/.dvdisaster-regtest
    fi
 

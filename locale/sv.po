@@ -1,5 +1,5 @@
 # Swedish translation of dvdisaster.
-# Copyright (C) 2004-2012 dvdisasters COPYRIGHT HOLDER
+# Copyright (C) 2004-2015 dvdisasters COPYRIGHT HOLDER
 # This file is distributed under the same license as the dvdisaster package.
 # Daniel Nylander <po@danielnylander.se>, 2006.
 #
@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-25 21:12+0200\n"
+"POT-Creation-Date: 2020-08-29 22:10+0200\n"
 "PO-Revision-Date: 2006-06-14 23:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -503,6 +503,17 @@ msgid ""
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
+"\n"
+"Exempel på normala användningsområden:\n"
+"  dvdisaster -r,--read   # Läs mediumavbilden till hårddisk.\n"
+"                         # Använd -rn-m för att läsa ett specifikt sektorintervall,\n"
+"                         # exempelvis -r100-200\n"
+"  dvdisaster -c,--create # Skapa .ecc-information för mediumavbilden.\n"
+"  dvdisaster -f,--fix    # Försök att rätta till mediumavbilden med .ecc-information.\n"
+"  dvdisaster -s,--scan   # Sök av mediumet efter läsfel.\n"
+"  dvdisaster -t,--test   # Testa integriteten av .iso och .ecc-filerna.\n"
+"  dvdisaster -u,--unlink # Ta bort .iso-filer (när andra operationer är färdiga)\n"
+"\n"
 
 #: dvdisaster.c:918
 #, c-format
@@ -556,7 +567,7 @@ msgstr "  --auto-suffix          - lägg automatiskt till filändelserna .iso oc
 
 #: dvdisaster.c:938
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
-msgstr ""
+msgstr "  --cache-size n         - cachestorlek för avbild i MiB med -c (standard: 32MiB)\n"
 
 #: dvdisaster.c:939
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
@@ -857,7 +868,7 @@ msgstr ""
 
 #: help-dialogs.c:753 misc.c:218
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
-msgstr ""
+msgstr "Copyright 2004-2017 Carsten Gnörlich"
 
 #: help-dialogs.c:760
 msgid ""
@@ -930,7 +941,7 @@ msgid ""
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:259
+#: large-io.c:261
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -983,7 +994,7 @@ msgstr "Läs avbild"
 
 #: main-window.c:278
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
-msgstr ""
+msgstr "Läser en cd/dvd-avbild till en fil (eller försöker att färdigställa en existerande avbildsfil)."
 
 #: main-window.c:292
 msgid "button|Create"
@@ -1978,7 +1989,7 @@ msgstr ""
 
 #: preferences.c:2546
 msgid "Local files (on hard disk)"
-msgstr ""
+msgstr "Lokala filer (på hårddisk)"
 
 #: preferences.c:2553
 msgid "Automatic file suffixes"
@@ -2667,7 +2678,7 @@ msgstr ""
 
 #: read-adaptive.c:896 read-linear.c:360
 msgid "Image file does not match the optical disc."
-msgstr ""
+msgstr "Avbildsfil stämmer inte med CD/DVD/BD."
 
 #: read-adaptive.c:903
 msgid "Reading aborted. Please select a different image file."
@@ -3363,6 +3374,8 @@ msgid ""
 "\n"
 "Fix mode(%s): Repairable sectors will be fixed in the image.\n"
 msgstr ""
+"\n"
+"Rättningsläge(%s): Reparerbara sektorer kommer att rättas till i avbilden.\n"
 
 #: rs01-fix.c:201
 #, c-format
@@ -4028,7 +4041,7 @@ msgstr "Använd som mest"
 
 #: rs01-window.c:807 rs03-preferences.c:713
 msgid "MiB for error correction data"
-msgstr ""
+msgstr "MiB för felkorrigeringsdata"
 
 #: rs01-window.c:824 rs03-preferences.c:730
 msgid ""
@@ -4153,7 +4166,7 @@ msgstr "- kontrollerar avbild -"
 #: rs02-create.c:1118
 #, c-format
 msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr ""
+msgstr "Kodar med Metod RS02: %lld MiB data, %lld MiB ecc (%d rötter; %4.1f%% redundans)."
 
 #: rs02-create.c:1127
 #, c-format
@@ -4161,6 +4174,8 @@ msgid ""
 "Augmenting image with Method RS02:\n"
 " %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
+"Utvidgar avbild med Metod RS02:\n"
+" %lld MiB data, %lld MiB ecc (%d rötter; %4.1f%% redundans)."
 
 #: rs02-create.c:1136
 #, c-format
@@ -4186,6 +4201,8 @@ msgid ""
 "Image has been augmented with error correction data.\n"
 "New image size is %lld MiB (%lld sectors).\n"
 msgstr ""
+"Avbild har utvidgats med felkorrigeringsdata.\n"
+"Ny storlek på avbild är %lld MiB (%lld sektorer).\n"
 
 #: rs02-fix.c:119 rs02-fix.c:130 rs03-fix.c:122 rs03-fix.c:133
 #, c-format
@@ -5272,7 +5289,7 @@ msgstr "FÖRFRÅGAN misslyckades. Någonting är fel med enhet %s.\n"
 #: scsi-layer.c:141
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
-msgstr ""
+msgstr "Enhet %s (%s) är inte en cd-rom-enhet."
 
 #: scsi-layer.c:142
 #, c-format
@@ -5675,9 +5692,6 @@ msgid ""
 "%s\n"
 "not found.\n"
 msgstr ""
-"Dokumentationsfilen\n"
-"%s\n"
-"hittades inte.\n"
 
 #: show-html.c:391
 msgid "Please hang on until the browser comes up!"
@@ -5760,6 +5774,20 @@ msgid "<i>New in this Version:</i>"
 msgstr ""
 
 #~ msgid ""
+#~ "Documentation file\n"
+#~ "%s\n"
+#~ "not found.\n"
+#~ "Please install the dvdisaster-doc package.\n"
+#~ msgstr ""
+#~ "Dokumentationsfilen\n"
+#~ "%s\n"
+#~ "hittades inte.\n"
+#~ "Installera dvdisaster-doc-paketet.\n"
+
+#~ msgid "created by dvdisaster-%d.%d\n"
+#~ msgstr "skapad av dvdisaster-%d.%d\n"
+
+#~ msgid ""
 #~ "Number of roots must be 8..100;\n"
 #~ "the number of erasures must be > 0 and less than the number of roots.\n"
 #~ msgstr ""
@@ -5773,32 +5801,18 @@ msgstr ""
 #~ "\n"
 #~ "Genererar slumpmässigt korrigerbara raderingar (för %d rötter, max raderingar = %d).\n"
 
-#~ msgid ""
-#~ "\n"
-#~ "Common usage examples:\n"
-#~ "  dvdisaster -r,--read   # Read the medium image to hard disc.\n"
-#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
-#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
-#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
-#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
-#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
-#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Exempel på normala användningsområden:\n"
-#~ "  dvdisaster -r,--read   # Läs mediumavbilden till hårddisk.\n"
-#~ "                         # Använd -rn-m för att läsa ett specifikt sektorintervall,\n"
-#~ "                         # exempelvis -r100-200\n"
-#~ "  dvdisaster -c,--create # Skapa .ecc-information för mediumavbilden.\n"
-#~ "  dvdisaster -f,--fix    # Försök att rätta till mediumavbilden med .ecc-information.\n"
-#~ "  dvdisaster -s,--scan   # Sök av mediumet efter läsfel.\n"
-#~ "  dvdisaster -t,--test   # Testa integriteten av .iso och .ecc-filerna.\n"
-#~ "  dvdisaster -u,--unlink # Ta bort .iso-filer (när andra operationer är färdiga)\n"
-#~ "\n"
+#~ msgid "Could not allocate ccb for %s"
+#~ msgstr "Kunde inte allokera ccb för %s"
 
-#~ msgid "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
-#~ msgstr "  --cache-size n         - cachestorlek för avbild i MB med -c (standard: 32MB)\n"
+#~ msgid "All sectors successfully read, but wrong image checksum."
+#~ msgstr "Alla sektorer lästa men felaktig kontrollsumma på avbild."
+
+#~ msgid ""
+#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
+#~ "Please visit http://www.dvdisaster.org for an upgrade."
+#~ msgstr ""
+#~ "Denna .ecc-fil kräver dvdisaster V%d.%d.%d eller högre.\n"
+#~ "Besök http://www.dvdisaster.org för en uppgradering."
 
 #~ msgid ": not present.\n"
 #~ msgstr ": inte tillgänglig.\n"
@@ -5810,63 +5824,11 @@ msgstr ""
 #~ "kunde inte läsa sektor %lld i avbild (endast %d byte):\n"
 #~ "%s"
 
-#~ msgid ""
-#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
-#~ "Please visit http://www.dvdisaster.org for an upgrade."
-#~ msgstr ""
-#~ "Denna .ecc-fil kräver dvdisaster V%d.%d.%d eller högre.\n"
-#~ "Besök http://www.dvdisaster.org för en uppgradering."
-
-#~ msgid "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr "Copyright 2004-2012 Carsten Gnörlich"
-
-#~ msgid "Reads a CD/DVD image into a file (or tries to complete an existing image file)."
-#~ msgstr "Läser en cd/dvd-avbild till en fil (eller försöker att färdigställa en existerande avbildsfil)."
-
 #~ msgid "Displays the user manual (external HTML browser required)."
 #~ msgstr "Visar användarmanualen (extern HTML-webbläsare krävs)."
 
-#~ msgid "Local files (on hard disc)"
-#~ msgstr "Lokala filer (på hårddisk)"
-
-#~ msgid "Image file does not match the CD/DVD."
-#~ msgstr "Avbildsfil stämmer inte med cd/dvd."
-
 #~ msgid "Reading CRC information from ecc file"
 #~ msgstr "Läser CRC-information från ecc-fil"
-
-#~ msgid "All sectors successfully read, but wrong image checksum."
-#~ msgstr "Alla sektorer lästa men felaktig kontrollsumma på avbild."
-
-#~ msgid ""
-#~ "\n"
-#~ "Fix mode: Repairable sectors will be fixed in the image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Rättningsläge: Reparerbara sektorer kommer att rättas till i avbilden.\n"
-
-#~ msgid "created by dvdisaster-%d.%d\n"
-#~ msgstr "skapad av dvdisaster-%d.%d\n"
-
-#~ msgid "MB for error correction data"
-#~ msgstr "MB för felkorrigeringsdata"
-
-#~ msgid "Encoding with Method RS02: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr "Kodar med Metod RS02: %lld MB data, %lld MB ecc (%d rötter; %4.1f%% redundans)."
-
-#~ msgid ""
-#~ "Augmenting image with Method RS02:\n"
-#~ " %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr ""
-#~ "Utvidgar avbild med Metod RS02:\n"
-#~ " %lld MB data, %lld MB ecc (%d rötter; %4.1f%% redundans)."
-
-#~ msgid ""
-#~ "Image has been augmented with error correction data.\n"
-#~ "New image size is %lld MB (%lld sectors).\n"
-#~ msgstr ""
-#~ "Avbild har utvidgats med felkorrigeringsdata.\n"
-#~ "Ny storlek på avbild är %lld MB (%lld sektorer).\n"
 
 #~ msgid ""
 #~ "No CD/DVD drives found in /dev.\n"
@@ -5875,17 +5837,14 @@ msgstr ""
 #~ "Inga cd/dvd-enheter hittades i /dev.\n"
 #~ "Inga enheter kommer att vara förvalda.\n"
 
-#~ msgid "Device %s (%s) is not a CDROM drive."
-#~ msgstr "Enhet %s (%s) är inte en cd-rom-enhet."
-
 #~ msgid "No CD/DVD drives found."
 #~ msgstr "Inga cd/dvd-enheter hittades."
 
 #~ msgid "dvdisaster-%s log\n"
 #~ msgstr "dvdisaster-%s logg\n"
 
-#~ msgid "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnoerlich.\n"
-#~ msgstr "dvdisaster-%s%sCopyright 2004-2012 Carsten Gnörlich.\n"
+#~ msgid "dvdisaster-%s%sCopyright 2004-2016 Carsten Gnoerlich.\n"
+#~ msgstr "dvdisaster-%s%sCopyright 2004-2016 Carsten Gnörlich.\n"
 
 #~ msgid ""
 #~ "  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
@@ -6005,8 +5964,8 @@ msgstr ""
 #~ "dvdisaster version %s\n"
 #~ "\n"
 
-#~ msgid "--cache-size maximum is 2048MB."
-#~ msgstr "--cache-size maximum är 2048MB."
+#~ msgid "--cache-size maximum is 2048MiB."
+#~ msgstr "--cache-size maximum är 2048MiB."
 
 #~ msgid "Setting the drive speed failed:\n"
 #~ msgstr "Misslyckades med att ställa in enhetens hastighet:\n"
@@ -6026,8 +5985,8 @@ msgstr ""
 #~ msgid "CD Audio"
 #~ msgstr "Cd-ljud"
 
-#~ msgid "--cache-size must at least be 1MB; 16MB or higher is recommended."
-#~ msgstr "--cache-size måste vara åtminstone 1MB; 16MB eller högre rekommenderas."
+#~ msgid "--cache-size must at least be 1MiB; 16MiB or higher is recommended."
+#~ msgstr "--cache-size måste vara åtminstone 1MiB; 16MiB eller högre rekommenderas."
 
 #~ msgid ""
 #~ "\n"
@@ -6064,8 +6023,8 @@ msgstr ""
 #~ msgid "General"
 #~ msgstr "Allmänt"
 
-#~ msgid "%d MB of system memory"
-#~ msgstr "%d MB av systemminne"
+#~ msgid "%d MiB of system memory"
+#~ msgstr "%d MiB av systemminne"
 
 #~ msgid "Split files into segments <= 2GB"
 #~ msgstr "Dela upp filer i segment <= 2GB"
@@ -6085,9 +6044,6 @@ msgstr ""
 
 #~ msgid "Could not create taskInterface."
 #~ msgstr "Kunde inte skapa taskInterface."
-
-#~ msgid "Could not allocate ccb for %s"
-#~ msgstr "Kunde inte allokera ccb för %s"
 
 #~ msgid "GetASPI32SupportInfo() not available."
 #~ msgstr "GetASPI32SupportInfo() inte tillgänglig."

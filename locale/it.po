@@ -1,14 +1,14 @@
 # Italian translations for dvdisaster package by Andrea Polverini (polve@polve.com)
 # Italian messages for dvdisaster.
-# Copyright (C) 2004-2012 THE dvdisaster'S COPYRIGHT HOLDER
+# Copyright (C) 2004-2015 THE dvdisaster'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dvdisaster package.
-# Carsten Gnörlich <carsten@dvdisaster.de>, 2012.
+# Carsten Gnörlich <carsten@dvdisaster.de>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-25 21:12+0200\n"
+"POT-Creation-Date: 2020-08-29 22:10+0200\n"
 "PO-Revision-Date: 2005-01-01 14:24+0100\n"
 "Last-Translator: Andrea Polverini <polve@polve.com>\n"
 "Language-Team: Italian <>\n"
@@ -503,6 +503,16 @@ msgid ""
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
+"\n"
+"Tipici esempi di utilizzo:\n"
+"  dvdisaster -r,--read   # Estrae l'immagine del supporto sull'hard disk.\n"
+"                         # Usare -rn-m per leggere un determinato intervallo di settori, ad es. -r100-200\n"
+"  dvdisaster -c,--create # Crea l'informazione .ecc per l'immagine del supporto.\n"
+"  dvdisaster -f,--fix    # Prova a correggere l'immagine del supporto usando l'informazione .ecc.\n"
+"  dvdisaster -s,--scan   # Scansiona il supporto per gli errori di lettura.\n"
+"  dvdisaster -t,--test   # Testa l'integrità dei file .iso e .ecc.\n"
+"  dvdisaster -u,--unlink # Cancella i file .iso (Quando le altre azioni sono concluse)\n"
+"\n"
 
 #: dvdisaster.c:918
 #, c-format
@@ -556,7 +566,7 @@ msgstr "  --auto-suffix          - aggiungi automaticamente i suffissi .iso e .e
 
 #: dvdisaster.c:938
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
-msgstr ""
+msgstr "  --cache-size n         - Dimensione della cache in MiB con la modalità -c (Standard: 32MiB)\n"
 
 #: dvdisaster.c:939
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
@@ -857,7 +867,7 @@ msgstr ""
 
 #: help-dialogs.c:753 misc.c:218
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
-msgstr ""
+msgstr "Copyright 2004-2017 Carsten Gnörlich"
 
 #: help-dialogs.c:760
 msgid ""
@@ -930,7 +940,7 @@ msgid ""
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:259
+#: large-io.c:261
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -978,7 +988,7 @@ msgstr "Leggi Immagine"
 
 #: main-window.c:278
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
-msgstr ""
+msgstr "Legge un'immagine CD/DVD in un file (oppure prova a completare un file immagine esistente)"
 
 #: main-window.c:292
 msgid "button|Create"
@@ -1973,7 +1983,7 @@ msgstr ""
 
 #: preferences.c:2546
 msgid "Local files (on hard disk)"
-msgstr ""
+msgstr "File locali (sul disco rigido)"
 
 #: preferences.c:2553
 msgid "Automatic file suffixes"
@@ -2663,7 +2673,7 @@ msgstr ""
 
 #: read-adaptive.c:896 read-linear.c:360
 msgid "Image file does not match the optical disc."
-msgstr ""
+msgstr "Il file immagine non corrisponde al CD/DVD/BD."
 
 #: read-adaptive.c:903
 msgid "Reading aborted. Please select a different image file."
@@ -3359,6 +3369,8 @@ msgid ""
 "\n"
 "Fix mode(%s): Repairable sectors will be fixed in the image.\n"
 msgstr ""
+"\n"
+"\"Modalità Fix(%s): I settori riparabili saranno riparati nell'immagine.\n"
 
 #: rs01-fix.c:201
 #, c-format
@@ -4025,7 +4037,7 @@ msgstr "Usare almeno"
 
 #: rs01-window.c:807 rs03-preferences.c:713
 msgid "MiB for error correction data"
-msgstr ""
+msgstr "MiB per i dati di correzione degli errori"
 
 #: rs01-window.c:824 rs03-preferences.c:730
 msgid ""
@@ -4143,7 +4155,7 @@ msgstr ""
 #: rs02-create.c:1118
 #, c-format
 msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr ""
+msgstr "Sto codificando con il Metodo RS02: %lld MiB dati, %lld MiB ecc (%d Radici, %4.1f%% Ridondanza)."
 
 #: rs02-create.c:1127
 #, c-format
@@ -5253,7 +5265,7 @@ msgstr "INQUIRY fallita. Qualcosa non va con il drive %s.\n"
 #: scsi-layer.c:141
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
-msgstr ""
+msgstr "La periferica %s (%s) non è un CDROM."
 
 #: scsi-layer.c:142
 #, c-format
@@ -5662,9 +5674,6 @@ msgid ""
 "%s\n"
 "not found.\n"
 msgstr ""
-"File di documentazione\n"
-"%s\n"
-"non trovati.\n"
 
 #: show-html.c:391
 msgid "Please hang on until the browser comes up!"
@@ -5747,6 +5756,23 @@ msgid "<i>New in this Version:</i>"
 msgstr ""
 
 #~ msgid ""
+#~ "Documentation file\n"
+#~ "%s\n"
+#~ "not found.\n"
+#~ "Please install the dvdisaster-doc package.\n"
+#~ msgstr ""
+#~ "File di documentazione\n"
+#~ "%s\n"
+#~ "non trovati.\n"
+#~ "Si prega di installare il pacchetto dvdisaster-doc.\n"
+
+#~ msgid "created by dvdisaster-%d.%d\n"
+#~ msgstr "Creato da dvdisaster-%d.%d\n"
+
+#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
+#~ msgstr "  --random-errors r,e inserisce nell'immagine errori casuali (correggibili)\n"
+
+#~ msgid ""
 #~ "\n"
 #~ "Generating random correctable erasures (for %d roots, max erasures = %d).\n"
 #~ msgstr ""
@@ -5754,33 +5780,11 @@ msgstr ""
 #~ "Generazione di cancellazioni correggibili casuali (%d radici, max = %d).\n"
 
 #~ msgid ""
-#~ "\n"
-#~ "Common usage examples:\n"
-#~ "  dvdisaster -r,--read   # Read the medium image to hard disc.\n"
-#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
-#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
-#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
-#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
-#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
-#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
-#~ "\n"
+#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
+#~ "Please visit http://www.dvdisaster.org for an upgrade."
 #~ msgstr ""
-#~ "\n"
-#~ "Tipici esempi di utilizzo:\n"
-#~ "  dvdisaster -r,--read   # Estrae l'immagine del supporto sull'hard disc.\n"
-#~ "                         # Usare -rn-m per leggere un determinato intervallo di settori, ad es. -r100-200\n"
-#~ "  dvdisaster -c,--create # Crea l'informazione .ecc per l'immagine del supporto.\n"
-#~ "  dvdisaster -f,--fix    # Prova a correggere l'immagine del supporto usando l'informazione .ecc.\n"
-#~ "  dvdisaster -s,--scan   # Scansiona il supporto per gli errori di lettura.\n"
-#~ "  dvdisaster -t,--test   # Testa l'integrità dei file .iso e .ecc.\n"
-#~ "  dvdisaster -u,--unlink # Cancella i file .iso (Quando le altre azioni sono concluse)\n"
-#~ "\n"
-
-#~ msgid "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
-#~ msgstr "  --cache-size n         - Dimensione della cache in MB con la modalità -c (Standard: 32MB)\n"
-
-#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
-#~ msgstr "  --random-errors r,e inserisce nell'immagine errori casuali (correggibili)\n"
+#~ "Questo file .ecc necessita di dvdisaster V%d.%d.%d o superiore.\n"
+#~ "Visitate il sito http://www.dvdisaster.org per l'upgrade."
 
 #~ msgid ": not present.\n"
 #~ msgstr ": non presente.\n"
@@ -5792,43 +5796,8 @@ msgstr ""
 #~ "Impossibile leggere il settore %lld dell'immagine (solo %d Bytes):\n"
 #~ "%s"
 
-#~ msgid ""
-#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
-#~ "Please visit http://www.dvdisaster.org for an upgrade."
-#~ msgstr ""
-#~ "Questo file .ecc necessita di dvdisaster V%d.%d.%d o superiore.\n"
-#~ "Visitate il sito http://www.dvdisaster.org per l'upgrade."
-
-#~ msgid "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr "Copyright 2004-2012 Carsten Gnörlich"
-
-#~ msgid "Reads a CD/DVD image into a file (or tries to complete an existing image file)."
-#~ msgstr "Legge un'immagine CD/DVD in un file (oppure prova a completare un file immagine esistente)"
-
 #~ msgid "Displays the user manual (external HTML browser required)."
 #~ msgstr "Mostra il manuale utente (è richiesto un Browser HTML esterno)"
-
-#~ msgid "Local files (on hard disc)"
-#~ msgstr "File locali (sul disco rigido)"
-
-#~ msgid "Image file does not match the CD/DVD."
-#~ msgstr "Il file immagine non corrisponde al CD/DVD."
-
-#~ msgid ""
-#~ "\n"
-#~ "Fix mode: Repairable sectors will be fixed in the image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\"Modalità Fix: I settori riparabili saranno riparati nell'immagine.\n"
-
-#~ msgid "created by dvdisaster-%d.%d\n"
-#~ msgstr "Creato da dvdisaster-%d.%d\n"
-
-#~ msgid "MB for error correction data"
-#~ msgstr "MB per i dati di correzione degli errori"
-
-#~ msgid "Encoding with Method RS02: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr "Sto codificando con il Metodo RS02: %lld MB dati, %lld MB ecc (%d Radici, %4.1f%% Ridondanza)."
 
 #~ msgid ""
 #~ "No CD/DVD drives found in /dev.\n"
@@ -5836,9 +5805,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Nessun CD/DVD drive trovato in /dev.\n"
 #~ "Nessun drive sarà preselezionato.\n"
-
-#~ msgid "Device %s (%s) is not a CDROM drive."
-#~ msgstr "La periferica %s (%s) non è un CDROM."
 
 #~ msgid "No CD/DVD drives found."
 #~ msgstr "Nessun CD/DVD drive trovato."
@@ -5961,8 +5927,8 @@ msgstr ""
 #~ "dvdisaster versione %s\n"
 #~ "\n"
 
-#~ msgid "--cache-size maximum is 2048MB."
-#~ msgstr "La --cache-size massima è 2048MB."
+#~ msgid "--cache-size maximum is 2048MiB."
+#~ msgstr "La --cache-size massima è 2048MiB."
 
 #~ msgid "Setting the drive speed failed:\n"
 #~ msgstr "Settaggio della velocità del drive fallito:\n"
@@ -5982,8 +5948,8 @@ msgstr ""
 #~ msgid "CD Audio"
 #~ msgstr "CD Audio"
 
-#~ msgid "--cache-size must at least be 1MB; 16MB or higher is recommended."
-#~ msgstr "la --cache-size deve essere minimo 1MB; sono consigliati 16MB o più."
+#~ msgid "--cache-size must at least be 1MiB; 16MiB or higher is recommended."
+#~ msgstr "la --cache-size deve essere minimo 1MiB; sono consigliati 16MiB o più."
 
 #~ msgid ""
 #~ "\n"
@@ -6020,8 +5986,8 @@ msgstr ""
 #~ msgid "General"
 #~ msgstr "Generale"
 
-#~ msgid "%d MB of system memory"
-#~ msgstr "%d MB di memoria di sistema"
+#~ msgid "%d MiB of system memory"
+#~ msgstr "%d MiB di memoria di sistema"
 
 #~ msgid "Split files into segments <= 2GB"
 #~ msgstr "Suddividere l'immagine in file <= 2GB"
@@ -6179,7 +6145,7 @@ msgstr ""
 #~ "  -v,--verbose           - more diagnostic messages\n"
 #~ "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 #~ "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
-#~ "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
+#~ "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 #~ "  --dao                  - assume DAO disc; do not trim image end\n"
 #~ "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 #~ "  --medium-size          - max. possible image size on medium (in sectors)\n"
@@ -6198,7 +6164,7 @@ msgstr ""
 #~ "  -v,--verbose           - more diagnostic messages\n"
 #~ "  --adaptive-read        - usare la strategia ottimizzata per leggere i supporti danneggiati\n"
 #~ "  --auto-suffix          - aggiungi automaticamente i suffissi .iso e .ecc\n"
-#~ "  --cache-size n         - Dimensione della cache in MB con la modalità -c (Standard: 32MB)\n"
+#~ "  --cache-size n         - Dimensione della cache in MiB con la modalità -c (Standard: 32MiB)\n"
 #~ "  --dao                  - Utilizza la modalità DAO; Il disco non sarà finalizzato\n"
 #~ "  --fill-unreadable n    - Riempi i settori illeggibili con il byte n\n"
 #~ "  --medium-size          - max. possible image size on medium (in sectors)\n"
@@ -6256,7 +6222,7 @@ msgstr ""
 #~ "  -v,--verbose           - more diagnostic messages\n"
 #~ "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 #~ "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
-#~ "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
+#~ "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 #~ "  --dao                  - assume DAO disc; do not trim image end\n"
 #~ "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 #~ "  --parse-udf            - use information from ISO/UDF filesystem\n"

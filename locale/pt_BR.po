@@ -1,13 +1,13 @@
 # Portuguese translations for dvdisaster package.
-# Copyright (C) 2012 THE dvdisaster'S COPYRIGHT HOLDER
+# Copyright (C) 2015 THE dvdisaster'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the dvdisaster package.
-# Carsten Gnörlich <carsten@dvdisaster.de>, 2012.
+# Carsten Gnörlich <carsten@dvdisaster.de>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.72.rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-25 21:12+0200\n"
+"POT-Creation-Date: 2020-08-29 22:10+0200\n"
 "PO-Revision-Date: 2010-06-09 11:13+0200\n"
 "Last-Translator: cg <cg@dvdisaster.org>\n"
 "Language-Team: Portuguese\n"
@@ -407,7 +407,7 @@ msgstr "--threads devem ser de 1..%d\n"
 
 #: dvdisaster.c:395
 msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
-msgstr ""
+msgstr "--cache-size deve ser pelo menos 8MiB; 16MiB ou mais são recomendados."
 
 #: dvdisaster.c:397
 #, c-format
@@ -519,6 +519,16 @@ msgid ""
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
+"\n"
+"Exemplos de uso comum:\n"
+"  dvdisaster -r,--read   # Lê a mídia e grava sua imagem no disco rígido.\n"
+"                         # Use -rn-m para ler um certo intervalo de setores, ex.: -r100-200\n"
+"  dvdisaster -c,--create # Cria informação .ecc para a imagem da mídia.\n"
+"  dvdisaster -f,--fix    # Tenta consertar a imagem da mídia usando a informação .ecc.\n"
+"  dvdisaster -s,--scan   # Vasculha a mídia por erros de leitura.\n"
+"  dvdisaster -t,--test   # Testa a integridade dos arquivos .iso e .ecc.\n"
+"  dvdisaster -u,--unlink # Apaga arquivos .iso (quando outras ações estão completas)\n"
+"\n"
 
 #: dvdisaster.c:918
 #, c-format
@@ -572,7 +582,7 @@ msgstr "  --auto-suffix           - adiciona sufixos .iso e .ecc aos arquivos au
 
 #: dvdisaster.c:938
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
-msgstr ""
+msgstr "  --cache-size n          - tamanho do cache da imagem em MiB durante o modo -c (padrão: 32MiB)\n"
 
 #: dvdisaster.c:939
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
@@ -875,7 +885,7 @@ msgstr ""
 
 #: help-dialogs.c:753 misc.c:218
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
-msgstr ""
+msgstr "Copyright 2004-2017 Carsten Gnoerlich"
 
 #: help-dialogs.c:760
 msgid ""
@@ -952,7 +962,7 @@ msgid ""
 "No error correction data recognized in image.\n"
 msgstr ""
 
-#: large-io.c:259
+#: large-io.c:261
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -1005,7 +1015,7 @@ msgstr "Ler Imagem"
 
 #: main-window.c:278
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
-msgstr ""
+msgstr "Lê uma imagem de CD/DVD e grava em um arquivo (ou tenta completar um arquivo de imagem existente)."
 
 #: main-window.c:292
 msgid "button|Create"
@@ -1119,22 +1129,22 @@ msgstr "completa"
 #: medium-info.c:180
 #, c-format
 msgid "%s (%d sessions; last session %s)\n"
-msgstr ""
+msgstr "%s (%d sessões; última sessão %s)\n"
 
 #: medium-info.c:192
 #, c-format
 msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
-msgstr ""
+msgstr "%lld setores (%lld MiB), da CAPACIDADE DE LEITURA\n"
 
 #: medium-info.c:201
 #, c-format
 msgid "%lld sectors (%lld MiB), from DVD structure\n"
-msgstr ""
+msgstr "%lld setores (%lld MiB), da estrutura do DVD\n"
 
 #: medium-info.c:211 medium-info.c:283 medium-info.c:285
 #, c-format
 msgid "%lld sectors (%lld MiB)\n"
-msgstr ""
+msgstr "%lld setores (%lld MiB)\n"
 
 #: medium-info.c:223 medium-info.c:517
 msgid "Filesystem info"
@@ -1143,7 +1153,7 @@ msgstr "Informação do sistema de arquivos"
 #: medium-info.c:241
 #, c-format
 msgid "%d sectors (%lld MiB)\n"
-msgstr ""
+msgstr "%d setores (%lld MiB)\n"
 
 #: medium-info.c:268 medium-info.c:550
 msgid "Augmented image info"
@@ -1152,7 +1162,7 @@ msgstr "Informação da imagem aumentada"
 #: medium-info.c:275 medium-info.c:277
 #, c-format
 msgid "%s, %d roots, %4.1f%% redundancy.\n"
-msgstr ""
+msgstr "%s, %d raízes, %4.1f%% de redundância.\n"
 
 #: medium-info.c:375
 msgid "windowtitle|Medium info"
@@ -1938,6 +1948,11 @@ msgid ""
 "\n"
 "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
 msgstr ""
+"<b>Número máximo de tentativas de leitura</b>\n"
+"\n"
+"Quando o número mínimo de tentativas de leitura é alcançado, sem sucesso, o dvdisaster pode optar por fazer tentativas de leitura adicionais até este número.\n"
+"\n"
+"A decisão de fazer mais tentativas depende da qualidade dos dados obtidos até o momento, que, por sua vez, é influenciada pelas capacidades do seu drive de CD/DVD e sistema operacional. Então, dependendo das suas configurações, você pode ou não ver o dvdisaster usar o valor máximo."
 
 #: preferences.c:2236
 msgid "Treatment of unreadable areas"
@@ -2053,6 +2068,9 @@ msgid ""
 "\n"
 "Use a different prefix for each disc you are trying to recover, e.g. \"disc1-\" and so on."
 msgstr ""
+"<b>Prefixo de arquivos de setor Raw</b>\n"
+"\n"
+"Usa um prefixo diferente para cada disco que você está tentando recuperar, por ex.: \"disco1-\" etc."
 
 #: preferences.c:2449
 msgid "Error correction"
@@ -2097,7 +2115,7 @@ msgstr "Arquivos"
 
 #: preferences.c:2546
 msgid "Local files (on hard disk)"
-msgstr ""
+msgstr "Arquivos locais (no disco rígido)"
 
 #: preferences.c:2553
 msgid "Automatic file suffixes"
@@ -2841,7 +2859,7 @@ msgstr ""
 
 #: read-adaptive.c:896 read-linear.c:360
 msgid "Image file does not match the optical disc."
-msgstr ""
+msgstr "O arquivo de imagem não combina com o CD/DVD/BD."
 
 #: read-adaptive.c:903
 msgid "Reading aborted. Please select a different image file."
@@ -3463,6 +3481,9 @@ msgid ""
 "Cache size is currently %d MiB.\n"
 "Try reducing it.\n"
 msgstr ""
+"Falha ao alocar memória para o cache de E/S.\n"
+"Tamanho do cache é atualmente %d MiB.\n"
+"Tente reduzí-lo.\n"
 
 #: rs01-create.c:619 rs01-create.c:749 rs01-create.c:1049 rs02-create.c:1005
 #: rs03-create.c:1157
@@ -3544,6 +3565,8 @@ msgid ""
 "\n"
 "Fix mode(%s): Repairable sectors will be fixed in the image.\n"
 msgstr ""
+"\n"
+"Modo de conserto(%s): Setores recuperáveis serão consertados na imagem.\n"
 
 #: rs01-fix.c:201
 #, c-format
@@ -4142,7 +4165,7 @@ msgstr "%4.1f%% de redundância (%d raízes)"
 #: rs02-window.c:395 rs02-window.c:1337 rs02-window.c:1343 rs02-window.c:1344
 #, c-format
 msgid "%d MiB of file cache"
-msgstr ""
+msgstr "%d MiB de cache de arquivos"
 
 #: rs01-window.c:669 rs03-preferences.c:557
 msgid "Redundancy for new error correction files"
@@ -4221,7 +4244,7 @@ msgstr "Usar no máximo"
 
 #: rs01-window.c:807 rs03-preferences.c:713
 msgid "MiB for error correction data"
-msgstr ""
+msgstr "MiB para dados de correção de erros"
 
 #: rs01-window.c:824 rs03-preferences.c:730
 msgid ""
@@ -4231,6 +4254,11 @@ msgid ""
 "\n"
 "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
 msgstr ""
+"<b>Redundância delimitada por espaço</b>\n"
+"\n"
+"Especifica o tamanho máximo do arquivo de correção de erros em MiB. O dvdisaster escolherá uma configuração de redundância compatível para que o tamanho total do arquivo de correção de erros não exceda o tamanho limite dado.\n"
+"\n"
+"<b>Nota:</b> Quando usa-se a mesma configuração de tamanho para imagens de tamanhos muito diferentes, imagens menores recebem mais redundância do que as maiores. Isso geralmente não é o que você quer."
 
 #: rs01-window.c:867 rs02-window.c:1334
 msgid "Memory utilization"
@@ -4250,6 +4278,9 @@ msgid ""
 "\n"
 "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MiB is suitable for most systems."
 msgstr ""
+"<b>Cache de arquivos</b>\n"
+"\n"
+"O dvdisaster otimiza o acesso à imagem e arquivos de correção de erros mantendo seu próprio cache. O padrão de 32MiB é adequada à maioria dos sistemas."
 
 #: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:622
 #, c-format
@@ -4356,7 +4387,7 @@ msgstr "- verificando a imagem -"
 #: rs02-create.c:1118
 #, c-format
 msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr ""
+msgstr "Codificando com o Método RS02: %lld MiB de dados, %lld MiB de ecc (%d raízes; %4.1f%% de redundância)."
 
 #: rs02-create.c:1127
 #, c-format
@@ -4364,6 +4395,8 @@ msgid ""
 "Augmenting image with Method RS02:\n"
 " %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
+"Aumentando a imagem com o Método RS02:\n"
+" %lld MiB de dados, %lld MiB de ecc (%d raízes; %4.1f%% de redundância)."
 
 #: rs02-create.c:1136
 #, c-format
@@ -4389,6 +4422,8 @@ msgid ""
 "Image has been augmented with error correction data.\n"
 "New image size is %lld MiB (%lld sectors).\n"
 msgstr ""
+"A imagem foi aumentada com dados de correção de erros.\n"
+"O tamanho da nova imagem é %lld MiB (%lld setores).\n"
 
 #: rs02-fix.c:119 rs02-fix.c:130 rs03-fix.c:122 rs03-fix.c:133
 #, c-format
@@ -4716,6 +4751,11 @@ msgid ""
 "\n"
 "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD and BD are given in the table. You can edit these sizes according to your needs."
 msgstr ""
+"<b>Determinar o tamanho da imagem aumentada da tabela</b>\n"
+"\n"
+"Imagens aumentadas preenchem espaço não usado da mídia com informações de correção de erros. Ative esta opção se você quer que a imagem aumentada se encaixe na menor mídia possível.\n"
+"\n"
+"Para que uma mídia adequada seja escolhida, a capacidade das mídias disponíveis devem ser conhecidas. Tamanhos padrão para CD e DVDs de duas camadas são dados na tabela. Você pode editar estes tamanhos de acordo com as suas necessidades."
 
 #: rs02-window.c:827
 msgid "CD-R / CD-RW:"
@@ -5531,7 +5571,7 @@ msgstr "A CONSULTA falhou. Há algo de errado com o drive %s.\n"
 #: scsi-layer.c:141
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
-msgstr ""
+msgstr "O dispositivo %s (%s) não é um drive de CDROM."
 
 #: scsi-layer.c:142
 #, c-format
@@ -5946,9 +5986,6 @@ msgid ""
 "%s\n"
 "not found.\n"
 msgstr ""
-"Arquivo de documentação\n"
-"%s\n"
-"não encontrado.\n"
 
 #: show-html.c:391
 msgid "Please hang on until the browser comes up!"
@@ -6031,6 +6068,24 @@ msgid "<i>New in this Version:</i>"
 msgstr "<i>Novidades dessa versão:</i>"
 
 #~ msgid ""
+#~ "Documentation file\n"
+#~ "%s\n"
+#~ "not found.\n"
+#~ "Please install the dvdisaster-doc package.\n"
+#~ msgstr ""
+#~ "Arquivo de documentação\n"
+#~ "%s\n"
+#~ "não encontrado.\n"
+#~ "Por favor, instale o pacote dvdisaster-doc.\n"
+
+#~ msgid ""
+#~ "Modified version Copyright 2017 (please fill in - [directions])\n"
+#~ "Copyright 2004-2017 Carsten Gnoerlich"
+#~ msgstr ""
+#~ "Versão modificada Copyright 2017 (por favor, preencha - [instruções])\n"
+#~ "Copyright 2004-2017 Carsten Gnoerlich"
+
+#~ msgid ""
 #~ "\n"
 #~ "This program is <b>not the original</b>. It is based on the\n"
 #~ "source code of dvdisaster, but contains third-party changes.\n"
@@ -6048,6 +6103,20 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ msgid "This software does not support encrypted media.\n"
 #~ msgstr "Este software não suporta mídias criptografadas.\n"
 
+#~ msgid "created by dvdisaster-%d.%d\n"
+#~ msgstr "criado pelo dvdisaster-%d.%d\n"
+
+#~ msgid ""
+#~ "NOTE: This is the Windows console version of dvdisaster.\n"
+#~ "The version providing a graphical user interface is called\n"
+#~ "dvdisaster-win.exe (also contained in this installation).\n"
+#~ "\n"
+#~ msgstr ""
+#~ "NOTA: Essa é a versão para console do Windows do dvdisaster.\n"
+#~ "O nome da versão que oferece uma interface gráfica de usuário\n"
+#~ "é dvdisaster-win.exe (também contido nesta instalação).\n"
+#~ "\n"
+
 #~ msgid ""
 #~ "Number of roots must be 8..100;\n"
 #~ "the number of erasures must be > 0 and less than the number of roots.\n"
@@ -6055,12 +6124,37 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "O número de raízes deve ser de 8 a 100;\n"
 #~ "o número de raízes deve ser maior que zero e menor do que o número de raízes.\n"
 
+#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
+#~ msgstr "  --random-errors r,e  - semeia a imagem com erros aleatórios (recuperáveis)\n"
+
 #~ msgid ""
 #~ "\n"
 #~ "Generating random correctable erasures (for %d roots, max erasures = %d).\n"
 #~ msgstr ""
 #~ "\n"
 #~ "Gerando rasuras recuperáveis aleatórias (%d raízes, rasuras máximas = %d).\n"
+
+#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
+#~ msgstr "Usar novo estilo de marcador de setor desaparecido (Cuidado: problemas de compatibilidade!)"
+
+#~ msgid ""
+#~ "<b>Missing sector tagging</b>\n"
+#~ "\n"
+#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
+#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
+#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
+#~ msgstr ""
+#~ "<b>Marcação de setor desaparecido</b>\n"
+#~ "\n"
+#~ "Setores desaparecidos são marcados com uma sequência de código especial na imagem. Se esse valor estiver desativado, um código melhorado que pode detectar certos conteúdos intencionalmente danificados. Isso inclui mídias que foram criadas a partir de imagens parcialmente recuperadas e imagens contendo arquivos desse tipo de mídia parcial.\n"
+#~ "Porém, apenas dvdisaster 0.72 ou superiores reconhecem essas marcações. Você NÃO DEVE processar as imagens resultantes com versões mais velhas do dvdisaster pois elas não enxergariam nenhum setor desaparecido das imagens resultantes.\n"
+#~ "Nota: dvdisaster >= 0.72 detectará e reconhecerá automaticamente ambos os formatos de marcações; mudar esse valor afetará apenas a criação de novas imagens."
+
+#~ msgid "All sectors successfully read, but wrong image checksum."
+#~ msgstr "Todos os setores lidos com sucesso, mas o checksum da imagem está errado"
+
+#~ msgid "All sectors successfully read, %s!"
+#~ msgstr "Todos os setores lidos com sucesso, %s!"
 
 #~ msgid ""
 #~ "Unrecoverable sector found!\n"
@@ -6112,55 +6206,12 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "ela não pode ser recuperada pelo dvdisaster. Também não será possível criar\n"
 #~ "dados de correção de erros para ela. Desculpe pelas más notícias.\n"
 
-#~ msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
-#~ msgstr "--cache-size deve ser pelo menos 8MB; 16MB ou mais são recomendados."
-
 #~ msgid ""
-#~ "dvdisaster is not properly installed.\n"
-#~ "Please execute the installer program (%s) again.\n"
+#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
+#~ "Please visit http://www.dvdisaster.org for an upgrade."
 #~ msgstr ""
-#~ "dvdisaster não está corretamente instalado.\n"
-#~ "Por favor, execute o programa instalador (%s) novamente.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Common usage examples:\n"
-#~ "  dvdisaster -r,--read   # Read the medium image to hard disc.\n"
-#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
-#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
-#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
-#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
-#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
-#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Exemplos de uso comum:\n"
-#~ "  dvdisaster -r,--read   # Lê a mídia e grava sua imagem no disco rígido.\n"
-#~ "                         # Use -rn-m para ler um certo intervalo de setores, ex.: -r100-200\n"
-#~ "  dvdisaster -c,--create # Cria informação .ecc para a imagem da mídia.\n"
-#~ "  dvdisaster -f,--fix    # Tenta consertar a imagem da mídia usando a informação .ecc.\n"
-#~ "  dvdisaster -s,--scan   # Vasculha a mídia por erros de leitura.\n"
-#~ "  dvdisaster -t,--test   # Testa a integridade dos arquivos .iso e .ecc.\n"
-#~ "  dvdisaster -u,--unlink # Apaga arquivos .iso (quando outras ações estão completas)\n"
-#~ "\n"
-
-#~ msgid "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
-#~ msgstr "  --cache-size n          - tamanho do cache da imagem em MB durante o modo -c (padrão: 32MB)\n"
-
-#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
-#~ msgstr "  --random-errors r,e  - semeia a imagem com erros aleatórios (recuperáveis)\n"
-
-#~ msgid ""
-#~ "NOTE: This is the Windows console version of dvdisaster.\n"
-#~ "The version providing a graphical user interface is called\n"
-#~ "dvdisaster-win.exe (also contained in this installation).\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NOTA: Essa é a versão para console do Windows do dvdisaster.\n"
-#~ "O nome da versão que oferece uma interface gráfica de usuário\n"
-#~ "é dvdisaster-win.exe (também contido nesta instalação).\n"
-#~ "\n"
+#~ "Esse arquivo .ecc requer dvdisaster V%d.%d.%d ou superior.\n"
+#~ "Por favor, visite http://www.dvdisaster.org para atualizar."
 
 #~ msgid ": not present.\n"
 #~ msgstr ": não está presente.\n"
@@ -6172,185 +6223,18 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "impossível ler o setor %lld da imagem (apenas %d bytes):\n"
 #~ "%s"
 
-#~ msgid ""
-#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
-#~ "Please visit http://www.dvdisaster.org for an upgrade."
-#~ msgstr ""
-#~ "Esse arquivo .ecc requer dvdisaster V%d.%d.%d ou superior.\n"
-#~ "Por favor, visite http://www.dvdisaster.org para atualizar."
-
-#~ msgid ""
-#~ "Modified version Copyright 2012 (please fill in - [directions])\n"
-#~ "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr ""
-#~ "Versão modificada Copyright 2012 (por favor, preencha - [instruções])\n"
-#~ "Copyright 2004-2012 Carsten Gnoerlich"
-
-#~ msgid "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr "Copyright 2004-2012 Carsten Gnoerlich"
-
-#~ msgid "Reads a CD/DVD image into a file (or tries to complete an existing image file)."
-#~ msgstr "Lê uma imagem de CD/DVD e grava em um arquivo (ou tenta completar um arquivo de imagem existente)."
-
-#~ msgid ""
-#~ "<b>dvdisaster is not properly installed</b>\n"
-#~ "\n"
-#~ "Please execute the installer program (%s) again.\n"
-#~ msgstr ""
-#~ "<b>o dvdisaster não está corretamente instalado</b>\n"
-#~ "\n"
-#~ "Por favor, execute o programa instalador (%s) novamente.\n"
-
-#~ msgid "%s (%d sessions; last session %s)"
-#~ msgstr "%s (%d sessões; última sessão %s)"
-
-#~ msgid "%lld sectors (%lld MB), from READ CAPACITY"
-#~ msgstr "%lld setores (%lld MB), da CAPACIDADE DE LEITURA"
-
-#~ msgid "%lld sectors (%lld MB), from DVD structure"
-#~ msgstr "%lld setores (%lld MB), da estrutura do DVD"
-
-#~ msgid "%lld sectors (%lld MB)"
-#~ msgstr "%lld setores (%lld MB)"
-
-#~ msgid "%d sectors (%lld MB)"
-#~ msgstr "%d setores (%lld MB)"
-
-#~ msgid "%s, %d roots, %4.1f%% redundancy."
-#~ msgstr "%s, %d raízes, %4.1f%% de redundância."
-
 #~ msgid "Displays the user manual (external HTML browser required)."
 #~ msgstr "Mostra o manual de usuário (requer browser de HTML externo)."
 
-#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
-#~ msgstr "Usar novo estilo de marcador de setor desaparecido (Cuidado: problemas de compatibilidade!)"
-
 #~ msgid ""
-#~ "<b>Missing sector tagging</b>\n"
+#~ "Please see the manual for [typical uses] of dvdisaster.\n"
 #~ "\n"
-#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
-#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
-#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
 #~ msgstr ""
-#~ "<b>Marcação de setor desaparecido</b>\n"
+#~ "Por favor, leia o manual para [usos típicos] do dvdisaster.\n"
 #~ "\n"
-#~ "Setores desaparecidos são marcados com uma sequência de código especial na imagem. Se esse valor estiver desativado, um código melhorado que pode detectar certos conteúdos intencionalmente danificados. Isso inclui mídias que foram criadas a partir de imagens parcialmente recuperadas e imagens contendo arquivos desse tipo de mídia parcial.\n"
-#~ "Porém, apenas dvdisaster 0.72 ou superiores reconhecem essas marcações. Você NÃO DEVE processar as imagens resultantes com versões mais velhas do dvdisaster pois elas não enxergariam nenhum setor desaparecido das imagens resultantes.\n"
-#~ "Nota: dvdisaster >= 0.72 detectará e reconhecerá automaticamente ambos os formatos de marcações; mudar esse valor afetará apenas a criação de novas imagens."
-
-#~ msgid ""
-#~ "<b>Maximum number of reading attempts</b>\n"
-#~ "\n"
-#~ "When the minimum number of reading attempts is reached without success, dvdisaster might choose to perform additional reading attempts upto this number.\n"
-#~ "\n"
-#~ "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your CD/DVD drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
-#~ msgstr ""
-#~ "<b>Número máximo de tentativas de leitura</b>\n"
-#~ "\n"
-#~ "Quando o número mínimo de tentativas de leitura é alcançado, sem sucesso, o dvdisaster pode optar por fazer tentativas de leitura adicionais até este número.\n"
-#~ "\n"
-#~ "A decisão de fazer mais tentativas depende da qualidade dos dados obtidos até o momento, que, por sua vez, é influenciada pelas capacidades do seu drive de CD/DVD e sistema operacional. Então, dependendo das suas configurações, você pode ou não ver o dvdisaster usar o valor máximo."
-
-#~ msgid ""
-#~ "<b>Raw sector file prefix</b>\n"
-#~ "\n"
-#~ "Use a different prefix for each disk you are trying to recover, e.g. \"disk1-\" and so on."
-#~ msgstr ""
-#~ "<b>Prefixo de arquivos de setor Raw</b>\n"
-#~ "\n"
-#~ "Usa um prefixo diferente para cada disco que você está tentando recuperar, por ex.: \"disco1-\" etc."
-
-#~ msgid "Local files (on hard disc)"
-#~ msgstr "Arquivos locais (no disco rígido)"
-
-#~ msgid "Image file does not match the CD/DVD."
-#~ msgstr "O arquivo de imagem não combina com o CD/DVD."
 
 #~ msgid "Reading CRC information from ecc file"
 #~ msgstr "Lendo informações de CRC do arquivo ecc"
-
-#~ msgid "All sectors successfully read, but wrong image checksum."
-#~ msgstr "Todos os setores lidos com sucesso, mas o checksum da imagem está errado"
-
-#~ msgid "All sectors successfully read, %s!"
-#~ msgstr "Todos os setores lidos com sucesso, %s!"
-
-#~ msgid ""
-#~ "Failed allocating memory for I/O cache.\n"
-#~ "Cache size is currently %d MB.\n"
-#~ "Try reducing it.\n"
-#~ msgstr ""
-#~ "Falha ao alocar memória para o cache de E/S.\n"
-#~ "Tamanho do cache é atualmente %d MB.\n"
-#~ "Tente reduzí-lo.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Fix mode: Repairable sectors will be fixed in the image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Modo de conserto: Setores recuperáveis serão consertados na imagem.\n"
-
-#~ msgid "created by dvdisaster-%d.%d\n"
-#~ msgstr "criado pelo dvdisaster-%d.%d\n"
-
-#~ msgid "%d MB of file cache"
-#~ msgstr "%d MB de cache de arquivos"
-
-#~ msgid "MB for error correction data"
-#~ msgstr "MB para dados de correção de erros"
-
-#~ msgid ""
-#~ "<b>Space-delimited redundancy</b>\n"
-#~ "\n"
-#~ "Specifies the maximum size of the error correction file in MB. dvdisaster will choose a suitable redundancy setting so that the overall size of the error correction file does not exceed the given limit.\n"
-#~ "\n"
-#~ "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
-#~ msgstr ""
-#~ "<b>Redundância delimitada por espaço</b>\n"
-#~ "\n"
-#~ "Especifica o tamanho máximo do arquivo de correção de erros em MB. O dvdisaster escolherá uma configuração de redundância compatível para que o tamanho total do arquivo de correção de erros não exceda o tamanho limite dado.\n"
-#~ "\n"
-#~ "<b>Nota:</b> Quando usa-se a mesma configuração de tamanho para imagens de tamanhos muito diferentes, imagens menores recebem mais redundância do que as maiores. Isso geralmente não é o que você quer."
-
-#~ msgid ""
-#~ "<b>File cache</b>\n"
-#~ "\n"
-#~ "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MB is suitable for most systems."
-#~ msgstr ""
-#~ "<b>Cache de arquivos</b>\n"
-#~ "\n"
-#~ "O dvdisaster otimiza o acesso à imagem e arquivos de correção de erros mantendo seu próprio cache. O padrão de 32MB é adequada à maioria dos sistemas."
-
-#~ msgid "Encoding with Method RS02: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr "Codificando com o Método RS02: %lld MB de dados, %lld MB de ecc (%d raízes; %4.1f%% de redundância)."
-
-#~ msgid ""
-#~ "Augmenting image with Method RS02:\n"
-#~ " %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr ""
-#~ "Aumentando a imagem com o Método RS02:\n"
-#~ " %lld MB de dados, %lld MB de ecc (%d raízes; %4.1f%% de redundância)."
-
-#~ msgid ""
-#~ "Image has been augmented with error correction data.\n"
-#~ "New image size is %lld MB (%lld sectors).\n"
-#~ msgstr ""
-#~ "A imagem foi aumentada com dados de correção de erros.\n"
-#~ "O tamanho da nova imagem é %lld MB (%lld setores).\n"
-
-#~ msgid ""
-#~ "<b>Determine augmented image size from table</b>\n"
-#~ "\n"
-#~ "Augmented images fill up unused medium space with error correction information. Activate this option if you want the augmented image to fit on the smallest possible medium.\n"
-#~ "\n"
-#~ "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD are given in the table. You can edit these sizes according to your needs."
-#~ msgstr ""
-#~ "<b>Determinar o tamanho da imagem aumentada da tabela</b>\n"
-#~ "\n"
-#~ "Imagens aumentadas preenchem espaço não usado da mídia com informações de correção de erros. Ative esta opção se você quer que a imagem aumentada se encaixe na menor mídia possível.\n"
-#~ "\n"
-#~ "Para que uma mídia adequada seja escolhida, a capacidade das mídias disponíveis devem ser conhecidas. Tamanhos padrão para CD e DVDs de duas camadas são dados na tabela. Você pode editar estes tamanhos de acordo com as suas necessidades."
 
 #~ msgid ""
 #~ "No CD/DVD drives found in /dev.\n"
@@ -6358,9 +6242,6 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ msgstr ""
 #~ "Nenhum drive de CD/DVD encontrado em /dev.\n"
 #~ "Nenhum drive será pré-selecionado.\n"
-
-#~ msgid "Device %s (%s) is not a CDROM drive."
-#~ msgstr "O dispositivo %s (%s) não é um drive de CDROM."
 
 #~ msgid ""
 #~ "No CD/DVD drives found.\n"
@@ -6379,11 +6260,20 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "mídias CD e DVD contra perda de dados.\n"
 
 #~ msgid ""
-#~ "Please see the manual for [typical uses] of dvdisaster.\n"
-#~ "\n"
+#~ "dvdisaster is not properly installed.\n"
+#~ "Please execute the installer program (%s) again.\n"
 #~ msgstr ""
-#~ "Por favor, leia o manual para [usos típicos] do dvdisaster.\n"
+#~ "dvdisaster não está corretamente instalado.\n"
+#~ "Por favor, execute o programa instalador (%s) novamente.\n"
+
+#~ msgid ""
+#~ "<b>dvdisaster is not properly installed</b>\n"
 #~ "\n"
+#~ "Please execute the installer program (%s) again.\n"
+#~ msgstr ""
+#~ "<b>o dvdisaster não está corretamente instalado</b>\n"
+#~ "\n"
+#~ "Por favor, execute o programa instalador (%s) novamente.\n"
 
 #~ msgid ""
 #~ "\n"
@@ -6409,8 +6299,8 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "\n"
 #~ "dvdisaster, versão %s build %s\n"
 
-#~ msgid "--cache-size maximum is 8192MB."
-#~ msgstr "--cache-size máximo é 8192MB."
+#~ msgid "--cache-size maximum is 8192MiB."
+#~ msgstr "--cache-size máximo é 8192MiB."
 
 #~ msgid ""
 #~ "  -n,--redundancy n%%     - error correction file redundancy (in percent), or\n"
@@ -6644,7 +6534,7 @@ msgstr "<i>Novidades dessa versão:</i>"
 #~ "  -v,--verbose           - more diagnostic messages\n"
 #~ "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 #~ "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
-#~ "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
+#~ "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 #~ "  --dao                  - assume DAO disc; do not trim image end\n"
 #~ "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 #~ "  --eject                - eject medium after successful read\n"
