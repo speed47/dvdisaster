@@ -3,10 +3,8 @@ name: C/C++ CI
 on: [pull_request]
 
 jobs:
-  build:
-
+  linux-gui:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
@@ -14,7 +12,22 @@ jobs:
     - name: configure
       run: ./configure
     - name: make
-      run: make
+      run: nproc && make -j$(nproc)
+    - name: check executability
+      run: ./dvdisaster --version
+    - name: regression tests
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+
+  linux-cli:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install prerequisites
+      run: sudo apt update && sudo apt install -y libglib2.0-dev
+    - name: configure (CLI)
+      run: CLI_ONLY=1 ./configure
+    - name: make
+      run: nproc && make -j$(nproc)
     - name: check executability
       run: ./dvdisaster --version
     - name: regression tests
