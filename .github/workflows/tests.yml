@@ -13,6 +13,7 @@ jobs:
       with:
         msystem: MINGW64
         update: false
+        install: git make gcc pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2
     - uses: actions/checkout@v2
     - shell: msys2 {0}
       name: configure
