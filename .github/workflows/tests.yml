@@ -17,13 +17,21 @@ jobs:
     - uses: actions/checkout@v2
     - shell: msys2 {0}
       name: configure
-      run: ./configure
+      run: |
+        set MSYSTEM=MINGW64
+        ./configure
     - shell: msys2 {0}
       name: make
-      run: nproc && make -j$(nproc)
+      run: |
+        set MSYSTEM=MINGW64
+        echo $MSYSTEM && nproc && make -j$(nproc)
     - shell: msys2 {0}
       name: check executability
-      run: ./dvdisaster.exe --version
+      run: |
+        set MSYSTEM=MINGW64
+        ./dvdisaster.exe --version
     - shell: msys2 {0}
       name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: |
+        set MSYSTEM=MINGW64
+        mkdir /var/tmp/regtest && ./regtest/runtests.sh
