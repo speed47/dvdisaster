@@ -13,7 +13,7 @@ jobs:
       with:
         msystem: MINGW64
         update: false
-        install: git make gcc pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2
+        install: git make pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc
     - uses: actions/checkout@v2
     - shell: msys2 {0}
       name: configure
@@ -30,6 +30,9 @@ jobs:
       run: |
         set MSYSTEM=MINGW64
         ./dvdisaster.exe --version
+    - shell: msys2 {0}
+      name: check executable
+      run: file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
     - shell: msys2 {0}
       name: regression tests
       run: |
