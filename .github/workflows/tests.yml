@@ -3,19 +3,24 @@ name: C/C++ CI
 on: [pull_request]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  win64:
+    runs-on: win-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: false
+        install: base-devel git mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2 
+    #- run: git config --global core.autocrlf input
+    #  shell: bash
     - uses: actions/checkout@v2
-    - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libgtk2.0-dev libglib2.0-dev
     - name: configure
       run: ./configure
     - name: make
       run: make
     - name: check executability
-      run: ./dvdisaster --version
+      run: ./dvdisaster.exe --version
     - name: regression tests
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
