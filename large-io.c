@@ -39,9 +39,6 @@
 #ifdef SYS_MINGW
 
 #include <windows.h>
-#include <io.h> /* _lseeki64 */
-#include <sys/types.h> /* _stati64 */
-#include <sys/stat.h> /* _stati64 */
 
 #define large_stat _stati64
 #define large_lseek _lseeki64
@@ -352,7 +349,6 @@ FILE *portable_fopen(char *path, char *modes)
    return file;
 }
 
-#if 0
 #ifdef SYS_MINGW
 int portable_mkdir(char *path)
 {  int status;
@@ -364,7 +360,6 @@ int portable_mkdir(char *path)
 
    return status;
 }
-#endif
 #endif
 
 /***
