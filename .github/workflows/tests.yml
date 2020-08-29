@@ -20,7 +20,7 @@ jobs:
       run: ./configure
     - shell: msys2 {0}
       name: make
-      run: make
+      run: nproc && make -j$(nproc)
     - shell: msys2 {0}
       name: check executability
       run: ./dvdisaster.exe --version
