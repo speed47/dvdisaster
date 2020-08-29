@@ -39,6 +39,7 @@
 #ifdef SYS_MINGW
 
 #include <windows.h>
+#include <io.h>
 
 #define stat _stati64
 #define lseek _lseeki64
