@@ -40,6 +40,8 @@
 
 #include <windows.h>
 #include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define stat _stati64
 #define lseek _lseeki64
