@@ -55,6 +55,10 @@ Even if the optical media era is sunsetting now, and has been for a few years, i
 The idea of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile, should upstream development never resume (we hope it does!).
 This is also why precompiled Windows binaries and a precompiled static CLI-only Linux version are available here.
 
+# Compiling
+
+See the INSTALL file
+
 # Screenshots
 
 ### Scanning a damaged CD under Windows

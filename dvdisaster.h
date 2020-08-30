@@ -124,10 +124,23 @@
 #define CDR_SIZE         (351*1024)
 #define DVD_SL_SIZE      2295104  /* DVD+R/RW size used as least common denominator */
 #define DVD_DL_SIZE 	 4171712  /* also seen: 4148992 4173824  */
-#define BD_SL_SIZE      11826176  /* w/o defect mgmt: 12219392 */
-#define BD_DL_SIZE      23652352  /* w/o defect mgmt: 24438784 */
-#define BDXL_TL_SIZE    47305728  /* w/o defect mgmt: 48878592 */
-#define BDXL_QL_SIZE    60403712  /* w/o defect mgmt: 62500864 */
+#define BD_SL_SIZE      11826176
+#define BD_DL_SIZE      23652352
+#define BDXL_TL_SIZE    47305728
+#define BDXL_QL_SIZE    60403712
+/*
+ * Below are the BD-R sizes when defect management is disabled when burning.
+ * This is a tradeoff between risking a coaster vs having more space for parity.
+ * These values are NEVER used by default, we default on the values above, which
+ * are smaller and will work with or without defect management.
+ * We use these values for RS03 when --no-defect-management is explicitly specified,
+ * don't forget to specify it again when attempting a repair!
+ * NODM = No Defect Management
+ */
+#define BD_SL_SIZE_NODM      12219392
+#define BD_DL_SIZE_NODM      24438784
+#define BDXL_TL_SIZE_NODM    48878592
+#define BDXL_QL_SIZE_NODM    62500864
 
 /* Maximum accepted media sizes (in 2K sectors) */
 
@@ -250,6 +263,8 @@ typedef struct _GlobalClosure
    int clSize;          /* Bytesize of cache line */
    int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
    int fixedSpeedValues;/* output fixed speed reading to make comparing debugging output easier */  
+   int noBdrDefectManagement;/* if true, enable use of the BD*_NODM sizes, default: false */
+   int ignoreRS03header; /* if true, ignore the RS03 header when repairing, forcing a full search (debug only) */
    char *homeDir;       /* path to users home dir */
    char *dotFile;       /* path to .dvdisaster file */
    char *logFile;       /* path to logfile */

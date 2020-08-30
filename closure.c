@@ -506,6 +506,8 @@ void InitClosure()
    Closure->welcomeMessage = 1;
    Closure->useSCSIDriver = DRIVER_SG;
    Closure->dsmVersion = 1;
+   Closure->noBdrDefectManagement = FALSE;
+   Closure->ignoreRS03header = FALSE;
 
    /* default sizes for typical CD and DVD media */
 

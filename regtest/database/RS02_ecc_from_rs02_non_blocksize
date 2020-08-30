@@ -11,7 +11,7 @@ Opening rs02-tmp.iso: 34933 medium sectors.
 Image size is now: 30000 medium sectors and 56 bytes.
 Augmenting image with Method RS02:
  58 MiB data, 9 MiB ecc (35 roots; 15.9% redundancy).
-* Warning: Using redundancies below 20%% may not give
+* Warning: Using redundancies below 20% may not give
 *          the expected data loss protection.
 Image has been augmented with error correction data.
 New image size is 68 MiB (34933 sectors).

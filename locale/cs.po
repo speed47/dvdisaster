@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-25 21:12+0200\n"
+"POT-Creation-Date: 2020-08-30 16:39+0200\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -35,15 +35,15 @@ msgstr ""
 "# každém spuštění programu.\n"
 "\n"
 
-#: closure.c:560
-msgid "medium.iso"
-msgstr "disk.iso"
-
-#: closure.c:561
-msgid "medium.ecc"
-msgstr "disk.ecc"
-
 #: closure.c:562
+msgid "medium.iso"
+msgstr "disc.iso"
+
+#: closure.c:563
+msgid "medium.ecc"
+msgstr "disc.ecc"
+
+#: closure.c:564
 msgid "sector-"
 msgstr "sektor-"
 
@@ -63,7 +63,7 @@ msgstr ""
 #: debug.c:850 debug.c:1181 debug.c:1189 debug.c:1266 rs01-common.c:175
 #: rs02-common.c:239 rs02-create.c:377 rs02-create.c:1032 rs02-fix.c:414
 #: rs02-verify.c:404 rs03-common.c:340 rs03-create.c:756 rs03-create.c:781
-#: rs03-recognize.c:550
+#: rs03-recognize.c:555
 #, c-format
 msgid "Failed seeking to sector %lld in image: %s"
 msgstr "Nezdařil se přechod na sektor %lld bitové kopie: %s"
@@ -242,7 +242,7 @@ msgstr "Nahrazeno %lld indikátorů \"nečitelných sektorů\".\n"
 
 #: debug.c:811 debug.c:854 debug.c:1185 debug.c:1252 debug.c:1256 debug.c:1306
 #: rs01-common.c:191 rs02-common.c:244 rs02-create.c:229 rs02-fix.c:417
-#: rs03-common.c:345 rs03-recognize.c:555
+#: rs03-common.c:345 rs03-recognize.c:560
 #, c-format
 msgid "Failed reading sector %lld in image: %s"
 msgstr "Čtení sektoru %lld bitové kopie %s se nezdařilo"
@@ -401,83 +401,83 @@ msgstr ""
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:160 dvdisaster.c:172
+#: dvdisaster.c:162 dvdisaster.c:174
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:355
+#: dvdisaster.c:367
 msgid "-o/--ecc-target expects 'file' or 'image'"
 msgstr "-o/--ecc-target očekává 'file' nebo 'image'"
 
-#: dvdisaster.c:381
+#: dvdisaster.c:393
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--threads musí být 1..%d\n"
 
-#: dvdisaster.c:395
+#: dvdisaster.c:407
 msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
-msgstr ""
+msgstr "--cache-size musí být minimálně 8MiB; doporučeno je 16MiB nebo více."
 
-#: dvdisaster.c:397
+#: dvdisaster.c:409
 #, c-format
 msgid "--cache-size maximum is %dMiB."
 msgstr ""
 
-#: dvdisaster.c:420
+#: dvdisaster.c:432
 msgid "--encoding-algorithm: SSE2 not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:424
+#: dvdisaster.c:436
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, SSE2"
 msgstr ""
 
-#: dvdisaster.c:431
+#: dvdisaster.c:443
 msgid "--encoding-algorithm: AltiVec not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:435
+#: dvdisaster.c:447
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"
 msgstr ""
 
-#: dvdisaster.c:438
+#: dvdisaster.c:450
 msgid "--encoding-algorithm: valid types are 32bit, 64bit"
 msgstr ""
 
-#: dvdisaster.c:447
+#: dvdisaster.c:459
 msgid "--encoding-io-strategy: mmap not supported on this OS"
 msgstr ""
 
-#: dvdisaster.c:451
+#: dvdisaster.c:463
 msgid "--encoding-io-strategy: valid types are readwrite and mmap"
 msgstr ""
 
-#: dvdisaster.c:461
+#: dvdisaster.c:473
 msgid "Valid args for --driver: sg,cdrom"
 msgstr "Platné parametry pro --driver: sg,cdrom"
 
-#: dvdisaster.c:463
+#: dvdisaster.c:475
 msgid "--driver is only supported on GNU/Linux"
 msgstr "--driver je podporován pouze v GNU/Linux"
 
-#: dvdisaster.c:471
+#: dvdisaster.c:483
 msgid "--fixed-speed-values is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:515
+#: dvdisaster.c:534
 #, c-format
 msgid "--prefetch-sectors must be in range 32...%s"
 msgstr ""
 
-#: dvdisaster.c:569
+#: dvdisaster.c:588
 msgid "--set-version is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:676
+#: dvdisaster.c:695
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? neplatná návratová hodnota getopt %d\n"
 
-#: dvdisaster.c:769 main-window.c:149
+#: dvdisaster.c:788 main-window.c:149
 #, c-format
 msgid ""
 "\n"
@@ -488,7 +488,7 @@ msgstr ""
 "Metoda %s není k dispozici.\n"
 "Pro zobrazení seznamu metod použijte -m bez parametrů.\n"
 
-#: dvdisaster.c:780 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1320
+#: dvdisaster.c:799 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1320
 #, c-format
 msgid ""
 "\n"
@@ -497,25 +497,25 @@ msgstr ""
 "\n"
 "Otevírání %s"
 
-#: dvdisaster.c:787 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
+#: dvdisaster.c:806 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
 #: rs03-create.c:349 rs03-create.c:1335
 #, c-format
 msgid ": %lld medium sectors.\n"
 msgstr ": %lld sektorů disku.\n"
 
-#: dvdisaster.c:788 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
+#: dvdisaster.c:807 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
 #: rs03-create.c:350 rs03-create.c:1336
 #, c-format
 msgid ": %lld medium sectors and %d bytes.\n"
 msgstr ": %lld sektorů disku a %d bajtů.\n"
 
-#: dvdisaster.c:815 main-window.c:207
+#: dvdisaster.c:834 main-window.c:207
 msgid "RS01 method not available for comparing files."
 msgstr "Metoda RS01 není pro porovnání souborů dostupná."
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:909
+#: dvdisaster.c:928
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -528,8 +528,18 @@ msgid ""
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
+"\n"
+"Příklady běžného použití:\n"
+"  dvdisaster -r,--read   # Uloží bitovou kopii disku na pevný disk.\n"
+"                         # Pro uložení určitého rozsahu sektorů použijte -rn-m, např. -r100-200\n"
+"  dvdisaster -c,--create # Vytvoří pro bitovou kopii disku ecc informace.\n"
+"  dvdisaster -f,--fix    # Pokusí se opravit bitovou kopii disku za pomoci ecc informací.\n"
+"  dvdisaster -s,--scan   # Zkontroluje disk na chyby čtení.\n"
+"  dvdisaster -t,--test   # Otestuje integritu souborů ISO a ECC.\n"
+"  dvdisaster -u,--unlink # Po dokončení ostatních akcí smaže soubory ISO\n"
+"\n"
 
-#: dvdisaster.c:918
+#: dvdisaster.c:937
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -546,23 +556,23 @@ msgstr ""
 "  -e,--ecc    eccsoubor - název souboru ECC          (výchozí: disk.ecc)\n"
 "  -o,--ecc-target [file|image] - kam uložit ecc data pro RS03\n"
 
-#: dvdisaster.c:928
+#: dvdisaster.c:947
 msgid "Tweaking options (see manual before using!)\n"
 msgstr "Možnosti optimalizace (před použitím si přečtěte návod!)\n"
 
-#: dvdisaster.c:929
+#: dvdisaster.c:948
 msgid "  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"
 msgstr "  -a,--assume x,y,...    - předpokl. bitovou kopii rozšířenou kodeky x,y,...\n"
 
-#: dvdisaster.c:930
+#: dvdisaster.c:949
 msgid "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 msgstr "  -j,--jump n            - po chybě čtení přeskočit n sektorů (výchozí: 16)\n"
 
-#: dvdisaster.c:931
+#: dvdisaster.c:950
 msgid "  -m n                   - list/select error correction methods (default: RS01)\n"
 msgstr "  -m n                   - vypsat/vybrat metody opravy chyb (výchozí: RS01)\n"
 
-#: dvdisaster.c:932
+#: dvdisaster.c:951
 #, c-format
 msgid ""
 "  -n,--redundancy n%%     - error correction data redundancy\n"
@@ -571,212 +581,220 @@ msgstr ""
 "  -n,--redundancy n%%     - redundance souboru pro opravu chyb\n"
 "                           povolené hodnoty závisí na kodeku (viz návod)\n"
 
-#: dvdisaster.c:934
+#: dvdisaster.c:953
 msgid "  -v,--verbose           - more diagnostic messages\n"
 msgstr "  -v,--verbose           - podrobnější diagnostický výpis\n"
 
-#: dvdisaster.c:935
+#: dvdisaster.c:954
 msgid "  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"
 msgstr "  -x,--threads n         - pro kódování/dekódování použít n vláken (pokud to kodek podporuje)\n"
 
-#: dvdisaster.c:936
+#: dvdisaster.c:955
 msgid "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 msgstr "  --adaptive-read        - použít optimalizovanou strategii čtení poškozených disků\n"
 
-#: dvdisaster.c:937
+#: dvdisaster.c:956
 msgid "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 msgstr "  --auto-suffix          - automaticky přidá k souborům přípony ISO a ECC\n"
 
-#: dvdisaster.c:938
+#: dvdisaster.c:957
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
-msgstr ""
+msgstr "  --cache-size n         - velikost mezipaměti v -c režimu (v MiB, výchozí: 32MiB)\n"
 
-#: dvdisaster.c:939
+#: dvdisaster.c:958
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
 msgstr "  --dao                  - předpokl. DAO disk; nezkracovat konec bitové kopie\n"
 
-#: dvdisaster.c:940
+#: dvdisaster.c:959
 msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr "  --defective-dump d     - adresář pro ukládání nezpracovaných sektorů\n"
 
-#: dvdisaster.c:942
+#: dvdisaster.c:961
 msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
 msgstr "  --driver=sg/cdrom      - použít (výchozí) sg nebo alternativní cdrom ovladač (viz návod!)\n"
 
-#: dvdisaster.c:944
+#: dvdisaster.c:963
 msgid "  --eject                - eject medium after successful read\n"
 msgstr "  --eject                - po úspěšném načtení vysune disk\n"
 
-#: dvdisaster.c:945
+#: dvdisaster.c:964
 msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
 msgstr ""
 
-#: dvdisaster.c:946
+#: dvdisaster.c:965
 msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
 msgstr ""
 
-#: dvdisaster.c:947
+#: dvdisaster.c:966
 msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 msgstr "  --fill-unreadable n    - vyplní nečitelné sektory bajtem n\n"
 
-#: dvdisaster.c:948
+#: dvdisaster.c:967
 msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
 msgstr "  --ignore-fatal-sense   - pokračovat ve čtení i po potenciálně neopravitelné chybě\n"
 
-#: dvdisaster.c:949
+#: dvdisaster.c:968
 msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
 msgstr "  --ignore-iso-size      - ignoruje údaj o velikosti bitové kopie z ISO/UDF (nebezpečné - čtěte manuál!)\n"
 
-#: dvdisaster.c:950
+#: dvdisaster.c:969
 msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
 msgstr "  --internal-rereads n   - mechanika může před nahlášením chyby zkusit n opakovaných čtení\n"
 
-#: dvdisaster.c:951
+#: dvdisaster.c:970
 msgid "  --medium-info          - print info about medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:952
+#: dvdisaster.c:971
+msgid "  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"
+msgstr ""
+
+#: dvdisaster.c:972
 msgid "  --no-progress          - do not print progress information\n"
 msgstr ""
 
-#: dvdisaster.c:953
+#: dvdisaster.c:973
 msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
 msgstr "  --old-ds-marker        - použít označení chybějících sektorů kompatibilní s dvdisaster <= 0.70\n"
 
-#: dvdisaster.c:954
+#: dvdisaster.c:974
 msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
-msgstr ""
+msgstr "  --prefetch-sectors n   - pro RS03 kódování přednačíst n sektorů (používá ~nMiB)\n"
 
-#: dvdisaster.c:955
+#: dvdisaster.c:975
 msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
 msgstr "  --raw-mode n           - režim přímého čtení pro CD disky (20 nebo 21)\n"
 
-#: dvdisaster.c:956
+#: dvdisaster.c:976
 msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
 msgstr "  --read-attempts n-m    - zkusit n až m opakovaných čtení poškozeného sektoru\n"
 
-#: dvdisaster.c:957
+#: dvdisaster.c:977
 msgid "  --read-medium n        - read the whole medium up to n times\n"
 msgstr "  --read-medium n        - celý disk zkusit číst až n krát\n"
 
-#: dvdisaster.c:958
+#: dvdisaster.c:978
 msgid "  --read-raw             - performs read in raw mode if possible\n"
 msgstr "  --read-raw             - pokud je to možné, provede čtení v přímém režimu\n"
 
-#: dvdisaster.c:959
+#: dvdisaster.c:979
 msgid "  --regtest              - tweaks output for compatibility with regtests\n"
 msgstr ""
 
-#: dvdisaster.c:960
+#: dvdisaster.c:980
 msgid "  --resource-file p      - get resource file from given path\n"
 msgstr ""
 
-#: dvdisaster.c:961
+#: dvdisaster.c:981
 msgid "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 msgstr "  --speed-warning n      - vypíše upozornění pokud se rychlost změní o více než n procent\n"
 
-#: dvdisaster.c:962
+#: dvdisaster.c:982
 msgid "  --spinup-delay n       - wait n seconds for drive to spin up\n"
 msgstr "  --spinup-delay n       - počká n sekund na roztočení mechaniky\n"
 
-#: dvdisaster.c:966
+#: dvdisaster.c:986
 msgid "Debugging options (purposefully undocumented and possibly harmful)\n"
 msgstr "Možnosti ladění (záměrně nezdokumentované a eventuálně škodlivé)\n"
 
-#: dvdisaster.c:967
+#: dvdisaster.c:987
 msgid "  --debug           - enables the following options\n"
 msgstr "  --debug           - povolí použití následujících možností\n"
 
-#: dvdisaster.c:968
+#: dvdisaster.c:988
 msgid "  --byteset s,i,b   - set byte i in sector s to b\n"
 msgstr "  --byteset s,i,b   - nastaví bajt i sektoru s na b\n"
 
-#: dvdisaster.c:969
+#: dvdisaster.c:989
 msgid "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 msgstr "  --cdump           - vytvoří výpis ve formátu C #include místo hexadecimálního\n"
 
-#: dvdisaster.c:970
+#: dvdisaster.c:990
 msgid "  --compare-images a,b  - compare sectors in images a and b\n"
 msgstr "  --compare-images a,b  - porovná sektory bitových kopií a a b\n"
 
-#: dvdisaster.c:971
+#: dvdisaster.c:991
 msgid "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
 msgstr "  --copy-sector a,n,b,m - zkopíruje sektor n bitové kopie a do sektoru m bitové kopie b\n"
 
-#: dvdisaster.c:972
+#: dvdisaster.c:992
 msgid "  --erase sector    - erase the given sector\n"
 msgstr "  --erase sector    - smaže daný sektor\n"
 
-#: dvdisaster.c:973
+#: dvdisaster.c:993
 msgid "  --erase n-m       - erase sectors n - m, inclusively\n"
 msgstr "  --erase n-m       - smaže sektory n - m, včetně\n"
 
-#: dvdisaster.c:974
+#: dvdisaster.c:994
 msgid "  --fixed-speed-values - output fixed speed values for better output diffing\n"
 msgstr ""
 
-#: dvdisaster.c:975
+#: dvdisaster.c:995
+msgid "  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"
+msgstr ""
+
+#: dvdisaster.c:996
 msgid "  --marked-image n  - create image with n marked random sectors\n"
 msgstr "  --marked-image n  - vytvoří bitovou kopii s n označenými náhodnými sektory\n"
 
-#: dvdisaster.c:976
+#: dvdisaster.c:997
 msgid "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
 msgstr "  --merge-images a,b  - sloučí bitové kopie a a b (a obdrží sektory z b)\n"
 
-#: dvdisaster.c:977
+#: dvdisaster.c:998
 msgid "  --random-errors e - seed image with (correctable) random errors\n"
 msgstr ""
 
-#: dvdisaster.c:978
+#: dvdisaster.c:999
 msgid "  --random-image n  - create image with n sectors of random numbers\n"
 msgstr "  --random-image n  - vytvoří bitovou kopii s n sektory náhodných čísel\n"
 
-#: dvdisaster.c:979
+#: dvdisaster.c:1000
 msgid "  --random-seed n   - random seed for built-in random number generator\n"
 msgstr "  --random-seed n   - základ pro zabudovaný generátor náhodných čísel\n"
 
-#: dvdisaster.c:980
+#: dvdisaster.c:1001
 msgid "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
 msgstr "  --raw-sector n    - zobrazí hexadecimální výpis daného nezpracovaného sektoru\n"
 
-#: dvdisaster.c:981
+#: dvdisaster.c:1002
 msgid "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
 msgstr "  --read-sector n   - zobrazí hexadecimální výpis daného sektoru\n"
 
-#: dvdisaster.c:982
+#: dvdisaster.c:1003
 msgid "  --screen-shot     - useful for generating screen shots\n"
 msgstr "  --screen-shot     - užitečné pro vytváření snímků obrazovky\n"
 
-#: dvdisaster.c:983
+#: dvdisaster.c:1004
 msgid "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
 msgstr "  --send-cdb arg    - vykoná na mechanice dané cdb; při špatném použití může zabít systém\n"
 
-#: dvdisaster.c:984
+#: dvdisaster.c:1005
 msgid "  --set-version     - set program version for debugging purposes (dangerous!)\n"
 msgstr ""
 
-#: dvdisaster.c:985
+#: dvdisaster.c:1006
 msgid "  --show-header n   - assumes given sector is a ecc header and prints it\n"
 msgstr ""
 
-#: dvdisaster.c:986
+#: dvdisaster.c:1007
 msgid "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 msgstr "  --show-sector n   - zobrazí hexadecimální výpis daného sektoru bitové kopie\n"
 
-#: dvdisaster.c:987
+#: dvdisaster.c:1008
 msgid "  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"
 msgstr ""
 
-#: dvdisaster.c:988
+#: dvdisaster.c:1009
 #, c-format
 msgid "  --sim-defects n   - simulate n%% defective sectors on medium\n"
 msgstr "  --sim-defects n   - nasimuluje na disku n%% poškozených sektorů\n"
 
-#: dvdisaster.c:989
+#: dvdisaster.c:1010
 msgid "  --truncate n      - truncates image to n sectors\n"
 msgstr "  --truncate n      - zkrátí bitovou kopii na n sektorů\n"
 
-#: dvdisaster.c:990
+#: dvdisaster.c:1011
 msgid ""
 "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n"
 "\n"
@@ -784,7 +802,7 @@ msgstr ""
 "  --zero-unreadable - nahradit značky pro \"nečitelné sektory\" nulami\n"
 "\n"
 
-#: dvdisaster.c:1020
+#: dvdisaster.c:1041
 msgid "Optical drive 52X FW 1.02"
 msgstr "Optická mechanika 52X FW 1.02"
 
@@ -900,6 +918,10 @@ msgstr ""
 #: help-dialogs.c:753 misc.c:218
 msgid "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
+"Copyright 2004-2017 Carsten Gnörlich\n"
+"Česká lokalizace\n"
+"\t\t2011 Jindřich Šesták\n"
+"\t\t2006 Luboš Staněk"
 
 #: help-dialogs.c:760
 msgid ""
@@ -979,7 +1001,7 @@ msgstr ""
 "Není k dispozici soubor pro opravu chyb.\n"
 "V bitové kopii nebyla rozpoznána žádná data pro opravu chyb.\n"
 
-#: large-io.c:259
+#: large-io.c:261
 #, c-format
 msgid ""
 "Error while writing the file:\n"
@@ -1043,7 +1065,7 @@ msgstr "Vytvořit bitovou kopii"
 
 #: main-window.c:278
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
-msgstr ""
+msgstr "Vytvoří soubor bitové kopie CD/DVD (nebo se pokusí doplnit soubor existující bitové kopie)."
 
 #: main-window.c:292
 msgid "button|Create"
@@ -1157,22 +1179,22 @@ msgstr "kompletní"
 #: medium-info.c:180
 #, c-format
 msgid "%s (%d sessions; last session %s)\n"
-msgstr ""
+msgstr "%s (%d session; poslední session %s)\n"
 
 #: medium-info.c:192
 #, c-format
 msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
-msgstr ""
+msgstr "%lld sektorů (%lld MiB), z READ CAPACITY\n"
 
 #: medium-info.c:201
 #, c-format
 msgid "%lld sectors (%lld MiB), from DVD structure\n"
-msgstr ""
+msgstr "%lld sektorů (%lld MiB), ze struktury DVD\n"
 
 #: medium-info.c:211 medium-info.c:283 medium-info.c:285
 #, c-format
 msgid "%lld sectors (%lld MiB)\n"
-msgstr ""
+msgstr "%lld sektorů (%lld MiB)\n"
 
 #: medium-info.c:223 medium-info.c:517
 msgid "Filesystem info"
@@ -1181,7 +1203,7 @@ msgstr "Informace o systému souborů"
 #: medium-info.c:241
 #, c-format
 msgid "%d sectors (%lld MiB)\n"
-msgstr ""
+msgstr "%d sektorů (%lld MiB)\n"
 
 #: medium-info.c:268 medium-info.c:550
 msgid "Augmented image info"
@@ -1190,7 +1212,7 @@ msgstr "Informace o rozšíření bitové kopie"
 #: medium-info.c:275 medium-info.c:277
 #, c-format
 msgid "%s, %d roots, %4.1f%% redundancy.\n"
-msgstr ""
+msgstr "%s, %d bází, %4.1f%% redundance.\n"
 
 #: medium-info.c:375
 msgid "windowtitle|Medium info"
@@ -1999,6 +2021,11 @@ msgid ""
 "\n"
 "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your optical drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
 msgstr ""
+"<b>Maximální počet pokusů o přečtení</b>\n"
+"\n"
+"Pokud je čtení za použití minimálního počtu pokusů neúspěšné, dvdisaster se může rozhodnout provést několik dalších pokusů až do tohoto čísla.\n"
+"\n"
+"Rozhodnutí o tom zda pokračovat ve čtení závisí na kvalitě dosud získaných dat, která je ovlivněna schopnostmi vaší CD/DVD mechaniky a operačního systému. Takže v závislost na konfiguraci vašeho systému dvdisaster může ale nemusí tuto maximální hodnotu použít."
 
 #: preferences.c:2236
 msgid "Treatment of unreadable areas"
@@ -2114,6 +2141,9 @@ msgid ""
 "\n"
 "Use a different prefix for each disc you are trying to recover, e.g. \"disc1-\" and so on."
 msgstr ""
+"<b>Předpona souboru sektoru</b>\n"
+"\n"
+"Pro každý disk používejte jedinečnou předponu, např. \"disc1-\" atd."
 
 #: preferences.c:2449
 msgid "Error correction"
@@ -2167,7 +2197,7 @@ msgstr "Soubory "
 
 #: preferences.c:2546
 msgid "Local files (on hard disk)"
-msgstr ""
+msgstr "Lokální soubory (na pevném disku)"
 
 #: preferences.c:2553
 msgid "Automatic file suffixes"
@@ -2915,7 +2945,7 @@ msgstr ""
 
 #: read-adaptive.c:896 read-linear.c:360
 msgid "Image file does not match the optical disc."
-msgstr ""
+msgstr "Soubor bitové kopie neodpovídá CD/DVD/BD."
 
 #: read-adaptive.c:903
 msgid "Reading aborted. Please select a different image file."
@@ -3537,6 +3567,9 @@ msgid ""
 "Cache size is currently %d MiB.\n"
 "Try reducing it.\n"
 msgstr ""
+"Vyhrazení paměti pro I/O mezipaměť selhalo.\n"
+"Aktuální velikost mezipaměti je %d MiB.\n"
+"Zkuste ji zmenšit.\n"
 
 #: rs01-create.c:619 rs01-create.c:749 rs01-create.c:1049 rs02-create.c:1005
 #: rs03-create.c:1157
@@ -3562,12 +3595,12 @@ msgstr ""
 "Nelze zapsat hlavičku ecc:\n"
 "%s"
 
-#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1430
+#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1446
 #, c-format
 msgid "Ecc generation: 100.0%%\n"
 msgstr "Tvorba ecc: 100.0%%\n"
 
-#: rs01-create.c:1086 rs03-create.c:1437
+#: rs01-create.c:1086 rs03-create.c:1453
 #, c-format
 msgid ""
 "Error correction file \"%s\" created.\n"
@@ -3576,7 +3609,7 @@ msgstr ""
 "Soubor pro opravu chyb \"%s\" byl vytvořen.\n"
 "Uchovávejte tento soubor na spolehlivém nosiči.\n"
 
-#: rs01-create.c:1095 rs03-create.c:1466
+#: rs01-create.c:1095 rs03-create.c:1482
 msgid ""
 "The error correction file has been successfully created.\n"
 "Make sure to keep this file on a reliable medium."
@@ -3618,6 +3651,8 @@ msgid ""
 "\n"
 "Fix mode(%s): Repairable sectors will be fixed in the image.\n"
 msgstr ""
+"\n"
+"Režim opravy(%s): Opravitelné sektory budou v bitové kopii opraveny.\n"
 
 #: rs01-fix.c:201
 #, c-format
@@ -4216,7 +4251,7 @@ msgstr "%4.1f%% redundance (%d bází)"
 #: rs02-window.c:395 rs02-window.c:1337 rs02-window.c:1343 rs02-window.c:1344
 #, c-format
 msgid "%d MiB of file cache"
-msgstr ""
+msgstr "%d MiB souborové mezipaměti"
 
 #: rs01-window.c:669 rs03-preferences.c:557
 msgid "Redundancy for new error correction files"
@@ -4295,7 +4330,7 @@ msgstr "Použít nejvíce"
 
 #: rs01-window.c:807 rs03-preferences.c:713
 msgid "MiB for error correction data"
-msgstr ""
+msgstr "MiB pro data pro opravu chyb"
 
 #: rs01-window.c:824 rs03-preferences.c:730
 msgid ""
@@ -4305,6 +4340,11 @@ msgid ""
 "\n"
 "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
 msgstr ""
+"<b>Prostorově vymezená redundance</b>\n"
+"\n"
+"Určí se maximální velikost souboru pro opravu chyb v MiB. dvdisaster automaticky zvolí vhodnou redundanci tak aby velikost souboru pro opravu chyb nepřekročila daný limit.\n"
+"\n"
+"<b>Upozornění:</b> Pokud použijete stejnou velikost pro bitové kopie různých velikostí, bude pro menší bitové kopie použita vyšší redundance než pro velké. To ve většině případů není to co chcete."
 
 #: rs01-window.c:867 rs02-window.c:1334
 msgid "Memory utilization"
@@ -4324,13 +4364,16 @@ msgid ""
 "\n"
 "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MiB is suitable for most systems."
 msgstr ""
+"<b>Mezipaměť pro soubory</b>\n"
+"\n"
+"dvdisaster optimalizuje přístup k souboru bitové kopie a souboru pro opravu chyb použitím vlastní mezipaměti. Přednastavených 32MiB je vhodných pro většinu systémů."
 
-#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:622
+#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:643
 #, c-format
 msgid "Failed seeking to ecc header at %lld: %s\n"
 msgstr "Přechod na hlavičku ecc na %lld selhal: %s\n"
 
-#: rs02-common.c:584 rs02-common.c:596 rs03-common.c:626
+#: rs02-common.c:584 rs02-common.c:596 rs03-common.c:647
 #, c-format
 msgid "Failed writing ecc header at %lld: %s\n"
 msgstr "Selhal zápis hlavičky ecc na %lld: %s\n"
@@ -4430,7 +4473,7 @@ msgstr "- kontrola bitové kopie -"
 #: rs02-create.c:1118
 #, c-format
 msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr ""
+msgstr "Kódování metodou RS02: %lld MiB data, %lld MiB ecc (%d bází; %4.1f%% redundance)."
 
 #: rs02-create.c:1127
 #, c-format
@@ -4438,6 +4481,8 @@ msgid ""
 "Augmenting image with Method RS02:\n"
 " %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
+"Rozšíření bitové kopie metodou RS02:\n"
+" %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)"
 
 #: rs02-create.c:1136
 #, c-format
@@ -4455,18 +4500,20 @@ msgstr ""
 #: rs02-create.c:1146 rs03-create.c:1409
 #, c-format
 msgid ""
-"Using redundancies below 20%%%% may not give\n"
+"Using redundancies below 20%% may not give\n"
 "the expected data loss protection.\n"
 msgstr ""
-"Použití redundance nižší než 20%%%% nemusí poskytnout\n"
+"Použití redundance nižší než 20%% nemusí poskytnout\n"
 "dostatečnou ochranu proti ztrátě dat.\n"
 
-#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1432 rs03-create.c:1460
+#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1448 rs03-create.c:1476
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
 "New image size is %lld MiB (%lld sectors).\n"
 msgstr ""
+"Bitová kopie byla rozšířena o data pro opravu chyb.\n"
+"Nová velikost bitové kopie je %lld MiB (%lld sektorů).\n"
 
 #: rs02-fix.c:119 rs02-fix.c:130 rs03-fix.c:122 rs03-fix.c:133
 #, c-format
@@ -4794,6 +4841,11 @@ msgid ""
 "\n"
 "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD and BD are given in the table. You can edit these sizes according to your needs."
 msgstr ""
+"<b>Určit velikost rozšířené bitové kopie z tabulky</b>\n"
+"\n"
+"Rozšířené bitové kopie zaplní nevyužité místo na disku daty pro opravu chyb. Aktivujte tuto volbu, pokud chcete aby se rozšířená bitová kopie vešla na nejmenší možný disk.\n"
+"\n"
+"Aby mohl být vybrán vhodný disk, musí být známy dostupné kapacity disků. V tabulce jsou zadány výchozí velikosti CD a jedno/dvou vrstvých DVD. Tyto velikosti můžete upravit podle svých potřeb."
 
 #: rs02-window.c:827
 msgid "CD-R / CD-RW:"
@@ -5078,7 +5130,7 @@ msgstr "Omezeno V/V"
 #: rs03-create.c:1149
 #, c-format
 msgid "%5.2fMiB/s current"
-msgstr ""
+msgstr "aktuálně %5.2fMiB/s"
 
 #: rs03-create.c:1202
 #, c-format
@@ -5088,7 +5140,7 @@ msgstr ""
 #: rs03-create.c:1364
 #, c-format
 msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr ""
+msgstr "Kódování metodou RS03: %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
 
 #: rs03-create.c:1383
 #, c-format
@@ -5117,17 +5169,23 @@ msgstr ""
 "Pokud není možné zmenšení bitové kopie nebo použití většího disku,\n"
 "vytvořte samostatný soubor pro opravu chyb."
 
-#: rs03-create.c:1443
+#: rs03-create.c:1425
+msgid ""
+"BD-R size with no defect management enabled,\n"
+"remember it should you need to repair this image later!\n"
+msgstr ""
+
+#: rs03-create.c:1459
 #, c-format
 msgid "Avg performance: %5.2fs (%5.2fMiB/s) total\n"
-msgstr ""
+msgstr "Prům. výkon: %5.2fs (%5.2fMiB/s) celkem\n"
 
-#: rs03-create.c:1447
+#: rs03-create.c:1463
 #, c-format
 msgid "%5.2fMiB/s average"
-msgstr ""
+msgstr "%5.2fMiB/s průměr"
 
-#: rs03-create.c:1449
+#: rs03-create.c:1465
 #, c-format
 msgid "%d times CPU bound; %d times I/O bound"
 msgstr "%d krát omezeno CPU; %d omezeno V/V"
@@ -5651,7 +5709,7 @@ msgstr "Příkaz INQUIRY selhal. Něco není v pořádku s mechanikou %s.\n"
 #: scsi-layer.c:141
 #, c-format
 msgid "Device %s (%s) is not an optical drive."
-msgstr ""
+msgstr "Zařízení %s (%s) není CD-ROM mechanika."
 
 #: scsi-layer.c:142
 #, c-format
@@ -6069,9 +6127,6 @@ msgid ""
 "%s\n"
 "not found.\n"
 msgstr ""
-"Soubor dokumentace\n"
-"%s\n"
-"nebyl nalezen.\n"
 
 #: show-html.c:391
 msgid "Please hang on until the browser comes up!"
@@ -6113,8 +6168,8 @@ msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
 "This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-"<b>Patchlevel 1</b> adds support for a full CLI version, BD-R TL/QL,\n"
-"and adds back support of Windows builds.\n"
+"<b>Patchlevel 2</b> adds support for a full CLI version, BD-R TL/QL,\n"
+"a Windows build and an option to produce bigger BD-R RS03 images.\n"
 "See the About box and changelog for more information.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
@@ -6154,11 +6209,22 @@ msgid "<i>New in this Version:</i>"
 msgstr "<i>Novinky v této verzi:</i>"
 
 #~ msgid ""
-#~ "\n"
-#~ "Could not open device %s."
+#~ "Documentation file\n"
+#~ "%s\n"
+#~ "not found.\n"
+#~ "Please install the dvdisaster-doc package.\n"
 #~ msgstr ""
-#~ "\n"
-#~ "Nepodařilo se otevřít mechaniku %s."
+#~ "Soubor dokumentace\n"
+#~ "%s\n"
+#~ "nebyl nalezen.\n"
+#~ "Nainstalujte prosím balíček dvdisaster-doc.\n"
+
+#~ msgid ""
+#~ "Modified version Copyright 2017 (please fill in - [directions])\n"
+#~ "Copyright 2004-2017 Carsten Gnoerlich"
+#~ msgstr ""
+#~ "Upravená verze Copyright 2017 (doplňte - [directions])\n"
+#~ "Copyright 2004-2017 Carsten Gnörlich"
 
 #~ msgid ""
 #~ "\n"
@@ -6178,6 +6244,44 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgid "This software does not support encrypted media.\n"
 #~ msgstr "Tento program nepodporuje zašifrované disky.\n"
 
+#~ msgid "created by dvdisaster-%d.%d\n"
+#~ msgstr "vytvořeno pomocí dvdisaster-%d.%d\n"
+
+#~ msgid "- created by       : dvdisaster-%d.%d\n"
+#~ msgstr "- vytvořeno pomocí : dvdisaster-%d.%d\n"
+
+#~ msgid ""
+#~ "<b>Ignore image size recorded in ISO/UDF filesystem</b>\n"
+#~ "\n"
+#~ "When reading or scanning optical discs, the overall size of the medium needs to be determined. dvdisaster will always use the image size recorded in the error correction data if such data is present. Otherwise, image size is queried in the following order:\n"
+#~ "\n"
+#~ "1. Image size recorded in the ISO/UDF file system\n"
+#~ "2. Image size reported by the optical drive.\n"
+#~ "\n"
+#~ "Using this order makes sense as image sizes reported by most drives are unreliable in many cases. However in some rare cases the image size recorded in the ISO/UDF filesystem is wrong. Some Linux live CDs may have this problem. If you read back the ISO image from such CDs and its md5sum does not match the advertised one, try re-reading the image with this option turned on.\n"
+#~ "Do <b>not blindly turn this option on</b> as it will most likely create sub optimal or corrupted ISO images, especially if you plan to use the image for error correction data generation."
+#~ msgstr ""
+#~ "<b>Ignorovat údaj o velikosti bitové kopie v systému souborů ISO/UDF</b>\n"
+#~ "\n"
+#~ "Při čtení nebo kontrole optických disků musí být zjištěna celková velikost disku. Pokud jsou k dispozici, dvdisaster vždy použije velikost uloženou v datech pro opravu chyb. V ostatních případech je velikost zjišťována v tomto pořadí:\n"
+#~ "\n"
+#~ "1. Velikost bitové kopie uložená v systému souborů ISO/UDF\n"
+#~ "2. Velikost bitové kopie poskytnutá mechanikou.\n"
+#~ "\n"
+#~ "Toto pořadí dává největší smysl, protože velikosti hlášené mechanikami nemusí být správné. Ve vzácných případech může být ale chybný údaj zaznamenaný v systému souborů ISO/UDF. Tento problém může nastat například u Linuxových live CD. Pokud vytváříte bitovou kopii ISO z takovýchto CD a kontrolní součet md5 se neshoduje s uvedeným, zkuste bitovou kopii vytvořit znovu po zapnutí této volby.\n"
+#~ "<b>Nezapínejte tuto volbu bezdůvodně</b>, zvláště pokud chcete vytvořenou bitovou kopii použít k vytvoření dat pro opravu chyb, při použití s běžnými disky může vést k vytvoření neoptimálních nebo poškozených bitových kopií."
+
+#~ msgid ""
+#~ "NOTE: This is the Windows console version of dvdisaster.\n"
+#~ "The version providing a graphical user interface is called\n"
+#~ "dvdisaster-win.exe (also contained in this installation).\n"
+#~ "\n"
+#~ msgstr ""
+#~ "POZNÁMKA: Toto je verze dvdisaster pro příkazový řádek Windows.\n"
+#~ "Verze s grafickým uživatelským rozhraním je nazvaná\n"
+#~ "dvdisaster-win.exe (také součást této instalace).\n"
+#~ "\n"
+
 #~ msgid ""
 #~ "Number of roots must be 8..100;\n"
 #~ "the number of erasures must be > 0 and less than the number of roots.\n"
@@ -6185,12 +6289,58 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ "Počet bází musí být v rozsahu 8..100;\n"
 #~ "počet výmazů musí být > 0 a menší než počet bází.\n"
 
+#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
+#~ msgstr "  --random-errors r,e - přidá do bitové kopie (opravitelné) náhodné chyby\n"
+
 #~ msgid ""
 #~ "\n"
 #~ "Generating random correctable erasures (for %d roots, max erasures = %d).\n"
 #~ msgstr ""
 #~ "\n"
 #~ "Generují se náhodné opravitelné výmazy (pro %d bází, max. výmazů = %d).\n"
+
+#~ msgid "<span %s>%lld (%lld expected)</span>"
+#~ msgstr "<span %s>%lld (%lld očekáváno)</span>"
+
+#~ msgid "<span %s>%lld sectors but %d bytes too short</span>"
+#~ msgstr "<span %s>%lld sektorů ale %d bajtů chybí</span>"
+
+#~ msgid "<span %s>%lld sectors but %d bytes too long</span>"
+#~ msgstr "<span %s>%lld sektorů ale %d bajtů přebývá</span>"
+
+#~ msgid "* sectors          : %lld (%lld expected)\n"
+#~ msgstr "* sektory          : %lld (očekáváno %lld)\n"
+
+#~ msgid "* medium sectors   : %lld (%lld expected)\n"
+#~ msgstr "* sektorů média    : %lld (očekáváno %lld)\n"
+
+#~ msgid "* sectors          : %lld sectors + %d of %d bytes in image; %lld sectors in ecc file\n"
+#~ msgstr "* sektory          : %lld sektorů + %d z %d bajtů v bitové kopii; %lld sektorů v ecc souboru\n"
+
+#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
+#~ msgstr "Použít nové značky pro chybějící sektory (Pozor: problémy s kompatibilitou!)"
+
+#~ msgid ""
+#~ "<b>Missing sector tagging</b>\n"
+#~ "\n"
+#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
+#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
+#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
+#~ msgstr ""
+#~ "<b>Označení chybějících sektorů</b>\n"
+#~ "\n"
+#~ "Chybějící sektory jsou v bitové kopii označeny speciální sekvencí znaků. Pokud je aktivována tato volba, je použit vylepšený kód, který je schopen odhalit úmyslně poškozený obsah. To zahrnuje disky vytvořené z částečně opravených bitových kopií, a bitové kopie obsahující soubory z takto poškozených disků.\n"
+#~ "Tyto značky budou ale rozpoznány jen v dvdisaster 0.72 a novějších verzích. Vytvořené bitové kopie NESMÍ být zpracovány staršími verzemi dvdisaster, protože by nebyly schopné chybějící sektory rozpoznat.\n"
+#~ "dvdisaster >= 0.72 při čtení bitové kopie automaticky rozpozná oba formáty značek. Povolení této volby ovlivní pouze vytváření nových bitových kopií."
+
+#~ msgid "All sectors successfully read, but wrong image checksum."
+#~ msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí kontrolní součet bitové kopie."
+
+#~ msgid "All sectors successfully read, %s!"
+#~ msgstr "Všechny sektory byly úspěšně načteny, %s!"
+
+#~ msgid "premature end in ecc file (only %d bytes): %s\n"
+#~ msgstr "předčasný konec ecc souboru (pouze %d bajtů): %s\n"
 
 #~ msgid ""
 #~ "Unrecoverable sector found!\n"
@@ -6242,64 +6392,12 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ "být pomocí dvdisaster opravena. Také nebude možné pro ní vytvořit\n"
 #~ "data pro opravu chyb. Omlouváme se za tyto špatné správy.\n"
 
-#~ msgid "--cache-size must at least be 8MB; 16MB or higher is recommended."
-#~ msgstr "--cache-size musí být minimálně 8MB; doporučeno je 16MB nebo více."
-
 #~ msgid ""
-#~ "dvdisaster is not properly installed.\n"
-#~ "Please execute the installer program (%s) again.\n"
+#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
+#~ "Please visit http://www.dvdisaster.org for an upgrade."
 #~ msgstr ""
-#~ "dvdisaster není správně nainstalován.\n"
-#~ "Spusťte znovu instalační program (%s).\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Common usage examples:\n"
-#~ "  dvdisaster -r,--read   # Read the medium image to hard disc.\n"
-#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
-#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
-#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
-#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
-#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
-#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Příklady běžného použití:\n"
-#~ "  dvdisaster -r,--read   # Uloží bitovou kopii disku na pevný disk.\n"
-#~ "                         # Pro uložení určitého rozsahu sektorů použijte -rn-m, např. -r100-200\n"
-#~ "  dvdisaster -c,--create # Vytvoří pro bitovou kopii disku ecc informace.\n"
-#~ "  dvdisaster -f,--fix    # Pokusí se opravit bitovou kopii disku za pomoci ecc informací.\n"
-#~ "  dvdisaster -s,--scan   # Zkontroluje disk na chyby čtení.\n"
-#~ "  dvdisaster -t,--test   # Otestuje integritu souborů ISO a ECC.\n"
-#~ "  dvdisaster -u,--unlink # Po dokončení ostatních akcí smaže soubory ISO\n"
-#~ "\n"
-
-#~ msgid "  --cache-size n         - image cache size in MB during -c mode (default: 32MB)\n"
-#~ msgstr "  --cache-size n         - velikost mezipaměti v -c režimu (v MB, výchozí: 32MB)\n"
-
-#~ msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMB)\n"
-#~ msgstr "  --prefetch-sectors n   - pro RS03 kódování přednačíst n sektorů (používá ~nMB)\n"
-
-#~ msgid "  --random-errors r,e seed image with (correctable) random errors\n"
-#~ msgstr "  --random-errors r,e - přidá do bitové kopie (opravitelné) náhodné chyby\n"
-
-#~ msgid ""
-#~ "NOTE: This is the Windows console version of dvdisaster.\n"
-#~ "The version providing a graphical user interface is called\n"
-#~ "dvdisaster-win.exe (also contained in this installation).\n"
-#~ "\n"
-#~ msgstr ""
-#~ "POZNÁMKA: Toto je verze dvdisaster pro příkazový řádek Windows.\n"
-#~ "Verze s grafickým uživatelským rozhraním je nazvaná\n"
-#~ "dvdisaster-win.exe (také součást této instalace).\n"
-#~ "\n"
-
-#~ msgid "Single threaded RS codec (RSS3)"
-#~ msgstr "Jednovláknový RS kodek (RSS3)"
-
-#~ msgid "Single threaded Reed-Solomon codec for error correction files and augmented images"
-#~ msgstr "Jednovláknový Reed-Solomon kodek pro soubory pro opravu chyb a rozšířené bitové kopie"
+#~ "Tento ECC soubor vyžaduje dvdisaster V%d.%d.%d nebo novější.\n"
+#~ "Pro aktualizaci navštivte http://www.dvdisaster.org."
 
 #~ msgid ": not present.\n"
 #~ msgstr ": nepřítomno.\n"
@@ -6311,180 +6409,18 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ "nepodařilo se přečíst sektor %lld bitové kopie (pouze %d bajtů):\n"
 #~ "%s"
 
-#~ msgid ""
-#~ "This .ecc file requires dvdisaster V%d.%d.%d or higher.\n"
-#~ "Please visit http://www.dvdisaster.org for an upgrade."
-#~ msgstr ""
-#~ "Tento ECC soubor vyžaduje dvdisaster V%d.%d.%d nebo novější.\n"
-#~ "Pro aktualizaci navštivte http://www.dvdisaster.org."
-
-#~ msgid ""
-#~ "Modified version Copyright 2012 (please fill in - [directions])\n"
-#~ "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr ""
-#~ "Upravená verze Copyright 2012 (doplňte - [directions])\n"
-#~ "Copyright 2004-2012 Carsten Gnörlich"
-
-#~ msgid "Copyright 2004-2012 Carsten Gnoerlich"
-#~ msgstr ""
-#~ "Copyright 2004-2012 Carsten Gnörlich\n"
-#~ "Česká lokalizace\n"
-#~ "\t\t2011 Jindřich Šesták\n"
-#~ "\t\t2006 Luboš Staněk"
-
-#~ msgid "Reads a CD/DVD image into a file (or tries to complete an existing image file)."
-#~ msgstr "Vytvoří soubor bitové kopie CD/DVD (nebo se pokusí doplnit soubor existující bitové kopie)."
-
-#~ msgid ""
-#~ "<b>dvdisaster is not properly installed</b>\n"
-#~ "\n"
-#~ "Please execute the installer program (%s) again.\n"
-#~ msgstr ""
-#~ "<b>dvdisaster není správně nainstalován</b>\n"
-#~ "\n"
-#~ "Spusťte znovu instalační program (%s).\n"
-
-#~ msgid "%s (%d sessions; last session %s)"
-#~ msgstr "%s (%d session; poslední session %s)"
-
-#~ msgid "%lld sectors (%lld MB), from READ CAPACITY"
-#~ msgstr "%lld sektorů (%lld MB), z READ CAPACITY"
-
-#~ msgid "%lld sectors (%lld MB), from DVD structure"
-#~ msgstr "%lld sektorů (%lld MB), ze struktury DVD"
-
-#~ msgid "%lld sectors (%lld MB)"
-#~ msgstr "%lld sektorů (%lld MB)"
-
-#~ msgid "%d sectors (%lld MB)"
-#~ msgstr "%d sektorů (%lld MB)"
-
-#~ msgid "%s, %d roots, %4.1f%% redundancy."
-#~ msgstr "%s, %d bází, %4.1f%% redundance."
-
 #~ msgid "Displays the user manual (external HTML browser required)."
 #~ msgstr "Zobrazí uživatelskou příručku (vyžaduje externí prohlížeč HTML)."
 
 #~ msgid ""
-#~ "<b>Ignore image size recorded in ISO/UDF filesystem</b>\n"
+#~ "Please see the manual for [typical uses] of dvdisaster.\n"
 #~ "\n"
-#~ "When reading or scanning optical discs, the overall size of the medium needs to be determined. dvdisaster will always use the image size recorded in the error correction data if such data is present. Otherwise, image size is queried in the following order:\n"
-#~ "\n"
-#~ "1. Image size recorded in the ISO/UDF file system\n"
-#~ "2. Image size reported by the optical drive.\n"
-#~ "\n"
-#~ "Using this order makes sense as image sizes reported by most drives are unreliable in many cases. However in some rare cases the image size recorded in the ISO/UDF filesystem is wrong. Some Linux live CDs may have this problem. If you read back the ISO image from such CDs and its md5sum does not match the advertised one, try re-reading the image with this option turned on.\n"
-#~ "Do <b>not blindly turn this option on</b> as it will most likely create sub optimal or corrupted ISO images, especially if you plan to use the image for error correction data generation."
 #~ msgstr ""
-#~ "<b>Ignorovat údaj o velikosti bitové kopie v systému souborů ISO/UDF</b>\n"
+#~ "Příklady [typického použití] dvdisaster naleznete v manuálu.\n"
 #~ "\n"
-#~ "Při čtení nebo kontrole optických disků musí být zjištěna celková velikost disku. Pokud jsou k dispozici, dvdisaster vždy použije velikost uloženou v datech pro opravu chyb. V ostatních případech je velikost zjišťována v tomto pořadí:\n"
-#~ "\n"
-#~ "1. Velikost bitové kopie uložená v systému souborů ISO/UDF\n"
-#~ "2. Velikost bitové kopie poskytnutá mechanikou.\n"
-#~ "\n"
-#~ "Toto pořadí dává největší smysl, protože velikosti hlášené mechanikami nemusí být správné. Ve vzácných případech může být ale chybný údaj zaznamenaný v systému souborů ISO/UDF. Tento problém může nastat například u Linuxových live CD. Pokud vytváříte bitovou kopii ISO z takovýchto CD a kontrolní součet md5 se neshoduje s uvedeným, zkuste bitovou kopii vytvořit znovu po zapnutí této volby.\n"
-#~ "<b>Nezapínejte tuto volbu bezdůvodně</b>, zvláště pokud chcete vytvořenou bitovou kopii použít k vytvoření dat pro opravu chyb, při použití s běžnými disky může vést k vytvoření neoptimálních nebo poškozených bitových kopií."
 
-#~ msgid "Use new style missing sector tags (Warning: compatibility issues!)"
-#~ msgstr "Použít nové značky pro chybějící sektory (Pozor: problémy s kompatibilitou!)"
-
-#~ msgid ""
-#~ "<b>Missing sector tagging</b>\n"
-#~ "\n"
-#~ "Missing sectors are tagged with a special code sequence in the image. If this value is activated, an improved code is used which can detect some wilfully damaged content. This includes media which have been created from partially recovered images, and images containing files from such partial media.\n"
-#~ "However only dvdisaster 0.72 and up will recognize the new tags. You must NOT process the resulting images with older dvdisaster versions as they would not see any missing sectors in the resulting images.\n"
-#~ "N.b.: dvdisaster >= 0.72 will automatically recognize both tag formats when reading images; setting this value only affects the creation of new images."
-#~ msgstr ""
-#~ "<b>Označení chybějících sektorů</b>\n"
-#~ "\n"
-#~ "Chybějící sektory jsou v bitové kopii označeny speciální sekvencí znaků. Pokud je aktivována tato volba, je použit vylepšený kód, který je schopen odhalit úmyslně poškozený obsah. To zahrnuje disky vytvořené z částečně opravených bitových kopií, a bitové kopie obsahující soubory z takto poškozených disků.\n"
-#~ "Tyto značky budou ale rozpoznány jen v dvdisaster 0.72 a novějších verzích. Vytvořené bitové kopie NESMÍ být zpracovány staršími verzemi dvdisaster, protože by nebyly schopné chybějící sektory rozpoznat.\n"
-#~ "dvdisaster >= 0.72 při čtení bitové kopie automaticky rozpozná oba formáty značek. Povolení této volby ovlivní pouze vytváření nových bitových kopií."
-
-#~ msgid ""
-#~ "<b>Maximum number of reading attempts</b>\n"
-#~ "\n"
-#~ "When the minimum number of reading attempts is reached without success, dvdisaster might choose to perform additional reading attempts upto this number.\n"
-#~ "\n"
-#~ "The decision to do more attempts depends on the quality of data gathered so far, which in turn is influenced by the capabilities of your CD/DVD drive and the operating system. So depending on your configuration, you may or may not see dvdisaster using the maximum value."
-#~ msgstr ""
-#~ "<b>Maximální počet pokusů o přečtení</b>\n"
-#~ "\n"
-#~ "Pokud je čtení za použití minimálního počtu pokusů neúspěšné, dvdisaster se může rozhodnout provést několik dalších pokusů až do tohoto čísla.\n"
-#~ "\n"
-#~ "Rozhodnutí o tom zda pokračovat ve čtení závisí na kvalitě dosud získaných dat, která je ovlivněna schopnostmi vaší CD/DVD mechaniky a operačního systému. Takže v závislost na konfiguraci vašeho systému dvdisaster může ale nemusí tuto maximální hodnotu použít."
-
-#~ msgid ""
-#~ "<b>Raw sector file prefix</b>\n"
-#~ "\n"
-#~ "Use a different prefix for each disk you are trying to recover, e.g. \"disk1-\" and so on."
-#~ msgstr ""
-#~ "<b>Předpona souboru sektoru</b>\n"
-#~ "\n"
-#~ "Pro každý disk používejte jedinečnou předponu, např. \"disk1-\" atd."
-
-#~ msgid "Local files (on hard disc)"
-#~ msgstr "Lokální soubory (na pevném disku)"
-
-#~ msgid "Image file does not match the CD/DVD."
-#~ msgstr "Soubor bitové kopie neodpovídá CD/DVD."
-
-#~ msgid "Reading CRC information from ecc file"
-#~ msgstr "Probíhá načtení CRC informací z ecc souboru"
-
-#~ msgid "All sectors successfully read, but wrong image checksum."
-#~ msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí kontrolní součet bitové kopie."
-
-#~ msgid "All sectors successfully read, %s!"
-#~ msgstr "Všechny sektory byly úspěšně načteny, %s!"
-
-#~ msgid ""
-#~ "Failed allocating memory for I/O cache.\n"
-#~ "Cache size is currently %d MB.\n"
-#~ "Try reducing it.\n"
-#~ msgstr ""
-#~ "Vyhrazení paměti pro I/O mezipaměť selhalo.\n"
-#~ "Aktuální velikost mezipaměti je %d MB.\n"
-#~ "Zkuste ji zmenšit.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Fix mode: Repairable sectors will be fixed in the image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Režim opravy: Opravitelné sektory budou v bitové kopii opraveny.\n"
-
-#~ msgid "created by dvdisaster-%d.%d\n"
-#~ msgstr "vytvořeno pomocí dvdisaster-%d.%d\n"
-
-#~ msgid "%d MB of file cache"
-#~ msgstr "%d MB souborové mezipaměti"
-
-#~ msgid "MB for error correction data"
-#~ msgstr "MB pro data pro opravu chyb"
-
-#~ msgid ""
-#~ "<b>Space-delimited redundancy</b>\n"
-#~ "\n"
-#~ "Specifies the maximum size of the error correction file in MB. dvdisaster will choose a suitable redundancy setting so that the overall size of the error correction file does not exceed the given limit.\n"
-#~ "\n"
-#~ "<b>Advance notice:</b> When using the same size setting for images of vastly different size, smaller images receive more redundancy than larger ones. This is usually not what you want."
-#~ msgstr ""
-#~ "<b>Prostorově vymezená redundance</b>\n"
-#~ "\n"
-#~ "Určí se maximální velikost souboru pro opravu chyb v MB. dvdisaster automaticky zvolí vhodnou redundanci tak aby velikost souboru pro opravu chyb nepřekročila daný limit.\n"
-#~ "\n"
-#~ "<b>Upozornění:</b> Pokud použijete stejnou velikost pro bitové kopie různých velikostí, bude pro menší bitové kopie použita vyšší redundance než pro velké. To ve většině případů není to co chcete."
-
-#~ msgid ""
-#~ "<b>File cache</b>\n"
-#~ "\n"
-#~ "dvdisaster optimizes access to the image and error correction files by maintaining its own cache. The preset of 32MB is suitable for most systems."
-#~ msgstr ""
-#~ "<b>Mezipaměť pro soubory</b>\n"
-#~ "\n"
-#~ "dvdisaster optimalizuje přístup k souboru bitové kopie a souboru pro opravu chyb použitím vlastní mezipaměti. Přednastavených 32MB je vhodných pro většinu systémů."
+#~ msgid "Failed seeking to sector %lld in ecc file: %s"
+#~ msgstr "Nezdařil se přechod na sektor %lld ecc souboru: %s"
 
 #~ msgid "All sectors successfully read, but wrong data md5sum."
 #~ msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí md5 kontrolní součet dat."
@@ -6492,133 +6428,31 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgid "All sectors successfully read, but wrong crc md5sum."
 #~ msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí md5 kontrolní součet crc."
 
-#~ msgid "Encoding with Method RS02: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr "Kódování metodou RS02: %lld MB data, %lld MB ecc (%d bází; %4.1f%% redundance)."
+#~ msgid "Reading CRC information from ecc file"
+#~ msgstr "Probíhá načtení CRC informací z ecc souboru"
 
-#~ msgid ""
-#~ "Augmenting image with Method RS02:\n"
-#~ " %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr ""
-#~ "Rozšíření bitové kopie metodou RS02:\n"
-#~ " %lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)"
+#~ msgid "Single threaded RS codec (RSS3)"
+#~ msgstr "Jednovláknový RS kodek (RSS3)"
 
-#~ msgid ""
-#~ "Image has been augmented with error correction data.\n"
-#~ "New image size is %lld MB (%lld sectors).\n"
-#~ msgstr ""
-#~ "Bitová kopie byla rozšířena o data pro opravu chyb.\n"
-#~ "Nová velikost bitové kopie je %lld MB (%lld sektorů).\n"
-
-#~ msgid ""
-#~ "<b>Determine augmented image size from table</b>\n"
-#~ "\n"
-#~ "Augmented images fill up unused medium space with error correction information. Activate this option if you want the augmented image to fit on the smallest possible medium.\n"
-#~ "\n"
-#~ "In order to pick a suitable medium the available media capacities must be known. Default sizes for CD and one/two layered DVD are given in the table. You can edit these sizes according to your needs."
-#~ msgstr ""
-#~ "<b>Určit velikost rozšířené bitové kopie z tabulky</b>\n"
-#~ "\n"
-#~ "Rozšířené bitové kopie zaplní nevyužité místo na disku daty pro opravu chyb. Aktivujte tuto volbu, pokud chcete aby se rozšířená bitová kopie vešla na nejmenší možný disk.\n"
-#~ "\n"
-#~ "Aby mohl být vybrán vhodný disk, musí být známy dostupné kapacity disků. V tabulce jsou zadány výchozí velikosti CD a jedno/dvou vrstvých DVD. Tyto velikosti můžete upravit podle svých potřeb."
-
-#~ msgid "Failed seeking to sector %lld in ecc file: %s"
-#~ msgstr "Nezdařil se přechod na sektor %lld ecc souboru: %s"
-
-#~ msgid "%5.2fMB/s current"
-#~ msgstr "aktuálně %5.2fMB/s"
-
-#~ msgid "%d threads with 128bit intrinsics"
-#~ msgstr "%d vláken se 128bit vnitřními typy"
-
-#~ msgid "Encoding with Method RS03: %lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr "Kódování metodou RS03: %lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)."
-
-#~ msgid ""
-#~ "Augmenting image with Method RS03 [%d threads]:\n"
-#~ "%lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr ""
-#~ "Rozšíření bitové kopie metodou RS03 [%d vláken]:\n"
-#~ "%lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)."
-
-#~ msgid ""
-#~ "Creating the error correction file with Method RS03 [%d threads]:\n"
-#~ "%lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
-#~ msgstr ""
-#~ "Vytvoření souboru pro opravu chyb metodou RS03 [%d vláken]:\n"
-#~ "%lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)."
-
-#~ msgid "Avg performance: %5.2fs (%5.2fMB/s) total\n"
-#~ msgstr "Prům. výkon: %5.2fs (%5.2fMB/s) celkem\n"
-
-#~ msgid "%5.2fMB/s average"
-#~ msgstr "%5.2fMB/s průměr"
-
-#~ msgid "<b>Warning</b>: This codec is experimental and for evaluation only. It is not yet fully implemented and does contain bugs. Future dvdisaster versions may not be compatible with it. <i>Do not yet use this codec for any archival purposes.</i>"
-#~ msgstr "<b>Upozornění</b>: Tento kodek je experimentální a pouze pro účely testování. Není ještě kompletní a obsahuje chyby. Novější verze dvdisaster s ním nemusejí být kompatibilní. <i>Nepoužívejte tento kodek pro účely zálohování.</i>"
-
-#~ msgid "Sector prefetch"
-#~ msgstr "Přednačítání sektorů"
-
-#~ msgid "Sector prefetching"
-#~ msgstr "Přednačítání sektorů"
-
-#~ msgid "Prefetch"
-#~ msgstr "Přednačíst"
-
-#~ msgid ""
-#~ "<b>Sector preloading</b>\n"
-#~ "\n"
-#~ "dvdisaster optimizes access to the image and error correction data by preloading and caching parts of them.\n"
-#~ "\n"
-#~ "The optimal preload value depends on the storage system used for the image and error correction files.\n"
-#~ "Use small preload values for systems with low latency and seek time, e.g. SSDs. For magnetic hard disks performace may be better using larger preload values.\n"
-#~ "\n"
-#~ "A preload value of n will used approx. n MB of RAM."
-#~ msgstr ""
-#~ "<b>Přednačítání sektorů</b>\n"
-#~ "\n"
-#~ "dvdisaster optimalizuje přístup k bitové kopii a datům pro opravu chyb jejich přednačítáním a uložením do vyrovnávací paměti.\n"
-#~ "\n"
-#~ "Optimální nastavení přednačítání závisí na typu úložiště na kterém jsou bitová kopie a data pro opravu chyb uloženy.\n"
-#~ "Používejte malé hodnoty pro úložiště s malou latencí a dobou vyhledávání, např. SSDs. Výkon s běžnými pevnými disky bude lepší při využití vyšších hodnot.\n"
-#~ "\n"
-#~ "Hodnota přednačítání n bude používat přibližně n MB RAM."
+#~ msgid "Single threaded Reed-Solomon codec for error correction files and augmented images"
+#~ msgstr "Jednovláknový Reed-Solomon kodek pro soubory pro opravu chyb a rozšířené bitové kopie"
 
 #~ msgid ""
 #~ "Augmenting image with Method RS03s:\n"
-#~ "%lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
+#~ "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 #~ msgstr ""
 #~ "Rozšíření bitové kopie metodou RS03:\n"
-#~ " %lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)"
+#~ " %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)"
 
 #~ msgid ""
 #~ "Creating the error correction file with Method RS03s:\n"
-#~ "%lld MB data, %lld MB ecc (%d roots; %4.1f%% redundancy)."
+#~ "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 #~ msgstr ""
 #~ "Vytvoření souboru pro opravu chyb metodou RS03:\n"
-#~ "%lld MB dat, %lld MB ecc (%d bází; %4.1f%% redundance)."
+#~ "%lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
 
-#~ msgid "- created by       : dvdisaster-%d.%d\n"
-#~ msgstr "- vytvořeno pomocí : dvdisaster-%d.%d\n"
-
-#~ msgid "<span %s>%lld (%lld expected)</span>"
-#~ msgstr "<span %s>%lld (%lld očekáváno)</span>"
-
-#~ msgid "<span %s>%lld sectors but %d bytes too short</span>"
-#~ msgstr "<span %s>%lld sektorů ale %d bajtů chybí</span>"
-
-#~ msgid "<span %s>%lld sectors but %d bytes too long</span>"
-#~ msgstr "<span %s>%lld sektorů ale %d bajtů přebývá</span>"
-
-#~ msgid "* sectors          : %lld (%lld expected)\n"
-#~ msgstr "* sektory          : %lld (očekáváno %lld)\n"
-
-#~ msgid "* sectors          : %lld sectors + %d of %d bytes in image; %lld sectors in ecc file\n"
-#~ msgstr "* sektory          : %lld sektorů + %d z %d bajtů v bitové kopii; %lld sektorů v ecc souboru\n"
-
-#~ msgid "premature end in ecc file (only %d bytes): %s\n"
-#~ msgstr "předčasný konec ecc souboru (pouze %d bajtů): %s\n"
+#~ msgid "<b>Warning</b>: This codec is experimental and for evaluation only. It is not yet fully implemented and does contain bugs. Future dvdisaster versions may not be compatible with it. <i>Do not yet use this codec for any archival purposes.</i>"
+#~ msgstr "<b>Upozornění</b>: Tento kodek je experimentální a pouze pro účely testování. Není ještě kompletní a obsahuje chyby. Novější verze dvdisaster s ním nemusejí být kompatibilní. <i>Nepoužívejte tento kodek pro účely zálohování.</i>"
 
 #~ msgid ""
 #~ "No CD/DVD drives found in /dev.\n"
@@ -6626,9 +6460,6 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgstr ""
 #~ "V /dev nebyly nalezeny žádné CD/DVD mechaniky.\n"
 #~ "Nebudou předvybrány žádné mechaniky.\n"
-
-#~ msgid "Device %s (%s) is not a CDROM drive."
-#~ msgstr "Zařízení %s (%s) není CD-ROM mechanika."
 
 #~ msgid ""
 #~ "No CD/DVD drives found.\n"
@@ -6670,11 +6501,72 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ "CD a DVD disků před ztrátou dat.\n"
 
 #~ msgid ""
-#~ "Please see the manual for [typical uses] of dvdisaster.\n"
-#~ "\n"
+#~ "Augmenting image with Method RS03 [%d threads]:\n"
+#~ "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
 #~ msgstr ""
-#~ "Příklady [typického použití] dvdisaster naleznete v manuálu.\n"
+#~ "Rozšíření bitové kopie metodou RS03 [%d vláken]:\n"
+#~ "%lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+
+#~ msgid ""
+#~ "Creating the error correction file with Method RS03 [%d threads]:\n"
+#~ "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr ""
+#~ "Vytvoření souboru pro opravu chyb metodou RS03 [%d vláken]:\n"
+#~ "%lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+
+#~ msgid ""
+#~ "<b>Sector preloading</b>\n"
 #~ "\n"
+#~ "dvdisaster optimizes access to the image and error correction data by preloading and caching parts of them.\n"
+#~ "\n"
+#~ "The optimal preload value depends on the storage system used for the image and error correction files.\n"
+#~ "Use small preload values for systems with low latency and seek time, e.g. SSDs. For magnetic hard disks performace may be better using larger preload values.\n"
+#~ "\n"
+#~ "A preload value of n will used approx. n MiB of RAM."
+#~ msgstr ""
+#~ "<b>Přednačítání sektorů</b>\n"
+#~ "\n"
+#~ "dvdisaster optimalizuje přístup k bitové kopii a datům pro opravu chyb jejich přednačítáním a uložením do vyrovnávací paměti.\n"
+#~ "\n"
+#~ "Optimální nastavení přednačítání závisí na typu úložiště na kterém jsou bitová kopie a data pro opravu chyb uloženy.\n"
+#~ "Používejte malé hodnoty pro úložiště s malou latencí a dobou vyhledávání, např. SSDs. Výkon s běžnými pevnými disky bude lepší při využití vyšších hodnot.\n"
+#~ "\n"
+#~ "Hodnota přednačítání n bude používat přibližně n MiB RAM."
+
+#~ msgid "%d threads with 128bit intrinsics"
+#~ msgstr "%d vláken se 128bit vnitřními typy"
+
+#~ msgid "Sector prefetch"
+#~ msgstr "Přednačítání sektorů"
+
+#~ msgid "Sector prefetching"
+#~ msgstr "Přednačítání sektorů"
+
+#~ msgid "Prefetch"
+#~ msgstr "Přednačíst"
+
+#~ msgid ""
+#~ "dvdisaster is not properly installed.\n"
+#~ "Please execute the installer program (%s) again.\n"
+#~ msgstr ""
+#~ "dvdisaster není správně nainstalován.\n"
+#~ "Spusťte znovu instalační program (%s).\n"
+
+#~ msgid ""
+#~ "<b>dvdisaster is not properly installed</b>\n"
+#~ "\n"
+#~ "Please execute the installer program (%s) again.\n"
+#~ msgstr ""
+#~ "<b>dvdisaster není správně nainstalován</b>\n"
+#~ "\n"
+#~ "Spusťte znovu instalační program (%s).\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Could not open device %s."
+#~ msgstr ""
+#~ "\n"
+#~ "Nepodařilo se otevřít mechaniku %s."
 
 #~ msgid ""
 #~ "\n"
@@ -6704,8 +6596,5 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgid "--prefetch-sectors must be in range 32...8096"
 #~ msgstr "--prefetch-sectors musí být v rozsahu 32...8096"
 
-#~ msgid "--cache-size maximum is 8192MB."
-#~ msgstr "--cache-size maximum je 8192MB."
-
-#~ msgid "* medium sectors   : %lld (%lld expected)\n"
-#~ msgstr "* sektorů média    : %lld (očekáváno %lld)\n"
+#~ msgid "--cache-size maximum is 8192MiB."
+#~ msgstr "--cache-size maximum je 8192MiB."

@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2010-02-06" "0.80" "protection for optical media"
+.TH DVDISASTER 1 "2020-08-30" "0.80" "protection for optical media"
 
 .SH NAME
 DVDISASTER \- data loss/scratch/aging protection for optical media
@@ -50,6 +50,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-no-bdr-defect-management \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
@@ -225,6 +226,21 @@ RS02 images:
 \-n BDXL3 augments image suitable for three layered BDXL media.
 .RE
 .RS
+\-n BDXL4 augments image suitable for quadruple layered BDXL media.
+.RE
+.RS
+\-n BDNODM\ \ \ \ augments image suitable for BD media burnt without defect management.
+.RE
+.RS
+\-n BD2NODM\ \  augments image suitable for two layered BD media burnt without defect management.
+.RE
+.RS
+\-n BDXL3NODM augments image suitable for three layered BDXL media burnt without defect management.
+.RE
+.RS
+\-n BDXL4NODM augments image suitable for quadruple layered BDXL media burnt without defect management.
+.RE
+.RS
 \-n x\ \ \ \ \ augments image using approx. x sectors in total.
 .RE
 .RS
@@ -240,7 +256,20 @@ RS03 images:
 .RS
 Setting the redundancy is not possible due to constraints in the format.
 The codec will automatically choose the size of the smallest fitting medium.
+However, see --no-bdr-defect-management below.
 .RE
+.RE
+
+.TP
+.B \-\-no-bdr-defect-management
+Enable bigger augmented images for BD-R (around +3%).
+If you know you will use a BD-R medium and want to maximize the free space
+for parity data, you can skip the defect management formatting before burning,
+at the expense of potential coasters. Specify this option to tell dvdisaster
+to produce bigger images that will only fit on BD-R media burnt without defect
+management. Some burning softwares call it "formatting" the BD-R before burning.
+Note that should you need to repair such an augmented image, you'll then need to
+specify this option on the command-line too.
 .RE
 
 .TP

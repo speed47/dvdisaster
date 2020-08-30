@@ -136,10 +136,16 @@ function try()
 	   REGTEST_SECTION="Test"
        fi
 
-       echo -n "[ ] ${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - "
+       if [ "$REGTEST_NO_UTF8" != 1 ]; then
+           echo -n "[ ] "
+       fi
+       echo -n "${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - "
        return 0
    else
-       echo "[-] ${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - SKIPPED ($doit, ${CODEC_PREFIX}_$2)"
+       if [ "$REGTEST_NO_UTF8" != 1 ]; then
+           echo -n "[-] "
+       fi
+       echo "${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - SKIPPED ($doit, ${CODEC_PREFIX}_$2)"
        return 1
    fi
 }
@@ -222,7 +228,11 @@ function run_regtest()
      fi
        
      if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG | $filter) >${DIFFLOG}; then
-	 printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
+	 if [ "$REGTEST_NO_UTF8" = 1 ]; then
+	   echo "BAD; diffs found (<expected; >created):"
+	 else
+	   printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
+	 fi
 	 cat ${DIFFLOG}
 
 	 if test "$interactive_diff" == "yes"; then
@@ -253,7 +263,7 @@ function run_regtest()
 	   xterm_pid=$!
        fi
 
-       LANG=en_EN.UTF-8 $NEWVER --regtest $extra_args --resource-file $LOGDIR/.dvdisaster-regtest >>$NEWLOG 2>&1
+       LANG=en_EN.UTF-8 timeout 15 $NEWVER --regtest $extra_args --resource-file $LOGDIR/.dvdisaster-regtest >>$NEWLOG 2>&1
        rm -f $LOGDIR/.dvdisaster-regtest
    fi
 
@@ -265,8 +275,11 @@ function run_regtest()
    if test ${image_md5} != "ignore"; then
        md5=$($MD5SUM ${testiso} | cut -d\  -f 1)
        if test "$image_md5" != "$md5"; then
-	   echo "BAD; md5 sum mismatch in image file:"
-	   printf "%b\r%b\n" "BAD; md5 sum mismatch in image file:" "[\e[31m✘\e[0m]"
+	   if [ "$REGTEST_NO_UTF8" = 1 ]; then
+	      echo "BAD; md5 sum mismatch in image file:"
+	   else
+	      printf "%b\r%b\n" "BAD; md5 sum mismatch in image file:" "[\e[31m✘\e[0m]"
+	   fi
 	   echo "... expected  image: $image_md5"
 	   echo "... generated image: $md5"
 	   pass="false"
@@ -276,7 +289,7 @@ function run_regtest()
    if test ${ecc_md5} != "ignore"; then
        md5=$($MD5SUM ${testecc} | cut -d\  -f 1)
        if test "$ecc_md5" != "$md5"; then
-	   if [ "$pass" = false ]; then
+	   if [ "$pass" = false ] || [ "$REGTEST_NO_UTF8" = 1 ]; then
 	      echo "BAD; md5 sum mismatch in ecc file:"
 	   else
 	      printf "%b\r%b\n" "BAD; md5 sum mismatch in ecc file:" "[\e[31m✘\e[0m]"
@@ -289,7 +302,11 @@ function run_regtest()
 
    case "${pass}" in
      true)
-      printf "%b\r%b\n" "GOOD" "[\e[32m✓\e[0m]"
+      if [ "$REGTEST_NO_UTF8" = 1 ]; then
+        echo GOOD
+      else
+        printf "%b\r%b\n" "GOOD" "[\e[32m✓\e[0m]"
+      fi
       ;;
      
      skip)

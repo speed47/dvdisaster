@@ -4,7 +4,7 @@
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I." 
-RECOMMENDED_CFLAGS="-DPATCHLEVEL=1 -O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
+RECOMMENDED_CFLAGS="-DPATCHLEVEL=2 -O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
 DEBUG_CFLAGS="-ggdb -Wall"
 
 if [ "$CLI_ONLY" = 1 ]; then

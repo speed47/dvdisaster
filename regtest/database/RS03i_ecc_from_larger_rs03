@@ -10,7 +10,7 @@ Opening rs03i-tmp.iso: 29835 medium sectors.
 *          Truncating image to data part (21000 sectors).
 Image size is now: 21000 medium sectors.
 41 MiB data, 7 MiB ecc (39 roots; 18.1% redundancy).
-* Warning: Using redundancies below 20%% may not give
+* Warning: Using redundancies below 20% may not give
 *          the expected data loss protection.
 Image has been augmented with error correction data.
 New image size is 48 MiB (24990 sectors).
