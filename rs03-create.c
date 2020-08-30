@@ -1406,8 +1406,24 @@ void RS03Create(void)
    {  int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Using redundancies below 20%%%% may not give\n"
+			    _("Using redundancies below 20%% may not give\n"
 			      "the expected data loss protection.\n"), NULL);
+
+      if(!answer)
+	abort_encoding(ec, FALSE);
+   }
+
+   /*** Warn in case of BD-R no defect management enabled */
+
+   if (lay->mediumCapacity == BD_SL_SIZE_NODM ||
+       lay->mediumCapacity == BD_DL_SIZE_NODM ||
+       lay->mediumCapacity == BDXL_TL_SIZE_NODM ||
+       lay->mediumCapacity == BDXL_QL_SIZE_NODM)
+   {  int answer;
+
+      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+			    _("BD-R size with no defect management enabled,\n"
+			      "remember it should you need to repair this image later!\n"), NULL);
 
       if(!answer)
 	abort_encoding(ec, FALSE);

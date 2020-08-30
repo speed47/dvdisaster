@@ -85,7 +85,9 @@ typedef enum
    MODIFIER_FIXED_SPEED_VALUES,
    MODIFIER_IGNORE_FATAL_SENSE,
    MODIFIER_IGNORE_ISO_SIZE,
+   MODIFIER_IGNORE_RS03_HEADER,
    MODIFIER_INTERNAL_REREADS,
+   MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
    MODIFIER_PREFETCH_SECTORS,
@@ -239,6 +241,7 @@ int main(int argc, char *argv[])
 	{"help", 0, 0, 'h'},
 	{"ignore-fatal-sense", 0, 0, MODIFIER_IGNORE_FATAL_SENSE },
 	{"ignore-iso-size", 0, 0, MODIFIER_IGNORE_ISO_SIZE },
+	{"ignore-rs03-header", 0, 0, MODIFIER_IGNORE_RS03_HEADER },
 	{"internal-rereads", 1, 0, MODIFIER_INTERNAL_REREADS },
         {"image", 1, 0, 'i'},
 	{"jump", 1, 0, 'j'},
@@ -246,6 +249,7 @@ int main(int argc, char *argv[])
 	{"medium-info", 0, 0, MODE_MEDIUM_INFO },
 	{"merge-images", 1, 0, MODE_MERGE_IMAGES },
 	{"method", 2, 0, 'm' },
+	{"no-bdr-defect-management", 0, 0, MODIFIER_NO_BDR_DEFECT_MANAGEMENT },
 	{"no-progress", 0, 0, MODIFIER_NO_PROGRESS },
 	{"old-ds-marker", 0, 0, MODIFIER_OLD_DS_MARKER },
 	{"prefetch-sectors", 1, 0, MODIFIER_PREFETCH_SECTORS },
@@ -341,6 +345,14 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = BDXL_TL_SIZE;
 		      else if(!strcmp(optarg, "BDXL4") || !strcmp(optarg, "bdxl4"))
 			   Closure->mediumSize = BDXL_QL_SIZE;
+		      else if(!strcmp(optarg, "BDNODM") || !strcmp(optarg, "bdnodm"))
+			   Closure->mediumSize = BD_SL_SIZE_NODM;
+		      else if(!strcmp(optarg, "BD2NODM") || !strcmp(optarg, "bd2nodm"))
+			   Closure->mediumSize = BD_DL_SIZE_NODM;
+		      else if(!strcmp(optarg, "BDXL3NODM") || !strcmp(optarg, "bdxl3nodm"))
+			   Closure->mediumSize = BDXL_TL_SIZE_NODM;
+		      else if(!strcmp(optarg, "BDXL4NODM") || !strcmp(optarg, "bdxl4nodm"))
+			   Closure->mediumSize = BDXL_QL_SIZE_NODM;
 		      else 
 		      {  int len = strlen(optarg);
 			 if(strchr("0123456789", optarg[len-1]))
@@ -478,6 +490,10 @@ int main(int argc, char *argv[])
          case MODIFIER_IGNORE_ISO_SIZE:
 	   Closure->ignoreIsoSize = TRUE;
 	   break;
+         case MODIFIER_IGNORE_RS03_HEADER:
+	   Closure->ignoreRS03header = TRUE;
+	   debug_mode_required = TRUE;
+	   break;
 	 case MODIFIER_INTERNAL_REREADS:
 	    if(optarg)
 	       Closure->internalAttempts = atoi(optarg);
@@ -502,6 +518,9 @@ int main(int argc, char *argv[])
 	    }
 	 }
 	   break;
+	 case MODIFIER_NO_BDR_DEFECT_MANAGEMENT:
+	    Closure->noBdrDefectManagement = TRUE;
+	    break;
 	 case MODIFIER_NO_PROGRESS:
 	    Closure->noProgress = 1;
 	    break;
@@ -949,6 +968,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"));
       PrintCLI(_("  --medium-info          - print info about medium in drive\n"));
+      PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress          - do not print progress information\n"));
       PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
       PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
@@ -972,6 +992,7 @@ int main(int argc, char *argv[])
 	PrintCLI(_("  --erase sector    - erase the given sector\n"));
 	PrintCLI(_("  --erase n-m       - erase sectors n - m, inclusively\n"));
 	PrintCLI(_("  --fixed-speed-values - output fixed speed values for better output diffing\n"));
+	PrintCLI(_("  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"));
 	PrintCLI(_("  --marked-image n  - create image with n marked random sectors\n"));
 	PrintCLI(_("  --merge-images a,b  merge image a with b (a receives sectors from b)\n"));
 	PrintCLI(_("  --random-errors e - seed image with (correctable) random errors\n"));

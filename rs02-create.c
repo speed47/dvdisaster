@@ -1143,7 +1143,7 @@ void RS02Create(void)
    {  int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Using redundancies below 20%%%% may not give\n"
+			    _("Using redundancies below 20%% may not give\n"
 			      "the expected data loss protection.\n"), NULL);
 
       if(!answer)

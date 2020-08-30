@@ -1776,7 +1776,7 @@ fi
 REGTEST_SECTION="Reading tests (adaptive)"
 
 echo "Currently not enabled!"
-exit 0
+exit $nbfailed
 
 # Read complete / optimal image
 

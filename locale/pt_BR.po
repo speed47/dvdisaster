@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.72.rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-29 22:10+0200\n"
+"POT-Creation-Date: 2020-08-30 16:39+0200\n"
 "PO-Revision-Date: 2010-06-09 11:13+0200\n"
 "Last-Translator: cg <cg@dvdisaster.org>\n"
 "Language-Team: Portuguese\n"
@@ -30,15 +30,15 @@ msgstr ""
 "# que será sobreescrevido toda vez que o dvdisaster rodar.\n"
 "\n"
 
-#: closure.c:560
+#: closure.c:562
 msgid "medium.iso"
 msgstr "midia.iso"
 
-#: closure.c:561
+#: closure.c:563
 msgid "medium.ecc"
 msgstr "midia.ecc"
 
-#: closure.c:562
+#: closure.c:564
 msgid "sector-"
 msgstr "setor-"
 
@@ -58,7 +58,7 @@ msgstr ""
 #: debug.c:850 debug.c:1181 debug.c:1189 debug.c:1266 rs01-common.c:175
 #: rs02-common.c:239 rs02-create.c:377 rs02-create.c:1032 rs02-fix.c:414
 #: rs02-verify.c:404 rs03-common.c:340 rs03-create.c:756 rs03-create.c:781
-#: rs03-recognize.c:550
+#: rs03-recognize.c:555
 #, c-format
 msgid "Failed seeking to sector %lld in image: %s"
 msgstr "Falha ao ir para o setor %lld da imagem: %s"
@@ -233,7 +233,7 @@ msgstr "%lld marcadores \"setor-ilegível\" substituidos.\n"
 
 #: debug.c:811 debug.c:854 debug.c:1185 debug.c:1252 debug.c:1256 debug.c:1306
 #: rs01-common.c:191 rs02-common.c:244 rs02-create.c:229 rs02-fix.c:417
-#: rs03-common.c:345 rs03-recognize.c:555
+#: rs03-common.c:345 rs03-recognize.c:560
 #, c-format
 msgid "Failed reading sector %lld in image: %s"
 msgstr "Falha ao ler setor %lld da imagem: %s"
@@ -392,83 +392,83 @@ msgstr ""
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: dvdisaster.c:160 dvdisaster.c:172
+#: dvdisaster.c:162 dvdisaster.c:174
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: dvdisaster.c:355
+#: dvdisaster.c:367
 msgid "-o/--ecc-target expects 'file' or 'image'"
 msgstr ""
 
-#: dvdisaster.c:381
+#: dvdisaster.c:393
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr "--threads devem ser de 1..%d\n"
 
-#: dvdisaster.c:395
+#: dvdisaster.c:407
 msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
 msgstr "--cache-size deve ser pelo menos 8MiB; 16MiB ou mais são recomendados."
 
-#: dvdisaster.c:397
+#: dvdisaster.c:409
 #, c-format
 msgid "--cache-size maximum is %dMiB."
 msgstr ""
 
-#: dvdisaster.c:420
+#: dvdisaster.c:432
 msgid "--encoding-algorithm: SSE2 not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:424
+#: dvdisaster.c:436
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, SSE2"
 msgstr ""
 
-#: dvdisaster.c:431
+#: dvdisaster.c:443
 msgid "--encoding-algorithm: AltiVec not supported on this processor!"
 msgstr ""
 
-#: dvdisaster.c:435
+#: dvdisaster.c:447
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"
 msgstr ""
 
-#: dvdisaster.c:438
+#: dvdisaster.c:450
 msgid "--encoding-algorithm: valid types are 32bit, 64bit"
 msgstr ""
 
-#: dvdisaster.c:447
+#: dvdisaster.c:459
 msgid "--encoding-io-strategy: mmap not supported on this OS"
 msgstr ""
 
-#: dvdisaster.c:451
+#: dvdisaster.c:463
 msgid "--encoding-io-strategy: valid types are readwrite and mmap"
 msgstr ""
 
-#: dvdisaster.c:461
+#: dvdisaster.c:473
 msgid "Valid args for --driver: sg,cdrom"
 msgstr ""
 
-#: dvdisaster.c:463
+#: dvdisaster.c:475
 msgid "--driver is only supported on GNU/Linux"
 msgstr "--driver suportado apenas no GNU/Linux"
 
-#: dvdisaster.c:471
+#: dvdisaster.c:483
 msgid "--fixed-speed-values is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:515
+#: dvdisaster.c:534
 #, c-format
 msgid "--prefetch-sectors must be in range 32...%s"
 msgstr ""
 
-#: dvdisaster.c:569
+#: dvdisaster.c:588
 msgid "--set-version is only allowed in debug mode"
 msgstr ""
 
-#: dvdisaster.c:676
+#: dvdisaster.c:695
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? valor de retorno de getopt %d ilegal\n"
 
-#: dvdisaster.c:769 main-window.c:149
+#: dvdisaster.c:788 main-window.c:149
 #, c-format
 msgid ""
 "\n"
@@ -479,7 +479,7 @@ msgstr ""
 "Método %s não disponível.\n"
 "Use -m sem parâmetros para uma lista de métodos.\n"
 
-#: dvdisaster.c:780 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1320
+#: dvdisaster.c:799 rs01-create.c:285 rs02-create.c:1075 rs03-create.c:1320
 #, c-format
 msgid ""
 "\n"
@@ -488,25 +488,25 @@ msgstr ""
 "\n"
 "Abrindo %s"
 
-#: dvdisaster.c:787 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
+#: dvdisaster.c:806 rs01-create.c:294 rs02-create.c:175 rs02-create.c:1085
 #: rs03-create.c:349 rs03-create.c:1335
 #, c-format
 msgid ": %lld medium sectors.\n"
 msgstr ": %lld setores da mídia.\n"
 
-#: dvdisaster.c:788 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
+#: dvdisaster.c:807 rs01-create.c:295 rs02-create.c:176 rs02-create.c:1086
 #: rs03-create.c:350 rs03-create.c:1336
 #, c-format
 msgid ": %lld medium sectors and %d bytes.\n"
 msgstr ": %lld setores da mídia e %d bytes.\n"
 
-#: dvdisaster.c:815 main-window.c:207
+#: dvdisaster.c:834 main-window.c:207
 msgid "RS01 method not available for comparing files."
 msgstr "Método RS01 não está disponível para comparar arquivos."
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: dvdisaster.c:909
+#: dvdisaster.c:928
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -530,7 +530,7 @@ msgstr ""
 "  dvdisaster -u,--unlink # Apaga arquivos .iso (quando outras ações estão completas)\n"
 "\n"
 
-#: dvdisaster.c:918
+#: dvdisaster.c:937
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -541,241 +541,249 @@ msgid ""
 "  -o,--ecc-target [file image] - where to put ecc data in RS03\n"
 msgstr ""
 
-#: dvdisaster.c:928
+#: dvdisaster.c:947
 msgid "Tweaking options (see manual before using!)\n"
 msgstr "Opções avançadas (leio o manual antes de usar!)\n"
 
-#: dvdisaster.c:929
+#: dvdisaster.c:948
 msgid "  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"
 msgstr ""
 
-#: dvdisaster.c:930
+#: dvdisaster.c:949
 msgid "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 msgstr "  -j,--jump n             - pula n setores adiante após um erro de leitura (padrão: 16)\n"
 
-#: dvdisaster.c:931
+#: dvdisaster.c:950
 msgid "  -m n                   - list/select error correction methods (default: RS01)\n"
 msgstr "  -m n                    - lista/seleciona métodos de correção de erros (Padrão: (RS01)\n"
 
-#: dvdisaster.c:932
+#: dvdisaster.c:951
 #, c-format
 msgid ""
 "  -n,--redundancy n%%     - error correction data redundancy\n"
 "                           allowed values depend on codec (see manual)\n"
 msgstr ""
 
-#: dvdisaster.c:934
+#: dvdisaster.c:953
 msgid "  -v,--verbose           - more diagnostic messages\n"
 msgstr "  -v,--verbose            - mais mensagens de diagnóstico\n"
 
-#: dvdisaster.c:935
+#: dvdisaster.c:954
 msgid "  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"
 msgstr ""
 
-#: dvdisaster.c:936
+#: dvdisaster.c:955
 msgid "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 msgstr "  --adaptive-read         - usa estratégia otimizada para leitura de mídia danificada\n"
 
-#: dvdisaster.c:937
+#: dvdisaster.c:956
 msgid "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 msgstr "  --auto-suffix           - adiciona sufixos .iso e .ecc aos arquivos automaticamente\n"
 
-#: dvdisaster.c:938
+#: dvdisaster.c:957
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 msgstr "  --cache-size n          - tamanho do cache da imagem em MiB durante o modo -c (padrão: 32MiB)\n"
 
-#: dvdisaster.c:939
+#: dvdisaster.c:958
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
 msgstr "  --dao                   - assume que é um disco DAO; não cortar o fim da imagem\n"
 
-#: dvdisaster.c:940
+#: dvdisaster.c:959
 msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr "  --defective-dump d      - diretório para salvar setores raw incompletos\n"
 
-#: dvdisaster.c:942
+#: dvdisaster.c:961
 msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
 msgstr ""
 
-#: dvdisaster.c:944
+#: dvdisaster.c:963
 msgid "  --eject                - eject medium after successful read\n"
 msgstr "  --eject                 - ejeta a mídia após uma leitura bem-sucedida\n"
 
-#: dvdisaster.c:945
+#: dvdisaster.c:964
 msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
 msgstr ""
 
-#: dvdisaster.c:946
+#: dvdisaster.c:965
 msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
 msgstr ""
 
-#: dvdisaster.c:947
+#: dvdisaster.c:966
 msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 msgstr "  --fill-unreadable n     - preenche setores ilegíveis com o byte n\n"
 
-#: dvdisaster.c:948
+#: dvdisaster.c:967
 msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
 msgstr "  --ignore-fatal-sense    - continua a leitura após condição de erro possivelmente fatal\n"
 
-#: dvdisaster.c:949
+#: dvdisaster.c:968
 msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
 msgstr ""
 
-#: dvdisaster.c:950
+#: dvdisaster.c:969
 msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
 msgstr "  --internal-rereads n    - o dispositivo pode tentar n re-leituras antes de reportar  um erro\n"
 
-#: dvdisaster.c:951
+#: dvdisaster.c:970
 msgid "  --medium-info          - print info about medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:952
+#: dvdisaster.c:971
+msgid "  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"
+msgstr ""
+
+#: dvdisaster.c:972
 msgid "  --no-progress          - do not print progress information\n"
 msgstr ""
 
-#: dvdisaster.c:953
+#: dvdisaster.c:973
 msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
 msgstr ""
 
-#: dvdisaster.c:954
+#: dvdisaster.c:974
 msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
 msgstr ""
 
-#: dvdisaster.c:955
+#: dvdisaster.c:975
 msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
 msgstr "  --raw-mode n            - modo para leitura de mídia CD em modo raw (20 ou 21)\n"
 
-#: dvdisaster.c:956
+#: dvdisaster.c:976
 msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
 msgstr "  --read-attempts n-m     - tenta de n a m leituras em um setor defeituoso\n"
 
-#: dvdisaster.c:957
+#: dvdisaster.c:977
 msgid "  --read-medium n        - read the whole medium up to n times\n"
 msgstr "  --read-medium n         - faz uma leitura em modo raw, se possível\n"
 
-#: dvdisaster.c:958
+#: dvdisaster.c:978
 msgid "  --read-raw             - performs read in raw mode if possible\n"
 msgstr ""
 
-#: dvdisaster.c:959
+#: dvdisaster.c:979
 msgid "  --regtest              - tweaks output for compatibility with regtests\n"
 msgstr ""
 
-#: dvdisaster.c:960
+#: dvdisaster.c:980
 msgid "  --resource-file p      - get resource file from given path\n"
 msgstr ""
 
-#: dvdisaster.c:961
+#: dvdisaster.c:981
 msgid "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 msgstr "  --speed-warning n       - mostra um aviso se a velocidade variar mais do que n porcento\n"
 
-#: dvdisaster.c:962
+#: dvdisaster.c:982
 msgid "  --spinup-delay n       - wait n seconds for drive to spin up\n"
 msgstr "  --spinup-delay n        - aguarda n segundos para que o drive gire\n"
 
-#: dvdisaster.c:966
+#: dvdisaster.c:986
 msgid "Debugging options (purposefully undocumented and possibly harmful)\n"
 msgstr "Opções de depuração (propositalmente não-documentadas e possivelmente perigosas)\n"
 
-#: dvdisaster.c:967
+#: dvdisaster.c:987
 msgid "  --debug           - enables the following options\n"
 msgstr "  --debug           - habilita as opções seguintes\n"
 
-#: dvdisaster.c:968
+#: dvdisaster.c:988
 msgid "  --byteset s,i,b   - set byte i in sector s to b\n"
 msgstr "  --byteset s,i,b   - define o byte i no setores s ao b\n"
 
-#: dvdisaster.c:969
+#: dvdisaster.c:989
 msgid "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 msgstr "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 
-#: dvdisaster.c:970
+#: dvdisaster.c:990
 msgid "  --compare-images a,b  - compare sectors in images a and b\n"
 msgstr "  --compare-images a,b  - compara os setores nas imagens a e b\n"
 
-#: dvdisaster.c:971
+#: dvdisaster.c:991
 msgid "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
 msgstr "  --copy-sector a,n,b,m - copia o setor n da imagem a para o setor m da imagem b\n"
 
-#: dvdisaster.c:972
+#: dvdisaster.c:992
 msgid "  --erase sector    - erase the given sector\n"
 msgstr "  --erase setor     - apaga o setor escolhido\n"
 
-#: dvdisaster.c:973
+#: dvdisaster.c:993
 msgid "  --erase n-m       - erase sectors n - m, inclusively\n"
 msgstr "  --erase n-m       - apaga os setores n a m (inclusivo)\n"
 
-#: dvdisaster.c:974
+#: dvdisaster.c:994
 msgid "  --fixed-speed-values - output fixed speed values for better output diffing\n"
 msgstr ""
 
-#: dvdisaster.c:975
+#: dvdisaster.c:995
+msgid "  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"
+msgstr ""
+
+#: dvdisaster.c:996
 msgid "  --marked-image n  - create image with n marked random sectors\n"
 msgstr "  --marked-image a,b  - mescla a imagem a com a b (a recebe os setores de b)\n"
 
-#: dvdisaster.c:976
+#: dvdisaster.c:997
 msgid "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
 msgstr ""
 
-#: dvdisaster.c:977
+#: dvdisaster.c:998
 msgid "  --random-errors e - seed image with (correctable) random errors\n"
 msgstr ""
 
-#: dvdisaster.c:978
+#: dvdisaster.c:999
 msgid "  --random-image n  - create image with n sectors of random numbers\n"
 msgstr "  --random-image n  - cria um arquivo de imagem com n setores de números aleatórios\n"
 
-#: dvdisaster.c:979
+#: dvdisaster.c:1000
 msgid "  --random-seed n   - random seed for built-in random number generator\n"
 msgstr "  --random-seed n   - semente aleatória para o gerador de números aleatórios\n"
 
-#: dvdisaster.c:980
+#: dvdisaster.c:1001
 msgid "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:981
+#: dvdisaster.c:1002
 msgid "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
 msgstr ""
 
-#: dvdisaster.c:982
+#: dvdisaster.c:1003
 msgid "  --screen-shot     - useful for generating screen shots\n"
 msgstr "  --screen-shot     - útil para gerar capturas de tela\n"
 
-#: dvdisaster.c:983
+#: dvdisaster.c:1004
 msgid "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
 msgstr "  --send-cdb arg    - executa o cdb escolhido no drive; para o sistema se usado deforma errada\n"
 
-#: dvdisaster.c:984
+#: dvdisaster.c:1005
 msgid "  --set-version     - set program version for debugging purposes (dangerous!)\n"
 msgstr ""
 
-#: dvdisaster.c:985
+#: dvdisaster.c:1006
 msgid "  --show-header n   - assumes given sector is a ecc header and prints it\n"
 msgstr ""
 
-#: dvdisaster.c:986
+#: dvdisaster.c:1007
 msgid "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 msgstr "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 
-#: dvdisaster.c:987
+#: dvdisaster.c:1008
 msgid "  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"
 msgstr ""
 
-#: dvdisaster.c:988
+#: dvdisaster.c:1009
 #, c-format
 msgid "  --sim-defects n   - simulate n%% defective sectors on medium\n"
 msgstr "  --sim-defects n   - simula n%% setores defeituosos na mídia\n"
 
-#: dvdisaster.c:989
+#: dvdisaster.c:1010
 msgid "  --truncate n      - truncates image to n sectors\n"
 msgstr "  --truncate n      - trunca a imagem para n setores\n"
 
-#: dvdisaster.c:990
+#: dvdisaster.c:1011
 msgid ""
 "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n"
 "\n"
 msgstr "  --zero-unreadable - substitui os marcadores \"setor-ilegível\" por zeros\n"
 
-#: dvdisaster.c:1020
+#: dvdisaster.c:1041
 msgid "Optical drive 52X FW 1.02"
 msgstr "Drive ótico 52X FW 1.02"
 
@@ -3509,12 +3517,12 @@ msgstr ""
 "Impossível gravar no cabeçalho ecc:\n"
 "%s"
 
-#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1430
+#: rs01-create.c:1085 rs02-create.c:1177 rs03-create.c:1446
 #, c-format
 msgid "Ecc generation: 100.0%%\n"
 msgstr "Geração de ecc: 100.0%%\n"
 
-#: rs01-create.c:1086 rs03-create.c:1437
+#: rs01-create.c:1086 rs03-create.c:1453
 #, c-format
 msgid ""
 "Error correction file \"%s\" created.\n"
@@ -3523,7 +3531,7 @@ msgstr ""
 "Arquivo de correção de erros \"%s\" criado.\n"
 "Lembre-se de manter este arquivo em uma mídia confiável.\n"
 
-#: rs01-create.c:1095 rs03-create.c:1466
+#: rs01-create.c:1095 rs03-create.c:1482
 msgid ""
 "The error correction file has been successfully created.\n"
 "Make sure to keep this file on a reliable medium."
@@ -4282,12 +4290,12 @@ msgstr ""
 "\n"
 "O dvdisaster otimiza o acesso à imagem e arquivos de correção de erros mantendo seu próprio cache. O padrão de 32MiB é adequada à maioria dos sistemas."
 
-#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:622
+#: rs02-common.c:580 rs02-common.c:592 rs02-verify.c:649 rs03-common.c:643
 #, c-format
 msgid "Failed seeking to ecc header at %lld: %s\n"
 msgstr "Falha ao buscar no cabeçalho ecc em %lld: %s\n"
 
-#: rs02-common.c:584 rs02-common.c:596 rs03-common.c:626
+#: rs02-common.c:584 rs02-common.c:596 rs03-common.c:647
 #, c-format
 msgid "Failed writing ecc header at %lld: %s\n"
 msgstr "Falha ao gravar no cabeçalho ecc em %lld: %s\n"
@@ -4410,13 +4418,13 @@ msgstr ""
 #: rs02-create.c:1146 rs03-create.c:1409
 #, c-format
 msgid ""
-"Using redundancies below 20%%%% may not give\n"
+"Using redundancies below 20%% may not give\n"
 "the expected data loss protection.\n"
 msgstr ""
-"Usar redundâncias abaixo de 20%%%% pode não dar\n"
+"Usar redundâncias abaixo de 20%% pode não dar\n"
 "a proteção contra perda de dados esperada.\n"
 
-#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1432 rs03-create.c:1460
+#: rs02-create.c:1178 rs02-create.c:1188 rs03-create.c:1448 rs03-create.c:1476
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
@@ -5063,17 +5071,23 @@ msgid ""
 "an option, please create a separate error correction file."
 msgstr ""
 
-#: rs03-create.c:1443
+#: rs03-create.c:1425
+msgid ""
+"BD-R size with no defect management enabled,\n"
+"remember it should you need to repair this image later!\n"
+msgstr ""
+
+#: rs03-create.c:1459
 #, c-format
 msgid "Avg performance: %5.2fs (%5.2fMiB/s) total\n"
 msgstr ""
 
-#: rs03-create.c:1447
+#: rs03-create.c:1463
 #, c-format
 msgid "%5.2fMiB/s average"
 msgstr ""
 
-#: rs03-create.c:1449
+#: rs03-create.c:1465
 #, c-format
 msgid "%d times CPU bound; %d times I/O bound"
 msgstr ""
@@ -6027,8 +6041,8 @@ msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
 "This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-"<b>Patchlevel 1</b> adds support for a full CLI version, BD-R TL/QL,\n"
-"and adds back support of Windows builds.\n"
+"<b>Patchlevel 2</b> adds support for a full CLI version, BD-R TL/QL,\n"
+"a Windows build and an option to produce bigger BD-R RS03 images.\n"
 "See the About box and changelog for more information.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""

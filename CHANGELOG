@@ -1,5 +1,39 @@
 # dvdisaster changelog -*-text-*-
  
+0.79.6.patchlevel-2 30-08-2020 *UNOFFICIAL*
+- fix: Adjust BDXL_QL_SIZE and rollback BD_SL_SIZE to upstream version*
+- feat: add --no-bdr-defect-management to produce bigger augmented images with RS03
+- chore: remove 2 compiler warnings under Linux
+- chore: automatically run regtests under Win32, Win64, Linux64 (regular and CLI-only) on pull requests
+- chore: add a Linux CLI-only static make target
+- chore: fix make parallelism
+- chore: use tags to describe the build
+
+*:BD_SL_SIZE was mistakenly modified in 0.79.6-pl1, we restore the
+  previous upstream value to avoid having several dvdisaster versions
+  in the field with different values set for it.
+
+  If you created an RS03 augmented image with 0.79.6-pl1, you'll still
+  be able to conduct a repair of the image, should it be damaged,
+  by using any 0.79.6 version (with or without patchlevel), using
+  the following additional command-line parameters:
+  dvdisaster -f --debug -n 12219392
+  On the patchlevel versions, this is equivalent to saying:
+  dvdisaster -f --no-bdr-defect-management
+
+  BDXL_QL_SIZE (introduced in pl1) was also adjusted in this version,
+  To repair a damaged BD-R quadruple layer image created by pl1:
+  dvdisaster -f --debug -n 62500864
+  On the patchlevel versions, this is equivalent to saying:
+  dvdisaster -f --no-bdr-defect-management
+
+  The values that were present in pl1 were corresponding to a BD-R
+  burnt without formatting it for defect management first, which enabled
+  more space for parity data. You can still do it if you want, with
+  --no-bdr-defect-management (see manpage), but to follow upstream,
+  the default number of sectors for all BD-R implies that defect
+  management is enabled.
+
 0.79.6.patchlevel-1 20-08-2020 *UNOFFICIAL*
 - This is an UNOFFICIAL version, not from the original author,
   based on the latest available pre-release, 0.79.6.

@@ -127,6 +127,11 @@ Call the configuration script in the usual way:
 
 user@host> ./configure
 
+If you want to build a CLI-only version, which doesn't depend
+on the gtk2 libraries, you can run instead:
+
+user@host> CLI_ONLY=1 ./configure
+
 The script will possibly print some errors about missing libraries.
 Type "configure --help" to learn about pointing configure 
 to the correct path of already installed libraries.

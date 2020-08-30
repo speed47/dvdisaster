@@ -150,6 +150,7 @@ simple-md5sum: md5.c
 	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
 
 version.tex:
+	@test -d $(SRCDIR)/documentation/config || mkdir $(SRCDIR)/documentation/config
 	@echo "\\newcommand{\\projectversion}{$(VERSION)}" >$(SRCDIR)/documentation/config/version.tex
 
 manual: version.tex

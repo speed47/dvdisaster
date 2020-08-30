@@ -390,11 +390,13 @@ int RS03RecognizeImage(Image *image)
 
    /* Easy shot: Locate the ecc header in the image */
 
-   image->eccHeader = FindRS03HeaderInImage(image); 
+   if (!Closure->debugMode || !Closure->ignoreRS03header)
+   { image->eccHeader = FindRS03HeaderInImage(image);
   
-   if(image->eccHeader) 
-   {  free_recognize_context(rc);
-      return TRUE;
+     if(image->eccHeader)
+     {  free_recognize_context(rc);
+        return TRUE;
+     }
    }
 
    /* No exhaustive search on optical media unless explicitly okayed by user */
@@ -417,10 +419,13 @@ int RS03RecognizeImage(Image *image)
    {  if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
       else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX; 
-      else if(image_sectors < BD_SL_SIZE)  layer_size = BD_SL_SIZE/GF_FIELDMAX; 
-      else if(image_sectors < BD_DL_SIZE)  layer_size = BD_DL_SIZE/GF_FIELDMAX;
-      else if(image_sectors < BDXL_TL_SIZE)  layer_size = BDXL_TL_SIZE/GF_FIELDMAX;
-      else                                 layer_size = BDXL_QL_SIZE/GF_FIELDMAX; 
+      else if(image_sectors < BD_SL_SIZE)
+         layer_size = (Closure->noBdrDefectManagement ? BD_SL_SIZE_NODM : BD_SL_SIZE)/GF_FIELDMAX;
+      else if(image_sectors < BD_DL_SIZE)
+         layer_size = (Closure->noBdrDefectManagement ? BD_DL_SIZE_NODM : BD_DL_SIZE)/GF_FIELDMAX;
+      else if(image_sectors < BDXL_TL_SIZE)
+         layer_size = (Closure->noBdrDefectManagement ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE)/GF_FIELDMAX;
+      else layer_size = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE)/GF_FIELDMAX;
    }
 
    Verbose(".. trying layer size %lld\n", layer_size);

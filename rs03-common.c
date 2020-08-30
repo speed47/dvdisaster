@@ -532,13 +532,34 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       lay->mediumCapacity = DVD_SL_SIZE;       /* Single layered DVD */
 	    else if(get_roots(dataSectors, DVD_DL_SIZE) >= 8)
 	       lay->mediumCapacity = DVD_DL_SIZE;       /* Double layered DVD */
-	    else if(get_roots(dataSectors, BD_SL_SIZE) >= 8)
-	       lay->mediumCapacity = BD_SL_SIZE;        /* Single layered BD */
-	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8)
-	       lay->mediumCapacity = BD_DL_SIZE;        /* Double layered BD */
-	    else if(get_roots(dataSectors, BDXL_TL_SIZE) >= 8)
-	       lay->mediumCapacity = BDXL_TL_SIZE;        /* Triple layered BDXL */
-	    else lay->mediumCapacity = BDXL_QL_SIZE;
+	    else if(get_roots(dataSectors, BD_SL_SIZE) >= 8) {
+	       /* Single layered BD */
+	       if (Closure->noBdrDefectManagement)
+	          lay->mediumCapacity = BD_SL_SIZE_NODM;
+	       else
+	          lay->mediumCapacity = BD_SL_SIZE;
+	    }
+	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8) {
+	       /* Double layered BD */
+	       if (Closure->noBdrDefectManagement)
+	          lay->mediumCapacity = BD_DL_SIZE_NODM;
+	       else
+	          lay->mediumCapacity = BD_DL_SIZE;
+	    }
+	    else if(get_roots(dataSectors, BDXL_TL_SIZE) >= 8) {
+	       /* Triple layered BDXL */
+	       if (Closure->noBdrDefectManagement)
+	          lay->mediumCapacity = BDXL_TL_SIZE_NODM;
+	       else
+	          lay->mediumCapacity = BDXL_TL_SIZE;
+	    }
+	    else {
+	       /* Quadruple layered BDXL */
+	       if (Closure->noBdrDefectManagement)
+	           lay->mediumCapacity = BDXL_QL_SIZE_NODM;
+	       else
+	           lay->mediumCapacity = BDXL_QL_SIZE;
+	    }
 	 }
       }
 

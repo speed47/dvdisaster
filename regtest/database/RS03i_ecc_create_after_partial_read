@@ -249,7 +249,7 @@ ndata             = 216
 nroots            = 39 (18.1%)
 
 41 MiB data, 7 MiB ecc (39 roots; 18.1% redundancy).
-* Warning: Using redundancies below 20%% may not give
+* Warning: Using redundancies below 20% may not give
 *          the expected data loss protection.
 CrcBufValid: NOT complete
 Cache allocation: 110592K+12288K+9984K=129M (data+parity+descrambling)
