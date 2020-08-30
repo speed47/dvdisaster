@@ -348,5 +348,14 @@ windist:
 	cp -vr $(MINGWROOT)/lib/gtk-2.0 dist/lib/
 	find dist -type f -name "*.a" -delete
 
+windistcli:
+	rm -rf dist
+	mkdir -p dist/locale
+	for i in libglib-2.0-*.dll libiconv-*.dll libintl-*.dll libpcre-*.dll libwinpthread-*.dll; \
+		do cp -v $(MINGWROOT)/bin/$$i dist/ ; done
+	cp -v dvdisaster.exe dist/
+	cp -vr locale/*/ dist/locale/
+	find dist -type f -name "*.a" -delete
+
 static: dvdisaster
 	$(CC) $(LOPTS) $(OFILES) $(LIBS) -pthread -static -o dvdisaster-static

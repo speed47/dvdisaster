@@ -45,8 +45,8 @@ This version is built on top of the latest upstream version, with the following 
 
 - Most Debian patches have been applied, those specific to Debian have been omitted
 - Windows build supported again, it was dropped upstream a few versions back
-- A Linux CLI-only version is now supported, without depending on gtk (`CLI_ONLY=1 ./configure && make clean && make -j4`)
-- Regression tests confirmed working on Linux64 (normal and CLI-only), Windows32 and Windows64
+- A CLI-only version is now supported, without depending on gtk (`CLI_ONLY=1 ./configure && make clean && make -j4`)
+- Regression tests confirmed working on Linux64, Windows32 and Windows64, for normal and CLI-only builds
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
 
 # Rationale
