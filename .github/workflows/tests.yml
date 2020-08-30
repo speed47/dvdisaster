@@ -40,7 +40,7 @@ jobs:
     - name: regression tests
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
 
-  win64:
+  win64-gui:
     runs-on: windows-2016
 
     defaults:
@@ -66,7 +66,7 @@ jobs:
     - name: regression tests
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
 
-  win32:
+  win32-gui:
     runs-on: windows-2016
 
     defaults:
@@ -83,6 +83,58 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       run: ./configure
+    - name: make
+      run: nproc && make -j$(nproc)
+    - name: check executability
+      run: ./dvdisaster.exe --version
+    - name: check executable
+      run: file dvdisaster.exe && file dvdisaster.exe | grep -q '386, for MS Windows'
+    - name: regression tests
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+
+  win64-cli:
+    runs-on: windows-2016
+
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: false
+        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc
+    - run: git config --global core.autocrlf input
+      shell: bash
+    - uses: actions/checkout@v2
+    - name: configure
+      run: env CLI_ONLY=1 ./configure
+    - name: make
+      run: nproc && make -j$(nproc)
+    - name: check executability
+      run: ./dvdisaster.exe --version
+    - name: check executable
+      run: file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
+    - name: regression tests
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+
+  win32-cli:
+    runs-on: windows-2016
+
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW32
+        update: false
+        install: git diffutils make pkg-config mingw-w64-i686-glib2 mingw-w64-i686-gcc
+    - run: git config --global core.autocrlf input
+      shell: bash
+    - uses: actions/checkout@v2
+    - name: configure
+      run: env CLI_ONLY=1 ./configure
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executability
