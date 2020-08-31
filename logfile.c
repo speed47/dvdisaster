@@ -29,7 +29,11 @@
 
 void DefaultLogFile()
 {
+#ifndef SYS_MINGW
    Closure->logFile = g_strdup_printf("%s/.dvdisaster.log", g_getenv("HOME"));
+#else
+   Closure->logFile = g_strdup_printf("%s/dvdisaster.log", Closure->homeDir); /* portable mode */
+#endif
 }
 
 /*
