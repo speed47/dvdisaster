@@ -28,6 +28,33 @@
  #define Verbose(format, ...)
 #endif
 
+
+#ifdef SYS_MINGW
+#include <windows.h>
+
+/* safety margin in case we're getting UTF path names */
+#define WIN_MAX_PATH (4*MAX_PATH)
+
+/*
+ * Find the place of our executable
+ * (Windows only)
+ */
+
+static char* get_exe_path()
+{  char path[WIN_MAX_PATH];
+   int n = GetModuleFileNameA(NULL, path, WIN_MAX_PATH);
+
+   if(n>0 && n<WIN_MAX_PATH-1)
+   {  char *backslash = strrchr(path, '\\');
+
+      if(backslash) *backslash=0;
+        return g_strdup(path);
+   }
+
+   return g_strdup(".");
+}
+#endif
+
 /***
  *** Locate the binary and documentation directory
  ***/
@@ -36,9 +63,9 @@ static void get_base_dirs()
 {  
    /*** Unless completely disabled through a configure option, the
 	source directory is supposed to hold the most recent files,
-	so try this first. */
+	so try this first (never under Windows). */
 
-#ifdef WITH_EMBEDDED_SRC_PATH_YES
+#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
    if(DirStat(SRCDIR))
    {  Closure->binDir = g_strdup(SRCDIR);
       Closure->docDir = g_strdup_printf("%s/documentation",SRCDIR);
@@ -50,26 +77,40 @@ static void get_base_dirs()
    /*** Otherwise try the installation directory. 
 	On Unices this is a hardcoded directory. */
 
-#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_KFREEBSD) || \
-    defined(SYS_NETBSD) || defined(SYS_HURD) || defined(SYS_UNKNOWN)
+#ifndef SYS_MINGW
    if(DirStat(BINDIR))
      Closure->binDir = g_strdup(BINDIR);
 
    if(DirStat(DOCDIR))
      Closure->docDir = g_strdup(DOCDIR);
    Verbose("Using hardcoded BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
+#else
+   Closure->binDir = get_exe_path();
+   /* We'll just put the 2 PDF in the same dir, portable mode */
+   Closure->docDir = g_strdup(Closure->binDir);
+   Verbose("Using path from get_exe_path() = %s\n", Closure->binDir);
 #endif
+
 
    /*** The location of the dotfile depends on the operating system. 
 	Under Unix the users home directory is used. */
 
-#ifdef WITH_EMBEDDED_SRC_PATH_YES
+#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
 find_dotfile:
 #endif /* WITH_EMBEDDED_SRC_PATH_YES */
    
+#ifndef SYS_MINGW
    Closure->homeDir = g_strdup(g_getenv("HOME"));
+#else
+   Closure->homeDir = g_strdup(Closure->binDir); /* portable mode */
+#endif
    if(!Closure->dotFile) /* may have been set by the --resource-file option */
+#ifndef SYS_MINGW
       Closure->dotFile = g_strdup_printf("%s/.dvdisaster", Closure->homeDir);
+#else
+      /* Windows doesn't really love dotfiles */
+      Closure->dotFile = g_strdup_printf("%s/dvdisaster.cfg", Closure->homeDir);
+#endif
 
    Verbose("\nUsing file locations:\n"
 	   "- Homedir: %s\n"
