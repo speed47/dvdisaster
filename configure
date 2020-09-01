@@ -3,8 +3,8 @@
 # Load the shell functions needed for the rest of this script.
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
-REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I." 
-RECOMMENDED_CFLAGS="-DPATCHLEVEL=2 -O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
+REQUIRED_CFLAGS="-DPATCHLEVEL=3 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I."
+RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
 DEBUG_CFLAGS="-ggdb -Wall"
 
 if [ "$CLI_ONLY" = 1 ]; then
