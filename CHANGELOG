@@ -1,5 +1,9 @@
 # dvdisaster changelog -*-text-*-
- 
+
+0.79.6.patchlevel-3 01-09-2020 *UNOFFICIAL*
+- fix: windows: flavor in build version was always 'UNKNOWN'
+- fix: windows: the config & log files were not written properly
+
 0.79.6.patchlevel-2 30-08-2020 *UNOFFICIAL*
 - fix: Adjust BDXL_QL_SIZE and rollback BD_SL_SIZE to upstream version*
 - feat: add --no-bdr-defect-management to produce bigger augmented images with RS03
