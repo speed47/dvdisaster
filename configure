@@ -3,21 +3,19 @@
 # Load the shell functions needed for the rest of this script.
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
+BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build"
 REQUIRED_CFLAGS="-DPATCHLEVEL=3 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I."
 RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
 DEBUG_CFLAGS="-ggdb -Wall"
 
 if [ "$CLI_ONLY" = 1 ]; then
   REQUIRED_CFLAGS="-DCLI $REQUIRED_CFLAGS"
-  echo '#define FLAVOR CLI' > build.h
-else
-  echo '#define FLAVOR GUI' > build.h
 fi
 
 CFG_USE_CYGWIN="no"   # do not change
 
 if test -e $BASH_BASED_CONFIGURE; then
-   source $BASH_BASED_CONFIGURE
+   source $BASH_BASED_CONFIGURE $BASH_BASED_CONFIGURE_OPTS
 else
    echo "Could not find $BASH_BASED_CONFIGURE"
    echo "You're probably not in the right directory."
@@ -78,10 +76,10 @@ PRINT_MESSAGE "\nChecking for functions and symbols..."
 CHECK_FUNCTION mmap
 
 if ! CHECK_FUNCTION getopt_long ; then
-  if ! test -e getopt.h || ! test -e getopt.c ; then
+  if ! test -e src/getopt.h || ! test -e src/getopt.c ; then
     echo " * getopt_long is missing. You can provide one by simply"
     echo " * copying getopt.c, getopt1.c and getopt.h from the GNU"
-    echo " * C library into this directory."
+    echo " * C library into the src/ directory."
     exit 1
   fi
 fi
@@ -157,17 +155,17 @@ fi
 
 PRINT_MESSAGE "\nCollecting source files:"
 
-rm -f conftest.c method-link.c
-cfiles="method-link.c"
+rm -f src/conftest.c src/method-link.c
+cfiles="src/method-link.c"
 ofiles="$BUILDTMP/method-link.o"
 
-for cfile in *.c; do
+for cfile in src/*.c; do
   if [ "$CLI_ONLY" = 1 ]; then
     grep -q 'DVDISASTER_GUI_FILE' "$cfile" && continue
   fi
   cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
   cfiles="$cfiles $cfile"
-  ofiles="$ofiles $BUILDTMP/$cfile_prefix.o"
+  ofiles="$ofiles $BUILDTMP/$(basename $cfile_prefix.o)"
   echo -n " $cfile_prefix"
 done
 
@@ -175,37 +173,37 @@ echo
 echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
 echo "CFG_OFILES = $ofiles" >> Makefile.config
 if [ "$CLI_ONLY" != 1 ]; then
-  echo "ICONS = inlined-icons.h" >> Makefile.config
+  echo "ICONS = src/inlined-icons.h" >> Makefile.config
 fi
 
 # Create the method wrapper
 
 PRINT_MESSAGE "\nCollecting methods:"
 
-cat >> method-link.c <<EOF
+cat >> src/method-link.c <<EOF
 /* Automatically generated wrapper for registering the methods */
  
 void BindMethods(void)
 {
 EOF
 
-for method in ecc-*.c; do
-  method_name=`echo $method | sed -e 's/\.c//' -e 's/ecc-//'`
+for method in src/ecc-*.c; do
+  method_name=`echo $(basename $method) | sed -e 's/\.c//' -e 's/ecc-//'`
   method_prefix="$method_prefix $method_name"
   echo -n " $method_name"
 done
 
 for method in $method_prefix; do
-  echo "   void register_${method}(void);" >> method-link.c
+  echo "   void register_${method}(void);" >> src/method-link.c
 done
 
-echo >> method-link.c
+echo >> src/method-link.c
 
 for method in $method_prefix; do
-  echo "   register_${method}();" >> method-link.c
+  echo "   register_${method}();" >> src/method-link.c
 done
 
-echo "}" >> method-link.c
+echo "}" >> src/method-link.c
 echo 
 
 # Okay, hopefully we've got everything together now.

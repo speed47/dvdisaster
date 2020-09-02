@@ -7,7 +7,7 @@ cat > Makefile <<EOF
 
 EOF
 
-for i in ../*.c; do
+for i in ../src/*.c; do
   cfiles="$cfiles $i"
   nopath=`echo $i | sed -e 's/..\///'`
   cfiles2="$cfiles2 $nopath"
