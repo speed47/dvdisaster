@@ -67,29 +67,29 @@ OFILES = $(CFG_OFILES)
 # Compilation related
 ######################################################################
 
-.PHONY : all help show locale build.h
+.PHONY : all help show locale src/build.h
 
-${BUILDTMP}/%.o : %.c
+${BUILDTMP}/%.o : src/%.c
 	@echo "Compiling:" $?
 	@$(CC) $(COPTS) -c $? -o $@
 
 all: dvdisaster
 
-${BUILDTMP}/build.o : build.c build.h
-	@echo "Compiling:" build.o
-	@$(CC) $(COPTS) -c build.c -o $@
+${BUILDTMP}/build.o : src/build.c src/build.h
+	@echo "Compiling:" src/build.o
+	@$(CC) $(COPTS) -c src/build.c -o $@
 
 # Building the dvdisaster binary
 
-build.h:
-	@echo "Updating:" build.h
-	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/build.h
+src/build.h:
+	@echo "Updating:" src/build.h
+	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/src/build.h
 
-dvdisaster: $(ICONS) $(OFILES) build.h
+dvdisaster: $(ICONS) $(OFILES) src/build.h
 	@echo "Linking  : dvdisaster"
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
-	then windres -v winres.rc -O coff -o winres.o >/dev/null ; \
-	     $(CC) $(LOPTS) $(OFILES) $(LIBS) winres.o -o dvdisaster ; \
+	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null ; \
+	     $(CC) $(LOPTS) $(OFILES) $(LIBS) ${BUILDTMP}/winres.o -o dvdisaster ; \
 	else $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
 	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
@@ -98,47 +98,47 @@ dvdisaster: $(ICONS) $(OFILES) build.h
 	else $(MAKE) --no-print-directory -C locale; \
 	fi
 
-inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png
-	@gdk-pixbuf-csource --raw --name=dvdisaster_read     icons/read.png      >inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_create   icons/create.png   >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_scan     icons/scan.png     >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_fix      icons/fix.png      >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_verify   icons/verify.png   >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc icons/open-ecc.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_open_img icons/open-img.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_cd icons/cd.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help icons/gtk-help.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index icons/gtk-index.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit icons/gtk-quit.png >>inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop icons/gtk-stop.png >>inlined-icons.h
+src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png
+	@gdk-pixbuf-csource --raw --name=dvdisaster_read     icons/read.png      >src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_create   icons/create.png   >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_scan     icons/scan.png     >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_fix      icons/fix.png      >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_verify   icons/verify.png   >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc icons/open-ecc.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_open_img icons/open-img.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_cd icons/cd.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help icons/gtk-help.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index icons/gtk-index.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit icons/gtk-quit.png >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop icons/gtk-stop.png >>src/inlined-icons.h
 
-$(BUILDTMP)/help-dialogs.o: help-dialogs.c simple-md5sum
+$(BUILDTMP)/help-dialogs.o: src/help-dialogs.c simple-md5sum
 	@if test -e fingerprints.md5; \
-	then if test -e help-dialogs.h; then rm help-dialogs.h; fi; \
-	     mv inlined-icons.h inlined-icons.saved; \
-	     mv build.h build.saved; \
-	     ./simple-md5sum -b *.h *.c | sort -k2 >tmp.md5; \
+	then if test -e src/help-dialogs.h; then rm src/help-dialogs.h; fi; \
+	     mv src/inlined-icons.h src/inlined-icons.saved; \
+	     mv src/build.h src/build.saved; \
+	     ./simple-md5sum -b src/*.h src/*.c | sort -k2 >tmp.md5; \
 	     sort -k2 < fingerprints.md5 >tmp2.md5; \
-	     mv inlined-icons.saved inlined-icons.h; \
-	     mv build.saved build.h; \
+	     mv src/inlined-icons.saved src/inlined-icons.h; \
+	     mv src/build.saved src/build.h; \
 	     if ! cmp tmp2.md5 tmp.md5 >/dev/null; \
-	     then echo "#define MODIFIED_SOURCE 1" >> help-dialogs.h; \
-	     else echo "#define UNMODIFIED_SOURCE 1" >> help-dialogs.h; \
+	     then echo "#define MODIFIED_SOURCE 1" >> src/help-dialogs.h; \
+	     else echo "#define UNMODIFIED_SOURCE 1" >> src/help-dialogs.h; \
 	     fi; \
 	     rm tmp.md5 tmp2.md5; \
-	else echo "#define MODIFIED_SOURCE 1" >> help-dialogs.h; \
+	else echo "#define MODIFIED_SOURCE 1" >> src/help-dialogs.h; \
 	fi
-	@echo "Compiling:" help-dialogs.c
-	@$(CC) $(COPTS) -c help-dialogs.c -o $(BUILDTMP)/help-dialogs.o
+	@echo "Compiling:" src/help-dialogs.c
+	@$(CC) $(COPTS) -c src/help-dialogs.c -o $(BUILDTMP)/help-dialogs.o
 
-$(BUILDTMP)/rs-encoder-sse2.o: rs-encoder-sse2.c
-	@echo "Compiling:" rs-encoder-sse2.c
-	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c rs-encoder-sse2.c -o $(BUILDTMP)/rs-encoder-sse2.o
+$(BUILDTMP)/rs-encoder-sse2.o: src/rs-encoder-sse2.c
+	@echo "Compiling:" src/rs-encoder-sse2.c
+	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c src/rs-encoder-sse2.c -o $(BUILDTMP)/rs-encoder-sse2.o
 
-$(BUILDTMP)/rs-encoder-altivec.o: rs-encoder-altivec.c
-	@echo "Compiling:" rs-encoder-altivec.c
-	@$(CC) $(ALTIVEC_OPTIONS) $(COPTS) -c rs-encoder-altivec.c -o $(BUILDTMP)/rs-encoder-altivec.o
+$(BUILDTMP)/rs-encoder-altivec.o: src/rs-encoder-altivec.c
+	@echo "Compiling:" src/rs-encoder-altivec.c
+	@$(CC) $(ALTIVEC_OPTIONS) $(COPTS) -c src/rs-encoder-altivec.c -o $(BUILDTMP)/rs-encoder-altivec.o
 
 locale:
 	@$(MAKE) --no-print-directory -C locale
@@ -146,8 +146,8 @@ locale:
 untranslated:
 	@$(MAKE) --no-print-directory -C locale check-untranslated
 
-simple-md5sum: md5.c
-	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
+simple-md5sum: src/md5.c
+	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM src/md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
 
 version.tex:
 	@test -d $(SRCDIR)/documentation/config || mkdir $(SRCDIR)/documentation/config
@@ -304,7 +304,7 @@ distclean: clean
 clean:
 	@echo "Removing rebuildable files"
 	@rm -rf *.o $(BUILDTMP)/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
-	@rm -f inlined-icons.h help-dialogs.h
+	@rm -f src/inlined-icons.h src/help-dialogs.h
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;
@@ -317,7 +317,7 @@ clean:
 	    $(MAKE) --no-print-directory simple-md5sum; \
 	    echo "[simple-md5sum (re-)built]"; \
 	  fi; \
-	  ./simple-md5sum -b *.h *.c >fingerprints.md5 ;\
+	  ./simple-md5sum -b src/*.h src/*.c >fingerprints.md5 ;\
 	  mv build.saved build.h; \
 	fi
 	@rm -f simple-md5sum
