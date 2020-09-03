@@ -34,7 +34,7 @@ messages.pot: \$(CFILES)
 	@cd ..; xgettext --no-wrap -cTRANSLATORS: -o locale/messages.pot -k_ -k_utf \$(CFILES_NP)
 
 clean:
-	rm -f messages.pot
+	@rm -f messages.pot
 
 EOF
 
