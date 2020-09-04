@@ -652,6 +652,8 @@ static void open_and_determine_mode(read_closure *rc)
 
       rc->rs01LayerSectors = (rc->ei->sectors+rc->eh->dataBytes-1)/rc->eh->dataBytes;
 
+      PrintLog(_("%s-type ECC found\n"), "RS01");
+
 #ifndef CLI
       SetAdaptiveReadMinimumPercentage((1000*(rc->eh->dataBytes-rc->eh->eccBytes))/rc->eh->dataBytes);
 #endif
@@ -665,6 +667,8 @@ static void open_and_determine_mode(read_closure *rc)
 #ifndef CLI
       SetAdaptiveReadMinimumPercentage((1000*rc->lay->ndata)/255);
 #endif
+
+      PrintLog(_("%s-type ECC found\n"), "RS02");
 
       if(Closure->version < rc->eh->neededVersion)
 	 PrintCLI(_("* Warning: This image requires dvdisaster-%d.%d!\n"
@@ -689,6 +693,24 @@ static void open_and_determine_mode(read_closure *rc)
 				  s, sinv, slice, idx);
 	 }
 	 Verbose("RS02SliceIndex() verification finished.\n");
+      }
+   }
+   else
+   if(rc->medium->eccHeader && !strncmp((char*)rc->medium->eccHeader->method,"RS03",4))
+   {  int answer;
+      PrintLog(_("%s-type ECC found\n"), "RS03");
+      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL, "%s",
+			    _("Adaptive reading has not been adapted yet to handle RS03-augmented images properly.\n"
+			      "To quote the original author: \"behaviour with RS03 is unpredictable and undefined\".\n"
+			      "You should cancel and use the linear reading strategy instead. Continue at your own risk.\n"));
+
+      if(!answer)
+      {
+#ifndef CLI
+         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+#endif
+	 rc->earlyTermination = FALSE;
+	 cleanup((gpointer)rc);
       }
    }
 
@@ -1451,13 +1473,16 @@ void ReadMediumAdaptive(gpointer data)
 
    /* Please note: Commenting the follwing Stop() out will provide
       adaptive reading for RS01 and RS02, but behaviour with RS03
-      is unpredictable und undefind. Therefore feel free to re-enable
+      is unpredictable and undefined. Therefore feel free to re-enable
       adaptive reading for your own use, but do not distibute such
       binaries to unsuspecting users.
       Adaptive reading will be re-introduced for all codecs
       in one of the next versions. */
 
-#if 1
+    /* Unofficial version addendum: we enable adaptative reading, but
+       we warn the user if we find RS03 data (see open_and_determine_mode()) */
+
+#if 0
    Stop(_("Adaptive reading is unavailable in this version.\n"
 	  "It will be re-introduced in one of the next versions."));
 #endif
