@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: non-regression tests
 
 on: [pull_request]
 

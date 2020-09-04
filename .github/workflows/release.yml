@@ -1,8 +1,8 @@
+name: autobuild
+
 on:
   release:
     types: [published]
-
-name: Upload Release Asset
 
 jobs:
   linux64-cli:
@@ -23,7 +23,7 @@ jobs:
 
     - name: check executable
       run: |
-        ./dvdisaster --version && ./dvdisaster --version | grep -q -e UNKNOWN -e dirty || true
+        ./dvdisaster --version && ./dvdisaster --version | grep -q dirty || true
         file dvdisaster && file dvdisaster | grep -q 'ELF 64' && file dvdisaster | grep -q 'statically linked'
 
     - name: build dist
@@ -79,7 +79,7 @@ jobs:
 
     - name: check executable
       run: |
-        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q -e UNKNOWN -e dirty || true
+        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q dirty || true
         file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
 
     - name: build dist
@@ -146,7 +146,7 @@ jobs:
 
     - name: check executable
       run: |
-        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q -e UNKNOWN -e dirty || true
+        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q dirty || true
         file dvdisaster.exe && file dvdisaster.exe | grep -q '386, for MS Windows'
 
     - name: build dist
@@ -215,7 +215,7 @@ jobs:
 
     - name: check executable
       run: |
-        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q -e UNKNOWN -e dirty || true
+        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q dirty || true
         file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
 
     - name: build dist
@@ -278,7 +278,7 @@ jobs:
 
     - name: check executable
       run: |
-        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q -e UNKNOWN -e dirty || true
+        ./dvdisaster.exe --version && ./dvdisaster --version | grep -q dirty || true
         file dvdisaster.exe && file dvdisaster.exe | grep -q '386, for MS Windows'
 
     - name: build dist

@@ -3,7 +3,7 @@ build=$(grep BUILDNUM $1 2>/dev/null | cut -d\  -f3)
 build=$((build+1))
 cat >$1 <<EOF
 #ifdef CLI
-#define FLAVOR CLI
+#define FLAVOR NOGUI
 #else
 #define FLAVOR GUI
 #endif
