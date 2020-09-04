@@ -20,7 +20,7 @@ jobs:
     - name: check executable
       run: file dvdisaster && file dvdisaster | grep -q 'ELF 64'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
 
   linux64-cli:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
     - name: check executable
       run: file dvdisaster && file dvdisaster | grep -q 'ELF 64'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
 
   win64-gui:
     runs-on: windows-2016
@@ -64,7 +64,7 @@ jobs:
     - name: check executable
       run: file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
 
   win32-gui:
     runs-on: windows-2016
@@ -90,7 +90,7 @@ jobs:
     - name: check executable
       run: file dvdisaster.exe && file dvdisaster.exe | grep -q '386, for MS Windows'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
 
   win64-cli:
     runs-on: windows-2016
@@ -116,7 +116,7 @@ jobs:
     - name: check executable
       run: file dvdisaster.exe && file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
 
   win32-cli:
     runs-on: windows-2016
@@ -142,4 +142,4 @@ jobs:
     - name: check executable
       run: file dvdisaster.exe && file dvdisaster.exe | grep -q '386, for MS Windows'
     - name: regression tests
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh

@@ -4,7 +4,7 @@
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build"
-REQUIRED_CFLAGS="-DPATCHLEVEL=3 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
+REQUIRED_CFLAGS="-DPATCHLEVEL=4 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
 RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
 DEBUG_CFLAGS="-ggdb -Wall"
 

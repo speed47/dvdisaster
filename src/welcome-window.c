@@ -81,9 +81,9 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
 	 AboutText(box, _("<b>Unofficial version.</b>\n\n"
 			  "This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-			  "<b>Patchlevel 3</b> adds support for a full CLI version, BD-R TL/QL,\n"
-			  "a Windows build and an option to produce bigger BD-R RS03 images.\n"
-			  "See the About box and changelog for more information.\n"
+			  "We add support for a full CLI version, BD-R TL/QL, a Windows build, add an option to\n"
+			  "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
+			  "Please refer to the changelog for more information.\n"
 			  "The warning message from the pre-release version is retained below.\n"));
 
 	 AboutText(box, _("<i>Please note:</i>\n"
