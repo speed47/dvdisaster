@@ -83,6 +83,10 @@ ${BUILDTMP}/build.o : src/build.c src/build.h
 	@echo "Compiling:" src/build.o
 	@$(CC) $(COPTS) -c src/build.c -o $@
 
+${BUILDTMP}/icon-factory.o : src/icon-factory.c src/inlined-icons.h
+	@echo "Compiling:" src/icon-factory.o
+	@$(CC) $(COPTS) -c src/icon-factory.c -o $@
+
 # Building the dvdisaster binary
 
 dvdisaster: $(ICONS) $(OFILES)
