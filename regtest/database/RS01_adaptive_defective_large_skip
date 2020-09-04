@@ -86,7 +86,7 @@ try_sector: trying sector 20850
 try_sector: no cookie, skipping current modulo
 RS02Recognize: skipping exhaustive RS02 search
 ...trying RS03
-RS03Recognize: medium sim-cd
+RS03RecognizeImage: medium sim-cd
 FindRS03HeaderInImage: medium sim-cd
 RS03RecognizeImage: skipping exhaustive RS03 search
 ...no augmented image detected.

@@ -9,6 +9,7 @@ Device: sim-cd, Simulated CD drive 1.00
 Using READ CD.
 Medium "Random Image": CD-R mode 1, 21044 sectors, created 16-07-2006.
 
+RS01-type ECC found
 Adaptive reading: Trying to collect enough data for error correction.
 * Warning: Medium contains 44 sectors more as recorded in the .ecc file
 *          (Medium: 21044 sectors; expected from .ecc file: 21000 sectors).

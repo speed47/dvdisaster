@@ -441,7 +441,7 @@ fi
 # Tests whether CRC and ECC information is taken from the read process,
 # not the wrong ecc file.
 
-if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
+if try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
   cp $MASTERISO $SIMISO
 
   $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE-777)) --random-seed 1337 >>$LOGFILE 2>&1
@@ -1477,9 +1477,6 @@ fi
 ### Reading tests (adaptive)
 
 REGTEST_SECTION="Reading tests (adaptive)"
-
-echo "Currently not enabled!"
-exit $nbfailed
 
 # Read good image with error correction data available
 
