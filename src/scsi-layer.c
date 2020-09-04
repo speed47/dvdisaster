@@ -922,13 +922,17 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
 	 }
 
 	 dh->typeDescr = g_strdup("DVD-ROM");
-	 dh->subType = UNSUPPORTED;
+         /* this also happens to be the detected medium type for the Windows 10 iso mounter,
+            if you want to use it to test dvdisaster, use --permissive-medium-type */
+         if (!Closure->permissiveMediumType)
+	    dh->subType = UNSUPPORTED;
 	 break;
       }
 
       default: 
 	dh->typeDescr = g_strdup_printf("DVD book type 0x%02x",(phy_info4>>4) & 0x0f); 
-	dh->subType = UNSUPPORTED;
+        if (!Closure->permissiveMediumType)
+	   dh->subType = UNSUPPORTED;
 	break;
    }
    

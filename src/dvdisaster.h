@@ -265,6 +265,7 @@ typedef struct _GlobalClosure
    int fixedSpeedValues;/* output fixed speed reading to make comparing debugging output easier */  
    int noBdrDefectManagement;/* if true, enable use of the BD*_NODM sizes, default: false */
    int ignoreRS03header; /* if true, ignore the RS03 header when repairing, forcing a full search (debug only) */
+   int permissiveMediumType; /* if true, don't bail out on some UNSUPPORTED medium types (debug only) */
    char *homeDir;       /* path to users home dir */
    char *dotFile;       /* path to .dvdisaster file */
    char *logFile;       /* path to logfile */
