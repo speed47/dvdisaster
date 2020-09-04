@@ -18,6 +18,8 @@ This version is built on top of the latest upstream version, with the following 
 - Regression tests confirmed working on Linux64, Windows32 and Windows64, for normal and CLI-only builds
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
 
+For more information please refer to the [CHANGELOG](CHANGELOG).
+
 ## 3 available protection modes ("codecs")
 
 **RS01** creates error correction files which are stored separately from the image they belong to.
@@ -34,8 +36,6 @@ augmented images, with the following added features:
 - RS03 is more robust, but also more restrictive: The augmented image must completely fill the medium now while the size of augmented images can be freely chosen in RS02.
   The changes for parallel computation and higher robustness make RS03 a bit less space efficient,
   e.g. RS03 error correction data has slighly less error correction capacity than its RS01/RS02 counterparts on images with equal size.
-
-For more information please refer to the [CHANGELOG](CHANGELOG).
 
 # Rationale
 
