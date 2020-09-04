@@ -730,7 +730,7 @@ fi
 
 # Fix image containing 137 extra bytes
 
-if false && try "trying to fix image with 137 extra bytes" fix_image_plus137; then
+if try "trying to fix image with 137 extra bytes" fix_image_plus137; then
   # Test possibly broken on upstream 0.79.6, forcefully ignoring
 
   cp $ISO_PLUS137 $TMPISO
@@ -743,7 +743,7 @@ fi
 # error in the zero-padded area following the 137 bytes.
 # Both shall be corrected.
 
-if false && try "trying to fix image with error in 137 extra bytes" fix_image_error_in_plus137; then
+if try "trying to fix image with error in 137 extra bytes" fix_image_error_in_plus137; then
   # Test possibly broken on upstream 0.79.6, forcefully ignoring
 
   cp $ISO_PLUS137 $TMPISO
@@ -1774,9 +1774,6 @@ fi
 ### Reading tests (adaptive)
 
 REGTEST_SECTION="Reading tests (adaptive)"
-
-echo "Currently not enabled!"
-exit $nbfailed
 
 # Read complete / optimal image
 

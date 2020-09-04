@@ -28,6 +28,8 @@ if ! $MD5SUM $RNDSEQ >/dev/null 2>&1; then
     MD5SUM=../simple-md5sum
 fi
 
+nbfailed=0
+
 # Assemble sed expressions for removal of variable output contents
 
 SED_REMOVE_ISO_DIR="([a-zA-Z]:/[a-zA-Z0-9/]+)?${ISODIR}/"
@@ -44,12 +46,13 @@ fi
 # Usage
 
 if test "$1" == "--help" || test "$1" == "-h"; then
-    echo "Usage: $0 [gui] [all|cont <test case>]"
+    echo "Usage: $0 [gui] [all|[cont|only] <test case>]"
     exit 1;
 fi
 
 doall="no"
 cont_at="false"
+only_this_one="false"
 gui_mode="false"
 
 param=($*)
@@ -59,6 +62,7 @@ case "${param[0]}" in
 	gui_mode="true"
 	param[0]="${param[1]}"
 	param[1]="${param[2]}"
+	param[2]="${param[3]}"
 	;;
 esac
 	
@@ -68,6 +72,9 @@ case "${param[0]}" in
 	;;
     cont)
 	cont_at="${param[1]}"
+	;;
+    only)
+	only_this_one="${param[1]}"
 	;;
 esac
 
@@ -118,9 +125,19 @@ function try()
        cont_at="false"
    fi
 
+   if test "$only_this_one" != "false"; then
+       if test "$only_this_one" != "${CODEC_PREFIX}_$2"; then
+           return 1
+       elif test "$only_this_one" == "done_please_exit"; then
+           exit $nbfailed
+       else
+           only_this_one="done_please_exit"
+       fi
+   fi
+
    doit=$(echo $doit | cut -d\  -f 2) 
 
-   if test $doall = "yes" || test $doit = "yes"; then
+   if test $doall = "yes" || test $doit = "yes" || test $only_this_one != "false"; then
        # Clean up temporary files
        if test -n "$TMPISO" && test -f "$TMPISO"; then
 	   rm -f $TMPISO
@@ -222,7 +239,9 @@ function run_regtest()
 
      filter=cat
      echo "$options" | grep -qw SORTED && filter=sort
-     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ]; then
+     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || \
+        [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ] || \
+        [ "${CODEC_PREFIX}_${testsymbol}" = RS01_adaptive_no_device ]; then
 	     # for Windows
 	     sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
      fi
@@ -236,17 +255,21 @@ function run_regtest()
 	 cat ${DIFFLOG}
 
 	 if test "$interactive_diff" == "yes"; then
-	   echo
-	   echo ">> The diff can also be seen with: vimdiff $REFLOG $NEWLOG"
-	   read -n 1 -p ">> Press 'a' to accept this diff; any other key to fail this test:" -e answer
-	   if test "$answer" == "a"; then
-	       cp $REFLOG $LOGDIR
-	       head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
-	       sed -e "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
-	       pass="skip"
-	   else
-	       pass="false"
-	   fi
+	   while true; do
+	      read -n 1 -p ">> Press 'a' to accept this diff; 'v' to vimdiff; any other key to fail this test:" -e answer
+	      if test "$answer" == "a"; then
+	         cp $REFLOG $LOGDIR
+	         head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
+	         sed -e "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
+	         pass="skip"
+	      elif test "$answer" == "v"; then
+	         vimdiff $REFLOG $NEWLOG
+	         continue
+	      else
+	         pass="false"
+	      fi
+	      break
+	   done
 	 else
 	   pass="false"
 	 fi
@@ -313,6 +336,8 @@ function run_regtest()
       ;;
      
      *)
+      nbfailed=$((nbfailed + 1))
+      [ $nbfailed -ge 256 ] && nbfailed=255
       echo "test symbol for config: $testsymbol"
       if test "$fail_on_bad" == "yes"; then
 	next=$(grep -A 1  ${CODEC_PREFIX}_$testsymbol config.txt | tail -n 1 | cut -d\  -f 1)
