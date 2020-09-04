@@ -68,7 +68,9 @@ typedef enum
    MODE_TRUNCATE,
    MODE_ZERO_UNREADABLE,
 
-   MODIFIER_ADAPTIVE_READ, 
+   /* don't use the ascii range 32-127 so that we
+      avoid collision with the single-char options */
+   MODIFIER_ADAPTIVE_READ = 128,
    MODIFIER_AUTO_SUFFIX,
    MODIFIER_CACHE_SIZE, 
    MODIFIER_CLV_SPEED,    /* unused */ 
@@ -194,11 +196,6 @@ int main(int argc, char *argv[])
 
    if(sizeof(EccHeader) != 4096)
      Stop("sizeof(EccHeader) is %d, but must be 4096.\n", sizeof(EccHeader));
-
-   /*** If we have too much command line options fail here */
-
-   if(MODIFIER_VERSION >= 'a')
-     Stop("Too many command line options\n");
 
    /*** CPU type detection. Must be done before parsing the options
         as some may be CPU-related. */
