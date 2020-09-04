@@ -136,12 +136,12 @@ static EccInfo* open_ecc_file(int mode)
  */
 
 CrcBuf *GetCRCFromRS01_obsolete(EccInfo *ei)   /* FIXME: obsolete */
-{  CrcBuf *cb = g_malloc(sizeof(CrcBuf));
+{  CrcBuf *cb = g_malloc0(sizeof(CrcBuf));
    guint32 *buf;
    gint64 crc_sectors,crc_remainder;
    gint64 i,j,sec_idx;
 
-   cb->crcbuf = g_malloc(ei->sectors * sizeof(guint32));
+   cb->crcbuf = g_malloc0(ei->sectors * sizeof(guint32));
    cb->crcSize   = ei->sectors;
    cb->valid  = CreateBitmap0(ei->sectors);
    buf = cb->crcbuf;
@@ -188,7 +188,7 @@ CrcBuf *GetCRCFromRS02_obsolete(void *layv, void *dhv, LargeFile *image)
 {  RS02Layout *lay = (RS02Layout*)layv;
    DeviceHandle *dh = (DeviceHandle*)dhv;
    AlignedBuffer *ab = CreateAlignedBuffer(2048);
-   CrcBuf *cb = g_malloc(sizeof(CrcBuf));
+   CrcBuf *cb = g_malloc0(sizeof(CrcBuf));
    gint64 block_idx[256];
    gint64 image_sectors,crc_sector;
    gint64 s,i;
@@ -196,7 +196,7 @@ CrcBuf *GetCRCFromRS02_obsolete(void *layv, void *dhv, LargeFile *image)
 
    image_sectors = lay->eccSectors+lay->dataSectors;
  
-   cb->crcbuf = g_malloc(image_sectors * sizeof(guint32));
+   cb->crcbuf = g_malloc0(image_sectors * sizeof(guint32));
    cb->crcSize   = image_sectors;
    cb->valid  = CreateBitmap0(image_sectors);
 
