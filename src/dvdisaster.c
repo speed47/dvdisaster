@@ -92,6 +92,7 @@ typedef enum
    MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
+   MODIFIER_PERMISSIVE_MEDIUM_TYPE,
    MODIFIER_PREFETCH_SECTORS,
    MODIFIER_RANDOM_SEED,
    MODIFIER_RAW_MODE,
@@ -249,6 +250,7 @@ int main(int argc, char *argv[])
 	{"no-bdr-defect-management", 0, 0, MODIFIER_NO_BDR_DEFECT_MANAGEMENT },
 	{"no-progress", 0, 0, MODIFIER_NO_PROGRESS },
 	{"old-ds-marker", 0, 0, MODIFIER_OLD_DS_MARKER },
+	{"permissive-medium-type", 0, 0, MODIFIER_PERMISSIVE_MEDIUM_TYPE },
 	{"prefetch-sectors", 1, 0, MODIFIER_PREFETCH_SECTORS },
         {"prefix", 1, 0, 'p'},
 	{"random-errors", 1, 0, MODE_RANDOM_ERR },
@@ -523,6 +525,10 @@ int main(int argc, char *argv[])
 	    break;
 	 case MODIFIER_OLD_DS_MARKER:
 	    Closure->dsmVersion = 0;
+	    break;
+	 case MODIFIER_PERMISSIVE_MEDIUM_TYPE:
+	    Closure->permissiveMediumType = TRUE;
+	    debug_mode_required = TRUE;
 	    break;
          case MODIFIER_PREFETCH_SECTORS:
  	    Closure->prefetchSectors = atoi(optarg);
@@ -982,6 +988,7 @@ int main(int argc, char *argv[])
       { PrintCLI("\n");
 	PrintCLI(_("Debugging options (purposefully undocumented and possibly harmful)\n"));
 	PrintCLI(_("  --debug           - enables the following options\n"));
+	PrintCLI(_("  --permissive-medium-type - allow more media types, even theoretically unsupported ones\n"));
 	PrintCLI(_("  --byteset s,i,b   - set byte i in sector s to b\n"));
 	PrintCLI(_("  --cdump           - creates C #include file dumps instead of hexdumps\n")); 
 	PrintCLI(_("  --compare-images a,b  - compare sectors in images a and b\n"));
