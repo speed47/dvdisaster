@@ -6,5 +6,5 @@ for i in rs*.bash; do
    allfailed=$((allfailed + ret))
 done
 echo Failed $allfailed tests
-[ $allfailed -ge 256 ] allfailed=255
+[ $allfailed -ge 256 ] && allfailed=255
 exit $allfailed

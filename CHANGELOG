@@ -5,6 +5,7 @@
 - feat: add --permissive-medium-type option
 - fix: lift the limitation on the number of cmdline args
 - fix: lift segfault when aborting adaptive read
+- fix: ensure variables are initialized before dereferencing
 - chore: re-enable adaptive read regtests
 - chore: move *.c *.h to src/, and build in build/
 - chore: build: finally really fix make parallelism
