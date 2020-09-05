@@ -2071,4 +2071,5 @@ fi
 
 REGTEST_SECTION="Reading tests (adaptive)"
 
+[ -n "$RETFILE" ] && echo -n $nbfailed > $RETFILE
 exit $nbfailed

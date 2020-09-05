@@ -1783,4 +1783,5 @@ if try "reading medium containing dead sector markers" adaptive_medium_with_dsm;
   run_regtest adaptive_medium_with_dsm "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
 fi
 
+[ -n "$RETFILE" ] && echo -n $nbfailed > $RETFILE
 exit $nbfailed

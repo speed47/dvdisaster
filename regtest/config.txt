@@ -1,6 +1,6 @@
 # Global toggles
 
-FAIL_ON_BAD no
+FAIL_ON_BAD yes
 SPAWN_LOG_WINDOW no
 INTERACTIVE_DIFF yes
 
