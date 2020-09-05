@@ -1837,7 +1837,7 @@ reread:
 
 	       err = CheckForMissingSector(rc->buf+i*2048, b, NULL, 0);
 	       if(err != SECTOR_PRESENT)
-	       {  int fixme;
+	       {  int fixme=0;
 		  ExplainMissingSector(rc->buf+i*2048, b, err, SOURCE_MEDIUM, &fixme);
 
 		  if(rc->map)  /* Avoids confusion in the ecc stage */
