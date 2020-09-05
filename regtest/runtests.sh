@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 
 for i in rs*.bash; do
-   ( DVDISASTER_SCSI_SIMULATED_NODELAY=1 RETFILE=/tmp/result.$i ./$i ) &
+   ( DVDISASTER_SCSI_SIMULATED_NODELAY=1 RETFILE=/tmp/result.$i PARALLEL=1 ./$i ) &
 done
 
 wait

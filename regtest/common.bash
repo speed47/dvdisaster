@@ -19,14 +19,16 @@ if ! test -d $LOGDIR; then
     LOGDIR=/tmp
 fi
 LOGFILE="$LOGDIR/log.txt"
-DIFFLOG="$LOGDIR/difflog.txt"
-NEWLOG="$LOGDIR/newlog.txt"
-TMPLOG="$LOGDIR/tmplog.txt"
+DIFFLOG="$LOGDIR/difflog_${CODEC_PREFIX}.txt"
+NEWLOG="$LOGDIR/newlog_${CODEC_PREFIX}.txt"
+TMPLOG="$LOGDIR/tmplog_${CODEC_PREFIX}.txt"
 
 MD5SUM=md5sum
 if ! $MD5SUM $RNDSEQ >/dev/null 2>&1; then
     MD5SUM=../simple-md5sum
 fi
+
+trap '[ -n "$RETFILE" ] && echo $nbfailed > $RETFILE' EXIT
 
 nbfailed=0
 

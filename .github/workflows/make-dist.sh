@@ -28,8 +28,10 @@ if ./dvdisaster$exe --version | grep -q NOGUI; then
     suffix="$os-cli-only"
 else
     GUI=1
-    suffix=$os-static
+    suffix="$os"
 fi
+
+[ "$os" = linux64 ] && suffix="$os-static"
 
 archive=dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')-$suffix.zip
 echo "Archive name is $archive"

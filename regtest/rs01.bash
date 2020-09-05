@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS01
 . common.bash
 
 ISOSIZE=21000
@@ -10,8 +11,6 @@ MASTERECC=$ISODIR/rs01-master.ecc
 TMPISO=$ISODIR/rs01-tmp.iso
 TMPECC=$ISODIR/rs01-tmp.ecc
 SIMISO=$ISODIR/rs01-sim.iso
-
-CODEC_PREFIX=RS01
 
 # Create master image and ecc file
 
@@ -1783,5 +1782,4 @@ if try "reading medium containing dead sector markers" adaptive_medium_with_dsm;
   run_regtest adaptive_medium_with_dsm "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
 fi
 
-[ -n "$RETFILE" ] && echo -n $nbfailed > $RETFILE
 exit $nbfailed

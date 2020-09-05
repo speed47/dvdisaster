@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS03f
 . common.bash
 
 ISOSIZE=21000
@@ -10,7 +11,6 @@ MASTERECC=$ISODIR/rs03f-master.ecc
 SIMISO=$ISODIR/rs03f-sim.iso
 TMPISO=$ISODIR/rs03f-tmp.iso
 TMPECC=$ISODIR/rs03f-tmp.ecc
-CODEC_PREFIX=RS03f
 
 # Create master image
 
@@ -1494,5 +1494,4 @@ fi
 
 REGTEST_SECTION="Reading tests (adaptive)"
 
-[ -n "$RETFILE" ] && echo -n $nbfailed > $RETFILE
 exit $nbfailed
