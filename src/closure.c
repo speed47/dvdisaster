@@ -466,7 +466,7 @@ GlobalClosure *Closure;
 int exitCode = EXIT_SUCCESS;
 
 void InitClosure()
-{  int v1,v2,v3,dots=0;
+{  int v1=0,v2=0,v3=0,dots=0;
    char *v,version[strlen(VERSION)+1];
 
    Closure = g_malloc0(sizeof(GlobalClosure));
