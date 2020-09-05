@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS02
 . common.bash
 
 ISOSIZE=30000
@@ -13,8 +14,6 @@ TMPECC=$TMPDIR/rs02-tmp.ecc  # rs02 augmented image wrapped by ecc file
 NO_FILE=$TMPDIR/none.file
 
 ISO_PLUS137=$ISODIR/rs02-plus137.iso
-
-CODEC_PREFIX=RS02
 
 # Create master image
 

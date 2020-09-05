@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS03f
 . common.bash
 
 ISOSIZE=21000
@@ -10,7 +11,6 @@ MASTERECC=$ISODIR/rs03f-master.ecc
 SIMISO=$TMPDIR/rs03f-sim.iso
 TMPISO=$TMPDIR/rs03f-tmp.iso
 TMPECC=$TMPDIR/rs03f-tmp.ecc
-CODEC_PREFIX=RS03f
 
 # Create master image
 

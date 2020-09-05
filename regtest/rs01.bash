@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS01
 . common.bash
 
 ISOSIZE=21000
@@ -10,8 +11,6 @@ MASTERECC=$ISODIR/rs01-master.ecc
 TMPISO=$TMPDIR/rs01-tmp.iso
 TMPECC=$TMPDIR/rs01-tmp.ecc
 SIMISO=$TMPDIR/rs01-sim.iso
-
-CODEC_PREFIX=RS01
 
 # Create master image and ecc file
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CODEC_PREFIX=RS03i
 . common.bash
 
 ISOSIZE=21000
@@ -16,8 +17,6 @@ LARGEMASTERISO=$ISODIR/rs03i-large.iso
 LMI_HEADER=235219
 LMI_LAYER_SIZE=1409
 LMI_FIRSTCRC=235303
-
-CODEC_PREFIX=RS03i
 
 # Create master image
 

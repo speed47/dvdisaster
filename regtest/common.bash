@@ -27,9 +27,9 @@ if ! test -d $LOGDIR; then
     LOGDIR=/tmp
 fi
 LOGFILE="$LOGDIR/log.txt"
-DIFFLOG="$LOGDIR/difflog.txt"
-NEWLOG="$LOGDIR/newlog.txt"
-TMPLOG="$LOGDIR/tmplog.txt"
+DIFFLOG="$LOGDIR/difflog_${CODEC_PREFIX}.txt"
+NEWLOG="$LOGDIR/newlog_${CODEC_PREFIX}.txt"
+TMPLOG="$LOGDIR/tmplog_${CODEC_PREFIX}.txt"
 
 UNAME="$(uname -s)"
 
@@ -42,6 +42,12 @@ fi
 if ! $MD5SUM $RNDSEQ >/dev/null 2>&1; then
     MD5SUM=../simple-md5sum
 fi
+
+if [ "$REGTEST_PARALLEL" = 1 ]; then
+    REGTEST_NO_UTF8=1
+fi
+
+trap 'ret=$?; [ -n "$RETFILE" ] && echo $((nbfailed + ret)) > $RETFILE' EXIT
 
 nbfailed=0
 
@@ -88,17 +94,32 @@ case "${param[0]}" in
 	;;
 esac
 
-# Sanity check
-
-echo -n "Checking for $NEWVER: "
-if test -x $NEWVER; then
-    echo "OK"
-else
-    echo "missing."
-    exit 1
-fi
-
 ### Helper functions
+
+# Handle echo -n properly even in parallel mode
+
+printbuf=''
+function echo_n()
+{
+    if [ "$REGTEST_PARALLEL" = 1 ]; then
+        printbuf="${printbuf}$*"
+    else
+        echo -n "$*"
+    fi
+}
+
+# Handle "echo" even in parallel mode (output buf if parallel)
+
+function echo_line()
+{
+    if [ "$REGTEST_PARALLEL" = 1 ]; then
+        printbuf="${printbuf}$*"
+        echo "$printbuf"
+    else
+        echo "$*"
+    fi
+    printbuf=''
+}
 
 # See if file needs to be created
 
@@ -166,7 +187,7 @@ function try()
        if [ "$REGTEST_NO_UTF8" != 1 ]; then
            echo -n "[ ] "
        fi
-       echo -n "${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - "
+       echo_n "${CODEC_PREFIX} - ${REGTEST_SECTION} - $1 - "
        return 0
    else
        if [ "$REGTEST_NO_UTF8" != 1 ]; then
@@ -242,7 +263,7 @@ function run_regtest()
       if ! test -r $REFLOG; then
           pass="false"
           if [ "$REGTEST_NO_UTF8" = 1 ]; then
-             echo "BAD; '$REFLOG' is missing in log file database"
+             echo_line "BAD; '$REFLOG' is missing in log file database"
           else
              printf "%b\r%b\n" "BAD; '$REFLOG' is missing in log file database" "[\e[31m✘\e[0m]"
           fi
@@ -274,7 +295,7 @@ function run_regtest()
 
          if ! diff <(tail -n +3 $REFLOG | $filter) <(cat $NEWLOG | $filter) >${DIFFLOG}; then
             if [ "$REGTEST_NO_UTF8" = 1 ]; then
-               echo "BAD; diffs found (<expected; >created):"
+               echo_line "BAD; diffs found (<expected; >created):"
             else
                printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
             fi
@@ -335,7 +356,7 @@ function run_regtest()
        md5=$($MD5SUM ${testiso} | cut -d\  -f 1)
        if test "$image_md5" != "$md5"; then
 	   if [ "$REGTEST_NO_UTF8" = 1 ]; then
-	      echo "BAD; md5 sum mismatch in image file:"
+	      echo_line "BAD; md5 sum mismatch in image file:"
 	   else
 	      printf "%b\r%b\n" "BAD; md5 sum mismatch in image file:" "[\e[31m✘\e[0m]"
 	   fi
@@ -349,7 +370,7 @@ function run_regtest()
        md5=$($MD5SUM ${testecc} | cut -d\  -f 1)
        if test "$ecc_md5" != "$md5"; then
 	   if [ "$pass" = false ] || [ "$REGTEST_NO_UTF8" = 1 ]; then
-	      echo "BAD; md5 sum mismatch in ecc file:"
+	      echo_line "BAD; md5 sum mismatch in ecc file:"
 	   else
 	      printf "%b\r%b\n" "BAD; md5 sum mismatch in ecc file:" "[\e[31m✘\e[0m]"
 	   fi
@@ -362,7 +383,7 @@ function run_regtest()
    case "${pass}" in
      true)
       if [ "$REGTEST_NO_UTF8" = 1 ]; then
-        echo GOOD
+        echo_line GOOD
       else
         printf "%b\r%b\n" "GOOD" "[\e[32m✓\e[0m]"
       fi
@@ -404,3 +425,13 @@ function run_regtest()
      FILE_MSG=""
    fi
 }
+
+# Sanity check
+
+echo_n "Checking for $NEWVER: "
+if test -x $NEWVER; then
+    echo_line "OK"
+else
+    echo_line "missing."
+    exit 1
+fi

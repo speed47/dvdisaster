@@ -54,7 +54,7 @@ jobs:
     - name: regression tests
       if: matrix.printf == 'normal'
       env:
-        REGTEST_NO_UTF8: 1
+        REGTEST_PARALLEL: 1
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
   win:
     runs-on: windows-latest
@@ -120,7 +120,7 @@ jobs:
     - name: run regression tests
       if: matrix.printf == 'normal'
       env:
-        REGTEST_NO_UTF8: 1
+        REGTEST_PARALLEL: 1
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
 
   linux:
@@ -170,5 +170,5 @@ jobs:
     - name: regression tests
       if: matrix.printf == 'normal'
       env:
-        REGTEST_NO_UTF8: 1
+        REGTEST_PARALLEL: 1
       run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
