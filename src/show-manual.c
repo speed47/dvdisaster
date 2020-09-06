@@ -76,7 +76,9 @@ static void search_cb(GtkWidget *widget, gpointer data)
 {  viewer_dialog_info *bdi = (viewer_dialog_info*)data; 
 
    if(widget == bdi->search) 
-   {  bdi->filesel = gtk_file_selection_new(_utf("windowtitle|Choose a PDF viewer"));
+   {
+/*FIXME
+      bdi->filesel = gtk_file_selection_new(_utf("windowtitle|Choose a PDF viewer"));
       bdi->fileok = GTK_FILE_SELECTION(bdi->filesel)->ok_button;
       bdi->filecancel = GTK_FILE_SELECTION(bdi->filesel)->cancel_button;
       ReverseCancelOK(GTK_DIALOG(bdi->filesel));
@@ -88,12 +90,13 @@ static void search_cb(GtkWidget *widget, gpointer data)
 		       G_CALLBACK(search_cb), bdi);
       
       gtk_widget_show(bdi->filesel);
+*/
    }
 
    if(widget == bdi->fileok)
    {
       if(Closure->viewer) g_free(Closure->viewer);
-      Closure->viewer = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(bdi->filesel)));
+      //FIXME Closure->viewer = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(bdi->filesel)));
       ShowPDF(bdi->path);
       gtk_widget_destroy(bdi->filesel);
       gtk_widget_destroy(bdi->dialog);
@@ -123,7 +126,7 @@ static void viewer_dialog(char *path)
    }
 
    vbox = gtk_vbox_new(FALSE, 0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), vbox, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox, FALSE, FALSE, 0);
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
 
    /* Insert the contents */

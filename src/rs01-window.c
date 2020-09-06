@@ -238,7 +238,7 @@ static gboolean curve_idle_func(gpointer data)
       wl->fixCurve->maxY = wl->fixCurve->maxY - (wl->fixCurve->maxY % 5) + 5;
 
       update_geometry(wl);
-      gdk_window_clear(wl->fixCurve->widget->window);
+      gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
       redraw_curve(wl);
       wl->lastPercent = wl->percent;
 
@@ -248,18 +248,18 @@ static gboolean curve_idle_func(gpointer data)
    /*** Draw the error value */
 
    if(wl->fixCurve->ivalue[wl->percent] > 0)
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->barColor);
-      gdk_draw_rectangle(wl->fixCurve->widget->window,
-			 Closure->drawGC, TRUE,
+   {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->barColor);
+      cairo_rectangle(Closure->drawGC,
 			 x0, y, x0==x1 ? 1 : x1-x0, wl->fixCurve->bottomY-y);
+      cairo_fill(Closure->drawGC);
    }
    wl->lastPercent = wl->percent;
 
    /* Redraw the ecc capacity threshold line */
 
    y = CurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->greenSector);
+   gdk_draw_line(gtk_widget_get_window(wl->fixCurve->widget),
 		 Closure->drawGC,
 		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
    return FALSE;
@@ -310,8 +310,8 @@ static void redraw_curve(RS01Widgets *wl)
    /* Ecc capacity threshold line */
 
    y = CurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->greenSector);
+   gdk_draw_line(gtk_widget_get_window(wl->fixCurve->widget),
 		 Closure->drawGC,
 		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
 }
@@ -346,7 +346,7 @@ void ResetRS01FixWindow(Method *method)
    RS01UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
-   {  gdk_window_clear(wl->fixCurve->widget->window);
+   {  gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
       redraw_curve(wl);
    }
 

@@ -175,6 +175,20 @@
 #define STOP_CURRENT_ACTION 1
 #define STOP_SHUTDOWN_ALL 2
 
+#if 0
+void gdk_draw_line(GtkWidget *_, cairo_t *gc, gint x1, gint y1, gint x2, gint y2) {
+         cairo_set_line_cap(gc, CAIRO_LINE_CAP_SQUARE);
+         cairo_move_to(gc, x1, y1);
+         cairo_line_to(gc, x2, y2);
+         cairo_stroke(gc);
+}
+#endif
+
+#define gdk_draw_line(a,b,c,d,e,f) ;
+#define gdk_window_clear(a) ;
+#define gdk_draw_layout(a,b,c,d,e) ;
+#define gdk_colormap_alloc_color(a,b,c,d) ;
+
 /***
  *** Our global closure (encapsulation of global variables)
  ***/
@@ -308,7 +322,6 @@ typedef struct _GlobalClosure
    /*** Widgets of the main window */
 
    GtkWindow *window;        /* main window */
-   GtkTooltips *tooltips;    /* our global tooltips structure */
    GdkPixbuf *windowIcon;    /* main window icon */
 
    GtkWidget *fileMenuImage;  /* Select image entry */
@@ -351,7 +364,7 @@ typedef struct _GlobalClosure
 
    /*** Common stuff for drawing curves and spirals */
 
-   GdkGC     *drawGC;
+   cairo_t   *drawGC;
    GdkColor  *background,*foreground,*grid;
    GdkColor  *redText;
    char      *redMarkup;
@@ -1459,7 +1472,7 @@ void EndIterativeSmartLEC(void*);
  ***/
 
 typedef struct _Spiral
-{  GdkDrawable *drawable;
+{  GdkWindow *drawable;
    int mx, my;
    int startRadius;
    int segmentSize;

@@ -1418,6 +1418,104 @@ EOF
 }
 
 #
+# Require the GTK3 includes and libraries.
+# Unlike with the other packages, we don't have to fid out about the includes
+# and libraries by ourselves, but just query pkg-config about them.
+# It seems that people have more trouble with getting GTK+ to work
+# than with other toolkits, so we try a bit harder to diagnose them here.
+
+function REQUIRE_GTK3()
+{  local want_major="$1"
+   local want_minor="$2"
+   local want_micro="$3"
+   local want_threads="$4"
+   local found_version="0.0.0"
+
+   if test -n "$cfg_help_mode"; then
+     return 0
+   fi
+
+   if test "$want_threads" == "WITH_THREADS"; then threads="--libs gthread-2.0"; fi
+
+   echo -e "\n/* *** REQUIRE_GTK3 */\n" >>$LOGFILE
+
+   echo "Gtk+ ${want_major}.${want_minor}.${want_micro} is required..."
+
+   # See if pkgconfig returns something
+
+   echo -n " pkg-config... "
+   if pkg-config --cflags gtk+-3.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-3.0 >>config.tmp 2>&1 ; then
+        echo "works"
+	rm config.tmp
+   else 
+	echo "failed"
+	echo -e "\nError message(s) from pkg-config were:"
+	cat config.tmp
+	rm config.tmp
+ 	cat <<EOF
+
+Make sure you have the following packages installed:
+- pkg-config (sometimes, the obvious is overlooked ;-)
+- glib2
+- pango
+- atk
+- gtk3
+
+Some GNU/Linux distributions (e.g. SuSE) distinguish between
+end-user packages of the libraries (e.g. 'gtk3') and
+versions suitable for building programs (e.g. 'gtk3-devel').
+You might have to install the development versions explicitly
+even if you have already GTK+ or Gnome applications running
+on your system.
+
+EOF
+	  exit 1
+   fi
+
+   # Do a test compile to make sure they did not return some junk
+
+   CFG_GTK3_CFLAGS=`pkg-config --cflags gtk+-3.0`
+   CFG_GTK3_LIBS=`pkg-config $threads --libs gtk+-3.0`
+
+   CFG_GTK3_BINDIR=`which pkg-config`
+   CFG_GTK3_BINDIR=`echo $CFG_GTK3_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
+
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK3_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_GTK3_LIBS"
+
+   cat >conftest.c <<EOF
+#include <gtk/gtk.h>
+
+CPPABUSE GTK_MAJOR_VERSION.GTK_MINOR_VERSION.GTK_MICRO_VERSION
+EOF
+
+   echo -n " test preprocessing... "
+
+   if try_preprocess; then
+	echo "works"
+	rm -f conftest.c
+ 	found_version=$(grep CPPABUSE ./conftest.out | tr -d "CPABUSE ()")
+	rm -f conftest.out
+        if ! check_version "GTK+" "$want_major" "$want_minor" "$want_micro" "$found_version"; then
+          echo -e "\n Did not find a suitable version of GTK+."
+          exit 1
+        fi
+   else
+	echo "failed"
+	echo -e "\nThe tail of configure.log might contain hints\nabout the compilation problem."
+	rm -f conftest.c
+	exit 1
+   fi
+
+   # Successfully finished
+
+   echo "CFG_GTK3_CFLAGS = $CFG_GTK3_CFLAGS" >> Makefile.config
+   echo "CFG_GTK3_LIBS = $CFG_GTK3_LIBS" >> Makefile.config
+   echo "CFG_GTK3_BINDIR = $CFG_GTK3_BINDIR" >> Makefile.config
+   return 1
+}
+
+#
 # Require the GTK2 includes and libraries.
 # Unlike with the other packages, we don't have to fid out about the includes
 # and libraries by ourselves, but just query pkg-config about them.
@@ -1484,7 +1582,7 @@ EOF
    CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"
 
    cat >conftest.c <<EOF
-#include <gtk/gtkversion.h>
+#include <gtk/gtk.h>
 
 CPPABUSE GTK_MAJOR_VERSION.GTK_MINOR_VERSION.GTK_MICRO_VERSION
 EOF

@@ -36,8 +36,8 @@ static GdkColor *footer_color;
 #define REDRAW_PROGRESS   1<<2
 #define REDRAW_ERRORMSG   1<<3
 
-static int draw_text(GdkDrawable *d, PangoLayout *l, char *text, int x, int y, GdkColor *color, int redraw)
-{  static GdkPixmap *pixmap;
+static int draw_text(GdkWindow *d, PangoLayout *l, char *text, int x, int y, GdkColor *color, int redraw)
+{  //FIXME static GdkPixmap *pixmap;
    static int pixmap_width, pixmap_height;
    int w,h,pw;
    int erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
@@ -45,6 +45,7 @@ static int draw_text(GdkDrawable *d, PangoLayout *l, char *text, int x, int y, G
    SetText(l, text, &w, &h);
 
    pw = erase_to-x;
+/*FIXME
    if(pw > pixmap_width || h > pixmap_height)
    {  if(pixmap) g_object_unref(pixmap);
      
@@ -52,29 +53,30 @@ static int draw_text(GdkDrawable *d, PangoLayout *l, char *text, int x, int y, G
       pixmap_width = pw;
       pixmap_height = h;
    }
+*/
 
 
    if(redraw)  /* redraw using double buffering to prevent flicker */
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->background);
-      gdk_draw_rectangle(pixmap, Closure->drawGC, TRUE, 0, 0, pw, h);
+   {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->background);
+ //FIXME     gdk_draw_rectangle(pixmap, Closure->drawGC, TRUE, 0, 0, pw, h);
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
-      gdk_draw_layout(pixmap, Closure->drawGC, 0, 0, l);
-      gdk_draw_drawable(d, Closure->drawGC, pixmap, 0, 0, x, y, pw, h);
+      /*fg*/gdk_cairo_set_source_color(Closure->drawGC, color);
+ //FIXME     gdk_draw_layout(pixmap, Closure->drawGC, 0, 0, l);
+ //FIXME     gdk_draw_drawable(d, Closure->drawGC, pixmap, 0, 0, x, y, pw, h);
    }
 
    return h;
 }
 
 static void redraw_labels(GtkWidget *widget, int erase_mask)
-{  GdkDrawable *d = Closure->readAdaptiveDrawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(Closure->readAdaptiveDrawingArea);
    char buf[256];
    int x,y,w,h;
 
    /* Draw the labels */
 
    x = 10; 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->foreground);
 
    y = Closure->readAdaptiveSpiral->my - Closure->readAdaptiveSpiral->diameter/2;
    h = draw_text(d, Closure->readLinearCurve->layout, 
@@ -139,7 +141,7 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
 
 
    if(Closure->readAdaptiveErrorMsg && erase_mask & REDRAW_ERRORMSG)
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, footer_color);
+   {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC, footer_color);
       
       SetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
       y = Closure->readAdaptiveSpiral->my + Closure->readAdaptiveSpiral->diameter/2 - h;
@@ -155,7 +157,8 @@ static void redraw_spiral(GtkWidget *widget)
 /* Calculate the geometry of the spiral */
 
 static void update_geometry(GtkWidget *widget)
-{  GtkAllocation *a = &widget->allocation;
+{  GtkAllocation *a;
+   gtk_widget_get_allocation(widget, a);
 
    Closure->readAdaptiveSpiral->mx = a->width - 15 - Closure->readAdaptiveSpiral->diameter / 2;
    Closure->readAdaptiveSpiral->my = a->height / 2;
@@ -325,16 +328,17 @@ void ResetAdaptiveReadWindow()
    readable = correctable = missing = 0;
    percent = min_required = 0;
 
-   if(Closure->readAdaptiveDrawingArea->window)
+   if(gtk_widget_get_window(Closure->readAdaptiveDrawingArea))
    {  static GdkRectangle rect;
-      GtkAllocation *a = &Closure->readAdaptiveDrawingArea->allocation;
+      GtkAllocation *a;
+      gtk_widget_get_allocation(Closure->readAdaptiveDrawingArea, a);
 
       rect.x = rect.y = 0;
       rect.width  = a->width;
       rect.height = a->height;
 
-      gdk_window_clear(Closure->readAdaptiveDrawingArea->window);
-      gdk_window_invalidate_rect(Closure->readAdaptiveDrawingArea->window, &rect, FALSE);
+      gdk_window_clear(gtk_widget_get_window(Closure->readAdaptiveDrawingArea));
+      gdk_window_invalidate_rect(gtk_widget_get_window(Closure->readAdaptiveDrawingArea), &rect, FALSE);
    }
 }
 

@@ -54,7 +54,7 @@ PRINT_MESSAGE "\nLooking for includes and libraries:"
 
 REQUIRE_GLIB2 2 32 0
 if [ "$CLI_ONLY" != 1 ]; then
-  REQUIRE_GTK2 2 6 0 WITH_THREADS
+  REQUIRE_GTK3 3 0 0 WITH_THREADS
 fi
 echo
 

@@ -42,10 +42,10 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 {  GtkWidget *box = (GtkWidget*)data;
 
    if(!Closure->drawGC)
-   {  GdkColor *bg = &widget->style->bg[0];
-      GdkColormap *cmap = gdk_colormap_get_system();
+   {  GdkColor *bg = &gtk_widget_get_style(widget)->bg[0];
+      GdkVisual *cmap = gdk_visual_get_system();
 
-      Closure->drawGC = gdk_gc_new(widget->window);
+      Closure->drawGC = gdk_cairo_create(gtk_widget_get_window(widget));
 
       memcpy(Closure->background, bg, sizeof(GdkColor));
 

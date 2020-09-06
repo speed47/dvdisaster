@@ -216,7 +216,7 @@ GtkWidget *CreateMenuBar(GtkWidget *parent)
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|File"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_bar_append(GTK_MENU_BAR(menu_bar), menu_anchor);
+   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
    /* The tools menu */
 
@@ -230,7 +230,7 @@ GtkWidget *CreateMenuBar(GtkWidget *parent)
    
    Closure->toolMenuAnchor = menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_bar_append(GTK_MENU_BAR(menu_bar), menu_anchor);
+   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
    /* The help menu */
 
@@ -250,7 +250,7 @@ GtkWidget *CreateMenuBar(GtkWidget *parent)
    add_menu_button(menu_strip, _("menu|To do list"), MENU_HELP_TODO);
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Help"));
-   gtk_menu_item_right_justify(GTK_MENU_ITEM(menu_anchor));
+   gtk_menu_item_set_right_justified(GTK_MENU_ITEM(menu_anchor), TRUE);
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
    gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
@@ -289,7 +289,7 @@ void AttachTooltip(GtkWidget *widget, char *short_descr, char *long_descr)
    g_signal_connect(G_OBJECT(widget), "enter_notify_event", G_CALLBACK(tooltip_cb), (gpointer)long_copy);
    g_signal_connect(G_OBJECT(widget), "leave_notify_event", G_CALLBACK(tooltip_cb), (gpointer)long_copy);
 
-   gtk_tooltips_set_tip(Closure->tooltips, widget, short_copy, long_copy);
+   gtk_widget_set_tooltip_text(widget, long_copy);
 
    g_free(short_copy);
    FORGET(long_copy);     /* long_copy must be kept during programs life */
@@ -333,8 +333,9 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 
       case MENU_FILE_IMAGE:
 	 if(!Closure->imageFileSel)
-         {  Closure->imageFileSel = gtk_file_selection_new(_utf("windowtitle|Image file selection"));
+         {  Closure->imageFileSel = gtk_file_chooser_dialog_new(_utf("windowtitle|Image file selection"), NULL, GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
 	    ReverseCancelOK(GTK_DIALOG(Closure->imageFileSel));
+/*FIXME
             g_signal_connect(G_OBJECT(Closure->imageFileSel), "destroy",
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->imageFileSel)->ok_button),"clicked", 
@@ -342,9 +343,12 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
     
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->imageFileSel)->cancel_button),"clicked", 
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_CANCEL));
+*/
          }
+/*FIXME
 	 gtk_file_selection_set_filename(GTK_FILE_SELECTION(Closure->imageFileSel),
 					 gtk_entry_get_text(GTK_ENTRY(Closure->imageEntry)));
+*/
 	 gtk_widget_show(Closure->imageFileSel);
 	 break;
 
@@ -354,7 +358,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 
       case MENU_FILE_IMAGE_OK:
 	 g_free(Closure->imageName);
-	 Closure->imageName = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(Closure->imageFileSel)));
+	 //FIXME Closure->imageName = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(Closure->imageFileSel)));
 	 if(Closure->autoSuffix)
 	   Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
 	 gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
@@ -368,6 +372,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 
       /*** Same stuff again for ecc file selection */
 
+/*FIXME
       case MENU_FILE_ECC:
 	 if(!Closure->eccFileSel)
          {  Closure->eccFileSel = gtk_file_selection_new(_utf("windowtitle|Error correction file selection"));
@@ -384,6 +389,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 					 gtk_entry_get_text(GTK_ENTRY(Closure->eccEntry)));
 	 gtk_widget_show(Closure->eccFileSel);
 	 break;
+*/
 
       case MENU_FILE_ECC_DESTROY:
 	 Closure->eccFileSel = NULL;
@@ -391,12 +397,14 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 
       case MENU_FILE_ECC_OK:
 	 g_free(Closure->eccName);
+/*FIXME
 	 Closure->eccName = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(Closure->eccFileSel)));
 	 if(Closure->autoSuffix)
 	   Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
 	 gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
 	 gtk_editable_set_position(GTK_EDITABLE(Closure->eccEntry), -1);
 	 gtk_widget_hide(Closure->eccFileSel);
+*/
 	 break;
 
       case MENU_FILE_ECC_CANCEL:
@@ -476,13 +484,13 @@ GtkWidget *CreateToolBar(GtkWidget *parent)
    icon = gtk_image_new_from_stock("dvdisaster-cd", GTK_ICON_SIZE_LARGE_TOOLBAR);
    gtk_container_add(GTK_CONTAINER(ebox), icon);
 
-   Closure->driveCombo = combo_box = gtk_combo_box_new_text();
+   Closure->driveCombo = combo_box = gtk_combo_box_text_new();
 
    g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(drive_select_cb), NULL);
 
    for(i=0; i<Closure->deviceNames->len; i++)   
    {
-     gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), 
+     gtk_combo_box_text_append(GTK_COMBO_BOX(combo_box), NULL,
 			       g_ptr_array_index(Closure->deviceNames,i));
 
      if(!strcmp(Closure->device, g_ptr_array_index(Closure->deviceNodes,i)))
@@ -490,7 +498,7 @@ GtkWidget *CreateToolBar(GtkWidget *parent)
    }
 
    if(!Closure->deviceNodes->len)
-   {   gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _utf("No drives found"));
+   {   gtk_combo_box_text_append(GTK_COMBO_BOX(combo_box), NULL, _utf("No drives found"));
    }
 
    gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);

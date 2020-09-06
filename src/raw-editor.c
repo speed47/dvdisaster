@@ -294,6 +294,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	 if(!rec->fileSel)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
+/*FIXME
 	    rec->fileSel = gtk_file_selection_new(_utf("windowtitle|Raw sector dump selection"));
 	    ReverseCancelOK(GTK_DIALOG(rec->fileSel));
             g_signal_connect(G_OBJECT(rec->fileSel), "destroy",
@@ -304,6 +305,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_CANCEL));
 	    sprintf(filename, "%s/", Closure->dDumpDir);
 	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->fileSel), filename);
+*/
          }
 	 gtk_widget_show(rec->fileSel);
 	 break;
@@ -315,7 +317,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
       case ACTION_FILESEL_OK:
 	 if(rec->filepath)
 	    g_free(rec->filepath);
-	 rec->filepath = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->fileSel)));
+	 //FIXME rec->filepath = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->fileSel)));
 	 gtk_widget_hide(rec->fileSel);
 	 ResetRawBuffer(rec->rb);
 	 ReadDefectiveSectorFile(rec->dsh, rec->rb, rec->filepath);
@@ -415,6 +417,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 if(!rec->loadBufSel)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
+/*FIXME
 	    rec->loadBufSel = gtk_file_selection_new(_utf("windowtitle|Load buffer from file"));
 	    ReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
             g_signal_connect(G_OBJECT(rec->loadBufSel), "destroy",
@@ -425,6 +428,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_CANCEL));
 	    sprintf(filename, "%s/", Closure->dDumpDir);
 	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->loadBufSel), filename);
+*/
          }
 	 gtk_widget_show(rec->loadBufSel);
 	 break;
@@ -433,6 +437,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 if(!rec->saveBufSel)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
+/*FIXME
 	    rec->saveBufSel = gtk_file_selection_new(_utf("windowtitle|Save buffer to file"));
 	    ReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
             g_signal_connect(G_OBJECT(rec->saveBufSel), "destroy",
@@ -443,6 +448,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_CANCEL));
 	    sprintf(filename, "%s/", Closure->dDumpDir);
 	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->saveBufSel), filename);
+*/
          }
 	 gtk_widget_show(rec->saveBufSel);
 	 break;
@@ -459,7 +465,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
       {  LargeFile *file;
 	 char *path;
 
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
+	 //FIXME path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
 	 gtk_widget_hide(rec->loadBufSel);
 
 	 file = LargeOpen(path, O_RDONLY, IMG_PERMS);
@@ -479,7 +485,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
       {  LargeFile *file;
 	 char *path;
 
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
+	 //FIXME path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
 	 gtk_widget_hide(rec->saveBufSel);
 
 	 file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
@@ -583,15 +589,16 @@ static void evaluate_vectors(raw_editor_context *rec)
 /* Render the sector */
 
 static void render_sector(raw_editor_context *rec)
-{  GdkDrawable *d = rec->drawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(rec->drawingArea);
    unsigned char *buf = rec->rb->recovered;
    int idx=0;
    int i,j,w,h,x,y;
 
    if(!d) return;
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->background);
-   gdk_draw_rectangle(d, Closure->drawGC, TRUE, 0, 0, rec->daWidth, rec->daHeight);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->background);
+   cairo_rectangle(Closure->drawGC, 0, 0, rec->daWidth, rec->daHeight);
+   cairo_fill(Closure->drawGC);
 
    idx = 12;
    for(j=0,y=0; j<P_VECTOR_SIZE; j++, y+=rec->charHeight)
@@ -599,29 +606,33 @@ static void render_sector(raw_editor_context *rec)
       {  char byte[3];
 
 	 if(rec->tags[idx])
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->curveColor);
-	    gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
+	 {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->curveColor);
+	    cairo_rectangle(Closure->drawGC, x, y, 
 			       rec->charWidth, rec->charHeight);
+	    cairo_fill(Closure->drawGC);
 	 }
 	 else if(rec->rb->byteState[idx])
 	 {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->yellowSector);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
+	    {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->yellowSector);
+	       cairo_rectangle(Closure->drawGC, x, y, 
 				  rec->charWidth, rec->charHeight);
+	       cairo_fill(Closure->drawGC);
 	    } 
 	    else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->greenText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
+	    {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->greenText);
+	       cairo_rectangle(Closure->drawGC, x, y, 
 				  rec->charWidth, rec->charHeight);
+	       cairo_fill(Closure->drawGC);
 	    }
 	    else 
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->redText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y,
+	    {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->redText);
+	       cairo_rectangle(Closure->drawGC, x, y,
 				  rec->charWidth, rec->charHeight);
+	       cairo_fill(Closure->drawGC);
 	    }
 	 }
 
-         gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->foreground);
+         /*fg*/gdk_cairo_set_source_color(Closure->drawGC,Closure->foreground);
 
 	 sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
 	 idx++;

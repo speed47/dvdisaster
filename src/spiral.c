@@ -64,10 +64,11 @@ Spiral* CreateSpiral(GdkColor *outline, GdkColor *fill,
 }
 
 void SetSpiralWidget(Spiral *spiral, GtkWidget *widget)
-{  GtkAllocation *al = &widget->allocation;
+{  GtkAllocation *al;
+   gtk_widget_get_allocation(widget, al);
 
    if(!spiral->drawable)
-   {  spiral->drawable     = widget->window;
+   {  spiral->drawable     = gtk_widget_get_window(widget);
       spiral->mx           = al->width/2;
       spiral->my           = al->height/2;
    }
@@ -128,10 +129,10 @@ void DrawSpiral(Spiral *spiral)
       points[2].x = xo1; points[2].y = yo1;
       points[3].x = xi1; points[3].y = yi1;
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->segmentColor[i]);
-      gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->outline);
-      gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
+      /*fg*/gdk_cairo_set_source_color(Closure->drawGC, spiral->segmentColor[i]);
+      ///FIXME gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
+      /*fg*/gdk_cairo_set_source_color(Closure->drawGC, spiral->outline);
+      ///FIXME gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
 
       xi0 = xi1; yi0 = yi1;
       xo0 = xo1; yo0 = yo1;
@@ -173,10 +174,10 @@ void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
    points[2].y = spiral->my + scale_o*sin(a);
 
    spiral->segmentColor[segment] = color;
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
-   gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->outline);
-   gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, color);
+   //FIXME gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, spiral->outline);
+   //FIXME gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
 }
 
 /*
@@ -185,18 +186,18 @@ void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
 
 void DrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
 		     char *text, GdkColor *color, int x, int line)
-{  GdkDrawable *d = spiral->drawable;
+{  GdkWindow *d = spiral->drawable;
    int w,h,y;
 
    SetText(layout, text, &w, &h);
    if(line > 0) y = spiral->my + spiral->diameter / 2 + 20 + (line-1) * (10 + h); 
    else         y = spiral->my - spiral->diameter / 2 - 20 - h + (line+1) * (10 + h); 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
-   gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y+(h-6)/2, 6, 6);
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->grid);
-   gdk_draw_rectangle(d, Closure->drawGC, FALSE, x, y+(h-6)/2, 6, 6);
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-   gdk_draw_layout(d, Closure->drawGC, x+10, y, layout);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, color);
+   //FIXME gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y+(h-6)/2, 6, 6);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->grid);
+   //FIXME gdk_draw_rectangle(d, Closure->drawGC, FALSE, x, y+(h-6)/2, 6, 6);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->foreground);
+   //FIXME gdk_draw_layout(d, Closure->drawGC, x+10, y, layout);
 }
 
 /* 

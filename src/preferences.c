@@ -78,8 +78,8 @@ typedef struct
    GtkWidget *frame;
    GtkWidget *image;
    GdkColor  *color;
-   GdkPixmap *pixmap;
-   GdkGC     *gc;
+   //FIXME GdkPixmap *pixmap;
+   cairo_t   *gc;
    int userData;
 } color_button_info;
 
@@ -732,19 +732,21 @@ static gboolean color_delete_cb(GtkWidget *widget, GdkEvent *event, gpointer dat
 static void update_color_buttons(color_button_info *a, color_button_info *b, int redraw)
 {  GdkRectangle rect;
    GdkWindow *window;
-   gint ignore;
 
    /* Note that a->color and b->color point to the same object. */
 
    gdk_colormap_alloc_color(gdk_colormap_get_system(), a->color, FALSE, TRUE);
 
-   gdk_gc_set_rgb_fg_color(a->gc, a->color);   
-   gdk_gc_set_rgb_bg_color(a->gc, a->color);
-   gdk_gc_set_rgb_fg_color(b->gc, b->color);   
-   gdk_gc_set_rgb_bg_color(b->gc, b->color);
+   /*fg*/gdk_cairo_set_source_color(a->gc, a->color);   
+   /*bg*/gdk_cairo_set_source_color(a->gc, a->color);
+   /*fg*/gdk_cairo_set_source_color(b->gc, b->color);   
+   /*bg*/gdk_cairo_set_source_color(b->gc, b->color);
 
-   gdk_draw_rectangle(a->pixmap, a->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-   gdk_draw_rectangle(b->pixmap, b->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
+   cairo_rectangle(a->gc, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
+   cairo_fill(a->gc);
+   cairo_rectangle(b->gc, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
+   cairo_fill(b->gc);
+
 
    /* Trigger an expose event for the button. Since the button has no own window
       this will actually redraw the whole dialog box. */
@@ -752,15 +754,15 @@ static void update_color_buttons(color_button_info *a, color_button_info *b, int
    if(redraw) /* Useful when all buttons are reset to default at once */
    {  window = gtk_widget_get_parent_window(a->button);
       if(window) 
-      {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
+      {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height);
 
-	 gdk_window_invalidate_rect(a->button->window, &rect, TRUE); 
+	 gdk_window_invalidate_rect(gtk_widget_get_window(a->button), &rect, TRUE); 
       }
    }
 
    window = gtk_widget_get_parent_window(b->button);
    if(window)
-   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
+   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height);
 	 
       gdk_window_invalidate_rect(window, &rect, TRUE); 
    }
@@ -771,7 +773,7 @@ static void color_ok_cb(GtkWidget *widget, gpointer data)
    prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
 
-   gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
+   //FIXME gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
 
    switch(cbi->userData)
    {  case COLOR_RED:
@@ -833,6 +835,7 @@ static void color_cancel_cb(GtkWidget *widget, gpointer data)
 static void color_choose_cb(GtkWidget *widget, gpointer data)
 {  color_button_info *cbi = (color_button_info*)data;
 
+/*FIXME
    if(!cbi->dialog)
    {  GtkColorSelectionDialog *csd;
       cbi->dialog = gtk_color_selection_dialog_new(_utf("Color selection"));
@@ -847,6 +850,7 @@ static void color_choose_cb(GtkWidget *widget, gpointer data)
 
    gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
    gtk_widget_show(cbi->dialog);
+*/
 }
 
 static void default_color_cb(GtkWidget *widget, gpointer data)
@@ -875,6 +879,7 @@ static color_button_info *create_color_button(GdkColor *color, int user_data)
    gtk_container_set_border_width(GTK_CONTAINER(cbi->frame), 1);
    gtk_frame_set_shadow_type(GTK_FRAME(cbi->frame), GTK_SHADOW_ETCHED_OUT);
    gtk_container_add(GTK_CONTAINER(cbi->button), cbi->frame); 
+/*FIXME
    cbi->pixmap = gdk_pixmap_new(gdk_get_default_root_window(), COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT, -1);
    cbi->image  = gtk_image_new_from_pixmap(cbi->pixmap, NULL);
    gtk_container_add(GTK_CONTAINER(cbi->frame), cbi->image); 
@@ -883,6 +888,7 @@ static color_button_info *create_color_button(GdkColor *color, int user_data)
    gdk_gc_set_foreground(cbi->gc, color);   
    gdk_gc_set_background(cbi->gc, color);
    gdk_draw_rectangle(cbi->pixmap, cbi->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
+*/
    cbi->color = color;
    cbi->userData = user_data;
    g_signal_connect(G_OBJECT(cbi->button), "clicked", G_CALLBACK(color_choose_cb), cbi);
@@ -1196,7 +1202,7 @@ static void cache_defective_select_cb(GtkWidget *widget, gpointer data)
       case 1: /* OK */
 	 if(Closure->dDumpDir)
 	    g_free(Closure->dDumpDir);
-	 Closure->dDumpDir = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)));
+	 //FIXME Closure->dDumpDir = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)));
 	 if(pc->cacheDefectiveDirA)
 	    gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirA), Closure->dDumpDir);
 	 if(pc->cacheDefectiveDirB)
@@ -1217,8 +1223,9 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
    if(!pc->cacheDefectiveChooser)
    {  char filename[strlen(Closure->dDumpDir)+10];
 
-      pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
+      //FIXME pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
       ReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
+/*FIXME
 
       g_signal_connect(G_OBJECT(pc->cacheDefectiveChooser), "destroy",
 		       G_CALLBACK(cache_defective_select_cb), 
@@ -1232,13 +1239,16 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
       gtk_file_selection_set_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser),
 				      filename);
       gtk_file_selection_hide_fileop_buttons(GTK_FILE_SELECTION(pc->cacheDefectiveChooser));
+*/
 
       /* Hide the file selection parts */
 
+/*FIXME
       file_list = GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->file_list;
       set_widget_sensitive(file_list, FALSE);
       gtk_widget_hide(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry);
       set_entry_text(GTK_ENTRY(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry), "");
+*/
 #if 0
       gtk_widget_hide(file_list->parent);
 #endif
@@ -1263,7 +1273,7 @@ static void logfile_select_cb(GtkWidget *widget, gpointer data)
 
       case 1: /* OK */
 	 g_free(Closure->logFile);
-	 Closure->logFile = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->logFileChooser)));
+	 //FIXME Closure->logFile = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->logFileChooser)));
 	 Closure->logFileStamped = FALSE;
 	 if(pc->logFilePathA)
 	    gtk_label_set_text(GTK_LABEL(pc->logFilePathA), Closure->logFile);
@@ -1289,6 +1299,7 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
    {  case LOGFILE_SELECT:
 	 if(!pc->logFileChooser)
 	 {  
+/*FIXME
 	    pc->logFileChooser = gtk_file_selection_new(_utf("Log file"));
 	    ReverseCancelOK(GTK_DIALOG(pc->logFileChooser));
 
@@ -1302,6 +1313,7 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 	    
 	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(pc->logFileChooser),
 					    Closure->logFile);
+*/
 	 }
 	 gtk_widget_show(pc->logFileChooser);
 	 break;
@@ -2459,7 +2471,7 @@ void CreatePreferencesWindow(void)
 
 	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
 
-	 chooser = gtk_combo_box_new_text();
+	 chooser = gtk_combo_box_text_new();
 
        	 g_signal_connect(G_OBJECT(chooser), "changed", G_CALLBACK(method_select_cb), pc);
 
@@ -2468,7 +2480,7 @@ void CreatePreferencesWindow(void)
 	    char *utf;
 
 	    utf  = g_locale_to_utf8(method->menuEntry, -1, NULL, NULL, NULL);
-	    gtk_combo_box_append_text(GTK_COMBO_BOX(chooser), utf); 
+	    gtk_combo_box_text_append(GTK_COMBO_BOX(chooser), NULL, utf); 
 	    g_free(utf);
 
 	    if(!strncmp(Closure->methodName, method->name, 4))

@@ -45,7 +45,7 @@ static void update_geometry(void);
 
 static gboolean max_speed_idle_func(gpointer data)
 {  
-   gdk_window_clear(Closure->readLinearDrawingArea->window);
+   gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
    update_geometry();
    redraw_curve();
 
@@ -138,7 +138,7 @@ static gboolean curve_idle_func(gpointer data)
    {  Closure->readLinearCurve->maxY = Closure->readLinearCurve->fvalue[ci->percent] + 1;
 
       update_geometry();
-      gdk_window_clear(Closure->readLinearDrawingArea->window);
+      gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
       redraw_curve();
       rc->lastPlotted = ci->percent;
       rc->lastPlottedY = CurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
@@ -161,16 +161,16 @@ static gboolean curve_idle_func(gpointer data)
       gint l1 = CurveLogY(Closure->readLinearCurve, Closure->readLinearCurve->lvalue[i]);
 
       if(Closure->readLinearCurve->lvalue[i])
-      {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
+      {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->logColor);
       
-	 gdk_draw_rectangle(Closure->readLinearDrawingArea->window,
-			    Closure->drawGC, TRUE,
+	 cairo_rectangle(Closure->drawGC,
 			    x0, l1,
 			    x0==x1 ? 1 : x1-x0, Closure->readLinearCurve->bottomLY-l1);
+	 cairo_fill(Closure->drawGC);
       }
       if(x0<x1)
-      {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-	 gdk_draw_line(Closure->readLinearDrawingArea->window,
+      {  /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->curveColor);
+	 gdk_draw_line(gtk_widget_get_window(Closure->readLinearDrawingArea),
 		      Closure->drawGC,
 		      x0, y0, x1, y1);
 
@@ -270,7 +270,8 @@ void MarkExistingSectors(void)
 
 static void update_geometry(void)
 {  GtkWidget *widget = Closure->readLinearDrawingArea;
-   GtkAllocation *a = &widget->allocation;
+   GtkAllocation *a;
+   gtk_widget_get_allocation(widget, a);
 
    /* Curve geometry */ 
 
@@ -300,14 +301,14 @@ static void update_geometry(void)
 }
 
 static void redraw_curve(void)
-{  GdkDrawable *d = Closure->readLinearDrawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(Closure->readLinearDrawingArea);
    int x,w,h;
    int pos = 1;
 
    /* Draw and label the spiral */
 
    x = Closure->readLinearCurve->rightX + 20;
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
+   /*fg*/gdk_cairo_set_source_color(Closure->drawGC, Closure->curveColor);
    SetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
    gdk_draw_layout(d, Closure->drawGC, 
 		   x,
@@ -376,13 +377,12 @@ void ResetLinearReadWindow()
 static gboolean redraw_idle_func(gpointer data)
 {  GdkRectangle rect;
    GdkWindow *window;
-   gint ignore;
 
    /* Trigger an expose event for the drawing area. */
 
    window = gtk_widget_get_parent_window(Closure->readLinearDrawingArea);
    if(window) 
-   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
+   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height);
 
       gdk_window_invalidate_rect(window, &rect, TRUE); 
    }

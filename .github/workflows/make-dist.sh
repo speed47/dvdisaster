@@ -38,13 +38,13 @@ echo "::set-output name=archive::$archive"
 mkdir -p dist/locale
 cp -vr locale/*/ dist/locale/
 if [ "$os" != "linux64" ]; then
+  mkdir -p dist/lib
   if [ "$GUI" = 1 ]; then
     mkdir -p dist/share/themes
     cp -vr $MINGW_PREFIX/share/themes/MS-Windows dist/share/themes/
     cp -vr $MINGW_PREFIX/lib/gtk-2.0 dist/lib/
     rm -rf dist/lib/gtk-2.0/include
   fi
-  mkdir -p dist/lib
   ntldd -R dvdisaster
   for i in $(ntldd -R dvdisaster | awk '/mingw/ {print $3}' | tr \\\\ / | grep -Eo '[^/]+$')
   do

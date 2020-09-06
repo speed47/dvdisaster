@@ -137,7 +137,8 @@ static void redraw_spiral(RS01Widgets *wl)
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  RS01Widgets *wl = (RS01Widgets*)data;
-   GtkAllocation *a = &widget->allocation;
+   GtkAllocation *a;
+   gtk_widget_get_allocation(widget, a);
    int w,h,size;
 
    /* Finish spiral initialization */
