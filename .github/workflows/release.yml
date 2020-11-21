@@ -107,19 +107,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev
+      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard
     - name: configure
       run: ./configure --prefix=/usr
     - name: make
       run: nproc && make -j$(nproc) && make
     - name: make install
       run: touch documentation/user-manual/manual.pdf && mkdir /tmp/dist && make install DESTDIR=/tmp/dist
+    - name: copy things to dist
+      run: |
+        install -d /tmp/dist/usr/lib/gtk-2.0
+        cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /tmp/dist/usr/lib/gtk-2.0
     - name: get linuxdeploy
       run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage && chmod 755 linuxdeploy-x86_64.AppImage
     - name: build appimage
       run: |
         export VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$')
-        ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --appdir /tmp/dist/ --output appimage
+        ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /tmp/dist/ --output appimage
     - name: test appimage
       id: dist
       run: |
