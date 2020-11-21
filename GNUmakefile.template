@@ -63,6 +63,12 @@ LIBS = $(INTL_LIBS) $(CAM_LIBS) $(GTK_LIBS) $(EFENCE_LIBS) $(MUDFLAP_LIBS) -lm
 CFILES = $(CFG_CFILES)
 OFILES = $(CFG_OFILES)
 
+# special case for DESTDIR, if BUILDROOT is undef and DESTDIR is,
+# set BUILDROOT to DESTDIR
+ifeq "" "$(BUILDROOT)"
+BUILDROOT = $(DESTDIR)
+endif
+
 ######################################################################
 # Compilation related
 ######################################################################
