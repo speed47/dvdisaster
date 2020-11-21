@@ -5,22 +5,40 @@ on:
     types: [published]
 
 jobs:
-
-  win64-gui:
+  win:
     runs-on: windows-2016
+    strategy:
+      matrix:
+        arch: [x86_64, i686]
+        ui: [cli, gui]
+        include:
+          - arch: x86_64
+            msystem: MINGW64
+            grep: x86-64
+          - arch: i686
+            msystem: MINGW32
+            grep: 386
+          - ui: cli
+            clionly: 1
     defaults:
       run:
         shell: msys2 {0}
     steps:
     - uses: msys2/setup-msys2@v2
       with:
-        msystem: MINGW64
+        msystem: ${{ matrix.msystem }}
         update: false
-        install: git diffutils make pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ghostscript mingw-w64-x86_64-jq mingw-w64-x86_64-ntldd-git man zip
-    - run: git config --global core.autocrlf input
+        install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
+    - name: install GUI prereqs
+      if: matrix.ui == 'gui'
+      run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk2
+    - name: git config
+      run: git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2
     - name: configure
+      env:
+        CLI_ONLY: ${{ matrix.clionly }}
       run: ./configure
     - name: make
       run: nproc && make -j$(nproc)
@@ -28,8 +46,14 @@ jobs:
       run: |
           ./dvdisaster.exe --version
           file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty -e NOGUI && exit 1
-          file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
+          if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
+          file dvdisaster.exe | grep -q '${{ matrix.grep }}, for MS Windows'
+    - name: check executable (GUI)
+      if: matrix.ui == 'gui'
+      run: if ./dvdisaster.exe --version | grep NOGUI; then exit 1; fi
+    - name: check executable (CLI)
+      if: matrix.ui == 'cli'
+      run: ./dvdisaster.exe --version | grep NOGUI
     - name: prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
       id: dist
@@ -44,138 +68,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.dist.outputs.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
-
-  win32-gui:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        update: false
-        install: git diffutils make pkg-config mingw-w64-i686-gtk2 mingw-w64-i686-glib2 mingw-w64-i686-gcc mingw-w64-i686-ghostscript mingw-w64-i686-jq mingw-w64-i686-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
-      run: |
-          ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty -e NOGUI && exit 1
-          file dvdisaster.exe | grep -q '386, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.dist.outputs.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
-
-  win64-cli:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        update: false
-        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ghostscript mingw-w64-x86_64-jq mingw-w64-x86_64-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: env CLI_ONLY=1 ./configure
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
-      run: |
-          ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty && exit 1
-          ./dvdisaster.exe --version | grep -q NOGUI
-          file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.dist.outputs.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
-
-  win32-cli:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        update: false
-        install: git diffutils make pkg-config mingw-w64-i686-glib2 mingw-w64-i686-gcc mingw-w64-i686-ghostscript mingw-w64-i686-jq mingw-w64-i686-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: env CLI_ONLY=1 ./configure
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
-      run: |
-          ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty && exit 1
-          ./dvdisaster.exe --version | grep -q NOGUI
-          file dvdisaster.exe | grep -q '386, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.dist.outputs.upload_url }}
+        upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./${{ steps.dist.outputs.archive }}
         asset_name: ${{ steps.dist.outputs.archive }}
         asset_content_type: application/zip
@@ -185,7 +78,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man jq
+      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
     - name: configure
       run: env CLI_ONLY=1 ./configure
     - name: make
@@ -204,7 +97,44 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.dist.outputs.upload_url }}
+        upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./${{ steps.dist.outputs.archive }}
         asset_name: ${{ steps.dist.outputs.archive }}
         asset_content_type: application/zip
+
+  linux64-appimage:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: install prerequisites
+      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev
+    - name: configure
+      run: ./configure --prefix=/usr
+    - name: make
+      run: nproc && make -j$(nproc) && make
+    - name: make install
+      run: touch documentation/user-manual/manual.pdf && mkdir /tmp/dist && make install DESTDIR=/tmp/dist
+    - name: get linuxdeploy
+      run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage && chmod 755 linuxdeploy-x86_64.AppImage
+    - name: build appimage
+      run: |
+        export VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$')
+        ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --appdir /tmp/dist/ --output appimage
+    - name: test appimage
+      id: dist
+      run: |
+        chmod 755 dvdisaster*.AppImage && ./dvdisaster*.AppImage --version
+        archive=$(ls -1 dvdisaster*.AppImage)
+        echo "::set-output name=archive::$archive"
+        echo "appimage is <$archive>"
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./${{ steps.dist.outputs.archive }}
+        asset_name: ${{ steps.dist.outputs.archive }}
+        asset_content_type: application/zip
+

@@ -20,6 +20,8 @@ This version is built on top of the latest upstream version, with the following 
 
 For more information please refer to the [CHANGELOG](CHANGELOG).
 
+This version will never break compatibility with upstream versions, the goal is to ensure an optical media protected by upstream dvdisaster will still be able to be repaired with this version 10+ years from now. Regression tests are here to ensure this is the case.
+
 ## 3 available protection modes ("codecs")
 
 **RS01** creates error correction files which are stored separately from the image they belong to.

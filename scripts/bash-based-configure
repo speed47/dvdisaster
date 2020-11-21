@@ -602,7 +602,7 @@ function GET_BINDIR()
 function GET_DOCDIR() 
 {  local default="$1"
 
-   path_from_default "doc" "$default" $cfg_docdir
+   path_from_default "share/doc" "$default" $cfg_docdir
    DOCDIR=$ret_path
 
    if test -n "$cfg_help_mode"; then
@@ -620,7 +620,7 @@ function GET_DOCDIR()
 function GET_LOCALEDIR() 
 {  local default="$1"
 
-   path_from_default "locale" "$default" $cfg_localedir
+   path_from_default "share/locale" "$default" $cfg_localedir
    LOCALEDIR=$ret_path
 
    if test -n "$cfg_help_mode"; then
@@ -638,7 +638,7 @@ function GET_LOCALEDIR()
 function GET_MANDIR() 
 {  local default="$1"
 
-   path_from_default "man" "$default" $cfg_mandir
+   path_from_default "share/man" "$default" $cfg_mandir
    MANDIR=$ret_path
 
    if test -n "$cfg_help_mode"; then

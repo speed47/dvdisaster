@@ -4,31 +4,20 @@ set -x
 
 github_ref="$1"
 
-if [ -n "$GITHUB_EVENT_PATH" ] && [ -f "$GITHUB_EVENT_PATH" ]; then
-    if command -v jq >/dev/null; then
-        upload_url=$(jq -r '.release.upload_url' < $GITHUB_EVENT_PATH)
-        echo "Upload URL is $upload_url"
-        echo "::set-output name=upload_url::$upload_url"
-    fi
-else
-    echo "This should only be run from GitHub Actions"
-    exit 1
-fi
-
 case "$MSYSTEM" in
-    MINGW64) os=win64; exe=.exe;;
-    MINGW32) os=win32; exe=.exe;;
-    *)       os=linux64; exe='';;
+    MINGW64) os=win64;   suf=$os-portable; exe=.exe;;
+    MINGW32) os=win32;   suf=$os-portable; exe=.exe;;
+    *)       os=linux64; suf=$os-static;   exe='';;
 esac
 
 ./dvdisaster$exe --version
 
 if ./dvdisaster$exe --version | grep -q NOGUI; then
     GUI=0
-    suffix="$os-cli-only"
+    suffix=$suf-cli-only
 else
     GUI=1
-    suffix=$os-static
+    suffix=$suf
 fi
 
 archive=dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')-$suffix.zip
