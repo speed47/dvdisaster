@@ -28,9 +28,9 @@ mkdir -p dist/locale
 cp -vr locale/*/ dist/locale/
 if [ "$os" != "linux64" ]; then
   if [ "$GUI" = 1 ]; then
-    mkdir -p dist/share/themes
+    mkdir -p dist/share/themes dist/lib/gtk-2.0
     cp -vr $MINGW_PREFIX/share/themes/MS-Windows dist/share/themes/
-    cp -vr $MINGW_PREFIX/lib/gtk-2.0 dist/lib/
+    cp -vr $MINGW_PREFIX/lib/gtk-2.0/* dist/lib/gtk-2.0/
     rm -rf dist/lib/gtk-2.0/include
   fi
   mkdir -p dist/lib
