@@ -91,6 +91,12 @@ static void get_base_dirs()
    Verbose("Using path from get_exe_path() = %s\n", Closure->binDir);
 #endif
 
+   /* for AppImage, get docdir from env if there */
+   if (g_getenv("DVDISASTER_DOCDIR"))
+   {  if (Closure->docDir)
+         g_free(Closure->docDir);
+      Closure->docDir = g_strdup(g_getenv("DVDISASTER_DOCDIR"));
+   }
 
    /*** The location of the dotfile depends on the operating system. 
 	Under Unix the users home directory is used. */

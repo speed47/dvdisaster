@@ -4,7 +4,7 @@
 fix: don't error on blank media in medium-info (#19), bug present upstream since 0.79.5
 fix: gui: fix the 'SetLabelText() failed' error caption on the medium-info window (#19), bug present upstream since 0.72.3
 fix: add CHANGELOG, TODO, CREDITS to dist for the Help menu
-chore: appimage: add missing gtk engines
+chore: appimage: add missing gtk engines and adjust docdir for help menu
 chore: enhance packaging, update locales, changelog et al.
 
 0.79.6.patchlevel-4 04-09-2020 *UNOFFICIAL*
