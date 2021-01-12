@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-05 15:51+0200\n"
+"POT-Creation-Date: 2021-01-12 20:59+0100\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -1269,7 +1269,7 @@ msgstr "Typ disku:"
 msgid "Book type:"
 msgstr "Book type:"
 
-#: src/medium-info.c:467 src/scsi-layer.c:2706
+#: src/medium-info.c:467 src/scsi-layer.c:2727
 msgid "Manuf.-ID:"
 msgstr "ID výrobce:"
 
@@ -3124,12 +3124,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "Chyba CRC v sektoru %lld\n"
 
-#: src/read-adaptive.c:1973 src/scsi-layer.c:1755
+#: src/read-adaptive.c:1973 src/scsi-layer.c:1776
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Sektory %lld-%lld: %s\n"
 
-#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1754
+#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1775
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Sektor %lld: %s\n"
@@ -3182,7 +3182,7 @@ msgstr "Adaptivní čtení:"
 msgid "Sectors processed"
 msgstr "Zpracované sektory"
 
-#: src/read-adaptive-window.c:112 src/scsi-layer.c:1736
+#: src/read-adaptive-window.c:112 src/scsi-layer.c:1757
 msgid "readable"
 msgstr "čitelné"
 
@@ -3252,7 +3252,7 @@ msgstr "Probíhá načtení CRC informací z ecc dat"
 msgid "done.\n"
 msgstr "dokončeno.\n"
 
-#: src/read-linear.c:522 src/scsi-layer.c:2081
+#: src/read-linear.c:522 src/scsi-layer.c:2102
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Čekám %d sekund na roztočení disku...\n"
@@ -5878,7 +5878,7 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit strukturu BD disku.\n"
 
-#: src/scsi-layer.c:1683
+#: src/scsi-layer.c:1704
 #, c-format
 msgid ""
 "%s\n"
@@ -5887,12 +5887,12 @@ msgstr ""
 "%s\n"
 "Nepodařilo se zjistit délku struktury DVD pro kód formátu 1.\n"
 
-#: src/scsi-layer.c:1694
+#: src/scsi-layer.c:1715
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Získání copyright informací DVD se nezdařilo - nepřijatelná délka paketu %d\n"
 
-#: src/scsi-layer.c:1709
+#: src/scsi-layer.c:1730
 #, c-format
 msgid ""
 "%s\n"
@@ -5901,23 +5901,23 @@ msgstr ""
 "%s\n"
 "Získání copyright informací se nezdařilo.\n"
 
-#: src/scsi-layer.c:1770
+#: src/scsi-layer.c:1791
 msgid "is undecideable because of read error"
 msgstr "není rozhodnuto kvůli chybě čtení"
 
-#: src/scsi-layer.c:1776
+#: src/scsi-layer.c:1797
 msgid "looks GOOD"
 msgstr "vypadá DOBŘE"
 
-#: src/scsi-layer.c:1782
+#: src/scsi-layer.c:1803
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "má neformátovanou velikost (NEPOUŽITELNÉ)"
 
-#: src/scsi-layer.c:1787
+#: src/scsi-layer.c:1808
 msgid "is UNUSABLE"
 msgstr "je NEPOUŽITELNÝ"
 
-#: src/scsi-layer.c:1813
+#: src/scsi-layer.c:1834
 #, c-format
 msgid ""
 "%s\n"
@@ -5926,12 +5926,12 @@ msgstr ""
 "%s\n"
 "Dotaz na velikost disku selhal.\n"
 
-#: src/scsi-layer.c:1835
+#: src/scsi-layer.c:1856
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "ČÍST KAPACITU: nepravděpodobná velikost disku, %lld sektorů\n"
 
-#: src/scsi-layer.c:1911
+#: src/scsi-layer.c:1932
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -5944,7 +5944,7 @@ msgstr ""
 "ČÍST STRUKTURU DVD: %lld sektorů\n"
 "\n"
 
-#: src/scsi-layer.c:1916
+#: src/scsi-layer.c:1937
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -5952,15 +5952,15 @@ msgstr ""
 "Vyhodnocení oznámených velikostí disku:\n"
 "\n"
 
-#: src/scsi-layer.c:1971
+#: src/scsi-layer.c:1992
 msgid "Using value from READ CAPACITY"
 msgstr "Bude použita hodnota z READ CAPACITY"
 
-#: src/scsi-layer.c:1975
+#: src/scsi-layer.c:1996
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Bude použita hodnota z READ DVD STRUCTURE"
 
-#: src/scsi-layer.c:1985
+#: src/scsi-layer.c:2006
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -5971,7 +5971,7 @@ msgstr ""
 "Bude použita menší hodnota, protože je to správně pro >90%% všech mechanik,\n"
 "ale POKRAČUJTE NA VLASTNÍ NEBEZPEČÍ (bitová kopie může být neúplná/nepoužitelná)"
 
-#: src/scsi-layer.c:1990
+#: src/scsi-layer.c:2011
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -5980,7 +5980,7 @@ msgstr ""
 "Konečné rozhodnutí: %s\n"
 "\n"
 
-#: src/scsi-layer.c:1998
+#: src/scsi-layer.c:2019
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -5988,7 +5988,7 @@ msgstr ""
 "Selhalo určení velikosti bitové kopie.\n"
 "Zkuste použít jinou mechaniku."
 
-#: src/scsi-layer.c:2124 src/scsi-layer.c:2150
+#: src/scsi-layer.c:2145 src/scsi-layer.c:2171
 #, c-format
 msgid ""
 "%s\n"
@@ -5997,7 +5997,7 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo načíst/vysunout.\n"
 
-#: src/scsi-layer.c:2140
+#: src/scsi-layer.c:2161
 #, c-format
 msgid ""
 "%s\n"
@@ -6006,37 +6006,37 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo odemknout.\n"
 
-#: src/scsi-layer.c:2206
+#: src/scsi-layer.c:2227
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Čekám na roztočení mechaniky: %d\n"
 
-#: src/scsi-layer.c:2489
+#: src/scsi-layer.c:2510
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Sektory %lld - %lld: %s\n"
 
-#: src/scsi-layer.c:2503
+#: src/scsi-layer.c:2524
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Sektor %lld, pokus %d: %s Vrácený sektor: %d.\n"
 
-#: src/scsi-layer.c:2509
+#: src/scsi-layer.c:2530
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Sektor %lld, pokus %d: %s\n"
 
-#: src/scsi-layer.c:2520
+#: src/scsi-layer.c:2541
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Sektor %lld, pokus %d: úspěch\n"
 
-#: src/scsi-layer.c:2591
+#: src/scsi-layer.c:2612
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Mechanika %s: neobsahuje disk\n"
 
-#: src/scsi-layer.c:2596
+#: src/scsi-layer.c:2617
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -6047,7 +6047,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/scsi-layer.c:2602
+#: src/scsi-layer.c:2623
 #, c-format
 msgid ""
 "\n"
@@ -6056,47 +6056,47 @@ msgstr ""
 "\n"
 "Zařízení: %s, %s\n"
 
-#: src/scsi-layer.c:2609
+#: src/scsi-layer.c:2630
 msgid "Drive failed to report media type."
 msgstr "Mechanika neohlásila typ disku."
 
-#: src/scsi-layer.c:2620 src/scsi-layer.c:2718
+#: src/scsi-layer.c:2641 src/scsi-layer.c:2739
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Tento program nepodporuje \"%s\" disky."
 
-#: src/scsi-layer.c:2628
+#: src/scsi-layer.c:2649
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Tento program nepodporuje multisession (%d sessions) disky."
 
-#: src/scsi-layer.c:2659 src/scsi-layer.c:2668
+#: src/scsi-layer.c:2680 src/scsi-layer.c:2689
 msgid "Using READ CD"
 msgstr "Je použito READ CD"
 
-#: src/scsi-layer.c:2660
+#: src/scsi-layer.c:2681
 msgid ", RAW reading"
 msgstr ", přímé čtení"
 
-#: src/scsi-layer.c:2663
+#: src/scsi-layer.c:2684
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", stránka režimu 1 ERP = %02xh"
 
-#: src/scsi-layer.c:2666
+#: src/scsi-layer.c:2687
 msgid ", C2 scanning"
 msgstr ", kontrola C2"
 
-#: src/scsi-layer.c:2673
+#: src/scsi-layer.c:2694
 msgid "Using READ(10).\n"
 msgstr "Je použit READ(10).\n"
 
-#: src/scsi-layer.c:2695
+#: src/scsi-layer.c:2716
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Disk: %s, %lld sektorů%s"
 
-#: src/scsi-layer.c:2699
+#: src/scsi-layer.c:2720
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Disk \"%s\": %s, %lld sektorů%s vytvořeno %s"
@@ -6215,10 +6215,10 @@ msgstr "Vzorový disk"
 msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
-"This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-"We add support for a full CLI version, BD-R TL/QL, a Windows build, add an option to\n"
+"The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
+"We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
 "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
-"Please refer to the changelog for more information.\n"
+"Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
 
