@@ -745,7 +745,7 @@ void AboutDialog()
 #ifdef MODIFIED_SOURCE
    AboutTextWithLink(vbox,
 		     _("[Modified version]\n"
-		       "Copyright 2019-2020 Stephane Lesimple\n"
+		       "Copyright 2019-2021 Stephane Lesimple\n"
 		       "Copyright 2005-2017 Debian Optical Media Tools Team\n"
 		       "Copyright 2004-2017 Carsten Gnoerlich"),
 		     "MODIFYING");
