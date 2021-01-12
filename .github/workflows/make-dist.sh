@@ -42,7 +42,8 @@ if [ "$os" != "linux64" ]; then
   find dist -type f -name "*.a" -delete
 fi
 man -t documentation/dvdisaster.en.1 | ps2pdf - dist/dvdisaster.pdf
-cp dvdisaster documentation/dvdisaster.*.1 documentation/user-manual/manual.pdf dist/
+cp CHANGELOG TODO dvdisaster documentation/dvdisaster.*.1 documentation/user-manual/manual.pdf dist/
+cp CREDITS.en dist/CREDITS
 if command -v zip >/dev/null; then
     mv dist ${archive/.zip/}
     zip -9r $archive ${archive/.zip/}
