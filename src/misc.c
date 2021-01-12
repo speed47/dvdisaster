@@ -508,7 +508,7 @@ void PrintCLIorLabel(void *unused, char *format, ...)
       while(*c == '\n')          /* Remove trailing newlines */
 	*c-- = 0;
 
-      SetLabelText(label, tmp);  /* converts to utf8 by itself */
+      SetLabelText(label, "%s", tmp);  /* converts to utf8 by itself */
    
       g_free(tmp);
    }
