@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-05 15:51+0200\n"
+"POT-Creation-Date: 2021-01-12 20:59+0100\n"
 "PO-Revision-Date: 2006-06-14 23:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -1204,7 +1204,7 @@ msgstr ""
 msgid "Book type:"
 msgstr ""
 
-#: src/medium-info.c:467 src/scsi-layer.c:2706
+#: src/medium-info.c:467 src/scsi-layer.c:2727
 msgid "Manuf.-ID:"
 msgstr ""
 
@@ -2862,12 +2862,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "CRC-fel i sektor %lld\n"
 
-#: src/read-adaptive.c:1973 src/scsi-layer.c:1755
+#: src/read-adaptive.c:1973 src/scsi-layer.c:1776
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Sektorer %lld-%lld: %s\n"
 
-#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1754
+#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1775
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Sektor %lld: %s\n"
@@ -2920,7 +2920,7 @@ msgstr "Adaptiv läsning:"
 msgid "Sectors processed"
 msgstr "Sektorer behandlade"
 
-#: src/read-adaptive-window.c:112 src/scsi-layer.c:1736
+#: src/read-adaptive-window.c:112 src/scsi-layer.c:1757
 msgid "readable"
 msgstr "läsbar"
 
@@ -2990,7 +2990,7 @@ msgstr ""
 msgid "done.\n"
 msgstr "klar.\n"
 
-#: src/read-linear.c:522 src/scsi-layer.c:2081
+#: src/read-linear.c:522 src/scsi-layer.c:2102
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Väntar %d sekunder på att enheten ska varva upp...\n"
@@ -5468,7 +5468,7 @@ msgid ""
 "Could not query BD disc structure.\n"
 msgstr ""
 
-#: src/scsi-layer.c:1683
+#: src/scsi-layer.c:1704
 #, c-format
 msgid ""
 "%s\n"
@@ -5477,12 +5477,12 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter dvdstrukturlängd för formatkod 1.\n"
 
-#: src/scsi-layer.c:1694
+#: src/scsi-layer.c:1715
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Kunde inte fråga efter dvd:ns copyrightinformation - osannolik paketlängd %d\n"
 
-#: src/scsi-layer.c:1709
+#: src/scsi-layer.c:1730
 #, c-format
 msgid ""
 "%s\n"
@@ -5491,23 +5491,23 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter copyrightinformation.\n"
 
-#: src/scsi-layer.c:1770
+#: src/scsi-layer.c:1791
 msgid "is undecideable because of read error"
 msgstr "är inte bestämt på grund av läsfel"
 
-#: src/scsi-layer.c:1776
+#: src/scsi-layer.c:1797
 msgid "looks GOOD"
 msgstr "ser BRA UT"
 
-#: src/scsi-layer.c:1782
+#: src/scsi-layer.c:1803
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "ger oformaterad storlek (EJ ANVÄNDBAR)"
 
-#: src/scsi-layer.c:1787
+#: src/scsi-layer.c:1808
 msgid "is UNUSABLE"
 msgstr "är OANVÄNDBAR"
 
-#: src/scsi-layer.c:1813
+#: src/scsi-layer.c:1834
 #, c-format
 msgid ""
 "%s\n"
@@ -5516,12 +5516,12 @@ msgstr ""
 "%s\n"
 "Kunde inte fråga efter mediumstorlek.\n"
 
-#: src/scsi-layer.c:1835
+#: src/scsi-layer.c:1856
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr ""
 
-#: src/scsi-layer.c:1911
+#: src/scsi-layer.c:1932
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -5530,7 +5530,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scsi-layer.c:1916
+#: src/scsi-layer.c:1937
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -5538,15 +5538,15 @@ msgstr ""
 "Evaluering av returnerade mediumstorlekar:\n"
 "\n"
 
-#: src/scsi-layer.c:1971
+#: src/scsi-layer.c:1992
 msgid "Using value from READ CAPACITY"
 msgstr "Använder värde från LÄSKAPACITET"
 
-#: src/scsi-layer.c:1975
+#: src/scsi-layer.c:1996
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Använder värde från LÄS DVDSTRUKTUR"
 
-#: src/scsi-layer.c:1985
+#: src/scsi-layer.c:2006
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -5557,7 +5557,7 @@ msgstr ""
 "Använder ett mindre värde eftersom det passar för >90%% av alla enheter,\n"
 "men FORTSÄTT PÅ EGEN RISK (avbilden kan bli felaktig/oanvändbar)"
 
-#: src/scsi-layer.c:1990
+#: src/scsi-layer.c:2011
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -5566,7 +5566,7 @@ msgstr ""
 "Slutligt beslut: %s\n"
 "\n"
 
-#: src/scsi-layer.c:1998
+#: src/scsi-layer.c:2019
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -5574,51 +5574,51 @@ msgstr ""
 "Misslyckades med att fastställa avbildsstorlek.\n"
 "Försök använda en annan enhet."
 
-#: src/scsi-layer.c:2124 src/scsi-layer.c:2150
+#: src/scsi-layer.c:2145 src/scsi-layer.c:2171
 #, c-format
 msgid ""
 "%s\n"
 "Could not load/unload the medium.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2140
+#: src/scsi-layer.c:2161
 #, c-format
 msgid ""
 "%s\n"
 "Could not unlock the medium.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2206
+#: src/scsi-layer.c:2227
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr ""
 
-#: src/scsi-layer.c:2489
+#: src/scsi-layer.c:2510
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr ""
 
-#: src/scsi-layer.c:2503
+#: src/scsi-layer.c:2524
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2509
+#: src/scsi-layer.c:2530
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr ""
 
-#: src/scsi-layer.c:2520
+#: src/scsi-layer.c:2541
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr ""
 
-#: src/scsi-layer.c:2591
+#: src/scsi-layer.c:2612
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr ""
 
-#: src/scsi-layer.c:2596
+#: src/scsi-layer.c:2617
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5626,7 +5626,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scsi-layer.c:2602
+#: src/scsi-layer.c:2623
 #, c-format
 msgid ""
 "\n"
@@ -5635,47 +5635,47 @@ msgstr ""
 "\n"
 "Enhet: %s, %s\n"
 
-#: src/scsi-layer.c:2609
+#: src/scsi-layer.c:2630
 msgid "Drive failed to report media type."
 msgstr ""
 
-#: src/scsi-layer.c:2620 src/scsi-layer.c:2718
+#: src/scsi-layer.c:2641 src/scsi-layer.c:2739
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr ""
 
-#: src/scsi-layer.c:2628
+#: src/scsi-layer.c:2649
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr ""
 
-#: src/scsi-layer.c:2659 src/scsi-layer.c:2668
+#: src/scsi-layer.c:2680 src/scsi-layer.c:2689
 msgid "Using READ CD"
 msgstr ""
 
-#: src/scsi-layer.c:2660
+#: src/scsi-layer.c:2681
 msgid ", RAW reading"
 msgstr ""
 
-#: src/scsi-layer.c:2663
+#: src/scsi-layer.c:2684
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ""
 
-#: src/scsi-layer.c:2666
+#: src/scsi-layer.c:2687
 msgid ", C2 scanning"
 msgstr ""
 
-#: src/scsi-layer.c:2673
+#: src/scsi-layer.c:2694
 msgid "Using READ(10).\n"
 msgstr ""
 
-#: src/scsi-layer.c:2695
+#: src/scsi-layer.c:2716
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Medium: %s, %lld sektorer%s"
 
-#: src/scsi-layer.c:2699
+#: src/scsi-layer.c:2720
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Medium \"%s\": %s, %lld sektorer%s skapade %s"
@@ -5794,10 +5794,10 @@ msgstr ""
 msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
-"This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-"We add support for a full CLI version, BD-R TL/QL, a Windows build, add an option to\n"
+"The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
+"We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
 "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
-"Please refer to the changelog for more information.\n"
+"Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
 

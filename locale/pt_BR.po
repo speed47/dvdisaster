@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.72.rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-05 15:51+0200\n"
+"POT-Creation-Date: 2021-01-12 20:59+0100\n"
 "PO-Revision-Date: 2010-06-09 11:13+0200\n"
 "Last-Translator: cg <cg@dvdisaster.org>\n"
 "Language-Team: Portuguese\n"
@@ -1227,7 +1227,7 @@ msgstr "Tipo de mídia:"
 msgid "Book type:"
 msgstr "Tipo de livro:"
 
-#: src/medium-info.c:467 src/scsi-layer.c:2706
+#: src/medium-info.c:467 src/scsi-layer.c:2727
 msgid "Manuf.-ID:"
 msgstr "ID do Manufatorador:"
 
@@ -3046,12 +3046,12 @@ msgstr ""
 msgid "CRC error in sector %lld\n"
 msgstr "Erro de CRC no setor %lld\n"
 
-#: src/read-adaptive.c:1973 src/scsi-layer.c:1755
+#: src/read-adaptive.c:1973 src/scsi-layer.c:1776
 #, c-format
 msgid "Sectors %lld-%lld: %s\n"
 msgstr "Setores %lld-%lld: %s\n"
 
-#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1754
+#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1775
 #, c-format
 msgid "Sector %lld: %s\n"
 msgstr "Setor %lld: %s\n"
@@ -3104,7 +3104,7 @@ msgstr "Leitura adaptiva:"
 msgid "Sectors processed"
 msgstr "Setores processados"
 
-#: src/read-adaptive-window.c:112 src/scsi-layer.c:1736
+#: src/read-adaptive-window.c:112 src/scsi-layer.c:1757
 msgid "readable"
 msgstr "legível"
 
@@ -3174,7 +3174,7 @@ msgstr "Lendo informação de CRC dos dados ecc"
 msgid "done.\n"
 msgstr "pronto.\n"
 
-#: src/read-linear.c:522 src/scsi-layer.c:2081
+#: src/read-linear.c:522 src/scsi-layer.c:2102
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Aguardando %d segundos para que o drive gire...\n"
@@ -5754,7 +5754,7 @@ msgstr ""
 "%s\n"
 "Impossível consultar a estrutura do disco BD.\n"
 
-#: src/scsi-layer.c:1683
+#: src/scsi-layer.c:1704
 #, c-format
 msgid ""
 "%s\n"
@@ -5763,12 +5763,12 @@ msgstr ""
 "%s\n"
 "Impossível consultar o tamanho da estrutura do dvd para o código de formato 1.\n"
 
-#: src/scsi-layer.c:1694
+#: src/scsi-layer.c:1715
 #, c-format
 msgid "Could not query dvd copyright info - implausible packet length %d\n"
 msgstr "Impossível consultar as informações de copyright do dvd - tamanho de pacote inverossímil: %d\n"
 
-#: src/scsi-layer.c:1709
+#: src/scsi-layer.c:1730
 #, c-format
 msgid ""
 "%s\n"
@@ -5777,23 +5777,23 @@ msgstr ""
 "%s\n"
 "Impossível consultar as informações de copyright.\n"
 
-#: src/scsi-layer.c:1770
+#: src/scsi-layer.c:1791
 msgid "is undecideable because of read error"
 msgstr "é impossível de se resolver por causa de um erro de leitura"
 
-#: src/scsi-layer.c:1776
+#: src/scsi-layer.c:1797
 msgid "looks GOOD"
 msgstr "parece BOM"
 
-#: src/scsi-layer.c:1782
+#: src/scsi-layer.c:1803
 msgid "gives unformatted size (UNUSABLE)"
 msgstr "dá o tamanho não-formatado (INUTILIZÁVEL)"
 
-#: src/scsi-layer.c:1787
+#: src/scsi-layer.c:1808
 msgid "is UNUSABLE"
 msgstr "é INUTILIZÁVEL"
 
-#: src/scsi-layer.c:1813
+#: src/scsi-layer.c:1834
 #, c-format
 msgid ""
 "%s\n"
@@ -5802,12 +5802,12 @@ msgstr ""
 "%s\n"
 "Impossível consultar o tamanho da mídia.\n"
 
-#: src/scsi-layer.c:1835
+#: src/scsi-layer.c:1856
 #, c-format
 msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
 msgstr "CAPACIDADE DE LEITURA: tamanho da mídia inverossímil, %lld setores\n"
 
-#: src/scsi-layer.c:1911
+#: src/scsi-layer.c:1932
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
@@ -5819,7 +5819,7 @@ msgstr ""
 "LEITURA DA CAPACIDADE:         %lld setores\n"
 "LEITURA DA ESTRUTURA DO DVD :  %lld setores\n"
 
-#: src/scsi-layer.c:1916
+#: src/scsi-layer.c:1937
 msgid ""
 "Evaluation of returned medium sizes:\n"
 "\n"
@@ -5827,15 +5827,15 @@ msgstr ""
 "Avaliação dos tamanhos da mídia retornados:\n"
 "\n"
 
-#: src/scsi-layer.c:1971
+#: src/scsi-layer.c:1992
 msgid "Using value from READ CAPACITY"
 msgstr "Usando o valor da LEITURA DA CAPACIDADE"
 
-#: src/scsi-layer.c:1975
+#: src/scsi-layer.c:1996
 msgid "Using value from READ DVD STRUCTURE"
 msgstr "Usando o valor da LEITURA DA ESTRUTURA DO DVD"
 
-#: src/scsi-layer.c:1985
+#: src/scsi-layer.c:2006
 #, c-format
 msgid ""
 "FAILED to determine image size.\n"
@@ -5846,7 +5846,7 @@ msgstr ""
 "Usar valores menores como este é adequado a mais de 90%% de todos os drives,\n"
 "mas CONTINUE COM A SUA CONTA EM RISCO (a imagem pode ficar incompleta/inutilizável)"
 
-#: src/scsi-layer.c:1990
+#: src/scsi-layer.c:2011
 #, c-format
 msgid ""
 "Final decision: %s\n"
@@ -5855,7 +5855,7 @@ msgstr ""
 "Decisão final: %s\n"
 "\n"
 
-#: src/scsi-layer.c:1998
+#: src/scsi-layer.c:2019
 msgid ""
 "Failed to determine image size.\n"
 "Try using a different drive."
@@ -5863,14 +5863,14 @@ msgstr ""
 "Falha ao determinar o tamanho da imagem.\n"
 "Tente usar um drive diferente."
 
-#: src/scsi-layer.c:2124 src/scsi-layer.c:2150
+#: src/scsi-layer.c:2145 src/scsi-layer.c:2171
 #, c-format
 msgid ""
 "%s\n"
 "Could not load/unload the medium.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2140
+#: src/scsi-layer.c:2161
 #, c-format
 msgid ""
 "%s\n"
@@ -5879,37 +5879,37 @@ msgstr ""
 "%s\n"
 "Impossível destravar a mídia.\n"
 
-#: src/scsi-layer.c:2206
+#: src/scsi-layer.c:2227
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Aguardando 10 segundos pelo drive: %d\n"
 
-#: src/scsi-layer.c:2489
+#: src/scsi-layer.c:2510
 #, c-format
 msgid "Sectors %lld - %lld: %s\n"
 msgstr "Setores %lld - %lld: %s\n"
 
-#: src/scsi-layer.c:2503
+#: src/scsi-layer.c:2524
 #, c-format
 msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
 msgstr "Setor %lld, tentativa %d: %s Setor retornado: %d.\n"
 
-#: src/scsi-layer.c:2509
+#: src/scsi-layer.c:2530
 #, c-format
 msgid "Sector %lld, try %d: %s\n"
 msgstr "Setor %lld, tentativa %d: %s\n"
 
-#: src/scsi-layer.c:2520
+#: src/scsi-layer.c:2541
 #, c-format
 msgid "Sector %lld, try %d: success\n"
 msgstr "Setor %lld, tentativa %d: sucesso\n"
 
-#: src/scsi-layer.c:2591
+#: src/scsi-layer.c:2612
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Dispositivo %s: nenhuma mídia presente\n"
 
-#: src/scsi-layer.c:2596
+#: src/scsi-layer.c:2617
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5920,7 +5920,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/scsi-layer.c:2602
+#: src/scsi-layer.c:2623
 #, c-format
 msgid ""
 "\n"
@@ -5929,47 +5929,47 @@ msgstr ""
 "\n"
 "Dispositivo: %s, %s\n"
 
-#: src/scsi-layer.c:2609
+#: src/scsi-layer.c:2630
 msgid "Drive failed to report media type."
 msgstr "O drive falhou ao informar o tipo de mídia."
 
-#: src/scsi-layer.c:2620 src/scsi-layer.c:2718
+#: src/scsi-layer.c:2641 src/scsi-layer.c:2739
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Este software não suporta mídias do tipo \"%s\""
 
-#: src/scsi-layer.c:2628
+#: src/scsi-layer.c:2649
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Este software não suporta mídias em multisessão (%d sessões)."
 
-#: src/scsi-layer.c:2659 src/scsi-layer.c:2668
+#: src/scsi-layer.c:2680 src/scsi-layer.c:2689
 msgid "Using READ CD"
 msgstr "Usando READ CD"
 
-#: src/scsi-layer.c:2660
+#: src/scsi-layer.c:2681
 msgid ", RAW reading"
 msgstr ", leitura RAW"
 
-#: src/scsi-layer.c:2663
+#: src/scsi-layer.c:2684
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ""
 
-#: src/scsi-layer.c:2666
+#: src/scsi-layer.c:2687
 msgid ", C2 scanning"
 msgstr ", escaneando C2"
 
-#: src/scsi-layer.c:2673
+#: src/scsi-layer.c:2694
 msgid "Using READ(10).\n"
 msgstr "Usando READ(10).\n"
 
-#: src/scsi-layer.c:2695
+#: src/scsi-layer.c:2716
 #, c-format
 msgid "Medium: %s, %lld sectors%s"
 msgstr "Mídia: %s, %lld setores%s"
 
-#: src/scsi-layer.c:2699
+#: src/scsi-layer.c:2720
 #, c-format
 msgid "Medium \"%s\": %s, %lld sectors%s created %s"
 msgstr "Mídia \"%s\": %s, %lld setores%s criou %s"
@@ -6088,10 +6088,10 @@ msgstr "Disco de exemplo"
 msgid ""
 "<b>Unofficial version.</b>\n"
 "\n"
-"This is a modified version of the last <b>0.79.6</b> upstream pre-release.\n"
-"We add support for a full CLI version, BD-R TL/QL, a Windows build, add an option to\n"
+"The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
+"We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
 "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
-"Please refer to the changelog for more information.\n"
+"Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
 
