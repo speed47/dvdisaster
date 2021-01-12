@@ -877,7 +877,7 @@ void ReadSector(char *arg)
 
    /*** Open the device */
 
-   image = OpenImageFromDevice(Closure->device);
+   image = OpenImageFromDevice(Closure->device, 0);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
 
@@ -931,7 +931,7 @@ void RawSector(char *arg)
 
    /*** Open the device */
 
-   image = OpenImageFromDevice(Closure->device);
+   image = OpenImageFromDevice(Closure->device, 0);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
    sense = &image->dh->sense;

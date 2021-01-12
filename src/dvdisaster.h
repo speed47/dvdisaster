@@ -894,7 +894,7 @@ typedef struct _Image
 } Image;
 
 Image* OpenImageFromFile(char*, int, mode_t);
-Image* OpenImageFromDevice(char*);   /* really in scsi-layer.h */
+Image* OpenImageFromDevice(char*, int);   /* really in scsi-layer.h */
 Image* OpenEccFileForImage(Image*, char*, int, mode_t);
 int ReportImageEccInconsistencies(Image*);
 int GetImageFingerprint(Image*, guint8*, guint64);
