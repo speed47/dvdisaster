@@ -104,7 +104,7 @@ void PrintMediumInfo(void *mi_ptr)
       print_defaults(mi);
 #endif
 
-   image = OpenImageFromDevice(Closure->device);
+   image = OpenImageFromDevice(Closure->device, 2 /* allow blanks, see comment in OpenImageFromDevice() */);
    if(!image) return;
    dh = image->dh;
    QueryBlankCapacity(dh);

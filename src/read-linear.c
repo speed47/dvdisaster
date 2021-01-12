@@ -832,7 +832,7 @@ void ReadMediumLinear(gpointer data)
         and possibly the respective ecc file.
         The on disk image is maintained in rc->reader|writerImage. */
 
-   rc->image = OpenImageFromDevice(Closure->device);
+   rc->image = OpenImageFromDevice(Closure->device, 0);
    Closure->readErrors = Closure->crcErrors = rc->readOK = 0;
 
    /*** Save some useful information for the missing sector marker */

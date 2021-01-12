@@ -626,7 +626,7 @@ static void open_and_determine_mode(read_closure *rc)
  
    /* open the device */
 
-   rc->medium = OpenImageFromDevice(Closure->device);
+   rc->medium = OpenImageFromDevice(Closure->device, 0);
    rc->dh = rc->medium->dh;
    rc->readMode = IMAGE_ONLY;
 

@@ -1054,6 +1054,17 @@ static int query_bd(DeviceHandle *dh, int probe_only)
 
 /*
  * Find out what type of disc has been inserted.
+ *
+ * `probe_only` is passed down to query_cd/dvd/br, and has
+ * a boolean meaning there:
+ * - 0: abort the program on error (call Stop())
+ * - 1: return error to the caller (us).
+ * If we're called with probe_only == 2, we additionally won't
+ * return an error to our caller even if query_cd/dvd/br return FALSE:
+ * this is used when querying media that may be blank (in PrintMediumInfo),
+ * as query_* attempt to read the TOC, which is always expected to fail
+ * on blank media. However we will still return FALSE if we get any
+ * other type of error.
  */
 
 static int query_type(DeviceHandle *dh, int probe_only)
@@ -1063,6 +1074,7 @@ static int query_type(DeviceHandle *dh, int probe_only)
    Sense *sense = &dh->sense;
    unsigned int length;
    int status;
+   int ret;
 
    /*** See which profile the drive selected.
 	This should at least give us a hint to decide 
@@ -1133,31 +1145,40 @@ static int query_type(DeviceHandle *dh, int probe_only)
 	dh->singleRate  = 150.0;
 	dh->maxRate     = 52;
 	dh->clusterSize = 16;  /* really 1, but this is faster */ 
-	return dh->incomplete ? query_incomplete(dh, probe_only) : query_cd(dh, probe_only);
+	ret = dh->incomplete ? query_incomplete(dh, probe_only) : query_cd(dh, probe_only);
+	return (probe_only == 2 ? TRUE : ret);
 
       case DVD:
 	dh->read        = read_dvd_sector;
 	dh->singleRate  = 1352.54;
 	dh->maxRate     = 17;
 	dh->clusterSize = 16;
-	if(!dh->incomplete) return query_dvd(dh, probe_only);
-	else
-	{  if(query_dvd(dh, TRUE)) return TRUE;
-	   return query_incomplete(dh, probe_only);
+	if(!dh->incomplete)
+	{	ret = query_dvd(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
 	}
-	break;
+	else
+	{	if(query_dvd(dh, TRUE)) return TRUE;
+		ret = query_incomplete(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
+	}
+	break; /* unreachable */
 
       case BD:
 	dh->read        = read_dvd_sector;
 	dh->singleRate  = 36000.0/8.0;  /* 1x = 36 kbit */
 	dh->maxRate     = 9;
 	dh->clusterSize = 32;
-	if(!dh->incomplete) return query_bd(dh, probe_only);
-	else
-	{  if(query_bd(dh, TRUE)) return TRUE;
-	   return query_incomplete(dh, probe_only);
+	if(!dh->incomplete)
+	{	ret = query_bd(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
 	}
-	break;
+	else
+	{	if(query_bd(dh, TRUE)) return TRUE;
+		ret = query_incomplete(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
+	}
+	break; /* unreachable */
 
       default:  /* maybe HD DVD or sth else we do not support */
 	return FALSE;
@@ -2017,7 +2038,7 @@ gint64 CurrentMediumSize(int get_blank_size)
    gint64 size;
 
 
-   image = OpenImageFromDevice(Closure->device);
+   image = OpenImageFromDevice(Closure->device, 0);
    if(!image) return 0;
    if(InquireDevice(image->dh, 1) != 0x05) 
    {  CloseImage(image);
@@ -2571,7 +2592,7 @@ int ReadSectorsFast(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors
  *** Open the device and query some of its properties.
  ***/
 
-Image* OpenImageFromDevice(char *device)
+Image* OpenImageFromDevice(char *device, int query_only)
 {  Image *image = NULL;
    DeviceHandle *dh = NULL;
 
@@ -2604,7 +2625,7 @@ Image* OpenImageFromDevice(char *device)
    /* Query the type and fail immediately if incompatible medium is found
       so that the later tests are not derailed by the wrong medium type */
 
-   if(!query_type(dh, 0))
+   if(!query_type(dh, query_only))
    {  CloseDevice(dh);
       Stop(_("Drive failed to report media type."));
       return NULL;
