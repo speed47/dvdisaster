@@ -2038,7 +2038,8 @@ gint64 CurrentMediumSize(int get_blank_size)
    gint64 size;
 
 
-   image = OpenImageFromDevice(Closure->device, 0);
+   /* 2 means: allow blank media, see comment in OpenImageFromDevice */
+   image = OpenImageFromDevice(Closure->device, 2);
    if(!image) return 0;
    if(InquireDevice(image->dh, 1) != 0x05) 
    {  CloseImage(image);
