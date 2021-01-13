@@ -2595,6 +2595,7 @@ int ReadSectorsFast(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors
 Image* OpenImageFromDevice(char *device, int query_only)
 {  Image *image = NULL;
    DeviceHandle *dh = NULL;
+   int subTypeMasked;
 
    /* Open the device. */
 
@@ -2633,7 +2634,11 @@ Image* OpenImageFromDevice(char *device, int query_only)
      
    Verbose("# query_type() returned.\n");
 
-   if(dh->subType == UNSUPPORTED)
+   /* subType is not set by get_configuration() but by query_cd() for CD.
+      So if we accept blank media (query_only == 2), then UNSUPPORTED for CD
+      is not an error, it just mean query_cd() didn't fill it because it
+      doesn't work for blank media as there's no TOC */
+   if(dh->subType == UNSUPPORTED && !(query_only == 2 && dh->mainType == CD))
    {  char *td = alloca(strlen(dh->typeDescr)+1);
 
       strcpy(td, dh->typeDescr);
@@ -2642,7 +2647,7 @@ Image* OpenImageFromDevice(char *device, int query_only)
       return NULL;
    }
 
-   if(dh->sessions>1)
+   if(dh->sessions>1 && query_only != 2)
    {  int sessions = dh->sessions;
 
       CloseDevice(dh);
@@ -2707,7 +2712,15 @@ Image* OpenImageFromDevice(char *device, int query_only)
    dh->sectors = query_size(image);
    Verbose("# returned: %lld sectors\n", dh->sectors); 
 
-   switch(dh->subType & MAIN_TYPE_MASK)
+   subTypeMasked = dh->subType & MAIN_TYPE_MASK;
+   /* Handle the special case of blank CDs, that have no subType
+      see above comment for more information: */
+   if (query_only == 2 && subTypeMasked == 0 && dh->mainType == CD)
+   {   Verbose("This may be a blank CD, adjusting subTypeMasked");
+       subTypeMasked = CD;
+   }
+
+   switch(subTypeMasked)
    {  case BD:
       case DVD:
       case CD:
