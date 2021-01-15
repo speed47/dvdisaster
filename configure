@@ -5,11 +5,23 @@
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build $@"
 REQUIRED_CFLAGS="-DPATCHLEVEL=5 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
-RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-deprecated-declarations -Wno-stringop-truncation"
+RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length"
 DEBUG_CFLAGS="-ggdb -Wall"
 
 if [ "$CLI_ONLY" = 1 ]; then
   REQUIRED_CFLAGS="-DCLI $REQUIRED_CFLAGS"
+fi
+
+if [ "$DEBUG_PRINTF_FORMAT" = 1 ]; then
+  # don't use the binary compiled with this,
+  # it's only useful to properly get all the build-time
+  # warnings around printf-errors, that are otherwise
+  # not catched by the compiler because of the _() macro
+  REQUIRED_CFLAGS="-DDEBUG_PRINTF_FORMAT $REQUIRED_CFLAGS"
+else
+  # warnings given by -Wformat-security are bogus
+  # because of _(), see above comment.
+  RECOMMENDED_CFLAGS="$RECOMMENDED_CFLAGS -Wno-format-security"
 fi
 
 CFG_USE_CYGWIN="no"   # do not change

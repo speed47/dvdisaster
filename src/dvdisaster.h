@@ -72,8 +72,14 @@
    Note that these functions are even required when
    WITH_NLS_NO is set! */
 
+#ifdef DEBUG_PRINTF_FORMAT
+/* disable sgettext() calls so that the compiler can analyze printf format strings */
+#define _(string) string
+#define _utf(string) string
+#else
 #define _(string) sgettext(string)
 #define _utf(string) sgettext_utf8(string)
+#endif
 
 /* File permissions for images */
 
