@@ -534,7 +534,7 @@ int main(int argc, char *argv[])
  	    Closure->prefetchSectors = atoi(optarg);
 	    if(   Closure->prefetchSectors < 32
 	       || Closure->prefetchSectors > MAX_PREFETCH_CACHE_SIZE)
-	      Stop(_("--prefetch-sectors must be in range 32...%s"),
+	      Stop(_("--prefetch-sectors must be in range 32...%d"),
 		    MAX_PREFETCH_CACHE_SIZE);
 	    break;
          case MODIFIER_RANDOM_SEED:

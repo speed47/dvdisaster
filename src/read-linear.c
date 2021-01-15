@@ -890,7 +890,7 @@ void ReadMediumLinear(gpointer data)
 	 {
 #ifndef CLI
             SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
-				 _("<span %s>Aborted by user request!</span>"),
+				 _("<span %s>Aborted by user request!</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
 				 Closure->redMarkup, rc->readOK,Closure->readErrors); 
 #endif
 	    rc->unreportedError = FALSE;  /* suppress respective error message */

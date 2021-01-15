@@ -244,7 +244,7 @@ static void check_image(ecc_closure *ec)
 		   "from a damaged medium which was NOT fully recovered.\n" 
 		   "This means that some files may have been silently corrupted.\n\n"
 		   "Error correction information can only be\n"
-		   "appended to complete (undamaged) images.\n"));
+		   "appended to complete (undamaged) images.\n"), sectors);
       }
       
       /* Update and cache the CRC sums */

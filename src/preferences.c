@@ -1490,7 +1490,7 @@ void CreatePreferencesWindow(void)
 			 "- reading defective media\n"
 			 "- if (and only if) error correction data is available.\n\n"
 			 "Using the adaptive strategy without error correction data "
-			 "is possible but it is recommended to use linear reading in that case."), Closure->invisibleDash);
+			 "is possible but it is recommended to use linear reading in that case."));
 
       /* Reading range */
 
