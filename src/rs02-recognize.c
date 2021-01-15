@@ -78,7 +78,7 @@ static int try_sector(Image *image, gint64 pos, EccHeader **ehptr, unsigned char
 
    /* Try reading the sector */
 
-   Verbose("try_sector: trying sector %lld\n", pos);
+   Verbose("try_sector: trying sector %" PRId64 "\n", pos);
 
    if(ImageReadSectors(image, secbuf, pos, 2) != 2)
    {  Verbose("try_sector: read error, trying next header\n");
@@ -244,7 +244,7 @@ int RS02Recognize(Image *image)
    while(header_modulo >= 32)
    {  pos = max_sectors & ~(header_modulo - 1);
 
-      Verbose("FindHeaderInMedium: Trying modulo %lld\n", header_modulo);
+      Verbose("FindHeaderInMedium: Trying modulo %" PRId64 "\n", header_modulo);
 
       while(pos > 0)
       {  int result;
@@ -255,12 +255,12 @@ int RS02Recognize(Image *image)
 #endif
 
 	 if(GetBit(try_next_header, pos))
-	 {  Verbose("Sector %lld cached; skipping\n", pos);
+	 {  Verbose("Sector %" PRId64 " cached; skipping\n", pos);
 	    goto check_next_header;
 	 }
 
 	 if(GetBit(try_next_modulo, pos))
-	 {  Verbose("Sector %lld cached; skipping modulo\n", pos);
+	 {  Verbose("Sector %" PRId64 " cached; skipping modulo\n", pos);
 	     goto check_next_modulo;
 	 }
 

@@ -123,7 +123,7 @@ static void cleanup(gpointer data)
    if(Closure->guiMode)
    {  if(rc->unreportedError)
          SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
-			      _("<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."),
+			      _("<span %s>Aborted by unrecoverable error.</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
 			      Closure->redMarkup, rc->readOK, Closure->readErrors); 
    }
 #endif
@@ -385,7 +385,7 @@ reopen_image:
 
    if(!Closure->readStart && !Closure->readEnd 
       && rc->readMarker < rc->image->dh->sectors-1 && Closure->readingPasses <= 1)
-   {  PrintLog(_("Completing image %s. Continuing with sector %lld.\n"),
+   {  PrintLog(_("Completing image %s. Continuing with sector %" PRId64 ".\n"),
 	       Closure->imageName, rc->readMarker);
       rc->firstSector = rc->readMarker;
 #ifndef CLI
@@ -423,7 +423,7 @@ static void fill_gap(read_closure *rc)
       s = rc->readMarker;
 
       if(!LargeSeek(rc->writerImage, (gint64)(2048*s)))
-	Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 	     s, "fill", strerror(errno));
 
       while(s < rc->firstSector)
@@ -432,7 +432,7 @@ static void fill_gap(read_closure *rc)
 	 CreateMissingSector(buf, s, rc->image->imageFP, FINGERPRINT_SECTOR, rc->volumeLabel);
 	 n = LargeWrite(rc->writerImage, buf, 2048);
 	 if(n != 2048)
-	   Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+	   Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 		s, "fill", strerror(errno));
 	 s++;
       }
@@ -545,7 +545,7 @@ static void show_progress(read_closure *rc)
 #ifndef CLI
    if(Closure->guiMode && rc->lastErrorsPrinted != Closure->readErrors)
    {  SetLabelText(GTK_LABEL(Closure->readLinearErrors), 
-		   _("Unreadable / skipped sectors: %lld"), Closure->readErrors);
+		   _("Unreadable / skipped sectors: %" PRId64 ""), Closure->readErrors);
       rc->lastErrorsPrinted = Closure->readErrors;
    }
 #endif
@@ -636,10 +636,10 @@ static void show_progress(read_closure *rc)
 
 	       if(sp >= Closure->speedWarning)
 	       {  if(delta > 0.0)
-		     PrintCLI(_("Sector %lld: Speed increased to %4.1fx\n"), 
+		     PrintCLI(_("Sector %" PRId64 ": Speed increased to %4.1fx\n"), 
 			      rc->readPos, fabs(rc->speed));
 		  else
-		     PrintCLI(_("Sector %lld: Speed dropped to %4.1fx\n"),
+		     PrintCLI(_("Sector %" PRId64 ": Speed dropped to %4.1fx\n"),
 			      rc->readPos, fabs(rc->speed));
 	       }
 	    }
@@ -700,14 +700,14 @@ static gpointer worker_thread(read_closure *rc)
       {  int n;
 
 	 if(!LargeSeek(rc->writerImage, (gint64)(2048*s)))
-	 {  rc->workerError = g_strdup_printf(_("Failed seeking to sector %lld in image [%s]: %s"),
+	 {  rc->workerError = g_strdup_printf(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 					      s, "store", strerror(errno));
 	    goto update_mutex;
 	 }
 
 	 n = LargeWrite(rc->writerImage, rc->alignedBuf[rc->writePtr]->buf, 2048*nsectors);
 	 if(n != 2048*nsectors)
-	 {  rc->workerError = g_strdup_printf(_("Failed writing to sector %lld in image [%s]: %s"),
+	 {  rc->workerError = g_strdup_printf(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 	                                      s, "store", strerror(errno));
 	    goto update_mutex;
 	 }
@@ -994,7 +994,7 @@ next_reading_pass:
       {
 	 if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	 {   SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
-				  _("<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."),
+				  _("<span %s>Aborted by user request!</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
 				  Closure->redMarkup, rc->readOK,Closure->readErrors); 
 	 }
 	 rc->unreportedError = FALSE;  /* suppress respective error message */
@@ -1040,7 +1040,7 @@ reread:
 	 
 	 else
 	 {  if(!LargeSeek(rc->readerImage, (gint64)(2048*rc->readPos)))
-	       Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	       Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		    rc->readPos, "reread", strerror(errno));
 
 	    if(rc->readPos+nsectors > rc->readMarker)
@@ -1052,7 +1052,7 @@ reread:
 
 	       n = LargeRead(rc->readerImage, sector_buf, 2048);
 	       if(n != 2048)
-		  Stop(_("unexpected read error in image for sector %lld"),rc->readPos);
+		  Stop(_("unexpected read error in image for sector %" PRId64 ""),rc->readPos);
 	       err = CheckForMissingSector(sector_buf, rc->readPos+i,
 					   rc->image->fpState == 2 ? rc->image->imageFP : NULL,
 					   rc->image->fpSector);
@@ -1107,13 +1107,13 @@ reread:
 
 	 if(!Closure->guiMode)
 #endif
-	    Stop(_("Sector %lld: %s\nCan not recover from above error.\n"
+	    Stop(_("Sector %" PRId64 ": %s\nCan not recover from above error.\n"
 		   "Use the --ignore-fatal-sense option to override."),
 		 rc->readPos, GetLastSenseString(FALSE));
 
 #ifndef CLI
 	 answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-			      _("Sector %lld: %s\n\n"
+			      _("Sector %" PRId64 ": %s\n\n"
 				"It may not be possible to recover from this error.\n"
 				"Should the reading continue and ignore this error?"),
 			      rc->readPos, GetLastSenseString(FALSE));
@@ -1124,7 +1124,7 @@ reread:
 	 if(!answer)
 	 {
             SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
-				_("<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."),
+				_("<span %s>Aborted by user request!</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
 				 Closure->redMarkup, rc->readOK,Closure->readErrors); 
 	    rc->unreportedError = FALSE;  /* suppress respective error message */
 	    goto terminate;
@@ -1140,7 +1140,7 @@ reread:
 	 for(i=0; i<nsectors; i++)
 	 {  if(rc->image->dh->c2[i])
 	    {  if(!status)  /* Do not print C2 and error messages together */
-		  PrintCLI(_("Sector %lld: %3d C2 errors.%s\n"), 
+		  PrintCLI(_("Sector %" PRId64 ": %3d C2 errors.%s\n"), 
 			   rc->readPos+i, rc->image->dh->c2[i], "              ");
 
 	       if(rc->image->dh->c2[i] > rc->maxC2)  /* remember highest value */
@@ -1277,7 +1277,7 @@ Closure->status,
 #else
 NULL,
 #endif
-			    _("Sector %lld: %s Skipping %d sectors.\n"),
+			    _("Sector %" PRId64 ": %s Skipping %d sectors.\n"),
 			    rc->readPos, GetLastSenseString(FALSE), nfill-1);  
 	    for(i=0; i<nfill; i++)         /* workaround: large values for nfill */
 	    {  Closure->readErrors++;      /* would exceed sampling of green/red */
@@ -1310,7 +1310,7 @@ Closure->status,
 #else
 NULL,
 #endif
-			       _("Sector %lld: %s\n"),
+			       _("Sector %" PRId64 ": %s\n"),
 			       rc->readPos, GetLastSenseString(FALSE));  
 	       if(rc->readPos >= rc->image->dh->sectors - 2) tao_tail++;
 	       Closure->readErrors++;
@@ -1389,8 +1389,8 @@ step_counter:
    /* We were re-reading an incomplete image */
 
    if(rc->rereading)
-   {  if(!Closure->readErrors) t = g_strdup_printf(_("%lld sectors read.     "),rc->readOK);
-      else                     t = g_strdup_printf(_("%lld sectors read; %lld unreadable sectors."),rc->readOK,Closure->readErrors);
+   {  if(!Closure->readErrors) t = g_strdup_printf(_("%" PRId64 " sectors read.     "),rc->readOK);
+      else                     t = g_strdup_printf(_("%" PRId64 " sectors read; %" PRId64 " unreadable sectors."),rc->readOK,Closure->readErrors);
    }
 
    /* We were reading the image for the first time */
@@ -1402,7 +1402,7 @@ step_counter:
       {
 	 if(rc->image->eccFile)  /* ...maybe wrong image size? */
 	 {  if(rc->image->dh->sectors != rc->image->expectedSectors)
-	       t = g_strdup_printf(_("All sectors successfully read, but wrong image length (%lld sectors difference)"), rc->image->dh->sectors - rc->image->expectedSectors);
+	       t = g_strdup_printf(_("All sectors successfully read, but wrong image length (%" PRId64 " sectors difference)"), rc->image->dh->sectors - rc->image->expectedSectors);
 	 }
 	                  /* ...or bad ecc md5 sum (theoretically impossible by now)? */
 	 if(   rc->readOK == rc->image->dh->sectors  /* no user limited range */  
@@ -1422,14 +1422,14 @@ step_counter:
       }
       else /* we have unreadable or damaged sectors */
       {  if(Closure->readErrors && !Closure->crcErrors)
-	      t = g_strdup_printf(_("%lld unreadable sectors."),Closure->readErrors);
+	      t = g_strdup_printf(_("%" PRId64 " unreadable sectors."),Closure->readErrors);
          else if(!Closure->readErrors && Closure->crcErrors)
 	 {  if(md5_failure & CRC_MD5_BAD)
-	       t = g_strdup_printf(_("%lld CRC errors and a md5sum mismatch in the CRC section."),Closure->crcErrors);
+	       t = g_strdup_printf(_("%" PRId64 " CRC errors and a md5sum mismatch in the CRC section."),Closure->crcErrors);
 	    else
-	       t = g_strdup_printf(_("%lld CRC errors."),Closure->crcErrors);
+	       t = g_strdup_printf(_("%" PRId64 " CRC errors."),Closure->crcErrors);
 	 }
-	 else t = g_strdup_printf(_("%lld CRC errors, %lld unreadable sectors."),
+	 else t = g_strdup_printf(_("%" PRId64 " CRC errors, %" PRId64 " unreadable sectors."),
 				  Closure->crcErrors, Closure->readErrors);
       }
    }

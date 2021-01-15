@@ -401,7 +401,7 @@ static void read_crc(verify_closure *cc, RS02Layout *lay)
    /* First sector containing crc data */
 
    if(!LargeSeek(cc->image->file, 2048*(lay->dataSectors+2)))
-     Stop(_("Failed seeking to sector %lld in image: %s"), 
+     Stop(_("Failed seeking to sector %" PRId64 " in image: %s"), 
 	  lay->dataSectors+2, strerror(errno));
    crc_sector = lay->dataSectors+2;
 
@@ -512,7 +512,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-      PrintLog(_("- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"),
+      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
 #ifndef CLI
@@ -528,7 +528,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 		      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
 	 SetLabelText(GTK_LABEL(vc->wl->cmpEcc3Msg),
-		     _("<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"),
+		     _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
 		      recoverable < expected ? Closure->redMarkup : Closure->greenMarkup,
 		     recoverable, expected, percentage/10, percentage%10);
       }
@@ -617,19 +617,19 @@ void RS02Verify(Image *image)
 #endif
 
    PrintLog("\n%s: ",Closure->imageName);
-   PrintLog(_("present, contains %lld medium sectors.\n"),image->sectorSize);
+   PrintLog(_("present, contains %" PRId64 " medium sectors.\n"),image->sectorSize);
 
 #ifndef CLI
    if(Closure->guiMode)
    {  if(expected_sectors == image->sectorSize)
-      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%lld", image->sectorSize);
+      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%" PRId64 "", image->sectorSize);
       }
       else
-      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "<span %s>%lld</span>", 
+      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "<span %s>%" PRId64 "</span>", 
 		      Closure->redMarkup, image->sectorSize);
 	 if(expected_sectors > image->sectorSize)
-	      img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors shorter than expected.</span>"), Closure->redMarkup, expected_sectors - image->sectorSize);
-	 else img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors longer than expected.</span>"), Closure->redMarkup, image->sectorSize - expected_sectors);
+	      img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors shorter than expected.</span>"), Closure->redMarkup, expected_sectors - image->sectorSize);
+	 else img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors longer than expected.</span>"), Closure->redMarkup, image->sectorSize - expected_sectors);
       }
    }
 #endif
@@ -646,11 +646,11 @@ void RS02Verify(Image *image)
       {  int n;
 
 	 if(!LargeSeek(image->file, 2048*hdr_pos))
-	   Stop(_("Failed seeking to ecc header at %lld: %s\n"), hdr_pos, strerror(errno));
+	   Stop(_("Failed seeking to ecc header at %" PRId64 ": %s\n"), hdr_pos, strerror(errno));
 
 	 n = LargeRead(image->file, &eh, sizeof(EccHeader));
 	 if(n != sizeof(EccHeader))
-	   Stop(_("Failed reading ecc header at %lld: %s\n"), hdr_pos, strerror(errno));
+	   Stop(_("Failed reading ecc header at %" PRId64 ": %s\n"), hdr_pos, strerror(errno));
 
 	 /* Missing header blocks are always recoverable by copying information
 	    from the surviving headers */
@@ -694,7 +694,7 @@ void RS02Verify(Image *image)
       {  if(!hdr_crc_errors && !hdr_missing)
 	    SetLabelText(GTK_LABEL(wl->cmpEccHeaders), _("complete"));
          else
-	 {  SetLabelText(GTK_LABEL(wl->cmpEccHeaders), _("<span %s>%lld ok, %lld CRC errors, %lld missing</span>"),
+	 {  SetLabelText(GTK_LABEL(wl->cmpEccHeaders), _("<span %s>%" PRId64 " ok, %" PRId64 " CRC errors, %" PRId64 " missing</span>"),
 			 Closure->redMarkup, hdr_ok, hdr_crc_errors, hdr_missing);
 	 }
       }
@@ -781,8 +781,8 @@ void RS02Verify(Image *image)
       if(!current_missing || s==expected_sectors-1)
       {  if(first_missing>=0)
 	 {   if(first_missing == last_missing)
-	           PrintCLI(_("* missing sector   : %lld\n"), first_missing);
-	     else PrintCLI(_("* missing sectors  : %lld - %lld\n"), first_missing, last_missing);
+	           PrintCLI(_("* missing sector   : %" PRId64 "\n"), first_missing);
+	     else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
 	     first_missing = -1;
 	 }
       }
@@ -794,7 +794,7 @@ void RS02Verify(Image *image)
       {  guint32 crc = Crc32(buf, 2048);
 
 	 if(cc->crcValid[crc_idx] && crc != cc->crcBuf[crc_idx])
-	 {  PrintCLI(_("* CRC error, sector: %lld\n"), s);
+	 {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
@@ -834,15 +834,15 @@ void RS02Verify(Image *image)
 	 {  add_verify_values(self, percent, new_missing, new_crc_errors); 
 	    if(data_missing || data_crc_errors)
 	      SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-			   _("<span %s>%lld sectors missing; %lld CRC errors</span>"),
+			   _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
 			   Closure->redMarkup, data_missing, data_crc_errors);
 	    if(crc_missing)
 	      SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-			   _("<span %s>%lld sectors missing</span>"),
+			   _("<span %s>%" PRId64 " sectors missing</span>"),
 			   Closure->redMarkup, crc_missing);
 	    if(ecc_missing)
 	      SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-			   _("<span %s>%lld sectors missing</span>"),
+			   _("<span %s>%" PRId64 " sectors missing</span>"),
 			   Closure->redMarkup, ecc_missing);
 	 }
 #endif
@@ -857,15 +857,15 @@ void RS02Verify(Image *image)
    if(Closure->guiMode)
    {  if(data_missing || data_crc_errors)
         SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-		     _("<span %s>%lld sectors missing; %lld CRC errors</span>"),
+		     _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
 		     Closure->redMarkup, data_missing, data_crc_errors);
       if(crc_missing)
 	SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-		     _("<span %s>%lld sectors missing</span>"),
+		     _("<span %s>%" PRId64 " sectors missing</span>"),
 		     Closure->redMarkup, crc_missing);
       if(ecc_missing)
 	SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-		     _("<span %s>%lld sectors missing</span>"),
+		     _("<span %s>%" PRId64 " sectors missing</span>"),
 		     Closure->redMarkup, ecc_missing);
    }
 #endif
@@ -889,22 +889,22 @@ void RS02Verify(Image *image)
          PrintLog(_("* suspicious image : contains damaged ecc headers\n"));
       else
       {  if(!total_crc_errors)
-	   PrintLog(_("* BAD image        : %lld sectors missing\n"), total_missing);
+	   PrintLog(_("* BAD image        : %" PRId64 " sectors missing\n"), total_missing);
 	 if(!total_missing)
-	   PrintLog(_("* suspicious image : all sectors present, but %lld CRC errors\n"), total_crc_errors);
+	   PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"), total_crc_errors);
 	 if(total_missing && total_crc_errors)
-	   PrintLog(_("* BAD image        : %lld sectors missing, %lld CRC errors\n"), 
+	   PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
 		    total_missing, total_crc_errors);
       }
 
-      PrintLog(_("  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"),
+      PrintLog(_("  ... ecc headers    : %" PRId64 " ok, %" PRId64 " CRC errors, %" PRId64 " missing\n"),
 		 hdr_ok, hdr_crc_errors, hdr_missing);
-      PrintLog(_("  ... data section   : %lld sectors missing; %lld CRC errors\n"), 
+      PrintLog(_("  ... data section   : %" PRId64 " sectors missing; %" PRId64 " CRC errors\n"), 
 	       data_missing, data_crc_errors);
       if(!data_missing)
 	PrintLog(_("  ... data md5sum    : %s\n"), data_digest); 
-      PrintLog(_("  ... crc section    : %lld sectors missing\n"), crc_missing);
-      PrintLog(_("  ... ecc section    : %lld sectors missing\n"), ecc_missing);
+      PrintLog(_("  ... crc section    : %" PRId64 " sectors missing\n"), crc_missing);
+      PrintLog(_("  ... ecc section    : %" PRId64 " sectors missing\n"), ecc_missing);
    }
 
 #ifndef CLI
@@ -1040,25 +1040,25 @@ continue_with_ecc:
    /* Number of sectors medium is supposed to have */
 
    if(image->sectorSize == expected_sectors)
-   {  PrintLog(_("- medium sectors   : %lld / %lld (good)\n"), 
+   {  PrintLog(_("- medium sectors   : %" PRId64 " / %" PRId64 " (good)\n"), 
 	       expected_sectors, lay->dataSectors);
 
 #ifndef CLI
       if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%lld / %lld", 
+	SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 " / %" PRId64 "", 
 		     expected_sectors, lay->dataSectors);
 #endif
    }
    else 
    {  if(image->sectorSize > expected_sectors && image->sectorSize - expected_sectors <= 2)   
-           PrintLog(_("* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"),
+           PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"),
 		    expected_sectors);
-      else PrintLog(_("* medium sectors   : %lld (BAD)\n"),expected_sectors);
+      else PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
 
 #ifndef CLI
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
-		      "<span %s>%lld</span>", Closure->redMarkup, expected_sectors);
+		      "<span %s>%" PRId64 "</span>", Closure->redMarkup, expected_sectors);
 	 if(!ecc_advice && image->sectorSize > expected_sectors)
 	    ecc_advice = g_strdup_printf(_("<span %s>Image size does not match recorded size.</span>"), Closure->redMarkup);
       }

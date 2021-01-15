@@ -189,7 +189,7 @@ mi->usedCapacity1,
 #else
 NULL,
 #endif
-   _("%lld sectors (%lld MiB), from READ CAPACITY\n"),
+   _("%" PRId64 " sectors (%" PRId64 " MiB), from READ CAPACITY\n"),
 		dh->readCapacity+1, (dh->readCapacity+1)>>9);
    print_tab(" ",tab_width);
    PrintCLIorLabel(
@@ -198,7 +198,7 @@ mi->usedCapacity2,
 #else
 NULL,
 #endif
-   _("%lld sectors (%lld MiB), from DVD structure\n"),
+   _("%" PRId64 " sectors (%" PRId64 " MiB), from DVD structure\n"),
 		dh->userAreaSize, dh->userAreaSize>>9);
 
    print_tab("Blank capacity:",tab_width);
@@ -208,7 +208,7 @@ mi->blankCapacity,
 #else
 NULL,
 #endif
-   _("%lld sectors (%lld MiB)\n"),
+   _("%" PRId64 " sectors (%" PRId64 " MiB)\n"),
 		dh->blankCapacity, (dh->blankCapacity)>>9);
 
    /* Filesystem properties */
@@ -238,7 +238,7 @@ mi->isoSize,
 #else
 NULL,
 #endif
-       _("%d sectors (%lld MiB)\n"),
+       _("%d sectors (%" PRId64 " MiB)\n"),
 		   image->isoInfo->volumeSize, (gint64)image->isoInfo->volumeSize>>9);
       print_tab("Creation time:",tab_width);
       PrintCLIorLabel(
@@ -280,9 +280,9 @@ NULL,
 		    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
       print_tab("Augmented image size:",tab_width);
 #ifndef CLI
-      PrintCLIorLabel(mi->eccSize, _("%lld sectors (%lld MiB)\n"),
+      PrintCLIorLabel(mi->eccSize, _("%" PRIu64 " sectors (%" PRId64 " MiB)\n"),
 #else
-      PrintCLIorLabel(NULL, _("%lld sectors (%lld MiB)\n"),
+      PrintCLIorLabel(NULL, _("%" PRId64 " sectors (%" PRId64 " MiB)\n"),
 #endif
 		   image->expectedSectors, image->expectedSectors>>9);
 

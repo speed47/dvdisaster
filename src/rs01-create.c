@@ -73,7 +73,7 @@ static int calculate_redundancy(char *image_name)
 
 	         fs = strtoll(Closure->redundancy, NULL, 10);
 	         if(fs < ecc_file_size(sectors, 8) || fs > ecc_file_size(sectors, 100))
-		   Stop(_("Ecc file size %lldm out of useful range [%lld .. %lld]"),
+		   Stop(_("Ecc file size %" PRId64 "m out of useful range [%" PRId64 " .. %" PRId64 "]"),
 			fs, ecc_file_size(sectors, 8), ecc_file_size(sectors, 100));
 		 for(nr=100; nr>8; nr--)
 		   if(fs >= ecc_file_size(sectors, nr))
@@ -291,8 +291,8 @@ void RS01Create(void)
       Stop(_("Image file %s: %s."),Closure->imageName, strerror(errno));
    }
    if(image->inLast == 2048)
-        PrintLog(_(": %lld medium sectors.\n"), image->sectorSize);
-   else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+        PrintLog(_(": %" PRId64 " medium sectors.\n"), image->sectorSize);
+   else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 
    if(!Closure->eccName || !strlen(Closure->eccName))
@@ -398,7 +398,7 @@ void RS01Create(void)
 	     SetProgress(wl->encPBar1, 100, 100);
 #endif
 
-	    Stop(_("%lld sectors unread or missing due to errors.\n"), image->sectorsMissing);
+	    Stop(_("%" PRId64 " sectors unread or missing due to errors.\n"), image->sectorsMissing);
 	 }
       }
    }

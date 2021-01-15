@@ -266,12 +266,12 @@ int GetImageFingerprint(Image *image, guint8 *fp_out, guint64 sector)
 	 case 1:    /* unreadable */
 	    if(fp_out) 
 	      memset(fp_out, 0, 16);
-	    Verbose("GetImageFingerprint(%lld): cached unreadable\n", sector);
+	    Verbose("GetImageFingerprint(%" PRId64 "): cached unreadable\n", sector);
 	    return FALSE;
 	 case 2:    /* already cached */
 	    if(fp_out)
 	      memcpy(fp_out, image->imageFP, 16);
-	    Verbose("GetImageFingerprint(%lld): cached\n", sector);
+	    Verbose("GetImageFingerprint(%" PRId64 "): cached\n", sector);
 	    return TRUE;
       }
 
@@ -281,7 +281,7 @@ int GetImageFingerprint(Image *image, guint8 *fp_out, guint64 sector)
      image->fpSector = sector;
      if(status != 1)  /* read error */
      {  image->fpState = 1;
-        Verbose("GetImageFingerprint(%lld): not readable\n", sector);
+        Verbose("GetImageFingerprint(%" PRId64 "): not readable\n", sector);
      }
      else
      {  struct MD5Context md5ctxt;
@@ -293,7 +293,7 @@ int GetImageFingerprint(Image *image, guint8 *fp_out, guint64 sector)
 	MD5Final(image->imageFP, &md5ctxt);
 	if(fp_out)
 	  memcpy(fp_out, image->imageFP, 16);
-	Verbose("GetImageFingerprint(%lld): read & cached\n", sector);
+	Verbose("GetImageFingerprint(%" PRId64 "): read & cached\n", sector);
      }
 
      FreeAlignedBuffer(ab);

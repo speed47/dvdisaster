@@ -200,8 +200,8 @@ void RS01SetFixMaxValues(RS01Widgets *wl, int data_bytes, int ecc_bytes, gint64 
 static gboolean results_idle_func(gpointer data)
 {  RS01Widgets *wl = (RS01Widgets*)data;
 
-   SetLabelText(GTK_LABEL(wl->fixCorrected), _("Repaired: %lld"), wl->corrected); 
-   SetLabelText(GTK_LABEL(wl->fixUncorrected), _("Unrepairable: <span %s>%lld</span>"),Closure->redMarkup, wl->uncorrected); 
+   SetLabelText(GTK_LABEL(wl->fixCorrected), _("Repaired: %" PRId64 ""), wl->corrected); 
+   SetLabelText(GTK_LABEL(wl->fixUncorrected), _("Unrepairable: <span %s>%" PRId64 "</span>"),Closure->redMarkup, wl->uncorrected); 
    SetLabelText(GTK_LABEL(wl->fixProgress), _("Progress: %3d.%1d%%"), wl->percent/10, wl->percent%10);
 
    return FALSE;

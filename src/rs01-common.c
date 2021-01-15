@@ -172,7 +172,7 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
   {  int n,expected;
 	
      if(!LargeSeek(image->file, (gint64)(2048*s)))
-       Stop(_("Failed seeking to sector %lld in image: %s"),
+       Stop(_("Failed seeking to sector %" PRId64 " in image: %s"),
 	    s, strerror(errno));
 
      /* Prepare for short reads at the last image sector.
@@ -188,7 +188,7 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 
      n = LargeRead(image->file, buf, expected);
      if(n != expected)
-       Stop(_("Failed reading sector %lld in image: %s"),s,strerror(errno));
+       Stop(_("Failed reading sector %" PRId64 " in image: %s"),s,strerror(errno));
   }
 }
 
@@ -305,8 +305,8 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	if(!current_missing || s==image->sectorSize-1)
 	{  if(first_missing>=0)
 	    {   if(first_missing == last_missing)
-		     PrintCLI(_("* missing sector   : %lld\n"), first_missing);
-		else PrintCLI(_("* missing sectors  : %lld - %lld\n"), first_missing, last_missing);
+		     PrintCLI(_("* missing sector   : %" PRId64 "\n"), first_missing);
+		else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
 	      first_missing = -1;
 	   }
 	}
@@ -353,7 +353,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	    }
 
 	    if(crc != crcbuf[crcidx++] && !current_missing)
-	    {  PrintCLI(_("* CRC error, sector: %lld\n"), s);
+	    {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
 	       image->crcErrors++;
 	    }
 	 }

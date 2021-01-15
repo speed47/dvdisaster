@@ -19,8 +19,8 @@ if [ "$DEBUG_PRINTF_FORMAT" = 1 ]; then
   # not catched by the compiler because of the _() macro
   REQUIRED_CFLAGS="-DDEBUG_PRINTF_FORMAT $REQUIRED_CFLAGS"
 else
-  # warnings given by -Wformat-security are bogus
-  # because of _(), see above comment.
+  # warnings given by -Wformat-security are bogus because of _(),
+  # see above comment if you actually want to check for format errors
   RECOMMENDED_CFLAGS="$RECOMMENDED_CFLAGS -Wno-format-security"
 fi
 

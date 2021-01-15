@@ -154,7 +154,7 @@ static void remove_old_ecc(ecc_closure *ec)
 #endif
 	answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			      _("Image \"%s\" already contains error correction information.\n"
-				"Truncating image to data part (%lld sectors).\n"),
+				"Truncating image to data part (%" PRId64 " sectors).\n"),
 			      Closure->imageName, data_sectors);
 #ifndef CLI
       else answer = TRUE;
@@ -172,8 +172,8 @@ static void remove_old_ecc(ecc_closure *ec)
 
       PrintLog(_("Image size is now"));
       if(ec->image->inLast == 2048)
-           PrintLog(_(": %lld medium sectors.\n"), ec->image->sectorSize);
-      else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+           PrintLog(_(": %" PRId64 " medium sectors.\n"), ec->image->sectorSize);
+      else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   ec->image->sectorSize-1, ec->image->inLast);
    }
 }
@@ -226,7 +226,7 @@ static void check_image(ecc_closure *ec)
 
       n = LargeRead(image->file, buf, expected);
       if(n != expected)
-	Stop(_("Failed reading sector %lld in image: %s"),sectors,strerror(errno));
+	Stop(_("Failed reading sector %" PRId64 " in image: %s"),sectors,strerror(errno));
 
       /* Look for the dead sector marker */
 
@@ -237,7 +237,7 @@ static void check_image(ecc_closure *ec)
 		   "Error correction information can only be\n"
 		   "appended to complete (undamaged) images.\n"));
 	 else
-	    Stop(_("Sector %lld in the image is marked unreadable\n"
+	    Stop(_("Sector %" PRId64 " in the image is marked unreadable\n"
 		   "and seems to come from a different medium.\n\n"
 		   "The image was probably mastered from defective content.\n"
 		   "For example it might contain one or more files which came\n"
@@ -374,7 +374,7 @@ static void write_crc(ecc_closure *ec)
    /*** Calculate the CRCs */
 
    if(!LargeSeek(image->file, 2048*crc_sector))
-     Stop(_("Failed seeking to sector %lld in image: %s"), crc_sector, strerror(errno));
+     Stop(_("Failed seeking to sector %" PRId64 " in image: %s"), crc_sector, strerror(errno));
 
    for(layer_sector=0; layer_sector<lay->sectorsPerLayer; layer_sector++)
    {  gint64 layer_index = (layer_sector + layer_offset) % lay->sectorsPerLayer;
@@ -397,7 +397,7 @@ static void write_crc(ecc_closure *ec)
 	    {  int n = LargeWrite(image->file, crc_buf, 2048);
 
 	       if(n != 2048)
-		 Stop(_("Failed writing to sector %lld in image: %s"), crc_sector, strerror(errno));
+		 Stop(_("Failed writing to sector %" PRId64 " in image: %s"), crc_sector, strerror(errno));
 	       MD5Update(&md5ctxt, (unsigned char*)crc_buf, n);
 
 	       crc_sector++;
@@ -423,7 +423,7 @@ static void write_crc(ecc_closure *ec)
       n = LargeWrite(image->file, crc_buf, 2048);
 
       if(n != 2048)
-	Stop(_("Failed writing to sector %lld in image: %s"), crc_sector, strerror(errno));
+	Stop(_("Failed writing to sector %" PRId64 " in image: %s"), crc_sector, strerror(errno));
 
       MD5Update(&md5ctxt, (unsigned char*)crc_buf, n);
    }
@@ -1029,10 +1029,10 @@ static gint32 *enc_alpha_to;
 	 {  gint64 s = RS02EccSectorIndex(lay, k, chunk + si);
 
 	    if(!LargeSeek(image->file, 2048*s))
-	      Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
+	      Stop(_("Failed seeking to sector %" PRId64 " in image: %s"), s, strerror(errno));
 
 	    if(LargeWrite(image->file, ec->slice[k]+idx, 2048) != 2048)
-	      Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
+	      Stop(_("Failed writing to sector %" PRId64 " in image: %s"), s, strerror(errno));
 
 	    MD5Update(&ec->md5Ctxt[k], ec->slice[k]+idx, 2048);
 	}
@@ -1082,8 +1082,8 @@ void RS02Create(void)
    }
 
    if(image->inLast == 2048)
-        PrintLog(_(": %lld medium sectors.\n"), image->sectorSize);
-   else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+        PrintLog(_(": %" PRId64 " medium sectors.\n"), image->sectorSize);
+   else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 
    /*** Register the cleanup procedure for GUI mode */
@@ -1115,7 +1115,7 @@ void RS02Create(void)
 
 #ifndef CLI
    if(Closure->guiMode)  /* Preliminary fill text for the head line */
-   {  ec->msg = g_strdup_printf(_("Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
+   {  ec->msg = g_strdup_printf(_("Encoding with Method RS02: %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
 				lay->dataSectors/512, lay->eccSectors/512, lay->nroots, lay->redundancy);
 
       SetLabelText(GTK_LABEL(wl->encHeadline),
@@ -1124,7 +1124,7 @@ void RS02Create(void)
    }
    else
 #endif
-   {  ec->msg = g_strdup_printf(_("Augmenting image with Method RS02:\n %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
+   {  ec->msg = g_strdup_printf(_("Augmenting image with Method RS02:\n %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
 				 lay->dataSectors/512, lay->eccSectors/512, lay->nroots, lay->redundancy);
 
       PrintLog("%s\n",ec->msg);
@@ -1134,7 +1134,7 @@ void RS02Create(void)
 
    if(lay->nroots < 8)
      Stop(_("Not enough space on medium left for error correction data.\n"
-	    "Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+	    "Data portion of image: %" PRId64 " sect.; maximum possible size: %" PRId64 " sect.\n"
 	    "If reducing the image size or using a larger medium is\n"
 	    "not an option, please create a separate error correction file."),
 	  lay->dataSectors, lay->mediumCapacity);
@@ -1176,7 +1176,7 @@ void RS02Create(void)
 
    PrintProgress(_("Ecc generation: 100.0%%\n"));
    PrintLog(_("Image has been augmented with error correction data.\n"
-	      "New image size is %lld MiB (%lld sectors).\n"),
+	      "New image size is %" PRId64 " MiB (%" PRId64 " sectors).\n"),
 	    (lay->dataSectors + lay->eccSectors)/512,
 	    lay->dataSectors+lay->eccSectors);
    
@@ -1186,7 +1186,7 @@ void RS02Create(void)
 
       SetLabelText(GTK_LABEL(wl->encFootline), 
 		   _("Image has been augmented with error correction data.\n"
-		     "New image size is %lld MiB (%lld sectors).\n"),
+		     "New image size is %" PRId64 " MiB (%" PRId64 " sectors).\n"),
 		   (lay->dataSectors + lay->eccSectors)/512,
 		   lay->dataSectors+lay->eccSectors);
    }

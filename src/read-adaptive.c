@@ -507,12 +507,12 @@ static void print_progress(read_closure *rc, int immediate)
 
    if(rc->ei)
      n = g_snprintf(rc->progressMsg, 256,
-		    _("Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"),
+		    _("Repairable: %2d.%1d%% (correctable: %" PRId64 "; now reading [%" PRId64 "..%" PRId64 "], size %" PRId64 ")"),
 		    percent/10, percent%10, rc->correctable, 
 		    rc->intervalStart, rc->intervalStart+rc->intervalSize-1, rc->intervalSize);
    else
      n = g_snprintf(rc->progressMsg, 256,
-		    _("Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"),
+		    _("Repairable: %2d.%1d%% (missing: %" PRId64 "; now reading [%" PRId64 "..%" PRId64 "], size %" PRId64 ")"),
 		    percent/10, percent%10, rc->expectedSectors-rc->readable, 
 		    rc->intervalStart, rc->intervalStart+rc->intervalSize-1, rc->intervalSize);
 
@@ -686,10 +686,10 @@ static void open_and_determine_mode(read_closure *rc)
 	    sinv = RS02SectorIndex(rc->lay, slice, idx);
 
 	    if(slice == -1)
-	       Verbose("Header %lld found at sector %lld\n", idx, s);
+	       Verbose("Header %" PRId64 " found at sector %" PRId64 "\n", idx, s);
 	    else
-	    if(s != sinv) Verbose("Failed for sector %lld / %lld:\n"
-				  "slice %lld, idx %lld\n",
+	    if(s != sinv) Verbose("Failed for sector %" PRId64 " / %" PRId64 ":\n"
+				  "slice %" PRId64 ", idx %" PRId64 "\n",
 				  s, sinv, slice, idx);
 	 }
 	 Verbose("RS02SliceIndex() verification finished.\n");
@@ -761,9 +761,9 @@ static void check_size(read_closure *rc)
       int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Medium contains %lld sectors more as recorded in the .ecc file\n"
-			      "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
-			      "Only the first %lld medium sectors will be processed.\n"),
+			    _("Medium contains %" PRId64 " sectors more as recorded in the .ecc file\n"
+			      "(Medium: %" PRId64 " sectors; expected from .ecc file: %" PRId64 " sectors).\n"
+			      "Only the first %" PRId64 " medium sectors will be processed.\n"),
 			    rc->dh->sectors-rc->sectors, rc->dh->sectors, rc->sectors,
 			    rc->sectors);
 
@@ -782,10 +782,9 @@ static void check_size(read_closure *rc)
       int answer;
 
       answer =  ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			     _("Medium contains %lld sectors less as recorded in the .ecc file\n"
-			       "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"),
-			     rc->sectors-rc->dh->sectors, rc->dh->sectors, rc->sectors,
-			     rc->sectors);
+			     _("Medium contains %" PRId64 " sectors less as recorded in the .ecc file\n"
+			       "(Medium: %" PRId64 " sectors; expected from .ecc file: %" PRId64 " sectors).\n"),
+			     rc->sectors - rc->dh->sectors, rc->dh->sectors, rc->sectors);
 
       if(!answer)
       {
@@ -828,9 +827,9 @@ void GetReadingRange(gint64 sectors, gint64 *firstSector, gint64 *lastSector)
 #endif
 
       if(first > last || first < 0 || last >= sectors)
-	Stop(_("Sectors must be in range [0..%lld].\n"), sectors-1);
+	Stop(_("Sectors must be in range [0..%" PRId64 "].\n"), sectors-1);
 
-      PrintLog(_("Limiting sector range to [%lld,%lld].\n"), first, last);
+      PrintLog(_("Limiting sector range to [%" PRId64 ",%" PRId64 "].\n"), first, last);
    }
    else 
    {  first = 0; 
@@ -950,8 +949,8 @@ void check_image_size(read_closure *rc, gint64 image_file_sectors)
       int answer;
 	 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Image file is %lld sectors longer than inserted medium\n"
-			      "(Image file: %lld sectors; medium: %lld sectors).\n"),
+			    _("Image file is %" PRId64 " sectors longer than inserted medium\n"
+			      "(Image file: %" PRId64 " sectors; medium: %" PRId64 " sectors).\n"),
 			    image_file_sectors-rc->expectedSectors, 
 			    image_file_sectors, rc->expectedSectors);
 
@@ -1234,9 +1233,9 @@ static void build_interval_from_image(read_closure *rc)
    /*** Tell user results of image file analysis */
 
    if(rc->readMode == ECC_IN_FILE || rc->readMode == ECC_IN_IMAGE)
-        PrintLog(_("Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"),
+        PrintLog(_("Analysing existing image file: %" PRId64 " readable, %" PRId64 " correctable, %" PRId64 " still missing.\n"),
 		 rc->readable, rc->correctable, rc->expectedSectors-rc->readable-rc->correctable);
-   else PrintLog(_("Analysing existing image file: %lld readable, %lld still missing.\n"),
+   else PrintLog(_("Analysing existing image file: %" PRId64 " readable, %" PRId64 " still missing.\n"),
 		 rc->readable, rc->expectedSectors-rc->readable-rc->correctable);
 
 #ifndef CLI
@@ -1331,7 +1330,7 @@ void fill_gap(read_closure *rc)
 
   /*** Tell user what's going on */
 
-  t = g_strdup_printf(_("Filling image area [%lld..%lld]"), 
+  t = g_strdup_printf(_("Filling image area [%" PRId64 "..%" PRId64 "]"), 
 		      firstUnwritten, rc->intervalStart-1);
   clear_progress(rc);
 #ifndef CLI
@@ -1346,7 +1345,7 @@ void fill_gap(read_closure *rc)
   /*** Seek to end of image */
 
   if(!LargeSeek(rc->image, (gint64)(2048*firstUnwritten)))
-    Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+    Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 	 firstUnwritten, "fill", strerror(errno));
 
   /*** Fill image with dead sector markers until rc->intervalStart */
@@ -1360,7 +1359,7 @@ void fill_gap(read_closure *rc)
      CreateMissingSector(buf, i, rc->fingerprint, FINGERPRINT_SECTOR, rc->volumeLabel);
      n = LargeWrite(rc->image, buf, 2048);
      if(n != 2048)
-       Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+       Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 	    i, "fill", strerror(errno));
 
      /* Check whether user hit the Stop button */
@@ -1426,13 +1425,13 @@ void fill_correctable_gap(read_closure *rc, gint64 correctable)
       unsigned char buf[2048];
 
       if(!LargeSeek(rc->image, (gint64)(2048*ds)))
-	Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 	     ds, "skip-corr", strerror(errno));
 
       for(ds=rc->highestWrittenSector+1; ds<=correctable; ds++)
       {  CreateMissingSector(buf, ds, rc->fingerprint, FINGERPRINT_SECTOR, rc->volumeLabel);
 	 if(LargeWrite(rc->image, buf, 2048) != 2048)
-	  Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+	  Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 	       ds, "skip-corr", strerror(errno));
       }
       rc->highestWrittenSector = correctable;
@@ -1646,7 +1645,7 @@ reopen_image:
    for(;;)
    {  int cluster_mask = rc->dh->clusterSize-1;
 
-      Verbose("... Processing Interval [%lld..%lld], size %d\n",
+      Verbose("... Processing Interval [%" PRId64 "..%" PRId64 "], size %" PRId64 "\n",
 	      rc->intervalStart, rc->intervalStart+rc->intervalSize-1, rc->intervalSize);
      
       /* If we jumped beyond the highest writtensector, 
@@ -1729,13 +1728,13 @@ reread:
 
 	    if(!Closure->guiMode)
 #endif
-	      Stop(_("Sector %lld: %s\nCan not recover from above error.\n"
+	      Stop(_("Sector %" PRId64 ": %s\nCan not recover from above error.\n"
 		     "Use the --ignore-fatal-sense option to override."),
 		   s, GetLastSenseString(FALSE));
 
 #ifndef CLI
 	    answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-				 _("Sector %lld: %s\n\n"
+				 _("Sector %" PRId64 ": %s\n\n"
 				   "It may not be possible to recover from this error.\n"
 				   "Should the reading continue and ignore this error?"),
 				 s, GetLastSenseString(FALSE));
@@ -1768,7 +1767,7 @@ reread:
 	 {  gint64 b;
 
 	    if(!LargeSeek(rc->image, (gint64)(2048*s)))
-	      Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	      Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		   s,"store",strerror(errno));
 
 	    /* Store sector(s) in the image file if they pass the CRC test,
@@ -1791,7 +1790,7 @@ reread:
 		  {  //unsigned char buf[2048];
 
 		     PrintCLI("\n");
-		     PrintCLI(_("CRC error in sector %lld\n"),b);
+		     PrintCLI(_("CRC error in sector %" PRId64 "\n"),b);
 		     print_progress(rc, TRUE);
 
 #if 0 // remark: Do we still need to mark CRC defects as completely missing?
@@ -1800,7 +1799,7 @@ reread:
 #endif
 		     n = LargeWrite(rc->image, rc->buf+i*2048, 2048);
 		     if(n != 2048)
-			Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+			Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 			     b, "unv", strerror(errno));
 
 #ifndef CLI
@@ -1815,7 +1814,7 @@ reread:
 		  case CRC_GOOD:
 		     n = LargeWrite(rc->image, rc->buf+i*2048, 2048);
 		     if(n != 2048)
-			Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+			Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 			     b, "store", strerror(errno));
 
 		     if(rc->map)
@@ -1970,7 +1969,7 @@ Closure->status,
 #else
 NULL,
 #endif
-					   _("Sectors %lld-%lld: %s\n"),
+					   _("Sectors %" PRId64 "-%" PRId64 ": %s\n"),
 					   s, s+nsectors-1, GetLastSenseString(FALSE));  
 	    else	   PrintCLIorLabel(
 #ifndef CLI
@@ -1978,7 +1977,7 @@ Closure->status,
 #else
 NULL,
 #endif
-					   _("Sector %lld: %s\n"),
+					   _("Sector %" PRId64 ": %s\n"),
 					   s, GetLastSenseString(FALSE));  
 
 	    rc->unreadable += nsectors;
@@ -1986,7 +1985,7 @@ NULL,
 	    /* Write nsectors of "dead sector" markers */
 
 	    if(!LargeSeek(rc->image, (gint64)(2048*s)))
-	      Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	      Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		   s, "nds", strerror(errno));
 
 	    for(i=0; i<nsectors; i++)
@@ -1994,7 +1993,7 @@ NULL,
 
 	       n = LargeWrite(rc->image, buf, 2048);
 	       if(n != 2048)
-		 Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+		 Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 		      s, "nds", strerror(errno));
 
 #ifndef CLI
@@ -2009,13 +2008,13 @@ NULL,
 	       Store the remainder of the current interval in the queue. */
 
 	    if(s+nsectors-1 >= rc->intervalEnd)  /* This was the last sector; interval used up */
-	    {  Verbose("... Interval [%lld..%lld] used up\n", rc->intervalStart, rc->intervalEnd);
+	    {  Verbose("... Interval [%" PRId64 "..%" PRId64 "] used up\n", rc->intervalStart, rc->intervalEnd);
 	    }
 	    else  /* Insert remainder of interval into queue */
 	    {  rc->intervalStart = s+nsectors;
 	       rc->intervalSize  = rc->intervalEnd-rc->intervalStart+1;
 
-	       Verbose("... Interval %lld [%lld..%lld] added\n", 
+	       Verbose("... Interval %" PRId64 " [%" PRId64 "..%" PRId64 "] added\n", 
 		       rc->intervalSize, rc->intervalStart, rc->intervalStart+rc->intervalSize-1);
 
 	       add_interval(rc, rc->intervalStart, rc->intervalSize);
@@ -2051,7 +2050,7 @@ NULL,
       /* Split the new interval */
 
       if(rc->intervalSize>1)
-      {  Verbose("*** Splitting [%lld..%lld]\n",
+      {  Verbose("*** Splitting [%" PRId64 "..%" PRId64 "]\n",
 		 rc->intervalStart,rc->intervalStart+rc->intervalSize-1);
 
 	 add_interval(rc, rc->intervalStart, rc->intervalSize/2);
@@ -2061,7 +2060,7 @@ NULL,
       else /* 1 sector intervals can't be split further */
       {  
 	 rc->intervalEnd = rc->intervalStart;
-	 Verbose("*** Popped [%lld]\n",rc->intervalStart);
+	 Verbose("*** Popped [%" PRId64 "]\n",rc->intervalStart);
       }
 
       //print_intervals(rc);
@@ -2113,7 +2112,7 @@ finished:
 				  percent/10, percent%10); 
 
       PrintLog(_("\n%s\n"
-		  "(%lld readable,  %lld correctable,  %lld still missing).\n"),
+		  "(%" PRId64 " readable,  %" PRId64 " correctable,  %" PRId64 " still missing).\n"),
 		t, rc->readable, rc->correctable, rc->expectedSectors-total);
 #ifndef CLI
       if(Closure->guiMode)
@@ -2143,7 +2142,7 @@ finished:
 				   Closure->sectorSkip);
 
 	 PrintLog(_("\n%s\n" 
-		     "%2d.%1d%% of the image have been read (%lld sectors).\n"),
+		     "%2d.%1d%% of the image have been read (%" PRId64 " sectors).\n"),
 		   t, percent/10, percent%10, rc->readable);
 
 #ifndef CLI

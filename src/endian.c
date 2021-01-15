@@ -84,7 +84,7 @@ void PrintEccHeader(EccHeader *eh)
    print_hex("mediumSum        ", eh->mediumSum, 16);
    print_hex("eccSum           ", eh->eccSum, 16);
    print_hex("sectors          ", eh->sectors, 8);
-   PrintCLI("sectors (native)  %lld\n", uchar_to_gint64(eh->sectors));
+   PrintCLI("sectors (native)  %" PRId64 "\n", uchar_to_gint64(eh->sectors));
    PrintCLI("dataBytes         %8x\n", eh->dataBytes);
    PrintCLI("eccBytes          %8x\n", eh->eccBytes);
    PrintCLI("creatorVersion    %8x\n", eh->creatorVersion);
@@ -93,8 +93,8 @@ void PrintEccHeader(EccHeader *eh)
    PrintCLI("selfCRC           %8x\n", eh->selfCRC);
    print_hex("crcSum            ", eh->crcSum, 16);
    PrintCLI("inLast            %8x\n", eh->inLast);
-   PrintCLI("sectorsPerLayer   %lld\n", eh->sectorsPerLayer);
-   PrintCLI("sectorsAddedByEcc %lld\n", eh->sectorsAddedByEcc);
+   PrintCLI("sectorsPerLayer   %" PRId64 "\n", eh->sectorsPerLayer);
+   PrintCLI("sectorsAddedByEcc %" PRId64 "\n", eh->sectorsAddedByEcc);
 
    PrintCLI("\n");
 }
@@ -118,7 +118,7 @@ void print_crc_block(CrcBlock *cb)
    PrintCLI("inLast           %8x\n", cb->inLast);
    PrintCLI("dataBytes        %8x\n", cb->dataBytes);
    PrintCLI("eccBytes         %8x\n", cb->eccBytes);
-   PrintCLI("sectorsPerLayer  %lld\n", cb->sectorsPerLayer);
+   PrintCLI("sectorsPerLayer  %" PRId64 "\n", cb->sectorsPerLayer);
    PrintCLI("selfCRC          %8x\n", cb->selfCRC);
 
    PrintCLI("\n");

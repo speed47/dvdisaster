@@ -195,9 +195,9 @@ void RS03ReadSectors(Image *image, RS03Layout *lay, unsigned char *buf,
    gint64 n;
 
    if(layer < 0 || layer > 255) 
-      Stop("RS03ReadSectors: layer %lld out of range 0 .. 255\n", layer);
+      Stop("RS03ReadSectors: layer %" PRId64 " out of range 0 .. 255\n", layer);
    if(layer_sector < 0 || layer_sector >= lay->sectorsPerLayer) 
-      Stop("RS03ReadSectors: offset %lld out of range 0 .. %lld)\n",
+      Stop("RS03ReadSectors: offset %" PRId64 " out of range 0 .. %" PRId64 ")\n",
 	   layer_sector, lay->sectorsPerLayer-1);
 
    /* "Image" file size may not be a multiple of 2048 */
@@ -244,7 +244,7 @@ void RS03ReadSectors(Image *image, RS03Layout *lay, unsigned char *buf,
       stop_sector  = start_sector + how_many - 1;
 
       if(stop_sector >= (layer+1)*lay->sectorsPerLayer)
-	Stop("RS03ReadSectors: range %lld..%lld crosses layer boundary\n",
+	Stop("RS03ReadSectors: range %" PRId64 "..%" PRId64 " crosses layer boundary\n",
 	     start_sector, stop_sector);
       target_file = image->file;
    }
@@ -337,12 +337,12 @@ void RS03ReadSectors(Image *image, RS03Layout *lay, unsigned char *buf,
    /* All sectors are consecutively readable in image case */
    
    if(!LargeSeek(target_file, (gint64)(2048*start_sector)))
-      Stop(_("Failed seeking to sector %lld in image: %s"),
+      Stop(_("Failed seeking to sector %" PRId64 " in image: %s"),
 	   start_sector, strerror(errno));
 
    n = LargeRead(target_file, buf, byte_size);
    if(n != byte_size)
-      Stop(_("Failed reading sector %lld in image: %s"),
+      Stop(_("Failed reading sector %" PRId64 " in image: %s"),
 	   start_sector, strerror(errno));
 }
 
@@ -464,7 +464,7 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       ecc_size = strtoll(Closure->redundancy, NULL, 10);
 	       if(   ecc_size < ecc_file_size(lay->dataSectors, 8) 
 		  || ecc_size > ecc_file_size(lay->dataSectors, 170))
-		  Stop(_("Ecc file size %lldm out of useful range [%lld .. %lld]"),
+		  Stop(_("Ecc file size %" PRId64 "m out of useful range [%" PRId64 " .. %" PRId64 "]"),
 		       ecc_size, 
 		       ecc_file_size(lay->dataSectors, 8), 
 		       ecc_file_size(lay->dataSectors, 170));
@@ -522,7 +522,7 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
       {  dataSectors = image->sectorSize;
 	 if(Closure->debugMode && Closure->mediumSize)
 	 {   if(dataSectors >= Closure->mediumSize)
-	       Stop(_("Medium size smaller than image size (%lld < %lld)"), Closure->mediumSize, dataSectors);
+	       Stop(_("Medium size smaller than image size (%" PRId64 " < %" PRId64 ")"), Closure->mediumSize, dataSectors);
 	     lay->mediumCapacity = Closure->mediumSize;
          }
 	 else
@@ -591,14 +591,14 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
         Verbose("Calculated layout for RS03 file:\n");
    else Verbose("Calculated layout for RS03 image:\n");
    
-   Verbose("data sectors      = %lld\n", lay->dataSectors);
-   Verbose("data padding      = %lld\n", lay->dataPadding);
-   Verbose("layer size        = %lld\n", lay->sectorsPerLayer);
-   Verbose("total sectors     = %lld\n", lay->totalSectors);
-   Verbose("medium capacity   = %lld\n", lay->mediumCapacity);
-   Verbose("header position   = %lld\n", lay->eccHeaderPos);
-   Verbose("first CRC sector  = %lld\n", lay->firstCrcPos);
-   Verbose("first ECC sector  = %lld\n", lay->firstEccPos);
+   Verbose("data sectors      = %" PRId64 "\n", lay->dataSectors);
+   Verbose("data padding      = %" PRId64 "\n", lay->dataPadding);
+   Verbose("layer size        = %" PRId64 "\n", lay->sectorsPerLayer);
+   Verbose("total sectors     = %" PRId64 "\n", lay->totalSectors);
+   Verbose("medium capacity   = %" PRId64 "\n", lay->mediumCapacity);
+   Verbose("header position   = %" PRId64 "\n", lay->eccHeaderPos);
+   Verbose("first CRC sector  = %" PRId64 "\n", lay->firstCrcPos);
+   Verbose("first ECC sector  = %" PRId64 "\n", lay->firstEccPos);
    Verbose("ndata             = %d\n", lay->ndata);
    Verbose("nroots            = %d (%4.1f%%)\n", lay->nroots, lay->redundancy);
    Verbose("\n");
@@ -640,11 +640,11 @@ void WriteRS03Header(LargeFile *file, RS03Layout *lay, EccHeader *eh)
 {  int n;
 
    if(!LargeSeek(file, 2048*lay->eccHeaderPos))
-     Stop(_("Failed seeking to ecc header at %lld: %s\n"), lay->eccHeaderPos, strerror(errno));
+     Stop(_("Failed seeking to ecc header at %" PRId64 ": %s\n"), lay->eccHeaderPos, strerror(errno));
    
    n = LargeWrite(file, eh, sizeof(EccHeader));
    if(n != sizeof(EccHeader))
-     Stop(_("Failed writing ecc header at %lld: %s\n"), lay->eccHeaderPos, strerror(errno));
+     Stop(_("Failed writing ecc header at %" PRId64 ": %s\n"), lay->eccHeaderPos, strerror(errno));
 }
 
 /***

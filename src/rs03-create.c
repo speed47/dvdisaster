@@ -316,7 +316,7 @@ static void remove_old_ecc(ecc_closure *ec)
 #endif
 	answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			      _("Image \"%s\" already contains error correction information.\n"
-				"Truncating image to data part (%lld sectors).\n"),
+				"Truncating image to data part (%" PRId64 " sectors).\n"),
 			      Closure->imageName, data_sectors);
 #ifndef CLI
       else answer = TRUE;
@@ -346,8 +346,8 @@ static void remove_old_ecc(ecc_closure *ec)
 
       PrintLog(_("Image size is now"));
       if(ec->image->inLast == 2048)
-           PrintLog(_(": %lld medium sectors.\n"), ec->image->sectorSize);
-      else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+           PrintLog(_(": %" PRId64 " medium sectors.\n"), ec->image->sectorSize);
+      else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   ec->image->sectorSize-1, ec->image->inLast);
    }
 }
@@ -716,7 +716,7 @@ static void read_next_chunk(ecc_closure *ec, guint64 chunk)
 
 	  Stop(_("Incomplete image\n\n"
 		 "The image contains missing sectors,\n"
-		 "e.g. sector %lld.\n%s"
+		 "e.g. sector %" PRId64 ".\n%s"
 		 "Error correction data works like a backup; it must\n"
 		 "be created when the image is still fully readable.\n"
 		 "Exiting and removing partial error correction data."),
@@ -753,12 +753,12 @@ static void flush_crc(ecc_closure *ec, LargeFile *file_out)
    if(!LargeSeek(file_out, crc_sect))
    {  ec->abortImmediately = TRUE;
 
-      Stop(_("Failed seeking to sector %lld in image: %s"), crc_sect, strerror(errno));
+      Stop(_("Failed seeking to sector %" PRId64 " in image: %s"), crc_sect, strerror(errno));
    }
    for(i=0; i<ec->encoderLayerSectors; i++)
       if(LargeWrite(file_out, ec->encoderCrc+512*i, 2048) != 2048)
       {  ec->abortImmediately = TRUE;
-	 Stop(_("Failed writing to sector %lld in image: %s"), crc_sect, strerror(errno));
+	 Stop(_("Failed writing to sector %" PRId64 " in image: %s"), crc_sect, strerror(errno));
       }
 }
 
@@ -778,11 +778,11 @@ static void flush_parity(ecc_closure *ec, LargeFile *file_out)
 	
 	 if(!LargeSeek(file_out, 2048*s))
 	 {  ec->abortImmediately = TRUE;
-	    Stop(_("Failed seeking to sector %lld in image: %s"), s, strerror(errno));
+	    Stop(_("Failed seeking to sector %" PRId64 " in image: %s"), s, strerror(errno));
 	 }
 	 if(LargeWrite(file_out, ec->slice[k]+idx, 2048) != 2048)
 	 {  ec->abortImmediately = TRUE;
-	    Stop(_("Failed writing to sector %lld in image: %s"), s, strerror(errno));
+	    Stop(_("Failed writing to sector %" PRId64 " in image: %s"), s, strerror(errno));
 	 }
       }
    }
@@ -1332,8 +1332,8 @@ void RS03Create(void)
    ec->image = image;
 
    if(image->inLast == 2048)
-        PrintLog(_(": %lld medium sectors.\n"), image->sectorSize);
-   else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+        PrintLog(_(": %" PRId64 " medium sectors.\n"), image->sectorSize);
+   else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 
    /*** If the image already contains error correction information, remove it. */
@@ -1361,7 +1361,7 @@ void RS03Create(void)
    ecc_sectors = lay->nroots*lay->sectorsPerLayer;
 #ifndef CLI
    if(Closure->guiMode)  /* Preliminary fill text for the head line */
-   {  ec->msg = g_strdup_printf(_("Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
+   {  ec->msg = g_strdup_printf(_("Encoding with Method RS03: %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
 				lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
 
    if(lay->target == ECC_IMAGE)
@@ -1381,12 +1381,12 @@ void RS03Create(void)
  
      if(Closure->eccTarget == ECC_IMAGE)
 	 ec->msg = g_strdup_printf(_("Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
-				     "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
+				     "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
 				   Closure->codecThreads, alg, iostrat, 
 				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
       else
 	 ec->msg = g_strdup_printf(_("Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
-				     "%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."),
+				     "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
 				   Closure->codecThreads, alg, iostrat, 
 				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
 
@@ -1397,7 +1397,7 @@ void RS03Create(void)
 
    if(Closure->eccTarget == ECC_IMAGE && lay->nroots < 8)
      Stop(_("Not enough space on medium left for error correction data.\n"
-	    "Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+	    "Data portion of image: %" PRId64 " sect.; maximum possible size: %" PRId64 " sect.\n"
 	    "If reducing the image size or using a larger medium is not\n"
 	    "an option, please create a separate error correction file."),
 	  lay->dataSectors, lay->mediumCapacity);
@@ -1446,7 +1446,7 @@ void RS03Create(void)
    PrintProgress(_("Ecc generation: 100.0%%\n"));
    if(Closure->eccTarget == ECC_IMAGE)
      PrintLog(_("Image has been augmented with error correction data.\n"
-		"New image size is %lld MiB (%lld sectors).\n"),
+		"New image size is %" PRId64 " MiB (%" PRId64 " sectors).\n"),
 	      (lay->totalSectors)/512,
 	      lay->totalSectors);
    else
@@ -1474,7 +1474,7 @@ void RS03Create(void)
       if(Closure->eccTarget == ECC_IMAGE)
 	SetLabelText(GTK_LABEL(wl->encFootline),
 		     _("Image has been augmented with error correction data.\n"
-		       "New image size is %lld MiB (%lld sectors).\n"),
+		       "New image size is %" PRId64 " MiB (%" PRId64 " sectors).\n"),
 		     (lay->totalSectors)/512,
 		     lay->totalSectors);
       else

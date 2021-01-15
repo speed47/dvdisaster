@@ -325,7 +325,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	 calculate_failures(rec);
 	 evaluate_vectors(rec);
 	 render_sector(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("%s loaded, LBA %lld, %d samples."),
+	 SetLabelText(GTK_LABEL(rec->rightLabel), _("%s loaded, LBA %" PRId64 ", %d samples."),
 		      rec->filepath, rec->rb->lba, rec->rb->samplesRead);
 	 break;
 
@@ -387,14 +387,14 @@ static void save_sector(raw_editor_context *rec)
 
    if(!LargeSeek(image, (gint64)(2048*rb->lba)))
    {  LargeClose(image);
-      Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+      Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 	   rb->lba, "raw-editor", strerror(errno));
    }
 
    n = LargeWrite(image, rb->recovered+rb->dataOffset, 2048);
    if(n != 2048)
    {  LargeClose(image);
-      Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+      Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 	   rb->lba, "raw-editor", strerror(errno));
    }
 
