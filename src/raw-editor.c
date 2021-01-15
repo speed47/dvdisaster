@@ -839,7 +839,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
    switch(action)
    {  case ACTION_BROWSE_LOAD:
-	 file_select_cb(NULL, ACTION_BROWSE_LOAD);
+	 file_select_cb(NULL, GINT_TO_POINTER(ACTION_BROWSE_LOAD));
 	 break;
 
       case ACTION_BROWSE_SAVE:
