@@ -1339,7 +1339,7 @@ void fill_gap(read_closure *rc)
      ChangeSpiralCursor(Closure->readAdaptiveSpiral, -1); 
   }
 #endif
-  PrintCLI(t);
+  PrintCLI("%s", t);
   g_free(t);
 
   /*** Seek to end of image */
@@ -1615,7 +1615,7 @@ reopen_image:
       {  char *t = _("\nSufficient data for reconstructing the image is available.\n");
 
 	 if(rc->readMode != IMAGE_ONLY)
-	 {  PrintLog(t);
+	 {  PrintLog("%s", t);
 #ifndef CLI
 	    if(Closure->guiMode)
 	       SetAdaptiveReadFootline(t, Closure->greenText);
@@ -1947,7 +1947,7 @@ reread:
 
 	       print_progress(rc, TRUE);
 	       if(rc->readMode != IMAGE_ONLY)
-	       {  PrintLog(t);
+	       {  PrintLog("%s", t);
 #ifndef CLI
 		  if(Closure->guiMode && rc->ei)
 		    SetAdaptiveReadFootline(t, Closure->foreground);
@@ -2128,7 +2128,7 @@ finished:
    if(rc->readMode == IMAGE_ONLY)
    {  if(rc->readable == rc->expectedSectors)
       {  char *t = _("\nGood! All sectors have been read.\n"); 
-	 PrintLog(t);
+	 PrintLog("%s", t);
 #ifndef CLI
 	 if(Closure->guiMode)
 	   SetAdaptiveReadFootline(t, Closure->foreground);

@@ -917,7 +917,7 @@ void RS02Verify(Image *image)
       SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "%s", data_missing ? "-" : data_digest);
 
       if(img_advice) 
-      {  SetLabelText(GTK_LABEL(wl->cmpImageResult), img_advice);
+      {  SetLabelText(GTK_LABEL(wl->cmpImageResult), "%s", img_advice);
          g_free(img_advice);
       }
       else 
@@ -935,7 +935,7 @@ void RS02Verify(Image *image)
 #endif
    {
       if(img_advice) 
-      {  PrintLog(img_advice);
+      {  PrintLog("%s", img_advice);
       }
    }
 
@@ -1170,7 +1170,7 @@ continue_with_ecc:
 #ifndef CLI
    if(Closure->guiMode)
    {  if(ecc_advice) 
-      {  SetLabelText(GTK_LABEL(wl->cmpEccResult), ecc_advice);
+      {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);
          g_free(ecc_advice);
       }
       else 
@@ -1190,7 +1190,7 @@ continue_with_ecc:
    else
 #endif
    {  if(ecc_advice) 
-      {  PrintLog(ecc_advice);
+      {  PrintLog("%s", ecc_advice);
          g_free(ecc_advice);
       }
    }

@@ -707,7 +707,7 @@ void AboutTextWithLink(GtkWidget *parent, char *text, char *action)
 	    g_free(utf);
 	 }
       }
-      else AboutText(parent, head);
+      else AboutText(parent, "%s", head);
 
       if(end_of_line) head = end_of_line+1;
       else break;
@@ -739,7 +739,7 @@ void AboutDialog()
    text = g_strdup_printf("<span weight=\"bold\" size=\"xx-large\">dvdisaster</span><i> "
 			  "Version %s</i>",
 			  Closure->cookedVersion);
-   AboutText(vbox, text);
+   AboutText(vbox, "%s", text);
    g_free(text);
 
 #ifdef MODIFIED_SOURCE
