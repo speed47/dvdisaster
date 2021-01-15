@@ -38,6 +38,19 @@
 
 #define _GNU_SOURCE
 
+/* under MinGW, __attribute__ format printf doesn't work and outputs warnings for %lld,
+ * even if it's supported and doesn't output any warning under -Wformat when directly
+ * used with the real printf() func. However 'gnu_printf' works, see
+ * https://github.com/ocornut/imgui/issues/3592
+ */
+#ifdef __MINGW32__ /* defined under 32 and 64 bits mingw */
+# define PRINTF_FLAVOR gnu_printf
+#else
+# define PRINTF_FLAVOR printf
+#endif
+#define PRINTF_FORMAT2(ARG1,ARG2) __attribute__((format(PRINTF_FLAVOR, ARG1, ARG2)))
+#define PRINTF_FORMAT(ARG) PRINTF_FORMAT2(ARG,ARG+1)
+
 #include <glib.h>
 #include <glib/gprintf.h>
 #ifndef CLI
@@ -48,6 +61,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <inttypes.h> /* PRId64 et. al */
 #ifdef WITH_NLS_YES
  #include <libintl.h>
  #include <locale.h>
@@ -662,7 +676,7 @@ void RedrawCurve(Curve*, int);
 
 void HexDump(unsigned char*, int, int);
 void LaTeXify(gint32*, int, int);
-void AppendToTextFile(char*,char*, ...);
+void AppendToTextFile(char*,char*, ...) PRINTF_FORMAT(2);
 void CopySector(char*);
 void Byteset(char*);
 void Erase(char*);
@@ -807,8 +821,8 @@ LabelWithOnlineHelp* CreateLabelWithOnlineHelp(char*, char*);
 LabelWithOnlineHelp* CloneLabelWithOnlineHelp(LabelWithOnlineHelp*, char*);
 void FreeLabelWithOnlineHelp(LabelWithOnlineHelp*);
 void SetOnlineHelpLinkText(LabelWithOnlineHelp*, char*);
-void AddHelpListItem(LabelWithOnlineHelp*, char*, ...);
-void AddHelpParagraph(LabelWithOnlineHelp*, char*, ...);
+void AddHelpListItem(LabelWithOnlineHelp*, char*, ...) PRINTF_FORMAT(2);
+void AddHelpParagraph(LabelWithOnlineHelp*, char*, ...) PRINTF_FORMAT(2);
 void AddHelpWidget(LabelWithOnlineHelp*, GtkWidget*);
 
 /* Specific online help dialogs */
@@ -819,7 +833,7 @@ void ShowLog();
 void UpdateLog();
 void AboutDialog();
 
-void AboutText(GtkWidget*, char*, ...);
+void AboutText(GtkWidget*, char*, ...) PRINTF_FORMAT(2);
 void AboutLink(GtkWidget*, char*, char*);
 void AboutTextWithLink(GtkWidget*, char*, char*);
 #endif
@@ -970,7 +984,7 @@ int CountC2Errors(unsigned char*);
 
 void DefaultLogFile();
 void VPrintLogFile(char*, va_list);
-void PrintLogFile(char*, ...);
+void PrintLogFile(char*, ...) PRINTF_FORMAT(1);
 
 /***
  *** maintenance.c
@@ -1049,7 +1063,7 @@ void*	malloc_ext(int,char*,int);
 void*	realloc_ext(void*, int, char*, int);
 void*	try_malloc_ext(int,char*,int);
 char*	strdup_ext(const char*,char*,int);
-char*	strdup_printf_ext(char*, char*, int, ...);
+char*	strdup_printf_ext(char*, char*, int, ...) PRINTF_FORMAT2(2,4);
 char*	strdup_vprintf_ext(char*, va_list, char*, int);
 gchar*  g_locale_to_utf8_ext(const gchar*, gssize, gsize*, gsize*, GError**, char*, int);
 void	free_ext(void*,char*,int);
@@ -1134,22 +1148,22 @@ void gint64_to_uchar(unsigned char*, gint64);
 
 void CalcSectors(guint64, guint64*, int*);
 
-void PrintCLI(char*, ...);
-void PrintLog(char*, ...);
-void PrintLogWithAsterisks(char*, ...);
-void Verbose(char*, ...);
-void PrintTimeToLog(GTimer*, char*, ...);
-void PrintProgress(char*, ...);
+void PrintCLI(char*, ...) PRINTF_FORMAT(1);
+void PrintLog(char*, ...) PRINTF_FORMAT(1);
+void PrintLogWithAsterisks(char*, ...) PRINTF_FORMAT(1);
+void Verbose(char*, ...) PRINTF_FORMAT(1);
+void PrintTimeToLog(GTimer*, char*, ...) PRINTF_FORMAT(2);
+void PrintProgress(char*, ...) PRINTF_FORMAT(1);
 void ClearProgress(void);
 #ifndef CLI
-void PrintCLIorLabel(GtkLabel*, char*, ...);
+void PrintCLIorLabel(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 #else
-void PrintCLIorLabel(void*, char*, ...);
+void PrintCLIorLabel(void*, char*, ...) PRINTF_FORMAT(2);
 #endif
 int GetLongestTranslation(char*, ...);
 
-void LogWarning(char*, ...);
-void Stop(char*, ...);
+void LogWarning(char*, ...) PRINTF_FORMAT(1);
+void Stop(char*, ...) PRINTF_FORMAT(1);
 void RegisterCleanup(char*, void (*)(gpointer), gpointer);
 void UnregisterCleanup(void);
 
@@ -1160,27 +1174,27 @@ void ShowWidget(GtkWidget*);
 void AllowActions(gboolean);
 
 void ShowMessage(GtkWindow*, char*, GtkMessageType);
-GtkWidget* CreateMessage(char*, GtkMessageType, ...);
-void SetLabelText(GtkLabel*, char*, ...);
+GtkWidget* CreateMessage(char*, GtkMessageType, ...) PRINTF_FORMAT2(1,3);
+void SetLabelText(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 void SetProgress(GtkWidget*, int, int);
 
-int ModalDialog(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...);
-int ModalWarning(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...);
+int ModalDialog(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...) PRINTF_FORMAT(4);
+int ModalWarning(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...) PRINTF_FORMAT(4);
 #define ModalWarningOrCLI(a,b,c,d,...) ModalWarning(a,b,c,d,__VA_ARGS__)
 #else
-int ModalWarning(char*, ...);
+int ModalWarning(char*, ...) PRINTF_FORMAT(1);
 #define ModalWarningOrCLI(a,b,c,d,...) ModalWarning(d,__VA_ARGS__)
 #endif
 
 #ifndef CLI
 void SetText(PangoLayout*, char*, int*, int*);
-void SwitchAndSetFootline(GtkWidget*, int, GtkWidget*, char*, ...);
+void SwitchAndSetFootline(GtkWidget*, int, GtkWidget*, char*, ...) PRINTF_FORMAT(4);
 
 void ReverseCancelOK(GtkDialog*);
 void TimedInsensitive(GtkWidget*, int);
 
-int GetLabelWidth(GtkLabel*, char*, ...);
-void LockLabelSize(GtkLabel*, char*, ...);
+int GetLabelWidth(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
+void LockLabelSize(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 #endif
 
 int ConfirmImageDeletion(char *);

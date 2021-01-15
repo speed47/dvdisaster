@@ -92,11 +92,11 @@ void RS01AddVerifyValues(Method *method, int percent,
      return;
 
    if(newMissing) 
-     SetLabelText(GTK_LABEL(wl->cmpMissingSectors), "<span %s>%lld</span>", 
+     SetLabelText(GTK_LABEL(wl->cmpMissingSectors), "<span %s>%" PRId64 "</span>", 
 		  Closure->redMarkup, totalMissing);
 
    if(newCrcErrors) 
-     SetLabelText(GTK_LABEL(wl->cmpChkSumErrors), "<span %s>%lld</span>", 
+     SetLabelText(GTK_LABEL(wl->cmpChkSumErrors), "<span %s>%" PRId64 "</span>", 
 		  Closure->redMarkup, totalCrcErrors);
 
    sii->cmpSpiral = wl->cmpSpiral;
@@ -431,18 +431,18 @@ void RS01Verify(Image *image)
    }
 
    if(image->inLast == 2048)
-   {  PrintLog(_("present, contains %lld medium sectors.\n"), image->sectorSize);
+   {  PrintLog(_("present, contains %" PRId64 " medium sectors.\n"), image->sectorSize);
 #ifndef CLI
       if(Closure->guiMode)
-	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%lld", image->sectorSize);
+	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%" PRId64 "", image->sectorSize);
 #endif
    }
    else
-   {  PrintLog(_("present, contains %lld medium sectors and %d bytes.\n"),
+   {  PrintLog(_("present, contains %" PRId64 " medium sectors and %d bytes.\n"),
 	       image->sectorSize-1, image->inLast);
 #ifndef CLI
       if(Closure->guiMode)
-	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%lld sectors + %d bytes"), 
+	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " sectors + %d bytes"), 
 		      image->sectorSize-1, image->inLast);
 #endif
    }
@@ -468,11 +468,11 @@ void RS01Verify(Image *image)
       if(image->sectorSize < image->expectedSectors)
       {  diff = image->expectedSectors - image->sectorSize;
 
-	 PrintLog(_("* truncated image  : %lld sectors too short\n"), diff);
+	 PrintLog(_("* truncated image  : %" PRId64 " sectors too short\n"), diff);
 #ifndef CLI
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), 
-			_("<span %s>%lld (%lld sectors too short)</span>"),
+			_("<span %s>%" PRId64 " (%" PRId64 " sectors too short)</span>"),
 			Closure->redMarkup, image->sectorSize, diff);
 #endif
 	 image->sectorsMissing += diff;
@@ -488,19 +488,19 @@ void RS01Verify(Image *image)
    if(Closure->guiMode)
    {  if(image->crcErrors)
 	 SetLabelText(GTK_LABEL(wl->cmpChkSumErrors), 
-		      "<span %s>%lld</span>", Closure->redMarkup, image->crcErrors);
+		      "<span %s>%" PRId64 "</span>", Closure->redMarkup, image->crcErrors);
       if(image->sectorsMissing)
 	 SetLabelText(GTK_LABEL(wl->cmpMissingSectors), 
-		      "<span %s>%lld</span>", Closure->redMarkup, image->sectorsMissing);
+		      "<span %s>%" PRId64 "</span>", Closure->redMarkup, image->sectorsMissing);
    }
 #endif
 
    if(excess_sectors)
-   {  PrintLog(_("* image too long   : %lld excess sectors\n"), excess_sectors);
+   {  PrintLog(_("* image too long   : %" PRId64 " excess sectors\n"), excess_sectors);
 #ifndef CLI
       if(Closure->guiMode)
       {   SetLabelText(GTK_LABEL(wl->cmpImageSectors), 
-		       _("<span %s>%lld (%lld excess sectors)</span>"),
+		       _("<span %s>%" PRId64 " (%" PRId64 " excess sectors)</span>"),
 		       Closure->redMarkup, image->sectorSize, excess_sectors);
 	  SetLabelText(GTK_LABEL(wl->cmpImageResult),
 		       _("<span %s>Bad image.</span>"),
@@ -527,7 +527,7 @@ void RS01Verify(Image *image)
 #endif
 	 }
 	 else
-	 {  PrintLog(_("* suspicious image : all sectors present, but %lld CRC errors\n"
+	 {  PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"
 		       "- image md5sum     : %s\n"),image->crcErrors,idigest);
 
 #ifndef CLI
@@ -540,8 +540,8 @@ void RS01Verify(Image *image)
       }
       else /* sectors are missing */
       {  if(!image->crcErrors)
-	      PrintLog(_("* BAD image        : %lld sectors missing\n"), image->sectorsMissing);
-	 else PrintLog(_("* BAD image        : %lld sectors missing, %lld CRC errors\n"), 
+	      PrintLog(_("* BAD image        : %" PRId64 " sectors missing\n"), image->sectorsMissing);
+	 else PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
 		         image->sectorsMissing, image->crcErrors);
 #ifndef CLI
 	 if(Closure->guiMode)
@@ -711,19 +711,19 @@ process_ecc:
 
    if(!image->file)
    {  if(!ecc_in_last)
-      {  PrintLog(_("- medium sectors   : %lld\n"), image->expectedSectors);
+      {  PrintLog(_("- medium sectors   : %" PRId64 "\n"), image->expectedSectors);
 #ifndef CLI
 	 if(Closure->guiMode)
-	   SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%lld", image->expectedSectors);
+	   SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 "", image->expectedSectors);
 #endif
       }
       else
-      {  PrintLog(_("- medium sectors   : %lld sectors + %d bytes\n"),
+      {  PrintLog(_("- medium sectors   : %" PRId64 " sectors + %d bytes\n"),
 		  image->expectedSectors-1, ecc_in_last);
 #ifndef CLI
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
-			_("%lld sectors + %d bytes"), 
+			_("%" PRId64 " sectors + %d bytes"), 
 			image->expectedSectors-1, ecc_in_last);
 #endif
        }
@@ -734,19 +734,19 @@ process_ecc:
       if(image->sectorSize == image->expectedSectors 
 	 && (!ecc_in_last || image->inLast == eh->inLast))
       {  if(!ecc_in_last)
-	 {  PrintLog(_("- medium sectors   : %lld (good)\n"), image->expectedSectors);
+	 {  PrintLog(_("- medium sectors   : %" PRId64 " (good)\n"), image->expectedSectors);
 #ifndef CLI
 	    if(Closure->guiMode)
-	      SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%lld", image->expectedSectors);
+	      SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 "", image->expectedSectors);
 #endif
 	 }
 	 else
-	 {  PrintLog(_("- medium sectors   : %lld sectors + %d bytes (good)\n"),
+	 {  PrintLog(_("- medium sectors   : %" PRId64 " sectors + %d bytes (good)\n"),
 		     image->expectedSectors-1, ecc_in_last);
 #ifndef CLI
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
-			   _("%lld sectors + %d bytes"), 
+			   _("%" PRId64 " sectors + %d bytes"), 
 			   image->expectedSectors-1, ecc_in_last);
 #endif
 	 }
@@ -755,23 +755,23 @@ process_ecc:
       else /* sector sizes differ */
       { /* TAO case (1 or 2 sectors more than expected) */
 	if(image->sectorSize > image->expectedSectors && image->sectorSize - image->expectedSectors <= 2)   
-	{  PrintLog(_("* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"), image->expectedSectors);
+	{  PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"), image->expectedSectors);
 #ifndef CLI
 	   if(Closure->guiMode)
 	   {  if(!ecc_in_last)  
-	          SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%lld</span>", 
+	          SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%" PRId64 "</span>", 
 			       Closure->redMarkup, image->expectedSectors);
-	     else SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%lld sectors + %d bytes</span>", 
+	     else SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%" PRId64 " sectors + %d bytes</span>", 
 			       Closure->redMarkup, image->expectedSectors-1, ecc_in_last);
 	   }
 #endif
 	}
 	else  /* more than 2 Sectors difference */ 
 	{  if(!ecc_in_last)
-	   {  PrintLog(_("* medium sectors   : %lld (BAD)\n"), image->expectedSectors);
+	   {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"), image->expectedSectors);
 #ifndef CLI
 	      if(Closure->guiMode)
-	      {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%lld</span>", 
+	      {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%" PRId64 "</span>", 
 			      Closure->redMarkup, image->expectedSectors);
 		 if(!ecc_advice)
 		   ecc_advice = g_strdup_printf(_("<span %s>Image size does not match error correction file.</span>"), Closure->redMarkup);
@@ -779,12 +779,12 @@ process_ecc:
 #endif
 	   }
 	   else /* byte size difference */
-	   {  PrintLog(_("* medium sectors   : %lld sectors + %d bytes (BAD)\n"),
+	   {  PrintLog(_("* medium sectors   : %" PRId64 " sectors + %d bytes (BAD)\n"),
 		       image->expectedSectors-1, ecc_in_last);
 #ifndef CLI
 	      if(Closure->guiMode)
 	      {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
-			      _("<span %s>%lld sectors + %d bytes</span>"), 
+			      _("<span %s>%" PRId64 " sectors + %d bytes</span>"), 
 			      Closure->redMarkup, image->expectedSectors-1, ecc_in_last);
 		 if(!ecc_advice)
 		   ecc_advice = g_strdup_printf(_("<span %s>Image size does not match error correction file.</span>"), Closure->redMarkup);
@@ -866,17 +866,17 @@ process_ecc:
    ecc_blocks = (image->eccFile->size-image->expectedSectors*sizeof(guint32)-sizeof(EccHeader))/eh->eccBytes;
 
    if(ecc_expected == ecc_blocks)
-   {  PrintLog(_("- ecc blocks       : %lld (good)\n"),ecc_blocks);
+   {  PrintLog(_("- ecc blocks       : %" PRId64 " (good)\n"),ecc_blocks);
 #ifndef CLI
       if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), "%lld", ecc_blocks);
+	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), "%" PRId64 "", ecc_blocks);
 #endif
    }
    else
-   {  PrintLog(_("* ecc blocks       : %lld (BAD, expected %lld)\n"),ecc_blocks,ecc_expected);
+   {  PrintLog(_("* ecc blocks       : %" PRId64 " (BAD, expected %" PRId64 ")\n"),ecc_blocks,ecc_expected);
 #ifndef CLI
       if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), _("<span %s>%lld (bad, expected %lld)</span>"),Closure->redMarkup,ecc_blocks,ecc_expected);
+	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), _("<span %s>%" PRId64 " (bad, expected %" PRId64 ")</span>"),Closure->redMarkup,ecc_blocks,ecc_expected);
 #endif
    }
 

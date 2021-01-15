@@ -413,7 +413,7 @@ int RS03RecognizeImage(Image *image)
 
    if(Closure->debugMode && Closure->mediumSize > 170)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
-      Verbose("Warning: image size set to %lld for debugging!\n", Closure->mediumSize);
+      Verbose("Warning: image size set to %" PRId64 " for debugging!\n", Closure->mediumSize);
    }
    else
    {  if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
@@ -428,7 +428,7 @@ int RS03RecognizeImage(Image *image)
       else layer_size = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE)/GF_FIELDMAX;
    }
 
-   Verbose(".. trying layer size %lld\n", layer_size);
+   Verbose(".. trying layer size %" PRId64 "\n", layer_size);
 
    /*
     * Try a quick scan for the CRC sectors in order
@@ -499,7 +499,7 @@ int RS03RecognizeImage(Image *image)
 
 	       if(crc_state == 1) /* corrupted crc header, try this layer again later */
 		 continue;
-	       Verbose("** Success: sector %lld, rediscovered format with %d roots\n",
+	       Verbose("** Success: sector %" PRId64 ", rediscovered format with %d roots\n",
 		       sector, nroots); 
 	       image->eccHeader = g_malloc(sizeof(EccHeader));
 	       ReconstructRS03Header(image->eccHeader, cb);

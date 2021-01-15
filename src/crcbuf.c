@@ -231,7 +231,7 @@ void PrintCrcBuf(CrcBuf *cb)
      return;
 
    PrintLog("CrcBuf contents, image path %s:\n", cb->imageName ? cb->imageName : "none (medium)" );
-   PrintLog("  crcSize: %lld, dataSectors: %lld, coveredSectors: %lld, allSectors: %lld\n",
+   PrintLog("  crcSize: %" PRId64 ", dataSectors: %" PRId64 ", coveredSectors: %" PRId64 ", allSectors: %" PRId64 "\n",
 	    cb->crcSize, cb->dataSectors, cb->coveredSectors, cb->allSectors);
 
    PrintLog("  md5State:");
@@ -258,5 +258,5 @@ void PrintCrcBuf(CrcBuf *cb)
      if(!GetBit(cb->valid, i))
      {   missing++;
      }
-   PrintLog("  missing crcs: %lld\n", missing);
+   PrintLog("  missing crcs: %" PRId64 "\n", missing);
 }

@@ -314,9 +314,9 @@ void RS03Fix(Image *image)
      if(diff>0 && diff<=2)
      {  int answer;
         answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				  _("Image file is %lld sectors longer than expected.\n"
+				  _("Image file is %" PRId64 " sectors longer than expected.\n"
 				    "Assuming this is a TAO mode medium.\n"
-				    "%lld sectors will be removed from the image end.\n"),
+				    "%" PRId64 " sectors will be removed from the image end.\n"),
 				  diff, diff);
 
         if(!answer)
@@ -358,7 +358,7 @@ void RS03Fix(Image *image)
        if(!LargeTruncate(image->file, (gint64)expected_image_size))
 	 Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
-       PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
+       PrintLog(_("Image has been truncated by %" PRId64 " sectors.\n"), diff);
      }
 #endif
 
@@ -378,7 +378,7 @@ void RS03Fix(Image *image)
 	 if(!LargeTruncate(image->file, (gint64)expected_image_size))
 	   Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
-	 PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
+	 PrintLog(_("Image has been truncated by %" PRId64 " sectors.\n"), diff);
      }
    }
 
@@ -519,7 +519,7 @@ void RS03Fix(Image *image)
 	   if(crc_valid && !erasure_map[i] && crc != crc_buf[crc_idx])
 	   {  erasure_map[i] = 3;
 	      erasure_list[erasure_count++] = i;
-	      PrintCLI(_("CRC error in sector %lld\n"),block_idx[i]);
+	      PrintCLI(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
 	      damaged_sectors++;
 	      crc_errors++;
 	   }
@@ -556,7 +556,7 @@ void RS03Fix(Image *image)
 #endif
 	{  int sep_printed = 0;
 
-           PrintCLI(_("* Ecc block %lld: %3d unrepairable sectors: "), s, erasure_count);
+           PrintCLI(_("* Ecc block %" PRId64 ": %3d unrepairable sectors: "), s, erasure_count);
 
 	   for(i=0; i<erasure_count; i++)
 	   {  /* sector counting wraps to 0 for ecc files after the data layer */
@@ -564,7 +564,7 @@ void RS03Fix(Image *image)
 	      {  PrintCLI("; ecc file: ");
                  sep_printed = 1;
               }
-              PrintCLI("%lld ", RS03SectorIndex(lay, erasure_list[i], s));
+              PrintCLI("%" PRId64 " ", RS03SectorIndex(lay, erasure_list[i], s));
 	   }
 	   PrintCLI("\n");
      }
@@ -725,7 +725,7 @@ void RS03Fix(Image *image)
 	      {  PrintCLI(_("; ecc file: "));
                  sep_printed = 1;
               }
-              PrintCLI("%lld ", RS03SectorIndex(lay, erasure_list[i], s));
+              PrintCLI("%" PRId64 " ", RS03SectorIndex(lay, erasure_list[i], s));
 	   }
 	   PrintCLI("\n");
 	   uncorrected += erasure_count;
@@ -849,7 +849,7 @@ void RS03Fix(Image *image)
 	   {  PrintCLI(_("; ecc file: "));
               sep_printed = 1;
            }
-	   PrintCLI("%lld%c ", sec, type);
+	   PrintCLI("%" PRId64 "%c ", sec, type);
 
 	   /* Write the recovered sector */
 
@@ -862,12 +862,12 @@ void RS03Fix(Image *image)
 	      || i < ndata-1)
 	   {
 	      if(!LargeSeek(image->file, (gint64)(2048*sec)))
-		 Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+		 Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		      sec, "FW", strerror(errno));
 
 	      n = LargeWrite(image->file, cache_offset+fc->imgBlock[i], length);
 	      if(n != length)
-		 Stop(_("could not write medium sector %lld:\n%s"), sec, strerror(errno));
+		 Stop(_("could not write medium sector %" PRId64 ":\n%s"), sec, strerror(errno));
 	   }
 
 	   /* Write back into the error correction file
@@ -878,12 +878,12 @@ void RS03Fix(Image *image)
 	   if(lay->target == ECC_FILE && i >= ndata-1)
 	   {
 		 if(!LargeSeek(image->eccFile, (gint64)(2048*sec)))
-		    Stop(_("Failed seeking to sector %lld in ecc file [%s]: %s"),
+		    Stop(_("Failed seeking to sector %" PRId64 " in ecc file [%s]: %s"),
 			 sec, "FW", strerror(errno));
 
 	      n = LargeWrite(image->eccFile, cache_offset+fc->imgBlock[i], 2048);
 	      if(n != 2048)
-		Stop(_("could not write ecc file sector %lld:\n%s"),
+		Stop(_("could not write ecc file sector %" PRId64 ":\n%s"),
 		     sec, strerror(errno));
 	   }
 	}
@@ -938,15 +938,15 @@ skip:
 
    PrintProgress(_("Ecc progress: 100.0%%\n"));
 
-   if(corrected > 0) PrintLog(_("Repaired sectors: %lld (%lld data, %lld ecc)\n"),
+   if(corrected > 0) PrintLog(_("Repaired sectors: %" PRId64 " (%" PRId64 " data, %" PRId64 " ecc)\n"),
 			      corrected, data_corr, ecc_corr);
    if(uncorrected > 0) 
-   {  PrintLog(_("Unrepaired sectors: %lld\n"), uncorrected);      
+   {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
 #ifndef CLI
       if(Closure->guiMode)
         SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			     _("Image sectors could not be fully restored "
-			       "(%lld repaired; <span %s>%lld unrepaired</span>)"),
+			       "(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
 			     corrected, Closure->redMarkup, uncorrected);
 #endif
       exitCode = 2;
@@ -974,9 +974,9 @@ skip:
 #endif
 
    Verbose("\nSummary of processed sectors:\n");
-   Verbose("%lld damaged sectors\n", damaged_sectors);
-   Verbose("%lld CRC errors\n", crc_errors);
-   Verbose("%lld of %lld ecc blocks damaged (%lld / %lld sectors)\n",
+   Verbose("%" PRId64 " damaged sectors\n", damaged_sectors);
+   Verbose("%" PRId64 " CRC errors\n", crc_errors);
+   Verbose("%" PRId64 " of %" PRId64 " ecc blocks damaged (%" PRId64 " / %" PRId64 " sectors)\n",
 	   damaged_eccblocks, 2048*lay->sectorsPerLayer,
 	   damaged_eccsecs, lay->sectorsPerLayer);
    if(data_count != (ndata-1)*lay->sectorsPerLayer)

@@ -457,7 +457,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-      PrintLog(_("- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"),
+      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
 #ifndef CLI
@@ -471,7 +471,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 		      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
 	 SetLabelText(GTK_LABEL(vc->wl->cmpImagePrognosisMsg),
-		     _("<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"),
+		     _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
 		      recoverable < expected ? Closure->redMarkup : Closure->greenMarkup,
 		     recoverable, expected, percentage/10, percentage%10);
       }
@@ -617,10 +617,10 @@ static int check_syndromes(verify_closure *vc)
 #ifndef CLI
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-			   _("<span %s>%lld good, %lld bad; %d%% tested</span>"),
+			   _("<span %s>%" PRId64 " good, %" PRId64 " bad; %d%% tested</span>"),
 			   Closure->redMarkup, ecc_good, ecc_bad, percent);
 #endif
-	    PrintProgress(_("* Ecc block test   : %lld good, %lld bad; %d%% tested")
+	    PrintProgress(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %d%% tested")
 			  , ecc_good, ecc_bad, percent);
 	 }
       }
@@ -642,10 +642,10 @@ static int check_syndromes(verify_closure *vc)
 #ifndef CLI
      if(Closure->guiMode)
        SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-		    _("<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"),
+		    _("<span %s>%" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks</span>"),
 		    Closure->redMarkup, ecc_good, ecc_bad, ecc_bad_sub);
 #endif
-      PrintLog(_("* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"),
+      PrintLog(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
 	       ecc_good, ecc_bad, ecc_bad_sub);
 
       exitCode = EXIT_CODE_SYNDROME_ERROR;
@@ -769,9 +769,9 @@ void RS03Verify(Image *image)
       {  char *msg;
 
 	 if(expected_eccfile_sectors > eccfile_sectors)
-	      msg = g_strdup_printf(_("Ecc file is %lld sectors shorter than expected."),
+	      msg = g_strdup_printf(_("Ecc file is %" PRId64 " sectors shorter than expected."),
 				  expected_eccfile_sectors - eccfile_sectors);
-	 else msg = g_strdup_printf(_("Ecc file is %lld sectors longer than expected."), 
+	 else msg = g_strdup_printf(_("Ecc file is %" PRId64 " sectors longer than expected."), 
 				    eccfile_sectors - expected_eccfile_sectors);
 
 #ifndef CLI
@@ -988,28 +988,28 @@ void RS03Verify(Image *image)
 #ifndef CLI
          if(Closure->guiMode)
 	 {  if(image->inLast == 2048)
-	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%lld in image; %lld in ecc file"), 
+	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " in image; %" PRId64 " in ecc file"), 
 			   image->sectorSize, eccfile_sectors);
 	    else
-	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%lld sectors + %d bytes in image; %lld in ecc file"), 
+	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " sectors + %d bytes in image; %" PRId64 " in ecc file"), 
 			   image->sectorSize-1, image->inLast, eccfile_sectors);
 	 }
 #endif
 
 	 if(image->inLast == 2048)
-	      PrintLog(_("- sectors          : %lld in image; "), image->sectorSize);
-	 else PrintLog(_("- sectors          : %lld sectors + %d bytes in image; "), image->sectorSize-1, image->inLast);
+	      PrintLog(_("- sectors          : %" PRId64 " in image; "), image->sectorSize);
+	 else PrintLog(_("- sectors          : %" PRId64 " sectors + %d bytes in image; "), image->sectorSize-1, image->inLast);
 
-	 PrintLog(_("%lld in ecc file\n"), eccfile_sectors);
+	 PrintLog(_("%" PRId64 " in ecc file\n"), eccfile_sectors);
       }
       else 
       {  
 #ifndef CLI
          if(Closure->guiMode)
-	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%lld total / %lld data"), 
+	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " total / %" PRId64 " data"), 
 			image->sectorSize, lay->dataSectors);
 #endif
-	 PrintLog(_("- medium sectors   : %lld total / %lld data\n"),
+	 PrintLog(_("- medium sectors   : %" PRId64 " total / %" PRId64 " data\n"),
 		  image->sectorSize, lay->dataSectors);
       }
    }
@@ -1038,16 +1038,16 @@ void RS03Verify(Image *image)
 	 }
 
 	 if(expected_image_sectors > image->sectorSize)
-	    img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors shorter than expected.</span>"),
+	    img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors shorter than expected.</span>"),
 					 Closure->redMarkup, expected_image_sectors - image->sectorSize);
 	 if(expected_image_sectors < image->sectorSize)
-	    img_advice = g_strdup_printf(_("<span %s>Image file is %lld sectors longer than expected.</span>"),
+	    img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors longer than expected.</span>"),
 					 Closure->redMarkup, image->sectorSize - expected_image_sectors);
       }
 #endif
 
       if(lay->target == ECC_FILE)
-	PrintLog(_("* sectors          : %s (%s expected); %lld sectors in ecc file\n"),
+	PrintLog(_("* sectors          : %s (%s expected); %" PRId64 " sectors in ecc file\n"),
 		 image_size, expected_size, eccfile_sectors);
       else
 	PrintLog(_("* medium sectors   : %s (%s expected)\n"),
@@ -1182,8 +1182,8 @@ void RS03Verify(Image *image)
 		 ecc_msg = g_strdup(" ");
 	    }
 	    if(first_missing == last_missing)
-	         PrintCLI(_("* missing sector   : %lld%s\n"), first,ecc_msg);
-	    else PrintCLI(_("* missing sectors  : %lld - %lld%s\n"), first, last, ecc_msg);
+	         PrintCLI(_("* missing sector   : %" PRId64 "%s\n"), first,ecc_msg);
+	    else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "%s\n"), first, last, ecc_msg);
 	    first_missing = -1;
 	    g_free(ecc_msg);
 	 }
@@ -1199,7 +1199,7 @@ void RS03Verify(Image *image)
 
 	 if(GetBit(vc->crcBuf->valid,crc_idx)
 	    && crc != vc->crcBuf->crcbuf[crc_idx])
-	 {  PrintCLI(_("* CRC error, sector: %lld\n"), s);
+	 {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
@@ -1244,15 +1244,15 @@ void RS03Verify(Image *image)
 
 	    if(data_missing || data_crc_errors)
 	      SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-			   _("<span %s>%lld sectors missing; %lld CRC errors</span>"),
+			   _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
 			   Closure->redMarkup, data_missing, data_crc_errors);
 	    if(crc_missing || csc->signatureErrors)
 	      SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-			   _("<span %s>%lld sectors missing; %lld signature errors</span>"),
+			   _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
 			   Closure->redMarkup, crc_missing, csc->signatureErrors);
 	    if(ecc_missing)
 	      SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-			   _("<span %s>%lld sectors missing</span>"),
+			   _("<span %s>%" PRId64 " sectors missing</span>"),
 			   Closure->redMarkup, ecc_missing);
 	 }
 #endif
@@ -1287,15 +1287,15 @@ void RS03Verify(Image *image)
    if(Closure->guiMode)
    {  if(data_missing || data_crc_errors)
         SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-		     _("<span %s>%lld sectors missing; %lld CRC errors</span>"),
+		     _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
 		     Closure->redMarkup, data_missing, data_crc_errors);
       if(crc_missing || csc->signatureErrors)
         SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-		     _("<span %s>%lld sectors missing; %lld signature errors</span>"),
+		     _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
 		     Closure->redMarkup, crc_missing, csc->signatureErrors);
       if(ecc_missing)
 	SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-		     _("<span %s>%lld sectors missing</span>"),
+		     _("<span %s>%" PRId64 " sectors missing</span>"),
 		     Closure->redMarkup, ecc_missing);
    }
 #endif
@@ -1312,26 +1312,26 @@ void RS03Verify(Image *image)
 		 "- data md5sum      : %s\n"),data_digest);
    else
    {  if(!data_crc_errors && !csc->signatureErrors)
-         PrintLog(_("* BAD image/file   : %lld sectors missing\n"), total_missing);
+         PrintLog(_("* BAD image/file   : %" PRId64 " sectors missing\n"), total_missing);
       if(!total_missing)
-	 PrintLog(_("* suspicious image : all sectors present, but %lld CRC errors\n"), 
+	 PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"), 
 		  data_crc_errors);
       if(total_missing && data_crc_errors)
-	 PrintLog(_("* BAD image        : %lld sectors missing, %lld CRC errors\n"), 
+	 PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
 		  total_missing, data_crc_errors);
 
-      PrintLog(_("  ... data section   : %lld sectors missing; %lld CRC errors\n"), 
+      PrintLog(_("  ... data section   : %" PRId64 " sectors missing; %" PRId64 " CRC errors\n"), 
 	       data_missing, data_crc_errors);
       if(!total_missing && !data_crc_errors && !csc->signatureErrors)
 	PrintLog(_("  ... data md5sum    : %s\n"), data_digest); 
 
       if(csc->signatureErrors)
-	 PrintLog(_("  ... crc section    : %lld sectors missing; %lld signature errors\n"), 
+	 PrintLog(_("  ... crc section    : %" PRId64 " sectors missing; %" PRId64 " signature errors\n"), 
 		  crc_missing, csc->signatureErrors);
       else
-	 PrintLog(_("  ... crc section    : %lld sectors missing\n"), crc_missing);
+	 PrintLog(_("  ... crc section    : %" PRId64 " sectors missing\n"), crc_missing);
 
-      PrintLog(_("  ... ecc section    : %lld sectors missing\n"), ecc_missing);
+      PrintLog(_("  ... ecc section    : %" PRId64 " sectors missing\n"), ecc_missing);
    }
 
 #ifndef CLI

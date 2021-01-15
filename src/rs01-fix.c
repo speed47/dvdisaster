@@ -192,7 +192,7 @@ void RS01Fix(Image *image)
       image->file->size += n;
       image->inLast += n;
       if(n != padding)
-	 Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+	 Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 	      image->sectorSize, "SC", strerror(errno));
    }
 
@@ -206,9 +206,9 @@ void RS01Fix(Image *image)
      if(diff>0 && diff<=2)
      {
         int answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				  _("Image file is %lld sectors longer than expected.\n"
+				  _("Image file is %" PRId64 " sectors longer than expected.\n"
 				    "Assuming this is a TAO mode medium.\n"
-				    "%lld sectors will be removed from the image end.\n"),
+				    "%" PRId64 " sectors will be removed from the image end.\n"),
 				  diff, diff);
 
         if(!answer)
@@ -252,7 +252,7 @@ void RS01Fix(Image *image)
        if(!LargeTruncate(image->file, expected_image_size))
 	 Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
-       PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
+       PrintLog(_("Image has been truncated by %" PRId64 " sectors.\n"), diff);
      }
 #endif
 
@@ -274,7 +274,7 @@ void RS01Fix(Image *image)
 	 if(!LargeTruncate(image->file, expected_image_size))
 	   Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
-	 PrintLog(_("Image has been truncated by %lld sectors.\n"), diff);
+	 PrintLog(_("Image has been truncated by %" PRId64 " sectors.\n"), diff);
      }
    }
 
@@ -448,7 +448,7 @@ void RS01Fix(Image *image)
 	   else if(crc != fc->crcBuf[i][cache_sector])
 	   {  erasure_map[i] = 3;
 	      erasure_list[erasure_count++] = i;
-	      PrintCLI(_("CRC error in sector %lld\n"),block_idx[i]);
+	      PrintCLI(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
 	   }
 	}
      }
@@ -479,7 +479,7 @@ void RS01Fix(Image *image)
 	{  PrintCLI(_("* %3d unrepairable sectors: "), erasure_count);
 
 	   for(i=0; i<erasure_count; i++)
-	     PrintCLI("%lld ", block_idx[erasure_list[i]]);
+	     PrintCLI("%" PRId64 " ", block_idx[erasure_list[i]]);
 
 	   PrintCLI("\n");
 	}
@@ -498,14 +498,14 @@ void RS01Fix(Image *image)
 	     continue;  /* It's (already) dead, Jim ;-) */
 
 	   if(!LargeSeek(image->file, (gint64)(2048*idx)))
-	     Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	     Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		  idx, "FD", strerror(errno));
 
 	   CreateMissingSector(buf, idx, eh->mediumFP, eh->fpSector, NULL);
 
 	   n = LargeWrite(image->file, buf, 2048);
 	   if(n != 2048)
-	     Stop(_("Failed writing to sector %lld in image [%s]: %s"),
+	     Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 		  idx, "WD", strerror(errno));
 	}
      }
@@ -670,7 +670,7 @@ void RS01Fix(Image *image)
 	      for(i=0; i<erasure_count; i++)
 	      {  gint64 idx = block_idx[erasure_list[i]];
 	       
-                 PrintLog("%lld ", idx);
+                 PrintLog("%" PRId64 " ", idx);
 	      }
 	      PrintLog("\n");
 	      break;
@@ -724,14 +724,14 @@ void RS01Fix(Image *image)
 		    {  int old = fc->imgBlock[location][offset];
 		       int new = old ^ gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
 
-		       PrintCLI(_("-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"),
+		       PrintCLI(_("-> Error located in sector %" PRId64 " at byte %4d (value %02x '%c', expected %02x '%c')\n"),
 				block_idx[location], bi, 
 				old, canprint(old) ? old : '.',
 				new, canprint(new) ? new : '.');
 		    }
 
 		    if(!erasure_map[location])
-		      PrintLog(_("Unexpected byte error in sector %lld, byte %d\n"),
+		      PrintLog(_("Unexpected byte error in sector %" PRId64 ", byte %d\n"),
 			       block_idx[location], bi);
 
 		    fc->imgBlock[location][offset] ^= gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
@@ -753,12 +753,12 @@ void RS01Fix(Image *image)
 	{  gint64 idx = block_idx[erasure_list[i]];
 	   int length;
 
-	   PrintCLI("%lld ", idx);
+	   PrintCLI("%" PRId64 " ", idx);
 
 	   /* Write the recovered sector */
 
 	   if(!LargeSeek(image->file, (gint64)(2048*idx)))
-	     Stop(_("Failed seeking to sector %lld in image [%s]: %s"),
+	     Stop(_("Failed seeking to sector %" PRId64 " in image [%s]: %s"),
 		  idx, "FW", strerror(errno));
 
 	   if(idx < image->expectedSectors-1) length = 2048;
@@ -766,7 +766,7 @@ void RS01Fix(Image *image)
 
 	   n = LargeWrite(image->file, cache_offset+fc->imgBlock[erasure_list[i]], length);
 	   if(n != length)
-	     Stop(_("could not write medium sector %lld:\n%s"),idx,strerror(errno));
+	     Stop(_("could not write medium sector %" PRId64 ":\n%s"),idx,strerror(errno));
 	}
 
 	PrintCLI("\n");
@@ -808,14 +808,14 @@ skip:
    /*** Print results */
 
    PrintProgress(_("Ecc progress: 100.0%%\n"));
-   if(corrected > 0) PrintLog(_("Repaired sectors: %lld     \n"),corrected);
+   if(corrected > 0) PrintLog(_("Repaired sectors: %" PRId64 "     \n"),corrected);
    if(uncorrected > 0) 
-   {  PrintLog(_("Unrepaired sectors: %lld\n"), uncorrected);      
+   {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
 #ifndef CLI
       if(Closure->guiMode)
         SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			     _("Image sectors could not be fully restored "
-			       "(%lld repaired; <span %s>%lld unrepaired</span>)"),
+			       "(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
 			     corrected, Closure->redMarkup, uncorrected);
 #endif
    }

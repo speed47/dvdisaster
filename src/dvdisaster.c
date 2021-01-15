@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
 	wrong packing. */
 
    if(sizeof(EccHeader) != 4096)
-     Stop("sizeof(EccHeader) is %d, but must be 4096.\n", sizeof(EccHeader));
+     Stop("sizeof(EccHeader) is %zu, but must be 4096.\n", sizeof(EccHeader));
 
    /*** CPU type detection. Must be done before parsing the options
         as some may be CPU-related. */
@@ -806,8 +806,8 @@ int main(int argc, char *argv[])
 	   }
 	   else 
 	   {  if(image->inLast == 2048)
-	           PrintLog(_(": %lld medium sectors.\n"), image->sectorSize);
-	      else PrintLog(_(": %lld medium sectors and %d bytes.\n"), 
+	           PrintLog(_(": %" PRId64 " medium sectors.\n"), image->sectorSize);
+	      else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 	   }
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);

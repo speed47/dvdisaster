@@ -277,7 +277,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 #else
       NULL,
 #endif
-		   _(" [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"), 
+		   _(" [Appended %d/%d sectors to cache file %s; LBA=%" PRId64 ", ssize=%d, %d sectors]\n"), 
 		   count, rb->samplesRead, filename, dsh->lba, dsh->sectorSize, dsh->nSectors);
 
    g_free(filename);
