@@ -167,7 +167,7 @@ static void cleanup(gpointer data)
    }
    
    /* trigger failure if some threads are still accessing this */
-   memset(rc, sizeof(read_closure), 0xff); 
+   memset(rc, 0xff, sizeof(read_closure));
    g_free(rc);
 
    /* Continue with ecc file creation after read.
