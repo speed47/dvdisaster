@@ -114,7 +114,7 @@ void print_crc_block(CrcBlock *cb)
    PrintCLI("fpSector         %8x\n", cb->fpSector);
    print_hex("mediumFP         ", cb->mediumFP, 16);
    print_hex("mediumSum        ", cb->mediumSum, 16);
-   PrintCLI("dataSectors     %ll16x\n ",cb->dataSectors);
+   PrintCLI("dataSectors      %16" PRIx64 "\n",cb->dataSectors);
    PrintCLI("inLast           %8x\n", cb->inLast);
    PrintCLI("dataBytes        %8x\n", cb->dataBytes);
    PrintCLI("eccBytes         %8x\n", cb->eccBytes);

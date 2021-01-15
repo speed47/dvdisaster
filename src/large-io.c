@@ -260,7 +260,7 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
 	 answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
 			      _("Error while writing the file:\n\n%s\n\n"
 				"You can redo this operation after freeing some space."),
-			      strerror(errno),n);
+			      strerror(errno));
 
 	 if(!answer) return total; 
       }
