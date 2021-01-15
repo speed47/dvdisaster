@@ -552,9 +552,9 @@ guint32 EDCCrc32(unsigned char*, int);
 /* Flags for CrcBuf->md5State */
 
 #define MD5_INVALID 0
-#define MD5_BUILDING 1<<0
-#define MD5_DATA_COMPLETE 1<<1
-#define MD5_IMAGE_COMPLETE 1<<2
+#define MD5_BUILDING (1<<0)
+#define MD5_DATA_COMPLETE (1<<1)
+#define MD5_IMAGE_COMPLETE (1<<2)
 #define MD5_COMPLETE (MD5_DATA_COMPLETE | MD5_IMAGE_COMPLETE)
 
 typedef struct _CrcBuf
