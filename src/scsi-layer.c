@@ -2009,7 +2009,7 @@ static gint64 query_size(Image *image)
       }
 
       g_string_append_printf(warning, _("Final decision: %s\n\n"), decision_msg);
-      LogWarning(warning->str);
+      LogWarning("%s", warning->str);
 
       g_string_free(warning, TRUE);
 

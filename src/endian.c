@@ -62,7 +62,7 @@ guint64 SwapBytes64(guint64 in)
  */
 
 void print_hex(char *label, guint8 *values, int n)
-{  PrintCLI(label);
+{  PrintCLI("%s", label);
 
    while(n--)
      PrintCLI("%02x ",*values++);

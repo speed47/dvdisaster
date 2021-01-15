@@ -322,8 +322,8 @@ void RS01Fix(Image *image)
    {  int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Image file appears to be truncated.\n"
-			      "Consider completing it with another reading pass before going on.\n"), NULL);
+			      "%s",_("Image file appears to be truncated.\n"
+			      "Consider completing it with another reading pass before going on.\n"));
       if(!answer)
       {
 #ifndef CLI

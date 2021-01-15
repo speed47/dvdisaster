@@ -1087,7 +1087,7 @@ reread:
       g_mutex_lock(rc->mutex);
       if(rc->workerError)       /* something went wrong in the worker thread */
       {	g_mutex_unlock(rc->mutex);
-	Stop(rc->workerError);
+	Stop("%s", rc->workerError);
       }
       while(rc->bufState[rc->readPtr] != BUF_EMPTY)
       {  g_cond_wait(rc->canRead, rc->mutex);
@@ -1240,7 +1240,7 @@ reread:
 	       g_mutex_lock(rc->mutex);
 	       if(rc->workerError)       /* something went wrong in the worker thread */
 	       {  g_mutex_unlock(rc->mutex);
-		  Stop(rc->workerError);
+		  Stop("%s", rc->workerError);
 	       }
 	       
 	       while(rc->bufState[rc->readPtr] != BUF_EMPTY)

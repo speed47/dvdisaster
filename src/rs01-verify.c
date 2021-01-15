@@ -946,7 +946,7 @@ skip_ecc:
 #ifndef CLI
    if(Closure->guiMode)
    {  if(ecc_advice) 
-      {  SetLabelText(GTK_LABEL(wl->cmpEccResult), ecc_advice);
+      {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);
          g_free(ecc_advice);
       }
       else SetLabelText(GTK_LABEL(wl->cmpEccResult),

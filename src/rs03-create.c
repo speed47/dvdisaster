@@ -1406,8 +1406,8 @@ void RS03Create(void)
    {  int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Using redundancies below 20%% may not give\n"
-			      "the expected data loss protection.\n"), NULL);
+			    "%s", _("Using redundancies below 20% may not give\n"
+			      "the expected data loss protection.\n"));
 
       if(!answer)
 	abort_encoding(ec, FALSE);
@@ -1422,8 +1422,8 @@ void RS03Create(void)
    {  int answer;
 
       answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("BD-R size with no defect management enabled,\n"
-			      "remember it should you need to repair this image later!\n"), NULL);
+			    "%s", _("BD-R size with no defect management enabled,\n"
+			      "remember it should you need to repair this image later!\n"));
 
       if(!answer)
 	abort_encoding(ec, FALSE);
