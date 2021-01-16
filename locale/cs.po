@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 20:59+0100\n"
+"POT-Creation-Date: 2021-01-16 23:27+0100\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-Basepath: d:\\Preklady\\dvdisaster\\cvs\n"
 "X-Poedit-SearchPath-0: dvdisaster\n"
 
-#: src/closure.c:384
+#: src/closure.c:390
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -35,15 +35,15 @@ msgstr ""
 "# každém spuštění programu.\n"
 "\n"
 
-#: src/closure.c:603
+#: src/closure.c:609
 msgid "medium.iso"
 msgstr "disc.iso"
 
-#: src/closure.c:604
+#: src/closure.c:610
 msgid "medium.ecc"
 msgstr "disc.ecc"
 
-#: src/closure.c:605
+#: src/closure.c:611
 msgid "sector-"
 msgstr "sektor-"
 
@@ -64,10 +64,10 @@ msgstr ""
 #: src/debug.c:1189 src/debug.c:1266 src/rs01-common.c:175
 #: src/rs02-common.c:239 src/rs02-create.c:377 src/rs02-create.c:1032
 #: src/rs02-fix.c:414 src/rs02-verify.c:404 src/rs03-common.c:340
-#: src/rs03-create.c:756 src/rs03-create.c:781 src/rs03-recognize.c:555
+#: src/rs03-create.c:756 src/rs03-create.c:781
 #, c-format
-msgid "Failed seeking to sector %lld in image: %s"
-msgstr "Nezdařil se přechod na sektor %lld bitové kopie: %s"
+msgid "Failed seeking to sector %<PRId64> in image: %s"
+msgstr "Nezdařil se přechod na sektor %<PRId64> bitové kopie: %s"
 
 #: src/debug.c:111 src/debug.c:196 src/debug.c:243 src/debug.c:368
 #: src/debug.c:545 src/debug.c:662 src/debug.c:713 src/debug.c:1193
@@ -77,8 +77,8 @@ msgstr "Nezdařil se přechod na sektor %lld bitové kopie: %s"
 #: src/udf.c:958 src/udf.c:963 src/udf.c:966 src/udf.c:969 src/udf.c:972
 #: src/udf.c:975 src/udf.c:978
 #, c-format
-msgid "Failed writing to sector %lld in image: %s"
-msgstr "Nezdařil se zápis sektoru %lld bitové kopie: %s"
+msgid "Failed writing to sector %<PRId64> in image: %s"
+msgstr "Nezdařil se zápis sektoru %<PRId64> bitové kopie: %s"
 
 #: src/debug.c:119 src/debug.c:249 src/debug.c:374 src/debug.c:666
 #: src/debug.c:720 src/debug.c:1284
@@ -124,7 +124,7 @@ msgstr "Vygeneruje až %d nahodilých opravitelných výmazů.\n"
 #: src/debug.c:689 src/debug.c:795 src/debug.c:836 src/debug.c:882
 #: src/debug.c:936 src/debug.c:1161 src/debug.c:1169 src/debug.c:1225
 #: src/debug.c:1230 src/raw-editor.c:364 src/read-adaptive.c:73
-#: src/read-adaptive.c:93 src/read-adaptive.c:1553 src/read-adaptive.c:1589
+#: src/read-adaptive.c:93 src/read-adaptive.c:1552 src/read-adaptive.c:1588
 #: src/read-linear.c:289 src/read-linear.c:291 src/read-linear.c:327
 #: src/read-linear.c:329 src/rs01-create.c:303 src/rs03-create.c:1352
 #, c-format
@@ -146,8 +146,8 @@ msgstr "chybí třetí argument"
 #: src/debug.c:462 src/debug.c:802 src/debug.c:843 src/debug.c:891
 #: src/debug.c:954
 #, c-format
-msgid "Sector must be in range [0..%lld]\n"
-msgstr "Sektor musí být v rozsahu [0..%lld]\n"
+msgid "Sector must be in range [0..%<PRId64>]\n"
+msgstr "Sektor musí být v rozsahu [0..%<PRId64>]\n"
 
 #: src/debug.c:465
 msgid "Byte position must be in range [0..2047]"
@@ -159,8 +159,8 @@ msgstr "Hodnota bajtu musí být v rozsahu [0..255]"
 
 #: src/debug.c:470
 #, c-format
-msgid "Setting byte %d in sector %lld to value %d.\n"
-msgstr "Nastavení bajtu %d sektoru %lld na hodnotu %d.\n"
+msgid "Setting byte %d in sector %<PRId64> to value %d.\n"
+msgstr "Nastavení bajtu %d sektoru %<PRId64> na hodnotu %d.\n"
 
 #: src/debug.c:477 src/debug.c:531 src/debug.c:694 src/rs02-create.c:210
 #: src/rs02-verify.c:719 src/rs03-verify.c:1073
@@ -172,25 +172,25 @@ msgstr "Nezdařil se přechod na začátek bitové kopie: %s\n"
 msgid "Could not write the new byte value"
 msgstr "Nepodařilo se zapsat novou hodnotu bajtu"
 
-#: src/debug.c:524 src/read-adaptive.c:831
+#: src/debug.c:524 src/read-adaptive.c:830
 #, c-format
-msgid "Sectors must be in range [0..%lld].\n"
-msgstr "Sektory musí být v rozsahu [0..%lld].\n"
+msgid "Sectors must be in range [0..%<PRId64>].\n"
+msgstr "Sektory musí být v rozsahu [0..%<PRId64>].\n"
 
 #: src/debug.c:526
 #, c-format
-msgid "Erasing sectors [%lld,%lld]\n"
-msgstr "Probíhá mazání sektorů [%lld,%lld]\n"
+msgid "Erasing sectors [%<PRId64>,%<PRId64>]\n"
+msgstr "Probíhá mazání sektorů [%<PRId64>,%<PRId64>]\n"
 
 #: src/debug.c:572
 #, c-format
-msgid "New length must be in range [0..%lld].\n"
-msgstr "Nová délka musí být v rozsahu [0..%lld].\n"
+msgid "New length must be in range [0..%<PRId64>].\n"
+msgstr "Nová délka musí být v rozsahu [0..%<PRId64>].\n"
 
 #: src/debug.c:574
 #, c-format
-msgid "Truncating image to %lld sectors.\n"
-msgstr "Probíhá zkrácení bitové kopie na %lld sektorů.\n"
+msgid "Truncating image to %<PRId64> sectors.\n"
+msgstr "Probíhá zkrácení bitové kopie na %<PRId64> sektorů.\n"
 
 #: src/debug.c:579 src/read-linear.c:1472 src/rs01-fix.c:230 src/rs01-fix.c:253
 #: src/rs01-fix.c:275 src/rs01-fix.c:315 src/rs02-create.c:117
@@ -205,19 +205,19 @@ msgstr "Nepodařilo se zkrátit %s: %s\n"
 #, c-format
 msgid ""
 "\n"
-"Creating random image with %lld sectors.\n"
+"Creating random image with %<PRId64> sectors.\n"
 "\n"
 "There is no need for permanently storing this image;\n"
 "you can always reproduce it by calling\n"
-"dvdisaster --debug %s %lld --random-seed %d\n"
+"dvdisaster --debug %s %<PRId64> --random-seed %d\n"
 "\n"
 msgstr ""
 "\n"
-"Probíhá vytvoření náhodné bitové kopie s %lld sektory.\n"
+"Probíhá vytvoření náhodné bitové kopie s %<PRId64> sektory.\n"
 "\n"
 "Tuto bitovou kopii není nutné trvale uložit, lze ji\n"
 "kdykoliv znovu vytvořit pomocí příkazu\n"
-"dvdisaster --debug %s %lld --random-seed %d\n"
+"dvdisaster --debug %s %<PRId64> --random-seed %d\n"
 "\n"
 
 #: src/debug.c:674 src/read-adaptive.c:382 src/read-linear.c:133
@@ -237,38 +237,38 @@ msgstr "Probíhá nahrazení indikátorů \"nečitelných sektorů\" nulami.\n"
 #: src/debug.c:700
 #, c-format
 msgid ""
-"Could not read image sector %lld:\n"
+"Could not read image sector %<PRId64>:\n"
 "%s\n"
 msgstr ""
-"Nepodařilo se přečíst sektor %lld bitové kopie:\n"
+"Nepodařilo se přečíst sektor %<PRId64> bitové kopie:\n"
 "%s\n"
 
 #: src/debug.c:725
 #, c-format
-msgid "%lld \"unreadable sector\" markers replaced.\n"
-msgstr "Nahrazeno %lld indikátorů \"nečitelných sektorů\".\n"
+msgid "%<PRId64> \"unreadable sector\" markers replaced.\n"
+msgstr "Nahrazeno %<PRId64> indikátorů \"nečitelných sektorů\".\n"
 
 #: src/debug.c:811 src/debug.c:854 src/debug.c:1185 src/debug.c:1252
 #: src/debug.c:1256 src/debug.c:1306 src/rs01-common.c:191
 #: src/rs02-common.c:244 src/rs02-create.c:229 src/rs02-fix.c:417
-#: src/rs03-common.c:345 src/rs03-recognize.c:560
+#: src/rs03-common.c:345
 #, c-format
-msgid "Failed reading sector %lld in image: %s"
-msgstr "Čtení sektoru %lld bitové kopie %s se nezdařilo"
+msgid "Failed reading sector %<PRId64> in image: %s"
+msgstr "Čtení sektoru %<PRId64> bitové kopie %s se nezdařilo"
 
 #: src/debug.c:845 src/debug.c:894 src/debug.c:957
 #, c-format
 msgid ""
-"Contents of sector %lld:\n"
+"Contents of sector %<PRId64>:\n"
 "\n"
 msgstr ""
-"Obsah sektoru %lld:\n"
+"Obsah sektoru %<PRId64>:\n"
 "\n"
 
 #: src/debug.c:905
 #, c-format
-msgid "Failed reading sector %lld: %s"
-msgstr "Čtení sektoru %lld se nezdařilo: %s"
+msgid "Failed reading sector %<PRId64>: %s"
+msgstr "Čtení sektoru %<PRId64> se nezdařilo: %s"
 
 #: src/debug.c:944
 msgid "Raw reading only possible on CD media\n"
@@ -280,18 +280,18 @@ msgstr "chybí čtvrtý argument"
 
 #: src/debug.c:1165
 #, c-format
-msgid "Source sector must be in range [0..%lld]\n"
-msgstr "Zdrojový sektor musí být v rozsahu [0..%lld]\n"
+msgid "Source sector must be in range [0..%<PRId64>]\n"
+msgstr "Zdrojový sektor musí být v rozsahu [0..%<PRId64>]\n"
 
 #: src/debug.c:1173
 #, c-format
-msgid "Destination sector must be in range [0..%lld]\n"
-msgstr "Cílový sektor musí být v rozsahu [0..%lld]\n"
+msgid "Destination sector must be in range [0..%<PRId64>]\n"
+msgstr "Cílový sektor musí být v rozsahu [0..%<PRId64>]\n"
 
 #: src/debug.c:1177
 #, c-format
-msgid "Copying sector %lld from %s to sector %lld in %s.\n"
-msgstr "Probíhá kopírování sektoru %lld z %s do sektoru %lld na %s.\n"
+msgid "Copying sector %<PRId64> from %s to sector %<PRId64> in %s.\n"
+msgstr "Probíhá kopírování sektoru %<PRId64> z %s do sektoru %<PRId64> na %s.\n"
 
 #: src/ds-marker.c:267
 msgid "Stop reporting these errors"
@@ -474,7 +474,7 @@ msgstr ""
 
 #: src/dvdisaster.c:537
 #, c-format
-msgid "--prefetch-sectors must be in range 32...%s"
+msgid "--prefetch-sectors must be in range 32...%d"
 msgstr ""
 
 #: src/dvdisaster.c:591
@@ -510,14 +510,14 @@ msgstr ""
 #: src/dvdisaster.c:809 src/rs01-create.c:294 src/rs02-create.c:175
 #: src/rs02-create.c:1085 src/rs03-create.c:349 src/rs03-create.c:1335
 #, c-format
-msgid ": %lld medium sectors.\n"
-msgstr ": %lld sektorů disku.\n"
+msgid ": %<PRId64> medium sectors.\n"
+msgstr ": %<PRId64> sektorů disku.\n"
 
 #: src/dvdisaster.c:810 src/rs01-create.c:295 src/rs02-create.c:176
 #: src/rs02-create.c:1086 src/rs03-create.c:350 src/rs03-create.c:1336
 #, c-format
-msgid ": %lld medium sectors and %d bytes.\n"
-msgstr ": %lld sektorů disku a %d bajtů.\n"
+msgid ": %<PRId64> medium sectors and %d bytes.\n"
+msgstr ": %<PRId64> sektorů disku a %d bajtů.\n"
 
 #: src/dvdisaster.c:837 src/main-window.c:207
 msgid "RS01 method not available for comparing files."
@@ -924,7 +924,7 @@ msgstr "O aplikaci dvdisaster"
 #: src/help-dialogs.c:747
 msgid ""
 "[Modified version]\n"
-"Copyright 2019-2020 Stephane Lesimple\n"
+"Copyright 2019-2021 Stephane Lesimple\n"
 "Copyright 2005-2017 Debian Optical Media Tools Team\n"
 "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
@@ -1198,18 +1198,18 @@ msgstr "%s (%d session; poslední session %s)\n"
 
 #: src/medium-info.c:192
 #, c-format
-msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
-msgstr "%lld sektorů (%lld MiB), z READ CAPACITY\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB), from READ CAPACITY\n"
+msgstr "%<PRId64> sektorů (%<PRId64> MiB), z READ CAPACITY\n"
 
 #: src/medium-info.c:201
 #, c-format
-msgid "%lld sectors (%lld MiB), from DVD structure\n"
-msgstr "%lld sektorů (%lld MiB), ze struktury DVD\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB), from DVD structure\n"
+msgstr "%<PRId64> sektorů (%<PRId64> MiB), ze struktury DVD\n"
 
-#: src/medium-info.c:211 src/medium-info.c:283 src/medium-info.c:285
+#: src/medium-info.c:211 src/medium-info.c:285
 #, c-format
-msgid "%lld sectors (%lld MiB)\n"
-msgstr "%lld sektorů (%lld MiB)\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB)\n"
+msgstr "%<PRId64> sektorů (%<PRId64> MiB)\n"
 
 #: src/medium-info.c:223 src/medium-info.c:517
 msgid "Filesystem info"
@@ -1217,8 +1217,8 @@ msgstr "Informace o systému souborů"
 
 #: src/medium-info.c:241
 #, c-format
-msgid "%d sectors (%lld MiB)\n"
-msgstr "%d sektorů (%lld MiB)\n"
+msgid "%d sectors (%<PRId64> MiB)\n"
+msgstr "%d sektorů (%<PRId64> MiB)\n"
 
 #: src/medium-info.c:268 src/medium-info.c:550
 msgid "Augmented image info"
@@ -1228,6 +1228,11 @@ msgstr "Informace o rozšíření bitové kopie"
 #, c-format
 msgid "%s, %d roots, %4.1f%% redundancy.\n"
 msgstr "%s, %d bází, %4.1f%% redundance.\n"
+
+#: src/medium-info.c:283
+#, c-format
+msgid "%<PRIu64> sectors (%<PRId64> MiB)\n"
+msgstr ""
 
 #: src/medium-info.c:375
 msgid "windowtitle|Medium info"
@@ -1269,7 +1274,7 @@ msgstr "Typ disku:"
 msgid "Book type:"
 msgstr "Book type:"
 
-#: src/medium-info.c:467 src/scsi-layer.c:2727
+#: src/medium-info.c:467 src/scsi-layer.c:2741
 msgid "Manuf.-ID:"
 msgstr "ID výrobce:"
 
@@ -2580,8 +2585,8 @@ msgstr "Výběr neupraveného sektoru"
 
 #: src/raw-editor.c:328
 #, c-format
-msgid "%s loaded, LBA %lld, %d samples."
-msgstr "%s načteno, LBA %lld, %d vzorků."
+msgid "%s loaded, LBA %<PRId64>, %d samples."
+msgstr "%s načteno, LBA %<PRId64>, %d vzorků."
 
 #: src/raw-editor.c:352
 msgid "EDC checksum does not match - sector still defective!"
@@ -2595,21 +2600,21 @@ msgstr "LBA neodpovídá MSF kódu v sektoru!"
 msgid "Raw sector does not belong to the selected image!"
 msgstr "Sektor nepatří k vybrané bitové kopii!"
 
-#: src/raw-editor.c:390 src/read-adaptive.c:1349 src/read-adaptive.c:1429
-#: src/read-adaptive.c:1771 src/read-adaptive.c:1989 src/read-linear.c:426
+#: src/raw-editor.c:390 src/read-adaptive.c:1348 src/read-adaptive.c:1428
+#: src/read-adaptive.c:1770 src/read-adaptive.c:1988 src/read-linear.c:426
 #: src/read-linear.c:703 src/read-linear.c:1043 src/rs01-fix.c:501
 #: src/rs01-fix.c:761 src/rs02-fix.c:786 src/rs03-fix.c:865
 #, c-format
-msgid "Failed seeking to sector %lld in image [%s]: %s"
-msgstr "Nezdařil se přechod na sektor %lld bitové kopie [%s]: %s"
+msgid "Failed seeking to sector %<PRId64> in image [%s]: %s"
+msgstr "Nezdařil se přechod na sektor %<PRId64> bitové kopie [%s]: %s"
 
-#: src/raw-editor.c:397 src/read-adaptive.c:1363 src/read-adaptive.c:1435
-#: src/read-adaptive.c:1803 src/read-adaptive.c:1818 src/read-adaptive.c:1997
+#: src/raw-editor.c:397 src/read-adaptive.c:1362 src/read-adaptive.c:1434
+#: src/read-adaptive.c:1802 src/read-adaptive.c:1817 src/read-adaptive.c:1996
 #: src/read-linear.c:435 src/read-linear.c:710 src/rs01-fix.c:195
 #: src/rs01-fix.c:508
 #, c-format
-msgid "Failed writing to sector %lld in image [%s]: %s"
-msgstr "Nezdařil se zápis sektoru %lld bitové kopie [%s]: %s"
+msgid "Failed writing to sector %<PRId64> in image [%s]: %s"
+msgstr "Nezdařil se zápis sektoru %<PRId64> bitové kopie [%s]: %s"
 
 #: src/raw-editor.c:418
 msgid "windowtitle|Load buffer from file"
@@ -2836,8 +2841,8 @@ msgstr " [Vytvoření nového souboru mezipaměti %s]\n"
 
 #: src/raw-sector-cache.c:280
 #, c-format
-msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
-msgstr " [Přidáno %d/%d sektorů do souboru mezipaměti %s; LBA=%lld, velikosts=%d, %d sektorů]\n"
+msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
+msgstr " [Přidáno %d/%d sektorů do souboru mezipaměti %s; LBA=%<PRId64>, velikosts=%d, %d sektorů]\n"
 
 #: src/read-adaptive.c:55 src/rs01-create.c:1080
 #, c-format
@@ -2883,19 +2888,19 @@ msgstr "Nepodařilo se přeskočit ecc hlavičku: %s"
 msgid "Error reading CRC information: %s"
 msgstr "Nepodařilo se načíst CRC informace: %s"
 
-#: src/read-adaptive.c:374 src/read-adaptive.c:1748
+#: src/read-adaptive.c:374 src/read-adaptive.c:1747
 msgid "Aborted by unrecoverable error."
 msgstr "Zrušeno kvůli neopravitelné chybě."
 
 #: src/read-adaptive.c:510
 #, c-format
-msgid "Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"
-msgstr "Opravitelné: %2d.%1d%% (opravitelné: %lld; nyní načítáno [%lld..%lld], velikost %lld)"
+msgid "Repairable: %2d.%1d%% (correctable: %<PRId64>; now reading [%<PRId64>..%<PRId64>], size %<PRId64>)"
+msgstr "Opravitelné: %2d.%1d%% (opravitelné: %<PRId64>; nyní načítáno [%<PRId64>..%<PRId64>], velikost %<PRId64>)"
 
 #: src/read-adaptive.c:515
 #, c-format
-msgid "Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"
-msgstr "Opravitelné: %2d.%1d%% (chybějící: %lld; nyní načítáno [%lld..%lld], velikost %lld)"
+msgid "Repairable: %2d.%1d%% (missing: %<PRId64>; now reading [%<PRId64>..%<PRId64>], size %<PRId64>)"
+msgstr "Opravitelné: %2d.%1d%% (chybějící: %<PRId64>; nyní načítáno [%<PRId64>..%<PRId64>], velikost %<PRId64>)"
 
 #: src/read-adaptive.c:655 src/read-adaptive.c:671 src/read-adaptive.c:701
 #, c-format
@@ -2918,9 +2923,9 @@ msgid ""
 "You should cancel and use the linear reading strategy instead. Continue at your own risk.\n"
 msgstr ""
 
-#: src/read-adaptive.c:710 src/read-adaptive.c:773 src/read-adaptive.c:793
-#: src/read-adaptive.c:866 src/read-adaptive.c:961 src/read-adaptive.c:1031
-#: src/read-adaptive.c:1372 src/read-adaptive.c:1672
+#: src/read-adaptive.c:710 src/read-adaptive.c:773 src/read-adaptive.c:792
+#: src/read-adaptive.c:865 src/read-adaptive.c:960 src/read-adaptive.c:1030
+#: src/read-adaptive.c:1371 src/read-adaptive.c:1671
 msgid "Aborted by user request!"
 msgstr "Zrušeno uživatelem!"
 
@@ -2941,29 +2946,29 @@ msgstr "Pokouším se shromáždit dostatek dat pro opravu chyb."
 #: src/read-adaptive.c:764
 #, c-format
 msgid ""
-"Medium contains %lld sectors more as recorded in the .ecc file\n"
-"(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
-"Only the first %lld medium sectors will be processed.\n"
+"Medium contains %<PRId64> sectors more as recorded in the .ecc file\n"
+"(Medium: %<PRId64> sectors; expected from .ecc file: %<PRId64> sectors).\n"
+"Only the first %<PRId64> medium sectors will be processed.\n"
 msgstr ""
-"Disk obsahuje o %lld sektorů více než je uvedeno v souboru ECC\n"
-"(Disk: %lld sektorů; podle ecc očekáváno: %lld sektorů).\n"
-"Bude zpracováno pouze prvních %lld sektorů disku.\n"
+"Disk obsahuje o %<PRId64> sektorů více než je uvedeno v souboru ECC\n"
+"(Disk: %<PRId64> sektorů; podle ecc očekáváno: %<PRId64> sektorů).\n"
+"Bude zpracováno pouze prvních %<PRId64> sektorů disku.\n"
 
 #: src/read-adaptive.c:785
 #, c-format
 msgid ""
-"Medium contains %lld sectors less as recorded in the .ecc file\n"
-"(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+"Medium contains %<PRId64> sectors less as recorded in the .ecc file\n"
+"(Medium: %<PRId64> sectors; expected from .ecc file: %<PRId64> sectors).\n"
 msgstr ""
-"Disk obsahuje o %lld sektorů méně než je uvedeno v souboru ECC\n"
-"(Disk: %lld sektorů; podle .ecc očekáváno: %lld sektorů).\n"
+"Disk obsahuje o %<PRId64> sektorů méně než je uvedeno v souboru ECC\n"
+"(Disk: %<PRId64> sektorů; podle .ecc očekáváno: %<PRId64> sektorů).\n"
 
-#: src/read-adaptive.c:833
+#: src/read-adaptive.c:832
 #, c-format
-msgid "Limiting sector range to [%lld,%lld].\n"
-msgstr "Rozsah sektorů omezen na [%lld,%lld].\n"
+msgid "Limiting sector range to [%<PRId64>,%<PRId64>].\n"
+msgstr "Rozsah sektorů omezen na [%<PRId64>,%<PRId64>].\n"
 
-#: src/read-adaptive.c:859
+#: src/read-adaptive.c:858
 #, c-format
 msgid ""
 "Sector %d is missing. Can not compare medium and ecc fingerprints.\n"
@@ -2972,7 +2977,7 @@ msgstr ""
 "Sektor %d chybí. Nelze porovnat otisky bitové kopie a ecc.\n"
 "Ujistěte se, že soubory bitové kopie a ecc patří k sobě.\n"
 
-#: src/read-adaptive.c:875
+#: src/read-adaptive.c:874
 msgid ""
 "Fingerprints of medium and ecc file do not match.\n"
 "Medium and ecc file do not belong together.\n"
@@ -2980,91 +2985,91 @@ msgstr ""
 "Otisky disku a ecc nesouhlasí.\n"
 "Disk a soubor ecc k sobě nepatří.\n"
 
-#: src/read-adaptive.c:918 src/read-linear.c:360
+#: src/read-adaptive.c:917 src/read-linear.c:360
 msgid "Image file does not match the optical disc."
 msgstr "Soubor bitové kopie neodpovídá CD/DVD/BD."
 
-#: src/read-adaptive.c:925
+#: src/read-adaptive.c:924
 msgid "Reading aborted. Please select a different image file."
 msgstr "Čtení zrušeno. Vyberte jiný soubor bitové kopie."
 
-#: src/read-adaptive.c:953
+#: src/read-adaptive.c:952
 #, c-format
 msgid ""
-"Image file is %lld sectors longer than inserted medium\n"
-"(Image file: %lld sectors; medium: %lld sectors).\n"
+"Image file is %<PRId64> sectors longer than inserted medium\n"
+"(Image file: %<PRId64> sectors; medium: %<PRId64> sectors).\n"
 msgstr ""
-"Soubor bitové kopie je o %lld sektorů delší než vložený disk\n"
-"(Soubor bitové kopie: %lld sektorů; disk: %lld sektorů).\n"
+"Soubor bitové kopie je o %<PRId64> sektorů delší než vložený disk\n"
+"(Soubor bitové kopie: %<PRId64> sektorů; disk: %<PRId64> sektorů).\n"
 
-#: src/read-adaptive.c:981 src/read-adaptive.c:987
+#: src/read-adaptive.c:980 src/read-adaptive.c:986
 msgid "Loading CRC data."
 msgstr "Probíhá načtení CRC dat."
 
-#: src/read-adaptive.c:1021
+#: src/read-adaptive.c:1020
 msgid "Analysing existing image file"
 msgstr "Analyzování existujícího souboru bitové kopie"
 
-#: src/read-adaptive.c:1041 src/rs01-common.c:280 src/rs02-verify.c:752
+#: src/read-adaptive.c:1040 src/rs01-common.c:280 src/rs02-verify.c:752
 #, c-format
 msgid "premature end in image (only %d bytes): %s\n"
 msgstr "předčasný konec bitové kopie (pouze %d bajtů): %s\n"
 
-#: src/read-adaptive.c:1128
+#: src/read-adaptive.c:1127
 #, c-format
 msgid "Analysing existing image file: %2d%%"
 msgstr "Analyzování existujícího souboru bitové kopie: %2d%%"
 
-#: src/read-adaptive.c:1157
+#: src/read-adaptive.c:1156
 msgid "Determining correctable sectors"
 msgstr "Určování opravitelných sektorů"
 
-#: src/read-adaptive.c:1237
+#: src/read-adaptive.c:1236
 #, c-format
-msgid "Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"
-msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %lld opravitelných, %lld chybí.\n"
+msgid "Analysing existing image file: %<PRId64> readable, %<PRId64> correctable, %<PRId64> still missing.\n"
+msgstr "Analyzování existujícího souboru bitové kopie: %<PRId64> čitelných, %<PRId64> opravitelných, %<PRId64> chybí.\n"
 
-#: src/read-adaptive.c:1239
+#: src/read-adaptive.c:1238
 #, c-format
-msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
-msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %lld chybí.\n"
+msgid "Analysing existing image file: %<PRId64> readable, %<PRId64> still missing.\n"
+msgstr "Analyzování existujícího souboru bitové kopie: %<PRId64> čitelných, %<PRId64> chybí.\n"
 
-#: src/read-adaptive.c:1296 src/read-linear.c:784
+#: src/read-adaptive.c:1295 src/read-linear.c:784
 msgid "Ignore once"
 msgstr "Ignorovat jednou"
 
-#: src/read-adaptive.c:1297 src/read-linear.c:785
+#: src/read-adaptive.c:1296 src/read-linear.c:785
 msgid "Ignore always"
 msgstr "Ignorovat vždy"
 
-#: src/read-adaptive.c:1298 src/read-linear.c:786
+#: src/read-adaptive.c:1297 src/read-linear.c:786
 msgid "Abort"
 msgstr "Přerušit"
 
-#: src/read-adaptive.c:1334
+#: src/read-adaptive.c:1333
 #, c-format
-msgid "Filling image area [%lld..%lld]"
-msgstr "Vyplňování oblasti bitové kopie [%lld..%lld]"
+msgid "Filling image area [%<PRId64>..%<PRId64>]"
+msgstr "Vyplňování oblasti bitové kopie [%<PRId64>..%<PRId64>]"
 
-#: src/read-adaptive.c:1466 src/read-linear.c:223
+#: src/read-adaptive.c:1465 src/read-linear.c:223
 msgid "Reading aborted"
 msgstr "Čtení zrušeno"
 
-#: src/read-adaptive.c:1470 src/read-linear.c:228
+#: src/read-adaptive.c:1469 src/read-linear.c:228
 msgid "Preparing for reading the medium image."
 msgstr "Příprava na vytvoření bitové kopie disku."
 
-#: src/read-adaptive.c:1471 src/read-linear.c:219 src/read-linear.c:229
+#: src/read-adaptive.c:1470 src/read-linear.c:219 src/read-linear.c:229
 msgid "Medium: not yet determined"
 msgstr "Disk: dosud nebyl určen"
 
-#: src/read-adaptive.c:1486
+#: src/read-adaptive.c:1485
 msgid ""
 "Adaptive reading is unavailable in this version.\n"
 "It will be re-introduced in one of the next versions."
 msgstr ""
 
-#: src/read-adaptive.c:1495
+#: src/read-adaptive.c:1494
 msgid ""
 "* Warning: Using adaptive reading without error correction data\n"
 "*          has little advantage over linear reading, but may\n"
@@ -3073,20 +3078,20 @@ msgid ""
 "*          Please consider using linear reading instead.\n"
 msgstr ""
 
-#: src/read-adaptive.c:1555 src/read-linear.c:293
+#: src/read-adaptive.c:1554 src/read-linear.c:293
 #, c-format
 msgid "Creating new %s image.\n"
 msgstr "Vytváření nové bitové kopie %s.\n"
 
-#: src/read-adaptive.c:1560 src/read-linear.c:286
+#: src/read-adaptive.c:1559 src/read-linear.c:286
 msgid "Reading new medium image."
 msgstr "Vytvoření nové bitové kopie disku."
 
-#: src/read-adaptive.c:1582 src/read-linear.c:319
+#: src/read-adaptive.c:1581 src/read-linear.c:319
 msgid "Completing existing medium image."
 msgstr "Doplnění existující bitové kopie disku."
 
-#: src/read-adaptive.c:1616 src/read-adaptive.c:1947
+#: src/read-adaptive.c:1615 src/read-adaptive.c:1946
 msgid ""
 "\n"
 "Sufficient data for reconstructing the image is available.\n"
@@ -3094,63 +3099,63 @@ msgstr ""
 "\n"
 "K dispozici je dostatek dat pro rekonstrukci bitové kopie.\n"
 
-#: src/read-adaptive.c:1732 src/read-linear.c:1110
+#: src/read-adaptive.c:1731 src/read-linear.c:1110
 #, c-format
 msgid ""
-"Sector %lld: %s\n"
+"Sector %<PRId64>: %s\n"
 "Can not recover from above error.\n"
 "Use the --ignore-fatal-sense option to override."
 msgstr ""
-"Sektor %lld: %s\n"
+"Sektor %<PRId64>: %s\n"
 "Výše uvedenou chybu nelze opravit.\n"
 "Pro ignorování použijte parametr --ignore-fatal-sense."
 
-#: src/read-adaptive.c:1738 src/read-linear.c:1116
+#: src/read-adaptive.c:1737 src/read-linear.c:1116
 #, c-format
 msgid ""
-"Sector %lld: %s\n"
+"Sector %<PRId64>: %s\n"
 "\n"
 "It may not be possible to recover from this error.\n"
 "Should the reading continue and ignore this error?"
 msgstr ""
-"Sektor %lld: %s\n"
+"Sektor %<PRId64>: %s\n"
 "\n"
 "Je možné, že zotavení po této chybě nebude možné.\n"
 "Má čtení pokračovat a ignorovat tuto chybu?"
 
-#: src/read-adaptive.c:1794 src/rs01-fix.c:451 src/rs02-fix.c:464
+#: src/read-adaptive.c:1793 src/rs01-fix.c:451 src/rs02-fix.c:464
 #: src/rs03-fix.c:522
 #, c-format
-msgid "CRC error in sector %lld\n"
-msgstr "Chyba CRC v sektoru %lld\n"
+msgid "CRC error in sector %<PRId64>\n"
+msgstr "Chyba CRC v sektoru %<PRId64>\n"
 
-#: src/read-adaptive.c:1973 src/scsi-layer.c:1776
+#: src/read-adaptive.c:1972 src/scsi-layer.c:1776
 #, c-format
-msgid "Sectors %lld-%lld: %s\n"
-msgstr "Sektory %lld-%lld: %s\n"
+msgid "Sectors %<PRId64>-%<PRId64>: %s\n"
+msgstr "Sektory %<PRId64>-%<PRId64>: %s\n"
 
-#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1775
+#: src/read-adaptive.c:1980 src/read-linear.c:1313 src/scsi-layer.c:1775
 #, c-format
-msgid "Sector %lld: %s\n"
-msgstr "Sektor %lld: %s\n"
+msgid "Sector %<PRId64>: %s\n"
+msgstr "Sektor %<PRId64>: %s\n"
 
-#: src/read-adaptive.c:2112
+#: src/read-adaptive.c:2111
 #, c-format
 msgid "Only %2d.%1d%% of the image are readable or correctable"
 msgstr "Pouze %2d.%1d%% bitové kopie je čitelných nebo opravitelných"
 
-#: src/read-adaptive.c:2115
+#: src/read-adaptive.c:2114
 #, c-format
 msgid ""
 "\n"
 "%s\n"
-"(%lld readable,  %lld correctable,  %lld still missing).\n"
+"(%<PRId64> readable,  %<PRId64> correctable,  %<PRId64> still missing).\n"
 msgstr ""
 "\n"
 "%s\n"
-"(%lld čitelných,  %lld opravitelných,  %lld stále chybějících).\n"
+"(%<PRId64> čitelných,  %<PRId64> opravitelných,  %<PRId64> stále chybějících).\n"
 
-#: src/read-adaptive.c:2131
+#: src/read-adaptive.c:2130
 msgid ""
 "\n"
 "Good! All sectors have been read.\n"
@@ -3158,21 +3163,18 @@ msgstr ""
 "\n"
 "V pořádku! Všechny sektory byly načteny.\n"
 
-#: src/read-adaptive.c:2142
+#: src/read-adaptive.c:2141
 #, c-format
 msgid "No unreadable intervals with >= %d sectors left."
 msgstr "Nezbyly žádné nečitelné úseky obsahující >= %d sektorů."
 
-#: src/read-adaptive.c:2145
+#: src/read-adaptive.c:2144
 #, c-format
 msgid ""
 "\n"
 "%s\n"
-"%2d.%1d%% of the image have been read (%lld sectors).\n"
+"%2d.%1d%% of the image have been read (%<PRId64> sectors).\n"
 msgstr ""
-"\n"
-"%s\n"
-"%2d.%1d%% bitové kopie bylo načteno (%lld sektorů).\n"
 
 #: src/read-adaptive-window.c:81
 msgid "Adaptive reading:"
@@ -3206,8 +3208,8 @@ msgstr "Celkem opravitelných: %d.%d%%"
 
 #: src/read-linear.c:126
 #, c-format
-msgid "<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."
-msgstr "<span %s>Zrušeno kvůli neopravitelné chybě.</span> Dosud načteno %lld sektorů, %lld sektorů nečitelných/přeskočeno."
+msgid "<span %s>Aborted by unrecoverable error.</span> %<PRId64> sectors read, %<PRId64> sectors unreadable/skipped so far."
+msgstr ""
 
 #: src/read-linear.c:182
 msgid ""
@@ -3236,8 +3238,8 @@ msgstr "<span %s>Čtení zrušeno.</span> Zvolte jiný soubor bitové kopie."
 
 #: src/read-linear.c:388
 #, c-format
-msgid "Completing image %s. Continuing with sector %lld.\n"
-msgstr "Doplnění bitové kopie %s. Navazuji od sektoru %lld.\n"
+msgid "Completing image %s. Continuing with sector %<PRId64>.\n"
+msgstr ""
 
 #: src/read-linear.c:396
 #, c-format
@@ -3252,25 +3254,25 @@ msgstr "Probíhá načtení CRC informací z ecc dat"
 msgid "done.\n"
 msgstr "dokončeno.\n"
 
-#: src/read-linear.c:522 src/scsi-layer.c:2102
+#: src/read-linear.c:522 src/scsi-layer.c:2103
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Čekám %d sekund na roztočení disku...\n"
 
 #: src/read-linear.c:548 src/read-linear-window.c:104
 #, c-format
-msgid "Unreadable / skipped sectors: %lld"
-msgstr "Nečitelné/přeskočené sektory: %lld"
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr ""
 
 #: src/read-linear.c:639
 #, c-format
-msgid "Sector %lld: Speed increased to %4.1fx\n"
-msgstr "Sektor %lld: Rychlost zvýšena na %4.1fx\n"
+msgid "Sector %<PRId64>: Speed increased to %4.1fx\n"
+msgstr ""
 
 #: src/read-linear.c:642
 #, c-format
-msgid "Sector %lld: Speed dropped to %4.1fx\n"
-msgstr "Sektor %lld: Rychlost snížena na %4.1fx\n"
+msgid "Sector %<PRId64>: Speed dropped to %4.1fx\n"
+msgstr ""
 
 #: src/read-linear.c:648
 #, c-format
@@ -3282,8 +3284,7 @@ msgstr ""
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Pozice čtení: %3d.%1d%% (%4.1fx)"
 
-#: src/read-linear.c:744 src/rs01-common.c:356 src/rs02-verify.c:797
-#: src/rs03-verify.c:1202
+#: src/read-linear.c:744
 #, c-format
 msgid "* CRC error, sector: %lld\n"
 msgstr "* Chyba CRC, sektor: %lld\n"
@@ -3309,36 +3310,28 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/read-linear.c:893 src/rs01-create.c:769 src/rs01-fix.c:219
-#: src/rs01-fix.c:243 src/rs01-fix.c:295 src/rs01-fix.c:332 src/rs01-fix.c:352
-#: src/rs01-fix.c:407 src/rs01-verify.c:457 src/rs01-verify.c:916
-#: src/rs02-create.c:130 src/rs02-fix.c:260 src/rs02-fix.c:281
-#: src/rs02-fix.c:372 src/rs02-verify.c:741 src/rs03-create.c:269
-#: src/rs03-fix.c:278 src/rs03-fix.c:327 src/rs03-fix.c:350 src/rs03-fix.c:429
-#: src/rs03-verify.c:548 src/rs03-verify.c:1096
+#: src/read-linear.c:893 src/read-linear.c:997 src/read-linear.c:1127
 #, c-format
-msgid "<span %s>Aborted by user request!</span>"
-msgstr "<span %s>Zrušeno uživatelem!</span>"
+msgid "<span %s>Aborted by user request!</span> %<PRId64> sectors read, %<PRId64> sectors unreadable/skipped so far."
+msgstr ""
 
-#: src/read-linear.c:997 src/read-linear.c:1127
-#, c-format
-msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
-msgstr "<span %s>Zrušeno uživatelem!</span> Načteno %lld sektorů, %lld sektorů nečitelných/přeskočeno."
-
+#
+#
+#
 #: src/read-linear.c:1055
 #, c-format
-msgid "unexpected read error in image for sector %lld"
-msgstr "neočekávaná chyba čtení bitové kopie u sektoru %lld"
+msgid "unexpected read error in image for sector %<PRId64>"
+msgstr "neočekávaná chyba čtení bitové kopie u sektoru %<PRId64>"
 
 #: src/read-linear.c:1143
 #, c-format
-msgid "Sector %lld: %3d C2 errors.%s\n"
-msgstr "Sektor %lld: %3d C2 chyb.%s\n"
+msgid "Sector %<PRId64>: %3d C2 errors.%s\n"
+msgstr "Sektor %<PRId64>: %3d C2 chyb.%s\n"
 
 #: src/read-linear.c:1280
 #, c-format
-msgid "Sector %lld: %s Skipping %d sectors.\n"
-msgstr "Sektor %lld: %s Přeskakuji %d sektorů.\n"
+msgid "Sector %<PRId64>: %s Skipping %d sectors.\n"
+msgstr "Sektor %<PRId64>: %s Přeskakuji %d sektorů.\n"
 
 #: src/read-linear.c:1351
 #, c-format
@@ -3360,18 +3353,18 @@ msgstr ""
 
 #: src/read-linear.c:1392
 #, c-format
-msgid "%lld sectors read.     "
-msgstr "Přečteno %lld sektorů.     "
+msgid "%<PRId64> sectors read.     "
+msgstr "Přečteno %<PRId64> sektorů.     "
 
 #: src/read-linear.c:1393
 #, c-format
-msgid "%lld sectors read; %lld unreadable sectors."
-msgstr "%lld sektorů načteno; %lld nečitelných sektorů."
+msgid "%<PRId64> sectors read; %<PRId64> unreadable sectors."
+msgstr "%<PRId64> sektorů načteno; %<PRId64> nečitelných sektorů."
 
 #: src/read-linear.c:1405
 #, c-format
-msgid "All sectors successfully read, but wrong image length (%lld sectors difference)"
-msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí délka bitové kopie (rozdíl %lld sektorů)"
+msgid "All sectors successfully read, but wrong image length (%<PRId64> sectors difference)"
+msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí délka bitové kopie (rozdíl %<PRId64> sektorů)"
 
 #: src/read-linear.c:1411
 msgid "All sectors successfully read, but wrong ecc md5sum."
@@ -3391,23 +3384,23 @@ msgstr "Všechny sektory byly úspěšně načteny."
 
 #: src/read-linear.c:1425
 #, c-format
-msgid "%lld unreadable sectors."
-msgstr "%lld nečitelných sektorů."
+msgid "%<PRId64> unreadable sectors."
+msgstr "%<PRId64> nečitelných sektorů."
 
 #: src/read-linear.c:1428
 #, c-format
-msgid "%lld CRC errors and a md5sum mismatch in the CRC section."
+msgid "%<PRId64> CRC errors and a md5sum mismatch in the CRC section."
 msgstr ""
 
 #: src/read-linear.c:1430
 #, c-format
-msgid "%lld CRC errors."
-msgstr "%lld chyb CRC."
+msgid "%<PRId64> CRC errors."
+msgstr "%<PRId64> chyb CRC."
 
 #: src/read-linear.c:1432
 #, c-format
-msgid "%lld CRC errors, %lld unreadable sectors."
-msgstr "%lld chyb CRC, %lld nečitelných sektorů"
+msgid "%<PRId64> CRC errors, %<PRId64> unreadable sectors."
+msgstr "%<PRId64> chyb CRC, %<PRId64> nečitelných sektorů"
 
 #: src/read-linear.c:1441
 msgid "Scanning finished: "
@@ -3477,8 +3470,8 @@ msgstr "Rychlost"
 
 #: src/recover-raw.c:65
 #, c-format
-msgid "Sector %lld dumped to %s\n"
-msgstr "Sektor %lld uložen do %s\n"
+msgid "Sector %<PRId64> dumped to %s\n"
+msgstr "Sektor %<PRId64> uložen do %s\n"
 
 #: src/rs01-common.c:252 src/rs02-verify.c:831 src/rs03-verify.c:1228
 #, c-format
@@ -3492,18 +3485,23 @@ msgstr "Probíhá kontrola sektorů bitové kopie: %3d%%"
 
 #: src/rs01-common.c:308 src/rs02-verify.c:784
 #, c-format
-msgid "* missing sector   : %lld\n"
-msgstr "* chybějící sektor   : %lld\n"
+msgid "* missing sector   : %<PRId64>\n"
+msgstr "* chybějící sektor   : %<PRId64>\n"
 
 #: src/rs01-common.c:309 src/rs02-verify.c:785
 #, c-format
-msgid "* missing sectors  : %lld - %lld\n"
-msgstr "* chybějící sektory  : %lld - %lld\n"
+msgid "* missing sectors  : %<PRId64> - %<PRId64>\n"
+msgstr "* chybějící sektory  : %<PRId64> - %<PRId64>\n"
 
 #: src/rs01-common.c:327 src/rs01-common.c:399 src/rs01-create.c:343
 #, c-format
 msgid "Error writing CRC information: %s"
 msgstr "Chyba při zápisu CRC informací: %s"
+
+#: src/rs01-common.c:356 src/rs02-verify.c:797 src/rs03-verify.c:1202
+#, c-format
+msgid "* CRC error, sector: %<PRId64>\n"
+msgstr ""
 
 #: src/rs01-create.c:63
 #, c-format
@@ -3512,8 +3510,8 @@ msgstr "Redundance %4.1f%% z použitelného rozsahu [3.2%%..64.5%%]"
 
 #: src/rs01-create.c:76 src/rs03-common.c:467
 #, c-format
-msgid "Ecc file size %lldm out of useful range [%lld .. %lld]"
-msgstr "Velikost souboru ecc %lldm je mimo užitečný rozsah [%lld .. %lld]"
+msgid "Ecc file size %<PRId64>m out of useful range [%<PRId64> .. %<PRId64>]"
+msgstr "Velikost souboru ecc %<PRId64>m je mimo užitečný rozsah [%<PRId64> .. %<PRId64>]"
 
 #: src/rs01-create.c:91
 #, c-format
@@ -3592,8 +3590,8 @@ msgstr "<span %s>Zrušeno uživatelem!</span> (neúplný soubor pro opravu chyb 
 
 #: src/rs01-create.c:401
 #, c-format
-msgid "%lld sectors unread or missing due to errors.\n"
-msgstr "%lld sektorů nepřečteno nebo chybí kvůli chybám.\n"
+msgid "%<PRId64> sectors unread or missing due to errors.\n"
+msgstr "%<PRId64> sektorů nepřečteno nebo chybí kvůli chybám.\n"
 
 #: src/rs01-create.c:458
 #, c-format
@@ -3616,6 +3614,17 @@ msgstr ""
 #, c-format
 msgid "Ecc generation: %3d.%1d%%"
 msgstr "Tvorba ecc: %3d.%1d%%"
+
+#: src/rs01-create.c:769 src/rs01-fix.c:219 src/rs01-fix.c:243
+#: src/rs01-fix.c:295 src/rs01-fix.c:332 src/rs01-fix.c:352 src/rs01-fix.c:407
+#: src/rs01-verify.c:457 src/rs01-verify.c:916 src/rs02-create.c:130
+#: src/rs02-fix.c:260 src/rs02-fix.c:281 src/rs02-fix.c:372
+#: src/rs02-verify.c:741 src/rs03-create.c:269 src/rs03-fix.c:278
+#: src/rs03-fix.c:327 src/rs03-fix.c:350 src/rs03-fix.c:429
+#: src/rs03-verify.c:548 src/rs03-verify.c:1096
+#, c-format
+msgid "<span %s>Aborted by user request!</span>"
+msgstr "<span %s>Zrušeno uživatelem!</span>"
 
 #: src/rs01-create.c:1062
 #, c-format
@@ -3715,13 +3724,13 @@ msgstr ""
 #: src/rs01-fix.c:209 src/rs02-fix.c:250 src/rs03-fix.c:317
 #, c-format
 msgid ""
-"Image file is %lld sectors longer than expected.\n"
+"Image file is %<PRId64> sectors longer than expected.\n"
 "Assuming this is a TAO mode medium.\n"
-"%lld sectors will be removed from the image end.\n"
+"%<PRId64> sectors will be removed from the image end.\n"
 msgstr ""
-"Soubor bitové kopie je o %lld sektorů delší než bylo očekáváno.\n"
+"Soubor bitové kopie je o %<PRId64> sektorů delší než bylo očekáváno.\n"
 "Bude považován za disk v režimu TAO.\n"
-"Na konci bitové kopie bude odebráno %lld sektorů.\n"
+"Na konci bitové kopie bude odebráno %<PRId64> sektorů.\n"
 
 #: src/rs01-fix.c:238 src/rs02-fix.c:276 src/rs03-fix.c:345
 msgid "Is it okay to remove the superfluous sectors?"
@@ -3730,8 +3739,8 @@ msgstr "Mohou být nadbytečné sektory odstraněny?"
 #: src/rs01-fix.c:255 src/rs01-fix.c:277 src/rs02-fix.c:290 src/rs02-fix.c:308
 #: src/rs03-fix.c:361 src/rs03-fix.c:381
 #, c-format
-msgid "Image has been truncated by %lld sectors.\n"
-msgstr "Bitová kopie byla zkrácena o %lld sektorů.\n"
+msgid "Image has been truncated by %<PRId64> sectors.\n"
+msgstr "Bitová kopie byla zkrácena o %<PRId64> sektorů.\n"
 
 #: src/rs01-fix.c:268 src/rs02-fix.c:302 src/rs03-fix.c:373
 msgid ""
@@ -3816,13 +3825,13 @@ msgstr ""
 
 #: src/rs01-fix.c:727
 #, c-format
-msgid "-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
-msgstr "-> V sektoru %lld na bajtu %4d lokalizována chyba (hodnota %02x '%c', očekáváno %02x '%c')\n"
+msgid "-> Error located in sector %<PRId64> at byte %4d (value %02x '%c', expected %02x '%c')\n"
+msgstr "-> V sektoru %<PRId64> na bajtu %4d lokalizována chyba (hodnota %02x '%c', očekáváno %02x '%c')\n"
 
 #: src/rs01-fix.c:734
 #, c-format
-msgid "Unexpected byte error in sector %lld, byte %d\n"
-msgstr "Neočekávaná chyba bajtu sektoru %lld, bajt %d\n"
+msgid "Unexpected byte error in sector %<PRId64>, byte %d\n"
+msgstr "Neočekávaná chyba bajtu sektoru %<PRId64>, bajt %d\n"
 
 #: src/rs01-fix.c:740
 #, c-format
@@ -3837,10 +3846,10 @@ msgstr "  %3d opravených sektorů: "
 #: src/rs01-fix.c:769 src/rs02-fix.c:794 src/rs03-fix.c:870
 #, c-format
 msgid ""
-"could not write medium sector %lld:\n"
+"could not write medium sector %<PRId64>:\n"
 "%s"
 msgstr ""
-"nelze zapsat sektor disku %lld:\n"
+"nelze zapsat sektor disku %<PRId64>:\n"
 "%s"
 
 #: src/rs01-fix.c:798 src/rs02-fix.c:835 src/rs03-fix.c:927
@@ -3855,18 +3864,18 @@ msgstr "Průběh ecc: 100.0%%\n"
 
 #: src/rs01-fix.c:811
 #, c-format
-msgid "Repaired sectors: %lld     \n"
-msgstr "Opravené sektory: %lld     \n"
+msgid "Repaired sectors: %<PRId64>     \n"
+msgstr "Opravené sektory: %<PRId64>     \n"
 
 #: src/rs01-fix.c:813 src/rs02-fix.c:854 src/rs03-fix.c:944
 #, c-format
-msgid "Unrepaired sectors: %lld\n"
-msgstr "Neopravené sektory: %lld\n"
+msgid "Unrepaired sectors: %<PRId64>\n"
+msgstr "Neopravené sektory: %<PRId64>\n"
 
 #: src/rs01-fix.c:817 src/rs02-fix.c:858 src/rs03-fix.c:948
 #, c-format
-msgid "Image sectors could not be fully restored (%lld repaired; <span %s>%lld unrepaired</span>)"
-msgstr "Sektory bitové kopie se nepodařilo úplně obnovit (%lld opraveno; <span %s>%lld neopraveno</span>)"
+msgid "Image sectors could not be fully restored (%<PRId64> repaired; <span %s>%<PRId64> unrepaired</span>)"
+msgstr "Sektory bitové kopie se nepodařilo úplně obnovit (%<PRId64> opraveno; <span %s>%<PRId64> neopraveno</span>)"
 
 #: src/rs01-fix.c:824 src/rs02-fix.c:865 src/rs03-fix.c:956
 msgid "Good! All sectors are already present."
@@ -3969,38 +3978,38 @@ msgstr "nedostupný\n"
 
 #: src/rs01-verify.c:434 src/rs02-verify.c:620
 #, c-format
-msgid "present, contains %lld medium sectors.\n"
-msgstr "k dispozici, obsahuje %lld sektorů disku.\n"
+msgid "present, contains %<PRId64> medium sectors.\n"
+msgstr "k dispozici, obsahuje %<PRId64> sektorů disku.\n"
 
 #: src/rs01-verify.c:441
 #, c-format
-msgid "present, contains %lld medium sectors and %d bytes.\n"
-msgstr "existuje, obsahuje %lld sektorů disku a %d bajtů.\n"
+msgid "present, contains %<PRId64> medium sectors and %d bytes.\n"
+msgstr "existuje, obsahuje %<PRId64> sektorů disku a %d bajtů.\n"
 
 #: src/rs01-verify.c:445 src/rs01-verify.c:726 src/rs01-verify.c:749
 #, c-format
-msgid "%lld sectors + %d bytes"
-msgstr "%lld sektorů + %d bajtů"
+msgid "%<PRId64> sectors + %d bytes"
+msgstr "%<PRId64> sektorů + %d bajtů"
 
 #: src/rs01-verify.c:471
 #, c-format
-msgid "* truncated image  : %lld sectors too short\n"
-msgstr "* zkrácená bitová kopie  : O %lld sektorů kratší\n"
+msgid "* truncated image  : %<PRId64> sectors too short\n"
+msgstr "* zkrácená bitová kopie  : O %<PRId64> sektorů kratší\n"
 
 #: src/rs01-verify.c:475
 #, c-format
-msgid "<span %s>%lld (%lld sectors too short)</span>"
-msgstr "<span %s>%lld (o %lld sektorů kratší)</span>"
+msgid "<span %s>%<PRId64> (%<PRId64> sectors too short)</span>"
+msgstr "<span %s>%<PRId64> (o %<PRId64> sektorů kratší)</span>"
 
 #: src/rs01-verify.c:499
 #, c-format
-msgid "* image too long   : %lld excess sectors\n"
-msgstr "* bitová kopie je příliš dlouhá  : %lld nadbytečných sektorů\n"
+msgid "* image too long   : %<PRId64> excess sectors\n"
+msgstr "* bitová kopie je příliš dlouhá  : %<PRId64> nadbytečných sektorů\n"
 
 #: src/rs01-verify.c:503
 #, c-format
-msgid "<span %s>%lld (%lld excess sectors)</span>"
-msgstr "<span %s>%lld (%lld nadbytečných sektorů)</span>"
+msgid "<span %s>%<PRId64> (%<PRId64> excess sectors)</span>"
+msgstr "<span %s>%<PRId64> (%<PRId64> nadbytečných sektorů)</span>"
 
 #: src/rs01-verify.c:506 src/rs01-verify.c:549
 #, c-format
@@ -4028,10 +4037,10 @@ msgstr "<span %s>Bitová kopie je v pořádku.</span>"
 #: src/rs01-verify.c:530
 #, c-format
 msgid ""
-"* suspicious image : all sectors present, but %lld CRC errors\n"
+"* suspicious image : all sectors present, but %<PRId64> CRC errors\n"
 "- image md5sum     : %s\n"
 msgstr ""
-"* podezřelá bitová kopie : všechny sektory existují, ale zjištěno %lld chyb CRC\n"
+"* podezřelá bitová kopie : všechny sektory existují, ale zjištěno %<PRId64> chyb CRC\n"
 "- md5 součet bitové kopie: %s\n"
 
 #: src/rs01-verify.c:535
@@ -4041,13 +4050,13 @@ msgstr "<span %s>Bitová kopie je kompletní, avšak obsahuje chyby kontrolního
 
 #: src/rs01-verify.c:543 src/rs02-verify.c:892
 #, c-format
-msgid "* BAD image        : %lld sectors missing\n"
-msgstr "* POŠKOZENÁ bitová kopie  : %lld chybějících sektorů\n"
+msgid "* BAD image        : %<PRId64> sectors missing\n"
+msgstr "* POŠKOZENÁ bitová kopie  : %<PRId64> chybějících sektorů\n"
 
 #: src/rs01-verify.c:544 src/rs02-verify.c:896 src/rs03-verify.c:1320
 #, c-format
-msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
-msgstr "* POŠKOZENÁ bitová kopie  : %lld chybějících sektorů, %lld chyb CRC\n"
+msgid "* BAD image        : %<PRId64> sectors missing, %<PRId64> CRC errors\n"
+msgstr "* POŠKOZENÁ bitová kopie  : %<PRId64> chybějících sektorů, %<PRId64> chyb CRC\n"
 
 #: src/rs01-verify.c:561 src/rs03-verify.c:1275
 msgid "- Checking ecc file -"
@@ -4119,33 +4128,33 @@ msgstr "<span %s>Aktualizujte prosím vaši verzi programu dvdisaster!</span>"
 
 #: src/rs01-verify.c:714
 #, c-format
-msgid "- medium sectors   : %lld\n"
-msgstr "- sektory disku    : %lld\n"
+msgid "- medium sectors   : %<PRId64>\n"
+msgstr "- sektory disku    : %<PRId64>\n"
 
 #: src/rs01-verify.c:721
 #, c-format
-msgid "- medium sectors   : %lld sectors + %d bytes\n"
-msgstr "- sektory disku    : %lld sektorů + %d bajtů\n"
+msgid "- medium sectors   : %<PRId64> sectors + %d bytes\n"
+msgstr "- sektory disku    : %<PRId64> sektorů + %d bajtů\n"
 
 #: src/rs01-verify.c:737
 #, c-format
-msgid "- medium sectors   : %lld (good)\n"
-msgstr "- sektory disku    : %lld (v pořádku)\n"
+msgid "- medium sectors   : %<PRId64> (good)\n"
+msgstr "- sektory disku    : %<PRId64> (v pořádku)\n"
 
 #: src/rs01-verify.c:744
 #, c-format
-msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
-msgstr "- sektory disku    : %lld sektorů + %d bajtů (v pořádku)\n"
+msgid "- medium sectors   : %<PRId64> sectors + %d bytes (good)\n"
+msgstr "- sektory disku    : %<PRId64> sektorů + %d bajtů (v pořádku)\n"
 
 #: src/rs01-verify.c:758 src/rs02-verify.c:1054
 #, c-format
-msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
-msgstr "* sektory disku    : %lld (ŠPATNĚ, pravděpodobně rozdíl TAO/DAO)\n"
+msgid "* medium sectors   : %<PRId64> (BAD, perhaps TAO/DAO mismatch)\n"
+msgstr "* sektory disku    : %<PRId64> (ŠPATNĚ, pravděpodobně rozdíl TAO/DAO)\n"
 
 #: src/rs01-verify.c:771 src/rs02-verify.c:1056
 #, c-format
-msgid "* medium sectors   : %lld (BAD)\n"
-msgstr "* sektory disku    : %lld (SPATNĚ)\n"
+msgid "* medium sectors   : %<PRId64> (BAD)\n"
+msgstr "* sektory disku    : %<PRId64> (SPATNĚ)\n"
 
 #: src/rs01-verify.c:777 src/rs01-verify.c:790
 #, c-format
@@ -4154,13 +4163,13 @@ msgstr "<span %s>Velikost bitové kopie neodpovídá souboru pro opravu chyb.</s
 
 #: src/rs01-verify.c:782
 #, c-format
-msgid "* medium sectors   : %lld sectors + %d bytes (BAD)\n"
-msgstr "* sektory média    : %lld sektorů + %d bajtů (ŠPATNĚ)\n"
+msgid "* medium sectors   : %<PRId64> sectors + %d bytes (BAD)\n"
+msgstr "* sektory média    : %<PRId64> sektorů + %d bajtů (ŠPATNĚ)\n"
 
 #: src/rs01-verify.c:787
 #, c-format
-msgid "<span %s>%lld sectors + %d bytes</span>"
-msgstr "<span %s>%lld sektorů + %d bajtů</span>"
+msgid "<span %s>%<PRId64> sectors + %d bytes</span>"
+msgstr "<span %s>%<PRId64> sektorů + %d bajtů</span>"
 
 #: src/rs01-verify.c:804
 #, c-format
@@ -4214,18 +4223,18 @@ msgstr "* rychlý režim     : Ecc soubor nebude kontrolován!\n"
 
 #: src/rs01-verify.c:869
 #, c-format
-msgid "- ecc blocks       : %lld (good)\n"
-msgstr "- ecc bloky        : %lld (v pořádku)\n"
+msgid "- ecc blocks       : %<PRId64> (good)\n"
+msgstr "- ecc bloky        : %<PRId64> (v pořádku)\n"
 
 #: src/rs01-verify.c:876
 #, c-format
-msgid "* ecc blocks       : %lld (BAD, expected %lld)\n"
-msgstr "* ecc bloky        : %lld (ŠPATNĚ, očekáváno %lld)\n"
+msgid "* ecc blocks       : %<PRId64> (BAD, expected %<PRId64>)\n"
+msgstr "* ecc bloky        : %<PRId64> (ŠPATNĚ, očekáváno %<PRId64>)\n"
 
 #: src/rs01-verify.c:879
 #, c-format
-msgid "<span %s>%lld (bad, expected %lld)</span>"
-msgstr "<span %s>%lld (špatný, očekáváno %lld)</span>"
+msgid "<span %s>%<PRId64> (bad, expected %<PRId64>)</span>"
+msgstr "<span %s>%<PRId64> (špatný, očekáváno %<PRId64>)</span>"
 
 #: src/rs01-verify.c:905
 #, c-format
@@ -4266,13 +4275,13 @@ msgstr "Zobrazit křivku rychlosti čtení"
 
 #: src/rs01-window.c:203 src/rs02-window.c:141 src/rs03-window.c:174
 #, c-format
-msgid "Repaired: %lld"
-msgstr "Opraveno: %lld"
+msgid "Repaired: %<PRId64>"
+msgstr "Opraveno: %<PRId64>"
 
 #: src/rs01-window.c:204 src/rs02-window.c:142 src/rs03-window.c:175
 #, c-format
-msgid "Unrepairable: <span %s>%lld</span>"
-msgstr "Neopravitelné: <span %s>%lld</span>"
+msgid "Unrepairable: <span %s>%<PRId64></span>"
+msgstr "Neopravitelné: <span %s>%<PRId64></span>"
 
 #: src/rs01-window.c:205 src/rs02-window.c:143 src/rs03-window.c:176
 #, c-format
@@ -4414,13 +4423,13 @@ msgstr ""
 #: src/rs02-common.c:580 src/rs02-common.c:592 src/rs02-verify.c:649
 #: src/rs03-common.c:643
 #, c-format
-msgid "Failed seeking to ecc header at %lld: %s\n"
-msgstr "Přechod na hlavičku ecc na %lld selhal: %s\n"
+msgid "Failed seeking to ecc header at %<PRId64>: %s\n"
+msgstr "Přechod na hlavičku ecc na %<PRId64> selhal: %s\n"
 
 #: src/rs02-common.c:584 src/rs02-common.c:596 src/rs03-common.c:647
 #, c-format
-msgid "Failed writing ecc header at %lld: %s\n"
-msgstr "Selhal zápis hlavičky ecc na %lld: %s\n"
+msgid "Failed writing ecc header at %<PRId64>: %s\n"
+msgstr "Selhal zápis hlavičky ecc na %<PRId64>: %s\n"
 
 #: src/rs02-create.c:122 src/rs03-create.c:261
 #, c-format
@@ -4431,10 +4440,10 @@ msgstr "<span %s>Přerušeno uživatelem!</span> (neúplná ecc data z bitové k
 #, c-format
 msgid ""
 "Image \"%s\" already contains error correction information.\n"
-"Truncating image to data part (%lld sectors).\n"
+"Truncating image to data part (%<PRId64> sectors).\n"
 msgstr ""
 "Bitová kopie \"%s\" již obsahuje informace pro opravu chyb.\n"
-"Bitová kopie bude zkrácena po datovou část (%lld sektorů).\n"
+"Bitová kopie bude zkrácena po datovou část (%<PRId64> sektorů).\n"
 
 #: src/rs02-create.c:173 src/rs03-create.c:347
 msgid "Image size is now"
@@ -4453,7 +4462,7 @@ msgstr ""
 #: src/rs02-create.c:240
 #, c-format
 msgid ""
-"Sector %lld in the image is marked unreadable\n"
+"Sector %<PRId64> in the image is marked unreadable\n"
 "and seems to come from a different medium.\n"
 "\n"
 "The image was probably mastered from defective content.\n"
@@ -4464,7 +4473,7 @@ msgid ""
 "Error correction information can only be\n"
 "appended to complete (undamaged) images.\n"
 msgstr ""
-"Sektor %lld bitové kopie je označen jako nečitelný\n"
+"Sektor %<PRId64> bitové kopie je označen jako nečitelný\n"
 "a zdá se že pochází z jiného disku.\n"
 "\n"
 "Bitová kopie byla pravděpodobně vytvořena z poškozeného obsahu.\n"
@@ -4517,49 +4526,47 @@ msgstr "- kontrola bitové kopie -"
 
 #: src/rs02-create.c:1118
 #, c-format
-msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr "Kódování metodou RS02: %lld MiB data, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+msgid "Encoding with Method RS02: %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
+msgstr "Kódování metodou RS02: %<PRId64> MiB data, %<PRId64> MiB ecc (%d bází; %4.1f%% redundance)."
 
 #: src/rs02-create.c:1127
 #, c-format
 msgid ""
 "Augmenting image with Method RS02:\n"
-" %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+" %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 "Rozšíření bitové kopie metodou RS02:\n"
-" %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)"
+" %<PRId64> MiB dat, %<PRId64> MiB ecc (%d bází; %4.1f%% redundance)"
 
 #: src/rs02-create.c:1136
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
-"Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+"Data portion of image: %<PRId64> sect.; maximum possible size: %<PRId64> sect.\n"
 "If reducing the image size or using a larger medium is\n"
 "not an option, please create a separate error correction file."
 msgstr ""
 "Pro data pro opravu chyb není na disku dostatek volného místa.\n"
-"Datová část bitové kopie: %lld sek.; maximální možná velikost: %lld sek.\n"
+"Datová část bitové kopie: %<PRId64> sek.; maximální možná velikost: %<PRId64> sek.\n"
 "Pokud není možné zmenšení bitové kopie, nebo použití většího disku,\n"
 "vytvořte samostatný soubor pro opravu chyb."
 
 #: src/rs02-create.c:1146 src/rs03-create.c:1409
 #, c-format
 msgid ""
-"Using redundancies below 20%% may not give\n"
+"Using redundancies below 20% may not give\n"
 "the expected data loss protection.\n"
 msgstr ""
-"Použití redundance nižší než 20%% nemusí poskytnout\n"
-"dostatečnou ochranu proti ztrátě dat.\n"
 
 #: src/rs02-create.c:1178 src/rs02-create.c:1188 src/rs03-create.c:1448
 #: src/rs03-create.c:1476
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
-"New image size is %lld MiB (%lld sectors).\n"
+"New image size is %<PRId64> MiB (%<PRId64> sectors).\n"
 msgstr ""
 "Bitová kopie byla rozšířena o data pro opravu chyb.\n"
-"Nová velikost bitové kopie je %lld MiB (%lld sektorů).\n"
+"Nová velikost bitové kopie je %<PRId64> MiB (%<PRId64> sektorů).\n"
 
 #: src/rs02-fix.c:119 src/rs02-fix.c:130 src/rs03-fix.c:122 src/rs03-fix.c:133
 #, c-format
@@ -4594,8 +4601,8 @@ msgstr ""
 
 #: src/rs02-fix.c:499 src/rs03-fix.c:559
 #, c-format
-msgid "* Ecc block %lld: %3d unrepairable sectors: "
-msgstr "* Ecc blok %lld: %3d neopravitelných sektorů: "
+msgid "* Ecc block %<PRId64>: %3d unrepairable sectors: "
+msgstr "* Ecc blok %<PRId64>: %3d neopravitelných sektorů: "
 
 #: src/rs02-fix.c:721
 #, c-format
@@ -4609,8 +4616,8 @@ msgstr "-> Neočekávaná chyba v sektoru %lld, bajt %4d (hodnota %02x '%c', oč
 
 #: src/rs02-fix.c:851 src/rs03-fix.c:941
 #, c-format
-msgid "Repaired sectors: %lld (%lld data, %lld ecc)\n"
-msgstr "Opravené sektory: %lld (%lld data, %lld ecc)\n"
+msgid "Repaired sectors: %<PRId64> (%<PRId64> data, %<PRId64> ecc)\n"
+msgstr "Opravené sektory: %<PRId64> (%<PRId64> data, %<PRId64> ecc)\n"
 
 #: src/rs02-recognize.c:50
 msgid "Skip RS02 test"
@@ -4674,8 +4681,8 @@ msgstr "- počet výmazů     :  průměr =  %.1f; nejvíce = %d na ecc blok.\n"
 
 #: src/rs02-verify.c:515 src/rs03-verify.c:460
 #, c-format
-msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
-msgstr "- odhad            : Obnovitelných je %lld z(e) %lld sektorů (%d.%d%%)\n"
+msgid "- prognosis        : %<PRId64> of %<PRId64> sectors recoverable (%d.%d%%)\n"
+msgstr "- odhad            : Obnovitelných je %<PRId64> z(e) %<PRId64> sektorů (%d.%d%%)\n"
 
 #: src/rs02-verify.c:522 src/rs03-verify.c:465
 msgid "Erasure counts:"
@@ -4692,8 +4699,8 @@ msgstr "<span %s>průměr =  %.1f; nejvíce = %d na ecc blok.</span>"
 
 #: src/rs02-verify.c:531 src/rs03-verify.c:474
 #, c-format
-msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
-msgstr "<span %s>Obnovitelných je %lld z(e) %lld sektorů (%d.%d%%)</span>"
+msgid "<span %s>%<PRId64> of %<PRId64> sectors recoverable (%d.%d%%)</span>"
+msgstr "<span %s>Obnovitelných je %<PRId64> z(e) %<PRId64> sektorů (%d.%d%%)</span>"
 
 #: src/rs02-verify.c:593 src/rs03-verify.c:700
 msgid "Check aborted"
@@ -4709,35 +4716,35 @@ msgstr "Bitová kopie obsahuje data pro opravu chyb."
 
 #: src/rs02-verify.c:631 src/rs03-verify.c:1041
 #, c-format
-msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
-msgstr "<span %s>Soubor bitové kopie je o %lld sektorů kratší než očekáváno.</span>"
+msgid "<span %s>Image file is %<PRId64> sectors shorter than expected.</span>"
+msgstr "<span %s>Soubor bitové kopie je o %<PRId64> sektorů kratší než očekáváno.</span>"
 
 #: src/rs02-verify.c:632 src/rs03-verify.c:1044
 #, c-format
-msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
-msgstr "<span %s>Soubor bitové kopie je o %lld sektorů delší než očekáváno.</span>"
+msgid "<span %s>Image file is %<PRId64> sectors longer than expected.</span>"
+msgstr "<span %s>Soubor bitové kopie je o %<PRId64> sektorů delší než očekáváno.</span>"
 
 #: src/rs02-verify.c:653
 #, c-format
-msgid "Failed reading ecc header at %lld: %s\n"
-msgstr "Nepodařilo se načíst ecc hlavičku na %lld: %s\n"
+msgid "Failed reading ecc header at %<PRId64>: %s\n"
+msgstr "Nepodařilo se načíst ecc hlavičku na %<PRId64>: %s\n"
 
 #: src/rs02-verify.c:697
 #, c-format
-msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
-msgstr "<span %s>%lld v pořádku, %lld chyb CRC, %lld chybí</span>"
+msgid "<span %s>%<PRId64> ok, %<PRId64> CRC errors, %<PRId64> missing</span>"
+msgstr "<span %s>%<PRId64> v pořádku, %<PRId64> chyb CRC, %<PRId64> chybí</span>"
 
 #: src/rs02-verify.c:837 src/rs02-verify.c:860 src/rs03-verify.c:1247
 #: src/rs03-verify.c:1290
 #, c-format
-msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
-msgstr "<span %s>chybí %lld sektorů; %lld chyb CRC</span>"
+msgid "<span %s>%<PRId64> sectors missing; %<PRId64> CRC errors</span>"
+msgstr "<span %s>chybí %<PRId64> sektorů; %<PRId64> chyb CRC</span>"
 
 #: src/rs02-verify.c:841 src/rs02-verify.c:845 src/rs02-verify.c:864
 #: src/rs02-verify.c:868 src/rs03-verify.c:1255 src/rs03-verify.c:1298
 #, c-format
-msgid "<span %s>%lld sectors missing</span>"
-msgstr "<span %s>chybí %lld sektorů</span>"
+msgid "<span %s>%<PRId64> sectors missing</span>"
+msgstr "<span %s>chybí %<PRId64> sektorů</span>"
 
 #: src/rs02-verify.c:883
 #, c-format
@@ -4754,18 +4761,18 @@ msgstr "* podezřelá bitová kopie : Obsahuje poškozené ecc hlavičky\n"
 
 #: src/rs02-verify.c:894 src/rs03-verify.c:1317
 #, c-format
-msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
-msgstr "* podezřelá bitová kopie  : všechny sektory přítomny, ale %lld chyb CRC\n"
+msgid "* suspicious image : all sectors present, but %<PRId64> CRC errors\n"
+msgstr "* podezřelá bitová kopie  : všechny sektory přítomny, ale %<PRId64> chyb CRC\n"
 
 #: src/rs02-verify.c:900
 #, c-format
-msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
-msgstr "  ... ecc hlavičky    : %lld ok, %lld chybné CRC, %lld chybí\n"
+msgid "  ... ecc headers    : %<PRId64> ok, %<PRId64> CRC errors, %<PRId64> missing\n"
+msgstr "  ... ecc hlavičky    : %<PRId64> ok, %<PRId64> chybné CRC, %<PRId64> chybí\n"
 
 #: src/rs02-verify.c:902 src/rs03-verify.c:1323
 #, c-format
-msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
-msgstr "  ... datová sekce   : chybí %lld sektorů; %lld chyb CRC\n"
+msgid "  ... data section   : %<PRId64> sectors missing; %<PRId64> CRC errors\n"
+msgstr "  ... datová sekce   : chybí %<PRId64> sektorů; %<PRId64> chyb CRC\n"
 
 #: src/rs02-verify.c:905 src/rs03-verify.c:1326
 #, c-format
@@ -4774,13 +4781,13 @@ msgstr "  ... md5 součet dat : %s\n"
 
 #: src/rs02-verify.c:906 src/rs03-verify.c:1332
 #, c-format
-msgid "  ... crc section    : %lld sectors missing\n"
-msgstr "  ... crc sekce      : chybí %lld sektorů\n"
+msgid "  ... crc section    : %<PRId64> sectors missing\n"
+msgstr "  ... crc sekce      : chybí %<PRId64> sektorů\n"
 
 #: src/rs02-verify.c:907 src/rs03-verify.c:1334
 #, c-format
-msgid "  ... ecc section    : %lld sectors missing\n"
-msgstr "  ... ecc sekce      : chybí %lld sektorů\n"
+msgid "  ... ecc section    : %<PRId64> sectors missing\n"
+msgstr "  ... ecc sekce      : chybí %<PRId64> sektorů\n"
 
 #: src/rs02-verify.c:930 src/rs03-verify.c:1392
 #, c-format
@@ -4801,8 +4808,8 @@ msgstr ""
 
 #: src/rs02-verify.c:1043
 #, c-format
-msgid "- medium sectors   : %lld / %lld (good)\n"
-msgstr "- sektory disku    : %lld / %lld (v pořádku)\n"
+msgid "- medium sectors   : %<PRId64> / %<PRId64> (good)\n"
+msgstr "- sektory disku    : %<PRId64> / %<PRId64> (v pořádku)\n"
 
 #: src/rs02-verify.c:1063
 #, c-format
@@ -5113,7 +5120,7 @@ msgstr "Redundance %d z použitelného rozsahu [8..170]."
 
 #: src/rs03-common.c:525
 #, c-format
-msgid "Medium size smaller than image size (%lld < %lld)"
+msgid "Medium size smaller than image size (%<PRId64> < %<PRId64>)"
 msgstr ""
 
 #: src/rs03-create.c:434
@@ -5142,7 +5149,7 @@ msgid ""
 "Incomplete image\n"
 "\n"
 "The image contains missing sectors,\n"
-"e.g. sector %lld.\n"
+"e.g. sector %<PRId64>.\n"
 "%sError correction data works like a backup; it must\n"
 "be created when the image is still fully readable.\n"
 "Exiting and removing partial error correction data."
@@ -5150,7 +5157,7 @@ msgstr ""
 "Nekompletní bitová kopie\n"
 "\n"
 "Bitová kopie obsahuje chybějící sektory,\n"
-"např. sektor %lld.\n"
+"např. sektor %<PRId64>.\n"
 "%sData pro opravu chyb fungují jako záloha; musí\n"
 "být vytvořeny z kompletně čitelné bitové kopie.\n"
 "Operace přerušena a částečná data pro opravu chyb odstraněna."
@@ -5187,33 +5194,33 @@ msgstr ""
 
 #: src/rs03-create.c:1364
 #, c-format
-msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr "Kódování metodou RS03: %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+msgid "Encoding with Method RS03: %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
+msgstr "Kódování metodou RS03: %<PRId64> MiB dat, %<PRId64> MiB ecc (%d bází; %4.1f%% redundance)."
 
 #: src/rs03-create.c:1383
 #, c-format
 msgid ""
 "Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
-"%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+"%<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs03-create.c:1388
 #, c-format
 msgid ""
 "Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
-"%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+"%<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs03-create.c:1399
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
-"Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+"Data portion of image: %<PRId64> sect.; maximum possible size: %<PRId64> sect.\n"
 "If reducing the image size or using a larger medium is not\n"
 "an option, please create a separate error correction file."
 msgstr ""
 "Pro data pro opravu chyb není na disku dostatek volného místa.\n"
-"Datová část bitové kopie: %lld sek.; maximální možná velikost: %lld sek.\n"
+"Datová část bitové kopie: %<PRId64> sek.; maximální možná velikost: %<PRId64> sek.\n"
 "Pokud není možné zmenšení bitové kopie nebo použití většího disku,\n"
 "vytvořte samostatný soubor pro opravu chyb."
 
@@ -5264,16 +5271,16 @@ msgstr ""
 
 #: src/rs03-fix.c:881
 #, c-format
-msgid "Failed seeking to sector %lld in ecc file [%s]: %s"
-msgstr "Nezdařil se přechod na sektor %lld ecc souboru [%s]: %s"
+msgid "Failed seeking to sector %<PRId64> in ecc file [%s]: %s"
+msgstr "Nezdařil se přechod na sektor %<PRId64> ecc souboru [%s]: %s"
 
 #: src/rs03-fix.c:886
 #, c-format
 msgid ""
-"could not write ecc file sector %lld:\n"
+"could not write ecc file sector %<PRId64>:\n"
 "%s"
 msgstr ""
-"nelze zapsat sektor ecc souboru %lld:\n"
+"nelze zapsat sektor ecc souboru %<PRId64>:\n"
 "%s"
 
 #: src/rs03-preferences.c:345 src/rs03-preferences.c:782
@@ -5443,6 +5450,16 @@ msgid ""
 "Available extensions are SSE2 for x86 based processors and AltiVec on PowerPC processors. These extensions encode with 128bit wide operations and will usually provide the fastest encoding variant. If \"auto\" is selected, the SSE2/AltiVec algorithms will be selected if the processor supports them; otherwise the 64bit algorithm will be used."
 msgstr ""
 
+#: src/rs03-recognize.c:555
+#, c-format
+msgid "Failed seeking to sector %lld in image: %s"
+msgstr "Nezdařil se přechod na sektor %lld bitové kopie: %s"
+
+#: src/rs03-recognize.c:560
+#, c-format
+msgid "Failed reading sector %lld in image: %s"
+msgstr "Čtení sektoru %lld bitové kopie %s se nezdařilo"
+
 #: src/rs03-verify.c:193
 msgid "Error correction properties"
 msgstr "Vlastnosti ochrany dat"
@@ -5488,13 +5505,13 @@ msgstr "- kontrola ecc bloků: %d%% zkontrolováno"
 
 #: src/rs03-verify.c:620
 #, c-format
-msgid "<span %s>%lld good, %lld bad; %d%% tested</span>"
-msgstr "<span %s>%lld v pořádku, %lld poškozených; %d%% zkontrolováno</span>"
+msgid "<span %s>%<PRId64> good, %<PRId64> bad; %d%% tested</span>"
+msgstr "<span %s>%<PRId64> v pořádku, %<PRId64> poškozených; %d%% zkontrolováno</span>"
 
 #: src/rs03-verify.c:623
 #, c-format
-msgid "* Ecc block test   : %lld good, %lld bad; %d%% tested"
-msgstr "* kontrola ecc bloků: %lld v pořádku, %lld poškozeno; %d%% zkontrolováno"
+msgid "* Ecc block test   : %<PRId64> good, %<PRId64> bad; %d%% tested"
+msgstr "* kontrola ecc bloků: %<PRId64> v pořádku, %<PRId64> poškozeno; %d%% zkontrolováno"
 
 #: src/rs03-verify.c:635
 msgid "pass"
@@ -5506,13 +5523,13 @@ msgstr "- kontrola ecc bloků: úspěšná\n"
 
 #: src/rs03-verify.c:645
 #, c-format
-msgid "<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"
-msgstr "<span %s>%lld v pořádku, %lld poškozených; %lld poškozených subbloků</span>"
+msgid "<span %s>%<PRId64> good, %<PRId64> bad; %<PRId64> bad sub blocks</span>"
+msgstr "<span %s>%<PRId64> v pořádku, %<PRId64> poškozených; %<PRId64> poškozených subbloků</span>"
 
 #: src/rs03-verify.c:648
 #, c-format
-msgid "* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"
-msgstr "* kontrola ecc bloků: %lld v pořádku, %lld poškozeno; %lld poškozené sub bloky\n"
+msgid "* Ecc block test   : %<PRId64> good, %<PRId64> bad; %<PRId64> bad sub blocks\n"
+msgstr "* kontrola ecc bloků: %<PRId64> v pořádku, %<PRId64> poškozeno; %<PRId64> poškozené sub bloky\n"
 
 #: src/rs03-verify.c:740
 #, c-format
@@ -5529,13 +5546,13 @@ msgstr ""
 
 #: src/rs03-verify.c:772
 #, c-format
-msgid "Ecc file is %lld sectors shorter than expected."
-msgstr "Soubor ecc je o %lld sektorů kratší než očekáváno."
+msgid "Ecc file is %<PRId64> sectors shorter than expected."
+msgstr "Soubor ecc je o %<PRId64> sektorů kratší než očekáváno."
 
 #: src/rs03-verify.c:774
 #, c-format
-msgid "Ecc file is %lld sectors longer than expected."
-msgstr "Soubor ecc je o %lld sektorů delší než očekáváno."
+msgid "Ecc file is %<PRId64> sectors longer than expected."
+msgstr "Soubor ecc je o %<PRId64> sektorů delší než očekáváno."
 
 #: src/rs03-verify.c:782
 #, c-format
@@ -5592,38 +5609,38 @@ msgstr ""
 
 #: src/rs03-verify.c:991
 #, c-format
-msgid "%lld in image; %lld in ecc file"
-msgstr "%lld v bitové kopii; %lld v ecc souboru"
+msgid "%<PRId64> in image; %<PRId64> in ecc file"
+msgstr "%<PRId64> v bitové kopii; %<PRId64> v ecc souboru"
 
 #: src/rs03-verify.c:994
 #, c-format
-msgid "%lld sectors + %d bytes in image; %lld in ecc file"
-msgstr "%lld sektorů + %d bajtů v bitové kopii; %lld v ecc souboru"
+msgid "%<PRId64> sectors + %d bytes in image; %<PRId64> in ecc file"
+msgstr "%<PRId64> sektorů + %d bajtů v bitové kopii; %<PRId64> v ecc souboru"
 
 #: src/rs03-verify.c:1000
 #, c-format
-msgid "- sectors          : %lld in image; "
-msgstr "- sektory          : %lld v bitové kopii; "
+msgid "- sectors          : %<PRId64> in image; "
+msgstr "- sektory          : %<PRId64> v bitové kopii; "
 
 #: src/rs03-verify.c:1001
 #, c-format
-msgid "- sectors          : %lld sectors + %d bytes in image; "
-msgstr "- sektory          : %lld sektorů + %d bajtů v bitové kopii; "
+msgid "- sectors          : %<PRId64> sectors + %d bytes in image; "
+msgstr "- sektory          : %<PRId64> sektorů + %d bajtů v bitové kopii; "
 
 #: src/rs03-verify.c:1003
 #, c-format
-msgid "%lld in ecc file\n"
-msgstr "%lld v ecc souboru\n"
+msgid "%<PRId64> in ecc file\n"
+msgstr "%<PRId64> v ecc souboru\n"
 
 #: src/rs03-verify.c:1009
 #, c-format
-msgid "%lld total / %lld data"
-msgstr "%lld celkem / %lld data"
+msgid "%<PRId64> total / %<PRId64> data"
+msgstr "%<PRId64> celkem / %<PRId64> data"
 
 #: src/rs03-verify.c:1012
 #, c-format
-msgid "- medium sectors   : %lld total / %lld data\n"
-msgstr "- sektory disku    : %lld celkem / %lld data\n"
+msgid "- medium sectors   : %<PRId64> total / %<PRId64> data\n"
+msgstr "- sektory disku    : %<PRId64> celkem / %<PRId64> data\n"
 
 #: src/rs03-verify.c:1029
 #, c-format
@@ -5642,7 +5659,7 @@ msgstr "<span %s>Soubor obrazu je o %d bajtů delší než očekáváno.</span>"
 
 #: src/rs03-verify.c:1050
 #, c-format
-msgid "* sectors          : %s (%s expected); %lld sectors in ecc file\n"
+msgid "* sectors          : %s (%s expected); %<PRId64> sectors in ecc file\n"
 msgstr ""
 
 #: src/rs03-verify.c:1053
@@ -5661,18 +5678,18 @@ msgstr " (v ecc souboru)"
 
 #: src/rs03-verify.c:1185
 #, c-format
-msgid "* missing sector   : %lld%s\n"
-msgstr "* chybějící sektor : %lld%s\n"
+msgid "* missing sector   : %<PRId64>%s\n"
+msgstr "* chybějící sektor : %<PRId64>%s\n"
 
 #: src/rs03-verify.c:1186
 #, c-format
-msgid "* missing sectors  : %lld - %lld%s\n"
-msgstr "* chybějící sektory: %lld - %lld%s\n"
+msgid "* missing sectors  : %<PRId64> - %<PRId64>%s\n"
+msgstr "* chybějící sektory: %<PRId64> - %<PRId64>%s\n"
 
 #: src/rs03-verify.c:1251 src/rs03-verify.c:1294
 #, c-format
-msgid "<span %s>%lld sectors missing; %lld signature errors</span>"
-msgstr "<span %s>%lld sektorů chybí; %lld chyb podpisu</span>"
+msgid "<span %s>%<PRId64> sectors missing; %<PRId64> signature errors</span>"
+msgstr "<span %s>%<PRId64> sektorů chybí; %<PRId64> chyb podpisu</span>"
 
 #: src/rs03-verify.c:1277
 msgid "Error correction file:"
@@ -5689,13 +5706,13 @@ msgstr ""
 
 #: src/rs03-verify.c:1315
 #, c-format
-msgid "* BAD image/file   : %lld sectors missing\n"
-msgstr "* POŠKOZENÁ bitová kopie/soubor: %lld chybějících sektorů\n"
+msgid "* BAD image/file   : %<PRId64> sectors missing\n"
+msgstr "* POŠKOZENÁ bitová kopie/soubor: %<PRId64> chybějících sektorů\n"
 
 #: src/rs03-verify.c:1329
 #, c-format
-msgid "  ... crc section    : %lld sectors missing; %lld signature errors\n"
-msgstr "  ... crc sekce      : %lld sektorů chybí; %lld chyb podpisu\n"
+msgid "  ... crc section    : %<PRId64> sectors missing; %<PRId64> signature errors\n"
+msgstr "  ... crc sekce      : %<PRId64> sektorů chybí; %<PRId64> chyb podpisu\n"
 
 #: src/rs03-verify.c:1362
 #, c-format
@@ -5857,8 +5874,8 @@ msgstr ""
 
 #: src/scsi-layer.c:697 src/scsi-layer.c:707
 #, c-format
-msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
-msgstr "ČÍST STRUKTURU DVD: nepravděpodobná velikost disku, %lld-%lld=%lld sektorů\n"
+msgid "READ DVD STRUCTURE: implausible medium size, %<PRId64>-%<PRId64>=%<PRId64> sectors\n"
+msgstr "ČÍST STRUKTURU DVD: nepravděpodobná velikost disku, %<PRId64>-%<PRId64>=%<PRId64> sektorů\n"
 
 #: src/scsi-layer.c:976
 #, c-format
@@ -5928,20 +5945,20 @@ msgstr ""
 
 #: src/scsi-layer.c:1856
 #, c-format
-msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
-msgstr "ČÍST KAPACITU: nepravděpodobná velikost disku, %lld sektorů\n"
+msgid "READ CAPACITY: implausible medium size, %<PRId64> sectors\n"
+msgstr "ČÍST KAPACITU: nepravděpodobná velikost disku, %<PRId64> sektorů\n"
 
 #: src/scsi-layer.c:1932
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
-"READ CAPACITY:      %lld sectors\n"
-"READ DVD STRUCTURE: %lld sectors\n"
+"READ CAPACITY:      %<PRId64> sectors\n"
+"READ DVD STRUCTURE: %<PRId64> sectors\n"
 "\n"
 msgstr ""
 "Rozdílné velikosti disku v závislosti na typu dotazu:\n"
-"ČÍST KAPACITU:      %lld sektorů\n"
-"ČÍST STRUKTURU DVD: %lld sektorů\n"
+"ČÍST KAPACITU:      %<PRId64> sektorů\n"
+"ČÍST STRUKTURU DVD: %<PRId64> sektorů\n"
 "\n"
 
 #: src/scsi-layer.c:1937
@@ -5988,7 +6005,7 @@ msgstr ""
 "Selhalo určení velikosti bitové kopie.\n"
 "Zkuste použít jinou mechaniku."
 
-#: src/scsi-layer.c:2145 src/scsi-layer.c:2171
+#: src/scsi-layer.c:2146 src/scsi-layer.c:2172
 #, c-format
 msgid ""
 "%s\n"
@@ -5997,7 +6014,7 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo načíst/vysunout.\n"
 
-#: src/scsi-layer.c:2161
+#: src/scsi-layer.c:2162
 #, c-format
 msgid ""
 "%s\n"
@@ -6006,37 +6023,37 @@ msgstr ""
 "%s\n"
 "Disk se nepodařilo odemknout.\n"
 
-#: src/scsi-layer.c:2227
+#: src/scsi-layer.c:2228
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr "Čekám na roztočení mechaniky: %d\n"
 
-#: src/scsi-layer.c:2510
+#: src/scsi-layer.c:2511
 #, c-format
-msgid "Sectors %lld - %lld: %s\n"
-msgstr "Sektory %lld - %lld: %s\n"
+msgid "Sectors %<PRId64> - %<PRId64>: %s\n"
+msgstr "Sektory %<PRId64> - %<PRId64>: %s\n"
 
-#: src/scsi-layer.c:2524
+#: src/scsi-layer.c:2525
 #, c-format
-msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
-msgstr "Sektor %lld, pokus %d: %s Vrácený sektor: %d.\n"
+msgid "Sector %<PRId64>, try %d: %s Sector returned: %d.\n"
+msgstr "Sektor %<PRId64>, pokus %d: %s Vrácený sektor: %d.\n"
 
-#: src/scsi-layer.c:2530
+#: src/scsi-layer.c:2531
 #, c-format
-msgid "Sector %lld, try %d: %s\n"
-msgstr "Sektor %lld, pokus %d: %s\n"
+msgid "Sector %<PRId64>, try %d: %s\n"
+msgstr "Sektor %<PRId64>, pokus %d: %s\n"
 
-#: src/scsi-layer.c:2541
+#: src/scsi-layer.c:2542
 #, c-format
-msgid "Sector %lld, try %d: success\n"
-msgstr "Sektor %lld, pokus %d: úspěch\n"
+msgid "Sector %<PRId64>, try %d: success\n"
+msgstr "Sektor %<PRId64>, pokus %d: úspěch\n"
 
-#: src/scsi-layer.c:2612
+#: src/scsi-layer.c:2614
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr "Mechanika %s: neobsahuje disk\n"
 
-#: src/scsi-layer.c:2617
+#: src/scsi-layer.c:2619
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -6047,7 +6064,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/scsi-layer.c:2623
+#: src/scsi-layer.c:2625
 #, c-format
 msgid ""
 "\n"
@@ -6056,50 +6073,50 @@ msgstr ""
 "\n"
 "Zařízení: %s, %s\n"
 
-#: src/scsi-layer.c:2630
+#: src/scsi-layer.c:2632
 msgid "Drive failed to report media type."
 msgstr "Mechanika neohlásila typ disku."
 
-#: src/scsi-layer.c:2641 src/scsi-layer.c:2739
+#: src/scsi-layer.c:2647 src/scsi-layer.c:2753
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr "Tento program nepodporuje \"%s\" disky."
 
-#: src/scsi-layer.c:2649
+#: src/scsi-layer.c:2655
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr "Tento program nepodporuje multisession (%d sessions) disky."
 
-#: src/scsi-layer.c:2680 src/scsi-layer.c:2689
+#: src/scsi-layer.c:2686 src/scsi-layer.c:2695
 msgid "Using READ CD"
 msgstr "Je použito READ CD"
 
-#: src/scsi-layer.c:2681
+#: src/scsi-layer.c:2687
 msgid ", RAW reading"
 msgstr ", přímé čtení"
 
-#: src/scsi-layer.c:2684
+#: src/scsi-layer.c:2690
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ", stránka režimu 1 ERP = %02xh"
 
-#: src/scsi-layer.c:2687
+#: src/scsi-layer.c:2693
 msgid ", C2 scanning"
 msgstr ", kontrola C2"
 
-#: src/scsi-layer.c:2694
+#: src/scsi-layer.c:2700
 msgid "Using READ(10).\n"
 msgstr "Je použit READ(10).\n"
 
-#: src/scsi-layer.c:2716
+#: src/scsi-layer.c:2730
 #, c-format
-msgid "Medium: %s, %lld sectors%s"
-msgstr "Disk: %s, %lld sektorů%s"
+msgid "Medium: %s, %<PRId64> sectors%s"
+msgstr "Disk: %s, %<PRId64> sektorů%s"
 
-#: src/scsi-layer.c:2720
+#: src/scsi-layer.c:2734
 #, c-format
-msgid "Medium \"%s\": %s, %lld sectors%s created %s"
-msgstr "Disk \"%s\": %s, %lld sektorů%s vytvořeno %s"
+msgid "Medium \"%s\": %s, %<PRId64> sectors%s created %s"
+msgstr "Disk \"%s\": %s, %<PRId64> sektorů%s vytvořeno %s"
 
 #: src/scsi-netbsd.c:103
 msgid ""
@@ -6213,11 +6230,10 @@ msgstr "Vzorový disk"
 
 #: src/welcome-window.c:82
 msgid ""
-"<b>Unofficial version.</b>\n"
-"\n"
 "The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
 "We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
 "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
+"\n"
 "Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
@@ -6255,6 +6271,607 @@ msgstr ""
 #: src/welcome-window.c:151
 msgid "<i>New in this Version:</i>"
 msgstr "<i>Novinky v této verzi:</i>"
+
+#~ msgid ""
+#~ "Using redundancies below 20%% may not give\n"
+#~ "the expected data loss protection.\n"
+#~ msgstr ""
+#~ "Použití redundance nižší než 20%% nemusí poskytnout\n"
+#~ "dostatečnou ochranu proti ztrátě dat.\n"
+
+#~ msgid "Failed writing to sector %lld in image: %s"
+#~ msgstr "Nezdařil se zápis sektoru %lld bitové kopie: %s"
+
+#~ msgid "Sector must be in range [0..%lld]\n"
+#~ msgstr "Sektor musí být v rozsahu [0..%lld]\n"
+
+#~ msgid "Setting byte %d in sector %lld to value %d.\n"
+#~ msgstr "Nastavení bajtu %d sektoru %lld na hodnotu %d.\n"
+
+#~ msgid "Sectors must be in range [0..%lld].\n"
+#~ msgstr "Sektory musí být v rozsahu [0..%lld].\n"
+
+#~ msgid "Erasing sectors [%lld,%lld]\n"
+#~ msgstr "Probíhá mazání sektorů [%lld,%lld]\n"
+
+#~ msgid "New length must be in range [0..%lld].\n"
+#~ msgstr "Nová délka musí být v rozsahu [0..%lld].\n"
+
+#~ msgid "Truncating image to %lld sectors.\n"
+#~ msgstr "Probíhá zkrácení bitové kopie na %lld sektorů.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Creating random image with %lld sectors.\n"
+#~ "\n"
+#~ "There is no need for permanently storing this image;\n"
+#~ "you can always reproduce it by calling\n"
+#~ "dvdisaster --debug %s %lld --random-seed %d\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Probíhá vytvoření náhodné bitové kopie s %lld sektory.\n"
+#~ "\n"
+#~ "Tuto bitovou kopii není nutné trvale uložit, lze ji\n"
+#~ "kdykoliv znovu vytvořit pomocí příkazu\n"
+#~ "dvdisaster --debug %s %lld --random-seed %d\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Could not read image sector %lld:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "Nepodařilo se přečíst sektor %lld bitové kopie:\n"
+#~ "%s\n"
+
+#~ msgid "%lld \"unreadable sector\" markers replaced.\n"
+#~ msgstr "Nahrazeno %lld indikátorů \"nečitelných sektorů\".\n"
+
+#~ msgid ""
+#~ "Contents of sector %lld:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Obsah sektoru %lld:\n"
+#~ "\n"
+
+#~ msgid "Failed reading sector %lld: %s"
+#~ msgstr "Čtení sektoru %lld se nezdařilo: %s"
+
+#~ msgid "Source sector must be in range [0..%lld]\n"
+#~ msgstr "Zdrojový sektor musí být v rozsahu [0..%lld]\n"
+
+#~ msgid "Destination sector must be in range [0..%lld]\n"
+#~ msgstr "Cílový sektor musí být v rozsahu [0..%lld]\n"
+
+#~ msgid "Copying sector %lld from %s to sector %lld in %s.\n"
+#~ msgstr "Probíhá kopírování sektoru %lld z %s do sektoru %lld na %s.\n"
+
+#~ msgid ": %lld medium sectors.\n"
+#~ msgstr ": %lld sektorů disku.\n"
+
+#~ msgid ": %lld medium sectors and %d bytes.\n"
+#~ msgstr ": %lld sektorů disku a %d bajtů.\n"
+
+#~ msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
+#~ msgstr "%lld sektorů (%lld MiB), z READ CAPACITY\n"
+
+#~ msgid "%lld sectors (%lld MiB), from DVD structure\n"
+#~ msgstr "%lld sektorů (%lld MiB), ze struktury DVD\n"
+
+#~ msgid "%lld sectors (%lld MiB)\n"
+#~ msgstr "%lld sektorů (%lld MiB)\n"
+
+#~ msgid "%d sectors (%lld MiB)\n"
+#~ msgstr "%d sektorů (%lld MiB)\n"
+
+#~ msgid "%s loaded, LBA %lld, %d samples."
+#~ msgstr "%s načteno, LBA %lld, %d vzorků."
+
+#~ msgid "Failed seeking to sector %lld in image [%s]: %s"
+#~ msgstr "Nezdařil se přechod na sektor %lld bitové kopie [%s]: %s"
+
+#~ msgid "Failed writing to sector %lld in image [%s]: %s"
+#~ msgstr "Nezdařil se zápis sektoru %lld bitové kopie [%s]: %s"
+
+#~ msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
+#~ msgstr " [Přidáno %d/%d sektorů do souboru mezipaměti %s; LBA=%lld, velikosts=%d, %d sektorů]\n"
+
+#~ msgid "Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"
+#~ msgstr "Opravitelné: %2d.%1d%% (opravitelné: %lld; nyní načítáno [%lld..%lld], velikost %lld)"
+
+#~ msgid "Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"
+#~ msgstr "Opravitelné: %2d.%1d%% (chybějící: %lld; nyní načítáno [%lld..%lld], velikost %lld)"
+
+#~ msgid ""
+#~ "Medium contains %lld sectors more as recorded in the .ecc file\n"
+#~ "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+#~ "Only the first %lld medium sectors will be processed.\n"
+#~ msgstr ""
+#~ "Disk obsahuje o %lld sektorů více než je uvedeno v souboru ECC\n"
+#~ "(Disk: %lld sektorů; podle ecc očekáváno: %lld sektorů).\n"
+#~ "Bude zpracováno pouze prvních %lld sektorů disku.\n"
+
+#~ msgid ""
+#~ "Medium contains %lld sectors less as recorded in the .ecc file\n"
+#~ "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+#~ msgstr ""
+#~ "Disk obsahuje o %lld sektorů méně než je uvedeno v souboru ECC\n"
+#~ "(Disk: %lld sektorů; podle .ecc očekáváno: %lld sektorů).\n"
+
+#~ msgid "Limiting sector range to [%lld,%lld].\n"
+#~ msgstr "Rozsah sektorů omezen na [%lld,%lld].\n"
+
+#~ msgid ""
+#~ "Image file is %lld sectors longer than inserted medium\n"
+#~ "(Image file: %lld sectors; medium: %lld sectors).\n"
+#~ msgstr ""
+#~ "Soubor bitové kopie je o %lld sektorů delší než vložený disk\n"
+#~ "(Soubor bitové kopie: %lld sektorů; disk: %lld sektorů).\n"
+
+#~ msgid "Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"
+#~ msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %lld opravitelných, %lld chybí.\n"
+
+#~ msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
+#~ msgstr "Analyzování existujícího souboru bitové kopie: %lld čitelných, %lld chybí.\n"
+
+#~ msgid "Filling image area [%lld..%lld]"
+#~ msgstr "Vyplňování oblasti bitové kopie [%lld..%lld]"
+
+#~ msgid ""
+#~ "Sector %lld: %s\n"
+#~ "Can not recover from above error.\n"
+#~ "Use the --ignore-fatal-sense option to override."
+#~ msgstr ""
+#~ "Sektor %lld: %s\n"
+#~ "Výše uvedenou chybu nelze opravit.\n"
+#~ "Pro ignorování použijte parametr --ignore-fatal-sense."
+
+#~ msgid ""
+#~ "Sector %lld: %s\n"
+#~ "\n"
+#~ "It may not be possible to recover from this error.\n"
+#~ "Should the reading continue and ignore this error?"
+#~ msgstr ""
+#~ "Sektor %lld: %s\n"
+#~ "\n"
+#~ "Je možné, že zotavení po této chybě nebude možné.\n"
+#~ "Má čtení pokračovat a ignorovat tuto chybu?"
+
+#~ msgid "CRC error in sector %lld\n"
+#~ msgstr "Chyba CRC v sektoru %lld\n"
+
+#~ msgid "Sectors %lld-%lld: %s\n"
+#~ msgstr "Sektory %lld-%lld: %s\n"
+
+#~ msgid "Sector %lld: %s\n"
+#~ msgstr "Sektor %lld: %s\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s\n"
+#~ "(%lld readable,  %lld correctable,  %lld still missing).\n"
+#~ msgstr ""
+#~ "\n"
+#~ "%s\n"
+#~ "(%lld čitelných,  %lld opravitelných,  %lld stále chybějících).\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s\n"
+#~ "%2d.%1d%% of the image have been read (%lld sectors).\n"
+#~ msgstr ""
+#~ "\n"
+#~ "%s\n"
+#~ "%2d.%1d%% bitové kopie bylo načteno (%lld sektorů).\n"
+
+#~ msgid "<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."
+#~ msgstr "<span %s>Zrušeno kvůli neopravitelné chybě.</span> Dosud načteno %lld sektorů, %lld sektorů nečitelných/přeskočeno."
+
+#~ msgid "Completing image %s. Continuing with sector %lld.\n"
+#~ msgstr "Doplnění bitové kopie %s. Navazuji od sektoru %lld.\n"
+
+#~ msgid "Unreadable / skipped sectors: %lld"
+#~ msgstr "Nečitelné/přeskočené sektory: %lld"
+
+#~ msgid "Sector %lld: Speed increased to %4.1fx\n"
+#~ msgstr "Sektor %lld: Rychlost zvýšena na %4.1fx\n"
+
+#~ msgid "Sector %lld: Speed dropped to %4.1fx\n"
+#~ msgstr "Sektor %lld: Rychlost snížena na %4.1fx\n"
+
+#~ msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
+#~ msgstr "<span %s>Zrušeno uživatelem!</span> Načteno %lld sektorů, %lld sektorů nečitelných/přeskočeno."
+
+#~ msgid "unexpected read error in image for sector %lld"
+#~ msgstr "neočekávaná chyba čtení bitové kopie u sektoru %lld"
+
+#~ msgid "Sector %lld: %3d C2 errors.%s\n"
+#~ msgstr "Sektor %lld: %3d C2 chyb.%s\n"
+
+#~ msgid "Sector %lld: %s Skipping %d sectors.\n"
+#~ msgstr "Sektor %lld: %s Přeskakuji %d sektorů.\n"
+
+#~ msgid "%lld sectors read.     "
+#~ msgstr "Přečteno %lld sektorů.     "
+
+#~ msgid "%lld sectors read; %lld unreadable sectors."
+#~ msgstr "%lld sektorů načteno; %lld nečitelných sektorů."
+
+#~ msgid "All sectors successfully read, but wrong image length (%lld sectors difference)"
+#~ msgstr "Všechny sektory byly úspěšně načteny, ale nesouhlasí délka bitové kopie (rozdíl %lld sektorů)"
+
+#~ msgid "%lld unreadable sectors."
+#~ msgstr "%lld nečitelných sektorů."
+
+#~ msgid "%lld CRC errors."
+#~ msgstr "%lld chyb CRC."
+
+#~ msgid "%lld CRC errors, %lld unreadable sectors."
+#~ msgstr "%lld chyb CRC, %lld nečitelných sektorů"
+
+#~ msgid "Sector %lld dumped to %s\n"
+#~ msgstr "Sektor %lld uložen do %s\n"
+
+#~ msgid "* missing sector   : %lld\n"
+#~ msgstr "* chybějící sektor   : %lld\n"
+
+#~ msgid "* missing sectors  : %lld - %lld\n"
+#~ msgstr "* chybějící sektory  : %lld - %lld\n"
+
+#~ msgid "Ecc file size %lldm out of useful range [%lld .. %lld]"
+#~ msgstr "Velikost souboru ecc %lldm je mimo užitečný rozsah [%lld .. %lld]"
+
+#~ msgid "%lld sectors unread or missing due to errors.\n"
+#~ msgstr "%lld sektorů nepřečteno nebo chybí kvůli chybám.\n"
+
+#~ msgid ""
+#~ "Image file is %lld sectors longer than expected.\n"
+#~ "Assuming this is a TAO mode medium.\n"
+#~ "%lld sectors will be removed from the image end.\n"
+#~ msgstr ""
+#~ "Soubor bitové kopie je o %lld sektorů delší než bylo očekáváno.\n"
+#~ "Bude považován za disk v režimu TAO.\n"
+#~ "Na konci bitové kopie bude odebráno %lld sektorů.\n"
+
+#~ msgid "Image has been truncated by %lld sectors.\n"
+#~ msgstr "Bitová kopie byla zkrácena o %lld sektorů.\n"
+
+#~ msgid "-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
+#~ msgstr "-> V sektoru %lld na bajtu %4d lokalizována chyba (hodnota %02x '%c', očekáváno %02x '%c')\n"
+
+#~ msgid "Unexpected byte error in sector %lld, byte %d\n"
+#~ msgstr "Neočekávaná chyba bajtu sektoru %lld, bajt %d\n"
+
+#~ msgid ""
+#~ "could not write medium sector %lld:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "nelze zapsat sektor disku %lld:\n"
+#~ "%s"
+
+#~ msgid "Repaired sectors: %lld     \n"
+#~ msgstr "Opravené sektory: %lld     \n"
+
+#~ msgid "Unrepaired sectors: %lld\n"
+#~ msgstr "Neopravené sektory: %lld\n"
+
+#~ msgid "Image sectors could not be fully restored (%lld repaired; <span %s>%lld unrepaired</span>)"
+#~ msgstr "Sektory bitové kopie se nepodařilo úplně obnovit (%lld opraveno; <span %s>%lld neopraveno</span>)"
+
+#~ msgid "present, contains %lld medium sectors.\n"
+#~ msgstr "k dispozici, obsahuje %lld sektorů disku.\n"
+
+#~ msgid "present, contains %lld medium sectors and %d bytes.\n"
+#~ msgstr "existuje, obsahuje %lld sektorů disku a %d bajtů.\n"
+
+#~ msgid "%lld sectors + %d bytes"
+#~ msgstr "%lld sektorů + %d bajtů"
+
+#~ msgid "* truncated image  : %lld sectors too short\n"
+#~ msgstr "* zkrácená bitová kopie  : O %lld sektorů kratší\n"
+
+#~ msgid "<span %s>%lld (%lld sectors too short)</span>"
+#~ msgstr "<span %s>%lld (o %lld sektorů kratší)</span>"
+
+#~ msgid "* image too long   : %lld excess sectors\n"
+#~ msgstr "* bitová kopie je příliš dlouhá  : %lld nadbytečných sektorů\n"
+
+#~ msgid "<span %s>%lld (%lld excess sectors)</span>"
+#~ msgstr "<span %s>%lld (%lld nadbytečných sektorů)</span>"
+
+#~ msgid ""
+#~ "* suspicious image : all sectors present, but %lld CRC errors\n"
+#~ "- image md5sum     : %s\n"
+#~ msgstr ""
+#~ "* podezřelá bitová kopie : všechny sektory existují, ale zjištěno %lld chyb CRC\n"
+#~ "- md5 součet bitové kopie: %s\n"
+
+#~ msgid "* BAD image        : %lld sectors missing\n"
+#~ msgstr "* POŠKOZENÁ bitová kopie  : %lld chybějících sektorů\n"
+
+#~ msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
+#~ msgstr "* POŠKOZENÁ bitová kopie  : %lld chybějících sektorů, %lld chyb CRC\n"
+
+#~ msgid "- medium sectors   : %lld\n"
+#~ msgstr "- sektory disku    : %lld\n"
+
+#~ msgid "- medium sectors   : %lld sectors + %d bytes\n"
+#~ msgstr "- sektory disku    : %lld sektorů + %d bajtů\n"
+
+#~ msgid "- medium sectors   : %lld (good)\n"
+#~ msgstr "- sektory disku    : %lld (v pořádku)\n"
+
+#~ msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
+#~ msgstr "- sektory disku    : %lld sektorů + %d bajtů (v pořádku)\n"
+
+#~ msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
+#~ msgstr "* sektory disku    : %lld (ŠPATNĚ, pravděpodobně rozdíl TAO/DAO)\n"
+
+#~ msgid "* medium sectors   : %lld (BAD)\n"
+#~ msgstr "* sektory disku    : %lld (SPATNĚ)\n"
+
+#~ msgid "* medium sectors   : %lld sectors + %d bytes (BAD)\n"
+#~ msgstr "* sektory média    : %lld sektorů + %d bajtů (ŠPATNĚ)\n"
+
+#~ msgid "<span %s>%lld sectors + %d bytes</span>"
+#~ msgstr "<span %s>%lld sektorů + %d bajtů</span>"
+
+#~ msgid "- ecc blocks       : %lld (good)\n"
+#~ msgstr "- ecc bloky        : %lld (v pořádku)\n"
+
+#~ msgid "* ecc blocks       : %lld (BAD, expected %lld)\n"
+#~ msgstr "* ecc bloky        : %lld (ŠPATNĚ, očekáváno %lld)\n"
+
+#~ msgid "<span %s>%lld (bad, expected %lld)</span>"
+#~ msgstr "<span %s>%lld (špatný, očekáváno %lld)</span>"
+
+#~ msgid "Repaired: %lld"
+#~ msgstr "Opraveno: %lld"
+
+#~ msgid "Unrepairable: <span %s>%lld</span>"
+#~ msgstr "Neopravitelné: <span %s>%lld</span>"
+
+#~ msgid "Failed seeking to ecc header at %lld: %s\n"
+#~ msgstr "Přechod na hlavičku ecc na %lld selhal: %s\n"
+
+#~ msgid "Failed writing ecc header at %lld: %s\n"
+#~ msgstr "Selhal zápis hlavičky ecc na %lld: %s\n"
+
+#~ msgid ""
+#~ "Image \"%s\" already contains error correction information.\n"
+#~ "Truncating image to data part (%lld sectors).\n"
+#~ msgstr ""
+#~ "Bitová kopie \"%s\" již obsahuje informace pro opravu chyb.\n"
+#~ "Bitová kopie bude zkrácena po datovou část (%lld sektorů).\n"
+
+#~ msgid ""
+#~ "Sector %lld in the image is marked unreadable\n"
+#~ "and seems to come from a different medium.\n"
+#~ "\n"
+#~ "The image was probably mastered from defective content.\n"
+#~ "For example it might contain one or more files which came\n"
+#~ "from a damaged medium which was NOT fully recovered.\n"
+#~ "This means that some files may have been silently corrupted.\n"
+#~ "\n"
+#~ "Error correction information can only be\n"
+#~ "appended to complete (undamaged) images.\n"
+#~ msgstr ""
+#~ "Sektor %lld bitové kopie je označen jako nečitelný\n"
+#~ "a zdá se že pochází z jiného disku.\n"
+#~ "\n"
+#~ "Bitová kopie byla pravděpodobně vytvořena z poškozeného obsahu.\n"
+#~ "Může například obsahovat soubory pocházející z poškozeného\n"
+#~ "disku, který nebyl zcela opraven.\n"
+#~ "To znamená, že soubory mohly být neodhalitelně poškozeny.\n"
+#~ "\n"
+#~ "Informace pro opravu chyb může být přidána pouze\n"
+#~ "k nepoškozeným bitovým kopiím.\n"
+
+#~ msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr "Kódování metodou RS02: %lld MiB data, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+
+#~ msgid ""
+#~ "Augmenting image with Method RS02:\n"
+#~ " %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr ""
+#~ "Rozšíření bitové kopie metodou RS02:\n"
+#~ " %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)"
+
+#~ msgid ""
+#~ "Not enough space on medium left for error correction data.\n"
+#~ "Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+#~ "If reducing the image size or using a larger medium is\n"
+#~ "not an option, please create a separate error correction file."
+#~ msgstr ""
+#~ "Pro data pro opravu chyb není na disku dostatek volného místa.\n"
+#~ "Datová část bitové kopie: %lld sek.; maximální možná velikost: %lld sek.\n"
+#~ "Pokud není možné zmenšení bitové kopie, nebo použití většího disku,\n"
+#~ "vytvořte samostatný soubor pro opravu chyb."
+
+#~ msgid ""
+#~ "Image has been augmented with error correction data.\n"
+#~ "New image size is %lld MiB (%lld sectors).\n"
+#~ msgstr ""
+#~ "Bitová kopie byla rozšířena o data pro opravu chyb.\n"
+#~ "Nová velikost bitové kopie je %lld MiB (%lld sektorů).\n"
+
+#~ msgid "* Ecc block %lld: %3d unrepairable sectors: "
+#~ msgstr "* Ecc blok %lld: %3d neopravitelných sektorů: "
+
+#~ msgid "Repaired sectors: %lld (%lld data, %lld ecc)\n"
+#~ msgstr "Opravené sektory: %lld (%lld data, %lld ecc)\n"
+
+#~ msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
+#~ msgstr "- odhad            : Obnovitelných je %lld z(e) %lld sektorů (%d.%d%%)\n"
+
+#~ msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
+#~ msgstr "<span %s>Obnovitelných je %lld z(e) %lld sektorů (%d.%d%%)</span>"
+
+#~ msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
+#~ msgstr "<span %s>Soubor bitové kopie je o %lld sektorů kratší než očekáváno.</span>"
+
+#~ msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
+#~ msgstr "<span %s>Soubor bitové kopie je o %lld sektorů delší než očekáváno.</span>"
+
+#~ msgid "Failed reading ecc header at %lld: %s\n"
+#~ msgstr "Nepodařilo se načíst ecc hlavičku na %lld: %s\n"
+
+#~ msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
+#~ msgstr "<span %s>%lld v pořádku, %lld chyb CRC, %lld chybí</span>"
+
+#~ msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
+#~ msgstr "<span %s>chybí %lld sektorů; %lld chyb CRC</span>"
+
+#~ msgid "<span %s>%lld sectors missing</span>"
+#~ msgstr "<span %s>chybí %lld sektorů</span>"
+
+#~ msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
+#~ msgstr "* podezřelá bitová kopie  : všechny sektory přítomny, ale %lld chyb CRC\n"
+
+#~ msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
+#~ msgstr "  ... ecc hlavičky    : %lld ok, %lld chybné CRC, %lld chybí\n"
+
+#~ msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
+#~ msgstr "  ... datová sekce   : chybí %lld sektorů; %lld chyb CRC\n"
+
+#~ msgid "  ... crc section    : %lld sectors missing\n"
+#~ msgstr "  ... crc sekce      : chybí %lld sektorů\n"
+
+#~ msgid "  ... ecc section    : %lld sectors missing\n"
+#~ msgstr "  ... ecc sekce      : chybí %lld sektorů\n"
+
+#~ msgid "- medium sectors   : %lld / %lld (good)\n"
+#~ msgstr "- sektory disku    : %lld / %lld (v pořádku)\n"
+
+#~ msgid ""
+#~ "Incomplete image\n"
+#~ "\n"
+#~ "The image contains missing sectors,\n"
+#~ "e.g. sector %lld.\n"
+#~ "%sError correction data works like a backup; it must\n"
+#~ "be created when the image is still fully readable.\n"
+#~ "Exiting and removing partial error correction data."
+#~ msgstr ""
+#~ "Nekompletní bitová kopie\n"
+#~ "\n"
+#~ "Bitová kopie obsahuje chybějící sektory,\n"
+#~ "např. sektor %lld.\n"
+#~ "%sData pro opravu chyb fungují jako záloha; musí\n"
+#~ "být vytvořeny z kompletně čitelné bitové kopie.\n"
+#~ "Operace přerušena a částečná data pro opravu chyb odstraněna."
+
+#~ msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr "Kódování metodou RS03: %lld MiB dat, %lld MiB ecc (%d bází; %4.1f%% redundance)."
+
+#~ msgid ""
+#~ "Not enough space on medium left for error correction data.\n"
+#~ "Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+#~ "If reducing the image size or using a larger medium is not\n"
+#~ "an option, please create a separate error correction file."
+#~ msgstr ""
+#~ "Pro data pro opravu chyb není na disku dostatek volného místa.\n"
+#~ "Datová část bitové kopie: %lld sek.; maximální možná velikost: %lld sek.\n"
+#~ "Pokud není možné zmenšení bitové kopie nebo použití většího disku,\n"
+#~ "vytvořte samostatný soubor pro opravu chyb."
+
+#~ msgid "Failed seeking to sector %lld in ecc file [%s]: %s"
+#~ msgstr "Nezdařil se přechod na sektor %lld ecc souboru [%s]: %s"
+
+#~ msgid ""
+#~ "could not write ecc file sector %lld:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "nelze zapsat sektor ecc souboru %lld:\n"
+#~ "%s"
+
+#~ msgid "<span %s>%lld good, %lld bad; %d%% tested</span>"
+#~ msgstr "<span %s>%lld v pořádku, %lld poškozených; %d%% zkontrolováno</span>"
+
+#~ msgid "* Ecc block test   : %lld good, %lld bad; %d%% tested"
+#~ msgstr "* kontrola ecc bloků: %lld v pořádku, %lld poškozeno; %d%% zkontrolováno"
+
+#~ msgid "<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"
+#~ msgstr "<span %s>%lld v pořádku, %lld poškozených; %lld poškozených subbloků</span>"
+
+#~ msgid "* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"
+#~ msgstr "* kontrola ecc bloků: %lld v pořádku, %lld poškozeno; %lld poškozené sub bloky\n"
+
+#~ msgid "Ecc file is %lld sectors shorter than expected."
+#~ msgstr "Soubor ecc je o %lld sektorů kratší než očekáváno."
+
+#~ msgid "Ecc file is %lld sectors longer than expected."
+#~ msgstr "Soubor ecc je o %lld sektorů delší než očekáváno."
+
+#~ msgid "%lld in image; %lld in ecc file"
+#~ msgstr "%lld v bitové kopii; %lld v ecc souboru"
+
+#~ msgid "%lld sectors + %d bytes in image; %lld in ecc file"
+#~ msgstr "%lld sektorů + %d bajtů v bitové kopii; %lld v ecc souboru"
+
+#~ msgid "- sectors          : %lld in image; "
+#~ msgstr "- sektory          : %lld v bitové kopii; "
+
+#~ msgid "- sectors          : %lld sectors + %d bytes in image; "
+#~ msgstr "- sektory          : %lld sektorů + %d bajtů v bitové kopii; "
+
+#~ msgid "%lld in ecc file\n"
+#~ msgstr "%lld v ecc souboru\n"
+
+#~ msgid "%lld total / %lld data"
+#~ msgstr "%lld celkem / %lld data"
+
+#~ msgid "- medium sectors   : %lld total / %lld data\n"
+#~ msgstr "- sektory disku    : %lld celkem / %lld data\n"
+
+#~ msgid "* missing sector   : %lld%s\n"
+#~ msgstr "* chybějící sektor : %lld%s\n"
+
+#~ msgid "* missing sectors  : %lld - %lld%s\n"
+#~ msgstr "* chybějící sektory: %lld - %lld%s\n"
+
+#~ msgid "<span %s>%lld sectors missing; %lld signature errors</span>"
+#~ msgstr "<span %s>%lld sektorů chybí; %lld chyb podpisu</span>"
+
+#~ msgid "* BAD image/file   : %lld sectors missing\n"
+#~ msgstr "* POŠKOZENÁ bitová kopie/soubor: %lld chybějících sektorů\n"
+
+#~ msgid "  ... crc section    : %lld sectors missing; %lld signature errors\n"
+#~ msgstr "  ... crc sekce      : %lld sektorů chybí; %lld chyb podpisu\n"
+
+#~ msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
+#~ msgstr "ČÍST STRUKTURU DVD: nepravděpodobná velikost disku, %lld-%lld=%lld sektorů\n"
+
+#~ msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
+#~ msgstr "ČÍST KAPACITU: nepravděpodobná velikost disku, %lld sektorů\n"
+
+#~ msgid ""
+#~ "Different media sizes depending on query method:\n"
+#~ "READ CAPACITY:      %lld sectors\n"
+#~ "READ DVD STRUCTURE: %lld sectors\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Rozdílné velikosti disku v závislosti na typu dotazu:\n"
+#~ "ČÍST KAPACITU:      %lld sektorů\n"
+#~ "ČÍST STRUKTURU DVD: %lld sektorů\n"
+#~ "\n"
+
+#~ msgid "Sectors %lld - %lld: %s\n"
+#~ msgstr "Sektory %lld - %lld: %s\n"
+
+#~ msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
+#~ msgstr "Sektor %lld, pokus %d: %s Vrácený sektor: %d.\n"
+
+#~ msgid "Sector %lld, try %d: %s\n"
+#~ msgstr "Sektor %lld, pokus %d: %s\n"
+
+#~ msgid "Sector %lld, try %d: success\n"
+#~ msgstr "Sektor %lld, pokus %d: úspěch\n"
+
+#~ msgid "Medium: %s, %lld sectors%s"
+#~ msgstr "Disk: %s, %lld sektorů%s"
+
+#~ msgid "Medium \"%s\": %s, %lld sectors%s created %s"
+#~ msgstr "Disk \"%s\": %s, %lld sektorů%s vytvořeno %s"
 
 #~ msgid ""
 #~ "Documentation file\n"
