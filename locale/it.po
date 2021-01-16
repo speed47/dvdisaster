@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 20:59+0100\n"
+"POT-Creation-Date: 2021-01-16 23:27+0100\n"
 "PO-Revision-Date: 2005-01-01 14:24+0100\n"
 "Last-Translator: Andrea Polverini <polve@polve.com>\n"
 "Language-Team: Italian <>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/closure.c:384
+#: src/closure.c:390
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -31,15 +31,15 @@ msgstr ""
 "# e sarà sovrascritto ogni volta che verrà eseguito dvdisaster\n"
 "\n"
 
-#: src/closure.c:603
+#: src/closure.c:609
 msgid "medium.iso"
 msgstr ""
 
-#: src/closure.c:604
+#: src/closure.c:610
 msgid "medium.ecc"
 msgstr ""
 
-#: src/closure.c:605
+#: src/closure.c:611
 msgid "sector-"
 msgstr ""
 
@@ -60,9 +60,9 @@ msgstr ""
 #: src/debug.c:1189 src/debug.c:1266 src/rs01-common.c:175
 #: src/rs02-common.c:239 src/rs02-create.c:377 src/rs02-create.c:1032
 #: src/rs02-fix.c:414 src/rs02-verify.c:404 src/rs03-common.c:340
-#: src/rs03-create.c:756 src/rs03-create.c:781 src/rs03-recognize.c:555
+#: src/rs03-create.c:756 src/rs03-create.c:781
 #, c-format
-msgid "Failed seeking to sector %lld in image: %s"
+msgid "Failed seeking to sector %<PRId64> in image: %s"
 msgstr ""
 
 #: src/debug.c:111 src/debug.c:196 src/debug.c:243 src/debug.c:368
@@ -73,7 +73,7 @@ msgstr ""
 #: src/udf.c:958 src/udf.c:963 src/udf.c:966 src/udf.c:969 src/udf.c:972
 #: src/udf.c:975 src/udf.c:978
 #, c-format
-msgid "Failed writing to sector %lld in image: %s"
+msgid "Failed writing to sector %<PRId64> in image: %s"
 msgstr ""
 
 #: src/debug.c:119 src/debug.c:249 src/debug.c:374 src/debug.c:666
@@ -117,7 +117,7 @@ msgstr ""
 #: src/debug.c:689 src/debug.c:795 src/debug.c:836 src/debug.c:882
 #: src/debug.c:936 src/debug.c:1161 src/debug.c:1169 src/debug.c:1225
 #: src/debug.c:1230 src/raw-editor.c:364 src/read-adaptive.c:73
-#: src/read-adaptive.c:93 src/read-adaptive.c:1553 src/read-adaptive.c:1589
+#: src/read-adaptive.c:93 src/read-adaptive.c:1552 src/read-adaptive.c:1588
 #: src/read-linear.c:289 src/read-linear.c:291 src/read-linear.c:327
 #: src/read-linear.c:329 src/rs01-create.c:303 src/rs03-create.c:1352
 #, c-format
@@ -139,8 +139,8 @@ msgstr "Il terzo argomento è mancante"
 #: src/debug.c:462 src/debug.c:802 src/debug.c:843 src/debug.c:891
 #: src/debug.c:954
 #, c-format
-msgid "Sector must be in range [0..%lld]\n"
-msgstr "I Settori devono rientrare nell'intervallo [0..%lld]\n"
+msgid "Sector must be in range [0..%<PRId64>]\n"
+msgstr "I Settori devono rientrare nell'intervallo [0..%<PRId64>]\n"
 
 #: src/debug.c:465
 msgid "Byte position must be in range [0..2047]"
@@ -152,8 +152,8 @@ msgstr "Il valore del Byte deve rientrare nell'intervallo [0..255]"
 
 #: src/debug.c:470
 #, c-format
-msgid "Setting byte %d in sector %lld to value %d.\n"
-msgstr "Settaggio del byte %d nel settore %lld al valore %d.\n"
+msgid "Setting byte %d in sector %<PRId64> to value %d.\n"
+msgstr "Settaggio del byte %d nel settore %<PRId64> al valore %d.\n"
 
 #: src/debug.c:477 src/debug.c:531 src/debug.c:694 src/rs02-create.c:210
 #: src/rs02-verify.c:719 src/rs03-verify.c:1073
@@ -165,24 +165,24 @@ msgstr ""
 msgid "Could not write the new byte value"
 msgstr "Impossibile scrivere il nuovo valore del byte"
 
-#: src/debug.c:524 src/read-adaptive.c:831
+#: src/debug.c:524 src/read-adaptive.c:830
 #, c-format
-msgid "Sectors must be in range [0..%lld].\n"
-msgstr "I settori devi rientrare nell'intervallo [0..%lld].\n"
+msgid "Sectors must be in range [0..%<PRId64>].\n"
+msgstr "I settori devi rientrare nell'intervallo [0..%<PRId64>].\n"
 
 #: src/debug.c:526
 #, c-format
-msgid "Erasing sectors [%lld,%lld]\n"
-msgstr "Cancellazione settori [%lld,%lld]\n"
+msgid "Erasing sectors [%<PRId64>,%<PRId64>]\n"
+msgstr "Cancellazione settori [%<PRId64>,%<PRId64>]\n"
 
 #: src/debug.c:572
 #, c-format
-msgid "New length must be in range [0..%lld].\n"
+msgid "New length must be in range [0..%<PRId64>].\n"
 msgstr ""
 
 #: src/debug.c:574
 #, c-format
-msgid "Truncating image to %lld sectors.\n"
+msgid "Truncating image to %<PRId64> sectors.\n"
 msgstr ""
 
 #: src/debug.c:579 src/read-linear.c:1472 src/rs01-fix.c:230 src/rs01-fix.c:253
@@ -198,19 +198,19 @@ msgstr "Non posso troncare %s: %s\n"
 #, c-format
 msgid ""
 "\n"
-"Creating random image with %lld sectors.\n"
+"Creating random image with %<PRId64> sectors.\n"
 "\n"
 "There is no need for permanently storing this image;\n"
 "you can always reproduce it by calling\n"
-"dvdisaster --debug %s %lld --random-seed %d\n"
+"dvdisaster --debug %s %<PRId64> --random-seed %d\n"
 "\n"
 msgstr ""
 "\n"
-"Creazione dell'immagine random con %lld settori.\n"
+"Creazione dell'immagine random con %<PRId64> settori.\n"
 "\n"
 "Non c'è alcun bisogno di archiviare permanentemente questa immagine;\n"
 "La puoi sempre riprodurre con una chiamata\n"
-"dvdisaster --debug %s %lld --random-seed %d\n"
+"dvdisaster --debug %s %<PRId64> --random-seed %d\n"
 "\n"
 
 #: src/debug.c:674 src/read-adaptive.c:382 src/read-linear.c:133
@@ -230,35 +230,35 @@ msgstr "Sostituzione dei marcatori \"unreadable sector\" con zeri.\n"
 #: src/debug.c:700
 #, c-format
 msgid ""
-"Could not read image sector %lld:\n"
+"Could not read image sector %<PRId64>:\n"
 "%s\n"
 msgstr ""
-"Impossibile leggere il settore %lld dell'immagine:\n"
+"Impossibile leggere il settore %<PRId64> dell'immagine:\n"
 "%s\n"
 
 #: src/debug.c:725
 #, c-format
-msgid "%lld \"unreadable sector\" markers replaced.\n"
-msgstr "%lld marcatori \"unreadable sector\" sostituiti.\n"
+msgid "%<PRId64> \"unreadable sector\" markers replaced.\n"
+msgstr "%<PRId64> marcatori \"unreadable sector\" sostituiti.\n"
 
 #: src/debug.c:811 src/debug.c:854 src/debug.c:1185 src/debug.c:1252
 #: src/debug.c:1256 src/debug.c:1306 src/rs01-common.c:191
 #: src/rs02-common.c:244 src/rs02-create.c:229 src/rs02-fix.c:417
-#: src/rs03-common.c:345 src/rs03-recognize.c:560
+#: src/rs03-common.c:345
 #, c-format
-msgid "Failed reading sector %lld in image: %s"
+msgid "Failed reading sector %<PRId64> in image: %s"
 msgstr ""
 
 #: src/debug.c:845 src/debug.c:894 src/debug.c:957
 #, c-format
 msgid ""
-"Contents of sector %lld:\n"
+"Contents of sector %<PRId64>:\n"
 "\n"
-msgstr "Contenuto del settore %lld:\n"
+msgstr "Contenuto del settore %<PRId64>:\n"
 
 #: src/debug.c:905
 #, c-format
-msgid "Failed reading sector %lld: %s"
+msgid "Failed reading sector %<PRId64>: %s"
 msgstr ""
 
 #: src/debug.c:944
@@ -271,17 +271,17 @@ msgstr ""
 
 #: src/debug.c:1165
 #, c-format
-msgid "Source sector must be in range [0..%lld]\n"
+msgid "Source sector must be in range [0..%<PRId64>]\n"
 msgstr ""
 
 #: src/debug.c:1173
 #, c-format
-msgid "Destination sector must be in range [0..%lld]\n"
+msgid "Destination sector must be in range [0..%<PRId64>]\n"
 msgstr ""
 
 #: src/debug.c:1177
 #, c-format
-msgid "Copying sector %lld from %s to sector %lld in %s.\n"
+msgid "Copying sector %<PRId64> from %s to sector %<PRId64> in %s.\n"
 msgstr ""
 
 #: src/ds-marker.c:267
@@ -449,7 +449,7 @@ msgstr ""
 
 #: src/dvdisaster.c:537
 #, c-format
-msgid "--prefetch-sectors must be in range 32...%s"
+msgid "--prefetch-sectors must be in range 32...%d"
 msgstr ""
 
 #: src/dvdisaster.c:591
@@ -485,14 +485,14 @@ msgstr ""
 #: src/dvdisaster.c:809 src/rs01-create.c:294 src/rs02-create.c:175
 #: src/rs02-create.c:1085 src/rs03-create.c:349 src/rs03-create.c:1335
 #, c-format
-msgid ": %lld medium sectors.\n"
-msgstr ": %lld settori del supporto.\n"
+msgid ": %<PRId64> medium sectors.\n"
+msgstr ": %<PRId64> settori del supporto.\n"
 
 #: src/dvdisaster.c:810 src/rs01-create.c:295 src/rs02-create.c:176
 #: src/rs02-create.c:1086 src/rs03-create.c:350 src/rs03-create.c:1336
 #, c-format
-msgid ": %lld medium sectors and %d bytes.\n"
-msgstr ": %lld settori del supporto e %d bytes.\n"
+msgid ": %<PRId64> medium sectors and %d bytes.\n"
+msgstr ": %<PRId64> settori del supporto e %d bytes.\n"
 
 #: src/dvdisaster.c:837 src/main-window.c:207
 msgid "RS01 method not available for comparing files."
@@ -882,7 +882,7 @@ msgstr "Info su dvdisaster"
 #: src/help-dialogs.c:747
 msgid ""
 "[Modified version]\n"
-"Copyright 2019-2020 Stephane Lesimple\n"
+"Copyright 2019-2021 Stephane Lesimple\n"
 "Copyright 2005-2017 Debian Optical Media Tools Team\n"
 "Copyright 2004-2017 Carsten Gnoerlich"
 msgstr ""
@@ -1129,17 +1129,17 @@ msgstr ""
 
 #: src/medium-info.c:192
 #, c-format
-msgid "%lld sectors (%lld MiB), from READ CAPACITY\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB), from READ CAPACITY\n"
 msgstr ""
 
 #: src/medium-info.c:201
 #, c-format
-msgid "%lld sectors (%lld MiB), from DVD structure\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB), from DVD structure\n"
 msgstr ""
 
-#: src/medium-info.c:211 src/medium-info.c:283 src/medium-info.c:285
+#: src/medium-info.c:211 src/medium-info.c:285
 #, c-format
-msgid "%lld sectors (%lld MiB)\n"
+msgid "%<PRId64> sectors (%<PRId64> MiB)\n"
 msgstr ""
 
 #: src/medium-info.c:223 src/medium-info.c:517
@@ -1148,7 +1148,7 @@ msgstr ""
 
 #: src/medium-info.c:241
 #, c-format
-msgid "%d sectors (%lld MiB)\n"
+msgid "%d sectors (%<PRId64> MiB)\n"
 msgstr ""
 
 #: src/medium-info.c:268 src/medium-info.c:550
@@ -1158,6 +1158,11 @@ msgstr ""
 #: src/medium-info.c:275 src/medium-info.c:277
 #, c-format
 msgid "%s, %d roots, %4.1f%% redundancy.\n"
+msgstr ""
+
+#: src/medium-info.c:283
+#, c-format
+msgid "%<PRIu64> sectors (%<PRId64> MiB)\n"
 msgstr ""
 
 #: src/medium-info.c:375
@@ -1198,7 +1203,7 @@ msgstr ""
 msgid "Book type:"
 msgstr ""
 
-#: src/medium-info.c:467 src/scsi-layer.c:2727
+#: src/medium-info.c:467 src/scsi-layer.c:2741
 msgid "Manuf.-ID:"
 msgstr ""
 
@@ -2318,7 +2323,7 @@ msgstr ""
 
 #: src/raw-editor.c:328
 #, c-format
-msgid "%s loaded, LBA %lld, %d samples."
+msgid "%s loaded, LBA %<PRId64>, %d samples."
 msgstr ""
 
 #: src/raw-editor.c:352
@@ -2333,20 +2338,20 @@ msgstr ""
 msgid "Raw sector does not belong to the selected image!"
 msgstr ""
 
-#: src/raw-editor.c:390 src/read-adaptive.c:1349 src/read-adaptive.c:1429
-#: src/read-adaptive.c:1771 src/read-adaptive.c:1989 src/read-linear.c:426
+#: src/raw-editor.c:390 src/read-adaptive.c:1348 src/read-adaptive.c:1428
+#: src/read-adaptive.c:1770 src/read-adaptive.c:1988 src/read-linear.c:426
 #: src/read-linear.c:703 src/read-linear.c:1043 src/rs01-fix.c:501
 #: src/rs01-fix.c:761 src/rs02-fix.c:786 src/rs03-fix.c:865
 #, c-format
-msgid "Failed seeking to sector %lld in image [%s]: %s"
+msgid "Failed seeking to sector %<PRId64> in image [%s]: %s"
 msgstr ""
 
-#: src/raw-editor.c:397 src/read-adaptive.c:1363 src/read-adaptive.c:1435
-#: src/read-adaptive.c:1803 src/read-adaptive.c:1818 src/read-adaptive.c:1997
+#: src/raw-editor.c:397 src/read-adaptive.c:1362 src/read-adaptive.c:1434
+#: src/read-adaptive.c:1802 src/read-adaptive.c:1817 src/read-adaptive.c:1996
 #: src/read-linear.c:435 src/read-linear.c:710 src/rs01-fix.c:195
 #: src/rs01-fix.c:508
 #, c-format
-msgid "Failed writing to sector %lld in image [%s]: %s"
+msgid "Failed writing to sector %<PRId64> in image [%s]: %s"
 msgstr ""
 
 #: src/raw-editor.c:418
@@ -2574,7 +2579,7 @@ msgstr ""
 
 #: src/raw-sector-cache.c:280
 #, c-format
-msgid " [Appended %d/%d sectors to cache file %s; LBA=%lld, ssize=%d, %d sectors]\n"
+msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr ""
 
 #: src/read-adaptive.c:55 src/rs01-create.c:1080
@@ -2621,19 +2626,19 @@ msgstr ""
 msgid "Error reading CRC information: %s"
 msgstr "Errore di lettura delle informazioni CRC: %s"
 
-#: src/read-adaptive.c:374 src/read-adaptive.c:1748
+#: src/read-adaptive.c:374 src/read-adaptive.c:1747
 msgid "Aborted by unrecoverable error."
 msgstr "Interrotto da un errore irrecuperabile."
 
 #: src/read-adaptive.c:510
 #, c-format
-msgid "Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"
-msgstr "Riparabili: %2d.%1d%% (correggibili: %lld; leggi [%lld..%lld], dimensione %lld)"
+msgid "Repairable: %2d.%1d%% (correctable: %<PRId64>; now reading [%<PRId64>..%<PRId64>], size %<PRId64>)"
+msgstr "Riparabili: %2d.%1d%% (correggibili: %<PRId64>; leggi [%<PRId64>..%<PRId64>], dimensione %<PRId64>)"
 
 #: src/read-adaptive.c:515
 #, c-format
-msgid "Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"
-msgstr "Riparabili: %2d.%1d%% (mancante: %lld; leggi [%lld..%lld], dimensione %lld)"
+msgid "Repairable: %2d.%1d%% (missing: %<PRId64>; now reading [%<PRId64>..%<PRId64>], size %<PRId64>)"
+msgstr "Riparabili: %2d.%1d%% (mancante: %<PRId64>; leggi [%<PRId64>..%<PRId64>], dimensione %<PRId64>)"
 
 #: src/read-adaptive.c:655 src/read-adaptive.c:671 src/read-adaptive.c:701
 #, c-format
@@ -2656,9 +2661,9 @@ msgid ""
 "You should cancel and use the linear reading strategy instead. Continue at your own risk.\n"
 msgstr ""
 
-#: src/read-adaptive.c:710 src/read-adaptive.c:773 src/read-adaptive.c:793
-#: src/read-adaptive.c:866 src/read-adaptive.c:961 src/read-adaptive.c:1031
-#: src/read-adaptive.c:1372 src/read-adaptive.c:1672
+#: src/read-adaptive.c:710 src/read-adaptive.c:773 src/read-adaptive.c:792
+#: src/read-adaptive.c:865 src/read-adaptive.c:960 src/read-adaptive.c:1030
+#: src/read-adaptive.c:1371 src/read-adaptive.c:1671
 msgid "Aborted by user request!"
 msgstr "Annullato dall'utente!"
 
@@ -2679,128 +2684,128 @@ msgstr "Provo a raggruppare abbastanza dati per la correzione errori."
 #: src/read-adaptive.c:764
 #, c-format
 msgid ""
-"Medium contains %lld sectors more as recorded in the .ecc file\n"
-"(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
-"Only the first %lld medium sectors will be processed.\n"
+"Medium contains %<PRId64> sectors more as recorded in the .ecc file\n"
+"(Medium: %<PRId64> sectors; expected from .ecc file: %<PRId64> sectors).\n"
+"Only the first %<PRId64> medium sectors will be processed.\n"
 msgstr ""
-"Il supporto contiene %lld settori in più rispetto a quelli\n"
+"Il supporto contiene %<PRId64> settori in più rispetto a quelli\n"
 "registrati nel file .ecc\n"
-"(Supporto: %lld settori; attesi dal file .ecc: %lld settori).\n"
-"Solo i primi %lld settori del supporto saranno processati.\n"
+"(Supporto: %<PRId64> settori; attesi dal file .ecc: %<PRId64> settori).\n"
+"Solo i primi %<PRId64> settori del supporto saranno processati.\n"
 
 #: src/read-adaptive.c:785
 #, c-format
 msgid ""
-"Medium contains %lld sectors less as recorded in the .ecc file\n"
-"(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+"Medium contains %<PRId64> sectors less as recorded in the .ecc file\n"
+"(Medium: %<PRId64> sectors; expected from .ecc file: %<PRId64> sectors).\n"
 msgstr ""
-"Il supporto contiene %lld settori in meno rispetto a quelli\n"
+"Il supporto contiene %<PRId64> settori in meno rispetto a quelli\n"
 "registrati nel file .ecc\n"
-"(Supporto: %lld settori; attesi dal file .ecc: %lld settori).\n"
+"(Supporto: %<PRId64> settori; attesi dal file .ecc: %<PRId64> settori).\n"
 
-#: src/read-adaptive.c:833
+#: src/read-adaptive.c:832
 #, c-format
-msgid "Limiting sector range to [%lld,%lld].\n"
-msgstr "Limitazione ampiezza dei settori [%lld,%lld].\n"
+msgid "Limiting sector range to [%<PRId64>,%<PRId64>].\n"
+msgstr "Limitazione ampiezza dei settori [%<PRId64>,%<PRId64>].\n"
 
-#: src/read-adaptive.c:859
+#: src/read-adaptive.c:858
 #, c-format
 msgid ""
 "Sector %d is missing. Can not compare medium and ecc fingerprints.\n"
 "Double check that the medium and the ecc file belong together.\n"
 msgstr ""
 
-#: src/read-adaptive.c:875
+#: src/read-adaptive.c:874
 msgid ""
 "Fingerprints of medium and ecc file do not match.\n"
 "Medium and ecc file do not belong together.\n"
 msgstr ""
 
-#: src/read-adaptive.c:918 src/read-linear.c:360
+#: src/read-adaptive.c:917 src/read-linear.c:360
 msgid "Image file does not match the optical disc."
 msgstr "Il file immagine non corrisponde al CD/DVD/BD."
 
-#: src/read-adaptive.c:925
+#: src/read-adaptive.c:924
 msgid "Reading aborted. Please select a different image file."
 msgstr "Lettura annullata. Prego selezionare un file immagine differente."
 
-#: src/read-adaptive.c:953
+#: src/read-adaptive.c:952
 #, c-format
 msgid ""
-"Image file is %lld sectors longer than inserted medium\n"
-"(Image file: %lld sectors; medium: %lld sectors).\n"
+"Image file is %<PRId64> sectors longer than inserted medium\n"
+"(Image file: %<PRId64> sectors; medium: %<PRId64> sectors).\n"
 msgstr ""
-"Il file immagine è %lld settori più lungo del supporto inserito\n"
-"(File immagine: %lld sectors; supporto: %lld sectors).\n"
+"Il file immagine è %<PRId64> settori più lungo del supporto inserito\n"
+"(File immagine: %<PRId64> sectors; supporto: %<PRId64> sectors).\n"
 
-#: src/read-adaptive.c:981 src/read-adaptive.c:987
+#: src/read-adaptive.c:980 src/read-adaptive.c:986
 msgid "Loading CRC data."
 msgstr ""
 
-#: src/read-adaptive.c:1021
+#: src/read-adaptive.c:1020
 msgid "Analysing existing image file"
 msgstr "Analizzo il file immagine esistente"
 
-#: src/read-adaptive.c:1041 src/rs01-common.c:280 src/rs02-verify.c:752
+#: src/read-adaptive.c:1040 src/rs01-common.c:280 src/rs02-verify.c:752
 #, c-format
 msgid "premature end in image (only %d bytes): %s\n"
 msgstr "Fine prematura dell'immagine (solo %d Bytes): %s\n"
 
-#: src/read-adaptive.c:1128
+#: src/read-adaptive.c:1127
 #, c-format
 msgid "Analysing existing image file: %2d%%"
 msgstr "Analizzo il file immagine esistente: %2d%%"
 
-#: src/read-adaptive.c:1157
+#: src/read-adaptive.c:1156
 msgid "Determining correctable sectors"
 msgstr "Determino i settori correggibili"
 
-#: src/read-adaptive.c:1237
+#: src/read-adaptive.c:1236
 #, c-format
-msgid "Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"
-msgstr "Analizzo il file immagine esistente: %lld leggibile, %lld correggibili, %lld ancora mancanti.\n"
+msgid "Analysing existing image file: %<PRId64> readable, %<PRId64> correctable, %<PRId64> still missing.\n"
+msgstr "Analizzo il file immagine esistente: %<PRId64> leggibile, %<PRId64> correggibili, %<PRId64> ancora mancanti.\n"
 
-#: src/read-adaptive.c:1239
+#: src/read-adaptive.c:1238
 #, c-format
-msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
-msgstr "Analizzo il file immagine esistente: %lld leggibile, %lld ancora mancanti.\n"
+msgid "Analysing existing image file: %<PRId64> readable, %<PRId64> still missing.\n"
+msgstr "Analizzo il file immagine esistente: %<PRId64> leggibile, %<PRId64> ancora mancanti.\n"
 
-#: src/read-adaptive.c:1296 src/read-linear.c:784
+#: src/read-adaptive.c:1295 src/read-linear.c:784
 msgid "Ignore once"
 msgstr "Ignora una volta"
 
-#: src/read-adaptive.c:1297 src/read-linear.c:785
+#: src/read-adaptive.c:1296 src/read-linear.c:785
 msgid "Ignore always"
 msgstr "Ignora sempre"
 
-#: src/read-adaptive.c:1298 src/read-linear.c:786
+#: src/read-adaptive.c:1297 src/read-linear.c:786
 msgid "Abort"
 msgstr "Ferma"
 
-#: src/read-adaptive.c:1334
+#: src/read-adaptive.c:1333
 #, c-format
-msgid "Filling image area [%lld..%lld]"
-msgstr "Riempio l'area immagine [%lld..%lld]"
+msgid "Filling image area [%<PRId64>..%<PRId64>]"
+msgstr "Riempio l'area immagine [%<PRId64>..%<PRId64>]"
 
-#: src/read-adaptive.c:1466 src/read-linear.c:223
+#: src/read-adaptive.c:1465 src/read-linear.c:223
 msgid "Reading aborted"
 msgstr "Lettura annullata"
 
-#: src/read-adaptive.c:1470 src/read-linear.c:228
+#: src/read-adaptive.c:1469 src/read-linear.c:228
 msgid "Preparing for reading the medium image."
 msgstr "Preparazione alla lettura dell'immagine del supporto"
 
-#: src/read-adaptive.c:1471 src/read-linear.c:219 src/read-linear.c:229
+#: src/read-adaptive.c:1470 src/read-linear.c:219 src/read-linear.c:229
 msgid "Medium: not yet determined"
 msgstr "Supporto: non ancora determinato"
 
-#: src/read-adaptive.c:1486
+#: src/read-adaptive.c:1485
 msgid ""
 "Adaptive reading is unavailable in this version.\n"
 "It will be re-introduced in one of the next versions."
 msgstr ""
 
-#: src/read-adaptive.c:1495
+#: src/read-adaptive.c:1494
 msgid ""
 "* Warning: Using adaptive reading without error correction data\n"
 "*          has little advantage over linear reading, but may\n"
@@ -2809,20 +2814,20 @@ msgid ""
 "*          Please consider using linear reading instead.\n"
 msgstr ""
 
-#: src/read-adaptive.c:1555 src/read-linear.c:293
+#: src/read-adaptive.c:1554 src/read-linear.c:293
 #, c-format
 msgid "Creating new %s image.\n"
 msgstr "Creo una nuova immagine %s.\n"
 
-#: src/read-adaptive.c:1560 src/read-linear.c:286
+#: src/read-adaptive.c:1559 src/read-linear.c:286
 msgid "Reading new medium image."
 msgstr "Lettura dell'immagine del supporto."
 
-#: src/read-adaptive.c:1582 src/read-linear.c:319
+#: src/read-adaptive.c:1581 src/read-linear.c:319
 msgid "Completing existing medium image."
 msgstr "Completamento dell'immagine esistente del supporto."
 
-#: src/read-adaptive.c:1616 src/read-adaptive.c:1947
+#: src/read-adaptive.c:1615 src/read-adaptive.c:1946
 msgid ""
 "\n"
 "Sufficient data for reconstructing the image is available.\n"
@@ -2830,60 +2835,60 @@ msgstr ""
 "\n"
 "Sono disponibili dati sufficienti per ricostruire l'immagine.\n"
 
-#: src/read-adaptive.c:1732 src/read-linear.c:1110
+#: src/read-adaptive.c:1731 src/read-linear.c:1110
 #, c-format
 msgid ""
-"Sector %lld: %s\n"
+"Sector %<PRId64>: %s\n"
 "Can not recover from above error.\n"
 "Use the --ignore-fatal-sense option to override."
 msgstr ""
 
-#: src/read-adaptive.c:1738 src/read-linear.c:1116
+#: src/read-adaptive.c:1737 src/read-linear.c:1116
 #, c-format
 msgid ""
-"Sector %lld: %s\n"
+"Sector %<PRId64>: %s\n"
 "\n"
 "It may not be possible to recover from this error.\n"
 "Should the reading continue and ignore this error?"
 msgstr ""
-"Settore %lld: %s\n"
+"Settore %<PRId64>: %s\n"
 "\n"
 "Potrebbe non essere possibile recuperare questo errore.\n"
 "La lettura deve procedere ignorando questo errore?"
 
-#: src/read-adaptive.c:1794 src/rs01-fix.c:451 src/rs02-fix.c:464
+#: src/read-adaptive.c:1793 src/rs01-fix.c:451 src/rs02-fix.c:464
 #: src/rs03-fix.c:522
 #, c-format
-msgid "CRC error in sector %lld\n"
-msgstr "Errore CRC nel settore %lld\n"
+msgid "CRC error in sector %<PRId64>\n"
+msgstr "Errore CRC nel settore %<PRId64>\n"
 
-#: src/read-adaptive.c:1973 src/scsi-layer.c:1776
+#: src/read-adaptive.c:1972 src/scsi-layer.c:1776
 #, c-format
-msgid "Sectors %lld-%lld: %s\n"
-msgstr "Settori %lld-%lld: %s\n"
+msgid "Sectors %<PRId64>-%<PRId64>: %s\n"
+msgstr "Settori %<PRId64>-%<PRId64>: %s\n"
 
-#: src/read-adaptive.c:1981 src/read-linear.c:1313 src/scsi-layer.c:1775
+#: src/read-adaptive.c:1980 src/read-linear.c:1313 src/scsi-layer.c:1775
 #, c-format
-msgid "Sector %lld: %s\n"
-msgstr "Settore %lld: %s\n"
+msgid "Sector %<PRId64>: %s\n"
+msgstr "Settore %<PRId64>: %s\n"
 
-#: src/read-adaptive.c:2112
+#: src/read-adaptive.c:2111
 #, c-format
 msgid "Only %2d.%1d%% of the image are readable or correctable"
 msgstr "Solo %2d.%1d%% dell'immagine è leggibile o correggibile"
 
-#: src/read-adaptive.c:2115
+#: src/read-adaptive.c:2114
 #, c-format
 msgid ""
 "\n"
 "%s\n"
-"(%lld readable,  %lld correctable,  %lld still missing).\n"
+"(%<PRId64> readable,  %<PRId64> correctable,  %<PRId64> still missing).\n"
 msgstr ""
 "\n"
 "%s\n"
-"(%lld leggibile, %lld correggibili, %lld ancora mancanti).\n"
+"(%<PRId64> leggibile, %<PRId64> correggibili, %<PRId64> ancora mancanti).\n"
 
-#: src/read-adaptive.c:2131
+#: src/read-adaptive.c:2130
 msgid ""
 "\n"
 "Good! All sectors have been read.\n"
@@ -2891,21 +2896,21 @@ msgstr ""
 "\n"
 "Fatto! Tutti i settori sono stati letti.\n"
 
-#: src/read-adaptive.c:2142
+#: src/read-adaptive.c:2141
 #, c-format
 msgid "No unreadable intervals with >= %d sectors left."
 msgstr "Nessun intervallo illeggibile con >= %d settori rimasti."
 
-#: src/read-adaptive.c:2145
+#: src/read-adaptive.c:2144
 #, c-format
 msgid ""
 "\n"
 "%s\n"
-"%2d.%1d%% of the image have been read (%lld sectors).\n"
+"%2d.%1d%% of the image have been read (%<PRId64> sectors).\n"
 msgstr ""
 "\n"
 "%s\n"
-"%2d.%1d%% dell'immagine è stata letta (%lld settori).\n"
+"%2d.%1d%% dell'immagine è stata letta (%<PRId64> settori).\n"
 
 #: src/read-adaptive-window.c:81
 msgid "Adaptive reading:"
@@ -2939,8 +2944,8 @@ msgstr "Totale recuperabile: %d.%d%%"
 
 #: src/read-linear.c:126
 #, c-format
-msgid "<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."
-msgstr "<span %s>Interrotto da un errore irrecuperabile.</span> %lld settori letti, %lld settori illeggibili/saltati."
+msgid "<span %s>Aborted by unrecoverable error.</span> %<PRId64> sectors read, %<PRId64> sectors unreadable/skipped so far."
+msgstr "<span %s>Interrotto da un errore irrecuperabile.</span> %<PRId64> settori letti, %<PRId64> settori illeggibili/saltati."
 
 #: src/read-linear.c:182
 msgid ""
@@ -2969,8 +2974,8 @@ msgstr "<span %s>Lettura annullata.</span> Prego selezionare un file immagine di
 
 #: src/read-linear.c:388
 #, c-format
-msgid "Completing image %s. Continuing with sector %lld.\n"
-msgstr "Completamento immagine %s. Continuo col settore %lld.\n"
+msgid "Completing image %s. Continuing with sector %<PRId64>.\n"
+msgstr "Completamento immagine %s. Continuo col settore %<PRId64>.\n"
 
 #: src/read-linear.c:396
 #, c-format
@@ -2985,25 +2990,25 @@ msgstr ""
 msgid "done.\n"
 msgstr "compiuto.\n"
 
-#: src/read-linear.c:522 src/scsi-layer.c:2102
+#: src/read-linear.c:522 src/scsi-layer.c:2103
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Attendere %d secondi per far avviare il drive...\n"
 
 #: src/read-linear.c:548 src/read-linear-window.c:104
 #, c-format
-msgid "Unreadable / skipped sectors: %lld"
-msgstr "Settori illeggibili / saltati: %lld"
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr "Settori illeggibili / saltati: %<PRId64>"
 
 #: src/read-linear.c:639
 #, c-format
-msgid "Sector %lld: Speed increased to %4.1fx\n"
-msgstr "Settore %lld: Velocità incrementata a %4.1fx\n"
+msgid "Sector %<PRId64>: Speed increased to %4.1fx\n"
+msgstr "Settore %<PRId64>: Velocità incrementata a %4.1fx\n"
 
 #: src/read-linear.c:642
 #, c-format
-msgid "Sector %lld: Speed dropped to %4.1fx\n"
-msgstr "Settore %lld: Velocità diminuita a %4.1fx\n"
+msgid "Sector %<PRId64>: Speed dropped to %4.1fx\n"
+msgstr "Settore %<PRId64>: Velocità diminuita a %4.1fx\n"
 
 #: src/read-linear.c:648
 #, c-format
@@ -3015,8 +3020,7 @@ msgstr ""
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Settori processati: %3d.%1d%% (%4.1fx)"
 
-#: src/read-linear.c:744 src/rs01-common.c:356 src/rs02-verify.c:797
-#: src/rs03-verify.c:1202
+#: src/read-linear.c:744
 #, c-format
 msgid "* CRC error, sector: %lld\n"
 msgstr "* Errore CRC, Settore : %lld\n"
@@ -3042,36 +3046,28 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/read-linear.c:893 src/rs01-create.c:769 src/rs01-fix.c:219
-#: src/rs01-fix.c:243 src/rs01-fix.c:295 src/rs01-fix.c:332 src/rs01-fix.c:352
-#: src/rs01-fix.c:407 src/rs01-verify.c:457 src/rs01-verify.c:916
-#: src/rs02-create.c:130 src/rs02-fix.c:260 src/rs02-fix.c:281
-#: src/rs02-fix.c:372 src/rs02-verify.c:741 src/rs03-create.c:269
-#: src/rs03-fix.c:278 src/rs03-fix.c:327 src/rs03-fix.c:350 src/rs03-fix.c:429
-#: src/rs03-verify.c:548 src/rs03-verify.c:1096
+#
+#
+#
+#: src/read-linear.c:893 src/read-linear.c:997 src/read-linear.c:1127
 #, c-format
-msgid "<span %s>Aborted by user request!</span>"
-msgstr "<span %s>Annullato dall'utente!</span>"
-
-#: src/read-linear.c:997 src/read-linear.c:1127
-#, c-format
-msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
-msgstr "<span %s>Annullato dall'utente!</span> %lld settori letti, %lld settori illeggibili/saltati.."
+msgid "<span %s>Aborted by user request!</span> %<PRId64> sectors read, %<PRId64> sectors unreadable/skipped so far."
+msgstr "<span %s>Annullato dall'utente!</span> %<PRId64> settori letti, %<PRId64> settori illeggibili/saltati.."
 
 #: src/read-linear.c:1055
 #, c-format
-msgid "unexpected read error in image for sector %lld"
-msgstr "Errore di lettura inatteso nell'immagine per il settore %lld"
+msgid "unexpected read error in image for sector %<PRId64>"
+msgstr "Errore di lettura inatteso nell'immagine per il settore %<PRId64>"
 
 #: src/read-linear.c:1143
 #, c-format
-msgid "Sector %lld: %3d C2 errors.%s\n"
+msgid "Sector %<PRId64>: %3d C2 errors.%s\n"
 msgstr ""
 
 #: src/read-linear.c:1280
 #, c-format
-msgid "Sector %lld: %s Skipping %d sectors.\n"
-msgstr "Settore %lld: %s Salto di %d settori.\n"
+msgid "Sector %<PRId64>: %s Skipping %d sectors.\n"
+msgstr "Settore %<PRId64>: %s Salto di %d settori.\n"
 
 #: src/read-linear.c:1351
 #, c-format
@@ -3089,17 +3085,17 @@ msgstr ""
 
 #: src/read-linear.c:1392
 #, c-format
-msgid "%lld sectors read.     "
-msgstr "%lld settori letti.      "
+msgid "%<PRId64> sectors read.     "
+msgstr "%<PRId64> settori letti.      "
 
 #: src/read-linear.c:1393
 #, c-format
-msgid "%lld sectors read; %lld unreadable sectors."
-msgstr "%lld settori letti; %lld settori illeggibili."
+msgid "%<PRId64> sectors read; %<PRId64> unreadable sectors."
+msgstr "%<PRId64> settori letti; %<PRId64> settori illeggibili."
 
 #: src/read-linear.c:1405
 #, c-format
-msgid "All sectors successfully read, but wrong image length (%lld sectors difference)"
+msgid "All sectors successfully read, but wrong image length (%<PRId64> sectors difference)"
 msgstr ""
 
 #: src/read-linear.c:1411
@@ -3120,23 +3116,23 @@ msgstr "Tutti i settori sono stati letti correttamente."
 
 #: src/read-linear.c:1425
 #, c-format
-msgid "%lld unreadable sectors."
-msgstr "%lld settori illeggibili."
+msgid "%<PRId64> unreadable sectors."
+msgstr "%<PRId64> settori illeggibili."
 
 #: src/read-linear.c:1428
 #, c-format
-msgid "%lld CRC errors and a md5sum mismatch in the CRC section."
+msgid "%<PRId64> CRC errors and a md5sum mismatch in the CRC section."
 msgstr ""
 
 #: src/read-linear.c:1430
 #, c-format
-msgid "%lld CRC errors."
-msgstr "%lld errori CRC."
+msgid "%<PRId64> CRC errors."
+msgstr "%<PRId64> errori CRC."
 
 #: src/read-linear.c:1432
 #, c-format
-msgid "%lld CRC errors, %lld unreadable sectors."
-msgstr "%lld errori CRC, %lld settori illeggibili."
+msgid "%<PRId64> CRC errors, %<PRId64> unreadable sectors."
+msgstr "%<PRId64> errori CRC, %<PRId64> settori illeggibili."
 
 #: src/read-linear.c:1441
 msgid "Scanning finished: "
@@ -3206,7 +3202,7 @@ msgstr "Velocità"
 
 #: src/recover-raw.c:65
 #, c-format
-msgid "Sector %lld dumped to %s\n"
+msgid "Sector %<PRId64> dumped to %s\n"
 msgstr ""
 
 #: src/rs01-common.c:252 src/rs02-verify.c:831 src/rs03-verify.c:1228
@@ -3221,18 +3217,23 @@ msgstr "Scansione dei settori dell'immagine : %3d%%"
 
 #: src/rs01-common.c:308 src/rs02-verify.c:784
 #, c-format
-msgid "* missing sector   : %lld\n"
-msgstr "* Settore mancante  : %lld\n"
+msgid "* missing sector   : %<PRId64>\n"
+msgstr "* Settore mancante  : %<PRId64>\n"
 
 #: src/rs01-common.c:309 src/rs02-verify.c:785
 #, c-format
-msgid "* missing sectors  : %lld - %lld\n"
-msgstr "* Settori mancanti  : %lld - %lld\n"
+msgid "* missing sectors  : %<PRId64> - %<PRId64>\n"
+msgstr "* Settori mancanti  : %<PRId64> - %<PRId64>\n"
 
 #: src/rs01-common.c:327 src/rs01-common.c:399 src/rs01-create.c:343
 #, c-format
 msgid "Error writing CRC information: %s"
 msgstr "Errore di scrittura nelle informazioni CRC: %s"
+
+#: src/rs01-common.c:356 src/rs02-verify.c:797 src/rs03-verify.c:1202
+#, c-format
+msgid "* CRC error, sector: %<PRId64>\n"
+msgstr ""
 
 #: src/rs01-create.c:63
 #, c-format
@@ -3241,8 +3242,8 @@ msgstr "Ridondanza %4.1f%% al di fuori dell'intervallo utilizzabile [3.2%%..64.5
 
 #: src/rs01-create.c:76 src/rs03-common.c:467
 #, c-format
-msgid "Ecc file size %lldm out of useful range [%lld .. %lld]"
-msgstr "La dimensione del file Ecc %lldm è al di fuori dell'intervallo utilizzabile [%lld .. %lld]"
+msgid "Ecc file size %<PRId64>m out of useful range [%<PRId64> .. %<PRId64>]"
+msgstr "La dimensione del file Ecc %<PRId64>m è al di fuori dell'intervallo utilizzabile [%<PRId64> .. %<PRId64>]"
 
 #: src/rs01-create.c:91
 #, c-format
@@ -3321,8 +3322,8 @@ msgstr "<span %s>Annullato dall'utente!</span> (Rimosso file di correzione error
 
 #: src/rs01-create.c:401
 #, c-format
-msgid "%lld sectors unread or missing due to errors.\n"
-msgstr "%lld settori non letti o persi a causa di errori.\n"
+msgid "%<PRId64> sectors unread or missing due to errors.\n"
+msgstr "%<PRId64> settori non letti o persi a causa di errori.\n"
 
 #: src/rs01-create.c:458
 #, c-format
@@ -3342,6 +3343,17 @@ msgstr ""
 #, c-format
 msgid "Ecc generation: %3d.%1d%%"
 msgstr "Generazione Ecc: %3d.%1d%%"
+
+#: src/rs01-create.c:769 src/rs01-fix.c:219 src/rs01-fix.c:243
+#: src/rs01-fix.c:295 src/rs01-fix.c:332 src/rs01-fix.c:352 src/rs01-fix.c:407
+#: src/rs01-verify.c:457 src/rs01-verify.c:916 src/rs02-create.c:130
+#: src/rs02-fix.c:260 src/rs02-fix.c:281 src/rs02-fix.c:372
+#: src/rs02-verify.c:741 src/rs03-create.c:269 src/rs03-fix.c:278
+#: src/rs03-fix.c:327 src/rs03-fix.c:350 src/rs03-fix.c:429
+#: src/rs03-verify.c:548 src/rs03-verify.c:1096
+#, c-format
+msgid "<span %s>Aborted by user request!</span>"
+msgstr "<span %s>Annullato dall'utente!</span>"
 
 #: src/rs01-create.c:1062
 #, c-format
@@ -3441,13 +3453,13 @@ msgstr ""
 #: src/rs01-fix.c:209 src/rs02-fix.c:250 src/rs03-fix.c:317
 #, c-format
 msgid ""
-"Image file is %lld sectors longer than expected.\n"
+"Image file is %<PRId64> sectors longer than expected.\n"
 "Assuming this is a TAO mode medium.\n"
-"%lld sectors will be removed from the image end.\n"
+"%<PRId64> sectors will be removed from the image end.\n"
 msgstr ""
-"Il file immagine è più lungo di %lld settori del previsto.\n"
+"Il file immagine è più lungo di %<PRId64> settori del previsto.\n"
 "Si assume di utilizzare un supporto TAO.\n"
-"%lld Settori saranno tagliati fuori dalla fine dell'immagine.\n"
+"%<PRId64> Settori saranno tagliati fuori dalla fine dell'immagine.\n"
 
 #: src/rs01-fix.c:238 src/rs02-fix.c:276 src/rs03-fix.c:345
 msgid "Is it okay to remove the superfluous sectors?"
@@ -3456,8 +3468,8 @@ msgstr "Tutto OK se rimuovo i settori superflui?"
 #: src/rs01-fix.c:255 src/rs01-fix.c:277 src/rs02-fix.c:290 src/rs02-fix.c:308
 #: src/rs03-fix.c:361 src/rs03-fix.c:381
 #, c-format
-msgid "Image has been truncated by %lld sectors.\n"
-msgstr "L'immagine è stata troncata di %lld settori.\n"
+msgid "Image has been truncated by %<PRId64> sectors.\n"
+msgstr "L'immagine è stata troncata di %<PRId64> settori.\n"
 
 #: src/rs01-fix.c:268 src/rs02-fix.c:302 src/rs03-fix.c:373
 msgid ""
@@ -3541,13 +3553,13 @@ msgstr ""
 
 #: src/rs01-fix.c:727
 #, c-format
-msgid "-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
-msgstr "-> Errore nel settore %lld al Byte %4d (Valore %02x '%c', previsto %02x '%c')\n"
+msgid "-> Error located in sector %<PRId64> at byte %4d (value %02x '%c', expected %02x '%c')\n"
+msgstr "-> Errore nel settore %<PRId64> al Byte %4d (Valore %02x '%c', previsto %02x '%c')\n"
 
 #: src/rs01-fix.c:734
 #, c-format
-msgid "Unexpected byte error in sector %lld, byte %d\n"
-msgstr "Errore di byte inaspettato nel settore %lld, Byte %d\n"
+msgid "Unexpected byte error in sector %<PRId64>, byte %d\n"
+msgstr "Errore di byte inaspettato nel settore %<PRId64>, Byte %d\n"
 
 #: src/rs01-fix.c:740
 #, c-format
@@ -3562,10 +3574,10 @@ msgstr "  %3d Settori riparati: "
 #: src/rs01-fix.c:769 src/rs02-fix.c:794 src/rs03-fix.c:870
 #, c-format
 msgid ""
-"could not write medium sector %lld:\n"
+"could not write medium sector %<PRId64>:\n"
 "%s"
 msgstr ""
-"Impossibile scrivere il settore %lld della periferica:\n"
+"Impossibile scrivere il settore %<PRId64> della periferica:\n"
 "%s"
 
 #: src/rs01-fix.c:798 src/rs02-fix.c:835 src/rs03-fix.c:927
@@ -3580,18 +3592,18 @@ msgstr "Avanzamento Ecc: 100.0%%\n"
 
 #: src/rs01-fix.c:811
 #, c-format
-msgid "Repaired sectors: %lld     \n"
-msgstr "Settori riparati: %lld    \n"
+msgid "Repaired sectors: %<PRId64>     \n"
+msgstr "Settori riparati: %<PRId64>    \n"
 
 #: src/rs01-fix.c:813 src/rs02-fix.c:854 src/rs03-fix.c:944
 #, c-format
-msgid "Unrepaired sectors: %lld\n"
-msgstr "Settori non riparati: %lld\n"
+msgid "Unrepaired sectors: %<PRId64>\n"
+msgstr "Settori non riparati: %<PRId64>\n"
 
 #: src/rs01-fix.c:817 src/rs02-fix.c:858 src/rs03-fix.c:948
 #, c-format
-msgid "Image sectors could not be fully restored (%lld repaired; <span %s>%lld unrepaired</span>)"
-msgstr "I settori dell'immagine non possono essere comopletamente recuperati (%lld riparati; <span %s>%lld non riparati</span>)"
+msgid "Image sectors could not be fully restored (%<PRId64> repaired; <span %s>%<PRId64> unrepaired</span>)"
+msgstr "I settori dell'immagine non possono essere comopletamente recuperati (%<PRId64> riparati; <span %s>%<PRId64> non riparati</span>)"
 
 #: src/rs01-fix.c:824 src/rs02-fix.c:865 src/rs03-fix.c:956
 msgid "Good! All sectors are already present."
@@ -3694,38 +3706,38 @@ msgstr "Non presente\n"
 
 #: src/rs01-verify.c:434 src/rs02-verify.c:620
 #, c-format
-msgid "present, contains %lld medium sectors.\n"
-msgstr "presente, contiene %lld settori della periferica\n"
+msgid "present, contains %<PRId64> medium sectors.\n"
+msgstr "presente, contiene %<PRId64> settori della periferica\n"
 
 #: src/rs01-verify.c:441
 #, c-format
-msgid "present, contains %lld medium sectors and %d bytes.\n"
-msgstr "presente, contiene %lld settori della periferica e %d bytes.\n"
+msgid "present, contains %<PRId64> medium sectors and %d bytes.\n"
+msgstr "presente, contiene %<PRId64> settori della periferica e %d bytes.\n"
 
 #: src/rs01-verify.c:445 src/rs01-verify.c:726 src/rs01-verify.c:749
 #, c-format
-msgid "%lld sectors + %d bytes"
-msgstr "%lld settori + %d bytes"
+msgid "%<PRId64> sectors + %d bytes"
+msgstr "%<PRId64> settori + %d bytes"
 
 #: src/rs01-verify.c:471
 #, c-format
-msgid "* truncated image  : %lld sectors too short\n"
-msgstr "* immagine troncata  : %lld settori troppo corti\n"
+msgid "* truncated image  : %<PRId64> sectors too short\n"
+msgstr "* immagine troncata  : %<PRId64> settori troppo corti\n"
 
 #: src/rs01-verify.c:475
 #, c-format
-msgid "<span %s>%lld (%lld sectors too short)</span>"
-msgstr "<span %s>%lld (%lld settori troppo corti)</span>"
+msgid "<span %s>%<PRId64> (%<PRId64> sectors too short)</span>"
+msgstr "<span %s>%<PRId64> (%<PRId64> settori troppo corti)</span>"
 
 #: src/rs01-verify.c:499
 #, c-format
-msgid "* image too long   : %lld excess sectors\n"
-msgstr "* Immagine troppo lunga: %lld settori in eccesso\n"
+msgid "* image too long   : %<PRId64> excess sectors\n"
+msgstr "* Immagine troppo lunga: %<PRId64> settori in eccesso\n"
 
 #: src/rs01-verify.c:503
 #, c-format
-msgid "<span %s>%lld (%lld excess sectors)</span>"
-msgstr "<span %s>%lld (%lld settori in eccesso)</span>"
+msgid "<span %s>%<PRId64> (%<PRId64> excess sectors)</span>"
+msgstr "<span %s>%<PRId64> (%<PRId64> settori in eccesso)</span>"
 
 #: src/rs01-verify.c:506 src/rs01-verify.c:549
 #, c-format
@@ -3753,10 +3765,10 @@ msgstr "<span %s>Buona immagine.</span>"
 #: src/rs01-verify.c:530
 #, c-format
 msgid ""
-"* suspicious image : all sectors present, but %lld CRC errors\n"
+"* suspicious image : all sectors present, but %<PRId64> CRC errors\n"
 "- image md5sum     : %s\n"
 msgstr ""
-"* Immagine sospetta : tutti i settori presenti, ma ci sono %lld errori CRC\n"
+"* Immagine sospetta : tutti i settori presenti, ma ci sono %<PRId64> errori CRC\n"
 "- Immagine md5sum   : %s\n"
 
 #: src/rs01-verify.c:535
@@ -3766,13 +3778,13 @@ msgstr "<span %s>Immagine completa, ma contiene errori nel checksum!</span>"
 
 #: src/rs01-verify.c:543 src/rs02-verify.c:892
 #, c-format
-msgid "* BAD image        : %lld sectors missing\n"
-msgstr "* Immagine DIFETTOSA: %lld settori mancanti\n"
+msgid "* BAD image        : %<PRId64> sectors missing\n"
+msgstr "* Immagine DIFETTOSA: %<PRId64> settori mancanti\n"
 
 #: src/rs01-verify.c:544 src/rs02-verify.c:896 src/rs03-verify.c:1320
 #, c-format
-msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
-msgstr "* Immagine DIFETTOSA: %lld settori mancanti, %lld errori CRC\n"
+msgid "* BAD image        : %<PRId64> sectors missing, %<PRId64> CRC errors\n"
+msgstr "* Immagine DIFETTOSA: %<PRId64> settori mancanti, %<PRId64> errori CRC\n"
 
 #: src/rs01-verify.c:561 src/rs03-verify.c:1275
 msgid "- Checking ecc file -"
@@ -3844,33 +3856,33 @@ msgstr "<span %s>Vi preghiamo di aggiornare la vostra versione di dvdisaster!</s
 
 #: src/rs01-verify.c:714
 #, c-format
-msgid "- medium sectors   : %lld\n"
-msgstr "* Settori del Media : %lld\n"
+msgid "- medium sectors   : %<PRId64>\n"
+msgstr "* Settori del Media : %<PRId64>\n"
 
 #: src/rs01-verify.c:721
 #, c-format
-msgid "- medium sectors   : %lld sectors + %d bytes\n"
+msgid "- medium sectors   : %<PRId64> sectors + %d bytes\n"
 msgstr ""
 
 #: src/rs01-verify.c:737
 #, c-format
-msgid "- medium sectors   : %lld (good)\n"
-msgstr "- settori del media : %lld (buoni)\n"
+msgid "- medium sectors   : %<PRId64> (good)\n"
+msgstr "- settori del media : %<PRId64> (buoni)\n"
 
 #: src/rs01-verify.c:744
 #, c-format
-msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
-msgstr "- settori del media : %lld settori + %d bytes (buoni)\n"
+msgid "- medium sectors   : %<PRId64> sectors + %d bytes (good)\n"
+msgstr "- settori del media : %<PRId64> settori + %d bytes (buoni)\n"
 
 #: src/rs01-verify.c:758 src/rs02-verify.c:1054
 #, c-format
-msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
-msgstr "* Settori del Media : %lld (Difettosi, probabile incongruenza TAO/DAO)\n"
+msgid "* medium sectors   : %<PRId64> (BAD, perhaps TAO/DAO mismatch)\n"
+msgstr "* Settori del Media : %<PRId64> (Difettosi, probabile incongruenza TAO/DAO)\n"
 
 #: src/rs01-verify.c:771 src/rs02-verify.c:1056
 #, c-format
-msgid "* medium sectors   : %lld (BAD)\n"
-msgstr "* Settori del Media : %lld (Difettosi)\n"
+msgid "* medium sectors   : %<PRId64> (BAD)\n"
+msgstr "* Settori del Media : %<PRId64> (Difettosi)\n"
 
 #: src/rs01-verify.c:777 src/rs01-verify.c:790
 #, c-format
@@ -3879,12 +3891,12 @@ msgstr "<span %s>La dimensione dell'immagine non corrisponde al file di correzio
 
 #: src/rs01-verify.c:782
 #, c-format
-msgid "* medium sectors   : %lld sectors + %d bytes (BAD)\n"
-msgstr "* settori del media : %lld settori + %d bytes (Difettosi)\n"
+msgid "* medium sectors   : %<PRId64> sectors + %d bytes (BAD)\n"
+msgstr "* settori del media : %<PRId64> settori + %d bytes (Difettosi)\n"
 
 #: src/rs01-verify.c:787
 #, c-format
-msgid "<span %s>%lld sectors + %d bytes</span>"
+msgid "<span %s>%<PRId64> sectors + %d bytes</span>"
 msgstr ""
 
 #: src/rs01-verify.c:804
@@ -3941,18 +3953,18 @@ msgstr ""
 
 #: src/rs01-verify.c:869
 #, c-format
-msgid "- ecc blocks       : %lld (good)\n"
-msgstr "- Blocchi Ecc       : %lld (buoni)\n"
+msgid "- ecc blocks       : %<PRId64> (good)\n"
+msgstr "- Blocchi Ecc       : %<PRId64> (buoni)\n"
 
 #: src/rs01-verify.c:876
 #, c-format
-msgid "* ecc blocks       : %lld (BAD, expected %lld)\n"
-msgstr "* Blocchi Ecc       : %lld (Difettosi, atteso: %lld)\n"
+msgid "* ecc blocks       : %<PRId64> (BAD, expected %<PRId64>)\n"
+msgstr "* Blocchi Ecc       : %<PRId64> (Difettosi, atteso: %<PRId64>)\n"
 
 #: src/rs01-verify.c:879
 #, c-format
-msgid "<span %s>%lld (bad, expected %lld)</span>"
-msgstr "<span %s>%lld (difettosi, atteso: %lld)</span>"
+msgid "<span %s>%<PRId64> (bad, expected %<PRId64>)</span>"
+msgstr "<span %s>%<PRId64> (difettosi, atteso: %<PRId64>)</span>"
 
 #: src/rs01-verify.c:905
 #, c-format
@@ -3993,13 +4005,13 @@ msgstr "Mostra la curva di velocità di lettura"
 
 #: src/rs01-window.c:203 src/rs02-window.c:141 src/rs03-window.c:174
 #, c-format
-msgid "Repaired: %lld"
-msgstr "Riparato: %lld"
+msgid "Repaired: %<PRId64>"
+msgstr "Riparato: %<PRId64>"
 
 #: src/rs01-window.c:204 src/rs02-window.c:142 src/rs03-window.c:175
 #, c-format
-msgid "Unrepairable: <span %s>%lld</span>"
-msgstr "Non riparabile: <span %s>%lld</span> "
+msgid "Unrepairable: <span %s>%<PRId64></span>"
+msgstr "Non riparabile: <span %s>%<PRId64></span> "
 
 #: src/rs01-window.c:205 src/rs02-window.c:143 src/rs03-window.c:176
 #, c-format
@@ -4121,12 +4133,12 @@ msgstr ""
 #: src/rs02-common.c:580 src/rs02-common.c:592 src/rs02-verify.c:649
 #: src/rs03-common.c:643
 #, c-format
-msgid "Failed seeking to ecc header at %lld: %s\n"
+msgid "Failed seeking to ecc header at %<PRId64>: %s\n"
 msgstr ""
 
 #: src/rs02-common.c:584 src/rs02-common.c:596 src/rs03-common.c:647
 #, c-format
-msgid "Failed writing ecc header at %lld: %s\n"
+msgid "Failed writing ecc header at %<PRId64>: %s\n"
 msgstr ""
 
 #: src/rs02-create.c:122 src/rs03-create.c:261
@@ -4138,7 +4150,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Image \"%s\" already contains error correction information.\n"
-"Truncating image to data part (%lld sectors).\n"
+"Truncating image to data part (%<PRId64> sectors).\n"
 msgstr ""
 
 #: src/rs02-create.c:173 src/rs03-create.c:347
@@ -4155,7 +4167,7 @@ msgstr ""
 #: src/rs02-create.c:240
 #, c-format
 msgid ""
-"Sector %lld in the image is marked unreadable\n"
+"Sector %<PRId64> in the image is marked unreadable\n"
 "and seems to come from a different medium.\n"
 "\n"
 "The image was probably mastered from defective content.\n"
@@ -4207,21 +4219,21 @@ msgstr ""
 
 #: src/rs02-create.c:1118
 #, c-format
-msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
-msgstr "Sto codificando con il Metodo RS02: %lld MiB dati, %lld MiB ecc (%d Radici, %4.1f%% Ridondanza)."
+msgid "Encoding with Method RS02: %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
+msgstr "Sto codificando con il Metodo RS02: %<PRId64> MiB dati, %<PRId64> MiB ecc (%d Radici, %4.1f%% Ridondanza)."
 
 #: src/rs02-create.c:1127
 #, c-format
 msgid ""
 "Augmenting image with Method RS02:\n"
-" %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+" %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs02-create.c:1136
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
-"Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+"Data portion of image: %<PRId64> sect.; maximum possible size: %<PRId64> sect.\n"
 "If reducing the image size or using a larger medium is\n"
 "not an option, please create a separate error correction file."
 msgstr ""
@@ -4229,7 +4241,7 @@ msgstr ""
 #: src/rs02-create.c:1146 src/rs03-create.c:1409
 #, c-format
 msgid ""
-"Using redundancies below 20%% may not give\n"
+"Using redundancies below 20% may not give\n"
 "the expected data loss protection.\n"
 msgstr ""
 
@@ -4238,7 +4250,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Image has been augmented with error correction data.\n"
-"New image size is %lld MiB (%lld sectors).\n"
+"New image size is %<PRId64> MiB (%<PRId64> sectors).\n"
 msgstr ""
 
 #: src/rs02-fix.c:119 src/rs02-fix.c:130 src/rs03-fix.c:122 src/rs03-fix.c:133
@@ -4268,8 +4280,8 @@ msgstr ""
 
 #: src/rs02-fix.c:499 src/rs03-fix.c:559
 #, c-format
-msgid "* Ecc block %lld: %3d unrepairable sectors: "
-msgstr "* Blocchi Ecc %lld: %3d settori non riparabili: "
+msgid "* Ecc block %<PRId64>: %3d unrepairable sectors: "
+msgstr "* Blocchi Ecc %<PRId64>: %3d settori non riparabili: "
 
 #: src/rs02-fix.c:721
 #, c-format
@@ -4283,8 +4295,8 @@ msgstr ""
 
 #: src/rs02-fix.c:851 src/rs03-fix.c:941
 #, c-format
-msgid "Repaired sectors: %lld (%lld data, %lld ecc)\n"
-msgstr "Settori riparati: %lld (%lld dati, %lld ecc)\n"
+msgid "Repaired sectors: %<PRId64> (%<PRId64> data, %<PRId64> ecc)\n"
+msgstr "Settori riparati: %<PRId64> (%<PRId64> dati, %<PRId64> ecc)\n"
 
 #: src/rs02-recognize.c:50
 msgid "Skip RS02 test"
@@ -4343,7 +4355,7 @@ msgstr ""
 
 #: src/rs02-verify.c:515 src/rs03-verify.c:460
 #, c-format
-msgid "- prognosis        : %lld of %lld sectors recoverable (%d.%d%%)\n"
+msgid "- prognosis        : %<PRId64> of %<PRId64> sectors recoverable (%d.%d%%)\n"
 msgstr ""
 
 #: src/rs02-verify.c:522 src/rs03-verify.c:465
@@ -4361,7 +4373,7 @@ msgstr ""
 
 #: src/rs02-verify.c:531 src/rs03-verify.c:474
 #, c-format
-msgid "<span %s>%lld of %lld sectors recoverable (%d.%d%%)</span>"
+msgid "<span %s>%<PRId64> of %<PRId64> sectors recoverable (%d.%d%%)</span>"
 msgstr ""
 
 #: src/rs02-verify.c:593 src/rs03-verify.c:700
@@ -4378,35 +4390,35 @@ msgstr ""
 
 #: src/rs02-verify.c:631 src/rs03-verify.c:1041
 #, c-format
-msgid "<span %s>Image file is %lld sectors shorter than expected.</span>"
+msgid "<span %s>Image file is %<PRId64> sectors shorter than expected.</span>"
 msgstr ""
 
 #: src/rs02-verify.c:632 src/rs03-verify.c:1044
 #, c-format
-msgid "<span %s>Image file is %lld sectors longer than expected.</span>"
+msgid "<span %s>Image file is %<PRId64> sectors longer than expected.</span>"
 msgstr ""
 
 #: src/rs02-verify.c:653
 #, c-format
-msgid "Failed reading ecc header at %lld: %s\n"
+msgid "Failed reading ecc header at %<PRId64>: %s\n"
 msgstr ""
 
 #: src/rs02-verify.c:697
 #, c-format
-msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
-msgstr "<span %s>%lld ok, %lld errori CRC, %lld mancanti</span>"
+msgid "<span %s>%<PRId64> ok, %<PRId64> CRC errors, %<PRId64> missing</span>"
+msgstr "<span %s>%<PRId64> ok, %<PRId64> errori CRC, %<PRId64> mancanti</span>"
 
 #: src/rs02-verify.c:837 src/rs02-verify.c:860 src/rs03-verify.c:1247
 #: src/rs03-verify.c:1290
 #, c-format
-msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
-msgstr "<span %s>%lld settori mancanti, %lld errori CRC</span>"
+msgid "<span %s>%<PRId64> sectors missing; %<PRId64> CRC errors</span>"
+msgstr "<span %s>%<PRId64> settori mancanti, %<PRId64> errori CRC</span>"
 
 #: src/rs02-verify.c:841 src/rs02-verify.c:845 src/rs02-verify.c:864
 #: src/rs02-verify.c:868 src/rs03-verify.c:1255 src/rs03-verify.c:1298
 #, c-format
-msgid "<span %s>%lld sectors missing</span>"
-msgstr "<span %s>%lld settori mancanti</span>"
+msgid "<span %s>%<PRId64> sectors missing</span>"
+msgstr "<span %s>%<PRId64> settori mancanti</span>"
 
 #: src/rs02-verify.c:883
 #, c-format
@@ -4423,17 +4435,17 @@ msgstr ""
 
 #: src/rs02-verify.c:894 src/rs03-verify.c:1317
 #, c-format
-msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
-msgstr "* Immagine sospetta : tutti i settori presenti, ma ci sono %lld errori CRC\n"
+msgid "* suspicious image : all sectors present, but %<PRId64> CRC errors\n"
+msgstr "* Immagine sospetta : tutti i settori presenti, ma ci sono %<PRId64> errori CRC\n"
 
 #: src/rs02-verify.c:900
 #, c-format
-msgid "  ... ecc headers    : %lld ok, %lld CRC errors, %lld missing\n"
+msgid "  ... ecc headers    : %<PRId64> ok, %<PRId64> CRC errors, %<PRId64> missing\n"
 msgstr ""
 
 #: src/rs02-verify.c:902 src/rs03-verify.c:1323
 #, c-format
-msgid "  ... data section   : %lld sectors missing; %lld CRC errors\n"
+msgid "  ... data section   : %<PRId64> sectors missing; %<PRId64> CRC errors\n"
 msgstr ""
 
 #: src/rs02-verify.c:905 src/rs03-verify.c:1326
@@ -4443,12 +4455,12 @@ msgstr "  ... dati md5sum    : %s\n"
 
 #: src/rs02-verify.c:906 src/rs03-verify.c:1332
 #, c-format
-msgid "  ... crc section    : %lld sectors missing\n"
+msgid "  ... crc section    : %<PRId64> sectors missing\n"
 msgstr ""
 
 #: src/rs02-verify.c:907 src/rs03-verify.c:1334
 #, c-format
-msgid "  ... ecc section    : %lld sectors missing\n"
+msgid "  ... ecc section    : %<PRId64> sectors missing\n"
 msgstr ""
 
 #: src/rs02-verify.c:930 src/rs03-verify.c:1392
@@ -4468,7 +4480,7 @@ msgstr ""
 
 #: src/rs02-verify.c:1043
 #, c-format
-msgid "- medium sectors   : %lld / %lld (good)\n"
+msgid "- medium sectors   : %<PRId64> / %<PRId64> (good)\n"
 msgstr ""
 
 #: src/rs02-verify.c:1063
@@ -4723,7 +4735,7 @@ msgstr ""
 
 #: src/rs03-common.c:525
 #, c-format
-msgid "Medium size smaller than image size (%lld < %lld)"
+msgid "Medium size smaller than image size (%<PRId64> < %<PRId64>)"
 msgstr ""
 
 #: src/rs03-create.c:434
@@ -4752,7 +4764,7 @@ msgid ""
 "Incomplete image\n"
 "\n"
 "The image contains missing sectors,\n"
-"e.g. sector %lld.\n"
+"e.g. sector %<PRId64>.\n"
 "%sError correction data works like a backup; it must\n"
 "be created when the image is still fully readable.\n"
 "Exiting and removing partial error correction data."
@@ -4786,28 +4798,28 @@ msgstr ""
 
 #: src/rs03-create.c:1364
 #, c-format
-msgid "Encoding with Method RS03: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+msgid "Encoding with Method RS03: %<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs03-create.c:1383
 #, c-format
 msgid ""
 "Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
-"%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+"%<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs03-create.c:1388
 #, c-format
 msgid ""
 "Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
-"%lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+"%<PRId64> MiB data, %<PRId64> MiB ecc (%d roots; %4.1f%% redundancy)."
 msgstr ""
 
 #: src/rs03-create.c:1399
 #, c-format
 msgid ""
 "Not enough space on medium left for error correction data.\n"
-"Data portion of image: %lld sect.; maximum possible size: %lld sect.\n"
+"Data portion of image: %<PRId64> sect.; maximum possible size: %<PRId64> sect.\n"
 "If reducing the image size or using a larger medium is not\n"
 "an option, please create a separate error correction file."
 msgstr ""
@@ -4859,13 +4871,13 @@ msgstr ""
 
 #: src/rs03-fix.c:881
 #, c-format
-msgid "Failed seeking to sector %lld in ecc file [%s]: %s"
+msgid "Failed seeking to sector %<PRId64> in ecc file [%s]: %s"
 msgstr ""
 
 #: src/rs03-fix.c:886
 #, c-format
 msgid ""
-"could not write ecc file sector %lld:\n"
+"could not write ecc file sector %<PRId64>:\n"
 "%s"
 msgstr ""
 
@@ -5021,6 +5033,16 @@ msgid ""
 "Available extensions are SSE2 for x86 based processors and AltiVec on PowerPC processors. These extensions encode with 128bit wide operations and will usually provide the fastest encoding variant. If \"auto\" is selected, the SSE2/AltiVec algorithms will be selected if the processor supports them; otherwise the 64bit algorithm will be used."
 msgstr ""
 
+#: src/rs03-recognize.c:555
+#, c-format
+msgid "Failed seeking to sector %lld in image: %s"
+msgstr ""
+
+#: src/rs03-recognize.c:560
+#, c-format
+msgid "Failed reading sector %lld in image: %s"
+msgstr ""
+
 #: src/rs03-verify.c:193
 msgid "Error correction properties"
 msgstr ""
@@ -5066,12 +5088,12 @@ msgstr ""
 
 #: src/rs03-verify.c:620
 #, c-format
-msgid "<span %s>%lld good, %lld bad; %d%% tested</span>"
+msgid "<span %s>%<PRId64> good, %<PRId64> bad; %d%% tested</span>"
 msgstr ""
 
 #: src/rs03-verify.c:623
 #, c-format
-msgid "* Ecc block test   : %lld good, %lld bad; %d%% tested"
+msgid "* Ecc block test   : %<PRId64> good, %<PRId64> bad; %d%% tested"
 msgstr ""
 
 #: src/rs03-verify.c:635
@@ -5084,12 +5106,12 @@ msgstr ""
 
 #: src/rs03-verify.c:645
 #, c-format
-msgid "<span %s>%lld good, %lld bad; %lld bad sub blocks</span>"
+msgid "<span %s>%<PRId64> good, %<PRId64> bad; %<PRId64> bad sub blocks</span>"
 msgstr ""
 
 #: src/rs03-verify.c:648
 #, c-format
-msgid "* Ecc block test   : %lld good, %lld bad; %lld bad sub blocks\n"
+msgid "* Ecc block test   : %<PRId64> good, %<PRId64> bad; %<PRId64> bad sub blocks\n"
 msgstr ""
 
 #: src/rs03-verify.c:740
@@ -5105,12 +5127,12 @@ msgstr ""
 
 #: src/rs03-verify.c:772
 #, c-format
-msgid "Ecc file is %lld sectors shorter than expected."
+msgid "Ecc file is %<PRId64> sectors shorter than expected."
 msgstr ""
 
 #: src/rs03-verify.c:774
 #, c-format
-msgid "Ecc file is %lld sectors longer than expected."
+msgid "Ecc file is %<PRId64> sectors longer than expected."
 msgstr ""
 
 #: src/rs03-verify.c:782
@@ -5163,37 +5185,37 @@ msgstr ""
 
 #: src/rs03-verify.c:991
 #, c-format
-msgid "%lld in image; %lld in ecc file"
+msgid "%<PRId64> in image; %<PRId64> in ecc file"
 msgstr ""
 
 #: src/rs03-verify.c:994
 #, c-format
-msgid "%lld sectors + %d bytes in image; %lld in ecc file"
+msgid "%<PRId64> sectors + %d bytes in image; %<PRId64> in ecc file"
 msgstr ""
 
 #: src/rs03-verify.c:1000
 #, c-format
-msgid "- sectors          : %lld in image; "
+msgid "- sectors          : %<PRId64> in image; "
 msgstr ""
 
 #: src/rs03-verify.c:1001
 #, c-format
-msgid "- sectors          : %lld sectors + %d bytes in image; "
+msgid "- sectors          : %<PRId64> sectors + %d bytes in image; "
 msgstr ""
 
 #: src/rs03-verify.c:1003
 #, c-format
-msgid "%lld in ecc file\n"
+msgid "%<PRId64> in ecc file\n"
 msgstr ""
 
 #: src/rs03-verify.c:1009
 #, c-format
-msgid "%lld total / %lld data"
+msgid "%<PRId64> total / %<PRId64> data"
 msgstr ""
 
 #: src/rs03-verify.c:1012
 #, c-format
-msgid "- medium sectors   : %lld total / %lld data\n"
+msgid "- medium sectors   : %<PRId64> total / %<PRId64> data\n"
 msgstr ""
 
 #: src/rs03-verify.c:1029
@@ -5213,7 +5235,7 @@ msgstr ""
 
 #: src/rs03-verify.c:1050
 #, c-format
-msgid "* sectors          : %s (%s expected); %lld sectors in ecc file\n"
+msgid "* sectors          : %s (%s expected); %<PRId64> sectors in ecc file\n"
 msgstr ""
 
 #: src/rs03-verify.c:1053
@@ -5232,17 +5254,17 @@ msgstr ""
 
 #: src/rs03-verify.c:1185
 #, c-format
-msgid "* missing sector   : %lld%s\n"
+msgid "* missing sector   : %<PRId64>%s\n"
 msgstr ""
 
 #: src/rs03-verify.c:1186
 #, c-format
-msgid "* missing sectors  : %lld - %lld%s\n"
+msgid "* missing sectors  : %<PRId64> - %<PRId64>%s\n"
 msgstr ""
 
 #: src/rs03-verify.c:1251 src/rs03-verify.c:1294
 #, c-format
-msgid "<span %s>%lld sectors missing; %lld signature errors</span>"
+msgid "<span %s>%<PRId64> sectors missing; %<PRId64> signature errors</span>"
 msgstr ""
 
 #: src/rs03-verify.c:1277
@@ -5258,12 +5280,12 @@ msgstr ""
 
 #: src/rs03-verify.c:1315
 #, c-format
-msgid "* BAD image/file   : %lld sectors missing\n"
+msgid "* BAD image/file   : %<PRId64> sectors missing\n"
 msgstr ""
 
 #: src/rs03-verify.c:1329
 #, c-format
-msgid "  ... crc section    : %lld sectors missing; %lld signature errors\n"
+msgid "  ... crc section    : %<PRId64> sectors missing; %<PRId64> signature errors\n"
 msgstr ""
 
 #: src/rs03-verify.c:1362
@@ -5427,7 +5449,7 @@ msgstr ""
 
 #: src/scsi-layer.c:697 src/scsi-layer.c:707
 #, c-format
-msgid "READ DVD STRUCTURE: implausible medium size, %lld-%lld=%lld sectors\n"
+msgid "READ DVD STRUCTURE: implausible medium size, %<PRId64>-%<PRId64>=%<PRId64> sectors\n"
 msgstr ""
 
 #: src/scsi-layer.c:976
@@ -5496,20 +5518,20 @@ msgstr ""
 
 #: src/scsi-layer.c:1856
 #, c-format
-msgid "READ CAPACITY: implausible medium size, %lld sectors\n"
+msgid "READ CAPACITY: implausible medium size, %<PRId64> sectors\n"
 msgstr ""
 
 #: src/scsi-layer.c:1932
 #, c-format
 msgid ""
 "Different media sizes depending on query method:\n"
-"READ CAPACITY:      %lld sectors\n"
-"READ DVD STRUCTURE: %lld sectors\n"
+"READ CAPACITY:      %<PRId64> sectors\n"
+"READ DVD STRUCTURE: %<PRId64> sectors\n"
 "\n"
 msgstr ""
 "Differenti dimensioni di supporti a seconda del metodo di query:\n"
-"\"READ CAPACITY\"     : %lld Settori\n"
-"\"READ DVD STRUCTURE\": %lld Settori\n"
+"\"READ CAPACITY\"     : %<PRId64> Settori\n"
+"\"READ DVD STRUCTURE\": %<PRId64> Settori\n"
 "\n"
 
 #: src/scsi-layer.c:1937
@@ -5557,51 +5579,51 @@ msgstr ""
 "Impossibile determinare la dimensione dell'immagine.\n"
 "Provare ad utilizzare un drive diverso."
 
-#: src/scsi-layer.c:2145 src/scsi-layer.c:2171
+#: src/scsi-layer.c:2146 src/scsi-layer.c:2172
 #, c-format
 msgid ""
 "%s\n"
 "Could not load/unload the medium.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2161
+#: src/scsi-layer.c:2162
 #, c-format
 msgid ""
 "%s\n"
 "Could not unlock the medium.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2227
+#: src/scsi-layer.c:2228
 #, c-format
 msgid "Waiting 10 seconds for drive: %d\n"
 msgstr ""
 
-#: src/scsi-layer.c:2510
+#: src/scsi-layer.c:2511
 #, c-format
-msgid "Sectors %lld - %lld: %s\n"
+msgid "Sectors %<PRId64> - %<PRId64>: %s\n"
 msgstr ""
 
-#: src/scsi-layer.c:2524
+#: src/scsi-layer.c:2525
 #, c-format
-msgid "Sector %lld, try %d: %s Sector returned: %d.\n"
+msgid "Sector %<PRId64>, try %d: %s Sector returned: %d.\n"
 msgstr ""
 
-#: src/scsi-layer.c:2530
+#: src/scsi-layer.c:2531
 #, c-format
-msgid "Sector %lld, try %d: %s\n"
+msgid "Sector %<PRId64>, try %d: %s\n"
 msgstr ""
 
-#: src/scsi-layer.c:2541
+#: src/scsi-layer.c:2542
 #, c-format
-msgid "Sector %lld, try %d: success\n"
+msgid "Sector %<PRId64>, try %d: success\n"
 msgstr ""
 
-#: src/scsi-layer.c:2612
+#: src/scsi-layer.c:2614
 #, c-format
 msgid "Device %s: no medium present\n"
 msgstr ""
 
-#: src/scsi-layer.c:2617
+#: src/scsi-layer.c:2619
 #, c-format
 msgid ""
 "Device %s does not become ready:\n"
@@ -5609,7 +5631,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scsi-layer.c:2623
+#: src/scsi-layer.c:2625
 #, c-format
 msgid ""
 "\n"
@@ -5618,50 +5640,50 @@ msgstr ""
 "\n"
 "Periferica: %s, %s\n"
 
-#: src/scsi-layer.c:2630
+#: src/scsi-layer.c:2632
 msgid "Drive failed to report media type."
 msgstr ""
 
-#: src/scsi-layer.c:2641 src/scsi-layer.c:2739
+#: src/scsi-layer.c:2647 src/scsi-layer.c:2753
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr ""
 
-#: src/scsi-layer.c:2649
+#: src/scsi-layer.c:2655
 #, c-format
 msgid "This software does not support multisession (%d sessions) media."
 msgstr ""
 
-#: src/scsi-layer.c:2680 src/scsi-layer.c:2689
+#: src/scsi-layer.c:2686 src/scsi-layer.c:2695
 msgid "Using READ CD"
 msgstr ""
 
-#: src/scsi-layer.c:2681
+#: src/scsi-layer.c:2687
 msgid ", RAW reading"
 msgstr ""
 
-#: src/scsi-layer.c:2684
+#: src/scsi-layer.c:2690
 #, c-format
 msgid ", Mode page 1 ERP = %02xh"
 msgstr ""
 
-#: src/scsi-layer.c:2687
+#: src/scsi-layer.c:2693
 msgid ", C2 scanning"
 msgstr ""
 
-#: src/scsi-layer.c:2694
+#: src/scsi-layer.c:2700
 msgid "Using READ(10).\n"
 msgstr ""
 
-#: src/scsi-layer.c:2716
+#: src/scsi-layer.c:2730
 #, c-format
-msgid "Medium: %s, %lld sectors%s"
-msgstr "Supporto: %s, %lld settori%s"
+msgid "Medium: %s, %<PRId64> sectors%s"
+msgstr "Supporto: %s, %<PRId64> settori%s"
 
-#: src/scsi-layer.c:2720
+#: src/scsi-layer.c:2734
 #, c-format
-msgid "Medium \"%s\": %s, %lld sectors%s created %s"
-msgstr "Supporto \"%s\": %s, %lld settori%s creato %s"
+msgid "Medium \"%s\": %s, %<PRId64> sectors%s created %s"
+msgstr "Supporto \"%s\": %s, %<PRId64> settori%s creato %s"
 
 #: src/scsi-netbsd.c:103
 msgid ""
@@ -5774,11 +5796,10 @@ msgstr ""
 
 #: src/welcome-window.c:82
 msgid ""
-"<b>Unofficial version.</b>\n"
-"\n"
 "The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
 "We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
 "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
+"\n"
 "Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 "The warning message from the pre-release version is retained below.\n"
 msgstr ""
@@ -5816,6 +5837,327 @@ msgstr ""
 #: src/welcome-window.c:151
 msgid "<i>New in this Version:</i>"
 msgstr ""
+
+#~ msgid "Sector must be in range [0..%lld]\n"
+#~ msgstr "I Settori devono rientrare nell'intervallo [0..%lld]\n"
+
+#~ msgid "Setting byte %d in sector %lld to value %d.\n"
+#~ msgstr "Settaggio del byte %d nel settore %lld al valore %d.\n"
+
+#~ msgid "Sectors must be in range [0..%lld].\n"
+#~ msgstr "I settori devi rientrare nell'intervallo [0..%lld].\n"
+
+#~ msgid "Erasing sectors [%lld,%lld]\n"
+#~ msgstr "Cancellazione settori [%lld,%lld]\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Creating random image with %lld sectors.\n"
+#~ "\n"
+#~ "There is no need for permanently storing this image;\n"
+#~ "you can always reproduce it by calling\n"
+#~ "dvdisaster --debug %s %lld --random-seed %d\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Creazione dell'immagine random con %lld settori.\n"
+#~ "\n"
+#~ "Non c'è alcun bisogno di archiviare permanentemente questa immagine;\n"
+#~ "La puoi sempre riprodurre con una chiamata\n"
+#~ "dvdisaster --debug %s %lld --random-seed %d\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Could not read image sector %lld:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "Impossibile leggere il settore %lld dell'immagine:\n"
+#~ "%s\n"
+
+#~ msgid "%lld \"unreadable sector\" markers replaced.\n"
+#~ msgstr "%lld marcatori \"unreadable sector\" sostituiti.\n"
+
+#~ msgid ""
+#~ "Contents of sector %lld:\n"
+#~ "\n"
+#~ msgstr "Contenuto del settore %lld:\n"
+
+#~ msgid ": %lld medium sectors.\n"
+#~ msgstr ": %lld settori del supporto.\n"
+
+#~ msgid ": %lld medium sectors and %d bytes.\n"
+#~ msgstr ": %lld settori del supporto e %d bytes.\n"
+
+#~ msgid "Repairable: %2d.%1d%% (correctable: %lld; now reading [%lld..%lld], size %lld)"
+#~ msgstr "Riparabili: %2d.%1d%% (correggibili: %lld; leggi [%lld..%lld], dimensione %lld)"
+
+#~ msgid "Repairable: %2d.%1d%% (missing: %lld; now reading [%lld..%lld], size %lld)"
+#~ msgstr "Riparabili: %2d.%1d%% (mancante: %lld; leggi [%lld..%lld], dimensione %lld)"
+
+#~ msgid ""
+#~ "Medium contains %lld sectors more as recorded in the .ecc file\n"
+#~ "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+#~ "Only the first %lld medium sectors will be processed.\n"
+#~ msgstr ""
+#~ "Il supporto contiene %lld settori in più rispetto a quelli\n"
+#~ "registrati nel file .ecc\n"
+#~ "(Supporto: %lld settori; attesi dal file .ecc: %lld settori).\n"
+#~ "Solo i primi %lld settori del supporto saranno processati.\n"
+
+#~ msgid ""
+#~ "Medium contains %lld sectors less as recorded in the .ecc file\n"
+#~ "(Medium: %lld sectors; expected from .ecc file: %lld sectors).\n"
+#~ msgstr ""
+#~ "Il supporto contiene %lld settori in meno rispetto a quelli\n"
+#~ "registrati nel file .ecc\n"
+#~ "(Supporto: %lld settori; attesi dal file .ecc: %lld settori).\n"
+
+#~ msgid "Limiting sector range to [%lld,%lld].\n"
+#~ msgstr "Limitazione ampiezza dei settori [%lld,%lld].\n"
+
+#~ msgid ""
+#~ "Image file is %lld sectors longer than inserted medium\n"
+#~ "(Image file: %lld sectors; medium: %lld sectors).\n"
+#~ msgstr ""
+#~ "Il file immagine è %lld settori più lungo del supporto inserito\n"
+#~ "(File immagine: %lld sectors; supporto: %lld sectors).\n"
+
+#~ msgid "Analysing existing image file: %lld readable, %lld correctable, %lld still missing.\n"
+#~ msgstr "Analizzo il file immagine esistente: %lld leggibile, %lld correggibili, %lld ancora mancanti.\n"
+
+#~ msgid "Analysing existing image file: %lld readable, %lld still missing.\n"
+#~ msgstr "Analizzo il file immagine esistente: %lld leggibile, %lld ancora mancanti.\n"
+
+#~ msgid "Filling image area [%lld..%lld]"
+#~ msgstr "Riempio l'area immagine [%lld..%lld]"
+
+#~ msgid ""
+#~ "Sector %lld: %s\n"
+#~ "\n"
+#~ "It may not be possible to recover from this error.\n"
+#~ "Should the reading continue and ignore this error?"
+#~ msgstr ""
+#~ "Settore %lld: %s\n"
+#~ "\n"
+#~ "Potrebbe non essere possibile recuperare questo errore.\n"
+#~ "La lettura deve procedere ignorando questo errore?"
+
+#~ msgid "CRC error in sector %lld\n"
+#~ msgstr "Errore CRC nel settore %lld\n"
+
+#~ msgid "Sectors %lld-%lld: %s\n"
+#~ msgstr "Settori %lld-%lld: %s\n"
+
+#~ msgid "Sector %lld: %s\n"
+#~ msgstr "Settore %lld: %s\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s\n"
+#~ "(%lld readable,  %lld correctable,  %lld still missing).\n"
+#~ msgstr ""
+#~ "\n"
+#~ "%s\n"
+#~ "(%lld leggibile, %lld correggibili, %lld ancora mancanti).\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "%s\n"
+#~ "%2d.%1d%% of the image have been read (%lld sectors).\n"
+#~ msgstr ""
+#~ "\n"
+#~ "%s\n"
+#~ "%2d.%1d%% dell'immagine è stata letta (%lld settori).\n"
+
+#~ msgid "<span %s>Aborted by unrecoverable error.</span> %lld sectors read, %lld sectors unreadable/skipped so far."
+#~ msgstr "<span %s>Interrotto da un errore irrecuperabile.</span> %lld settori letti, %lld settori illeggibili/saltati."
+
+#~ msgid "Completing image %s. Continuing with sector %lld.\n"
+#~ msgstr "Completamento immagine %s. Continuo col settore %lld.\n"
+
+#~ msgid "Unreadable / skipped sectors: %lld"
+#~ msgstr "Settori illeggibili / saltati: %lld"
+
+#~ msgid "Sector %lld: Speed increased to %4.1fx\n"
+#~ msgstr "Settore %lld: Velocità incrementata a %4.1fx\n"
+
+#~ msgid "Sector %lld: Speed dropped to %4.1fx\n"
+#~ msgstr "Settore %lld: Velocità diminuita a %4.1fx\n"
+
+#~ msgid "<span %s>Aborted by user request!</span> %lld sectors read, %lld sectors unreadable/skipped so far."
+#~ msgstr "<span %s>Annullato dall'utente!</span> %lld settori letti, %lld settori illeggibili/saltati.."
+
+#~ msgid "unexpected read error in image for sector %lld"
+#~ msgstr "Errore di lettura inatteso nell'immagine per il settore %lld"
+
+#~ msgid "Sector %lld: %s Skipping %d sectors.\n"
+#~ msgstr "Settore %lld: %s Salto di %d settori.\n"
+
+#~ msgid "%lld sectors read.     "
+#~ msgstr "%lld settori letti.      "
+
+#~ msgid "%lld sectors read; %lld unreadable sectors."
+#~ msgstr "%lld settori letti; %lld settori illeggibili."
+
+#~ msgid "%lld unreadable sectors."
+#~ msgstr "%lld settori illeggibili."
+
+#~ msgid "%lld CRC errors."
+#~ msgstr "%lld errori CRC."
+
+#~ msgid "%lld CRC errors, %lld unreadable sectors."
+#~ msgstr "%lld errori CRC, %lld settori illeggibili."
+
+#~ msgid "* missing sector   : %lld\n"
+#~ msgstr "* Settore mancante  : %lld\n"
+
+#~ msgid "* missing sectors  : %lld - %lld\n"
+#~ msgstr "* Settori mancanti  : %lld - %lld\n"
+
+#~ msgid "Ecc file size %lldm out of useful range [%lld .. %lld]"
+#~ msgstr "La dimensione del file Ecc %lldm è al di fuori dell'intervallo utilizzabile [%lld .. %lld]"
+
+#~ msgid "%lld sectors unread or missing due to errors.\n"
+#~ msgstr "%lld settori non letti o persi a causa di errori.\n"
+
+#~ msgid ""
+#~ "Image file is %lld sectors longer than expected.\n"
+#~ "Assuming this is a TAO mode medium.\n"
+#~ "%lld sectors will be removed from the image end.\n"
+#~ msgstr ""
+#~ "Il file immagine è più lungo di %lld settori del previsto.\n"
+#~ "Si assume di utilizzare un supporto TAO.\n"
+#~ "%lld Settori saranno tagliati fuori dalla fine dell'immagine.\n"
+
+#~ msgid "Image has been truncated by %lld sectors.\n"
+#~ msgstr "L'immagine è stata troncata di %lld settori.\n"
+
+#~ msgid "-> Error located in sector %lld at byte %4d (value %02x '%c', expected %02x '%c')\n"
+#~ msgstr "-> Errore nel settore %lld al Byte %4d (Valore %02x '%c', previsto %02x '%c')\n"
+
+#~ msgid "Unexpected byte error in sector %lld, byte %d\n"
+#~ msgstr "Errore di byte inaspettato nel settore %lld, Byte %d\n"
+
+#~ msgid ""
+#~ "could not write medium sector %lld:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossibile scrivere il settore %lld della periferica:\n"
+#~ "%s"
+
+#~ msgid "Repaired sectors: %lld     \n"
+#~ msgstr "Settori riparati: %lld    \n"
+
+#~ msgid "Unrepaired sectors: %lld\n"
+#~ msgstr "Settori non riparati: %lld\n"
+
+#~ msgid "Image sectors could not be fully restored (%lld repaired; <span %s>%lld unrepaired</span>)"
+#~ msgstr "I settori dell'immagine non possono essere comopletamente recuperati (%lld riparati; <span %s>%lld non riparati</span>)"
+
+#~ msgid "present, contains %lld medium sectors.\n"
+#~ msgstr "presente, contiene %lld settori della periferica\n"
+
+#~ msgid "present, contains %lld medium sectors and %d bytes.\n"
+#~ msgstr "presente, contiene %lld settori della periferica e %d bytes.\n"
+
+#~ msgid "%lld sectors + %d bytes"
+#~ msgstr "%lld settori + %d bytes"
+
+#~ msgid "* truncated image  : %lld sectors too short\n"
+#~ msgstr "* immagine troncata  : %lld settori troppo corti\n"
+
+#~ msgid "<span %s>%lld (%lld sectors too short)</span>"
+#~ msgstr "<span %s>%lld (%lld settori troppo corti)</span>"
+
+#~ msgid "* image too long   : %lld excess sectors\n"
+#~ msgstr "* Immagine troppo lunga: %lld settori in eccesso\n"
+
+#~ msgid "<span %s>%lld (%lld excess sectors)</span>"
+#~ msgstr "<span %s>%lld (%lld settori in eccesso)</span>"
+
+#~ msgid ""
+#~ "* suspicious image : all sectors present, but %lld CRC errors\n"
+#~ "- image md5sum     : %s\n"
+#~ msgstr ""
+#~ "* Immagine sospetta : tutti i settori presenti, ma ci sono %lld errori CRC\n"
+#~ "- Immagine md5sum   : %s\n"
+
+#~ msgid "* BAD image        : %lld sectors missing\n"
+#~ msgstr "* Immagine DIFETTOSA: %lld settori mancanti\n"
+
+#~ msgid "* BAD image        : %lld sectors missing, %lld CRC errors\n"
+#~ msgstr "* Immagine DIFETTOSA: %lld settori mancanti, %lld errori CRC\n"
+
+#~ msgid "- medium sectors   : %lld\n"
+#~ msgstr "* Settori del Media : %lld\n"
+
+#~ msgid "- medium sectors   : %lld (good)\n"
+#~ msgstr "- settori del media : %lld (buoni)\n"
+
+#~ msgid "- medium sectors   : %lld sectors + %d bytes (good)\n"
+#~ msgstr "- settori del media : %lld settori + %d bytes (buoni)\n"
+
+#~ msgid "* medium sectors   : %lld (BAD, perhaps TAO/DAO mismatch)\n"
+#~ msgstr "* Settori del Media : %lld (Difettosi, probabile incongruenza TAO/DAO)\n"
+
+#~ msgid "* medium sectors   : %lld (BAD)\n"
+#~ msgstr "* Settori del Media : %lld (Difettosi)\n"
+
+#~ msgid "* medium sectors   : %lld sectors + %d bytes (BAD)\n"
+#~ msgstr "* settori del media : %lld settori + %d bytes (Difettosi)\n"
+
+#~ msgid "- ecc blocks       : %lld (good)\n"
+#~ msgstr "- Blocchi Ecc       : %lld (buoni)\n"
+
+#~ msgid "* ecc blocks       : %lld (BAD, expected %lld)\n"
+#~ msgstr "* Blocchi Ecc       : %lld (Difettosi, atteso: %lld)\n"
+
+#~ msgid "<span %s>%lld (bad, expected %lld)</span>"
+#~ msgstr "<span %s>%lld (difettosi, atteso: %lld)</span>"
+
+#~ msgid "Repaired: %lld"
+#~ msgstr "Riparato: %lld"
+
+#~ msgid "Unrepairable: <span %s>%lld</span>"
+#~ msgstr "Non riparabile: <span %s>%lld</span> "
+
+#~ msgid "Encoding with Method RS02: %lld MiB data, %lld MiB ecc (%d roots; %4.1f%% redundancy)."
+#~ msgstr "Sto codificando con il Metodo RS02: %lld MiB dati, %lld MiB ecc (%d Radici, %4.1f%% Ridondanza)."
+
+#~ msgid "* Ecc block %lld: %3d unrepairable sectors: "
+#~ msgstr "* Blocchi Ecc %lld: %3d settori non riparabili: "
+
+#~ msgid "Repaired sectors: %lld (%lld data, %lld ecc)\n"
+#~ msgstr "Settori riparati: %lld (%lld dati, %lld ecc)\n"
+
+#~ msgid "<span %s>%lld ok, %lld CRC errors, %lld missing</span>"
+#~ msgstr "<span %s>%lld ok, %lld errori CRC, %lld mancanti</span>"
+
+#~ msgid "<span %s>%lld sectors missing; %lld CRC errors</span>"
+#~ msgstr "<span %s>%lld settori mancanti, %lld errori CRC</span>"
+
+#~ msgid "<span %s>%lld sectors missing</span>"
+#~ msgstr "<span %s>%lld settori mancanti</span>"
+
+#~ msgid "* suspicious image : all sectors present, but %lld CRC errors\n"
+#~ msgstr "* Immagine sospetta : tutti i settori presenti, ma ci sono %lld errori CRC\n"
+
+#~ msgid ""
+#~ "Different media sizes depending on query method:\n"
+#~ "READ CAPACITY:      %lld sectors\n"
+#~ "READ DVD STRUCTURE: %lld sectors\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Differenti dimensioni di supporti a seconda del metodo di query:\n"
+#~ "\"READ CAPACITY\"     : %lld Settori\n"
+#~ "\"READ DVD STRUCTURE\": %lld Settori\n"
+#~ "\n"
+
+#~ msgid "Medium: %s, %lld sectors%s"
+#~ msgstr "Supporto: %s, %lld settori%s"
+
+#~ msgid "Medium \"%s\": %s, %lld sectors%s created %s"
+#~ msgstr "Supporto \"%s\": %s, %lld settori%s creato %s"
 
 #~ msgid ""
 #~ "Documentation file\n"
