@@ -57,7 +57,7 @@ static void send_eof(read_closure *rc)
 
 static void cleanup(gpointer data)
 {  read_closure *rc = (read_closure*)data;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int full_read = FALSE;
    int aborted   = rc->earlyTermination;
    int scan_mode = rc->scanMode;
@@ -73,7 +73,7 @@ static void cleanup(gpointer data)
       in that case. */
 
    while(renderers_left
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       && Closure->stopActions != STOP_SHUTDOWN_ALL
 #endif
    )
@@ -112,14 +112,14 @@ static void cleanup(gpointer data)
 
    /* Clean up reader thread */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(rc->image)
      full_read = (rc->readOK == rc->image->dh->sectors && !Closure->crcErrors);
 #endif
 
    UnregisterCleanup();
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(rc->unreportedError)
          SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
@@ -173,7 +173,7 @@ static void cleanup(gpointer data)
    /* Continue with ecc file creation after read.
       NOTE: Images are NOT automatically augmented after a read. */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->readAndCreate && Closure->guiMode && !scan_mode && !aborted)  /* General prerequisites */
    {  if(   !strncmp(Closure->methodName, "RS01", 4)                         /* codec prerequisites */
 	 || (!strncmp(Closure->methodName, "RS03", 4) && Closure->eccTarget == ECC_FILE) ) 
@@ -211,7 +211,7 @@ static void register_reader(read_closure *rc)
 {
    if(rc->scanMode)  /* Output messages differ in read and scan mode */
    {  RegisterCleanup(_("Scanning aborted"), cleanup, rc);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(Closure->readLinearHeadline), 
 		     "<big>%s</big>\n<i>%s</i>",
@@ -221,7 +221,7 @@ static void register_reader(read_closure *rc)
    }
    else
    {  RegisterCleanup(_("Reading aborted"), cleanup, rc);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
        SetLabelText(GTK_LABEL(Closure->readLinearHeadline), 
 		    "<big>%s</big>\n<i>%s</i>",
@@ -252,7 +252,7 @@ static void determine_mode(read_closure *rc)
       rc->msg = g_strdup(_("Scanning medium for read errors."));
 
       PrintLog("%s\n", rc->msg);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  if(rc->eccMethod)
 	   SetLabelText(GTK_LABEL(Closure->readLinearHeadline), 
@@ -267,7 +267,7 @@ static void determine_mode(read_closure *rc)
 
       rc->readMarker = 0;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 InitializeCurve(rc, rc->image->dh->maxRate, rc->image->dh->canC2Scan);
 #endif
@@ -277,7 +277,7 @@ static void determine_mode(read_closure *rc)
 
    /*** If no image file exists, open a new one. */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 reopen_image:
 #endif
    if(!LargeStat(Closure->imageName, &image_size))
@@ -291,7 +291,7 @@ reopen_image:
 	 Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
       PrintLog(_("Creating new %s image.\n"),Closure->imageName);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  if(rc->eccMethod)
 	    SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
@@ -305,7 +305,7 @@ reopen_image:
       rc->rereading  = FALSE;
       rc->readMarker = 0;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 InitializeCurve(rc, rc->image->dh->maxRate, rc->image->dh->canC2Scan);
 #endif
@@ -354,11 +354,11 @@ reopen_image:
       
    if(!unknown_fingerprint && memcmp(image_fp, medium_fp, 16))
    {  	  
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(!Closure->guiMode)
 #endif
 	 Stop(_("Image file does not match the optical disc."));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       else
       {  int answer = ConfirmImageDeletion(Closure->imageName);
 	   
@@ -388,18 +388,18 @@ reopen_image:
    {  PrintLog(_("Completing image %s. Continuing with sector %" PRId64 ".\n"),
 	       Closure->imageName, rc->readMarker);
       rc->firstSector = rc->readMarker;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       Closure->additionalSpiralColor = 0;  /* blue */
 #endif
    }
    else 
    {  PrintLog(_("Completing image %s. Only missing sectors will be read.\n"), Closure->imageName);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       Closure->additionalSpiralColor = 3;  /* dark green*/
 #endif
    }
       
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
 		   "<big>%s</big>\n<i>%s</i>",rc->msg,rc->image->dh->mediumDescr);
@@ -463,7 +463,7 @@ static void prepare_crc_cache(read_closure *rc)
 
       // FIXME: reuse CrcBuf and write respective message
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
 		      "<big>%s</big>\n<i>%s</i>", 
@@ -474,7 +474,7 @@ static void prepare_crc_cache(read_closure *rc)
       if(rc->eccMethod->getCrcBuf)
       {  Closure->crcBuf = rc->eccMethod->getCrcBuf(rc->image);
 	 Closure->crcBuf->crcCached = TRUE;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	    RedrawReadLinearWindow();
 #endif
@@ -493,7 +493,7 @@ static void prepare_crc_cache(read_closure *rc)
 	 rc->eccMethod->resetCksums(rc->image);
       }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 SetLabelText(GTK_LABEL(Closure->readLinearHeadline),
 		      "<big>%s</big>\n<i>%s</i>", rc->msg, rc->image->dh->mediumDescr);
@@ -516,7 +516,7 @@ static void prepare_crc_cache(read_closure *rc)
 
 static void prepare_timer(read_closure *rc)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode && Closure->spinupDelay)
      SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline,
 			  _("Waiting %d seconds for drive to spin up...\n"), Closure->spinupDelay);
@@ -524,7 +524,7 @@ static void prepare_timer(read_closure *rc)
 
    SpinupDevice(rc->image->dh);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode && Closure->spinupDelay)
      SwitchAndSetFootline(Closure->readLinearNotebook, 0, Closure->readLinearFootline, "ignore");
 #endif
@@ -542,7 +542,7 @@ static void prepare_timer(read_closure *rc)
 static void show_progress(read_closure *rc)
 {  int percent;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode && rc->lastErrorsPrinted != Closure->readErrors)
    {  SetLabelText(GTK_LABEL(Closure->readLinearErrors), 
 		   _("Unreadable / skipped sectors: %" PRId64 ""), Closure->readErrors);
@@ -555,7 +555,7 @@ static void show_progress(read_closure *rc)
       
    if(rc->lastPercent != percent) 
    {  gulong ignore;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       int color;
 
       if(Closure->guiMode)
@@ -564,7 +564,7 @@ static void show_progress(read_closure *rc)
 
       if(rc->readOK <= rc->lastReadOK)  /* nothing read since last sample? */
       {  rc->speed = 0.0;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->readErrors - rc->previousReadErrors > 0)
 	    color = 2;
 	 else if(Closure->crcErrors - rc->previousCRCErrors > 0)
@@ -585,7 +585,7 @@ static void show_progress(read_closure *rc)
 	 double elapsed = g_timer_elapsed(rc->speedTimer, &ignore);
 	 double kb_sec  = kb_read / elapsed;
 	 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->readErrors - rc->previousReadErrors > 0)
 	    color = 2;
 	 else if(Closure->crcErrors - rc->previousCRCErrors > 0)
@@ -596,7 +596,7 @@ static void show_progress(read_closure *rc)
 	 if(rc->firstSpeedValue)
 	 {   rc->speed = kb_sec / rc->image->dh->singleRate;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	     if(Closure->guiMode)
 	     {  AddCurveValues(rc, rc->lastPercent, color, rc->maxC2);
 		AddCurveValues(rc, percent, color, rc->maxC2);
@@ -624,7 +624,7 @@ static void show_progress(read_closure *rc)
 	       cut_peaks=3;
 	    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	       AddCurveValues(rc, percent, color, rc->maxC2);
 #endif
@@ -777,7 +777,7 @@ update_mutex:
  *** The reader part
  ***/
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
   gtk_dialog_add_buttons(dialog, 
@@ -888,7 +888,7 @@ void ReadMediumLinear(gpointer data)
 	 
 	 if(!answer)
 	 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
             SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
 				 _("<span %s>Aborted by user request!</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
 				 Closure->redMarkup, rc->readOK,Closure->readErrors); 
@@ -901,7 +901,7 @@ void ReadMediumLinear(gpointer data)
    /*** See if user wants to limit the read range. */
 
    GetReadingRange(rc->image->dh->sectors, &rc->firstSector, &rc->lastSector);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(rc->firstSector > 0)                 /* Mark skipped sectors */
       Closure->additionalSpiralColor = 0;  /* blue */
 #endif
@@ -969,7 +969,7 @@ next_reading_pass:
 	    break;
       }
       Closure->sectorSkip = 0;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 MarkExistingSectors();
 #endif
@@ -989,7 +989,7 @@ next_reading_pass:
    while(rc->readPos<=rc->lastSector)
    {  int cluster_mask = rc->image->dh->clusterSize-1;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   /* somebody hit the Stop button */
       {
 	 if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
@@ -1102,7 +1102,7 @@ reread:
       if(status && !Closure->ignoreFatalSense 
 	 && rc->image->dh->sense.sense_key && rc->image->dh->sense.sense_key != 3 && rc->image->dh->sense.sense_key != 5)
       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          int answer;
 
 	 if(!Closure->guiMode)
@@ -1111,7 +1111,7 @@ reread:
 		   "Use the --ignore-fatal-sense option to override."),
 		 rc->readPos, GetLastSenseString(FALSE));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
 			      _("Sector %" PRId64 ": %s\n\n"
 				"It may not be possible to recover from this error.\n"
@@ -1272,7 +1272,7 @@ reread:
 	 {  int i;
 
 	    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 Closure->status,
 #else
 NULL,
@@ -1305,7 +1305,7 @@ NULL,
 	    }
 	    else 
 	    {  PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 Closure->status,
 #else
 NULL,
@@ -1332,7 +1332,7 @@ step_counter:
         to checksum means we have ecc data - we can fix the image using ecc
         rather than by re-reading it. */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      ChangeSpiralCursor(Closure->readLinearSpiral, -1); /* switch cursor off */
 #endif
@@ -1345,7 +1345,7 @@ step_counter:
       && rc->pass < Closure->readingPasses)
    {  int renderers_left = TRUE;
        
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(Closure->readLinearHeadline), 
 			_("<big>Trying to complete image, reading pass %d of %d.</big>\n%s"),
@@ -1435,7 +1435,7 @@ step_counter:
    }
 
    PrintLog("\n%s\n",t);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(rc->scanMode) SwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
 					 "%s%s",_("Scanning finished: "),t);
@@ -1451,7 +1451,7 @@ step_counter:
    if(rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors && !Closure->noTruncate)
    {  int answer;
    
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
         answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			      _("%d sectors missing at the end of the disc.\n"

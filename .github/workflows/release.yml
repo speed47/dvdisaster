@@ -19,7 +19,7 @@ jobs:
             msystem: MINGW32
             grep: 386
           - ui: cli
-            clionly: 1
+            clionly: --with-cli-only
     defaults:
       run:
         shell: msys2 {0}
@@ -37,9 +37,7 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2
     - name: configure
-      env:
-        CLI_ONLY: ${{ matrix.clionly }}
-      run: ./configure
+      run: ./configure ${{ matrix.clionly }}
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executable
@@ -80,7 +78,7 @@ jobs:
     - name: install prerequisites
       run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
     - name: configure
-      run: env CLI_ONLY=1 ./configure
+      run: ./configure --with-cli-only
     - name: make
       run: nproc && make -j$(nproc) && make static && mv -f dvdisaster-static dvdisaster
     - name: check executable

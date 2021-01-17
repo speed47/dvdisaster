@@ -53,7 +53,7 @@ void register_rs01(void)
    method->finalizeCksums    = RS01FinalizeCksums;
    method->expectedImageSize = RS01ExpectedImageSize;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /*** Linkage to rs01-window.c */
 
    method->createCreateWindow = CreateRS01EWindow;
@@ -80,13 +80,13 @@ void register_rs01(void)
 
 static void destroy(Method *method)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS01Widgets *wl = (RS01Widgets*)method->widgetList;
 #endif
 
    g_free(method->ckSumClosure);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 

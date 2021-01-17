@@ -260,7 +260,7 @@ int CheckForMissingSectors(unsigned char *buf, guint64 sector,
  *** Dialogue for indicating problem with the missing sector
  ***/
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
    gtk_dialog_add_buttons(dialog, 
@@ -271,7 +271,7 @@ static void insert_buttons(GtkDialog *dialog)
 
 void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int source_type, int *number)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int answer;
 #endif
    guint64 recorded_number;
@@ -293,7 +293,7 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
    
    /* In CLI mode, only report the first unrecoverable sector unless verbose is given. */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode && !Closure->verbose && *number > 0)
 #else
    if(!Closure->verbose && *number > 0)
@@ -313,7 +313,7 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
    vol_label = get_volume_label(buf);
    if(vol_label)
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
        if(Closure->guiMode)
 	    label_msg = g_strdup_printf(_("\n\nThe label of the original (defective) medium was:\n%s\n\n"), vol_label);
        else
@@ -339,11 +339,11 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 			  "repaired by dvdisaster. Also it will not be possible to create\n"
 			  "error correction data for it. Sorry for the bad news.\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(!Closure->guiMode)
 #endif
 	        PrintLogWithAsterisks(msg,sector, recorded_number, label_msg);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    else
 	    {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 				    sector, recorded_number, label_msg);
@@ -366,11 +366,11 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 			  "repaired by dvdisaster. Also it will not be possible to create\n"
 			  "error correction data for it. Sorry for the bad news.\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(!Closure->guiMode)
 #endif
 	         PrintLogWithAsterisks(msg,sector, label_msg);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    else
 	    {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 				    sector, label_msg);
@@ -395,11 +395,11 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 		    "repaired by dvdisaster. Also it will not be possible to create\n"
 		    "error correction data for it. Sorry for the bad news.\n");
 			   
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(!Closure->guiMode)
 #endif
           PrintLogWithAsterisks(msg, sector);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      else
      {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 			     sector);
@@ -419,11 +419,11 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 		    "in the ecc file are missing and its error correction\n"
 		    "capacity will be reduced.\n");
 			   
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(!Closure->guiMode)
 #endif
           PrintLogWithAsterisks(msg, sector);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      else
      {  answer = ModalDialog(GTK_MESSAGE_ERROR, GTK_BUTTONS_NONE, insert_buttons, msg,
 			     sector);

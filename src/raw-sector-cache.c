@@ -195,7 +195,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
    if(!LargeStat(filename, &length))
    {  
       PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          Closure->status,
 #else
          NULL,
@@ -272,7 +272,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
    LargeClose(file);
 
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       Closure->status,
 #else
       NULL,
@@ -327,7 +327,7 @@ int TryDefectiveSectorCache(RawBuffer *rb, unsigned char *outbuf)
       if(!status) 
       {
          PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
             Closure->status,
 #else
             NULL,

@@ -32,7 +32,7 @@
 typedef struct
 {  Image *image;
    EccHeader *eh;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS02Widgets *wl;
 #endif
    RS02Layout *lay;
@@ -49,7 +49,7 @@ static void fix_cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(fc->earlyTermination)
          SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -77,7 +77,7 @@ static void fix_cleanup(gpointer data)
 
    g_free(fc);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      g_thread_exit(0);
 #endif
@@ -111,7 +111,7 @@ static void expand_image(fix_closure *fc, gint64 new_size)
       percent = (100*sectors) / new_sectors;
       if(last_percent != percent)
       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode)
 	  ;
 	 else
@@ -121,7 +121,7 @@ static void expand_image(fix_closure *fc, gint64 new_size)
       }
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      ;
    else 
@@ -141,7 +141,7 @@ static void expand_image(fix_closure *fc, gint64 new_size)
 
 void RS02Fix(Image *image)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    Method *self = FindMethod("RS02");
    RS02Widgets *wl = (RS02Widgets*)self->widgetList;
 #endif
@@ -183,7 +183,7 @@ void RS02Fix(Image *image)
    /*** Register the cleanup procedure for GUI mode */
 
    fc->image = image;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    fc->wl = wl;
 #endif
    fc->earlyTermination = TRUE;
@@ -191,7 +191,7 @@ void RS02Fix(Image *image)
 
    /*** Open the image file */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->fixHeadline),
 		  _("<big>Repairing the image.</big>\n<i>%s</i>"),
@@ -219,7 +219,7 @@ void RS02Fix(Image *image)
 
    /*** Announce what we going to do */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  char *msg = g_strdup_printf(_("Image contains error correction data: Method RS02, %d roots, %4.1f%% redundancy."),
 				  eh->eccBytes, 
@@ -254,7 +254,7 @@ void RS02Fix(Image *image)
 
         if(!answer)
         {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
            SwitchAndSetFootline(fc->wl->fixNotebook, 1,
 				fc->wl->fixFootline,
 				_("<span %s>Aborted by user request!</span>"),
@@ -268,7 +268,7 @@ void RS02Fix(Image *image)
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
      }
      
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(diff>2 && Closure->guiMode)
      {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				 trans,
@@ -291,7 +291,7 @@ void RS02Fix(Image *image)
      }
 #endif
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(diff>2 && !Closure->guiMode)
 #else
      if(diff>2)
@@ -364,7 +364,7 @@ void RS02Fix(Image *image)
 
      /* See if user hit the Stop button */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->stopActions) 
      {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
@@ -493,7 +493,7 @@ void RS02Fix(Image *image)
 
      if(erasure_count>lay->nroots)   /* uncorrectable */
      {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
         if(!Closure->guiMode)
 #endif
 	{  PrintCLI(_("* Ecc block %" PRId64 ": %3d unrepairable sectors: "), s, erasure_count);
@@ -821,7 +821,7 @@ skip:
 
      if(last_percent != percent) 
      {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
        if(Closure->guiMode)
 	{  
 	   RS02AddFixValues(wl, percent, local_plot_max);
@@ -852,7 +852,7 @@ skip:
 			      corrected, data_corr, ecc_corr);
    if(uncorrected > 0) 
    {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
         SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			     _("Image sectors could not be fully restored "
@@ -874,7 +874,7 @@ skip:
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode && t)
      SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			  "%s %s", _("Repair results:"), t);

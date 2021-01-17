@@ -24,7 +24,7 @@
 
 #include "rs01-includes.h"
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 /***
  *** Reset the verify output window
@@ -356,7 +356,7 @@ static void cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       AllowActions(TRUE);
 #endif
@@ -364,7 +364,7 @@ static void cleanup(gpointer data)
    if(vc->image) CloseImage(vc->image);
    g_free(vc);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      g_thread_exit(0);
 #endif
@@ -373,12 +373,12 @@ static void cleanup(gpointer data)
 void RS01Verify(Image *image)
 {  verify_closure *vc = g_malloc0(sizeof(verify_closure));
    Method *self = FindMethod("RS01");
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS01Widgets *wl = (RS01Widgets*)self->widgetList;
 #endif
    char idigest[33],edigest[33]; 
    gint64 excess_sectors = 0;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    char *ecc_advice = NULL;
 #endif
 
@@ -399,7 +399,7 @@ void RS01Verify(Image *image)
 
    /*** Examine the .iso file */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		  _("Comparing image and error correction files."),
@@ -407,7 +407,7 @@ void RS01Verify(Image *image)
 #endif
 
    vc->image = image;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(image && image->eccFile)  
    {  if(Closure->guiMode)
          SetLabelText(GTK_LABEL(wl->cmpChkSumErrors), "0");
@@ -423,7 +423,7 @@ void RS01Verify(Image *image)
    if(!image || !image->file)
    {  PrintLog(_("not present\n"));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
 #endif
@@ -432,7 +432,7 @@ void RS01Verify(Image *image)
 
    if(image->inLast == 2048)
    {  PrintLog(_("present, contains %" PRId64 " medium sectors.\n"), image->sectorSize);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%" PRId64 "", image->sectorSize);
 #endif
@@ -440,7 +440,7 @@ void RS01Verify(Image *image)
    else
    {  PrintLog(_("present, contains %" PRId64 " medium sectors and %d bytes.\n"),
 	       image->sectorSize-1, image->inLast);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	 SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " sectors + %d bytes"), 
 		      image->sectorSize-1, image->inLast);
@@ -450,7 +450,7 @@ void RS01Verify(Image *image)
    if(!Closure->quickVerify)
       RS01ScanImage(self, image, NULL, PRINT_MODE);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->stopActions)   
    {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	 SetLabelText(GTK_LABEL(wl->cmpImageResult), 
@@ -469,7 +469,7 @@ void RS01Verify(Image *image)
       {  diff = image->expectedSectors - image->sectorSize;
 
 	 PrintLog(_("* truncated image  : %" PRId64 " sectors too short\n"), diff);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), 
 			_("<span %s>%" PRId64 " (%" PRId64 " sectors too short)</span>"),
@@ -484,7 +484,7 @@ void RS01Verify(Image *image)
 
    /*** Show summary of image read */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(image->crcErrors)
 	 SetLabelText(GTK_LABEL(wl->cmpChkSumErrors), 
@@ -497,7 +497,7 @@ void RS01Verify(Image *image)
 
    if(excess_sectors)
    {  PrintLog(_("* image too long   : %" PRId64 " excess sectors\n"), excess_sectors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {   SetLabelText(GTK_LABEL(wl->cmpImageSectors), 
 		       _("<span %s>%" PRId64 " (%" PRId64 " excess sectors)</span>"),
@@ -519,7 +519,7 @@ void RS01Verify(Image *image)
 	 if(!image->crcErrors)
 	 {  PrintLog(_("- good image       : all sectors present\n"
 		       "- image md5sum     : %s\n"),idigest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	    {  SetLabelText(GTK_LABEL(wl->cmpImageResult),_("<span %s>Good image.</span>"), Closure->greenMarkup);
 	       SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "%s", idigest);
@@ -530,7 +530,7 @@ void RS01Verify(Image *image)
 	 {  PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"
 		       "- image md5sum     : %s\n"),image->crcErrors,idigest);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	    {  SetLabelText(GTK_LABEL(wl->cmpImageResult), _("<span %s>Image complete, but contains checksum errors!</span>"), Closure->redMarkup);
 	       SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "%s", idigest);
@@ -543,7 +543,7 @@ void RS01Verify(Image *image)
 	      PrintLog(_("* BAD image        : %" PRId64 " sectors missing\n"), image->sectorsMissing);
 	 else PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
 		         image->sectorsMissing, image->crcErrors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	    SetLabelText(GTK_LABEL(wl->cmpImageResult),
 			 _("<span %s>Bad image.</span>"), Closure->redMarkup);
@@ -554,7 +554,7 @@ void RS01Verify(Image *image)
    /*** The .ecc file */
 
 process_ecc:
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		  _("Comparing image and error correction files."),
@@ -565,7 +565,7 @@ process_ecc:
 
    if(!image)
    {  PrintLog(_("not present\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpEccNotebook, 0, 
 			     wl->cmpEccEmptyMsg,_("No error correction file present."));
@@ -595,7 +595,7 @@ process_ecc:
 	    PrintLog(_("unusable\n"));
 	    break;
       }
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpEccNotebook, 0, 
 			     wl->cmpEccEmptyMsg,_("No error correction file present."));
@@ -625,7 +625,7 @@ process_ecc:
 	 PrintLog(format, _("created by dvdisaster"), major, minor, micro, unstable);
 	 PrintLog("\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	 {  SwitchAndSetFootline(wl->cmpEccNotebook, 1,
 				 wl->cmpEccCreatedBy, 
@@ -639,7 +639,7 @@ process_ecc:
 	 PrintLog(format, _("created by dvdisaster"), 
 		 major, minor, unstable);
 	 PrintLog("\n");
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SwitchAndSetFootline(wl->cmpEccNotebook, 1,
 				wl->cmpEccCreatedBy, format, "dvdisaster",
@@ -649,7 +649,7 @@ process_ecc:
    }
    else
    {  PrintLog(_("created by dvdisaster-0.41.x.\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpEccNotebook, 1,
 			     wl->cmpEccCreatedBy, "dvdisaster-0.41.x");
@@ -663,7 +663,7 @@ process_ecc:
    PrintLog(_("- method           : %4s, %d roots, %4.1f%% redundancy.\n"),
 	    method, eh->eccBytes, 
 	    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpEccMethod), _("%4s, %d roots, %4.1f%% redundancy"),
 		  method, eh->eccBytes, 
@@ -676,7 +676,7 @@ process_ecc:
    {  PrintLog(_("- requires         : dvdisaster-%d.%d (good)\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccRequires), "dvdisaster-%d.%d",
 		     eh->neededVersion/10000,
@@ -690,7 +690,7 @@ process_ecc:
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccRequires), 
 		      "<span %s>dvdisaster-%d.%d</span>",
@@ -712,7 +712,7 @@ process_ecc:
    if(!image->file)
    {  if(!ecc_in_last)
       {  PrintLog(_("- medium sectors   : %" PRId64 "\n"), image->expectedSectors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 "", image->expectedSectors);
 #endif
@@ -720,7 +720,7 @@ process_ecc:
       else
       {  PrintLog(_("- medium sectors   : %" PRId64 " sectors + %d bytes\n"),
 		  image->expectedSectors-1, ecc_in_last);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
 			_("%" PRId64 " sectors + %d bytes"), 
@@ -735,7 +735,7 @@ process_ecc:
 	 && (!ecc_in_last || image->inLast == eh->inLast))
       {  if(!ecc_in_last)
 	 {  PrintLog(_("- medium sectors   : %" PRId64 " (good)\n"), image->expectedSectors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 "", image->expectedSectors);
 #endif
@@ -743,7 +743,7 @@ process_ecc:
 	 else
 	 {  PrintLog(_("- medium sectors   : %" PRId64 " sectors + %d bytes (good)\n"),
 		     image->expectedSectors-1, ecc_in_last);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
 			   _("%" PRId64 " sectors + %d bytes"), 
@@ -756,7 +756,7 @@ process_ecc:
       { /* TAO case (1 or 2 sectors more than expected) */
 	if(image->sectorSize > image->expectedSectors && image->sectorSize - image->expectedSectors <= 2)   
 	{  PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"), image->expectedSectors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	   if(Closure->guiMode)
 	   {  if(!ecc_in_last)  
 	          SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%" PRId64 "</span>", 
@@ -769,7 +769,7 @@ process_ecc:
 	else  /* more than 2 Sectors difference */ 
 	{  if(!ecc_in_last)
 	   {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"), image->expectedSectors);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	      if(Closure->guiMode)
 	      {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "<span %s>%" PRId64 "</span>", 
 			      Closure->redMarkup, image->expectedSectors);
@@ -781,7 +781,7 @@ process_ecc:
 	   else /* byte size difference */
 	   {  PrintLog(_("* medium sectors   : %" PRId64 " sectors + %d bytes (BAD)\n"),
 		       image->expectedSectors-1, ecc_in_last);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	      if(Closure->guiMode)
 	      {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
 			      _("<span %s>%" PRId64 " sectors + %d bytes</span>"), 
@@ -803,7 +803,7 @@ process_ecc:
       {  int n = !memcmp(eh->mediumSum, image->mediumSum, 16);
 	 if(n) PrintLog(_("- image md5sum     : %s (good)\n"),edigest);
 	 else  PrintLog(_("* image md5sum     : %s (BAD)\n"),edigest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	 {  if(n) SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
 	    else  
@@ -815,7 +815,7 @@ process_ecc:
       }
       else 
       {  PrintLog(_("- image md5sum     : %s\n"),edigest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEccImgMd5Sum), "%s", edigest);
 #endif
@@ -825,7 +825,7 @@ process_ecc:
    if(image && image->file)
    {  if(image->fpState != FP_PRESENT)
       {  PrintLog(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("<span %s>missing sector prevents calculation</span>"), Closure->redMarkup);
 #endif
@@ -835,7 +835,7 @@ process_ecc:
 	if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	{  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	   if(Closure->guiMode)
 	   {  SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), 
 			   _("<span %s>mismatch</span>"), Closure->redMarkup);
@@ -847,7 +847,7 @@ process_ecc:
 	}
 	else 
 	{  PrintLog(_("- fingerprint match: good\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	      if(Closure->guiMode)
 		SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("good"));
 #endif
@@ -867,14 +867,14 @@ process_ecc:
 
    if(ecc_expected == ecc_blocks)
    {  PrintLog(_("- ecc blocks       : %" PRId64 " (good)\n"),ecc_blocks);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), "%" PRId64 "", ecc_blocks);
 #endif
    }
    else
    {  PrintLog(_("* ecc blocks       : %" PRId64 " (BAD, expected %" PRId64 ")\n"),ecc_blocks,ecc_expected);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccBlocks), _("<span %s>%" PRId64 " (bad, expected %" PRId64 ")</span>"),Closure->redMarkup,ecc_blocks,ecc_expected);
 #endif
@@ -899,17 +899,17 @@ process_ecc:
       percent = (100*count)/image->eccFile->size;
       if(last_percent != percent) 
       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(!Closure->guiMode)
 #endif
 	      PrintProgress(_("- ecc md5sum       : %3d%%"),percent);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 else SetLabelText(GTK_LABEL(wl->cmpEccMd5Sum), "%3d%%", percent);
 #endif
 	 last_percent = percent;
       }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	    SetLabelText(GTK_LABEL(wl->cmpEccResult), 
@@ -924,7 +924,7 @@ process_ecc:
 
    if(memcmp(eh->eccSum, digest, 16))
    {  PrintLog(_("* ecc md5sum       : BAD, ecc file may be damaged!\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccMd5Sum), _("<span %s>bad</span>"), Closure->redMarkup);
 	 if(!ecc_advice)
@@ -934,7 +934,7 @@ process_ecc:
    }
    else 
    {  PrintLog(_("- ecc md5sum       : %s (good)\n"),edigest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccMd5Sum), "%s", edigest);
 #endif
@@ -943,7 +943,7 @@ process_ecc:
 skip_ecc:
    PrintLog("\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(ecc_advice) 
       {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);

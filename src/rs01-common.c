@@ -207,7 +207,7 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 
 void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS01Widgets *wl = NULL;
 #endif
    unsigned char buf[2048];
@@ -216,7 +216,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
    int crcidx = 0;
    struct MD5Context image_md5;
    gint64 s, first_missing, last_missing;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    gint64 prev_missing = 0;
    gint64 prev_crc_errors = 0;
 #endif
@@ -225,7 +225,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 
    /* Extract widget list from method */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(method->widgetList)
      wl = (RS01Widgets*)method->widgetList;
 #endif
@@ -263,7 +263,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 
       /* Check for user interruption */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  image->sectorsMissing += image->sectorSize - s;
 	 if(crcbuf) g_free(crcbuf);
@@ -361,7 +361,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 
       MD5Update(&image_md5, buf, n);  /* update image md5sum */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode && mode & PRINT_MODE) 
 	   percent = (VERIFY_IMAGE_SEGMENTS*(s+1))/image->sectorSize;
       else
@@ -370,7 +370,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
       if(last_percent != percent) 
       {  PrintProgress(msg,percent);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode && mode & CREATE_CRC)
 	   SetProgress(wl->encPBar1, percent, 100);
 

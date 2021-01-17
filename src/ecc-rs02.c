@@ -54,7 +54,7 @@ void register_rs02(void)
    method->finalizeCksums    = RS02FinalizeCksums;
    method->expectedImageSize = RS02ExpectedImageSize;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /*** Linkage to rs02-window.c */
 
    method->createCreateWindow = CreateRS02EncWindow;
@@ -82,7 +82,7 @@ void register_rs02(void)
 
 static void destroy(Method *method)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS02Widgets *wl = (RS02Widgets*)method->widgetList;
 #endif
    RS02CksumClosure *csc = (RS02CksumClosure*)method->ckSumClosure;
@@ -91,7 +91,7 @@ static void destroy(Method *method)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 

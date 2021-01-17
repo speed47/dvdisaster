@@ -470,7 +470,7 @@ function PACKAGE()
    echo "CFG_VERSION = $VERSION" >> Makefile.config
 }
 
-# Add -D$1=$2 to CFG_OTHER_OPTIONS
+# Add -D$1="$2" to CFG_OTHER_OPTIONS
 
 function DEFINE_STRING()
 {  
@@ -481,6 +481,19 @@ function DEFINE_STRING()
    fi
 
    CFG_OTHER_OPTIONS="$CFG_OTHER_OPTIONS -D$1=\\\"$2\\\""
+}
+
+# Add -D$1=$2 to CFG_OTHER_OPTIONS
+
+function DEFINE_INT()
+{
+   if test -z "$1" || test -z "$2"; then
+     echo "DEFINE_INT $1 $2:"
+     echo "  needs two arguments"
+     exit 1;
+   fi
+
+   CFG_OTHER_OPTIONS="$CFG_OTHER_OPTIONS -D$1=$2"
 }
 
 # Add CFG_$1 = $2 to makefile

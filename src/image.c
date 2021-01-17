@@ -148,7 +148,7 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image || image->type == IMAGE_NONE)
   {  if(image) CloseImage(image);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
      {     CreateMessage(_("Image file %s not present or permission denied.\n"), GTK_MESSAGE_ERROR, Closure->imageName);
 	   return TRUE;
@@ -163,7 +163,7 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(image->eccFile && !image->eccFileMethod)
   {  CloseImage(image);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
      {   CreateMessage(_("\nError correction file type unknown.\n"), GTK_MESSAGE_ERROR);
 	 return TRUE;
@@ -178,7 +178,7 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image->eccFile && image->eccFileState == ECCFILE_NOPERM)
   {  CloseImage(image);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
        {    CreateMessage(_("\nPermission denied on ecc file (perhaps not writeable?).\n"),
 			  GTK_MESSAGE_ERROR);
@@ -195,7 +195,7 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image->eccFile && !image->eccMethod)
   {  CloseImage(image);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
      {    CreateMessage(_("\nNo error correction file present.\n"
 			  "No error correction data recognized in image.\n"), GTK_MESSAGE_ERROR);

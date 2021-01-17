@@ -29,7 +29,7 @@
  *** Recognize RS02 error correction data in the image
  ***/
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 /*
  * Dialog components for disabling RS02 search
@@ -249,7 +249,7 @@ int RS02Recognize(Image *image)
       while(pos > 0)
       {  int result;
 	
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)
 	   goto bail_out;
 #endif
@@ -272,7 +272,7 @@ int RS02Recognize(Image *image)
 	       read_count++;
 	       if(!answered_continue && read_count > 5)
 	       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
                   if(Closure->guiMode)
     		  {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
 					      _("Faster medium initialization\n\n"
@@ -304,7 +304,7 @@ int RS02Recognize(Image *image)
       header_modulo >>= 1;
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 bail_out:
 #endif
    FreeBitmap(try_next_header);

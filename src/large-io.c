@@ -211,7 +211,7 @@ ssize_t LargeRead(LargeFile *lf, void *buf, size_t count)
  * Writing large files
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
   gtk_dialog_add_buttons(dialog, 
@@ -226,7 +226,7 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
 
    /* Simply fail when going out of space in command line mode */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode)
 #endif
    {  while(count)
@@ -243,7 +243,7 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
       return total;
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /* Give the user a chance to free more space in GUI mode.
       When running out of space, the last write() may complete
       with n<count but no error condition, so we try writing
