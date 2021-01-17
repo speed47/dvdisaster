@@ -3,185 +3,114 @@ name: non-regression tests
 on: [pull_request]
 
 jobs:
-
-  win64-gui:
+  win:
     runs-on: windows-2016
+    strategy:
+      matrix:
+        arch: [x86_64, i686]
+        ui: [cli, gui]
+        printf: [fmtdbg, normal]
+        include:
+          - arch: x86_64
+            msystem: MINGW64
+            grep: x86-64
+          - arch: i686
+            msystem: MINGW32
+            grep: 386
+          - ui: cli
+            clionly: --with-cli-only
+          - printf: fmtdbg
+            debugprintf: --with-debug-printf-format
     defaults:
       run:
         shell: msys2 {0}
     steps:
     - uses: msys2/setup-msys2@v2
       with:
-        msystem: MINGW64
+        msystem: ${{ matrix.msystem }}
         update: false
-        install: git diffutils make pkg-config mingw-w64-x86_64-gtk2 mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ghostscript mingw-w64-x86_64-jq mingw-w64-x86_64-ntldd-git man zip
-    - run: git config --global core.autocrlf input
+        install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
+    - name: install GUI prereqs
+      if: matrix.ui == 'gui'
+      run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk2
+    - name: git config
+      run: git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2
     - name: configure
-      run: ./configure
+      run: |
+          echo running ./configure ${{ matrix.clionly }}
+          ./configure ${{ matrix.clionly }}
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executable
       run: |
           ./dvdisaster.exe --version
           file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty -e NOGUI && exit 1
-          file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
-
-  win32-gui:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        update: false
-        install: git diffutils make pkg-config mingw-w64-i686-gtk2 mingw-w64-i686-glib2 mingw-w64-i686-gcc mingw-w64-i686-ghostscript mingw-w64-i686-jq mingw-w64-i686-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
+          if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
+          file dvdisaster.exe | grep -q '${{ matrix.grep }}, for MS Windows'
+    - name: check executable (GUI)
+      if: matrix.ui == 'gui'
       run: |
           ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty -e NOGUI && exit 1
-          file dvdisaster.exe | grep -q '386, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
-
-  win64-cli:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        update: false
-        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ghostscript mingw-w64-x86_64-jq mingw-w64-x86_64-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure --with-cli-only
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
+          if ./dvdisaster.exe --version | grep NOGUI; then exit 1; fi
+    - name: check executable (CLI)
+      if: matrix.ui == 'cli'
       run: |
           ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty && exit 1
-          ./dvdisaster.exe --version | grep -q NOGUI
-          file dvdisaster.exe | grep -q 'x86-64, for MS Windows'
-    - name: prepare dist
+          ./dvdisaster.exe --version | grep NOGUI
+    - name: try to prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
+    - name: run regression tests
+      if: matrix.printf == 'normal'
+      env:
+        REGTEST_NO_UTF8: 1
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
 
-  win32-cli:
-    runs-on: windows-2016
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        update: false
-        install: git diffutils make pkg-config mingw-w64-i686-glib2 mingw-w64-i686-gcc mingw-w64-i686-ghostscript mingw-w64-i686-jq mingw-w64-i686-ntldd-git man zip
-    - run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure --with-cli-only
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
-      run: |
-          ./dvdisaster.exe --version
-          file dvdisaster.exe
-          ./dvdisaster.exe --version | grep -q -e dirty && exit 1
-          ./dvdisaster.exe --version | grep -q NOGUI
-          file dvdisaster.exe | grep -q '386, for MS Windows'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
-          cd dist
-          dvdisaster.exe --version
-    - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
-
-  linux64-cli:
+  linux:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ui: [cli, gui]
+        printf: [fmtdbg, normal]
+        include:
+          - ui: cli
+            clionly: --with-cli-only
+          - printf: fmtdbg
+            debugprintf: --with-debug-printf-format
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man jq
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev ghostscript man jq
+    - name: install prerequisites (GUI)
+      if: matrix.ui == 'gui'
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: sudo apt-get install -y libgtk2.0-dev
     - name: configure
-      run: ./configure --with-cli-only
+      run: |
+          echo ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
+          ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executability
       run: ./dvdisaster --version
-    - name: check executable
-      run: file dvdisaster && file dvdisaster | grep -q 'ELF 64'
+    - name: check executable (GUI)
+      if: matrix.ui == 'gui'
+      run: |
+          ./dvdisaster --version
+          if ./dvdisaster --version | grep NOGUI; then exit 1; fi
+    - name: check executable (CLI)
+      if: matrix.ui == 'cli'
+      run: |
+          ./dvdisaster --version
+          ./dvdisaster --version | grep NOGUI
     - name: prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
     - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
-
-  linux64-gui:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man jq libgtk2.0-dev
-    - name: configure
-      run: ./configure
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executability
-      run: ./dvdisaster --version
-    - name: check executable
-      run: file dvdisaster && file dvdisaster | grep -q 'ELF 64'
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-    - name: regression tests
-      run: mkdir /var/tmp/regtest && export REGTEST_NO_UTF8=1 && ./regtest/runtests.sh
-
+      if: matrix.printf == 'normal'
+      env:
+        REGTEST_NO_UTF8: 1
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
