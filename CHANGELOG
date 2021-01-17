@@ -1,11 +1,24 @@
 # dvdisaster changelog -*-text-*-
 
+0.79.6.patchlevel-6 17-01-2021 *UNOFFICIAL*
+- fix: allow blank media in Preferences>Error correction>RS02>query medium (#19)
+- fix: tested compilation under clang, detected a reversed order or arguments in a call to memset(), fixed
+- fix: printf: added --with-debug-print-format configure option to permit compile-time detection of printf format errors:
+  - fixed some potentially severe ones
+  - replaced %ldd/%ld by PRId64 to remove warnings on all archs
+- fix: appimage: adjust docdir for help menu
+- chore: ensure configure works properly even if user adds -Werror to CFLAGS
+- chore: added --with-werror to configure
+- chore: replaced CLI_ONLY=1 by --with-cli-only in configure
+- chore: update locales
+- chore: debug printf format in GitHub actions tests
+
 0.79.6.patchlevel-5 12-01-2021 *UNOFFICIAL*
-fix: don't error on blank media in medium-info (#19), bug present upstream since 0.79.5
-fix: gui: fix the 'SetLabelText() failed' error caption on the medium-info window (#19), bug present upstream since 0.72.3
-fix: add CHANGELOG, TODO, CREDITS to dist for the Help menu
-chore: appimage: add missing gtk engines and adjust docdir for help menu
-chore: enhance packaging, update locales, changelog et al.
+- fix: don't error on blank media in medium-info (#19), bug present upstream since 0.79.5
+- fix: gui: fix the 'SetLabelText() failed' error caption on the medium-info window (#19), bug present upstream since 0.72.3
+- fix: add CHANGELOG, TODO, CREDITS to dist for the Help menu
+- chore: appimage: add missing gtk engines and adjust docdir for help menu
+- chore: enhance packaging, update locales, changelog et al.
 
 0.79.6.patchlevel-4 04-09-2020 *UNOFFICIAL*
 - feat: allow adaptive reading again*
