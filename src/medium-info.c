@@ -25,7 +25,7 @@
 #include "scsi-layer.h"
 #include "udf.h"
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /*
  * Local data
  */
@@ -85,21 +85,21 @@ static void print_tab(char *label, int tab_width)
 void PrintMediumInfo(void *mi_ptr)
 {  Image *image;
    DeviceHandle *dh;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    medium_info *mi=(medium_info*)mi_ptr;
 #endif
    char *disc_status;
    char *sess_status;
    int tab_width=30;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!mi) /* create dummy medium_info in CLI mode so that PrintCLIorLabel() won't crash */
    {  mi=alloca(sizeof(medium_info));
       memset(mi, 0, sizeof(medium_info));
    }
 #endif
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       print_defaults(mi);
 #endif
@@ -125,7 +125,7 @@ void PrintMediumInfo(void *mi_ptr)
 
    print_tab("Medium type:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->physicalType,
 #else
 NULL,
@@ -133,7 +133,7 @@ NULL,
    "%s\n", dh->typeDescr);
    print_tab("Book type:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->bookType,
 #else
 NULL,
@@ -141,7 +141,7 @@ NULL,
    "%s\n", dh->bookDescr);
    print_tab("Manuf.-ID:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->manufID,
 #else
 NULL,
@@ -149,7 +149,7 @@ NULL,
    "%s\n", dh->manuID);
    print_tab("Drive profile:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->profileDescr,
 #else
 NULL,
@@ -172,7 +172,7 @@ NULL,
 
    print_tab("Disc status:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->discStatus,
 #else
 NULL,
@@ -184,7 +184,7 @@ NULL,
 
    print_tab("Used sectors:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->usedCapacity1,
 #else
 NULL,
@@ -193,7 +193,7 @@ NULL,
 		dh->readCapacity+1, (dh->readCapacity+1)>>9);
    print_tab(" ",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->usedCapacity2,
 #else
 NULL,
@@ -203,7 +203,7 @@ NULL,
 
    print_tab("Blank capacity:",tab_width);
    PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->blankCapacity,
 #else
 NULL,
@@ -225,7 +225,7 @@ NULL,
 
       print_tab("Medium label:",tab_width);
       PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->isoLabel,
 #else
 NULL,
@@ -233,7 +233,7 @@ NULL,
       "%s\n", image->isoInfo->volumeLabel);
       print_tab("File system size:",tab_width);
       PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->isoSize,
 #else
 NULL,
@@ -242,7 +242,7 @@ NULL,
 		   image->isoInfo->volumeSize, (gint64)image->isoInfo->volumeSize>>9);
       print_tab("Creation time:",tab_width);
       PrintCLIorLabel(
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 mi->isoTime,
 #else
 NULL,
@@ -271,7 +271,7 @@ NULL,
       memcpy(method, eh->method, 4);
       method[4] = 0;
       print_tab("Error correction data:",tab_width);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       PrintCLIorLabel(mi->eccState, _("%s, %d roots, %4.1f%% redundancy.\n"), 
 #else
       PrintCLIorLabel(NULL, _("%s, %d roots, %4.1f%% redundancy.\n"), 
@@ -279,7 +279,7 @@ NULL,
 		   method, eh->eccBytes,
 		    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
       print_tab("Augmented image size:",tab_width);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       PrintCLIorLabel(mi->eccSize, _("%" PRIu64 " sectors (%" PRId64 " MiB)\n"),
 #else
       PrintCLIorLabel(NULL, _("%" PRId64 " sectors (%" PRId64 " MiB)\n"),
@@ -289,13 +289,13 @@ NULL,
       print_tab("dvdisaster version:", tab_width);
 
       if(micro)
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	   PrintCLIorLabel(mi->eccVersion, "%d.%d.%d", major, minor, micro);
 #else
 	   PrintCLIorLabel(NULL, "%d.%d.%d", major, minor, micro);
 #endif
       else
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
            PrintCLIorLabel(mi->eccVersion, "%d.%d", major, minor);
 #else
            PrintCLIorLabel(NULL, "%d.%d", major, minor);
@@ -310,7 +310,7 @@ NULL,
 /***
  *** GUI callbacks 
  ***/
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 /*
  * Callback for drive selection

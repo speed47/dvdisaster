@@ -58,7 +58,7 @@ char *sgettext(char *msgid)
 
 char *sgettext_utf8(char *msgid)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    static gchar ringbuf[20][1024];
    static int ringptr;
 #endif
@@ -80,7 +80,7 @@ char *sgettext_utf8(char *msgid)
 
    /*** If we are running the GUI, convert to UTF8 for Gtk+ */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  char *msg_utf8 = g_locale_to_utf8(msgval, -1, NULL, NULL, NULL);
 
@@ -148,7 +148,7 @@ void CalcSectors(guint64 size, guint64 *sectors, int *in_last)
  * Append message to the log window.
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 #define MAX_LOG_WIN_SIZE 10240
 
@@ -241,7 +241,7 @@ void PrintCLI(char *format, ...)
       va_end(argp);
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(Closure->verbose)
       {  va_start(argp, format);
@@ -271,7 +271,7 @@ void PrintProgress(char *format, ...)
    va_list argp;
    int n;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      return;
 #endif
@@ -338,7 +338,7 @@ void PrintLog(char *format, ...)
 
    va_start(argp, format);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
    else 
@@ -389,7 +389,7 @@ void PrintLogWithAsterisks(char *format, ...)
 
    va_start(argp, format);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       log_window_vprintf(new_format, argp);
    else 
@@ -423,7 +423,7 @@ void Verbose(char *format, ...)
 
    va_start(argp, format);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
    else 
@@ -459,7 +459,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
    tmp2 = g_strdup_printf("%02d:%02d:%04.1f %s", hours, minutes, seconds, tmp1);
    va_end(argp);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    { 
       log_window_append(tmp2);
@@ -480,7 +480,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
  * or show it in the given label
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void PrintCLIorLabel(GtkLabel *label, char *format, ...)
 #else
 void PrintCLIorLabel(void *unused, char *format, ...)
@@ -495,7 +495,7 @@ void PrintCLIorLabel(void *unused, char *format, ...)
 
    va_start(argp, format);
       
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  char *c,*tmp;
 	
@@ -562,7 +562,7 @@ static void vlog_warning(char *format, va_list argp)
    prefix[len] = 0;
 
    str = g_string_sized_new(256);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    g_string_append_printf(str,"* %s:%c", warn, Closure->guiMode ? '\n' : ' ');
 #else
    g_string_append_printf(str,"* %s: ", warn);
@@ -570,7 +570,7 @@ static void vlog_warning(char *format, va_list argp)
    do
    {  c = strchr(line,'\n');
       if(c) *c=0;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode) g_string_append_printf(str,"* %s\n",line);
       else
 #endif
@@ -584,7 +584,7 @@ static void vlog_warning(char *format, va_list argp)
    if(Closure->logFileEnabled)
       PrintLogFile("%s", str->str);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  log_window_append(str->str);
    }
@@ -637,7 +637,7 @@ void Stop(char *format, ...)
 
    /*** CLI mode */
    
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode) 
 #endif
    {  g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
@@ -650,7 +650,7 @@ void Stop(char *format, ...)
 
    /*** GUI mode */
    
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    else
    {  char *titled,*msg,*utf_msg;
       int idx;
@@ -710,7 +710,7 @@ void Stop(char *format, ...)
 
    /* see above: possibly unreachable in GUI mode! */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode)
 #endif
    {    FreeClosure();
@@ -782,7 +782,7 @@ void CallIdleFunc(gboolean (*idle_func)(gpointer), gpointer data)
 /***
  *** Graphical user interface convenience
  ***/
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 /* 
  * Show the given widget
@@ -1111,7 +1111,7 @@ int ModalWarning(char *msg, ...)
    vlog_warning(msg, argp);
    va_end(argp);
    
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    { va_start(argp, msg);
      result = vmodal_dialog(mt, bt, button_fn, msg, argp);
@@ -1126,7 +1126,7 @@ int ModalWarning(char *msg, ...)
  * Set the text in the pango layout and retrieve its extents.
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void SetText(PangoLayout *layout, char *text, int *w, int *h)
 {  PangoRectangle rect;
    char *t = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
@@ -1316,12 +1316,12 @@ static void insert_button(GtkDialog *dialog)
 #endif
 int ConfirmImageDeletion(char *file)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode)  /* Always delete it in command line mode */
 #endif
       return TRUE;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->confirmDeletion) /* I told you so... */
       return TRUE;
 
@@ -1338,12 +1338,12 @@ int ConfirmImageDeletion(char *file)
 
 int ConfirmEccDeletion(char *file)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode)  /* Always delete it in command line mode */
 #endif
       return TRUE;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->confirmDeletion) /* I told you so... */
       return TRUE;
 

@@ -114,7 +114,7 @@ typedef enum
 int main(int argc, char *argv[])
 {  int mode = MODE_NONE; 
    int sequence = MODE_NONE;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int devices_queried = FALSE;
 #endif
    char *debug_arg = NULL;
@@ -763,7 +763,7 @@ int main(int argc, char *argv[])
    if(!Closure->device && mode == MODE_SEQUENCE 
       && (sequence & (1<<MODE_READ | 1<<MODE_SCAN))) 
    {  Closure->device = DefaultDevice();
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       devices_queried = TRUE;
 #endif
    }
@@ -920,7 +920,7 @@ int main(int argc, char *argv[])
 
    /*** If no mode was selected, print the help screen. */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(mode == MODE_HELP)
 #else
    if(mode == MODE_HELP || mode == MODE_NONE)
@@ -1019,7 +1019,7 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /* If no mode was selected at the command line, 
       start the graphical user interface. */
 

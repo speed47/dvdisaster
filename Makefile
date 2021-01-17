@@ -5,8 +5,9 @@
 all:
 	@echo
 	@echo "Please run \`./configure' first."
-	@echo "To build a CLI-only version,"
-	@echo "run \`CLI_ONLY=1 ./configure' instead."
+	@echo
+	@echo "To build a CLI-only version, run `./configure --with-cli-only'."
+	@echo
 	@echo "Note that dvdisaster requires GNU make to build."
 	@echo "Under non-Linux systems, it might be known as \`gmake'."
 	@echo

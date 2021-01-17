@@ -23,7 +23,7 @@
 #ifndef RS01INCLUDES_H
 #define RS01INCLUDES_H
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* Data structs from rs01-window.c */
 
 typedef struct
@@ -107,7 +107,7 @@ typedef struct
 {  struct MD5Context md5ctxt;   /* Complete image checksum */
 } RS01CksumClosure;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* 
  * These are exported via the Method struct 
  */
@@ -159,7 +159,7 @@ void RS01Create(void);
 
 void RS01Fix(Image*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* rs01-window.c */
 
 void RS01AddFixValues(RS01Widgets*, int, int);

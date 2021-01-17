@@ -55,7 +55,7 @@ void register_rs03(void)
    method->recognizeEccFile  = RS03RecognizeFile;
    method->recognizeEccImage = RS03RecognizeImage;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /*** Linkage to rs03-window.c */
 
    method->createCreateWindow = CreateRS03EncWindow;
@@ -83,7 +83,7 @@ void register_rs03(void)
 
 static void destroy(Method *method)
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS03Widgets *wl = (RS03Widgets*)method->widgetList;
 #endif
    RS03CksumClosure *csc = (RS03CksumClosure*)method->ckSumClosure;
@@ -92,7 +92,7 @@ static void destroy(Method *method)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(wl)
    {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
 

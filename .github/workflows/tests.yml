@@ -89,7 +89,7 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2
     - name: configure
-      run: env CLI_ONLY=1 ./configure
+      run: ./configure --with-cli-only
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executable
@@ -125,7 +125,7 @@ jobs:
       shell: bash
     - uses: actions/checkout@v2
     - name: configure
-      run: env CLI_ONLY=1 ./configure
+      run: ./configure --with-cli-only
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executable
@@ -153,7 +153,7 @@ jobs:
     - name: install prerequisites
       run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man jq
     - name: configure
-      run: env CLI_ONLY=1 ./configure
+      run: ./configure --with-cli-only
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executability

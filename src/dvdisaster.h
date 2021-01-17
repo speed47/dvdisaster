@@ -53,7 +53,7 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 #include <gtk/gtk.h>
 #endif
 
@@ -86,13 +86,14 @@
    Note that these functions are even required when
    WITH_NLS_NO is set! */
 
-#ifdef DEBUG_PRINTF_FORMAT
-/* disable sgettext() calls so that the compiler can analyze printf format strings */
-#define _(string) string
-#define _utf(string) string
+#ifndef WITH_DEBUG_PRINTF_FORMAT_YES
+ #define _(string) sgettext(string)
+ #define _utf(string) sgettext_utf8(string)
 #else
-#define _(string) sgettext(string)
-#define _utf(string) sgettext_utf8(string)
+/* disable sgettext() calls so that the compiler
+   can analyze printf format strings */
+ #define _(string) string
+ #define _utf(string) string
 #endif
 
 /* File permissions for images */
@@ -109,7 +110,7 @@
  #define round(x) rint(x)
 #endif
 
-#ifdef CLI
+#ifdef WITH_CLI_ONLY_YES
 #define STATUS_LABEL_OR_NULL NULL
 #else
 #define STATUS_LABEL_OR_NULL Closure->status
@@ -310,7 +311,7 @@ typedef struct _GlobalClosure
 
    struct _CrcBuf *crcBuf;      /* crcBuf of last image read */
    
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    /*** GUI-related things */
 
    int guiMode;              /* TRUE if GUI is active */
@@ -318,7 +319,7 @@ typedef struct _GlobalClosure
 #endif
    int noMissingWarnings;    /* suppress warnings about inconsistent missing sectors */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    GtkWidget *logWidget;     /* Dialog for the log display */
    GtkScrolledWindow *logScroll; /* and its scrolled window */
    GtkTextBuffer *logBuffer; /* Text buffer for the log output */
@@ -401,7 +402,7 @@ typedef struct _GlobalClosure
    GtkWidget *readLinearFootlineBox;
 #endif
    gint64 crcErrors, readErrors;  /* these are passed between threads and must therefore be global */
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
    /*** Widgets for the adaptive reading action */
 
@@ -549,7 +550,7 @@ int ProbeCacheLineSize();
 
 void InitClosure(void);
 void LocalizedFileDefaults(void);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void UpdateMarkup(char**, GdkColor*);
 void DefaultColors(void);
 #endif
@@ -624,7 +625,7 @@ int CrcBufValid(CrcBuf*, struct _Image*, EccHeader*);
 
 void PrintCrcBuf(CrcBuf*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** curve.c
  ***/
@@ -735,7 +736,7 @@ void    PrintEccHeader(EccHeader*);
  *** fix-window.c
  ***/
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void CreateFixWindow(GtkWidget*);
 #endif
 
@@ -795,7 +796,7 @@ void FreeGaloisTables(GaloisTables*);
 ReedSolomonTables *CreateReedSolomonTables(GaloisTables*, gint32, gint32, int);
 void FreeReedSolomonTables(ReedSolomonTables*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** help-dialogs.c
  ***/
@@ -1073,7 +1074,7 @@ int     forget(void*);
 
 void    check_memleaks(void);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** menubar.c
  ***/
@@ -1109,7 +1110,7 @@ typedef struct _Method
    void (*updateCksums)(Image*, gint64, unsigned char*);/* checksum while reading an image */
    int  (*finalizeCksums)(Image*);
    void *ckSumClosure;                                   /* working closure for above */
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    void (*createVerifyWindow)(struct _Method*, GtkWidget*);
    void (*createCreateWindow)(struct _Method*, GtkWidget*);
    void (*createFixWindow)(struct _Method*, GtkWidget*);
@@ -1121,7 +1122,7 @@ typedef struct _Method
    void (*readPreferences)(struct _Method*);
 #endif
    void (*destroy)(struct _Method*);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int  tabWindowIndex;              /* our position in the (invisible) notebook */
    void *widgetList;                 /* linkage to window system */
 #endif
@@ -1155,7 +1156,7 @@ void Verbose(char*, ...) PRINTF_FORMAT(1);
 void PrintTimeToLog(GTimer*, char*, ...) PRINTF_FORMAT(2);
 void PrintProgress(char*, ...) PRINTF_FORMAT(1);
 void ClearProgress(void);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void PrintCLIorLabel(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 #else
 void PrintCLIorLabel(void*, char*, ...) PRINTF_FORMAT(2);
@@ -1169,7 +1170,7 @@ void UnregisterCleanup(void);
 
 GThread* CreateGThread(GThreadFunc, gpointer);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void ShowWidget(GtkWidget*);
 void AllowActions(gboolean);
 
@@ -1186,7 +1187,7 @@ int ModalWarning(char*, ...) PRINTF_FORMAT(1);
 #define ModalWarningOrCLI(a,b,c,d,...) ModalWarning(d,__VA_ARGS__)
 #endif
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void SetText(PangoLayout*, char*, int*, int*);
 void SwitchAndSetFootline(GtkWidget*, int, GtkWidget*, char*, ...) PRINTF_FORMAT(4);
 
@@ -1200,7 +1201,7 @@ void LockLabelSize(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 int ConfirmImageDeletion(char *);
 int ConfirmEccDeletion(char *);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** preferences.c
  ***/
@@ -1270,7 +1271,7 @@ void ReadDefectiveSectorFile(DefectiveSectorHeader *, struct _RawBuffer*, char*)
 
 void ReadMediumLinear(gpointer);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** read-linear-window.c
  ***/
@@ -1292,7 +1293,7 @@ void GetReadingRange(gint64, gint64*, gint64*);
 
 void ReadMediumAdaptive(gpointer);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** read-adaptive-window.c
  ***/
@@ -1473,7 +1474,7 @@ void *PrepareIterativeSmartLEC(RawBuffer*);
 void SmartLECIteration(void*, char*);
 void EndIterativeSmartLEC(void*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /***
  *** spiral.c
  ***/

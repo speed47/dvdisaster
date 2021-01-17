@@ -23,7 +23,7 @@
 #ifndef RS02INCLUDES_H
 #define RS02INCLUDES_H
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* Data structs from rs02-window.c */
 
 typedef struct
@@ -122,7 +122,7 @@ typedef struct
  * These are exported via the Method struct 
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void CreateRS02EncWindow(Method*, GtkWidget*);
 void CreateRS02FixWindow(Method*, GtkWidget*);
 void CreateRS02PrefsPage(Method*, GtkWidget*);
@@ -188,7 +188,7 @@ void RS02Fix(Image*);
 
 int  RS02Recognize(Image*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* rs02-window.c */
 
 void RS02AddFixValues(RS02Widgets*, int, int);

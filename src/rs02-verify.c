@@ -28,7 +28,7 @@
  *** Reset the verify output window
  ***/
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 void ResetRS02VerifyWindow(Method *self)
 {  RS02Widgets *wl = (RS02Widgets*)self->widgetList;
@@ -344,7 +344,7 @@ typedef struct
 {  Image *image;
    EccHeader *eh;
    RS02Layout *lay;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS02Widgets *wl;
 #endif
    Bitmap *map;
@@ -358,7 +358,7 @@ static void cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       AllowActions(TRUE);
 #endif
@@ -371,7 +371,7 @@ static void cleanup(gpointer data)
    
    g_free(cc);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      g_thread_exit(0);
 #endif
@@ -515,7 +515,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(vc->wl->cmpEcc1Name), "");
 	 SetLabelText(GTK_LABEL(vc->wl->cmpEcc1Msg),  "");
@@ -548,7 +548,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 
 void RS02Verify(Image *image)
 {  verify_closure *cc = g_malloc0(sizeof(verify_closure));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    Method *self = FindMethod("RS02");
    RS02Widgets *wl = self->widgetList;
 #endif
@@ -574,7 +574,7 @@ void RS02Verify(Image *image)
    gint64 hdr_missing, hdr_crc_errors;
    gint64 hdr_ok,hdr_pos,hdr_correctable;
    gint64 ecc_sector,expected_sectors;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int ecc_md5_failure = FALSE;
 #endif
    int ecc_slice;
@@ -583,7 +583,7 @@ void RS02Verify(Image *image)
    char method[5];
    char *img_advice = NULL;
    char *ecc_advice = NULL;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int try_it;
 #endif
    int unrecoverable_sectors = 0;
@@ -591,7 +591,7 @@ void RS02Verify(Image *image)
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, cc);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    cc->wl = wl;
 #endif
 
@@ -609,7 +609,7 @@ void RS02Verify(Image *image)
 
    /*** Print information on image size */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		  _("Checking the image file."),
@@ -619,7 +619,7 @@ void RS02Verify(Image *image)
    PrintLog("\n%s: ",Closure->imageName);
    PrintLog(_("present, contains %" PRId64 " medium sectors.\n"),image->sectorSize);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(expected_sectors == image->sectorSize)
       {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), "%" PRId64 "", image->sectorSize);
@@ -689,7 +689,7 @@ void RS02Verify(Image *image)
 	   hdr_pos = (lay->protectedSectors + lay->headerModulo - 1) & ~(lay->headerModulo-1);
       else hdr_pos += lay->headerModulo;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  if(!hdr_crc_errors && !hdr_missing)
 	    SetLabelText(GTK_LABEL(wl->cmpEccHeaders), _("complete"));
@@ -734,7 +734,7 @@ void RS02Verify(Image *image)
 
       /* Check for user interruption */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	    SetLabelText(GTK_LABEL(wl->cmpImageResult), 
@@ -820,7 +820,7 @@ void RS02Verify(Image *image)
 	 }
       }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode) 
 	    percent = (VERIFY_IMAGE_SEGMENTS*(s+1))/expected_sectors;
       else
@@ -829,7 +829,7 @@ void RS02Verify(Image *image)
 
       if(last_percent != percent) 
       {  PrintProgress(_("- testing sectors  : %3d%%") ,percent);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	 {  add_verify_values(self, percent, new_missing, new_crc_errors); 
 	    if(data_missing || data_crc_errors)
@@ -853,7 +853,7 @@ void RS02Verify(Image *image)
 
    /* Complete damage summary */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(data_missing || data_crc_errors)
         SetLabelText(GTK_LABEL(wl->cmpDataSection), 
@@ -907,7 +907,7 @@ void RS02Verify(Image *image)
       PrintLog(_("  ... ecc section    : %" PRId64 " sectors missing\n"), ecc_missing);
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(!data_missing && !data_crc_errors) 
                         SetLabelText(GTK_LABEL(wl->cmpDataSection), _("complete"));
@@ -957,7 +957,7 @@ continue_with_ecc:
       PrintLog(format, _("created by dvdisaster"), major, minor, micro, unstable);
       PrintLog("\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SwitchAndSetFootline(wl->cmpEccNotebook, 1,
 			      wl->cmpEccCreatedBy, 
@@ -972,7 +972,7 @@ continue_with_ecc:
       PrintLog(format, _("created by dvdisaster"), major, minor, unstable);
       PrintLog("\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpEccNotebook, 1,
 			     wl->cmpEccCreatedBy,
@@ -989,7 +989,7 @@ continue_with_ecc:
 	    method, eh->eccBytes, 
 	    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpEccMethod), _("%4s, %d roots, %4.1f%% redundancy"),
 		  method, eh->eccBytes, 
@@ -1004,7 +1004,7 @@ continue_with_ecc:
 	       (eh->neededVersion%10000)/100);
 
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccRequires), "dvdisaster-%d.%d",
 		     eh->neededVersion/10000,
@@ -1019,7 +1019,7 @@ continue_with_ecc:
 	       (eh->neededVersion%10000)/100);
 
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
      {  SetLabelText(GTK_LABEL(wl->cmpEccRequires), 
 		     "<span %s>dvdisaster-%d.%d</span>",
@@ -1043,7 +1043,7 @@ continue_with_ecc:
    {  PrintLog(_("- medium sectors   : %" PRId64 " / %" PRId64 " (good)\n"), 
 	       expected_sectors, lay->dataSectors);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), "%" PRId64 " / %" PRId64 "", 
 		     expected_sectors, lay->dataSectors);
@@ -1055,7 +1055,7 @@ continue_with_ecc:
 		    expected_sectors);
       else PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccMediumSectors), 
 		      "<span %s>%" PRId64 "</span>", Closure->redMarkup, expected_sectors);
@@ -1078,7 +1078,7 @@ continue_with_ecc:
       if(n) PrintLog(_("- data md5sum      : %s (good)\n"),hdr_digest);
       else  PrintLog(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  if(n) SetLabelText(GTK_LABEL(wl->cmpEcc1Msg), "%s", hdr_digest);
 	 else  
@@ -1091,7 +1091,7 @@ continue_with_ecc:
    else 
    {  PrintLog(_("- data md5sum      : %s\n"), "-");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEcc1Msg), "%s", "-");
 #endif
@@ -1104,14 +1104,14 @@ continue_with_ecc:
    if(!crc_missing)
    {  if(!memcmp(eh->crcSum, cc->crcSum, 16))
       {  PrintLog(_("- crc md5sum       : %s (good)\n"),digest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpEcc2Msg), "%s", digest);
 #endif
       }
       else 
       {    PrintLog(_("* crc md5sum       : %s (BAD)\n"),digest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
            if(Closure->guiMode)
 	   {  SetLabelText(GTK_LABEL(wl->cmpEcc2Msg), "<span %s>%s</span>", Closure->redMarkup, digest);
 	   }
@@ -1122,7 +1122,7 @@ continue_with_ecc:
    else
    {  PrintLog(_("- crc md5sum       : %s\n"), "-");
      
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEcc2Msg), "%s", "-");
 #endif
@@ -1135,14 +1135,14 @@ continue_with_ecc:
    if(!ecc_missing)
    {  if(!memcmp(eh->eccSum, ecc_sum, 16))
       {    PrintLog(_("- ecc md5sum       : %s (good)\n"),digest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
            if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEcc3Msg), "%s", digest);
 #endif
       }
       else 
       {    PrintLog(_("* ecc md5sum       : %s (BAD)\n"),digest);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
            if(Closure->guiMode)
 	   {  SetLabelText(GTK_LABEL(wl->cmpEcc3Msg), "<span %s>%s</span>", Closure->redMarkup, digest);
 	   }
@@ -1153,7 +1153,7 @@ continue_with_ecc:
    else
    {  PrintLog(_("- ecc md5sum       : %s\n"), "-");
      
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEcc3Msg), "%s", "-");
 #endif
@@ -1162,12 +1162,12 @@ continue_with_ecc:
 
    /*** Print final results */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    try_it =
 #endif
       prognosis(cc, total_missing + data_crc_errors - hdr_correctable, expected_sectors);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(ecc_advice) 
       {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);

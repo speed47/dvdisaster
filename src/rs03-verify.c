@@ -35,7 +35,7 @@
 /***
  *** Reset the verify output window
  ***/
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 
 void ResetRS03VerifyWindow(Method *self)
 {  RS03Widgets *wl = (RS03Widgets*)self->widgetList;
@@ -376,7 +376,7 @@ typedef struct
 {  Image *image;
    EccHeader *eh;
    RS03Layout *lay;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS03Widgets *wl;
 #endif
    CrcBuf *crcBuf;
@@ -393,7 +393,7 @@ static void cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       AllowActions(TRUE);
 #endif
@@ -414,7 +414,7 @@ static void cleanup(gpointer data)
 
    g_free(vc);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      g_thread_exit(0);
 #endif
@@ -460,7 +460,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(vc->wl->cmpImageErasure), _("Erasure counts:"));
 	 SetLabelText(GTK_LABEL(vc->wl->cmpImagePrognosis), _("Prognosis:"));
@@ -497,7 +497,7 @@ static int check_syndromes(verify_closure *vc)
    int bad_counted;
    int layer,i,j;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(vc->wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		  _("Checking the image and error correction files."),
@@ -515,7 +515,7 @@ static int check_syndromes(verify_closure *vc)
 	 for(j=0; j<i; j++)
 	    g_free(vc->eccBlock[j]);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
 			_("<span %s>Out of memory; try reducing sector prefetch!</span>"),
@@ -541,7 +541,7 @@ static int check_syndromes(verify_closure *vc)
 
       /* Check for user interruption */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	    SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes), 
@@ -603,7 +603,7 @@ static int check_syndromes(verify_closure *vc)
 
 	 if(!ecc_bad)
 	 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
 			   _("%d%% tested"),
@@ -614,7 +614,7 @@ static int check_syndromes(verify_closure *vc)
 	 }
 	 else
 	 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
 			   _("<span %s>%" PRId64 " good, %" PRId64 " bad; %d%% tested</span>"),
@@ -630,7 +630,7 @@ static int check_syndromes(verify_closure *vc)
 
    if(!ecc_bad)
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
        SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),_("pass"));
 #endif
@@ -639,7 +639,7 @@ static int check_syndromes(verify_closure *vc)
    }
    else
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
        SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
 		    _("<span %s>%" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks</span>"),
@@ -660,7 +660,7 @@ static int check_syndromes(verify_closure *vc)
 void RS03Verify(Image *image)
 {  Method *self = FindMethod("RS03");
    verify_closure *vc = g_malloc0(sizeof(verify_closure));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    RS03Widgets *wl = self->widgetList;
 #endif
    EccHeader *eh = NULL;
@@ -683,12 +683,12 @@ void RS03Verify(Image *image)
    char *unstable="";
 
    char method[5];
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    char *img_advice = NULL;
    char *ecc_advice = NULL;
 #endif
    char *version;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    int syn_error = 0;
    int try_it;
 #endif
@@ -699,7 +699,7 @@ void RS03Verify(Image *image)
 
    RegisterCleanup(_("Check aborted"), cleanup, vc);
    vc->image = image;
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    vc->wl = wl;
 #endif
 
@@ -722,7 +722,7 @@ void RS03Verify(Image *image)
    else  /* may only happen when ecc file is present */
    {  PrintLog("\n%s not present.\n", Closure->imageName);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
 #endif
@@ -730,7 +730,7 @@ void RS03Verify(Image *image)
 
    if(eh->methodFlags[0] & MFLAG_ECC_FILE)
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		     _("Checking the image and error correction files."),
@@ -741,7 +741,7 @@ void RS03Verify(Image *image)
    }
    else 
    {  
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
        SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
 		    _("Checking the image file."),
@@ -774,7 +774,7 @@ void RS03Verify(Image *image)
 	 else msg = g_strdup_printf(_("Ecc file is %" PRId64 " sectors longer than expected."), 
 				    eccfile_sectors - expected_eccfile_sectors);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	    ecc_advice = g_strdup_printf("<span %s>%s</span>", Closure->redMarkup, msg);
 #endif
@@ -791,7 +791,7 @@ void RS03Verify(Image *image)
         PrintLog(_("- type             : Error correction file\n"));
    else PrintLog(_("- type             : Augmented image\n"));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(eh->methodFlags[0] & MFLAG_ECC_FILE)
 	   SetLabelText(GTK_LABEL(wl->cmpEccType), _("Error correction file"));
@@ -807,7 +807,7 @@ void RS03Verify(Image *image)
 	    method, eh->eccBytes, 
 	    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpEccMethod), _("%4s, %d roots, %4.1f%% redundancy"),
 		  method, eh->eccBytes, 
@@ -830,7 +830,7 @@ void RS03Verify(Image *image)
       PrintLog(format, _("- created by       : dvdisaster"), major, minor, micro, unstable);
       PrintLog("\n");
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format, 
 		      "dvdisaster", major, minor, micro, unstable);
@@ -842,7 +842,7 @@ void RS03Verify(Image *image)
       PrintLog(format, _("- created by       : dvdisaster"), major, minor, unstable);
       PrintLog("\n");
       
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format,
 		     "dvdisaster", major, minor, unstable);
@@ -863,7 +863,7 @@ void RS03Verify(Image *image)
    if(Closure->version >= eh->neededVersion)
    {  PrintLog(_("- requires         : dvdisaster-%s\n"), version);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
 	SetLabelText(GTK_LABEL(wl->cmpEccRequires), "dvdisaster-%s", version);
 #endif
@@ -874,7 +874,7 @@ void RS03Verify(Image *image)
 		 "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"),
 	       version);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode)
      {  SetLabelText(GTK_LABEL(wl->cmpEccRequires), 
 		     "<span %s>dvdisaster-%s</span>",
@@ -897,7 +897,7 @@ void RS03Verify(Image *image)
 
    PrintLog(_("- data md5sum      : %s\n"),hdr_digest);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
      SetLabelText(GTK_LABEL(wl->cmpEccDataCrcVal), "%s", hdr_digest);
 #endif
@@ -909,7 +909,7 @@ void RS03Verify(Image *image)
       {  if(image->fpState != FP_PRESENT)
          {  PrintLog(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	    if(Closure->guiMode)
 	      SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("<span %s>missing sector prevents calculation</span>"), Closure->redMarkup);
 #endif
@@ -919,7 +919,7 @@ void RS03Verify(Image *image)
 	   if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	   {  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	      if(Closure->guiMode)
 	      {  SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), 
 			      _("<span %s>mismatch</span>"), Closure->redMarkup);
@@ -931,7 +931,7 @@ void RS03Verify(Image *image)
 	   }
 	   else 
 	   {  PrintLog(_("- fingerprint match: good\n"));
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	      if(Closure->guiMode)
 		SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("good"));
 #endif
@@ -942,7 +942,7 @@ void RS03Verify(Image *image)
    
    /* print advice collected from above tests */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(ecc_advice) 
       {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);
@@ -985,7 +985,7 @@ void RS03Verify(Image *image)
    if(expected_image_sectors == image->sectorSize && matching_byte_size)
    {  if(lay->target == ECC_FILE)
       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode)
 	 {  if(image->inLast == 2048)
 	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " in image; %" PRId64 " in ecc file"), 
@@ -1004,7 +1004,7 @@ void RS03Verify(Image *image)
       }
       else 
       {  
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode)
 	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " total / %" PRId64 " data"), 
 			image->sectorSize, lay->dataSectors);
@@ -1024,7 +1024,7 @@ void RS03Verify(Image *image)
            expected_size = g_strdup_printf("%lld", (long long int)expected_image_sectors);
       else expected_size = g_strdup_printf("%lld sectors + %d bytes", (long long int)expected_image_sectors-1, eh->inLast);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
       {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("<span %s>%s (%s expected)</span>"), 
 		      Closure->redMarkup, image_size, expected_size);
@@ -1089,7 +1089,7 @@ void RS03Verify(Image *image)
 
       /* Check for user interruption */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	    SetLabelText(GTK_LABEL(wl->cmpImageResult), 
@@ -1211,7 +1211,7 @@ void RS03Verify(Image *image)
       if(!defective)
 	SetBit(vc->map, s);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode) 
       {   /* data part / spiral animation */
 	  percent = (VERIFY_IMAGE_SEGMENTS*(s+1))/virtual_expected;
@@ -1226,7 +1226,7 @@ void RS03Verify(Image *image)
 
       if(last_percent != percent) /* Update sector results */
       {  PrintProgress(_("- testing sectors  : %3d%%") ,percent);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	 {  if(lay->target == ECC_IMAGE)
 	    {  add_verify_values(self, percent, new_missing, new_crc_errors); 
@@ -1265,7 +1265,7 @@ void RS03Verify(Image *image)
 
       if(lay->target == ECC_FILE && s == lay->dataSectors-1)
       {	 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	if(Closure->guiMode)
 	{  /* flush/complete spiral */
 	   add_verify_values(self, VERIFY_IMAGE_SEGMENTS, new_missing, new_crc_errors); 
@@ -1283,7 +1283,7 @@ void RS03Verify(Image *image)
 
    /* Complete damage summary */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(data_missing || data_crc_errors)
         SetLabelText(GTK_LABEL(wl->cmpDataSection), 
@@ -1334,7 +1334,7 @@ void RS03Verify(Image *image)
       PrintLog(_("  ... ecc section    : %" PRId64 " sectors missing\n"), ecc_missing);
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(!data_missing && !data_crc_errors) 
                         SetLabelText(GTK_LABEL(wl->cmpDataSection), _("complete"));
@@ -1348,7 +1348,7 @@ void RS03Verify(Image *image)
 
    /*** Test error syndromes */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  SetLabelText(GTK_LABEL(wl->cmpEccSynLabel), _("Ecc block test:"));
       SetLabelText(GTK_LABEL(wl->cmpEccSyndromes), "");
@@ -1356,7 +1356,7 @@ void RS03Verify(Image *image)
 #endif
    if(0&&total_missing + data_crc_errors != 0)
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
      if(Closure->guiMode) 
         SetLabelText(GTK_LABEL(wl->cmpEccSyndromes),
 		     _("<span %s>Skipped; not useful on known defective image</span>"),
@@ -1367,7 +1367,7 @@ void RS03Verify(Image *image)
    }
    else
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       syn_error =
 #endif
          check_syndromes(vc);
@@ -1375,7 +1375,7 @@ void RS03Verify(Image *image)
 
    /*** Print image advice */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {
       if(img_advice) 
@@ -1397,12 +1397,12 @@ void RS03Verify(Image *image)
 
    /*** Print final results */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    try_it =
 #endif
       prognosis(vc, total_missing+data_crc_errors, lay->totalSectors); 
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(total_missing || data_crc_errors)
       {  if(try_it) SetLabelText(GTK_LABEL(wl->cmpImageResult),

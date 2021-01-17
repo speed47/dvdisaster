@@ -2206,7 +2206,7 @@ int TestUnitReady(DeviceHandle *dh)
 
       if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_NONE) != -1)
       {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
          if(Closure->guiMode)
 	    SetLabelText(Closure->status, "");
 #endif
@@ -2227,7 +2227,7 @@ int TestUnitReady(DeviceHandle *dh)
       {  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
 			 _("Waiting 10 seconds for drive: %d\n"),9-i);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)
 	    return FALSE;
 #endif
@@ -2240,7 +2240,7 @@ int TestUnitReady(DeviceHandle *dh)
       break;  /* Something is wrong with the drive */
    }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       SetLabelText(Closure->status, "");
 #endif
@@ -2496,7 +2496,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       if(status)  /* current try was unsuccessful */
       {  int last_key, last_asc, last_ascq;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)  /* user break */
 	    return status;
 #endif

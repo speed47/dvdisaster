@@ -137,7 +137,7 @@ find_dotfile:
  * Update color string for the <span color="#f00baa">...</span> string
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void UpdateMarkup(char **string, GdkColor *color)
 {  int hexval;
  
@@ -339,7 +339,7 @@ void ReadDotfile()
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
       if(!strcmp(symbol, "welcome-msg"))     { Closure->welcomeMessage = atoi(value); continue; }
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(!strcmp(symbol, "positive-text"))   { get_color(Closure->greenText, value); 
 	                                       UpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 	                                       continue; 
@@ -445,7 +445,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);
    g_fprintf(dotfile, "welcome-msg:       %d\n\n", Closure->welcomeMessage);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    save_colors(dotfile, "positive-text",      Closure->greenText);
    save_colors(dotfile, "negative-text",      Closure->redText);
    save_colors(dotfile, "bar-color",          Closure->barColor);
@@ -566,7 +566,7 @@ void InitClosure()
    Closure->bdSize3  = Closure->savedBDSize3  = BDXL_TL_SIZE;
    Closure->bdSize4  = Closure->savedBDSize4  = BDXL_QL_SIZE;
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    Closure->logString = g_string_sized_new(1024);
    Closure->logLock   = g_malloc0(sizeof(GMutex));
      g_mutex_init(Closure->logLock);
@@ -633,7 +633,7 @@ void cond_free_ptr_array(GPtrArray *a)
     
 void FreeClosure()
 {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
 #endif
 /* in CLI-only mode, always update dotfile */
@@ -664,7 +664,7 @@ void FreeClosure()
    cond_free(Closure->dDumpDir);
    cond_free(Closure->dDumpPrefix);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(Closure->prefsContext)
      FreePreferences(Closure->prefsContext);
 

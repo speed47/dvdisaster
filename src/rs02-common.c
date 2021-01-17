@@ -432,7 +432,7 @@ RS02Layout *CalcRS02Layout(Image *image)
 
    /* See if user wants to pick a certain redundancy */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode && Closure->redundancy)
 #else
    if(Closure->redundancy)

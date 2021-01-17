@@ -23,7 +23,7 @@
 #ifndef RS03INCLUDES_H
 #define RS03INCLUDES_H
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* Data structs from rs03-window.c */
 
 typedef struct
@@ -133,7 +133,7 @@ typedef struct
  * These are exported via the Method struct 
  */
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void CreateRS03EncWindow(Method*, GtkWidget*);
 void CreateRS03FixWindow(Method*, GtkWidget*);
 void CreateRS03PrefsPage(Method*, GtkWidget*);
@@ -200,7 +200,7 @@ void RS03Fix(Image*);
 int  RS03RecognizeFile(LargeFile*, EccHeader**);
 int  RS03RecognizeImage(Image*);
 
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 /* rs03-window.c */
 
 void RS03AddFixValues(RS03Widgets*, int, int);
@@ -217,7 +217,7 @@ void RS03Verify(Image*);
 /* temporary single threaded versions */
 
 void RS03SCreate(void);
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
 void CreateRS03SEncWindow(Method*, GtkWidget*);
 void ResetRS03SEncWindow(Method*);
 #endif

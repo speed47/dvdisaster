@@ -365,7 +365,7 @@ static IsoInfo* examine_iso(Image *image)
  
    for(sector=16; sector<32; sector++)
    {
-#ifndef CLI
+#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions) 
         continue;
 #endif
