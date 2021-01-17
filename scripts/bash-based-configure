@@ -729,15 +729,15 @@ function GET_DIR()
 # Try to compile conftest.c
 
 function try_compile()
-{ echo "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest" >>$LOGFILE
+{ echo "$CC $CFG_CFLAGS -Wno-error conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest" >>$LOGFILE
   cat conftest.c >>$LOGFILE
-  { (eval "$CC $CFG_CFLAGS conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest") 2>>$LOGFILE; } && test -s conftest
+  { (eval "$CC $CFG_CFLAGS -Wno-error conftest.c $CFG_LDFLAGS $CFG_LIBS -lm -o conftest") 2>>$LOGFILE; } && test -s conftest
 }
 
 function try_preprocess()
-{ echo "$CC $CFG_CFLAGS -E conftest.c -o conftest.out" >>$LOGFILE
+{ echo "$CC $CFG_CFLAGS -Wno-error -E conftest.c -o conftest.out" >>$LOGFILE
   cat conftest.c >>$LOGFILE
-  { (eval "$CC $CFG_CFLAGS -E conftest.c -o conftest.out") 2>>$LOGFILE; } && test -s conftest.out
+  { (eval "$CC $CFG_CFLAGS -Wno-error -E conftest.c -o conftest.out") 2>>$LOGFILE; } && test -s conftest.out
 }
 
 # Try to compile a main() with a given function
