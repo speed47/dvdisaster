@@ -364,6 +364,7 @@ int RS03RecognizeImage(Image *image)
 {  recognize_context *rc = g_malloc0(sizeof(recognize_context));
    guint64 image_sectors;
    guint64 layer_size;
+   gint64 triesleft = -1; /* infinity */
    int untested_layers;
    int layer, layer_sector;
    int i;
@@ -399,17 +400,39 @@ int RS03RecognizeImage(Image *image)
      }
    }
 
-   /* No exhaustive search on optical media unless explicitly okayed by user */
+   /* This concludes the non-exhaustive search, where we tried to look for
+      an ECC header signature on the sector right after the end of the ISO
+      data. This doesn't always work, as some software tend to add some sectors
+      after the end of the ISO (ImgBurn does this), or because the medium doesn't
+      have any ISO9600 structure at all (some have only UDF for example), in that
+      case the above quick search just does nothing.
+
+      By default, we don't launch an exhaustive search unless asked for.
+      For example on the medium-info page, we won't do it unless enabled in the options,
+      as the inserted medium might not have RS02 nor RS03 at all.
+      Of course, when doing verify or repair, as it implies the user knows there is
+      some ECC correction available on the medium, our caller will always require
+      an exhaustive search. It's also always enabled if we're not reading from a
+      drive but from a file on the hard drive, as seeking is very fast.
+
+      However even if not asked for an exhaustive search, and due to what has been
+      explained in the first paragraph, we'll always try to read at least 3 sectors
+      using the exhaustive search mechanism. On most images having ECC data, we'll
+      find the header on the first try, at least on easy cases. This is a tradeoff
+      to avoid having to display "no ECC data" on the medium-info page just because
+      we didn't bother looking for it too hard, without bringing in the full
+      exhaustive search which can take seconds or minutes on an optical drive with
+      a medium that, in the end, doesn't have any ECC data.
+   */
 
    if(!Closure->examineRS03 && image->type == IMAGE_MEDIUM)
-   {  free_recognize_context(rc);
-      Verbose("RS03RecognizeImage: skipping exhaustive RS03 search\n");
-      return FALSE;
+   {  triesleft = 3; /* no exhaustive search asked and reading from optical drive */
+      Verbose("RS03RecognizeImage: quick RS03 search, attempting up to %" PRId64" sector reads max\n", triesleft);
    }
+   else
+      Verbose("RS03RecognizeImage: No EH, entering exhaustive search\n");
 
    /* Determine image size in augmented case. */
-
-   Verbose("RS03RecognizeImage: No EH, entering exhaustive search\n");
 
    if(Closure->debugMode && Closure->mediumSize > 170)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
@@ -474,6 +497,11 @@ int RS03RecognizeImage(Image *image)
 	    /* reading beyond the image won't yield anything */
 	    if(sector >= image_sectors)
 	      goto mark_invalid_layer;
+
+            if (triesleft-- == 0) {
+                free_recognize_context(rc);
+                return FALSE;
+            }
 
 	    switch(image->type)
 	    {  case IMAGE_FILE:

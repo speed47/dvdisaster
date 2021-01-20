@@ -26,6 +26,7 @@ ExamineECC() started
 ...trying RS01
 ...trying RS02
 RS02Recognize: file rs03i-tmp.iso
+RS02Recognize: No EH, entering exhaustive search
 FindHeaderInMedium: Trying modulo 4611686018427387904
 FindHeaderInMedium: Trying modulo 2305843009213693952
 FindHeaderInMedium: Trying modulo 1152921504606846976
