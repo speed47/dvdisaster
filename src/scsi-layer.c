@@ -2707,7 +2707,13 @@ Image* OpenImageFromDevice(char *device, int query_only)
    ExamineUDF(image);
 
    read_capacity(image);  /* Needed for ExamineECC() ! */
-   ExamineECC(image);
+
+   /* if we allow blank and we have no max size set, don't bother looking for ECC,
+      or ExamineECC could throw a Stop() and abort the operation */
+   if (query_only == 2 && image->dh->readCapacity == 0 && image->dh->userAreaSize == 0)
+       Verbose("Capacity is zero, skipping ExamineECC() as we allow blanks");
+   else
+       ExamineECC(image);
 
    Verbose("# Calling query_size()\n");
    dh->sectors = query_size(image);

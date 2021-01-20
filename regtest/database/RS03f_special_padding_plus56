@@ -50,6 +50,7 @@ try_sector: trying sector 20123
 try_sector: read error, trying next header
 try_sector: trying sector 19973
 try_sector: no cookie, skipping current modulo
+RS02Recognize: No EH, entering exhaustive search
 FindHeaderInMedium: Trying modulo 4611686018427387904
 FindHeaderInMedium: Trying modulo 2305843009213693952
 FindHeaderInMedium: Trying modulo 1152921504606846976

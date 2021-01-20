@@ -84,11 +84,79 @@ try_sector: trying sector 21000
 try_sector: read error, trying next header
 try_sector: trying sector 20850
 try_sector: no cookie, skipping current modulo
-RS02Recognize: skipping exhaustive RS02 search
+RS02Recognize: quick RS02 search, attempting up to 3 sector reads max
+Medium rewriteable: FALSE
+FindHeaderInMedium: Trying modulo 4611686018427387904
+FindHeaderInMedium: Trying modulo 2305843009213693952
+FindHeaderInMedium: Trying modulo 1152921504606846976
+FindHeaderInMedium: Trying modulo 576460752303423488
+FindHeaderInMedium: Trying modulo 288230376151711744
+FindHeaderInMedium: Trying modulo 144115188075855872
+FindHeaderInMedium: Trying modulo 72057594037927936
+FindHeaderInMedium: Trying modulo 36028797018963968
+FindHeaderInMedium: Trying modulo 18014398509481984
+FindHeaderInMedium: Trying modulo 9007199254740992
+FindHeaderInMedium: Trying modulo 4503599627370496
+FindHeaderInMedium: Trying modulo 2251799813685248
+FindHeaderInMedium: Trying modulo 1125899906842624
+FindHeaderInMedium: Trying modulo 562949953421312
+FindHeaderInMedium: Trying modulo 281474976710656
+FindHeaderInMedium: Trying modulo 140737488355328
+FindHeaderInMedium: Trying modulo 70368744177664
+FindHeaderInMedium: Trying modulo 35184372088832
+FindHeaderInMedium: Trying modulo 17592186044416
+FindHeaderInMedium: Trying modulo 8796093022208
+FindHeaderInMedium: Trying modulo 4398046511104
+FindHeaderInMedium: Trying modulo 2199023255552
+FindHeaderInMedium: Trying modulo 1099511627776
+FindHeaderInMedium: Trying modulo 549755813888
+FindHeaderInMedium: Trying modulo 274877906944
+FindHeaderInMedium: Trying modulo 137438953472
+FindHeaderInMedium: Trying modulo 68719476736
+FindHeaderInMedium: Trying modulo 34359738368
+FindHeaderInMedium: Trying modulo 17179869184
+FindHeaderInMedium: Trying modulo 8589934592
+FindHeaderInMedium: Trying modulo 4294967296
+FindHeaderInMedium: Trying modulo 2147483648
+FindHeaderInMedium: Trying modulo 1073741824
+FindHeaderInMedium: Trying modulo 536870912
+FindHeaderInMedium: Trying modulo 268435456
+FindHeaderInMedium: Trying modulo 134217728
+FindHeaderInMedium: Trying modulo 67108864
+FindHeaderInMedium: Trying modulo 33554432
+FindHeaderInMedium: Trying modulo 16777216
+FindHeaderInMedium: Trying modulo 8388608
+FindHeaderInMedium: Trying modulo 4194304
+FindHeaderInMedium: Trying modulo 2097152
+FindHeaderInMedium: Trying modulo 1048576
+FindHeaderInMedium: Trying modulo 524288
+FindHeaderInMedium: Trying modulo 262144
+FindHeaderInMedium: Trying modulo 131072
+FindHeaderInMedium: Trying modulo 65536
+FindHeaderInMedium: Trying modulo 32768
+FindHeaderInMedium: Trying modulo 16384
+try_sector: trying sector 16384
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 8192
+Sector 16384 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 4096
+try_sector: trying sector 20480
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 2048
+Sector 20480 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 1024
+Sector 20480 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 512
+try_sector: trying sector 20992
+try_sector: no cookie, skipping current modulo
 ...trying RS03
 RS03RecognizeImage: medium sim-cd
 FindRS03HeaderInImage: medium sim-cd
-RS03RecognizeImage: skipping exhaustive RS03 search
+RS03RecognizeImage: quick RS03 search, attempting up to 3 sector reads max
+.. trying layer size 1409
+Scanning layers for signatures.
+- layer slice 0
+** All layers tested -> no RS03 data found
 ...no augmented image detected.
 # Calling query_size()
 # *** query_size(Simulated CD drive 1.00) ***
@@ -154,6 +222,7 @@ try_sector: trying sector 21000
 try_sector: read error, trying next header
 try_sector: trying sector 20850
 try_sector: no cookie, skipping current modulo
+RS02Recognize: No EH, entering exhaustive search
 FindHeaderInMedium: Trying modulo 4611686018427387904
 FindHeaderInMedium: Trying modulo 2305843009213693952
 FindHeaderInMedium: Trying modulo 1152921504606846976

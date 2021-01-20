@@ -1437,6 +1437,9 @@ if try "reading image with missing master header" read_bad_master; then
 
   cp $MASTERISO $SIMISO
   $NEWVER -i$SIMISO --debug --erase 30000 >>$LOGFILE 2>&1
+  # since pl7: we also need to erase a few more sectors as now
+  # no exhaustive search mean stop trying after reading 3 sectors
+  $NEWVER -i$SIMISO --debug --erase 32768 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_bad_master "--spinup-delay=0 -r -v" $TMPISO
