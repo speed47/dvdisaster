@@ -806,7 +806,7 @@ static gpointer io_thread(ecc_closure *ec)
    /*** Allocate local parity buffer aligned at 128bit boundary */
 
    ec->paritybase = g_malloc(n_parity_bytes+16);      /* output buffer */
-   ec->parity     = ec->paritybase + (16- ((unsigned long)ec->paritybase & 15));
+   ec->parity     = ec->paritybase + (16- ((intptr_t)ec->paritybase & 15));
 
    /*** Create buffer for the ndata input layers 
         Space is provided for one more sector so that

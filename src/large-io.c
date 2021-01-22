@@ -46,7 +46,7 @@
 /* The original windows ftruncate has off_size (32bit) */
 
 int large_ftruncate(int fd, gint64 size)
-{  gint32 handle;
+{  intptr_t handle;
 
    if((handle=_get_osfhandle(fd)) == -1)
      return -1;
