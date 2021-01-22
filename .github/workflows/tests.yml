@@ -39,8 +39,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       run: |
-          echo running ./configure ${{ matrix.clionly }}
-          ./configure ${{ matrix.clionly }}
+          echo running ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
+          ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }}    --with-werror
     - name: make
       run: nproc && make -j$(nproc)
     - name: check executable

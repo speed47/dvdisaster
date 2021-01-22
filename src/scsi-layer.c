@@ -48,7 +48,7 @@ AlignedBuffer* CreateAlignedBuffer(int size)
 {  AlignedBuffer *ab = g_malloc0(sizeof(AlignedBuffer));
 
    ab->base = g_malloc(size+4096);
-   ab->buf  = ab->base + (4096 - ((unsigned long)ab->base & 4095));
+   ab->buf  = ab->base + (4096 - ((intptr_t)ab->base & 4095));
 
    return ab;
 }
