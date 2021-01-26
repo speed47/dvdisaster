@@ -364,7 +364,8 @@ int RS03RecognizeImage(Image *image)
 {  recognize_context *rc = g_malloc0(sizeof(recognize_context));
    guint64 image_sectors;
    guint64 layer_size;
-   gint64 triesleft = -1; /* infinity */
+   gint64 trynumber;
+   gint64 maxtries;
    int untested_layers;
    int layer, layer_sector;
    int i;
@@ -426,11 +427,13 @@ int RS03RecognizeImage(Image *image)
    */
 
    if(!Closure->examineRS03 && image->type == IMAGE_MEDIUM)
-   {  triesleft = 3; /* no exhaustive search asked and reading from optical drive */
-      Verbose("RS03RecognizeImage: quick RS03 search, attempting up to %" PRId64" sector reads max\n", triesleft);
+   {  maxtries = 3; /* no exhaustive search asked and reading from optical drive */
+      Verbose("RS03RecognizeImage: quick RS03 search, attempting up to %" PRId64" sector reads max\n", maxtries);
    }
    else
+   {  maxtries = -1; /* infinity */
       Verbose("RS03RecognizeImage: No EH, entering exhaustive search\n");
+   }
 
    /* Determine image size in augmented case. */
 
@@ -480,6 +483,7 @@ int RS03RecognizeImage(Image *image)
       lay->target = ECC_IMAGE;
    }
    untested_layers = 247-84+1;
+   trynumber = 0;
 
    rc->ab = CreateAlignedBuffer(2048);
 
@@ -498,10 +502,16 @@ int RS03RecognizeImage(Image *image)
 	    if(sector >= image_sectors)
 	      goto mark_invalid_layer;
 
-            if (triesleft-- == 0) {
+            if (++trynumber > maxtries && maxtries > 0) {
+                Verbose("RS03: max tries reached, stopping search\n");
                 free_recognize_context(rc);
                 return FALSE;
             }
+
+            Verbose("RS03: %s = %" PRId64 ", reading sector %" PRId64 "\n",
+		    maxtries < 0 ? "try number" : "tries left",
+		    maxtries < 0 ? trynumber : maxtries - trynumber,
+		    sector);
 
 	    switch(image->type)
 	    {  case IMAGE_FILE:
