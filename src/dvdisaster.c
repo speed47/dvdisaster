@@ -83,6 +83,8 @@ typedef enum
    MODIFIER_EJECT,
    MODIFIER_ENCODING_ALGORITHM,
    MODIFIER_ENCODING_IO_STRATEGY,
+   MODIFIER_EXAMINE_RS02,
+   MODIFIER_EXAMINE_RS03,
    MODIFIER_FILL_UNREADABLE,
    MODIFIER_FIXED_SPEED_VALUES,
    MODIFIER_IGNORE_FATAL_SENSE,
@@ -233,6 +235,8 @@ int main(int argc, char *argv[])
 	{"encoding-algorithm", 1, 0, MODIFIER_ENCODING_ALGORITHM },
 	{"encoding-io-strategy", 1, 0, MODIFIER_ENCODING_IO_STRATEGY },
 	{"erase", 1, 0, MODE_ERASE },
+	{"examine-rs02", 0, 0, MODIFIER_EXAMINE_RS02 },
+	{"examine-rs03", 0, 0, MODIFIER_EXAMINE_RS03 },
 	{"fill-unreadable", 1, 0, MODIFIER_FILL_UNREADABLE },
 	{"fix", 0, 0, 'f'},
 	{"fixed-speed-values", 0, 0, MODIFIER_FIXED_SPEED_VALUES },
@@ -474,6 +478,12 @@ int main(int argc, char *argv[])
 	   Stop(_("--driver is only supported on GNU/Linux"));
 #endif
 	   break;
+         case MODIFIER_EXAMINE_RS02:
+           Closure->examineRS02 = TRUE;
+           break;
+         case MODIFIER_EXAMINE_RS03:
+           Closure->examineRS03 = TRUE;
+           break;
          case MODIFIER_FILL_UNREADABLE:
 	   if(optarg) Closure->fillUnreadable = strtol(optarg, NULL, 0);
 	   break;
@@ -995,6 +1005,8 @@ int main(int argc, char *argv[])
 	PrintCLI(_("  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"));
 	PrintCLI(_("  --erase sector    - erase the given sector\n"));
 	PrintCLI(_("  --erase n-m       - erase sectors n - m, inclusively\n"));
+	PrintCLI(_("  --examine-rs02    - force RS02 exhaustive search\n"));
+	PrintCLI(_("  --examine-rs03    - force RS03 exhaustive search\n"));
 	PrintCLI(_("  --fixed-speed-values - output fixed speed values for better output diffing\n"));
 	PrintCLI(_("  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"));
 	PrintCLI(_("  --marked-image n  - create image with n marked random sectors\n"));
