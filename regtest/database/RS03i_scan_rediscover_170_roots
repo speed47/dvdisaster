@@ -150,6 +150,7 @@ RS03RecognizeImage: No EH, entering exhaustive search
 .. trying layer size 1409
 Scanning layers for signatures.
 - layer slice 0
+RS03: try number = 1, reading sector 118356
 ** Success: sector 118356, rediscovered format with 170 roots
 ...augmented image found
 # Calling query_size()

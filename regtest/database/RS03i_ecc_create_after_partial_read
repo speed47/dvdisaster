@@ -157,6 +157,10 @@ Warning: image size set to 25000 for debugging!
 .. trying layer size 98
 Scanning layers for signatures.
 - layer slice 0
+RS03: tries left = 2, reading sector 8232
+RS03: tries left = 1, reading sector 8330
+RS03: tries left = 0, reading sector 8428
+RS03: max tries reached, stopping search
 ...no augmented image detected.
 # Calling query_size()
 # *** query_size(Simulated CD drive 1.00) ***
@@ -301,6 +305,137 @@ Warning: image size set to 25000 for debugging!
 .. trying layer size 98
 Scanning layers for signatures.
 - layer slice 0
+RS03: try number = 1, reading sector 8232
+RS03: try number = 2, reading sector 8330
+RS03: try number = 3, reading sector 8428
+RS03: try number = 4, reading sector 8526
+RS03: try number = 5, reading sector 8624
+RS03: try number = 6, reading sector 8722
+RS03: try number = 7, reading sector 8820
+RS03: try number = 8, reading sector 8918
+RS03: try number = 9, reading sector 9016
+RS03: try number = 10, reading sector 9114
+RS03: try number = 11, reading sector 9212
+RS03: try number = 12, reading sector 9310
+RS03: try number = 13, reading sector 9408
+RS03: try number = 14, reading sector 9506
+RS03: try number = 15, reading sector 9604
+RS03: try number = 16, reading sector 9702
+RS03: try number = 17, reading sector 9800
+RS03: try number = 18, reading sector 9898
+RS03: try number = 19, reading sector 9996
+RS03: try number = 20, reading sector 10094
+RS03: try number = 21, reading sector 10192
+RS03: try number = 22, reading sector 10290
+RS03: try number = 23, reading sector 10388
+RS03: try number = 24, reading sector 10486
+RS03: try number = 25, reading sector 10584
+RS03: try number = 26, reading sector 10682
+RS03: try number = 27, reading sector 10780
+RS03: try number = 28, reading sector 10878
+RS03: try number = 29, reading sector 10976
+RS03: try number = 30, reading sector 11074
+RS03: try number = 31, reading sector 11172
+RS03: try number = 32, reading sector 11270
+RS03: try number = 33, reading sector 11368
+RS03: try number = 34, reading sector 11466
+RS03: try number = 35, reading sector 11564
+RS03: try number = 36, reading sector 11662
+RS03: try number = 37, reading sector 11760
+RS03: try number = 38, reading sector 11858
+RS03: try number = 39, reading sector 11956
+RS03: try number = 40, reading sector 12054
+RS03: try number = 41, reading sector 12152
+RS03: try number = 42, reading sector 12250
+RS03: try number = 43, reading sector 12348
+RS03: try number = 44, reading sector 12446
+RS03: try number = 45, reading sector 12544
+RS03: try number = 46, reading sector 12642
+RS03: try number = 47, reading sector 12740
+RS03: try number = 48, reading sector 12838
+RS03: try number = 49, reading sector 12936
+RS03: try number = 50, reading sector 13034
+RS03: try number = 51, reading sector 13132
+RS03: try number = 52, reading sector 13230
+RS03: try number = 53, reading sector 13328
+RS03: try number = 54, reading sector 13426
+RS03: try number = 55, reading sector 13524
+RS03: try number = 56, reading sector 13622
+RS03: try number = 57, reading sector 13720
+RS03: try number = 58, reading sector 13818
+RS03: try number = 59, reading sector 13916
+RS03: try number = 60, reading sector 14014
+RS03: try number = 61, reading sector 14112
+RS03: try number = 62, reading sector 14210
+RS03: try number = 63, reading sector 14308
+RS03: try number = 64, reading sector 14406
+RS03: try number = 65, reading sector 14504
+RS03: try number = 66, reading sector 14602
+RS03: try number = 67, reading sector 14700
+RS03: try number = 68, reading sector 14798
+RS03: try number = 69, reading sector 14896
+RS03: try number = 70, reading sector 14994
+RS03: try number = 71, reading sector 15092
+RS03: try number = 72, reading sector 15190
+RS03: try number = 73, reading sector 15288
+RS03: try number = 74, reading sector 15386
+RS03: try number = 75, reading sector 15484
+RS03: try number = 76, reading sector 15582
+RS03: try number = 77, reading sector 15680
+RS03: try number = 78, reading sector 15778
+RS03: try number = 79, reading sector 15876
+RS03: try number = 80, reading sector 15974
+RS03: try number = 81, reading sector 16072
+RS03: try number = 82, reading sector 16170
+RS03: try number = 83, reading sector 16268
+RS03: try number = 84, reading sector 16366
+RS03: try number = 85, reading sector 16464
+RS03: try number = 86, reading sector 16562
+RS03: try number = 87, reading sector 16660
+RS03: try number = 88, reading sector 16758
+RS03: try number = 89, reading sector 16856
+RS03: try number = 90, reading sector 16954
+RS03: try number = 91, reading sector 17052
+RS03: try number = 92, reading sector 17150
+RS03: try number = 93, reading sector 17248
+RS03: try number = 94, reading sector 17346
+RS03: try number = 95, reading sector 17444
+RS03: try number = 96, reading sector 17542
+RS03: try number = 97, reading sector 17640
+RS03: try number = 98, reading sector 17738
+RS03: try number = 99, reading sector 17836
+RS03: try number = 100, reading sector 17934
+RS03: try number = 101, reading sector 18032
+RS03: try number = 102, reading sector 18130
+RS03: try number = 103, reading sector 18228
+RS03: try number = 104, reading sector 18326
+RS03: try number = 105, reading sector 18424
+RS03: try number = 106, reading sector 18522
+RS03: try number = 107, reading sector 18620
+RS03: try number = 108, reading sector 18718
+RS03: try number = 109, reading sector 18816
+RS03: try number = 110, reading sector 18914
+RS03: try number = 111, reading sector 19012
+RS03: try number = 112, reading sector 19110
+RS03: try number = 113, reading sector 19208
+RS03: try number = 114, reading sector 19306
+RS03: try number = 115, reading sector 19404
+RS03: try number = 116, reading sector 19502
+RS03: try number = 117, reading sector 19600
+RS03: try number = 118, reading sector 19698
+RS03: try number = 119, reading sector 19796
+RS03: try number = 120, reading sector 19894
+RS03: try number = 121, reading sector 19992
+RS03: try number = 122, reading sector 20090
+RS03: try number = 123, reading sector 20188
+RS03: try number = 124, reading sector 20286
+RS03: try number = 125, reading sector 20384
+RS03: try number = 126, reading sector 20482
+RS03: try number = 127, reading sector 20580
+RS03: try number = 128, reading sector 20678
+RS03: try number = 129, reading sector 20776
+RS03: try number = 130, reading sector 20874
+RS03: try number = 131, reading sector 20972
 ** All layers tested -> no RS03 data found
 ...no augmented image detected.
 GetImageFingerprint(16): read & cached
