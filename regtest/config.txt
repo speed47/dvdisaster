@@ -170,6 +170,11 @@ RS01_adaptive_medium_with_dsm yes
 
 ### RS02 tests
 
+# Strip tests
+
+RS02_strip_ecc yes
+RS02_strip_ecc_not yes
+
 # Verify tests
 RS02_good yes
 RS02_good_quick yes
@@ -334,6 +339,11 @@ RS02_adaptive_with_rs03_file yes
 RS02_adaptive_with_wrong_rs03_file yes
 
 ### RS03 augmented image tests
+
+# Strip tests
+
+RS03i_strip_ecc yes
+RS03i_strip_ecc_not yes
 
 # Verify tests
 

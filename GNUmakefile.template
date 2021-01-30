@@ -114,6 +114,7 @@ src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.pn
 	@gdk-pixbuf-csource --raw --name=dvdisaster_scan     icons/scan.png     >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_fix      icons/fix.png      >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_verify   icons/verify.png   >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_strip    icons/strip.png    >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc icons/open-ecc.png >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_open_img icons/open-img.png >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_cd icons/cd.png >>src/inlined-icons.h

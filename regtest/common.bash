@@ -260,10 +260,11 @@ function run_regtest()
 	      if test "$answer" == "a"; then
 	         cp $REFLOG $LOGDIR
 	         head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
-	         sed -e "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
+	         sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
 	         pass="skip"
 	      elif test "$answer" == "v"; then
 	         vimdiff $REFLOG $NEWLOG
+
 	         continue
 	      else
 	         pass="false"
@@ -295,7 +296,7 @@ function run_regtest()
    image_md5=$(head -n 1 $REFLOG)
    ecc_md5=$(head -n 2 $REFLOG | tail -n 1)
 
-   if test ${image_md5} != "ignore"; then
+   if test "${image_md5}" != "ignore"; then
        md5=$($MD5SUM ${testiso} | cut -d\  -f 1)
        if test "$image_md5" != "$md5"; then
 	   if [ "$REGTEST_NO_UTF8" = 1 ]; then
@@ -309,7 +310,7 @@ function run_regtest()
        fi
    fi	   
 
-   if test ${ecc_md5} != "ignore"; then
+   if test "${ecc_md5}" != "ignore"; then
        md5=$($MD5SUM ${testecc} | cut -d\  -f 1)
        if test "$ecc_md5" != "$md5"; then
 	   if [ "$pass" = false ] || [ "$REGTEST_NO_UTF8" = 1 ]; then
@@ -340,7 +341,7 @@ function run_regtest()
       [ $nbfailed -ge 256 ] && nbfailed=255
       echo "test symbol for config: $testsymbol"
       if test "$fail_on_bad" == "yes"; then
-	next=$(grep -A 1  ${CODEC_PREFIX}_$testsymbol config.txt | tail -n 1 | cut -d\  -f 1)
+	next=$(grep -A 1 "${CODEC_PREFIX}_$testsymbol" config.txt | tail -n 1 | cut -d\  -f 1)
 	echo "FAIL_ON_BAD set to yes -- exiting"
 	if test "$gui_mode" == "true"; then
 	    guiarg="gui"

@@ -440,15 +440,16 @@ fi
 # Read image with wrong ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is taken from the read process,
 # not the wrong ecc file.
+# FIXME expected output not in database, disabling for now:
 
-if try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
+if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
   cp $MASTERISO $SIMISO
 
   $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE-777)) --random-seed 1337 >>$LOGFILE 2>&1
   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
 
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
-  #run_regtest ecc_recreate_after_read_wrong_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
+  run_regtest ecc_recreate_after_read_wrong_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
 
 REGTEST_SECTION="Fixing tests"

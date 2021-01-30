@@ -822,6 +822,7 @@ static gboolean allow_actions_idle_func(gpointer data)
    gtk_widget_set_sensitive(Closure->createButton, s);
    gtk_widget_set_sensitive(Closure->fixButton, s);
    gtk_widget_set_sensitive(Closure->testButton, s);
+   gtk_widget_set_sensitive(Closure->stripButton, s);
 
    gtk_widget_set_sensitive(Closure->prefsButton, s);
    if(!s && Closure->prefsWindow)
@@ -1358,3 +1359,78 @@ int ConfirmEccDeletion(char *file)
 #endif
 }
 
+/*
+ * --strip method and associated cleanup func
+ */
+
+static void stripecc_cleanup(gpointer data)
+{
+   Image *image = (Image*)data;
+
+   UnregisterCleanup();
+
+   if (image)
+      CloseImage(image);
+
+#ifndef WITH_CLI_ONLY_YES
+   if(Closure->guiMode)
+   {  AllowActions(TRUE);
+      g_thread_exit(0);
+   }
+#endif
+}
+
+
+void StripECCFromImageFile()
+{  Image *image = NULL;
+   gint64 end;
+
+   RegisterCleanup(_("Strip ECC aborted"), stripecc_cleanup, (gpointer)image);
+
+   /*** Open the image file */
+   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
+
+   if (!image->eccHeader)
+     Stop(_("Image is not augmented (no dvdisaster signature found)."));
+
+   PrintLog("Image is augmented (expected sectors = %" PRId64 ")\n", image->expectedSectors);
+
+   end = uchar_to_gint64(image->eccHeader->sectors);
+   if (end <= 0)
+     Stop(_("Invalid end data sector (%" PRId64 "), aborting"), end);
+
+   PrintLog(_("Truncating image to %" PRId64 " sectors.\n"), end);
+
+   /*** Last chance to cancel in GUI mode */
+
+#ifndef WITH_CLI_ONLY_YES
+   if(Closure->guiMode)
+   { int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+			_("We're about to truncate the image from %" PRId64 " sectors (%" PRId64 " MiB)\n"
+			 "to %" PRId64 " sectors (%" PRId64 " MiB), removing any dvdisaster-added ECC data.\n"
+			 "This will restore the image to its pre-augmented original size."),
+			 image->expectedSectors, image->expectedSectors >> 9, end, end >> 9);
+			 /* >> 9 is 2048 bytes (1 sector) to MiB */
+
+     if (answer != 1)
+        Stop(_("Aborted on user request"));
+   }
+#endif
+
+   /*** Truncate it. */
+
+   if(!LargeTruncate(image->file, (gint64)(2048*end)))
+     Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
+
+   PrintLog(_("Image successfully truncated back to its original size.\n"));
+
+#ifndef WITH_CLI_ONLY_YES
+   ModalDialog(GTK_MESSAGE_INFO, GTK_BUTTONS_OK, NULL, _("Image successfully truncated"));
+#endif
+
+   /*** Clean up */
+
+   stripecc_cleanup((gpointer)image);
+}

@@ -39,6 +39,27 @@ if ! file_exists $ISO_PLUS137; then
     FILE_MSG=""
 fi
 
+### Strip tests
+
+REGTEST_SECTION="Strip tests"
+
+# Strip ECC from an augmented image
+
+if try "strip ECC from augmented image" strip_ecc; then
+  cp $MASTERISO $TMPISO
+
+  run_regtest strip_ecc "-v --strip" $TMPISO
+fi
+
+# Strip ECC from a non-augmented image
+
+if try "strip ECC from a non-augmented image" strip_ecc_not; then
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --strip >>$LOGFILE 2>&1
+
+  run_regtest strip_ecc_not "-v --strip" $TMPISO
+fi
+
 ### Verification tests
 
 REGTEST_SECTION="Verify tests"
