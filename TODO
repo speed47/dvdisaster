@@ -8,7 +8,7 @@ Version 0.79: new RS03 codec (encoding part)
  0.79.5: project re-launch
  0.79.6: re-introduce CRC and MD5 caching between reading
          and ecc creation; cosmetical changes
- 0.79.7: re-introduce adaptive reading
+ 0.79.7: re-introduce adaptive reading [partly done in pl4]
 
 Version 0.80: milestone release
  - RS03 encoding considered feature complete
@@ -23,7 +23,7 @@ Version 0.82: milestone release
  - RS03 decoding considered feature complete
 
 Version 0.84:
- - compile option to create a CLI-only binary
+ - compile option to create a CLI-only binary [done in pl1]
    (without GTK+ linkage)
 
 Version 0.86:
@@ -53,7 +53,7 @@ Unspecified schedule / later releases
  - add pause/resume button
  - optionally pause after n read errors for drives which
    need to cool down 
- - add function for stripping RS02 data from image
+ - add function for stripping RS02 data from image [done in pl7]
  - add quiet option for command line mode
  - display estimated finishing time for encoding/decoding
  - catch up with many other queued up suggestions

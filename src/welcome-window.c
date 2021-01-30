@@ -79,9 +79,9 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
 
-	 AboutText(box, _("The <b>0.79.6 patchlevel</b> series are modified/enhanced from the last upstream pre-release.\n"
-			  "We add support for a full CLI version, BD-R TL/QL, a Windows build, an option to\n"
-			  "produce bigger BD-R RS03 images, re-enabled adaptive reading (except for RS03), and more.\n"
+	 AboutText(box, _("This is <b>v0.79.6-pl7</b>. The patchlevel series are enhanced from the last upstream pre-release.\n"
+			  "We add support for a CLI version, BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+			  "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 			  "\n"
 			  "Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
 			  "The warning message from the pre-release version is retained below.\n"));
