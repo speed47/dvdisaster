@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-16 23:27+0100\n"
+"POT-Creation-Date: 2021-01-30 13:18+0100\n"
 "PO-Revision-Date: 2006-06-14 23:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -114,7 +114,7 @@ msgstr ""
 #: src/debug.c:443 src/debug.c:501 src/debug.c:565 src/debug.c:606
 #: src/debug.c:689 src/debug.c:795 src/debug.c:836 src/debug.c:882
 #: src/debug.c:936 src/debug.c:1161 src/debug.c:1169 src/debug.c:1225
-#: src/debug.c:1230 src/raw-editor.c:364 src/read-adaptive.c:73
+#: src/debug.c:1230 src/misc.c:1393 src/raw-editor.c:364 src/read-adaptive.c:73
 #: src/read-adaptive.c:93 src/read-adaptive.c:1552 src/read-adaptive.c:1588
 #: src/read-linear.c:289 src/read-linear.c:291 src/read-linear.c:327
 #: src/read-linear.c:329 src/rs01-create.c:303 src/rs03-create.c:1352
@@ -178,16 +178,17 @@ msgstr "Raderar sektorer [%<PRId64>,%<PRId64>]\n"
 msgid "New length must be in range [0..%<PRId64>].\n"
 msgstr "Ny längd måste vara inom intervallet [0..%<PRId64>].\n"
 
-#: src/debug.c:574
+#: src/debug.c:574 src/misc.c:1404
 #, c-format
 msgid "Truncating image to %<PRId64> sectors.\n"
 msgstr "Kapar avbild till %<PRId64> sektorer.\n"
 
-#: src/debug.c:579 src/read-linear.c:1472 src/rs01-fix.c:230 src/rs01-fix.c:253
-#: src/rs01-fix.c:275 src/rs01-fix.c:315 src/rs02-create.c:117
-#: src/rs02-create.c:171 src/rs02-fix.c:268 src/rs02-fix.c:288
-#: src/rs02-fix.c:306 src/rs03-create.c:256 src/rs03-create.c:345
-#: src/rs03-fix.c:298 src/rs03-fix.c:337 src/rs03-fix.c:359 src/rs03-fix.c:379
+#: src/debug.c:579 src/misc.c:1425 src/read-linear.c:1472 src/rs01-fix.c:230
+#: src/rs01-fix.c:253 src/rs01-fix.c:275 src/rs01-fix.c:315
+#: src/rs02-create.c:117 src/rs02-create.c:171 src/rs02-fix.c:268
+#: src/rs02-fix.c:288 src/rs02-fix.c:306 src/rs03-create.c:256
+#: src/rs03-create.c:345 src/rs03-fix.c:298 src/rs03-fix.c:337
+#: src/rs03-fix.c:359 src/rs03-fix.c:379
 #, c-format
 msgid "Could not truncate %s: %s\n"
 msgstr "Kunde inte kapa %s: %s\n"
@@ -385,83 +386,83 @@ msgstr ""
 #. TRANSLATORS:
 #. This is a dummy entry which is supposed to translate into "ok".
 #. Please do not return anything else here.
-#: src/dvdisaster.c:165 src/dvdisaster.c:177
+#: src/dvdisaster.c:168 src/dvdisaster.c:180
 msgid "test phrase for verifying the locale installation"
 msgstr "ok"
 
-#: src/dvdisaster.c:366
+#: src/dvdisaster.c:372
 msgid "-o/--ecc-target expects 'file' or 'image'"
 msgstr ""
 
-#: src/dvdisaster.c:392
+#: src/dvdisaster.c:398
 #, c-format
 msgid "--threads must be 1..%d\n"
 msgstr ""
 
-#: src/dvdisaster.c:406
+#: src/dvdisaster.c:415
 msgid "--cache-size must at least be 8MiB; 16MiB or higher is recommended."
 msgstr ""
 
-#: src/dvdisaster.c:408
+#: src/dvdisaster.c:417
 #, c-format
 msgid "--cache-size maximum is %dMiB."
 msgstr ""
 
-#: src/dvdisaster.c:431
+#: src/dvdisaster.c:440
 msgid "--encoding-algorithm: SSE2 not supported on this processor!"
 msgstr ""
 
-#: src/dvdisaster.c:435
+#: src/dvdisaster.c:444
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, SSE2"
 msgstr ""
 
-#: src/dvdisaster.c:442
+#: src/dvdisaster.c:451
 msgid "--encoding-algorithm: AltiVec not supported on this processor!"
 msgstr ""
 
-#: src/dvdisaster.c:446
+#: src/dvdisaster.c:455
 msgid "--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"
 msgstr ""
 
-#: src/dvdisaster.c:449
+#: src/dvdisaster.c:458
 msgid "--encoding-algorithm: valid types are 32bit, 64bit"
 msgstr ""
 
-#: src/dvdisaster.c:458
+#: src/dvdisaster.c:467
 msgid "--encoding-io-strategy: mmap not supported on this OS"
 msgstr ""
 
-#: src/dvdisaster.c:462
+#: src/dvdisaster.c:471
 msgid "--encoding-io-strategy: valid types are readwrite and mmap"
 msgstr ""
 
-#: src/dvdisaster.c:472
+#: src/dvdisaster.c:481
 msgid "Valid args for --driver: sg,cdrom"
 msgstr ""
 
-#: src/dvdisaster.c:474
+#: src/dvdisaster.c:483
 msgid "--driver is only supported on GNU/Linux"
 msgstr ""
 
-#: src/dvdisaster.c:482
+#: src/dvdisaster.c:497
 msgid "--fixed-speed-values is only allowed in debug mode"
 msgstr ""
 
-#: src/dvdisaster.c:537
+#: src/dvdisaster.c:552
 #, c-format
 msgid "--prefetch-sectors must be in range 32...%d"
 msgstr ""
 
-#: src/dvdisaster.c:591
+#: src/dvdisaster.c:606
 msgid "--set-version is only allowed in debug mode"
 msgstr ""
 
-#: src/dvdisaster.c:698
+#: src/dvdisaster.c:713
 #, c-format
 msgid "?? illegal getopt return value %d\n"
 msgstr "?? ogiltigt getopt-svarsvärde %d\n"
 
-#: src/dvdisaster.c:791 src/main-window.c:149
+#: src/dvdisaster.c:806 src/main-window.c:149
 #, c-format
 msgid ""
 "\n"
@@ -472,7 +473,7 @@ msgstr ""
 "Metod %s inte tillgänglig.\n"
 "Använd -m utan parametrar för en lista på metoder.\n"
 
-#: src/dvdisaster.c:802 src/rs01-create.c:285 src/rs02-create.c:1075
+#: src/dvdisaster.c:817 src/rs01-create.c:285 src/rs02-create.c:1075
 #: src/rs03-create.c:1320
 #, c-format
 msgid ""
@@ -482,25 +483,25 @@ msgstr ""
 "\n"
 "Öppnar %s"
 
-#: src/dvdisaster.c:809 src/rs01-create.c:294 src/rs02-create.c:175
+#: src/dvdisaster.c:824 src/rs01-create.c:294 src/rs02-create.c:175
 #: src/rs02-create.c:1085 src/rs03-create.c:349 src/rs03-create.c:1335
 #, c-format
 msgid ": %<PRId64> medium sectors.\n"
 msgstr ": %<PRId64> mediumsektorer.\n"
 
-#: src/dvdisaster.c:810 src/rs01-create.c:295 src/rs02-create.c:176
+#: src/dvdisaster.c:825 src/rs01-create.c:295 src/rs02-create.c:176
 #: src/rs02-create.c:1086 src/rs03-create.c:350 src/rs03-create.c:1336
 #, c-format
 msgid ": %<PRId64> medium sectors and %d bytes.\n"
 msgstr ": %<PRId64> mediumsektorer och %d byte.\n"
 
-#: src/dvdisaster.c:837 src/main-window.c:207
+#: src/dvdisaster.c:852 src/main-window.c:212
 msgid "RS01 method not available for comparing files."
 msgstr "RS01-metoden inte tillgänglig för jämförelser av filer."
 
 #. TRANSLATORS: Program options like -r and --read are not to be translated
 #. to avoid confusion when discussing the program in international forums.
-#: src/dvdisaster.c:931
+#: src/dvdisaster.c:950
 msgid ""
 "\n"
 "Common usage examples:\n"
@@ -510,6 +511,7 @@ msgid ""
 "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
 "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
 "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
+"  dvdisaster -z,--strip  # Strip ECC data from an augmented .iso.\n"
 "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
 "\n"
 msgstr ""
@@ -522,10 +524,11 @@ msgstr ""
 "  dvdisaster -f,--fix    # Försök att rätta till mediumavbilden med .ecc-information.\n"
 "  dvdisaster -s,--scan   # Sök av mediumet efter läsfel.\n"
 "  dvdisaster -t,--test   # Testa integriteten av .iso och .ecc-filerna.\n"
+"  dvdisaster -z,--strip  # Strip ECC data from an augmented .iso.\n"
 "  dvdisaster -u,--unlink # Ta bort .iso-filer (när andra operationer är färdiga)\n"
 "\n"
 
-#: src/dvdisaster.c:940
+#: src/dvdisaster.c:960
 #, c-format
 msgid ""
 "Drive and file specification:\n"
@@ -536,253 +539,261 @@ msgid ""
 "  -o,--ecc-target [file image] - where to put ecc data in RS03\n"
 msgstr ""
 
-#: src/dvdisaster.c:950
+#: src/dvdisaster.c:970
 msgid "Tweaking options (see manual before using!)\n"
 msgstr "Justeringsflaggor (se manualen före användning!)\n"
 
-#: src/dvdisaster.c:951
+#: src/dvdisaster.c:971
 msgid "  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"
 msgstr ""
 
-#: src/dvdisaster.c:952
+#: src/dvdisaster.c:972
 msgid "  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"
 msgstr "  -j,--jump n            - hoppa n sektorer framåt efter ett läsfel (standard: 16)\n"
 
-#: src/dvdisaster.c:953
+#: src/dvdisaster.c:973
 msgid "  -m n                   - list/select error correction methods (default: RS01)\n"
 msgstr "  -m n                   - lista/välj felkorrigeringsmetoder (standard: RS01)\n"
 
-#: src/dvdisaster.c:954
+#: src/dvdisaster.c:974
 #, c-format
 msgid ""
 "  -n,--redundancy n%%     - error correction data redundancy\n"
 "                           allowed values depend on codec (see manual)\n"
 msgstr ""
 
-#: src/dvdisaster.c:956
+#: src/dvdisaster.c:976
 msgid "  -v,--verbose           - more diagnostic messages\n"
 msgstr "  -v,--verbose           - mer informativa meddelanden\n"
 
-#: src/dvdisaster.c:957
+#: src/dvdisaster.c:977
 msgid "  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"
 msgstr ""
 
-#: src/dvdisaster.c:958
+#: src/dvdisaster.c:978
 msgid "  --adaptive-read        - use optimized strategy for reading damaged media\n"
 msgstr "  --adaptive-read        - använd optimerad strategi för läsning av skadat media\n"
 
-#: src/dvdisaster.c:959
+#: src/dvdisaster.c:979
 msgid "  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"
 msgstr "  --auto-suffix          - lägg automatiskt till filändelserna .iso och .ecc \n"
 
-#: src/dvdisaster.c:960
+#: src/dvdisaster.c:980
 msgid "  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"
 msgstr "  --cache-size n         - cachestorlek för avbild i MiB med -c (standard: 32MiB)\n"
 
-#: src/dvdisaster.c:961
+#: src/dvdisaster.c:981
 msgid "  --dao                  - assume DAO disc; do not trim image end\n"
 msgstr "  --dao                  - anta DAO-skiva; trimma inte avbildens slut\n"
 
-#: src/dvdisaster.c:962
+#: src/dvdisaster.c:982
 msgid "  --defective-dump d     - directory for saving incomplete raw sectors\n"
 msgstr ""
 
-#: src/dvdisaster.c:964
+#: src/dvdisaster.c:984
 msgid "  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"
 msgstr ""
 
-#: src/dvdisaster.c:966
+#: src/dvdisaster.c:986
 msgid "  --eject                - eject medium after successful read\n"
 msgstr ""
 
-#: src/dvdisaster.c:967
+#: src/dvdisaster.c:987
 msgid "  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"
 msgstr ""
 
-#: src/dvdisaster.c:968
+#: src/dvdisaster.c:988
 msgid "  --encoding-io-strategy n - possible values: readwrite, mmap\n"
 msgstr ""
 
-#: src/dvdisaster.c:969
+#: src/dvdisaster.c:989
 msgid "  --fill-unreadable n    - fill unreadable sectors with byte n\n"
 msgstr "  --fill-unreadable n    - fyll oläsliga sektorer med byte n\n"
 
-#: src/dvdisaster.c:970
+#: src/dvdisaster.c:990
 msgid "  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"
 msgstr ""
 
-#: src/dvdisaster.c:971
+#: src/dvdisaster.c:991
 msgid "  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"
 msgstr ""
 
-#: src/dvdisaster.c:972
+#: src/dvdisaster.c:992
 msgid "  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"
 msgstr ""
 
-#: src/dvdisaster.c:973
+#: src/dvdisaster.c:993
 msgid "  --medium-info          - print info about medium in drive\n"
 msgstr ""
 
-#: src/dvdisaster.c:974
+#: src/dvdisaster.c:994
 msgid "  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"
 msgstr ""
 
-#: src/dvdisaster.c:975
+#: src/dvdisaster.c:995
 msgid "  --no-progress          - do not print progress information\n"
 msgstr ""
 
-#: src/dvdisaster.c:976
+#: src/dvdisaster.c:996
 msgid "  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"
 msgstr ""
 
-#: src/dvdisaster.c:977
+#: src/dvdisaster.c:997
 msgid "  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"
 msgstr ""
 
-#: src/dvdisaster.c:978
+#: src/dvdisaster.c:998
 msgid "  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"
 msgstr ""
 
-#: src/dvdisaster.c:979
+#: src/dvdisaster.c:999
 msgid "  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"
 msgstr ""
 
-#: src/dvdisaster.c:980
+#: src/dvdisaster.c:1000
 msgid "  --read-medium n        - read the whole medium up to n times\n"
 msgstr ""
 
-#: src/dvdisaster.c:981
+#: src/dvdisaster.c:1001
 msgid "  --read-raw             - performs read in raw mode if possible\n"
 msgstr ""
 
-#: src/dvdisaster.c:982
+#: src/dvdisaster.c:1002
 msgid "  --regtest              - tweaks output for compatibility with regtests\n"
 msgstr ""
 
-#: src/dvdisaster.c:983
+#: src/dvdisaster.c:1003
 msgid "  --resource-file p      - get resource file from given path\n"
 msgstr ""
 
-#: src/dvdisaster.c:984
+#: src/dvdisaster.c:1004
 msgid "  --speed-warning n      - print warning if speed changes by more than n percent\n"
 msgstr "  --speed-warning n      - skriv ut varning om hastighet ändras med mer än n procent\n"
 
-#: src/dvdisaster.c:985
+#: src/dvdisaster.c:1005
 msgid "  --spinup-delay n       - wait n seconds for drive to spin up\n"
 msgstr "  --spinup-delay n       - vänta n sekunder på att enheten ska varva upp\n"
 
-#: src/dvdisaster.c:989
+#: src/dvdisaster.c:1009
 msgid "Debugging options (purposefully undocumented and possibly harmful)\n"
 msgstr ""
 
-#: src/dvdisaster.c:990
+#: src/dvdisaster.c:1010
 msgid "  --debug           - enables the following options\n"
 msgstr ""
 
-#: src/dvdisaster.c:991
+#: src/dvdisaster.c:1011
 msgid "  --permissive-medium-type - allow more media types, even theoretically unsupported ones\n"
 msgstr ""
 
-#: src/dvdisaster.c:992
+#: src/dvdisaster.c:1012
 msgid "  --byteset s,i,b   - set byte i in sector s to b\n"
 msgstr ""
 
-#: src/dvdisaster.c:993
+#: src/dvdisaster.c:1013
 msgid "  --cdump           - creates C #include file dumps instead of hexdumps\n"
 msgstr ""
 
-#: src/dvdisaster.c:994
+#: src/dvdisaster.c:1014
 msgid "  --compare-images a,b  - compare sectors in images a and b\n"
 msgstr ""
 
-#: src/dvdisaster.c:995
+#: src/dvdisaster.c:1015
 msgid "  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"
 msgstr ""
 
-#: src/dvdisaster.c:996
+#: src/dvdisaster.c:1016
 msgid "  --erase sector    - erase the given sector\n"
 msgstr ""
 
-#: src/dvdisaster.c:997
+#: src/dvdisaster.c:1017
 msgid "  --erase n-m       - erase sectors n - m, inclusively\n"
 msgstr ""
 
-#: src/dvdisaster.c:998
+#: src/dvdisaster.c:1018
+msgid "  --examine-rs02    - force RS02 exhaustive search\n"
+msgstr ""
+
+#: src/dvdisaster.c:1019
+msgid "  --examine-rs03    - force RS03 exhaustive search\n"
+msgstr ""
+
+#: src/dvdisaster.c:1020
 msgid "  --fixed-speed-values - output fixed speed values for better output diffing\n"
 msgstr ""
 
-#: src/dvdisaster.c:999
+#: src/dvdisaster.c:1021
 msgid "  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"
 msgstr ""
 
-#: src/dvdisaster.c:1000
+#: src/dvdisaster.c:1022
 msgid "  --marked-image n  - create image with n marked random sectors\n"
 msgstr ""
 
-#: src/dvdisaster.c:1001
+#: src/dvdisaster.c:1023
 msgid "  --merge-images a,b  merge image a with b (a receives sectors from b)\n"
 msgstr ""
 
-#: src/dvdisaster.c:1002
+#: src/dvdisaster.c:1024
 msgid "  --random-errors e - seed image with (correctable) random errors\n"
 msgstr ""
 
-#: src/dvdisaster.c:1003
+#: src/dvdisaster.c:1025
 msgid "  --random-image n  - create image with n sectors of random numbers\n"
 msgstr ""
 
-#: src/dvdisaster.c:1004
+#: src/dvdisaster.c:1026
 msgid "  --random-seed n   - random seed for built-in random number generator\n"
 msgstr ""
 
-#: src/dvdisaster.c:1005
+#: src/dvdisaster.c:1027
 msgid "  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"
 msgstr ""
 
-#: src/dvdisaster.c:1006
+#: src/dvdisaster.c:1028
 msgid "  --read-sector n   - shows hexdump of the given sector from medium in drive\n"
 msgstr ""
 
-#: src/dvdisaster.c:1007
+#: src/dvdisaster.c:1029
 msgid "  --screen-shot     - useful for generating screen shots\n"
 msgstr ""
 
-#: src/dvdisaster.c:1008
+#: src/dvdisaster.c:1030
 msgid "  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"
 msgstr ""
 
-#: src/dvdisaster.c:1009
+#: src/dvdisaster.c:1031
 msgid "  --set-version     - set program version for debugging purposes (dangerous!)\n"
 msgstr ""
 
-#: src/dvdisaster.c:1010
+#: src/dvdisaster.c:1032
 msgid "  --show-header n   - assumes given sector is a ecc header and prints it\n"
 msgstr ""
 
-#: src/dvdisaster.c:1011
+#: src/dvdisaster.c:1033
 msgid "  --show-sector n   - shows hexdump of the given sector in an image file\n"
 msgstr ""
 
-#: src/dvdisaster.c:1012
+#: src/dvdisaster.c:1034
 msgid "  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"
 msgstr ""
 
-#: src/dvdisaster.c:1013
+#: src/dvdisaster.c:1035
 #, c-format
 msgid "  --sim-defects n   - simulate n%% defective sectors on medium\n"
 msgstr ""
 
-#: src/dvdisaster.c:1014
+#: src/dvdisaster.c:1036
 msgid "  --truncate n      - truncates image to n sectors\n"
 msgstr ""
 
-#: src/dvdisaster.c:1015
+#: src/dvdisaster.c:1037
 msgid ""
 "  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n"
 "\n"
 msgstr ""
 
-#: src/dvdisaster.c:1045
+#: src/dvdisaster.c:1067
 msgid "Optical drive 52X FW 1.02"
 msgstr ""
 
@@ -1006,87 +1017,99 @@ msgstr ""
 msgid "Internal error: No suitable method for repairing image."
 msgstr ""
 
-#: src/main-window.c:275
+#: src/main-window.c:280
 msgid "button|Read"
 msgstr "Läs"
 
-#: src/main-window.c:278
+#: src/main-window.c:283
 msgid "tooltip|Read Image"
 msgstr "Läs avbild"
 
-#: src/main-window.c:278
+#: src/main-window.c:283
 msgid "Reads an optical disc image into a file (or tries to complete an existing image file)."
 msgstr "Läser en cd/dvd-avbild till en fil (eller försöker att färdigställa en existerande avbildsfil)."
 
-#: src/main-window.c:292
+#: src/main-window.c:297
 msgid "button|Create"
 msgstr "Skapa"
 
-#: src/main-window.c:295
+#: src/main-window.c:300
 msgid "tooltip|Create error correction data"
 msgstr ""
 
-#: src/main-window.c:295
+#: src/main-window.c:300
 msgid "Creates error correction data. Requires an image file."
 msgstr ""
 
-#: src/main-window.c:299
+#: src/main-window.c:304
 msgid "button|Scan"
 msgstr "Sök av"
 
-#: src/main-window.c:302
+#: src/main-window.c:307
 msgid "tooltip|Scan medium"
 msgstr "Sök av medium"
 
-#: src/main-window.c:302
+#: src/main-window.c:307
 msgid "Scans medium for unreadable sectors."
 msgstr "Söker av medium för oläsbara sektorer."
 
-#: src/main-window.c:306
+#: src/main-window.c:311
 msgid "button|Fix"
 msgstr "Rätta till"
 
-#: src/main-window.c:309
+#: src/main-window.c:314
 msgid "tooltip|Repair image"
 msgstr "Reparera avbild"
 
-#: src/main-window.c:309
+#: src/main-window.c:314
 msgid "Repairs an image. Requires an image file and error correction data."
 msgstr "Reparerar en avbild. Kräver en avbildsfil och felkorrigeringsdata."
 
-#: src/main-window.c:313
+#: src/main-window.c:318
 msgid "button|Verify"
 msgstr "Validera"
 
-#: src/main-window.c:316
+#: src/main-window.c:321
 msgid "tooltip|Consistency check"
 msgstr ""
 
-#: src/main-window.c:316
+#: src/main-window.c:321
 msgid "Tests consistency of error correction data and image file."
 msgstr "Testar konsistensen på felkorrigeringsdata och avbildsfil."
 
-#: src/main-window.c:320
+#: src/main-window.c:325
+msgid "button|Strip"
+msgstr ""
+
+#: src/main-window.c:328
+msgid "tooltip|Strip ECC"
+msgstr ""
+
+#: src/main-window.c:328
+msgid "Strip ECC data from an augmented image."
+msgstr ""
+
+#: src/main-window.c:332
 msgid "button|Stop"
 msgstr "Stopp"
 
-#: src/main-window.c:323
+#: src/main-window.c:335
 msgid "tooltip|Abort action"
 msgstr "Avbryt operation"
 
-#: src/main-window.c:323
+#: src/main-window.c:335
 msgid "Aborts an ongoing action."
 msgstr "Avbryter en pågående operation."
 
-#: src/main-window.c:480
+#: src/main-window.c:492
 msgid "tooltip|Protocol for current action"
 msgstr "Protokoll för aktuell operation"
 
-#: src/main-window.c:481
+#: src/main-window.c:493
 msgid "Displays additional information created during the current or last action."
 msgstr "Visar ytterligare information skapad under aktuella eller senaste operationen."
 
-#: src/main-window.c:490
+#: src/main-window.c:502
 msgid "View log"
 msgstr "Visa logg"
 
@@ -1209,7 +1232,7 @@ msgstr ""
 msgid "Book type:"
 msgstr ""
 
-#: src/medium-info.c:467 src/scsi-layer.c:2741
+#: src/medium-info.c:467 src/scsi-layer.c:2747
 msgid "Manuf.-ID:"
 msgstr ""
 
@@ -1459,11 +1482,11 @@ msgstr ""
 "* dvdisaster - kan inte fortsätta:\n"
 "*\n"
 
-#: src/misc.c:1306
+#: src/misc.c:1307
 msgid "Do not ask again"
 msgstr ""
 
-#: src/misc.c:1330
+#: src/misc.c:1331
 #, c-format
 msgid ""
 "Image file already exists and does not match the medium:\n"
@@ -1473,7 +1496,7 @@ msgid ""
 "The existing image file will be deleted."
 msgstr ""
 
-#: src/misc.c:1352
+#: src/misc.c:1353
 #, c-format
 msgid ""
 "The error correction file is already present:\n"
@@ -1481,6 +1504,39 @@ msgid ""
 "%s\n"
 "\n"
 "Overwrite it?"
+msgstr ""
+
+#: src/misc.c:1388
+msgid "Strip ECC aborted"
+msgstr ""
+
+#: src/misc.c:1396
+msgid "Image is not augmented (no dvdisaster signature found)."
+msgstr ""
+
+#: src/misc.c:1402
+#, c-format
+msgid "Invalid end data sector (%<PRId64>), aborting"
+msgstr ""
+
+#: src/misc.c:1411
+#, c-format
+msgid ""
+"We're about to truncate the image from %<PRId64> sectors (%<PRId64> MiB)\n"
+"to %<PRId64> sectors (%<PRId64> MiB), removing any dvdisaster-added ECC data.\n"
+"This will restore the image to its pre-augmented original size."
+msgstr ""
+
+#: src/misc.c:1418
+msgid "Aborted on user request"
+msgstr ""
+
+#: src/misc.c:1427
+msgid "Image successfully truncated back to its original size.\n"
+msgstr ""
+
+#: src/misc.c:1430
+msgid "Image successfully truncated"
 msgstr ""
 
 #: src/preferences.c:452
@@ -4325,7 +4381,7 @@ msgstr ""
 msgid "Disable RS02 initialization in the preferences"
 msgstr ""
 
-#: src/rs02-recognize.c:278
+#: src/rs02-recognize.c:305
 msgid ""
 "Faster medium initialization\n"
 "\n"
@@ -5050,12 +5106,12 @@ msgid ""
 "Available extensions are SSE2 for x86 based processors and AltiVec on PowerPC processors. These extensions encode with 128bit wide operations and will usually provide the fastest encoding variant. If \"auto\" is selected, the SSE2/AltiVec algorithms will be selected if the processor supports them; otherwise the 64bit algorithm will be used."
 msgstr ""
 
-#: src/rs03-recognize.c:555
+#: src/rs03-recognize.c:593
 #, c-format
 msgid "Failed seeking to sector %lld in image: %s"
 msgstr "Misslyckades med att söka fram till sektor %lld i avbild: %s"
 
-#: src/rs03-recognize.c:560
+#: src/rs03-recognize.c:598
 #, c-format
 msgid "Failed reading sector %lld in image: %s"
 msgstr "Misslyckades med att läsa sektor %lld i avbild: %s"
@@ -5653,7 +5709,7 @@ msgstr ""
 msgid "Drive failed to report media type."
 msgstr ""
 
-#: src/scsi-layer.c:2647 src/scsi-layer.c:2753
+#: src/scsi-layer.c:2647 src/scsi-layer.c:2759
 #, c-format
 msgid "This software does not support \"%s\" type media."
 msgstr ""
@@ -5684,12 +5740,12 @@ msgstr ""
 msgid "Using READ(10).\n"
 msgstr ""
 
-#: src/scsi-layer.c:2730
+#: src/scsi-layer.c:2736
 #, c-format
 msgid "Medium: %s, %<PRId64> sectors%s"
 msgstr "Medium: %s, %<PRId64> sektorer%s"
 
-#: src/scsi-layer.c:2734
+#: src/scsi-layer.c:2740
 #, c-format
 msgid "Medium \"%s\": %s, %<PRId64> sectors%s created %s"
 msgstr "Medium \"%s\": %s, %<PRId64> sektorer%s skapade %s"
@@ -5847,6 +5903,30 @@ msgstr ""
 #: src/welcome-window.c:151
 msgid "<i>New in this Version:</i>"
 msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "Common usage examples:\n"
+#~ "  dvdisaster -r,--read   # Read the medium image to hard disk.\n"
+#~ "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
+#~ "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
+#~ "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
+#~ "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
+#~ "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
+#~ "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Exempel på normala användningsområden:\n"
+#~ "  dvdisaster -r,--read   # Läs mediumavbilden till hårddisk.\n"
+#~ "                         # Använd -rn-m för att läsa ett specifikt sektorintervall,\n"
+#~ "                         # exempelvis -r100-200\n"
+#~ "  dvdisaster -c,--create # Skapa .ecc-information för mediumavbilden.\n"
+#~ "  dvdisaster -f,--fix    # Försök att rätta till mediumavbilden med .ecc-information.\n"
+#~ "  dvdisaster -s,--scan   # Sök av mediumet efter läsfel.\n"
+#~ "  dvdisaster -t,--test   # Testa integriteten av .iso och .ecc-filerna.\n"
+#~ "  dvdisaster -u,--unlink # Ta bort .iso-filer (när andra operationer är färdiga)\n"
+#~ "\n"
 
 #~ msgid ""
 #~ "Using redundancies below 20%% may not give\n"
