@@ -67,6 +67,7 @@ typedef enum
    MODE_SHOW_SECTOR, 
    MODE_TRUNCATE,
    MODE_ZERO_UNREADABLE,
+   MODE_STRIP_ECC,
 
    /* don't use the ascii range 32-127 so that we
       avoid collision with the single-char options */
@@ -280,6 +281,7 @@ int main(int argc, char *argv[])
 	{"sim-defects", 1, 0, MODIFIER_SIMULATE_DEFECTS},
 	{"speed-warning", 2, 0, MODIFIER_SPEED_WARNING},
 	{"spinup-delay", 1, 0, MODIFIER_SPINUP_DELAY},
+	{"strip", 0, 0, 'z'},
 	{"test", 2, 0, 't'},
         {"threads", 1, 0, 'x'},
 	{"truncate", 2, 0, MODIFIER_TRUNCATE},
@@ -291,7 +293,7 @@ int main(int argc, char *argv[])
       };
 
       c = getopt_long(argc, argv, 
-		      "a:cd:e:fhi:j:lm::n:o:p:r::s::t::uvx:",
+		      "a:cd:e:fhi:j:lm::n:o:p:r::s::t::uvx:z",
 		      long_options, &option_index);
 
       if(c == -1) break;
@@ -395,6 +397,9 @@ int main(int argc, char *argv[])
                    if(Closure->codecThreads < 1 || Closure->codecThreads > MAX_CODEC_THREADS)
                      Stop(_("--threads must be 1..%d\n"), MAX_CODEC_THREADS);
                    break;
+         case 'z':
+		   mode = MODE_STRIP_ECC;
+		   break;
 
          case  0 : break; /* flag argument */
 
@@ -918,6 +923,10 @@ int main(int argc, char *argv[])
 	 TruncateImageFile(debug_arg);
 	 break;
 
+      case MODE_STRIP_ECC:
+	 StripECCFromImageFile();
+	 break;
+
       case MODE_ZERO_UNREADABLE:
 	 ZeroUnreadable();
 	 break;
@@ -945,6 +954,7 @@ int main(int argc, char *argv[])
 	     "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
 	     "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
 	     "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
+	     "  dvdisaster -z,--strip  # Strip ECC data from an augmented .iso.\n"
 	     "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n\n"));
 
       PrintCLI(_("Drive and file specification:\n"

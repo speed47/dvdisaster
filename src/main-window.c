@@ -189,6 +189,11 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	CreateGThread((GThreadFunc)ReadMediumLinear, (gpointer)1);
         break;
 
+      case ACTION_STRIP:
+	AllowActions(FALSE);
+        CreateGThread((GThreadFunc)StripECCFromImageFile, (gpointer)0);
+        break;
+
       case ACTION_VERIFY:  
 	/* If something is wrong with the .iso or .ecc files
 	   we fall back to the RS01 method for verifying since it is robust
@@ -314,6 +319,13 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_VERIFY);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    AttachTooltip(wid, _("tooltip|Consistency check"), _("Tests consistency of error correction data and image file."));
+
+   /*** Strip */
+
+   Closure->stripButton = wid = create_button(_("button|Strip"), "dvdisaster-strip");
+   g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STRIP);
+   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   AttachTooltip(wid, _("tooltip|Strip ECC"), _("Strip ECC data from an augmented image."));
 
    /*** Stop */
 

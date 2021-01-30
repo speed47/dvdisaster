@@ -72,6 +72,7 @@ void CreateIconFactory()
    create_icon(ifact, "dvdisaster-scan",   dvdisaster_scan);
    create_icon(ifact, "dvdisaster-fix",    dvdisaster_fix);
    create_icon(ifact, "dvdisaster-verify", dvdisaster_verify);
+   create_icon(ifact, "dvdisaster-strip",  dvdisaster_strip);
 
    /*** Stock GTK icons to defeat theming */
 

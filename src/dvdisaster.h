@@ -354,6 +354,7 @@ typedef struct _GlobalClosure
    GtkWidget *scanButton;
    GtkWidget *fixButton;
    GtkWidget *testButton;
+   GtkWidget *stripButton;
 
    /*** The preferences window */
 
@@ -1012,7 +1013,8 @@ typedef enum
    ACTION_VERIFY,    /* VERIFY, CREATE and FIX have separate windows assigned */
    ACTION_CREATE,    /* for each method. */
    ACTION_CREATE_CONT,
-   ACTION_FIX        
+   ACTION_FIX,
+   ACTION_STRIP   /* ---  does not have a window */
 } MajorActions;
 
 void CreateMainWindow(int*, char***);
@@ -1200,6 +1202,7 @@ void LockLabelSize(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 
 int ConfirmImageDeletion(char *);
 int ConfirmEccDeletion(char *);
+void StripECCFromImageFile(void);
 
 #ifndef WITH_CLI_ONLY_YES
 /***
