@@ -1,5 +1,13 @@
 # dvdisaster changelog -*-text-*-
 
+0.79.6.patchlevel-7 30-01-2021 *UNOFFICIAL*
+- feat: add a new button to remove ECC data from an iso ("strip"), restoring an ISO to its previous non-augmented state (option: -z/--strip)
+- enh: try harder to find RS02/RS03 sigs in non-exhaustive mode (#19)
+- enh: add --examine-rs0[23] in --debug mode for CLI, to force exhaustive search with --medium-info
+- enh: more logs around exhaustive RS03 search in verbose
+- fix: windows: get rid of the last few warnings, build with -Werror for releases
+- chore: update tests, locales & readme
+
 0.79.6.patchlevel-6 17-01-2021 *UNOFFICIAL*
 - fix: allow blank media in Preferences>Error correction>RS02>query medium (#19)
 - fix: tested compilation under clang, detected a reversed order or arguments in a call to memset(), fixed
