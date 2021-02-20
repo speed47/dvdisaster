@@ -21,6 +21,7 @@
  */
 
 #include "dvdisaster.h"
+#include "inlined-icons.h"
 
 #if 0 
  #define Verbose g_printf
@@ -588,6 +589,9 @@ void InitClosure()
    Closure->darkSector  = g_malloc0(sizeof(GdkColor));
 
    DefaultColors();
+
+   Closure->tooltipOn  = gdk_pixbuf_new_from_inline(-1, dvdisaster_tooltip, FALSE, NULL);
+   Closure->tooltipOff = gdk_pixbuf_new_from_inline(-1, dvdisaster_nothing, FALSE, NULL);
 #endif
 
    memset(Closure->bs, '\b', 255);

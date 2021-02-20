@@ -688,6 +688,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->radio1A = radio;
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
       }
       else
@@ -717,6 +718,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->radio2A = radio;
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
       }
       else
@@ -747,6 +749,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->radio3A = radio;
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
       }
       else
       {  wl->radio3B = radio;
@@ -793,6 +796,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->radio4A = radio;
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
       }
       else
       {  wl->radio4B = radio;
@@ -899,6 +903,7 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       {  wl->cacheScaleA = scale; 
 	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	 gtk_container_add(GTK_CONTAINER(frame), hbox);
       }
       else
