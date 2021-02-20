@@ -83,11 +83,13 @@ static gint help_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
       case GDK_ENTER_NOTIFY: 
 	gtk_label_set_markup(GTK_LABEL(lab), lwoh->highlitText);
 	lwoh->inside = TRUE;
+	gtk_image_set_from_pixbuf(GTK_IMAGE(lwoh->tooltip), Closure->tooltipOn);
 	break;
 
       case GDK_LEAVE_NOTIFY: 
 	gtk_label_set_markup(GTK_LABEL(lab), lwoh->normalText);
 	lwoh->inside = FALSE;
+	gtk_image_set_from_pixbuf(GTK_IMAGE(lwoh->tooltip), Closure->tooltipOff);
 	break;
 
       default: break;
@@ -114,6 +116,10 @@ LabelWithOnlineHelp* CreateLabelWithOnlineHelp(char *title, char *ascii_text)
    lwoh->linkBox = ebox;
    lwoh->windowTitle = g_locale_to_utf8(title, -1, NULL, NULL, NULL);
    SetOnlineHelpLinkText(lwoh, ascii_text);
+
+   /*** Add a tooltip image */
+   lwoh->tooltip = gtk_image_new();
+   gtk_image_set_from_pixbuf(GTK_IMAGE(lwoh->tooltip), Closure->tooltipOff);
 
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), lwoh->normalText);
 
@@ -174,6 +180,7 @@ LabelWithOnlineHelp* CloneLabelWithOnlineHelp(LabelWithOnlineHelp *orig, char *a
    lwoh->linkLabel   = gtk_label_new(NULL);
    lwoh->linkBox     = ebox;
    lwoh->windowTitle = g_strdup("ignore");
+   lwoh->tooltip     = orig->tooltip;
 
    SetOnlineHelpLinkText(lwoh, ascii_text);
 

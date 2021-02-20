@@ -760,7 +760,7 @@ void ReadRS02Preferences(Method *method)
 
 void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 {  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
-   GtkWidget *frame, *hbox, *vbox, *vbox2, *lab, *scale, *table;
+   GtkWidget *frame, *hbox, *vbox, *vbox2, *tinybox, *lab, *scale, *table;
    GtkWidget *radio, *icon; 
    LabelWithOnlineHelp *lwoh;
    unsigned int index;
@@ -820,7 +820,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(hbox), table, FALSE, FALSE, 0);
 
    gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-   gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 5, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   tinybox = gtk_hbox_new(FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+   gtk_table_attach(GTK_TABLE(table), tinybox, 0, 5, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
    /* CD capacity table row */
 
@@ -828,7 +831,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->cdEntryA = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->cdEntryA), 9);
@@ -888,7 +894,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->dvdEntry1A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->dvdEntry1A), 9);
@@ -948,7 +957,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->dvdEntry2A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->dvdEntry2A), 9);
@@ -1008,7 +1020,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->bdEntry1A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry1A), 9);
@@ -1067,7 +1082,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->bdEntry2A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry2A), 9);
@@ -1126,7 +1144,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->bdEntry3A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry3A), 9);
@@ -1187,7 +1208,10 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    RegisterPreferencesHelpWindow(lwoh);
 
      gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0); 
-     gtk_table_attach(GTK_TABLE(table), lwoh->linkBox, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     tinybox = gtk_hbox_new(FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
 
      wl->bdEntry4A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry4A), 9);
@@ -1280,6 +1304,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
       gtk_box_pack_start(GTK_BOX(hbox), radio, FALSE, FALSE, 0);
 
       gtk_box_pack_start(GTK_BOX(hbox), !i ? lwoh->linkBox : lwoh->normalLabel, FALSE, FALSE, 0);
+      if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
  
       entry = gtk_entry_new();
       gtk_entry_set_width_chars(GTK_ENTRY(entry), 9);
@@ -1366,6 +1391,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
       {  wl->cacheScaleA = scale; 
 	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	 gtk_container_add(GTK_CONTAINER(frame), hbox);
       }
       else

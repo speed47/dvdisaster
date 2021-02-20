@@ -331,6 +331,8 @@ typedef struct _GlobalClosure
    GtkWindow *window;        /* main window */
    GtkTooltips *tooltips;    /* our global tooltips structure */
    GdkPixbuf *windowIcon;    /* main window icon */
+   GdkPixbuf *tooltipOn;     /* pixbuf of the tooltip icon */
+   GdkPixbuf *tooltipOff;    /* pixbuf of a fully transparent icon */
 
    GtkWidget *fileMenuImage;  /* Select image entry */
    GtkWidget *fileMenuEcc;    /* Select Parity File entry */
@@ -810,6 +812,7 @@ typedef struct _LabelWithOnlineHelp
    GtkWidget *linkBox;
    GtkWidget *linkLabel;
    GtkWidget *vbox;
+   GtkWidget *tooltip;
    GPtrArray *lastSizes;  /* for breaking expose loops between the help windows */
   
    char *windowTitle;
