@@ -21,7 +21,7 @@ fi
 # Set the package name and version
 
 PACKAGE dvdisaster 0.79.6
-DEFINE_INT PATCHLEVEL 7
+DEFINE_INT PATCHLEVEL 8
 DEFINE_STRING HAVE_UNSTABLE_RELEASE 1
 
 # Check for some essential tools.

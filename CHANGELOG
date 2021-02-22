@@ -1,5 +1,9 @@
 # dvdisaster changelog -*-text-*-
 
+0.79.6.patchlevel-8 22-02-2021 *UNOFFICIAL*
+- enh: gui: medium-info: add an 'exhaustive search' when not enabled in options
+- enh: gui: prefs: add a visual cue of tooltips
+
 0.79.6.patchlevel-7 30-01-2021 *UNOFFICIAL*
 - feat: add a new button to remove ECC data from an iso ("strip"), restoring an ISO to its previous non-augmented state (option: -z/--strip)
 - enh: try harder to find RS02/RS03 sigs in non-exhaustive mode (#19)
