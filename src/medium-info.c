@@ -45,6 +45,8 @@ typedef struct _medium_info
    GtkLabel *eccState;
    GtkLabel *eccSize;
    GtkLabel *eccVersion;
+   GtkLabel *exhaustiveSearch;
+   GtkWidget *exhaustiveSearchButton;
 } medium_info;
 
 /***
@@ -52,7 +54,8 @@ typedef struct _medium_info
  ***/
 
 static void print_defaults(medium_info *mi)
-{  SetLabelText(mi->physicalType, _("Medium not present"));
+{  SetLabelText(mi->physicalType, _("Please wait..."));
+   SetLabelText(mi->bookType, "-");
    SetLabelText(mi->manufID, "-");
    SetLabelText(mi->profileDescr, "-");
    SetLabelText(mi->discStatus, "-");
@@ -65,6 +68,7 @@ static void print_defaults(medium_info *mi)
    SetLabelText(mi->eccState, "-");
    SetLabelText(mi->eccSize, "-");
    SetLabelText(mi->eccVersion, "-");
+   SetLabelText(mi->exhaustiveSearch, "-");
 }
 #endif
 
@@ -102,9 +106,17 @@ void PrintMediumInfo(void *mi_ptr)
 #ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       print_defaults(mi);
+
+   /*** Ensure the UI is fully updated before our thread is stuck doing i/o */
+   while (gtk_events_pending()) gtk_main_iteration();
 #endif
 
    image = OpenImageFromDevice(Closure->device, 2 /* allow blanks, see comment in OpenImageFromDevice() */);
+#ifndef WITH_CLI_ONLY_YES
+   /*** in case of !image, say that we didn't find any medium */
+   if(Closure->guiMode)
+      SetLabelText(mi->physicalType, _("Medium not present"));
+#endif
    if(!image) return;
    dh = image->dh;
    QueryBlankCapacity(dh);
@@ -302,6 +314,17 @@ NULL,
 #endif
    }
 
+#ifndef WITH_CLI_ONLY_YES
+   if (Closure->examineRS02 && Closure->examineRS03)
+   {  SetLabelText(mi->exhaustiveSearch, _("yes"));
+      /*** Hide exhaustive search button if exhaustive search is already enabled for RS02 / RS03 */
+	  gtk_widget_hide(mi->exhaustiveSearchButton);
+   } else
+   {  SetLabelText(mi->exhaustiveSearch, _("no"));
+      gtk_widget_show(mi->exhaustiveSearchButton);
+   }
+#endif
+
    /* Clean up */
 
    CloseImage(image);
@@ -340,7 +363,28 @@ static void drive_select_cb(GtkWidget *widget, gpointer data)
  */
 
 static void update_cb(GtkWidget *widget, gpointer data)
-{  PrintMediumInfo((medium_info*)data); 
+{  medium_info *mi=(medium_info*)data;
+   PrintMediumInfo(mi);
+}
+
+/*
+ * Callback for forcing exhaustive search
+ */
+
+static void es_cb(GtkWidget *widget, gpointer data)
+{   medium_info *mi=(medium_info*)data;
+	int oldRS02 = Closure->examineRS02;
+	int oldRS03 = Closure->examineRS03;
+
+	gtk_widget_hide(mi->exhaustiveSearchButton);
+
+	Closure->examineRS02 = TRUE;
+	Closure->examineRS03 = TRUE;
+
+	PrintMediumInfo(mi);
+
+	Closure->examineRS02 = oldRS02;
+	Closure->examineRS03 = oldRS03;
 }
 
 /*
@@ -550,7 +594,7 @@ void CreateMediumInfoWindow()
   frame = gtk_frame_new(_utf("Augmented image info"));
   gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-  table = gtk_table_new(2, 3, FALSE);
+  table = gtk_table_new(3, 4, FALSE);
   gtk_container_set_border_width(GTK_CONTAINER(table), 5);
   gtk_container_add(GTK_CONTAINER(frame), table);
 
@@ -560,7 +604,7 @@ void CreateMediumInfoWindow()
   lab = gtk_label_new(" ");
   mi->eccState = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Augmented image size:"));
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -568,15 +612,26 @@ void CreateMediumInfoWindow()
   lab = gtk_label_new(" ");
   mi->eccSize = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("dvdisaster version:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->eccVersion = GTK_LABEL(lab);
   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+
+  lab = gtk_label_new(_utf("Exhaustive search:"));
+  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  lab = gtk_label_new(" ");
+  mi->exhaustiveSearch = GTK_LABEL(lab);
+  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  mi->exhaustiveSearchButton = gtk_button_new_with_label(_utf("Run exhaustive search"));
+  g_signal_connect(G_OBJECT(mi->exhaustiveSearchButton), "clicked", G_CALLBACK(es_cb), mi);
+  gtk_table_attach(GTK_TABLE(table), mi->exhaustiveSearchButton, 2, 3, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 0, 0);
 
   /*** Show it */
 
@@ -584,6 +639,9 @@ void CreateMediumInfoWindow()
   Closure->mediumWindow = dialog;
   Closure->mediumDrive = combo_box;
   gtk_widget_show_all(dialog);
+
+  /*** Hide it by default, it'll be unhidden by PrintMediumInfo if needed */
+  gtk_widget_hide(mi->exhaustiveSearchButton);
 
   PrintMediumInfo(mi);
 }
