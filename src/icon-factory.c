@@ -74,6 +74,10 @@ void CreateIconFactory()
    create_icon(ifact, "dvdisaster-verify", dvdisaster_verify);
    create_icon(ifact, "dvdisaster-strip",  dvdisaster_strip);
 
+   /*** Tooltip icon in preferences */
+   create_icon(ifact, "dvdisaster-tooltip", dvdisaster_tooltip);
+   create_icon(ifact, "dvdisaster-nothing", dvdisaster_nothing);
+
    /*** Stock GTK icons to defeat theming */
 
    create_icon(ifact, "dvdisaster-gtk-help", dvdisaster_gtk_help);

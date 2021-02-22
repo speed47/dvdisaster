@@ -89,8 +89,12 @@ ${BUILDTMP}/build.o : src/build.c src/build.h
 	@echo "Compiling:" src/build.o
 	@$(CC) $(COPTS) -c src/build.c -o $@
 
+${BUILDTMP}/closure.o : src/closure.c src/inlined-icons.h
+	@echo "Compiling:" src/closure.c
+	@$(CC) $(COPTS) -c src/closure.c -o $@
+
 ${BUILDTMP}/icon-factory.o : src/icon-factory.c src/inlined-icons.h
-	@echo "Compiling:" src/icon-factory.o
+	@echo "Compiling:" src/icon-factory.c
 	@$(CC) $(COPTS) -c src/icon-factory.c -o $@
 
 # Building the dvdisaster binary
@@ -109,6 +113,7 @@ dvdisaster: $(ICONS) $(OFILES)
 	fi
 
 src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png icons/strip.png icons/open-ecc.png icons/open-img.png icons/cd.png icons/gtk-help.png icons/gtk-index.png icons/gtk-preferences.png icons/gtk-quit.png icons/gtk-stop.png
+	@echo "Building:" src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_read            icons/read.png             >src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_create          icons/create.png          >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_scan            icons/scan.png            >>src/inlined-icons.h
@@ -123,6 +128,8 @@ src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.pn
 	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit        icons/gtk-quit.png        >>src/inlined-icons.h
 	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop        icons/gtk-stop.png        >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_tooltip         icons/tooltip.png         >>src/inlined-icons.h
+	@gdk-pixbuf-csource --raw --name=dvdisaster_nothing         icons/nothing.png         >>src/inlined-icons.h
 
 $(BUILDTMP)/help-dialogs.o: src/help-dialogs.c simple-md5sum
 	@if test -e fingerprints.md5; \
