@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -294,8 +294,6 @@ typedef struct _GlobalClosure
    int  logFileStamped; /* time stamp written to log file */
    char *binDir;        /* place where the binary resides */
    char *docDir;        /* place where our documentation resides */
-   char *viewer;        /* Name of preferred PDF viewer */
-   char *browser;       /* Name of preferred browser */
 
    GMutex progressLock; /* A mutex protected the stuff below */
    char bs[256];        /* A string of 255 backspace characters */
@@ -1458,7 +1456,7 @@ int ProbeAltiVec(void);
  *** show-manual.c
  ***/
 
-void ShowPDF(char*);
+void ShowURL(char*);
 
 /***
  *** show-html.c

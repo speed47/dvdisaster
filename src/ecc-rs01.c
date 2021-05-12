@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -37,7 +37,7 @@ void register_rs01(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS01", 4);
+   memcpy(method->name, "RS01", 4);
    method->menuEntry = g_strdup(_("Error correction file (RS01)"));
    method->description = g_strdup(_("Classic Reed-Solomon method based on polynomial arithmetic"));
    method->create  = RS01Create;

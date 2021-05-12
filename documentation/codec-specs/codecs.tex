@@ -35,12 +35,14 @@
 \fancyfoot[LO]{created: \today}
 \fancyfoot[RE]{\paperversion}
 
+\input{../config/version.tex}
+
 \begin{document}
 
 \definecolor{lightblue}{RGB}{224,224,255}
 \pagecolor{lightblue}
 \title{The dvdisaster Reed-Solomon Codec specification}
-\author{Carsten Gnörlich\\carsten@dvdisaster.org}
+\author{The dvdisaster development team\\support@dvdisaster.org}
 \date{}
 \maketitle
 \thispagestyle{empty}
@@ -59,7 +61,7 @@ Reed-Solomon codecs which are currently called RS01, RS02 and RS03.
 The codecs create Reed-Solomon parity data to protect data stored on optical media.
 Depending on the codec, parity data can either be stored in a separate file 
 or be integrated with the .iso image on the same medium. 
-See \url{http://dvdisaster.org}  for additional resources on the dvdisaster project,
+See \homepage for additional resources on the dvdisaster pro\-ject,
 e.g. for the {\em orange manual} (manual.pdf) containing information for end users.
 \end{abstract}
 
@@ -69,7 +71,7 @@ e.g. for the {\em orange manual} (manual.pdf) containing information for end use
 dvdisaster developers and, when the final version has been crafted, as an implementation
 guide for third party developers who wish to create and process dvdisaster error correction data.
 It is {\bf neither intended nor suitable} as end-user documentation; for usage information
-please refer to the online documentation at \url{http://dvdisaster.org}.
+please refer to the online documentation at \homepage.
 
 \bigskip
 
@@ -81,7 +83,8 @@ of programming in C is also assumed.
 \vfill
 \begin{center}
 {\em 
-Copyright 2008-2015 Carsten Gnörlich.
+Copyright 2008-2015 Carsten Gnörlich.\\
+Copyright 2021 The dvdisaster development team.\\
 Verbatim copying and distribution of this entire article is permitted in any medium, 
 provided this notice is preserved.}
 \end{center}

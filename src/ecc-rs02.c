@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -38,7 +38,7 @@ void register_rs02(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS02", 4);
+   memcpy(method->name, "RS02", 4);
    method->menuEntry = g_strdup(_("Augmented image (RS02)"));
    method->description = g_strdup(_("Reed-Solomon method with improved tolerance for defective ecc data"));
    method->create  = RS02Create;

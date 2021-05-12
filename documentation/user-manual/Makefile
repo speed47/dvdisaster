@@ -11,7 +11,7 @@ archclean: clean
 single:
 	pdflatex manual
 
-manual.pdf: preface.tex background.tex defect-reporting.tex howtos.tex manual.tex qa.tex burning-compatibility.tex download.tex local.tex overview.tex
+manual.pdf: preface.tex background.tex defect-reporting.tex howtos.tex manual.tex qa.tex download.tex local.tex overview.tex
 	pdflatex manual
 	pdflatex manual
 	pdflatex manual

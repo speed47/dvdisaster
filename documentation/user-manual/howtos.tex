@@ -2069,9 +2069,8 @@ want to re-invent medium writing in dvdisaster, as a lot of useful programs
 have already been written for this task. You should however pick a writing
 application which supports SAO/DAO (session at once / disc at once) writing
 on CD media and does not modify ISO images supplied by third-party software
-(like dvdisaster). Some common free burning programs for GNU/Linux have been
-\tlnk{burning-compatibility}{evaluated in the burning software compatibility section}.
-For a start try using the K3B burning program.
+(like dvdisaster). Not all burning programs are \tlnk{howto-compat-overview}{compatible with dvdisaster}, so new programs should be
+\tlnk{howto-compat-augment}{checked before using}. For a start we recommend the K3B burning program.
 
 \bigskip
 
@@ -3625,14 +3624,6 @@ writing the error correction data to the medium. Make sure that your
 writing software does \tlnk{howto-compat-augment}{correctly transfer the error correction data}
 when using it with augmented images for the first time.
 \end{itemize}
- 
-\smallskip
-
-Please see also the \tlnk{burning-compatibility}{burning software compatibility list}. From time 
-to time the dvdisaster project evaluates some of the most popular burning 
-software for the GNU/Linux platform and summarizes the results there. 
-
-%\newpage
 
 \subsubsection{Testing compatibility with CD/DVD/BD writing software for error correction files}
 \label{howto-compat-file}
@@ -3645,6 +3636,8 @@ In order to save time you do the following:
 \item You write the image to a medium.
 \item You create the error correction file from the same image.
 \end{enumerate}
+
+\newpage
 
 \paragraph{Possible incompatibility:} The writing software creates a medium which
 does not exactly match the image. This might prevent the error correction from recovering

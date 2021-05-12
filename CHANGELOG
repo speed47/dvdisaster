@@ -1,6 +1,33 @@
-# dvdisaster changelog -*-text-*-
+#  dvdisaster changelog -*-text-*-
+#  dvdisaster: Additional error correction for optical media.
+#  Copyright (C) 2004-2017 Carsten Gnoerlich.
+#  Copyright (C) 2019-2021 The dvdisaster development team.
+#
+#  Email: support@dvdisaster.org
+#
+#  This file is part of dvdisaster.
+#
+#  dvdisaster is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  dvdisaster is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
 
-0.79.7 - work in progress -
+0.79.8 11-05-2021
+- Revised code for clean compile under gcc-8 and Debian 10 (Buster).
+- Simplyfied display of URLS and PDF via xdg-open
+- minor rework of user manual
+- added skip feature to regtests: sometimes, output rows are permutated due to
+  a race condition between printf()s. This is rather hard to control.
+
+0.79.7 09-04-2019
 - Cleanup of documentation and files for new contact address
 
 0.79.6.patchlevel-9 27-06-2021 *UNOFFICIAL*
@@ -162,7 +189,7 @@ do not affect already created RS03 data.
 0.79.4 07-10-2012 (not released)
        ## 0.79.4 is a technical release in order to freeze
        ## and archive some parts of the source code.
-       ## Do not use for anything prodictive. 
+       ## Do not use for anything productive. 
        ## The next useful release will be 0.79.5.
 - optical drives would only be detected for /dev/pass[0-9]
   on FreeBSD. Fixed to work with arbitrary /dev/pass

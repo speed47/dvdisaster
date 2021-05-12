@@ -1895,6 +1895,7 @@ function CHECK_ENDIAN()
    # Try automatic detection
 
    cat > conftest.c <<EOF
+#include <stdio.h>
 int main()
 {  if(sizeof(int)==4)
    {  char *c = "1234";
@@ -1963,6 +1964,7 @@ function CHECK_BITNESS()
    # Try automatic detection
 
    cat > conftest.c <<EOF
+#include <stdio.h>
 int main()
 {  switch(sizeof(char*))
    {  case 4: printf("32\n"); break;

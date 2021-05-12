@@ -11,7 +11,7 @@ Medium "Random Image": CD-R mode 1, 34932 sectors, Ecc, created 16-07-2006.
 
 * Warning: This image requires dvdisaster-99.99!
 *          Proceeding could trigger incorrect behaviour.
-*          Please visit http://www.dvdisaster.org for an upgrade.
+*          Please upgrade dvdisaster.
 
 Scanning medium for read errors.
 Reading CRC information from ecc data (RS02) ... done.
