@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -443,8 +443,8 @@ RS02Layout *CalcRS02Layout(Image *image)
       {  case 'r':   /* pick number of roots */
 	 {  char buf[len+1];
  
-            memcpy(buf, Closure->redundancy, len);
-            buf[len] = '\0';
+            memcpy(buf, Closure->redundancy, len-1);
+	    buf[len-1]=0;
 	    requested_roots = atoi(buf);
 	    break;
 	 }
@@ -453,7 +453,7 @@ RS02Layout *CalcRS02Layout(Image *image)
 	    int percent;
  
             memcpy(buf, Closure->redundancy, len-1);
-            buf[len-1] = '\0';
+	    buf[len-1]=0;
 	    percent = atoi(buf);
 
 	    for(requested_roots = 7; requested_roots < 171; requested_roots++)

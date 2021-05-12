@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -38,7 +38,7 @@ void register_rs03(void)
 
    /*** Standard infomation and methods */ 
 
-   strncpy(method->name, "RS03", 4);
+   memcpy(method->name, "RS03", 4);
    method->menuEntry = g_strdup(_("Multithreaded RS codec (RS03)"));
    method->description = g_strdup(_("Multithreaded Reed-Solomon codec for error correction files and augmented images"));
    method->create  = RS03Create;

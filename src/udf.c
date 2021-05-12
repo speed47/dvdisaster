@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  * 
  *  Email: support@dvdisaster.org
  *
@@ -178,7 +178,7 @@ static void bp_get_string(unsigned char *dest, unsigned char *src, int begin, in
 static void bp_set_string(unsigned char *dest, char *src, int begin, int end)
 {  int length = end-begin+1;  
 
-   strncpy((char*)(dest+begin-1), src, length);
+   memcpy((char*)(dest+begin-1), src, length);
 }
 
 /*
@@ -797,10 +797,12 @@ void FreeIsoHeader(IsoHeader *ih)
 
 void AddFile(IsoHeader *ih, char *name, guint64 size)
 {  static int n;
-   char iso[22], joliet[strlen(name)+3];
+   char iso[22]; /* 15 would be enough but compiler figures out 22 */
+   char joliet[strlen(name)+3];
 
    n++;
    sprintf(iso,"RAN_%04d.DAT;1", n);
+  
    add_file_record(ih->proot, iso, size, 25,
 			106, 7, 16, 12, 28, 10, 8);
    sprintf(joliet,"%s;1", name);

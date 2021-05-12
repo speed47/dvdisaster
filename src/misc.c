@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -216,7 +216,7 @@ static void print_greetings(FILE *where)
 
    greetings_shown = 1;
    g_fprintf(where, "%s.\n%s\n", Closure->versionString,
-	     _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019 The dvdisaster development team."));
+	     _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019-2021 The dvdisaster development team."));
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE
@@ -641,7 +641,8 @@ void Stop(char *format, ...)
 #ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode) 
 #endif
-   {  g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
+   {  print_greetings(stdout);
+      g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
       va_start(argp, format);
       g_vprintf(format, argp);
       va_end(argp);

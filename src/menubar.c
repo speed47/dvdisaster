@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -116,7 +116,7 @@ static void menu_cb(GtkWidget *widget, gpointer data)
 	break;
 
       case MENU_HELP_MANUAL:
-	ShowPDF(NULL);
+	ShowURL(NULL);
 	break;
 
       case MENU_HELP_ABOUT:

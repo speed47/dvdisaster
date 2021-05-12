@@ -1,5 +1,6 @@
 #  dvdisaster: Additional error correction for optical media.
-#  Copyright (C) 2004-2018 Carsten Gnoerlich.
+#  Copyright (C) 2004-2017 Carsten Gnoerlich.
+#  Copyright (C) 2019-2021 The dvdisaster development team.
 #
 #  Email: support@dvdisaster.org
 #
@@ -34,6 +35,10 @@ MAN_LOCALES = de
 
 # Where to put tar archives (arch, srcdist)
 TAR_PREFIX=/dev/shm
+
+# current project homepage
+
+HOMEPAGE="https://dvdisaster.jcea.es/"
 
 ######################################################################
 # Take over variables from configure
@@ -172,6 +177,7 @@ untranslated:
 version.tex:
 	@test -d $(SRCDIR)/documentation/config || mkdir $(SRCDIR)/documentation/config
 	@echo "\\newcommand{\\projectversion}{$(VERSION)}" >$(SRCDIR)/documentation/config/version.tex
+	@echo "\\newcommand{\\homepage}{\\url{$(HOMEPAGE)}}" >>$(SRCDIR)/documentation/config/version.tex
 
 manual: version.tex
 	@echo "Producing user manual... "
@@ -277,7 +283,6 @@ install: dvdisaster manual
 	install -m 644 CHANGELOG $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 COPYING $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 CREDITS* $(BUILDROOT)$(DOCSUBDIR)
-	install -m 644 README.MODIFYING $(BUILDROOT)$(DOCSUBDIR)
 	install -m 644 TODO $(BUILDROOT)$(DOCSUBDIR)
 	install -d $(BUILDROOT)$(DOCSUBDIR)
 	(cd documentation/user-manual; install -m 644 manual.pdf $(BUILDROOT)$(DOCSUBDIR))

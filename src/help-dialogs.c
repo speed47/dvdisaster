@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -22,6 +22,7 @@
 // DVDISASTER_GUI_FILE
 
 #include "dvdisaster.h"
+#include "build.h"
 
 /***
  *** Online help system for the preferences
@@ -598,8 +599,7 @@ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
    {  case GDK_BUTTON_PRESS: 
         if(!inside) return FALSE; /* Defect in certain Gtk versions? */
         if(!strcmp(label,"GPL")) ShowGPL(); 
-        else if(strlen(label) > 4 && !strncmp(label, "http", 4)) ShowHTML(g_strdup(label));
-        else ShowPDF(g_strdup(label));
+        else ShowURL(g_strdup(label));
 	break; 
       case GDK_ENTER_NOTIFY: 
 	g_sprintf(text, "<span underline=\"single\" color=\"blue\">%s</span>", label);
@@ -737,7 +737,7 @@ void AboutDialog()
    AboutText(vbox, "%s", text);
    g_free(text);
 
-   AboutText(vbox, _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019 The dvdisaster development team."));
+   AboutText(vbox, _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019-2021 The dvdisaster development team."));
 
    sep = gtk_hseparator_new();
    gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 10);
@@ -755,8 +755,12 @@ void AboutDialog()
 
    AboutText(vbox, _("\ne-mail: support@dvdisaster.org"));
 
-   AboutText(vbox, "WWW: %s", HOMEPAGE);
-
+   text = g_strdup_printf("WWW: [%s]", HOMEPAGE);
+   AboutTextWithLink(vbox, text, HOMEPAGE);
+   g_free(text);
+   
+#ifdef SYS_NETBSD
+   AboutText(vbox, _("\nNetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;")); 
 #endif
    /* Show it */
 

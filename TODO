@@ -1,37 +1,40 @@
 
 Tentative to do/ release schedule
 
-Version 0.79: new RS03 codec (encoding part)
- - lots of speed optimizations in error correction data encoding
- - multithreaded / multicore processor support
- - add missing functionality, e.g. adaptive reading
- 0.79.5: project re-launch
- 0.79.6: re-introduce CRC and MD5 caching between reading
-         and ecc creation; cosmetical changes
- 0.79.7: re-introduce adaptive reading [partly done in pl4]
+Versions 0.79.x: development releases
+* restart project, catch up wich recent compiler and OS version,
+* last releases with gtk-2 
 
-Version 0.80: milestone release
+work in progress (this release):
+
+- clean build fpr gcc-8 and Debian Buster (Work in progress)
+
+upcoming (next releases):
+
+- clean build for gcc-10 (Slackware 15, Debian testing)
+- split GUI code from core source to allow for command-line only build
+
+Versions 0.80.x: development releases
+* gtk-4 migration
+* lots of micro releases to revive the project and resolve outstanding issues
+  
+- remove obsolete features, especially in the GUI
+- upgrade from gtk-2 to gtk-4
+- re-introduce adaptive reading
+- ... many more will likely be added ...
+
+Version 0.82: next milestone/stable release
  - RS03 encoding considered feature complete
 
-Version 0.81:
+Version 0.83: development releases
  - multithreaded decoding (error correction/repair) 
    for RS01/RS02/RS03
- - RS01 encoding (not decoding of course) will be
-   removed as RS03 fully replaces it
 
-Version 0.82: milestone release
+Version 0.84: milestone release
  - RS03 decoding considered feature complete
 
-Version 0.84:
- - compile option to create a CLI-only binary [done in pl1]
-   (without GTK+ linkage)
-
-Version 0.86:
- - maybe upgrade from GTK+ 2 to version 3
-   (not decided yet)
-   
 Version 0.90:
- - Grand finale: add a new feature which isn't jaw dropping 
+ - Grand finale: add a last new feature which isn't jaw dropping 
    but very convenient to have (sorry - has nothing to do 
    with ripping). Since I'm not sure whether there
    is prior art to this feature, I won't get into
@@ -49,7 +52,6 @@ Version 1.00: maintenance releases
 
 Unspecified schedule / later releases
 
- - native Windows fork
  - add pause/resume button
  - optionally pause after n read errors for drives which
    need to cool down 

@@ -12,7 +12,7 @@ Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
 * Warning: This ecc file requires dvdisaster-99.99!
 *          Proceeding could trigger incorrect behaviour.
 *          Please read the image without using this ecc file
-*          or visit http://www.dvdisaster.org for an upgrade.
+*          or upgrade dvdisaster.
 
 Creating new rs03f-tmp.iso image.
 Reading CRC information from ecc data (RS03) ... done.

@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The dvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -324,9 +324,6 @@ void ReadDotfile()
       if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "old-missing-sector-marker"))  { Closure->dsmVersion  = !atoi(value); continue; }
-      if(!strcmp(symbol, "pdf-viewer"))      { g_free(Closure->viewer);
-                                               Closure->viewer = g_strdup(value); continue; }
-
       if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = atoi(value); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
@@ -432,7 +429,6 @@ static void update_dotfile()
    g_fprintf(dotfile, "max-read-attempts: %d\n", Closure->maxReadAttempts);
    g_fprintf(dotfile, "min-read-attempts: %d\n", Closure->minReadAttempts);
    g_fprintf(dotfile, "old-missing-sector-marker: %d\n", !Closure->dsmVersion);
-   g_fprintf(dotfile, "pdf-viewer:        %s\n", Closure->viewer);
    g_fprintf(dotfile, "prefetch-sectors:  %d\n", Closure->prefetchSectors);
    g_fprintf(dotfile, "raw-mode:          %d\n", Closure->rawMode);
    g_fprintf(dotfile, "read-and-create:   %d\n", Closure->readAndCreate);
@@ -534,8 +530,6 @@ void InitClosure()
 
    Closure->deviceNames = g_ptr_array_new();
    Closure->deviceNodes = g_ptr_array_new();
-   Closure->viewer      = g_strdup("xdg-open");
-   Closure->browser      = g_strdup("xdg-open");
    Closure->methodList  = g_ptr_array_new();
    Closure->methodName  = g_strdup("RS01");
    Closure->dDumpDir    = g_strdup(Closure->homeDir);
@@ -661,8 +655,6 @@ void FreeClosure()
    cond_free(Closure->logFile);
    cond_free(Closure->binDir);
    cond_free(Closure->docDir);
-   cond_free(Closure->viewer);
-   cond_free(Closure->browser);
    cond_free(Closure->errorTitle);
    cond_free(Closure->simulateCD);
    cond_free(Closure->dDumpDir);

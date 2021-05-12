@@ -38,7 +38,7 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79.7
+PACKAGE dvdisaster 0.79.8
 DEFINE_INT PATCHLEVEL 9
 DEFINE_STRING HAVE_UNSTABLE_RELEASE 1
 DEFINE_STRING HOMEPAGE "https://dvdisaster.jcea.es"

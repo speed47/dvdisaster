@@ -209,10 +209,11 @@ function run_regtest()
    REFLOG=${DATABASE}/${CODEC_PREFIX}_${testsymbol}
 
    if test "$gui_mode" == "false"; then
+<<<<<<< HEAD
       rm -f $NEWLOG
 
       echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE 
-      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +3  >>$NEWLOG 
+      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +4  >>$NEWLOG 
 
       if ! test -r $REFLOG; then
           pass="false"
@@ -254,7 +255,7 @@ function run_regtest()
 
             if test "$interactive_diff" == "yes"; then
                while true; do
-                  read -n 1 -p ">> Press 'a' to accept this diff; 'v' to vimdiff; any other key to fail this test:" -e answer
+                  read -n 1 -p ">> Press 'a' to accept this diff; 'i' to ignore; 'v' to vimdiff; any other key to fail this test:" -e answer
                   if test "$answer" == "a"; then
                      cp $REFLOG $LOGDIR
                      head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
@@ -262,8 +263,13 @@ function run_regtest()
                      pass="skip"
                   elif test "$answer" == "v"; then
                      vimdiff $REFLOG $NEWLOG
-
                      continue
+                  else
+		     if test "$answer" == "i"; then
+			   pass="skip"
+		     else
+			   pass="false"
+		     fi
                   fi
                   break
                done

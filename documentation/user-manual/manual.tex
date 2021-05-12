@@ -11,6 +11,7 @@
 \usepackage{color}
 \usepackage[table]{xcolor}
 \usepackage{hyperref}
+\usepackage{comment}
 
 \marginsize{30mm}{20mm}{20mm}{20mm}  % Seitenränder links, rechts, oben, unten
 \parindent0em		% Keine amerikanische Einrückung am Anfang von Paragraphen
@@ -40,7 +41,7 @@
 
 \hypersetup{
     pdftitle={dvdisaster User's Manual},
-    pdfauthor={Carsten Gnörlich},
+    pdfauthor={Written by the dvdisaster development team},
     colorlinks=true,
     linkcolor=linkblue,
     citecolor=linkblue,
@@ -72,7 +73,7 @@
 \definecolor{lightorange}{RGB}{255,224,150}
 \pagecolor{lightorange}
 \title{The dvdisaster User's Manual}
-\author{Carsten Gnörlich\\carsten@dvdisaster.org}
+\author{Written by the dvdisaster development team\\support@dvdisaster.org}
 \date{}
 \maketitle
 \thispagestyle{empty}
@@ -92,7 +93,7 @@ for optical media  such as CD, DVD and BD discs.
 Use cases for creating ecc data, recovering defective media
 using ecc data and for general maintenanance of optical 
 media are given. 
-See \url{http://dvdisaster.org}  for additional resources on
+See \homepage for additional resources on
 the dvdisaster project, e.g. for the {\em blue} manual (codecs.pdf)
 containing a formal specification of the error correction data format.
 \end{abstract}
@@ -100,9 +101,10 @@ containing a formal specification of the error correction data format.
 \vfill
 \begin{center}
 {\em 
-Copyright 2008-2018 Carsten Gnörlich.
-Verbatim copying and distribution of this entire article is permitted in any medium, 
-provided this notice is preserved.}
+  Copyright 2008-2017 Carsten Gnörlich.\\
+  Copyright 2019-2021 The dvdisaster development team.\\
+  Verbatim copying and distribution of this entire article is permitted in
+  any medium, provided this notice is preserved.}
 \end{center}
 
 \newpage
@@ -129,9 +131,6 @@ provided this notice is preserved.}
 \newpage
 
 \input{background}
-\newpage
-
-\input{burning-compatibility}
 \newpage
 
 \input{defect-reporting}
