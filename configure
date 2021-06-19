@@ -54,6 +54,11 @@ fi
 
 WITH_OPTION cli-only no "[yes | no]"
 
+# Remove the useless CLI console under windows
+if [[ $(uname) =~ MINGW ]] && [ "$cfg_with_cli_only" != "yes" ]; then
+  CFG_CFLAGS="$CFG_CFLAGS -mwindows"
+fi
+
 # Look for required libraries
 
 PRINT_MESSAGE "\nLooking for includes and libraries:"
