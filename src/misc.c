@@ -1427,7 +1427,9 @@ void StripECCFromImageFile()
    PrintLog(_("Image successfully truncated back to its original size.\n"));
 
 #ifndef WITH_CLI_ONLY_YES
-   ModalDialog(GTK_MESSAGE_INFO, GTK_BUTTONS_OK, NULL, _("Image successfully truncated"));
+   if (Closure->guiMode)
+   {  ModalDialog(GTK_MESSAGE_INFO, GTK_BUTTONS_OK, NULL, _("Image successfully truncated"));
+   }
 #endif
 
    /*** Clean up */

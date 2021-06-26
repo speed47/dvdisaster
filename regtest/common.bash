@@ -30,16 +30,11 @@ fi
 
 nbfailed=0
 
-# Assemble sed expressions for removal of variable output contents
-
-SED_REMOVE_ISO_DIR="([a-zA-Z]:/[a-zA-Z0-9/]+)?${ISODIR}/"
-
 # For MSYS2
 
 if [ -n "$ORIGINAL_TEMP" ]; then
     ISODIR="$ORIGINAL_TEMP"
     # /c/ => C:/
-    SED_REMOVE_ISO_DIR="$(echo "$ISODIR" | cut -c2 | tr a-z A-Z):$(echo "$ISODIR" | cut -c3-)/"
     NON_EXISTENT_DEVICE=V:
 fi
 
@@ -214,67 +209,71 @@ function run_regtest()
    REFLOG=${DATABASE}/${CODEC_PREFIX}_${testsymbol}
 
    if test "$gui_mode" == "false"; then
-     rm -f $NEWLOG
+      rm -f $NEWLOG
 
-     echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE 
-     LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +3  >>$NEWLOG 
+      echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE 
+      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +3  >>$NEWLOG 
 
-     if ! test -r $REFLOG; then
-	 echo -e "FAIL\n$REFLOG missing in log file database"
-	 return
-     fi
+      if ! test -r $REFLOG; then
+          pass="false"
+          if [ "$REGTEST_NO_UTF8" = 1 ]; then
+             echo "BAD; '$REFLOG' is missing in log file database"
+          else
+             printf "%b\r%b\n" "BAD; '$REFLOG' is missing in log file database" "[\e[31m✘\e[0m]"
+          fi
+      else
+         # ignore the memory tracker line when no memory leaks
+         # have been found
 
-     # ignore the memory tracker line when no memory leaks
-     # have been found
-     
-     grep -va "dvdisaster: No memory leaks found." $NEWLOG >$TMPLOG
-     mv $TMPLOG $NEWLOG
-     
-     # ignore log lines specified by user
-     
-     if test -n "$IGNORE_LOG_LINE"; then
-	 grep -Eva "$IGNORE_LOG_LINE" $NEWLOG >$TMPLOG
-	 mv $TMPLOG $NEWLOG
-     fi
+         grep -va "dvdisaster: No memory leaks found." $NEWLOG >$TMPLOG
+         mv $TMPLOG $NEWLOG
 
-     filter=cat
-     echo "$options" | grep -qw SORTED && filter=sort
-     if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || \
-        [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ] || \
-        [ "${CODEC_PREFIX}_${testsymbol}" = RS01_adaptive_no_device ]; then
-	     # for Windows
-	     sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
-     fi
-       
-     if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG | $filter) >${DIFFLOG}; then
-	 if [ "$REGTEST_NO_UTF8" = 1 ]; then
-	   echo "BAD; diffs found (<expected; >created):"
-	 else
-	   printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
-	 fi
-	 cat ${DIFFLOG}
+         # ignore log lines specified by user
 
-	 if test "$interactive_diff" == "yes"; then
-	   while true; do
-	      read -n 1 -p ">> Press 'a' to accept this diff; 'v' to vimdiff; any other key to fail this test:" -e answer
-	      if test "$answer" == "a"; then
-	         cp $REFLOG $LOGDIR
-	         head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
-	         sed -re "s=${SED_REMOVE_ISO_DIR}==g" $NEWLOG >>$REFLOG
-	         pass="skip"
-	      elif test "$answer" == "v"; then
-	         vimdiff $REFLOG $NEWLOG
+         if test -n "$IGNORE_LOG_LINE"; then
+            grep -Eva "$IGNORE_LOG_LINE" $NEWLOG >$TMPLOG
+            mv $TMPLOG $NEWLOG
+         fi
 
-	         continue
-	      else
-	         pass="false"
-	      fi
-	      break
-	   done
-	 else
-	   pass="false"
-	 fi
-     fi
+         filter=cat
+         echo "$options" | grep -qw SORTED && filter=sort
+         if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || \
+            [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ] || \
+            [ "${CODEC_PREFIX}_${testsymbol}" = RS01_adaptive_no_device ]; then
+            # for Windows
+            sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
+         fi
+
+         if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=[a-zA-Z:/]+/([a-z0-9_-]+\.(ecc|iso))=\1=g;s=$ISODIR/==g" $NEWLOG | $filter) >${DIFFLOG}; then
+            if [ "$REGTEST_NO_UTF8" = 1 ]; then
+               echo "BAD; diffs found (<expected; >created):"
+            else
+               printf "%b\r%b\n" "BAD; diffs found (<expected; >created):" "[\e[31m✘\e[0m]"
+            fi
+            cat ${DIFFLOG}
+
+            if test "$interactive_diff" == "yes"; then
+               while true; do
+                  read -n 1 -p ">> Press 'a' to accept this diff; 'v' to vimdiff; any other key to fail this test:" -e answer
+                  if test "$answer" == "a"; then
+                     cp $REFLOG $LOGDIR
+                     head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
+                     sed -re "s=[a-zA-Z:/]+/([a-z0-9_-]+\.(ecc|iso))=\1=g;s=$ISODIR/==g" $NEWLOG >>$REFLOG
+                     pass="skip"
+                  elif test "$answer" == "v"; then
+                     vimdiff $REFLOG $NEWLOG
+
+                     continue
+                  else
+                     pass="false"
+                  fi
+                     break
+               done
+            else
+               pass="false"
+            fi
+         fi
+      fi
    else  # gui mode
        replace_config last-image "$testiso"
        if test -n "${testecc}"; then
@@ -293,8 +292,13 @@ function run_regtest()
 
    unset extra_args
      
-   image_md5=$(head -n 1 $REFLOG)
-   ecc_md5=$(head -n 2 $REFLOG | tail -n 1)
+   if test -r "$REFLOG"; then
+      image_md5=$(head -n 1 $REFLOG)
+      ecc_md5=$(head -n 2 $REFLOG | tail -n 1)
+   else
+      image_md5=ignore
+      ecc_md5=ignore
+   fi
 
    if test "${image_md5}" != "ignore"; then
        md5=$($MD5SUM ${testiso} | cut -d\  -f 1)

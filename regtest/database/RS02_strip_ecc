@@ -1,0 +1,75 @@
+cbadac3ca7b6e9bccfc889b7eaded254
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+ExamineUDF(File: rs02-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 30000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs02-tmp.iso
+try_sector: trying sector 30000
+try_sector: header at 30000: magic cookie found
+try_sector: CRC okay
+GetImageFingerprint(16): read & cached
+try_sector: fingerprint okay, header good
+Root sector search at +0 successful
+...augmented image found
+Expected size calculated from ecc header: 34932
+--> confirmed layout variant 1
+Calculated layout for RS02 image:
+data sectors      = 30000
+crc sectors       = 59
+protected sectors = 30061 (incl. 2 hdr sectors)
+reed solomon secs = 4795 (35 roots, 220 data)
+header repeats    = 38 (using modulo 128)
+added sectors     = 4932
+total image size  = 34932
+medium capacity   = n.a.
+
+Interleaving layout:
+137 sectors per ecc layer
+first layer sector with CRC data 136 (sector# 30002)
+
+GetImageFingerprint(16): cached
+Image is augmented (expected sectors = 34932)
+Truncating image to 30000 sectors.
+Image successfully truncated back to its original size.
