@@ -175,6 +175,21 @@ manualclean:
 	@echo "Removing temporary user manual files... "
 	@$(MAKE) --no-print-directory -C documentation/user-manual clean
 
+manualarchclean:
+	@echo "Removing generated user manual files... "
+	@$(MAKE) --no-print-directory -C documentation/user-manual archclean
+
+codecs:
+	@echo "Producing codecs specification documentation... "
+	@$(MAKE) --no-print-directory -C documentation/codec-specs
+
+codecsclean:
+	@echo "Removing temporary codecs specification documentation files... "
+	@$(MAKE) --no-print-directory -C documentation/codec-specs clean
+
+codecsarchclean:
+	@echo "Removing generated codecs specification documentation files... "
+	@$(MAKE) --no-print-directory -C documentation/codec-specs archclean
 
 # Some usage info
 
@@ -187,6 +202,7 @@ help:
 	@echo
 	@echo "Documentation related:"
 	@echo "manual    - create the user manual (requires LaTeX)"
+	@echo "codecs    - create the codecs spec documentation (requires LaTeX)"
 	@echo 
 	@echo "Locale related:"
 	@echo "locale    - update locale files"
@@ -346,7 +362,7 @@ arch:	archclean build.h
 INSTALL: documentation/install.template
 	@sed "s/@@PKGNAME/$(PKGNAME)/" <documentation/install.template >INSTALL
 
-srcdist: INSTALL distclean manual manualclean
+srcdist: INSTALL distclean manual manualclean codecsclean
 	@cd .. ; tar -c -j -X $(PKGNAME)/NODIST -f $(TAR_PREFIX)/$(PKGNAME).tar.bz2 $(PKGNAME)
 	@cd .. ; gpg --homedir .gnupg --default-key 758BCC23 --detach-sign --output $(TAR_PREFIX)/$(PKGNAME).tar.bz2.gpg --armor $(TAR_PREFIX)/$(PKGNAME).tar.bz2 
 
