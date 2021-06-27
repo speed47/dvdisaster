@@ -150,7 +150,7 @@ void CalcSectors(guint64 size, guint64 *sectors, int *in_last)
 
 #ifndef WITH_CLI_ONLY_YES
 
-#define MAX_LOG_WIN_SIZE 10240
+#define MAX_LOG_WIN_SIZE 1024000
 
 static void clamp_gstring(GString *string)
 {  gchar *ptr;
