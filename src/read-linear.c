@@ -552,6 +552,11 @@ static void show_progress(read_closure *rc)
 
    if(rc->readPos>rc->readMarker) rc->readMarker=rc->readPos;
    percent = (1000*rc->readPos)/rc->image->dh->sectors;
+
+   if (Closure->verbose)
+      Verbose("Current sector: %" PRId64 ". This session: NewSectorsReadOK=%" PRId64 ", ReadErrors=%" PRId64 ", CRCErrors=%" PRId64 "\n",
+         rc->readPos, rc->speed, rc->readOK, Closure->readErrors, Closure->crcErrors);
+
       
    if(rc->lastPercent != percent) 
    {  gulong ignore;
