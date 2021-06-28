@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-22 21:56+0100\n"
+"POT-Creation-Date: 2021-06-27 23:00+0200\n"
 "PO-Revision-Date: 2005-01-01 14:24+0100\n"
 "Last-Translator: Andrea Polverini <polve@polve.com>\n"
 "Language-Team: Italian <>\n"
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Truncating image to %<PRId64> sectors.\n"
 msgstr ""
 
-#: src/debug.c:579 src/misc.c:1425 src/read-linear.c:1472 src/rs01-fix.c:230
+#: src/debug.c:579 src/misc.c:1425 src/read-linear.c:1477 src/rs01-fix.c:230
 #: src/rs01-fix.c:253 src/rs01-fix.c:275 src/rs01-fix.c:315
 #: src/rs02-create.c:117 src/rs02-create.c:171 src/rs02-fix.c:268
 #: src/rs02-fix.c:288 src/rs02-fix.c:306 src/rs03-create.c:256
@@ -1549,7 +1549,7 @@ msgstr ""
 msgid "Image successfully truncated back to its original size.\n"
 msgstr ""
 
-#: src/misc.c:1430
+#: src/misc.c:1431
 msgid "Image successfully truncated"
 msgstr ""
 
@@ -2416,7 +2416,7 @@ msgstr ""
 
 #: src/raw-editor.c:390 src/read-adaptive.c:1348 src/read-adaptive.c:1428
 #: src/read-adaptive.c:1770 src/read-adaptive.c:1988 src/read-linear.c:426
-#: src/read-linear.c:703 src/read-linear.c:1043 src/rs01-fix.c:501
+#: src/read-linear.c:708 src/read-linear.c:1048 src/rs01-fix.c:501
 #: src/rs01-fix.c:761 src/rs02-fix.c:786 src/rs03-fix.c:865
 #, c-format
 msgid "Failed seeking to sector %<PRId64> in image [%s]: %s"
@@ -2424,7 +2424,7 @@ msgstr ""
 
 #: src/raw-editor.c:397 src/read-adaptive.c:1362 src/read-adaptive.c:1434
 #: src/read-adaptive.c:1802 src/read-adaptive.c:1817 src/read-adaptive.c:1996
-#: src/read-linear.c:435 src/read-linear.c:710 src/rs01-fix.c:195
+#: src/read-linear.c:435 src/read-linear.c:715 src/rs01-fix.c:195
 #: src/rs01-fix.c:508
 #, c-format
 msgid "Failed writing to sector %<PRId64> in image [%s]: %s"
@@ -2846,15 +2846,15 @@ msgstr "Analizzo il file immagine esistente: %<PRId64> leggibile, %<PRId64> corr
 msgid "Analysing existing image file: %<PRId64> readable, %<PRId64> still missing.\n"
 msgstr "Analizzo il file immagine esistente: %<PRId64> leggibile, %<PRId64> ancora mancanti.\n"
 
-#: src/read-adaptive.c:1295 src/read-linear.c:784
+#: src/read-adaptive.c:1295 src/read-linear.c:789
 msgid "Ignore once"
 msgstr "Ignora una volta"
 
-#: src/read-adaptive.c:1296 src/read-linear.c:785
+#: src/read-adaptive.c:1296 src/read-linear.c:790
 msgid "Ignore always"
 msgstr "Ignora sempre"
 
-#: src/read-adaptive.c:1297 src/read-linear.c:786
+#: src/read-adaptive.c:1297 src/read-linear.c:791
 msgid "Abort"
 msgstr "Ferma"
 
@@ -2911,7 +2911,7 @@ msgstr ""
 "\n"
 "Sono disponibili dati sufficienti per ricostruire l'immagine.\n"
 
-#: src/read-adaptive.c:1731 src/read-linear.c:1110
+#: src/read-adaptive.c:1731 src/read-linear.c:1115
 #, c-format
 msgid ""
 "Sector %<PRId64>: %s\n"
@@ -2919,7 +2919,7 @@ msgid ""
 "Use the --ignore-fatal-sense option to override."
 msgstr ""
 
-#: src/read-adaptive.c:1737 src/read-linear.c:1116
+#: src/read-adaptive.c:1737 src/read-linear.c:1121
 #, c-format
 msgid ""
 "Sector %<PRId64>: %s\n"
@@ -2943,7 +2943,7 @@ msgstr "Errore CRC nel settore %<PRId64>\n"
 msgid "Sectors %<PRId64>-%<PRId64>: %s\n"
 msgstr "Settori %<PRId64>-%<PRId64>: %s\n"
 
-#: src/read-adaptive.c:1980 src/read-linear.c:1313 src/scsi-layer.c:1775
+#: src/read-adaptive.c:1980 src/read-linear.c:1318 src/scsi-layer.c:1775
 #, c-format
 msgid "Sector %<PRId64>: %s\n"
 msgstr "Settore %<PRId64>: %s\n"
@@ -3076,32 +3076,32 @@ msgstr "Attendere %d secondi per far avviare il drive...\n"
 msgid "Unreadable / skipped sectors: %<PRId64>"
 msgstr "Settori illeggibili / saltati: %<PRId64>"
 
-#: src/read-linear.c:639
+#: src/read-linear.c:644
 #, c-format
 msgid "Sector %<PRId64>: Speed increased to %4.1fx\n"
 msgstr "Settore %<PRId64>: Velocità incrementata a %4.1fx\n"
 
-#: src/read-linear.c:642
+#: src/read-linear.c:647
 #, c-format
 msgid "Sector %<PRId64>: Speed dropped to %4.1fx\n"
 msgstr "Settore %<PRId64>: Velocità diminuita a %4.1fx\n"
 
-#: src/read-linear.c:648
+#: src/read-linear.c:653
 #, c-format
 msgid "Read position: %3d.%1d%% (nn.nx)"
 msgstr ""
 
-#: src/read-linear.c:650
+#: src/read-linear.c:655
 #, c-format
 msgid "Read position: %3d.%1d%% (%4.1fx)"
 msgstr "Settori processati: %3d.%1d%% (%4.1fx)"
 
-#: src/read-linear.c:744
+#: src/read-linear.c:749
 #, c-format
 msgid "* CRC error, sector: %lld\n"
 msgstr "* Errore CRC, Settore : %lld\n"
 
-#: src/read-linear.c:874
+#: src/read-linear.c:879
 #, c-format
 msgid ""
 "This ecc file requires dvdisaster-%d.%d!\n"
@@ -3112,7 +3112,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/read-linear.c:882
+#: src/read-linear.c:887
 #, c-format
 msgid ""
 "This image requires dvdisaster-%d.%d!\n"
@@ -3125,100 +3125,100 @@ msgstr ""
 #
 #
 #
-#: src/read-linear.c:893 src/read-linear.c:997 src/read-linear.c:1127
+#: src/read-linear.c:898 src/read-linear.c:1002 src/read-linear.c:1132
 #, c-format
 msgid "<span %s>Aborted by user request!</span> %<PRId64> sectors read, %<PRId64> sectors unreadable/skipped so far."
 msgstr "<span %s>Annullato dall'utente!</span> %<PRId64> settori letti, %<PRId64> settori illeggibili/saltati.."
 
-#: src/read-linear.c:1055
+#: src/read-linear.c:1060
 #, c-format
 msgid "unexpected read error in image for sector %<PRId64>"
 msgstr "Errore di lettura inatteso nell'immagine per il settore %<PRId64>"
 
-#: src/read-linear.c:1143
+#: src/read-linear.c:1148
 #, c-format
 msgid "Sector %<PRId64>: %3d C2 errors.%s\n"
 msgstr ""
 
-#: src/read-linear.c:1280
+#: src/read-linear.c:1285
 #, c-format
 msgid "Sector %<PRId64>: %s Skipping %d sectors.\n"
 msgstr "Settore %<PRId64>: %s Salto di %d settori.\n"
 
-#: src/read-linear.c:1351
+#: src/read-linear.c:1356
 #, c-format
 msgid ""
 "<big>Trying to complete image, reading pass %d of %d.</big>\n"
 "%s"
 msgstr ""
 
-#: src/read-linear.c:1355
+#: src/read-linear.c:1360
 #, c-format
 msgid ""
 "\n"
 "Trying to complete image, reading pass %d of %d.\n"
 msgstr ""
 
-#: src/read-linear.c:1392
+#: src/read-linear.c:1397
 #, c-format
 msgid "%<PRId64> sectors read.     "
 msgstr "%<PRId64> settori letti.      "
 
-#: src/read-linear.c:1393
+#: src/read-linear.c:1398
 #, c-format
 msgid "%<PRId64> sectors read; %<PRId64> unreadable sectors."
 msgstr "%<PRId64> settori letti; %<PRId64> settori illeggibili."
 
-#: src/read-linear.c:1405
+#: src/read-linear.c:1410
 #, c-format
 msgid "All sectors successfully read, but wrong image length (%<PRId64> sectors difference)"
 msgstr ""
 
-#: src/read-linear.c:1411
+#: src/read-linear.c:1416
 msgid "All sectors successfully read, but wrong ecc md5sum."
 msgstr ""
 
-#: src/read-linear.c:1417
+#: src/read-linear.c:1422
 msgid "All sectors successfully read, but incomplete or damaged checksums."
 msgstr ""
 
-#: src/read-linear.c:1418
+#: src/read-linear.c:1423
 msgid "All sectors successfully read. Checksums match."
 msgstr ""
 
-#: src/read-linear.c:1420
+#: src/read-linear.c:1425
 msgid "All sectors successfully read."
 msgstr "Tutti i settori sono stati letti correttamente."
 
-#: src/read-linear.c:1425
+#: src/read-linear.c:1430
 #, c-format
 msgid "%<PRId64> unreadable sectors."
 msgstr "%<PRId64> settori illeggibili."
 
-#: src/read-linear.c:1428
+#: src/read-linear.c:1433
 #, c-format
 msgid "%<PRId64> CRC errors and a md5sum mismatch in the CRC section."
 msgstr ""
 
-#: src/read-linear.c:1430
+#: src/read-linear.c:1435
 #, c-format
 msgid "%<PRId64> CRC errors."
 msgstr "%<PRId64> errori CRC."
 
-#: src/read-linear.c:1432
+#: src/read-linear.c:1437
 #, c-format
 msgid "%<PRId64> CRC errors, %<PRId64> unreadable sectors."
 msgstr "%<PRId64> errori CRC, %<PRId64> settori illeggibili."
 
-#: src/read-linear.c:1441
+#: src/read-linear.c:1446
 msgid "Scanning finished: "
 msgstr "Scansione terminata:"
 
-#: src/read-linear.c:1443
+#: src/read-linear.c:1448
 msgid "Reading finished: "
 msgstr "Lettura terminata:"
 
-#: src/read-linear.c:1457
+#: src/read-linear.c:1462
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
@@ -3229,7 +3229,7 @@ msgstr ""
 "Questo è corretto se il disco è stato scritto in modalità TAO (track at once).\n"
 "L'imagine sarà aggiustata di conseguenza.Leggere il manuale per i dettagli.\n"
 
-#: src/read-linear.c:1464
+#: src/read-linear.c:1469
 #, c-format
 msgid ""
 "%d sectors missing at the end of the disc.\n"
