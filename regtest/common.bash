@@ -191,7 +191,7 @@ function run_regtest()
    local testeccopt=""
    local image_md5=""
    local ecc_md5=""
-   local pass="true"
+   local pass="false"
 
    local fail_on_bad=$(grep "FAIL_ON_BAD" $CONFIGFILE)
    fail_on_bad=$(echo $fail_on_bad | cut -d\  -f 2) 
@@ -264,14 +264,12 @@ function run_regtest()
                      vimdiff $REFLOG $NEWLOG
 
                      continue
-                  else
-                     pass="false"
                   fi
-                     break
+                  break
                done
-            else
-               pass="false"
             fi
+         else
+            pass="true"
          fi
       fi
    else  # gui mode
