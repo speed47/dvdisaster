@@ -1,5 +1,13 @@
 # dvdisaster changelog -*-text-*-
 
+0.79.6.patchlevel-9 27-06-2021 *UNOFFICIAL*
+- fix: using --strip in console without X server would segfault at program exit
+- enh: windows: hide useless background console
+- enh: linear read: log amount of correctly read sectors during a sesssion
+- enh: log window: use a bigger scrollback buffer
+- doc: regenerate codecs.pdf to get proper page numbers
+- chore: fix codec-specs Makefile
+
 0.79.6.patchlevel-8 22-02-2021 *UNOFFICIAL*
 - enh: gui: medium-info: add an 'exhaustive search' when not enabled in options
 - enh: gui: prefs: add a visual cue of tooltips
