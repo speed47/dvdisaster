@@ -1,0 +1,522 @@
+ca01afa400e2244fc4797cae542888d1
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+# *** OpenImageFromDevice(sim-cd) ***
+# InquireDevice returned: Simulated CD drive 1.00
+
+Device: sim-cd, Simulated CD drive 1.00
+# *** query_type(Simulated CD drive 1.00, 0) ***
+# *** get_configuration(Simulated CD drive 1.00) ***
+# 8 data len, 9 current
+-> profile 9: CD-R
+# trying READ DISC INFORMATION for size
+# size returned is 32
+# trying READ DISC INFORMATION for real info
+0000: 00 20 1e 00 00 00 00 00  00 00 00 00 00 00 00 00  . ...... ........ 
+0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ ........ 
+# status is 1e, disc type 0
+#CD: starting media probe
+#CD: querying size of READ TOC/PMA/ATIP (for TOC)
+#CD: size returned is 12
+#CD: querying real READ TOC/PMA/ATIP (for TOC)
+0000: 00 0a 00 00 00 14 00 00  00 00 00 00              ........ ....
+#CD: control is 0x14
+#CD: querying size of READ TOC/PMA/ATIP (for full TOC)
+# Warning: Realigning length from 26 to 24
+#CD: size returned is 24
+#CD: querying real READ TOC/PMA/ATIP (for full TOC)
+0000: 00 18 00 01 00 00 00 a0  00 00 00 00 00 00 00 00  ........ ........ 
+0010: 00 00 00 00 00 00 00 00                           ........ 
+#CD: 1 sessions
+#CD: CD medium detected, type: CD-R mode 1
+# query_type() returned.
+# deciding reading strategy...
+Using READ CD.
+GetImageFingerprint(16): read & cached
+
+ExamineUDF(Device: Simulated CD drive 1.00)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 21000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+# *** read_capacity(Simulated CD drive 1.00) ***
+ -> 24989
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: medium sim-cd
+try_sector: trying sector 21000
+try_sector: no cookie, skipping current modulo
+try_sector: trying sector 20850
+try_sector: no cookie, skipping current modulo
+RS02Recognize: quick RS02 search, attempting up to 3 sector reads max
+Medium rewriteable: FALSE
+FindHeaderInMedium: Trying modulo 4611686018427387904
+FindHeaderInMedium: Trying modulo 2305843009213693952
+FindHeaderInMedium: Trying modulo 1152921504606846976
+FindHeaderInMedium: Trying modulo 576460752303423488
+FindHeaderInMedium: Trying modulo 288230376151711744
+FindHeaderInMedium: Trying modulo 144115188075855872
+FindHeaderInMedium: Trying modulo 72057594037927936
+FindHeaderInMedium: Trying modulo 36028797018963968
+FindHeaderInMedium: Trying modulo 18014398509481984
+FindHeaderInMedium: Trying modulo 9007199254740992
+FindHeaderInMedium: Trying modulo 4503599627370496
+FindHeaderInMedium: Trying modulo 2251799813685248
+FindHeaderInMedium: Trying modulo 1125899906842624
+FindHeaderInMedium: Trying modulo 562949953421312
+FindHeaderInMedium: Trying modulo 281474976710656
+FindHeaderInMedium: Trying modulo 140737488355328
+FindHeaderInMedium: Trying modulo 70368744177664
+FindHeaderInMedium: Trying modulo 35184372088832
+FindHeaderInMedium: Trying modulo 17592186044416
+FindHeaderInMedium: Trying modulo 8796093022208
+FindHeaderInMedium: Trying modulo 4398046511104
+FindHeaderInMedium: Trying modulo 2199023255552
+FindHeaderInMedium: Trying modulo 1099511627776
+FindHeaderInMedium: Trying modulo 549755813888
+FindHeaderInMedium: Trying modulo 274877906944
+FindHeaderInMedium: Trying modulo 137438953472
+FindHeaderInMedium: Trying modulo 68719476736
+FindHeaderInMedium: Trying modulo 34359738368
+FindHeaderInMedium: Trying modulo 17179869184
+FindHeaderInMedium: Trying modulo 8589934592
+FindHeaderInMedium: Trying modulo 4294967296
+FindHeaderInMedium: Trying modulo 2147483648
+FindHeaderInMedium: Trying modulo 1073741824
+FindHeaderInMedium: Trying modulo 536870912
+FindHeaderInMedium: Trying modulo 268435456
+FindHeaderInMedium: Trying modulo 134217728
+FindHeaderInMedium: Trying modulo 67108864
+FindHeaderInMedium: Trying modulo 33554432
+FindHeaderInMedium: Trying modulo 16777216
+FindHeaderInMedium: Trying modulo 8388608
+FindHeaderInMedium: Trying modulo 4194304
+FindHeaderInMedium: Trying modulo 2097152
+FindHeaderInMedium: Trying modulo 1048576
+FindHeaderInMedium: Trying modulo 524288
+FindHeaderInMedium: Trying modulo 262144
+FindHeaderInMedium: Trying modulo 131072
+FindHeaderInMedium: Trying modulo 65536
+FindHeaderInMedium: Trying modulo 32768
+FindHeaderInMedium: Trying modulo 16384
+try_sector: trying sector 16384
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 8192
+try_sector: trying sector 24576
+try_sector: no cookie, skipping current modulo
+FindHeaderInMedium: Trying modulo 4096
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 2048
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 1024
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 512
+Sector 24576 cached; skipping modulo
+FindHeaderInMedium: Trying modulo 256
+try_sector: trying sector 24832
+try_sector: no cookie, skipping current modulo
+...trying RS03
+RS03RecognizeImage: medium sim-cd
+FindRS03HeaderInImage: medium sim-cd
+RS03RecognizeImage: No EH, entering exhaustive search
+Warning: image size set to 25000 for debugging!
+.. trying layer size 98
+Scanning layers for signatures.
+- layer slice 0
+RS03: try number = 1, reading sector 8232
+RS03: try number = 2, reading sector 8330
+RS03: try number = 3, reading sector 8428
+RS03: try number = 4, reading sector 8526
+RS03: try number = 5, reading sector 8624
+RS03: try number = 6, reading sector 8722
+RS03: try number = 7, reading sector 8820
+RS03: try number = 8, reading sector 8918
+RS03: try number = 9, reading sector 9016
+RS03: try number = 10, reading sector 9114
+RS03: try number = 11, reading sector 9212
+RS03: try number = 12, reading sector 9310
+RS03: try number = 13, reading sector 9408
+RS03: try number = 14, reading sector 9506
+RS03: try number = 15, reading sector 9604
+RS03: try number = 16, reading sector 9702
+RS03: try number = 17, reading sector 9800
+RS03: try number = 18, reading sector 9898
+RS03: try number = 19, reading sector 9996
+RS03: try number = 20, reading sector 10094
+RS03: try number = 21, reading sector 10192
+RS03: try number = 22, reading sector 10290
+RS03: try number = 23, reading sector 10388
+RS03: try number = 24, reading sector 10486
+RS03: try number = 25, reading sector 10584
+RS03: try number = 26, reading sector 10682
+RS03: try number = 27, reading sector 10780
+RS03: try number = 28, reading sector 10878
+RS03: try number = 29, reading sector 10976
+RS03: try number = 30, reading sector 11074
+RS03: try number = 31, reading sector 11172
+RS03: try number = 32, reading sector 11270
+RS03: try number = 33, reading sector 11368
+RS03: try number = 34, reading sector 11466
+RS03: try number = 35, reading sector 11564
+RS03: try number = 36, reading sector 11662
+RS03: try number = 37, reading sector 11760
+RS03: try number = 38, reading sector 11858
+RS03: try number = 39, reading sector 11956
+RS03: try number = 40, reading sector 12054
+RS03: try number = 41, reading sector 12152
+RS03: try number = 42, reading sector 12250
+RS03: try number = 43, reading sector 12348
+RS03: try number = 44, reading sector 12446
+RS03: try number = 45, reading sector 12544
+RS03: try number = 46, reading sector 12642
+RS03: try number = 47, reading sector 12740
+RS03: try number = 48, reading sector 12838
+RS03: try number = 49, reading sector 12936
+RS03: try number = 50, reading sector 13034
+RS03: try number = 51, reading sector 13132
+RS03: try number = 52, reading sector 13230
+RS03: try number = 53, reading sector 13328
+RS03: try number = 54, reading sector 13426
+RS03: try number = 55, reading sector 13524
+RS03: try number = 56, reading sector 13622
+RS03: try number = 57, reading sector 13720
+RS03: try number = 58, reading sector 13818
+RS03: try number = 59, reading sector 13916
+RS03: try number = 60, reading sector 14014
+RS03: try number = 61, reading sector 14112
+RS03: try number = 62, reading sector 14210
+RS03: try number = 63, reading sector 14308
+RS03: try number = 64, reading sector 14406
+RS03: try number = 65, reading sector 14504
+RS03: try number = 66, reading sector 14602
+RS03: try number = 67, reading sector 14700
+RS03: try number = 68, reading sector 14798
+RS03: try number = 69, reading sector 14896
+RS03: try number = 70, reading sector 14994
+RS03: try number = 71, reading sector 15092
+RS03: try number = 72, reading sector 15190
+RS03: try number = 73, reading sector 15288
+RS03: try number = 74, reading sector 15386
+RS03: try number = 75, reading sector 15484
+RS03: try number = 76, reading sector 15582
+RS03: try number = 77, reading sector 15680
+RS03: try number = 78, reading sector 15778
+RS03: try number = 79, reading sector 15876
+RS03: try number = 80, reading sector 15974
+RS03: try number = 81, reading sector 16072
+RS03: try number = 82, reading sector 16170
+RS03: try number = 83, reading sector 16268
+RS03: try number = 84, reading sector 16366
+RS03: try number = 85, reading sector 16464
+RS03: try number = 86, reading sector 16562
+RS03: try number = 87, reading sector 16660
+RS03: try number = 88, reading sector 16758
+RS03: try number = 89, reading sector 16856
+RS03: try number = 90, reading sector 16954
+RS03: try number = 91, reading sector 17052
+RS03: try number = 92, reading sector 17150
+RS03: try number = 93, reading sector 17248
+RS03: try number = 94, reading sector 17346
+RS03: try number = 95, reading sector 17444
+RS03: try number = 96, reading sector 17542
+RS03: try number = 97, reading sector 17640
+RS03: try number = 98, reading sector 17738
+RS03: try number = 99, reading sector 17836
+RS03: try number = 100, reading sector 17934
+RS03: try number = 101, reading sector 18032
+RS03: try number = 102, reading sector 18130
+RS03: try number = 103, reading sector 18228
+RS03: try number = 104, reading sector 18326
+RS03: try number = 105, reading sector 18424
+RS03: try number = 106, reading sector 18522
+RS03: try number = 107, reading sector 18620
+RS03: try number = 108, reading sector 18718
+RS03: try number = 109, reading sector 18816
+RS03: try number = 110, reading sector 18914
+RS03: try number = 111, reading sector 19012
+RS03: try number = 112, reading sector 19110
+RS03: try number = 113, reading sector 19208
+RS03: try number = 114, reading sector 19306
+RS03: try number = 115, reading sector 19404
+RS03: try number = 116, reading sector 19502
+RS03: try number = 117, reading sector 19600
+RS03: try number = 118, reading sector 19698
+RS03: try number = 119, reading sector 19796
+RS03: try number = 120, reading sector 19894
+RS03: try number = 121, reading sector 19992
+RS03: try number = 122, reading sector 20090
+RS03: try number = 123, reading sector 20188
+RS03: try number = 124, reading sector 20286
+RS03: try number = 125, reading sector 20384
+RS03: try number = 126, reading sector 20482
+RS03: try number = 127, reading sector 20580
+RS03: try number = 128, reading sector 20678
+RS03: try number = 129, reading sector 20776
+RS03: try number = 130, reading sector 20874
+RS03: try number = 131, reading sector 20972
+RS03: try number = 132, reading sector 21070
+** Success: sector 21070, rediscovered format with 39 roots
+...augmented image found
+# Calling query_size()
+# *** query_size(Simulated CD drive 1.00) ***
+Medium size obtained from ECC header: 24990 sectors
+# returned: 24990 sectors
+Medium "Random Image": CD-R mode 1, 24990 sectors, Ecc, created 16-07-2006.
+
+Creating new rs03i-tmp.iso image.
+Reading CRC information from ecc data (RS03) ... Calculated layout for RS03 image:
+data sectors      = 21000
+data padding      = 68
+layer size        = 98
+total sectors     = 24990
+medium capacity   = 0
+header position   = 21000
+first CRC sector  = 21070
+first ECC sector  = 21168
+ndata             = 216
+nroots            = 39 (18.1%)
+
+done.
+* CRC error, sector: 21000
+Current sector: 22032. This session: NewSectorsReadOK=22032, ReadErrors=0, CRCErrors=1
+Current sector: 22048. This session: NewSectorsReadOK=22048, ReadErrors=0, CRCErrors=1
+Current sector: 22064. This session: NewSectorsReadOK=22064, ReadErrors=0, CRCErrors=1
+Current sector: 22080. This session: NewSectorsReadOK=22080, ReadErrors=0, CRCErrors=1
+Current sector: 22096. This session: NewSectorsReadOK=22096, ReadErrors=0, CRCErrors=1
+Current sector: 22112. This session: NewSectorsReadOK=22112, ReadErrors=0, CRCErrors=1
+Current sector: 22128. This session: NewSectorsReadOK=22128, ReadErrors=0, CRCErrors=1
+Current sector: 22144. This session: NewSectorsReadOK=22144, ReadErrors=0, CRCErrors=1
+Current sector: 22160. This session: NewSectorsReadOK=22160, ReadErrors=0, CRCErrors=1
+Current sector: 22176. This session: NewSectorsReadOK=22176, ReadErrors=0, CRCErrors=1
+Current sector: 22192. This session: NewSectorsReadOK=22192, ReadErrors=0, CRCErrors=1
+Current sector: 22208. This session: NewSectorsReadOK=22208, ReadErrors=0, CRCErrors=1
+Current sector: 22224. This session: NewSectorsReadOK=22224, ReadErrors=0, CRCErrors=1
+Current sector: 22240. This session: NewSectorsReadOK=22240, ReadErrors=0, CRCErrors=1
+Current sector: 22256. This session: NewSectorsReadOK=22256, ReadErrors=0, CRCErrors=1
+Current sector: 22272. This session: NewSectorsReadOK=22272, ReadErrors=0, CRCErrors=1
+Current sector: 22288. This session: NewSectorsReadOK=22288, ReadErrors=0, CRCErrors=1
+Current sector: 22304. This session: NewSectorsReadOK=22304, ReadErrors=0, CRCErrors=1
+Current sector: 22320. This session: NewSectorsReadOK=22320, ReadErrors=0, CRCErrors=1
+Current sector: 22336. This session: NewSectorsReadOK=22336, ReadErrors=0, CRCErrors=1
+Current sector: 22352. This session: NewSectorsReadOK=22352, ReadErrors=0, CRCErrors=1
+Current sector: 22368. This session: NewSectorsReadOK=22368, ReadErrors=0, CRCErrors=1
+Current sector: 22384. This session: NewSectorsReadOK=22384, ReadErrors=0, CRCErrors=1
+Current sector: 22400. This session: NewSectorsReadOK=22400, ReadErrors=0, CRCErrors=1
+Current sector: 22416. This session: NewSectorsReadOK=22416, ReadErrors=0, CRCErrors=1
+Current sector: 22432. This session: NewSectorsReadOK=22432, ReadErrors=0, CRCErrors=1
+Current sector: 22448. This session: NewSectorsReadOK=22448, ReadErrors=0, CRCErrors=1
+Current sector: 22464. This session: NewSectorsReadOK=22464, ReadErrors=0, CRCErrors=1
+Current sector: 22480. This session: NewSectorsReadOK=22480, ReadErrors=0, CRCErrors=1
+Current sector: 22496. This session: NewSectorsReadOK=22496, ReadErrors=0, CRCErrors=1
+Current sector: 22512. This session: NewSectorsReadOK=22512, ReadErrors=0, CRCErrors=1
+Current sector: 22528. This session: NewSectorsReadOK=22528, ReadErrors=0, CRCErrors=1
+Current sector: 22544. This session: NewSectorsReadOK=22544, ReadErrors=0, CRCErrors=1
+Current sector: 22560. This session: NewSectorsReadOK=22560, ReadErrors=0, CRCErrors=1
+Current sector: 22576. This session: NewSectorsReadOK=22576, ReadErrors=0, CRCErrors=1
+Current sector: 22592. This session: NewSectorsReadOK=22592, ReadErrors=0, CRCErrors=1
+Current sector: 22608. This session: NewSectorsReadOK=22608, ReadErrors=0, CRCErrors=1
+Current sector: 22624. This session: NewSectorsReadOK=22624, ReadErrors=0, CRCErrors=1
+Current sector: 22640. This session: NewSectorsReadOK=22640, ReadErrors=0, CRCErrors=1
+Current sector: 22656. This session: NewSectorsReadOK=22656, ReadErrors=0, CRCErrors=1
+Current sector: 22672. This session: NewSectorsReadOK=22672, ReadErrors=0, CRCErrors=1
+Current sector: 22688. This session: NewSectorsReadOK=22688, ReadErrors=0, CRCErrors=1
+Current sector: 22704. This session: NewSectorsReadOK=22704, ReadErrors=0, CRCErrors=1
+Current sector: 22720. This session: NewSectorsReadOK=22720, ReadErrors=0, CRCErrors=1
+Current sector: 22736. This session: NewSectorsReadOK=22736, ReadErrors=0, CRCErrors=1
+Current sector: 22752. This session: NewSectorsReadOK=22752, ReadErrors=0, CRCErrors=1
+Current sector: 22768. This session: NewSectorsReadOK=22768, ReadErrors=0, CRCErrors=1
+Current sector: 22784. This session: NewSectorsReadOK=22784, ReadErrors=0, CRCErrors=1
+Current sector: 22800. This session: NewSectorsReadOK=22800, ReadErrors=0, CRCErrors=1
+Current sector: 22816. This session: NewSectorsReadOK=22816, ReadErrors=0, CRCErrors=1
+Current sector: 22832. This session: NewSectorsReadOK=22832, ReadErrors=0, CRCErrors=1
+Current sector: 22848. This session: NewSectorsReadOK=22848, ReadErrors=0, CRCErrors=1
+Current sector: 22864. This session: NewSectorsReadOK=22864, ReadErrors=0, CRCErrors=1
+Current sector: 22880. This session: NewSectorsReadOK=22880, ReadErrors=0, CRCErrors=1
+Current sector: 22896. This session: NewSectorsReadOK=22896, ReadErrors=0, CRCErrors=1
+Current sector: 22912. This session: NewSectorsReadOK=22912, ReadErrors=0, CRCErrors=1
+Current sector: 22928. This session: NewSectorsReadOK=22928, ReadErrors=0, CRCErrors=1
+Current sector: 22944. This session: NewSectorsReadOK=22944, ReadErrors=0, CRCErrors=1
+Current sector: 22960. This session: NewSectorsReadOK=22960, ReadErrors=0, CRCErrors=1
+Current sector: 22976. This session: NewSectorsReadOK=22976, ReadErrors=0, CRCErrors=1
+Current sector: 22992. This session: NewSectorsReadOK=22992, ReadErrors=0, CRCErrors=1
+Current sector: 23008. This session: NewSectorsReadOK=23008, ReadErrors=0, CRCErrors=1
+Current sector: 23024. This session: NewSectorsReadOK=23024, ReadErrors=0, CRCErrors=1
+Current sector: 23040. This session: NewSectorsReadOK=23040, ReadErrors=0, CRCErrors=1
+Current sector: 23056. This session: NewSectorsReadOK=23056, ReadErrors=0, CRCErrors=1
+Current sector: 23072. This session: NewSectorsReadOK=23072, ReadErrors=0, CRCErrors=1
+Current sector: 23088. This session: NewSectorsReadOK=23088, ReadErrors=0, CRCErrors=1
+Current sector: 23104. This session: NewSectorsReadOK=23104, ReadErrors=0, CRCErrors=1
+Current sector: 23120. This session: NewSectorsReadOK=23120, ReadErrors=0, CRCErrors=1
+Current sector: 23136. This session: NewSectorsReadOK=23136, ReadErrors=0, CRCErrors=1
+Current sector: 23152. This session: NewSectorsReadOK=23152, ReadErrors=0, CRCErrors=1
+Current sector: 23168. This session: NewSectorsReadOK=23168, ReadErrors=0, CRCErrors=1
+Current sector: 23184. This session: NewSectorsReadOK=23184, ReadErrors=0, CRCErrors=1
+Current sector: 23200. This session: NewSectorsReadOK=23200, ReadErrors=0, CRCErrors=1
+Current sector: 23216. This session: NewSectorsReadOK=23216, ReadErrors=0, CRCErrors=1
+Current sector: 23232. This session: NewSectorsReadOK=23232, ReadErrors=0, CRCErrors=1
+Current sector: 23248. This session: NewSectorsReadOK=23248, ReadErrors=0, CRCErrors=1
+Current sector: 23264. This session: NewSectorsReadOK=23264, ReadErrors=0, CRCErrors=1
+Current sector: 23280. This session: NewSectorsReadOK=23280, ReadErrors=0, CRCErrors=1
+Current sector: 23296. This session: NewSectorsReadOK=23296, ReadErrors=0, CRCErrors=1
+Current sector: 23312. This session: NewSectorsReadOK=23312, ReadErrors=0, CRCErrors=1
+Current sector: 23328. This session: NewSectorsReadOK=23328, ReadErrors=0, CRCErrors=1
+Current sector: 23344. This session: NewSectorsReadOK=23344, ReadErrors=0, CRCErrors=1
+Current sector: 23360. This session: NewSectorsReadOK=23360, ReadErrors=0, CRCErrors=1
+Current sector: 23376. This session: NewSectorsReadOK=23376, ReadErrors=0, CRCErrors=1
+Current sector: 23392. This session: NewSectorsReadOK=23392, ReadErrors=0, CRCErrors=1
+Current sector: 23408. This session: NewSectorsReadOK=23408, ReadErrors=0, CRCErrors=1
+Current sector: 23424. This session: NewSectorsReadOK=23424, ReadErrors=0, CRCErrors=1
+Current sector: 23440. This session: NewSectorsReadOK=23440, ReadErrors=0, CRCErrors=1
+Current sector: 23456. This session: NewSectorsReadOK=23456, ReadErrors=0, CRCErrors=1
+Current sector: 23472. This session: NewSectorsReadOK=23472, ReadErrors=0, CRCErrors=1
+Current sector: 23488. This session: NewSectorsReadOK=23488, ReadErrors=0, CRCErrors=1
+Current sector: 23504. This session: NewSectorsReadOK=23504, ReadErrors=0, CRCErrors=1
+Current sector: 23520. This session: NewSectorsReadOK=23520, ReadErrors=0, CRCErrors=1
+Current sector: 23536. This session: NewSectorsReadOK=23536, ReadErrors=0, CRCErrors=1
+Current sector: 23552. This session: NewSectorsReadOK=23552, ReadErrors=0, CRCErrors=1
+Current sector: 23568. This session: NewSectorsReadOK=23568, ReadErrors=0, CRCErrors=1
+Current sector: 23584. This session: NewSectorsReadOK=23584, ReadErrors=0, CRCErrors=1
+Current sector: 23600. This session: NewSectorsReadOK=23600, ReadErrors=0, CRCErrors=1
+Current sector: 23616. This session: NewSectorsReadOK=23616, ReadErrors=0, CRCErrors=1
+Current sector: 23632. This session: NewSectorsReadOK=23632, ReadErrors=0, CRCErrors=1
+Current sector: 23648. This session: NewSectorsReadOK=23648, ReadErrors=0, CRCErrors=1
+Current sector: 23664. This session: NewSectorsReadOK=23664, ReadErrors=0, CRCErrors=1
+Current sector: 23680. This session: NewSectorsReadOK=23680, ReadErrors=0, CRCErrors=1
+Current sector: 23696. This session: NewSectorsReadOK=23696, ReadErrors=0, CRCErrors=1
+Current sector: 23712. This session: NewSectorsReadOK=23712, ReadErrors=0, CRCErrors=1
+Current sector: 23728. This session: NewSectorsReadOK=23728, ReadErrors=0, CRCErrors=1
+Current sector: 23744. This session: NewSectorsReadOK=23744, ReadErrors=0, CRCErrors=1
+Current sector: 23760. This session: NewSectorsReadOK=23760, ReadErrors=0, CRCErrors=1
+Current sector: 23776. This session: NewSectorsReadOK=23776, ReadErrors=0, CRCErrors=1
+Current sector: 23792. This session: NewSectorsReadOK=23792, ReadErrors=0, CRCErrors=1
+Current sector: 23808. This session: NewSectorsReadOK=23808, ReadErrors=0, CRCErrors=1
+Current sector: 23824. This session: NewSectorsReadOK=23824, ReadErrors=0, CRCErrors=1
+Current sector: 23840. This session: NewSectorsReadOK=23840, ReadErrors=0, CRCErrors=1
+Current sector: 23856. This session: NewSectorsReadOK=23856, ReadErrors=0, CRCErrors=1
+Current sector: 23872. This session: NewSectorsReadOK=23872, ReadErrors=0, CRCErrors=1
+Current sector: 23888. This session: NewSectorsReadOK=23888, ReadErrors=0, CRCErrors=1
+Current sector: 23904. This session: NewSectorsReadOK=23904, ReadErrors=0, CRCErrors=1
+Current sector: 23920. This session: NewSectorsReadOK=23920, ReadErrors=0, CRCErrors=1
+Current sector: 23936. This session: NewSectorsReadOK=23936, ReadErrors=0, CRCErrors=1
+Current sector: 23952. This session: NewSectorsReadOK=23952, ReadErrors=0, CRCErrors=1
+Current sector: 23968. This session: NewSectorsReadOK=23968, ReadErrors=0, CRCErrors=1
+Current sector: 23984. This session: NewSectorsReadOK=23984, ReadErrors=0, CRCErrors=1
+Current sector: 24000. This session: NewSectorsReadOK=24000, ReadErrors=0, CRCErrors=1
+Current sector: 24016. This session: NewSectorsReadOK=24016, ReadErrors=0, CRCErrors=1
+Current sector: 24032. This session: NewSectorsReadOK=24032, ReadErrors=0, CRCErrors=1
+Current sector: 24048. This session: NewSectorsReadOK=24048, ReadErrors=0, CRCErrors=1
+Current sector: 24064. This session: NewSectorsReadOK=24064, ReadErrors=0, CRCErrors=1
+Current sector: 24080. This session: NewSectorsReadOK=24080, ReadErrors=0, CRCErrors=1
+Current sector: 24096. This session: NewSectorsReadOK=24096, ReadErrors=0, CRCErrors=1
+Current sector: 24112. This session: NewSectorsReadOK=24112, ReadErrors=0, CRCErrors=1
+Current sector: 24128. This session: NewSectorsReadOK=24128, ReadErrors=0, CRCErrors=1
+Current sector: 24144. This session: NewSectorsReadOK=24144, ReadErrors=0, CRCErrors=1
+Current sector: 24160. This session: NewSectorsReadOK=24160, ReadErrors=0, CRCErrors=1
+Current sector: 24176. This session: NewSectorsReadOK=24176, ReadErrors=0, CRCErrors=1
+Current sector: 24192. This session: NewSectorsReadOK=24192, ReadErrors=0, CRCErrors=1
+Current sector: 24208. This session: NewSectorsReadOK=24208, ReadErrors=0, CRCErrors=1
+Current sector: 24224. This session: NewSectorsReadOK=24224, ReadErrors=0, CRCErrors=1
+Current sector: 24240. This session: NewSectorsReadOK=24240, ReadErrors=0, CRCErrors=1
+Current sector: 24256. This session: NewSectorsReadOK=24256, ReadErrors=0, CRCErrors=1
+Current sector: 24272. This session: NewSectorsReadOK=24272, ReadErrors=0, CRCErrors=1
+Current sector: 24288. This session: NewSectorsReadOK=24288, ReadErrors=0, CRCErrors=1
+Current sector: 24304. This session: NewSectorsReadOK=24304, ReadErrors=0, CRCErrors=1
+Current sector: 24320. This session: NewSectorsReadOK=24320, ReadErrors=0, CRCErrors=1
+Current sector: 24336. This session: NewSectorsReadOK=24336, ReadErrors=0, CRCErrors=1
+Current sector: 24352. This session: NewSectorsReadOK=24352, ReadErrors=0, CRCErrors=1
+Current sector: 24368. This session: NewSectorsReadOK=24368, ReadErrors=0, CRCErrors=1
+Current sector: 24384. This session: NewSectorsReadOK=24384, ReadErrors=0, CRCErrors=1
+Current sector: 24400. This session: NewSectorsReadOK=24400, ReadErrors=0, CRCErrors=1
+Current sector: 24416. This session: NewSectorsReadOK=24416, ReadErrors=0, CRCErrors=1
+Current sector: 24432. This session: NewSectorsReadOK=24432, ReadErrors=0, CRCErrors=1
+Current sector: 24448. This session: NewSectorsReadOK=24448, ReadErrors=0, CRCErrors=1
+Current sector: 24464. This session: NewSectorsReadOK=24464, ReadErrors=0, CRCErrors=1
+Current sector: 24480. This session: NewSectorsReadOK=24480, ReadErrors=0, CRCErrors=1
+Current sector: 24496. This session: NewSectorsReadOK=24496, ReadErrors=0, CRCErrors=1
+Current sector: 24512. This session: NewSectorsReadOK=24512, ReadErrors=0, CRCErrors=1
+Current sector: 24528. This session: NewSectorsReadOK=24528, ReadErrors=0, CRCErrors=1
+Current sector: 24544. This session: NewSectorsReadOK=24544, ReadErrors=0, CRCErrors=1
+Current sector: 24560. This session: NewSectorsReadOK=24560, ReadErrors=0, CRCErrors=1
+Current sector: 24576. This session: NewSectorsReadOK=24576, ReadErrors=0, CRCErrors=1
+Current sector: 24592. This session: NewSectorsReadOK=24592, ReadErrors=0, CRCErrors=1
+Current sector: 24608. This session: NewSectorsReadOK=24608, ReadErrors=0, CRCErrors=1
+Current sector: 24624. This session: NewSectorsReadOK=24624, ReadErrors=0, CRCErrors=1
+Current sector: 24640. This session: NewSectorsReadOK=24640, ReadErrors=0, CRCErrors=1
+Current sector: 24656. This session: NewSectorsReadOK=24656, ReadErrors=0, CRCErrors=1
+Current sector: 24672. This session: NewSectorsReadOK=24672, ReadErrors=0, CRCErrors=1
+Current sector: 24688. This session: NewSectorsReadOK=24688, ReadErrors=0, CRCErrors=1
+Current sector: 24704. This session: NewSectorsReadOK=24704, ReadErrors=0, CRCErrors=1
+Current sector: 24720. This session: NewSectorsReadOK=24720, ReadErrors=0, CRCErrors=1
+Current sector: 24736. This session: NewSectorsReadOK=24736, ReadErrors=0, CRCErrors=1
+Current sector: 24752. This session: NewSectorsReadOK=24752, ReadErrors=0, CRCErrors=1
+Current sector: 24768. This session: NewSectorsReadOK=24768, ReadErrors=0, CRCErrors=1
+Current sector: 24784. This session: NewSectorsReadOK=24784, ReadErrors=0, CRCErrors=1
+Current sector: 24800. This session: NewSectorsReadOK=24800, ReadErrors=0, CRCErrors=1
+Current sector: 24816. This session: NewSectorsReadOK=24816, ReadErrors=0, CRCErrors=1
+Current sector: 24832. This session: NewSectorsReadOK=24832, ReadErrors=0, CRCErrors=1
+Current sector: 24848. This session: NewSectorsReadOK=24848, ReadErrors=0, CRCErrors=1
+Current sector: 24864. This session: NewSectorsReadOK=24864, ReadErrors=0, CRCErrors=1
+Current sector: 24880. This session: NewSectorsReadOK=24880, ReadErrors=0, CRCErrors=1
+Current sector: 24896. This session: NewSectorsReadOK=24896, ReadErrors=0, CRCErrors=1
+Current sector: 24912. This session: NewSectorsReadOK=24912, ReadErrors=0, CRCErrors=1
+Current sector: 24928. This session: NewSectorsReadOK=24928, ReadErrors=0, CRCErrors=1
+Current sector: 24944. This session: NewSectorsReadOK=24944, ReadErrors=0, CRCErrors=1
+Current sector: 24960. This session: NewSectorsReadOK=24960, ReadErrors=0, CRCErrors=1
+Current sector: 24976. This session: NewSectorsReadOK=24976, ReadErrors=0, CRCErrors=1
+Current sector: 24977. This session: NewSectorsReadOK=24977, ReadErrors=0, CRCErrors=1
+Current sector: 24978. This session: NewSectorsReadOK=24978, ReadErrors=0, CRCErrors=1
+Current sector: 24979. This session: NewSectorsReadOK=24979, ReadErrors=0, CRCErrors=1
+Current sector: 24980. This session: NewSectorsReadOK=24980, ReadErrors=0, CRCErrors=1
+Current sector: 24981. This session: NewSectorsReadOK=24981, ReadErrors=0, CRCErrors=1
+Current sector: 24982. This session: NewSectorsReadOK=24982, ReadErrors=0, CRCErrors=1
+Current sector: 24983. This session: NewSectorsReadOK=24983, ReadErrors=0, CRCErrors=1
+Current sector: 24984. This session: NewSectorsReadOK=24984, ReadErrors=0, CRCErrors=1
+Current sector: 24985. This session: NewSectorsReadOK=24985, ReadErrors=0, CRCErrors=1
+Current sector: 24986. This session: NewSectorsReadOK=24986, ReadErrors=0, CRCErrors=1
+Current sector: 24987. This session: NewSectorsReadOK=24987, ReadErrors=0, CRCErrors=1
+Current sector: 24988. This session: NewSectorsReadOK=24988, ReadErrors=0, CRCErrors=1
+Current sector: 24989. This session: NewSectorsReadOK=24989, ReadErrors=0, CRCErrors=1
+Current sector: 24990. This session: NewSectorsReadOK=24990, ReadErrors=0, CRCErrors=1
+
+1 CRC errors.
+CrcBuf contents, image path none (medium):
+  crcSize: 24990, dataSectors: 21000, coveredSectors: 21070, allSectors: 24990
+  md5State: invalid
+  fp sector: 16; 15c0fd35a0cfa0f83b9ccbd8604c2592
+  missing crcs: 0
