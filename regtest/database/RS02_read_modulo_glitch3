@@ -116,34 +116,177 @@ Reading CRC information from ecc data (RS02) ... RS02LayoutFromImage(): returnin
 done.
 Sector 357520, try 1: Illegal Request; Logical block address out of range.
 Sector 357520: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357521. This session: NewSectorsReadOK=357520, ReadErrors=1
+Current sector: 357522. This session: NewSectorsReadOK=357520, ReadErrors=2
+Current sector: 357523. This session: NewSectorsReadOK=357520, ReadErrors=3
+Current sector: 357524. This session: NewSectorsReadOK=357520, ReadErrors=4
+Current sector: 357525. This session: NewSectorsReadOK=357520, ReadErrors=5
+Current sector: 357526. This session: NewSectorsReadOK=357520, ReadErrors=6
+Current sector: 357527. This session: NewSectorsReadOK=357520, ReadErrors=7
+Current sector: 357528. This session: NewSectorsReadOK=357520, ReadErrors=8
+Current sector: 357529. This session: NewSectorsReadOK=357520, ReadErrors=9
+Current sector: 357530. This session: NewSectorsReadOK=357520, ReadErrors=10
+Current sector: 357531. This session: NewSectorsReadOK=357520, ReadErrors=11
+Current sector: 357532. This session: NewSectorsReadOK=357520, ReadErrors=12
+Current sector: 357533. This session: NewSectorsReadOK=357520, ReadErrors=13
+Current sector: 357534. This session: NewSectorsReadOK=357520, ReadErrors=14
+Current sector: 357535. This session: NewSectorsReadOK=357520, ReadErrors=15
+Current sector: 357536. This session: NewSectorsReadOK=357520, ReadErrors=16
+Current sector: 357536. This session: NewSectorsReadOK=357520, ReadErrors=16
 Sector 357536, try 1: Illegal Request; Logical block address out of range.
 Sector 357536: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357537. This session: NewSectorsReadOK=357520, ReadErrors=17
+Current sector: 357538. This session: NewSectorsReadOK=357520, ReadErrors=18
+Current sector: 357539. This session: NewSectorsReadOK=357520, ReadErrors=19
+Current sector: 357540. This session: NewSectorsReadOK=357520, ReadErrors=20
+Current sector: 357541. This session: NewSectorsReadOK=357520, ReadErrors=21
+Current sector: 357542. This session: NewSectorsReadOK=357520, ReadErrors=22
+Current sector: 357543. This session: NewSectorsReadOK=357520, ReadErrors=23
+Current sector: 357544. This session: NewSectorsReadOK=357520, ReadErrors=24
+Current sector: 357545. This session: NewSectorsReadOK=357520, ReadErrors=25
+Current sector: 357546. This session: NewSectorsReadOK=357520, ReadErrors=26
+Current sector: 357547. This session: NewSectorsReadOK=357520, ReadErrors=27
+Current sector: 357548. This session: NewSectorsReadOK=357520, ReadErrors=28
+Current sector: 357549. This session: NewSectorsReadOK=357520, ReadErrors=29
+Current sector: 357550. This session: NewSectorsReadOK=357520, ReadErrors=30
+Current sector: 357551. This session: NewSectorsReadOK=357520, ReadErrors=31
+Current sector: 357552. This session: NewSectorsReadOK=357520, ReadErrors=32
+Current sector: 357552. This session: NewSectorsReadOK=357520, ReadErrors=32
 Sector 357552, try 1: Illegal Request; Logical block address out of range.
 Sector 357552: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357553. This session: NewSectorsReadOK=357520, ReadErrors=33
+Current sector: 357554. This session: NewSectorsReadOK=357520, ReadErrors=34
+Current sector: 357555. This session: NewSectorsReadOK=357520, ReadErrors=35
+Current sector: 357556. This session: NewSectorsReadOK=357520, ReadErrors=36
+Current sector: 357557. This session: NewSectorsReadOK=357520, ReadErrors=37
+Current sector: 357558. This session: NewSectorsReadOK=357520, ReadErrors=38
+Current sector: 357559. This session: NewSectorsReadOK=357520, ReadErrors=39
+Current sector: 357560. This session: NewSectorsReadOK=357520, ReadErrors=40
+Current sector: 357561. This session: NewSectorsReadOK=357520, ReadErrors=41
+Current sector: 357562. This session: NewSectorsReadOK=357520, ReadErrors=42
+Current sector: 357563. This session: NewSectorsReadOK=357520, ReadErrors=43
+Current sector: 357564. This session: NewSectorsReadOK=357520, ReadErrors=44
+Current sector: 357565. This session: NewSectorsReadOK=357520, ReadErrors=45
+Current sector: 357566. This session: NewSectorsReadOK=357520, ReadErrors=46
+Current sector: 357567. This session: NewSectorsReadOK=357520, ReadErrors=47
+Current sector: 357568. This session: NewSectorsReadOK=357520, ReadErrors=48
+Current sector: 357568. This session: NewSectorsReadOK=357520, ReadErrors=48
 Sector 357568, try 1: Illegal Request; Logical block address out of range.
 Sector 357568: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357569. This session: NewSectorsReadOK=357520, ReadErrors=49
+Current sector: 357570. This session: NewSectorsReadOK=357520, ReadErrors=50
+Current sector: 357571. This session: NewSectorsReadOK=357520, ReadErrors=51
+Current sector: 357572. This session: NewSectorsReadOK=357520, ReadErrors=52
+Current sector: 357573. This session: NewSectorsReadOK=357520, ReadErrors=53
+Current sector: 357574. This session: NewSectorsReadOK=357520, ReadErrors=54
+Current sector: 357575. This session: NewSectorsReadOK=357520, ReadErrors=55
+Current sector: 357576. This session: NewSectorsReadOK=357520, ReadErrors=56
+Current sector: 357577. This session: NewSectorsReadOK=357520, ReadErrors=57
+Current sector: 357578. This session: NewSectorsReadOK=357520, ReadErrors=58
+Current sector: 357579. This session: NewSectorsReadOK=357520, ReadErrors=59
+Current sector: 357580. This session: NewSectorsReadOK=357520, ReadErrors=60
+Current sector: 357581. This session: NewSectorsReadOK=357520, ReadErrors=61
+Current sector: 357582. This session: NewSectorsReadOK=357520, ReadErrors=62
+Current sector: 357583. This session: NewSectorsReadOK=357520, ReadErrors=63
+Current sector: 357584. This session: NewSectorsReadOK=357520, ReadErrors=64
+Current sector: 357584. This session: NewSectorsReadOK=357520, ReadErrors=64
 Sector 357584, try 1: Illegal Request; Logical block address out of range.
 Sector 357584: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357585. This session: NewSectorsReadOK=357520, ReadErrors=65
+Current sector: 357586. This session: NewSectorsReadOK=357520, ReadErrors=66
+Current sector: 357587. This session: NewSectorsReadOK=357520, ReadErrors=67
+Current sector: 357588. This session: NewSectorsReadOK=357520, ReadErrors=68
+Current sector: 357589. This session: NewSectorsReadOK=357520, ReadErrors=69
+Current sector: 357590. This session: NewSectorsReadOK=357520, ReadErrors=70
+Current sector: 357591. This session: NewSectorsReadOK=357520, ReadErrors=71
+Current sector: 357592. This session: NewSectorsReadOK=357520, ReadErrors=72
+Current sector: 357593. This session: NewSectorsReadOK=357520, ReadErrors=73
+Current sector: 357594. This session: NewSectorsReadOK=357520, ReadErrors=74
+Current sector: 357595. This session: NewSectorsReadOK=357520, ReadErrors=75
+Current sector: 357596. This session: NewSectorsReadOK=357520, ReadErrors=76
+Current sector: 357597. This session: NewSectorsReadOK=357520, ReadErrors=77
+Current sector: 357598. This session: NewSectorsReadOK=357520, ReadErrors=78
+Current sector: 357599. This session: NewSectorsReadOK=357520, ReadErrors=79
+Current sector: 357600. This session: NewSectorsReadOK=357520, ReadErrors=80
+Current sector: 357600. This session: NewSectorsReadOK=357520, ReadErrors=80
 Sector 357600, try 1: Illegal Request; Logical block address out of range.
 Sector 357600: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357601. This session: NewSectorsReadOK=357520, ReadErrors=81
+Current sector: 357602. This session: NewSectorsReadOK=357520, ReadErrors=82
+Current sector: 357603. This session: NewSectorsReadOK=357520, ReadErrors=83
+Current sector: 357604. This session: NewSectorsReadOK=357520, ReadErrors=84
+Current sector: 357605. This session: NewSectorsReadOK=357520, ReadErrors=85
+Current sector: 357606. This session: NewSectorsReadOK=357520, ReadErrors=86
+Current sector: 357607. This session: NewSectorsReadOK=357520, ReadErrors=87
+Current sector: 357608. This session: NewSectorsReadOK=357520, ReadErrors=88
+Current sector: 357609. This session: NewSectorsReadOK=357520, ReadErrors=89
+Current sector: 357610. This session: NewSectorsReadOK=357520, ReadErrors=90
+Current sector: 357611. This session: NewSectorsReadOK=357520, ReadErrors=91
+Current sector: 357612. This session: NewSectorsReadOK=357520, ReadErrors=92
+Current sector: 357613. This session: NewSectorsReadOK=357520, ReadErrors=93
+Current sector: 357614. This session: NewSectorsReadOK=357520, ReadErrors=94
+Current sector: 357615. This session: NewSectorsReadOK=357520, ReadErrors=95
+Current sector: 357616. This session: NewSectorsReadOK=357520, ReadErrors=96
+Current sector: 357616. This session: NewSectorsReadOK=357520, ReadErrors=96
 Sector 357616, try 1: Illegal Request; Logical block address out of range.
 Sector 357616: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357617. This session: NewSectorsReadOK=357520, ReadErrors=97
+Current sector: 357618. This session: NewSectorsReadOK=357520, ReadErrors=98
+Current sector: 357619. This session: NewSectorsReadOK=357520, ReadErrors=99
+Current sector: 357620. This session: NewSectorsReadOK=357520, ReadErrors=100
+Current sector: 357621. This session: NewSectorsReadOK=357520, ReadErrors=101
+Current sector: 357622. This session: NewSectorsReadOK=357520, ReadErrors=102
+Current sector: 357623. This session: NewSectorsReadOK=357520, ReadErrors=103
+Current sector: 357624. This session: NewSectorsReadOK=357520, ReadErrors=104
+Current sector: 357625. This session: NewSectorsReadOK=357520, ReadErrors=105
+Current sector: 357626. This session: NewSectorsReadOK=357520, ReadErrors=106
+Current sector: 357627. This session: NewSectorsReadOK=357520, ReadErrors=107
+Current sector: 357628. This session: NewSectorsReadOK=357520, ReadErrors=108
+Current sector: 357629. This session: NewSectorsReadOK=357520, ReadErrors=109
+Current sector: 357630. This session: NewSectorsReadOK=357520, ReadErrors=110
+Current sector: 357631. This session: NewSectorsReadOK=357520, ReadErrors=111
+Current sector: 357632. This session: NewSectorsReadOK=357520, ReadErrors=112
+Current sector: 357632. This session: NewSectorsReadOK=357520, ReadErrors=112
 Sector 357632, try 1: Illegal Request; Logical block address out of range.
 Sector 357632: Illegal Request; Logical block address out of range. Skipping 15 sectors.
+Current sector: 357633. This session: NewSectorsReadOK=357520, ReadErrors=113
+Current sector: 357634. This session: NewSectorsReadOK=357520, ReadErrors=114
+Current sector: 357635. This session: NewSectorsReadOK=357520, ReadErrors=115
+Current sector: 357636. This session: NewSectorsReadOK=357520, ReadErrors=116
+Current sector: 357637. This session: NewSectorsReadOK=357520, ReadErrors=117
+Current sector: 357638. This session: NewSectorsReadOK=357520, ReadErrors=118
+Current sector: 357639. This session: NewSectorsReadOK=357520, ReadErrors=119
+Current sector: 357640. This session: NewSectorsReadOK=357520, ReadErrors=120
+Current sector: 357641. This session: NewSectorsReadOK=357520, ReadErrors=121
+Current sector: 357642. This session: NewSectorsReadOK=357520, ReadErrors=122
+Current sector: 357643. This session: NewSectorsReadOK=357520, ReadErrors=123
+Current sector: 357644. This session: NewSectorsReadOK=357520, ReadErrors=124
+Current sector: 357645. This session: NewSectorsReadOK=357520, ReadErrors=125
+Current sector: 357646. This session: NewSectorsReadOK=357520, ReadErrors=126
+Current sector: 357647. This session: NewSectorsReadOK=357520, ReadErrors=127
+Current sector: 357648. This session: NewSectorsReadOK=357520, ReadErrors=128
+Current sector: 357648. This session: NewSectorsReadOK=357520, ReadErrors=128
 Sector 357648, try 1: Illegal Request; Logical block address out of range.
 Sector 357648: Illegal Request; Logical block address out of range.
+Current sector: 357649. This session: NewSectorsReadOK=357520, ReadErrors=129
 Sector 357649, try 1: Illegal Request; Logical block address out of range.
 Sector 357649: Illegal Request; Logical block address out of range.
+Current sector: 357650. This session: NewSectorsReadOK=357520, ReadErrors=130
 Sector 357650, try 1: Illegal Request; Logical block address out of range.
 Sector 357650: Illegal Request; Logical block address out of range.
+Current sector: 357651. This session: NewSectorsReadOK=357520, ReadErrors=131
 Sector 357651, try 1: Illegal Request; Logical block address out of range.
 Sector 357651: Illegal Request; Logical block address out of range.
+Current sector: 357652. This session: NewSectorsReadOK=357520, ReadErrors=132
 Sector 357652, try 1: Illegal Request; Logical block address out of range.
 Sector 357652: Illegal Request; Logical block address out of range.
+Current sector: 357653. This session: NewSectorsReadOK=357520, ReadErrors=133
 Sector 357653, try 1: Illegal Request; Logical block address out of range.
 Sector 357653: Illegal Request; Logical block address out of range.
+Current sector: 357654. This session: NewSectorsReadOK=357520, ReadErrors=134
 Sector 357654, try 1: Illegal Request; Logical block address out of range.
 Sector 357654: Illegal Request; Logical block address out of range.
+Current sector: 357655. This session: NewSectorsReadOK=357520, ReadErrors=135
 
 135 unreadable sectors.
 CrcBuf contents, image path none (medium):
