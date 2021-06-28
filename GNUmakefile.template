@@ -112,24 +112,28 @@ dvdisaster: $(ICONS) $(OFILES)
 	else $(MAKE) --no-print-directory -C locale; \
 	fi
 
-src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png icons/strip.png icons/open-ecc.png icons/open-img.png icons/cd.png icons/gtk-help.png icons/gtk-index.png icons/gtk-preferences.png icons/gtk-quit.png icons/gtk-stop.png
+# gdk-pixbuf-csource sometimes produces truncated output, so we have to ensure the output
+# is valid before appending it to inlined-icons.h:
+src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png icons/strip.png icons/open-ecc.png icons/open-img.png icons/cd.png icons/gtk-help.png icons/gtk-index.png icons/gtk-preferences.png icons/gtk-quit.png icons/gtk-stop.png icons/tooltip.png icons/nothing.png
 	@echo "Building:" src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_read            icons/read.png             >src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_create          icons/create.png          >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_scan            icons/scan.png            >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_fix             icons/fix.png             >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_verify          icons/verify.png          >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_strip           icons/strip.png           >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc        icons/open-ecc.png        >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_open_img        icons/open-img.png        >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_cd              icons/cd.png              >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help        icons/gtk-help.png        >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index       icons/gtk-index.png       >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit        icons/gtk-quit.png        >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop        icons/gtk-stop.png        >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_tooltip         icons/tooltip.png         >>src/inlined-icons.h
-	@gdk-pixbuf-csource --raw --name=dvdisaster_nothing         icons/nothing.png         >>src/inlined-icons.h
+	@rm -f src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_read            icons/read.png            >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_create          icons/create.png          >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_scan            icons/scan.png            >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_fix             icons/fix.png             >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_verify          icons/verify.png          >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_strip           icons/strip.png           >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc        icons/open-ecc.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_open_img        icons/open-img.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_cd              icons/cd.png              >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help        icons/gtk-help.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index       icons/gtk-index.png       >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit        icons/gtk-quit.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop        icons/gtk-stop.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_tooltip         icons/tooltip.png         >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@while gdk-pixbuf-csource --raw --name=dvdisaster_nothing         icons/nothing.png         >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
+	@rm -f src/.icons.tmp
 
 $(BUILDTMP)/help-dialogs.o: src/help-dialogs.c simple-md5sum
 	@if test -e fingerprints.md5; \
