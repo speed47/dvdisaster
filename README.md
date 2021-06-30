@@ -26,6 +26,8 @@ Please refer to the [CHANGELOG](CHANGELOG) for all the details.
 
 ## :twisted_rightwards_arrows: Choose between 3 protection modes ("codecs")
 
+For a more detailed explanation of the algorithms, please refer to the [codecs specification PDF](documentation/codecs.pdf).
+
 :one: **RS01** creates error correction files which are stored separately from the image they belong to.
 The artefact is an **ecc** file, which must be stored on another media than the one we're protecting.
 
@@ -65,18 +67,22 @@ See the [INSTALL](INSTALL) file. The [workflow file](.github/workflows/release.y
 
 # :camera: Screenshots
 
-### Scanning a damaged CD under Windows
+### Scanning a damaged CD under Windows:
 
-![dvdisaster_damaged_cd](https://user-images.githubusercontent.com/218502/91434313-edaaf880-e864-11ea-8e41-7b58a1e97a70.PNG)
+![dvdisaster_damaged_cd](https://user-images.githubusercontent.com/218502/123558682-e2cc3780-d797-11eb-8ad0-5247b2601656.PNG)
 
-### Scanning a healthy BD-R (single layer) with Linux GUI
+### Verifying the ECC correction data from the damaged image:
+
+![dvdisaster_cd_verify](https://user-images.githubusercontent.com/218502/123558696-f6779e00-d797-11eb-861b-1e6eb9d201b3.PNG)
+
+### Repairing the damaged image thanks to augmented data:
+
+![dvdisaster_cd_repair](https://user-images.githubusercontent.com/218502/123558704-fe374280-d797-11eb-8f93-cd41848777d0.PNG)
+
+### Verification of the image after correction:
+
+![dvdisaster_cd_verify_ok](https://user-images.githubusercontent.com/218502/123558712-04c5ba00-d798-11eb-884f-bfd5443f036c.PNG)
+
+### Scanning a healthy BD-R (single layer) with Linux GUI:
 
 ![dvdisaster_bdr_read](https://user-images.githubusercontent.com/218502/91436728-fbfb1380-e868-11ea-8444-04ebc60809d8.PNG)
-
-### Creating an RS03 error correction file with Linux GUI
-
-![dvdisaster_bdr_create](https://user-images.githubusercontent.com/218502/91436740-00273100-e869-11ea-837a-af0d0733fe87.PNG)
-
-### Verifying a BD-R image with Linux GUI
-
-![dvdisaster_bdr_verify](https://user-images.githubusercontent.com/218502/91436731-fc93aa00-e868-11ea-93e6-b8c277620df7.PNG)
