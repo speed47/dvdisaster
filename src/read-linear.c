@@ -651,10 +651,8 @@ static void show_progress(read_closure *rc)
 	    }
 
 	    if(Closure->fixedSpeedValues)
-	         PrintProgress(_("Read position: %3d.%1d%% (nn.nx)"),
-			       percent/10,percent%10);
-	    else PrintProgress(_("Read position: %3d.%1d%% (%4.1fx)"),
-			       percent/10,percent%10,rc->speed);
+	         PrintProgress(_("Read position: %3d.%1d%% (nn.nx), sector %" PRId64 "/%" PRId64 ", %" PRId64 " sectors read OK, %" PRId64 " read errors, %" PRId64 " crc errors"), percent/10, percent%10, rc->readPos, rc->image->dh->sectors, rc->readOK, Closure->readErrors, Closure->crcErrors);
+	    else PrintProgress(_("Read position: %3d.%1d%% (%4.1fx), sector %" PRId64 "/%" PRId64 ", %" PRId64 " sectors read OK, %" PRId64 " read errors, %" PRId64 " crc errors"), percent/10, percent%10, rc->speed, rc->readPos, rc->image->dh->sectors, rc->readOK, Closure->readErrors, Closure->crcErrors);
 	    
 	    rc->lastPercent    = percent;
 	    rc->lastSpeed      = rc->speed;
