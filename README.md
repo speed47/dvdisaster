@@ -67,7 +67,7 @@ See the [INSTALL](INSTALL) file. The [workflow file](.github/workflows/release.y
 
 # :camera: Screenshots
 
-### Scanning a damaged CD under Windows:
+### Reading a damaged CD under Windows:
 
 ![dvdisaster_damaged_cd](https://user-images.githubusercontent.com/218502/123558682-e2cc3780-d797-11eb-8ad0-5247b2601656.PNG)
 
@@ -83,6 +83,8 @@ See the [INSTALL](INSTALL) file. The [workflow file](.github/workflows/release.y
 
 ![dvdisaster_cd_verify_ok](https://user-images.githubusercontent.com/218502/123558712-04c5ba00-d798-11eb-884f-bfd5443f036c.PNG)
 
-### Scanning a healthy BD-R (single layer) with Linux GUI:
+### Reading a quad-layer multi-session BDXL with Linux GUI:
 
-![dvdisaster_bdr_read](https://user-images.githubusercontent.com/218502/91436728-fbfb1380-e868-11ea-8444-04ebc60809d8.PNG)
+![dvdisaster_bdxl_read](https://user-images.githubusercontent.com/218502/124361434-8baee280-dc2f-11eb-892e-27a9e738b41c.png)
+
+Note that the disc still has some room for more sessions (capacity is 128 GB).
