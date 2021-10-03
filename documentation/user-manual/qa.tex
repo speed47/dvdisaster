@@ -359,6 +359,18 @@ Usable media by type:
   You are welcome, of course, to provide an unoffical translation of the
   project documentation on your own webspace and at your own discretion. }
 
+ \qa{There are problems opening this manual from dvdisaster\label{qa-manual}}
+{dvdisaster uses {\tt xdg-open} for bringing up the PDF viewer. {\tt xdg-open} keeps a record of file types and applications capable of displaying them. However on some systems, {\tt xdg-open} is either not configured properly for viewing PDF, or misconfigured to use inappropriate programs like {\em Gimp}.
+
+  \smallskip
+
+  \paragraph{Remedy.} Configure {\tt xdg-open} properly. Usually the configuration is found in the ``settings'' menu of your desktop. As an alternative, use the command line to configure it for {\em xpdf}:
+
+ \smallskip
+  
+  {\tt  xdg-mime default xpdf.desktop application/pdf}}
+
+
 %\newpage
 
 \subsection{Error messages}

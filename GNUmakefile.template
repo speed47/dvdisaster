@@ -75,11 +75,11 @@ SYS_OPTIONS  = $(CFG_SYS_OPTIONS)
 SYS_NAME     = $(CFG_SYS_NAME)
 HAVE_OPTIONS = $(CFG_HAVE_OPTIONS)
 WITH_OPTIONS = $(CFG_WITH_OPTIONS)
-OTHER_OPTIONS = $(CFG_OTHER_OPTIONS) -DVERSION=\"$(VERSION)\"
+OTHER_OPTIONS = $(CFG_OTHER_OPTIONS) -DVERSION="\"$(VERSION)\""
 SSE2_OPTIONS = $(CFG_SSE2_OPTIONS)
 ALTIVEC_OPTIONS = $(CFG_ALTIVEC_OPTIONS)
 
-LOCATIONS = -DSRCDIR=\"$(SRCDIR)\" -DBINDIR=\"$(BINDIR)\" -DDOCDIR=\"$(DOCSUBDIR)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
+LOCATIONS = -DSRCDIR="\"$(SRCDIR)\"" -DBINDIR="\"$(BINDIR)\"" -DDOCDIR="\"$(DOCSUBDIR)\"" -DLOCALEDIR="\"$(LOCALEDIR)\""
 COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(SYS_NAME) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS) $(MUDFLAP_CFLAGS)
 LOPTS = $(LDFLAGS) $(INTL_LFLAGS) $(CAM_LFLAGS) $(EFENCE_LFLAGS) $(MUDFLAP_LFLAGS)
 
@@ -277,55 +277,67 @@ show:
 
 install: dvdisaster manual
 	@echo "Installing package..."
-	install -d $(BUILDROOT)$(BINDIR)
-	install dvdisaster $(BUILDROOT)$(BINDIR)
-	install -d $(BUILDROOT)$(DOCSUBDIR)
-	install -m 644 CHANGELOG $(BUILDROOT)$(DOCSUBDIR)
-	install -m 644 COPYING $(BUILDROOT)$(DOCSUBDIR)
-	install -m 644 CREDITS* $(BUILDROOT)$(DOCSUBDIR)
-	install -m 644 TODO $(BUILDROOT)$(DOCSUBDIR)
-	install -d $(BUILDROOT)$(DOCSUBDIR)
-	(cd documentation/user-manual; install -m 644 manual.pdf $(BUILDROOT)$(DOCSUBDIR))
-	install -d $(BUILDROOT)$(MANDIR)/man1
-	install -d $(BUILDROOT)$(MANDIR)/de/man1
+	install -d "$(BUILDROOT)$(BINDIR)"
+	install dvdisaster "$(BUILDROOT)$(BINDIR)"
+	install -d "$(BUILDROOT)$(DOCSUBDIR)"
+	install -m 644 CHANGELOG "$(BUILDROOT)$(DOCSUBDIR)"
+	install -m 644 COPYING "$(BUILDROOT)$(DOCSUBDIR)"
+	install -m 644 CREDITS* "$(BUILDROOT)$(DOCSUBDIR)"
+	install -m 644 TODO "$(BUILDROOT)$(DOCSUBDIR)"
+	install -d "$(BUILDROOT)$(DOCSUBDIR)"
+	(cd documentation/user-manual; install -m 644 manual.pdf "$(BUILDROOT)$(DOCSUBDIR)")
+	install -d "$(BUILDROOT)$(MANDIR)/man1"
+	install -d "$(BUILDROOT)$(MANDIR)/de/man1"
 	cd documentation; \
 	  ESCAPED_DOCSUBDIR=`echo $(DOCSUBDIR) | sed -e 's/\//\\\\\//g'`; \
 	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.en.1 >dvdisaster.updated; \
-	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/man1/dvdisaster.1; \
+	  install -m 644 dvdisaster.updated "$(BUILDROOT)$(MANDIR)/man1/dvdisaster.1"; \
 	  sed "s/%docdir%/$$ESCAPED_DOCSUBDIR/" <dvdisaster.de.1 >dvdisaster.updated; \
-	  install -m 644 dvdisaster.updated $(BUILDROOT)$(MANDIR)/de/man1/dvdisaster.1; \
+	  install -m 644 dvdisaster.updated "$(BUILDROOT)$(MANDIR)/de/man1/dvdisaster.1"; \
 	  rm dvdisaster.updated
 	if echo $(WITH_OPTIONS) | grep "NLS_YES" >/dev/null; then \
 	  cd locale; \
 	  for i in ?? ??_??; do\
-	    install -d $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
-	    install -m 644 $$i/LC_MESSAGES/dvdisaster.mo $(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES; \
+	    install -d "$(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES"; \
+	    install -m 644 $$i/LC_MESSAGES/dvdisaster.mo "$(BUILDROOT)$(LOCALEDIR)/$$i/LC_MESSAGES"; \
 	  done \
 	fi
-	@echo "# dvdisaster uninstaller script" > $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "# Usage: sh dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
-	@echo "rm -rf $(DOCSUBDIR)" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "# dvdisaster uninstaller script" > "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "# Usage: sh dvdisaster-uninstall.sh" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/CHANGELOG\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/COPYING\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.de\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.en\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/manual.pdf\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rm -f \"$(DOCSUBDIR)/TODO\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@echo "rmdir \"$(DOCSUBDIR)\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@for i in $(PO_LOCALES); do \
-	  echo "rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm \"$(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh" ; \
 	done
-	@echo "rm -f $(MANDIR)/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "rm -f \"$(MANDIR)/man1/dvdisaster.1\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@for i in $(MAN_LOCALES); do \
-	  echo "rm $(MANDIR)/$$i/man1/dvdisaster.1" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh ; \
+	  echo "rm \"$(MANDIR)/$$i/man1/dvdisaster.1\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh" ; \
 	done
-	@echo "echo \"dvdisaster has been uninstalled.\"" >> $(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh
+	@echo "echo \"dvdisaster has been uninstalled.\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 
 uninstall:
 	@echo "Uninstalling package..."
-	rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh
-	rm -rf $(DOCSUBDIR)
-	rm -f $(MANDIR)/man1/dvdisaster.1
+	rm -f "$(BINDIR)/dvdisaster" "$(BINDIR)/dvdisaster-uninstall.sh"
+	rm -f "$(DOCSUBDIR)/CHANGELOG"
+	rm -f "$(DOCSUBDIR)/COPYING"
+	rm -f "$(DOCSUBDIR)/CREDITS.de"
+	rm -f "$(DOCSUBDIR)/CREDITS.en"
+	rm -f "$(DOCSUBDIR)/manual.pdf"
+	rm -f "$(DOCSUBDIR)/TODO"
+	rmdir "$(DOCSUBDIR)"
+	rm -f "$(MANDIR)/man1/dvdisaster.1"
 	for i in $(PO_LOCALES); do \
-	   rm $(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo; \
+	   rm "$(LOCALEDIR)/$$i/LC_MESSAGES/dvdisaster.mo"; \
 	done
 	for i in $(MAN_LOCALES); do \
-	   rm $(MANDIR)/$$i/man1/dvdisaster.1; \
+	   rm "$(MANDIR)/$$i/man1/dvdisaster.1"; \
 	done
 
 archclean: distclean
@@ -340,7 +352,7 @@ distclean: clean
 
 clean:
 	@echo "Removing rebuildable files"
-	@rm -rf *.o $(BUILDTMP)/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
+	@rm -rf *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
 	@rm -f src/inlined-icons.h src/help-dialogs.h
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
