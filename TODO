@@ -7,18 +7,17 @@ Versions 0.79.x: development releases
 
 work in progress (this release):
 
-- clean build fpr gcc-8 and Debian Buster (Work in progress)
+- clean build for gcc-10 (Slackware 15, Debian testing)
 
 upcoming (next releases):
 
-- clean build for gcc-10 (Slackware 15, Debian testing)
 - split GUI code from core source to allow for command-line only build
+- remove obsolete features, especially from the GUI
 
 Versions 0.80.x: development releases
 * gtk-4 migration
 * lots of micro releases to revive the project and resolve outstanding issues
   
-- remove obsolete features, especially in the GUI
 - upgrade from gtk-2 to gtk-4
 - re-introduce adaptive reading
 - ... many more will likely be added ...

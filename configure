@@ -2,6 +2,7 @@
 
 #  dvdisaster: Additional error correction for optical media.
 #  Copyright (C) 2004-2018 Carsten Gnoerlich.
+#  Copyright (C) 2019-2021 The dvdisaster development team.
 #
 #  Email: support@dvdisaster.org
 #
@@ -38,7 +39,7 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79.8
+PACKAGE dvdisaster 0.79.9
 DEFINE_INT PATCHLEVEL 9
 DEFINE_STRING HAVE_UNSTABLE_RELEASE 1
 DEFINE_STRING HOMEPAGE "https://dvdisaster.jcea.es"
