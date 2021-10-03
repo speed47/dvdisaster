@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -215,7 +215,8 @@ static void print_greetings(FILE *where)
    if(greetings_shown) return;
 
    greetings_shown = 1;
-   g_fprintf(where, "%s\n%s.\n", Closure->versionString, _("Copyright 2004-2017 Carsten Gnoerlich"));
+   g_fprintf(where, "%s.\n%s\n", Closure->versionString,
+	     _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019 The dvdisaster development team."));
    /* TRANSLATORS: Excluding all kinds of warranty might be harmful under your
       legislature. If in doubt, just translate the following like "This is free
       software; please refer to the conditions of the GNU GENERAL PUBLIC LICENSE

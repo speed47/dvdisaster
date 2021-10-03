@@ -2693,7 +2693,7 @@ msgid ""
 "* Warning: This ecc file requires dvdisaster-%d.%d!\n"
 "*          Proceeding could trigger incorrect behaviour.\n"
 "*          Please read the image without using this ecc file\n"
-"*          or visit http://www.dvdisaster.org for an upgrade.\n"
+"*          or upgrade dvdisaster.\n"
 "\n"
 msgstr ""
 
@@ -3110,7 +3110,7 @@ msgid ""
 "\n"
 "Proceeding could trigger incorrect behaviour.\n"
 "Please read the image without using this ecc file\n"
-"or visit http://www.dvdisaster.org for an upgrade.\n"
+"or upgrade dvdisaster.\n"
 "\n"
 msgstr ""
 
@@ -3919,11 +3919,8 @@ msgstr "- kräver           : dvdisaster-%d.%d (bra)\n"
 msgid ""
 "* requires         : dvdisaster-%d.%d (BAD)\n"
 "* Warning          : The following output might be incorrect.\n"
-"*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"
+"*                  : Please upgrade dvdisaster.\n"
 msgstr ""
-"* kräver           : dvdisaster-%d.%d (DÅLIGT)\n"
-"* Varning          : Följande utdata kan vara felaktig.\n"
-"*                  : Besök http://www.dvdisaster.org för en uppgradering.\n"
 
 #: src/rs01-verify.c:701 src/rs02-verify.c:1030 src/rs03-verify.c:883
 #, c-format
@@ -5263,7 +5260,7 @@ msgstr ""
 msgid ""
 "* requires         : dvdisaster-%s (BAD)\n"
 "* Warning          : The following output might be incorrect.\n"
-"*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"
+"*                  : Please upgrade dvdisaster.\n"
 msgstr ""
 
 #: src/rs03-verify.c:896
@@ -6348,6 +6345,21 @@ msgstr ""
 #~ "hittades inte.\n"
 #~ "Installera dvdisaster-doc-paketet.\n"
 
+#~ msgid "Copyright 2004-2018 Carsten Gnoerlich"
+#~ msgstr "Copyright 2004-2018 Carsten Gnörlich"
+
+#~ msgid "windowtitle|Modifying dvdisaster"
+#~ msgstr "Ändra dvdisaster"
+
+#~ msgid ""
+#~ "* requires         : dvdisaster-%d.%d (BAD)\n"
+#~ "* Warning          : The following output might be incorrect.\n"
+#~ "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"
+#~ msgstr ""
+#~ "* kräver           : dvdisaster-%d.%d (DÅLIGT)\n"
+#~ "* Varning          : Följande utdata kan vara felaktig.\n"
+#~ "*                  : Besök http://www.dvdisaster.org för en uppgradering.\n"
+
 #~ msgid "created by dvdisaster-%d.%d\n"
 #~ msgstr "skapad av dvdisaster-%d.%d\n"
 
@@ -6551,13 +6563,6 @@ msgstr ""
 
 #~ msgid "--cache-size must at least be 1MiB; 16MiB or higher is recommended."
 #~ msgstr "--cache-size måste vara åtminstone 1MiB; 16MiB eller högre rekommenderas."
-
-#~ msgid ""
-#~ "\n"
-#~ "e-mail: carsten@dvdisaster.com   -or-   cgnoerlich@fsfe.org"
-#~ msgstr ""
-#~ "\n"
-#~ "e-post: carsten@dvdisaster.com   -eller-   cgnoerlich@fsfe.org"
 
 #~ msgid "illegal data_mode: %d"
 #~ msgstr "otillåten data_mode: %d"

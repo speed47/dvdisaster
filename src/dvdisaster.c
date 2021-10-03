@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -1003,6 +1003,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --resource-file p      - get resource file from given path\n"));
       PrintCLI(_("  --speed-warning n      - print warning if speed changes by more than n percent\n"));
       PrintCLI(_("  --spinup-delay n       - wait n seconds for drive to spin up\n"));
+      PrintCLI(_("  --version              - print version and some configuration info\n"));
 
       if(Closure->debugMode)
       { PrintCLI("\n");

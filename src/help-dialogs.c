@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -22,8 +22,6 @@
 // DVDISASTER_GUI_FILE
 
 #include "dvdisaster.h"
-
-#include "help-dialogs.h"
 
 /***
  *** Online help system for the preferences
@@ -589,13 +587,6 @@ GtkWidget* ShowTextfile(char *title, char *explanation, char *file,
  * About dialog
  */
 
-static void show_modifying(void)
-{  ShowTextfile(_("windowtitle|Modifying dvdisaster"), 
-	       _("<big>Modifying dvdisaster</big>\n"
-		 "<i>Your changes are not ours.</i>"),
-	       "README.MODIFYING", NULL, NULL);
-}
-
 static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 {  GtkWidget *lab = GTK_BIN(widget)->child;
    char *label = (char*)data;
@@ -607,7 +598,6 @@ static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
    {  case GDK_BUTTON_PRESS: 
         if(!inside) return FALSE; /* Defect in certain Gtk versions? */
         if(!strcmp(label,"GPL")) ShowGPL(); 
-        else if(!strcmp(label,"MODIFYING")) show_modifying();
         else if(strlen(label) > 4 && !strncmp(label, "http", 4)) ShowHTML(g_strdup(label));
         else ShowPDF(g_strdup(label));
 	break; 
@@ -726,9 +716,7 @@ void AboutTextWithLink(GtkWidget *parent, char *text, char *action)
 void AboutDialog()
 {  GtkWidget *about, *vbox, *sep;
    char *text; 
-#ifndef MODIFIED_SOURCE
-   const char *lang;
-#endif
+
    /* Create the dialog */
 
    about = gtk_dialog_new_with_buttons(_utf("windowtitle|About dvdisaster"), 
@@ -749,16 +737,7 @@ void AboutDialog()
    AboutText(vbox, "%s", text);
    g_free(text);
 
-#ifdef MODIFIED_SOURCE
-   AboutTextWithLink(vbox,
-		     _("[Modified version]\n"
-		       "Copyright 2019-2021 Stephane Lesimple\n"
-		       "Copyright 2005-2017 Debian Optical Media Tools Team\n"
-		       "Copyright 2004-2017 Carsten Gnoerlich"),
-		     "MODIFYING");
-#else
-   AboutText(vbox, _("Copyright 2004-2017 Carsten Gnoerlich"));
-#endif
+   AboutText(vbox, _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019 The dvdisaster development team."));
 
    sep = gtk_hseparator_new();
    gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 10);
@@ -774,27 +753,10 @@ void AboutDialog()
 				"under the conditions of the [GNU General Public License].\n"), 
 			"GPL");
 
-#ifdef MODIFIED_SOURCE
-   AboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
-			     "for Debian to support DVD-ROMs (with and without encryption),\n"
-			     "and subsequently patched again to support a CLI-only build, among other things.\n\n"
-			     "Please do not bother the original authors of dvdisaster nor the Debian maintainer\n"
-			     "but submit bugreports against [GitHub] instead.\n"),
-			     "https://github.com/speed47/dvdisaster");
+   AboutText(vbox, _("\ne-mail: support@dvdisaster.org"));
 
-#else
-   lang = g_getenv("LANG");
-   if(lang && !strncmp(lang, "de", 2))
-   {    AboutTextWithLink(vbox, "\n[http://www.dvdisaster.de]", "http://www.dvdisaster.de");
-   }
-   else 
-   {    AboutTextWithLink(vbox, "\n[http://www.dvdisaster.com]", "http://www.dvdisaster.com");
-   }
+   AboutText(vbox, "WWW: %s", HOMEPAGE);
 
-   AboutText(vbox, _("\ne-mail: carsten@dvdisaster.org   -or-   cgnoerlich@fsfe.org")); 
-#ifdef SYS_NETBSD
-   AboutText(vbox, _("\nNetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;")); 
-#endif
 #endif
    /* Show it */
 

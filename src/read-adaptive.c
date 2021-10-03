@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -119,7 +119,7 @@ static EccInfo* open_ecc_file(int mode)
 	    PrintCLI(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
 		    "*          Please read the image without using this ecc file\n"
-		    "*          or visit http://www.dvdisaster.org for an upgrade.\n\n"), 
+		    "*          or upgrade dvdisaster.\n\n"), 
 		  ei->eh->neededVersion/10000,
 		  (ei->eh->neededVersion%10000)/100);
 

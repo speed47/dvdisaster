@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 
+#  dvdisaster: Additional error correction for optical media.
+#  Copyright (C) 2004-2018 Carsten Gnoerlich.
+#
+#  Email: support@dvdisaster.org
+#
+#  This file is part of dvdisaster.
+#
+#  dvdisaster is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  dvdisaster is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
+
 # Load the shell functions needed for the rest of this script.
 
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
@@ -7,8 +27,6 @@ BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build $@"
 REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
 RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length"
 DEBUG_CFLAGS="-ggdb -Wall"
-
-CFG_USE_CYGWIN="no"   # do not change
 
 if test -e $BASH_BASED_CONFIGURE; then
    source $BASH_BASED_CONFIGURE $BASH_BASED_CONFIGURE_OPTS
@@ -20,9 +38,10 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79.6
+PACKAGE dvdisaster 0.79.7
 DEFINE_INT PATCHLEVEL 9
 DEFINE_STRING HAVE_UNSTABLE_RELEASE 1
+DEFINE_STRING HOMEPAGE "https://dvdisaster.jcea.es"
 
 # Check for some essential tools.
 

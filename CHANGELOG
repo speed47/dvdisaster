@@ -1,5 +1,8 @@
 # dvdisaster changelog -*-text-*-
 
+0.79.7 - work in progress -
+- Cleanup of documentation and files for new contact address
+
 0.79.6.patchlevel-9 27-06-2021 *UNOFFICIAL*
 - fix: using --strip in console without X server would segfault at program exit
 - enh: windows: hide useless background console
