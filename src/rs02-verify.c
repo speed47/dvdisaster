@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -1014,7 +1014,7 @@ continue_with_ecc:
    else 
    {  PrintLog(_("* requires         : dvdisaster-%d.%d (BAD)\n"
 		 "* Warning          : The following output might be incorrect.\n"
-		 "*                  : Please visit http://www.dvdisaster.org for an upgrade.\n"),
+		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
 

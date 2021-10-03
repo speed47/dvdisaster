@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2010-02-07" "0.80" "Schutz f\[:u]r optische Datentr\[:a]ger"
+.TH DVDISASTER 1 "2018-05-14" "0.79.7" "Schutz f\[:u]r optische Datentr\[:a]ger"
 
 .SH NAME
 DVDISASTER \- Schutz f\[:u]r optische Datentr\[:a]ger gegen Datenverlust durch Alterung
@@ -67,6 +67,7 @@ oder Kratzer
 .IR n \|]
 .RB [\| \-\-spinup\-delay
 .IR n \|]
+.RB [\| \-\-version \|]
 
 .SH BESCHREIBUNG
 .B DVDISASTER
@@ -334,7 +335,7 @@ funktioniert am besten beim direkten Arbeiten mit Dateien im Arbeitsspeicher (z.
 .RE
 .TP
 .B \-\-fill-unreadable n
-f\[:u]lle unlesbare Sektoren mit Byte n.
+f\[:u]lle unlesbare Sektoren mit Byte n. Hilfreich um Abbilder zu verarbeiten, die von anderen Werkzeugen angelegt wurden. Beispielsweise f\[:u]llt ddrescue unlesbare Sektoren mit Null auf; dementsprechend w\[:a]re \-\-fill-unreadable=0 zu verwenden. Bitte dabei beachten: Sparse files k\[:o]nnen nicht mit dvdisaster verarbeitet werden.
 .TP
 .B \-\-ignore-fatal-sense
 Lesen nach m\[:o]glicherweise schwerwiegenden Fehlern fortsetzen.
@@ -422,6 +423,9 @@ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 .TP
 .B \-\-spinup-delay n
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
+.TP
+.B \-\-version
+gibt die Versionsnummer und einige Konfigurationseigenschaften aus
 .PP
 
 .SH SIEHE AUCH

@@ -1,8 +1,8 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *
@@ -878,14 +878,14 @@ void ReadMediumLinear(gpointer data)
 				 _("This ecc file requires dvdisaster-%d.%d!\n\n"
 				   "Proceeding could trigger incorrect behaviour.\n"
 				   "Please read the image without using this ecc file\n"
-				   "or visit http://www.dvdisaster.org for an upgrade.\n\n"), 
+				   "or upgrade dvdisaster.\n\n"), 
 				 rc->eccHeader->neededVersion/10000,
 				 (rc->eccHeader->neededVersion%10000)/100);
 	 else
 	   answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 				 _("This image requires dvdisaster-%d.%d!\n\n"
 				   "Proceeding could trigger incorrect behaviour.\n"
-				   "Please visit http://www.dvdisaster.org for an upgrade.\n\n"), 
+				   "Please upgrade dvdisaster.\n\n"), 
 				 rc->eccHeader->neededVersion/10000,
 				 (rc->eccHeader->neededVersion%10000)/100);
 	PrintCLI("\n");

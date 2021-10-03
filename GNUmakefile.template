@@ -1,3 +1,23 @@
+#  dvdisaster: Additional error correction for optical media.
+#  Copyright (C) 2004-2018 Carsten Gnoerlich.
+#
+#  Email: support@dvdisaster.org
+#
+#  This file is part of dvdisaster.
+#
+#  dvdisaster is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  dvdisaster is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
+
 ######################################################################
 # Begin of dvdisaster makefile template
 ######################################################################
@@ -135,21 +155,6 @@ src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.pn
 	@while gdk-pixbuf-csource --raw --name=dvdisaster_nothing         icons/nothing.png         >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
 	@rm -f src/.icons.tmp
 
-$(BUILDTMP)/help-dialogs.o: src/help-dialogs.c simple-md5sum
-	@if test -e fingerprints.md5; \
-	then if test -e src/help-dialogs.h; then rm src/help-dialogs.h; fi; \
-	     ./simple-md5sum -b src/*.h src/*.c | grep -vF -e inlined-icons.h -e build.h | sort -k2 >tmp.md5; \
-	     sort -k2 < fingerprints.md5 >tmp2.md5; \
-	     if ! cmp tmp2.md5 tmp.md5 >/dev/null; \
-	     then echo "#define MODIFIED_SOURCE 1" >> src/help-dialogs.h; \
-	     else echo "#define UNMODIFIED_SOURCE 1" >> src/help-dialogs.h; \
-	     fi; \
-	     rm tmp.md5 tmp2.md5; \
-	else echo "#define MODIFIED_SOURCE 1" >> src/help-dialogs.h; \
-	fi
-	@echo "Compiling:" src/help-dialogs.c
-	@$(CC) $(COPTS) -c src/help-dialogs.c -o $(BUILDTMP)/help-dialogs.o
-
 $(BUILDTMP)/rs-encoder-sse2.o: src/rs-encoder-sse2.c
 	@echo "Compiling:" src/rs-encoder-sse2.c
 	@$(CC) $(SSE2_OPTIONS) $(COPTS) -c src/rs-encoder-sse2.c -o $(BUILDTMP)/rs-encoder-sse2.o
@@ -163,9 +168,6 @@ locale:
 
 untranslated:
 	@$(MAKE) --no-print-directory -C locale check-untranslated
-
-simple-md5sum: src/md5.c
-	@$(CC) $(COPTS) $(MUDFLAP_CFLAGS) -DSIMPLE_MD5SUM src/md5.c $(LDFLAGS) $(MUDFLAP_LFLAGS) $(MUDFLAP_LIBS) -o simple-md5sum
 
 version.tex:
 	@test -d $(SRCDIR)/documentation/config || mkdir $(SRCDIR)/documentation/config
@@ -331,10 +333,6 @@ distclean: clean
 	@rm -f configure.log Makefile.config src/build.h GNUmakefile locale/Makefile
 	@for i in locale/?? locale/??_??; do rm -rf $$i; done
 
-# There might be a not executable simple-md5sum from a compiler run
-# under a different architecture, so make sure we have a working binary
-# in the clean target.
-
 clean:
 	@echo "Removing rebuildable files"
 	@rm -rf *.o $(BUILDTMP)/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
@@ -344,17 +342,6 @@ clean:
 	@find . -name \#\*\# -print | xargs rm -f;
 	@rm -f documentation/config/version.tex
 	@if test -e $(PKGNAME); then rm -rf $(PKGNAME); fi
-	@if test -e ~/.dvdisaster-original-author; then \
-	  mv build.h build.saved ;\
-	  if ! test -x simple-md5sum || ! ./simple-md5sum >/dev/null 2>&1; then \
-	    rm -f simple-md5sum; \
-	    $(MAKE) --no-print-directory simple-md5sum; \
-	    echo "[simple-md5sum (re-)built]"; \
-	  fi; \
-	  ./simple-md5sum -b src/*.h src/*.c >fingerprints.md5 ;\
-	  mv build.saved build.h; \
-	fi
-	@rm -f simple-md5sum
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs clean;
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual clean;
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/locale clean;
@@ -367,7 +354,7 @@ INSTALL: documentation/install.template
 	@sed "s/@@PKGNAME/$(PKGNAME)/" <documentation/install.template >INSTALL
 
 srcdist: INSTALL distclean manual manualclean codecsclean
-	@cd .. ; tar -c -j -X $(PKGNAME)/NODIST -f $(TAR_PREFIX)/$(PKGNAME).tar.bz2 $(PKGNAME)
+	@cd .. ; tar -c -j --owner=dvdisaster --group=devel -X $(PKGNAME)/NODIST -f $(TAR_PREFIX)/$(PKGNAME).tar.bz2 $(PKGNAME)
 	@cd .. ; gpg --homedir .gnupg --default-key 758BCC23 --detach-sign --output $(TAR_PREFIX)/$(PKGNAME).tar.bz2.gpg --armor $(TAR_PREFIX)/$(PKGNAME).tar.bz2 
 
 static: dvdisaster

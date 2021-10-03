@@ -1,11 +1,11 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
+ *  Copyright (C) 2019 The dvdisaster development team.
  *
  *  The Reed-Solomon error correction draws a lot of inspiration - and even code -
  *  from Phil Karn's excellent Reed-Solomon library: http://www.ka9q.net/code/fec/
  *
- *  Email: carsten@dvdisaster.org  -or-  cgnoerlich@fsfe.org
- *  Project homepage: http://www.dvdisaster.org
+ *  Email: support@dvdisaster.org
  *
  *  This file is part of dvdisaster.
  *

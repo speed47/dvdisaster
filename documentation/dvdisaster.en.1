@@ -1,4 +1,4 @@
-.TH DVDISASTER 1 "2020-08-30" "0.80" "protection for optical media"
+.TH DVDISASTER 1 "2018-05-14" "0.79.7" "protection for optical media"
 
 .SH NAME
 DVDISASTER \- data loss/scratch/aging protection for optical media
@@ -67,6 +67,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .IR n \|]
 .RB [\| \-\-spinup\-delay
 .IR n \|]
+.RB [\| \-\-version \|]
 
 .SH DESCRIPTION
 .B DVDISASTER
@@ -348,7 +349,7 @@ and on very fast media with low latency such as SSDs.
 .RE
 .TP
 .B \-\-fill-unreadable n
-fill unreadable sectors with byte n
+fill unreadable sectors with byte n. Useful for processing images which have been created by other tools. For example, ddrescue fills unreadable sectors with zeros; therefore \-\-fill-unreadable=0 should be used. Please note: Sparse files can not be processed with dvdisaster.
 .TP
 .B \-\-ignore-fatal-sense
 continue reading after potentially fatal error condition.
@@ -432,6 +433,9 @@ print warning if speed changes by more than n percent.
 .TP
 .B \-\-spinup-delay n
 wait n seconds for drive to spin up.
+.TP
+.B \-\-version
+print version number and some configuration information.
 .PP
 
 .SH SEE ALSO
