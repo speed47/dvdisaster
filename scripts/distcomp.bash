@@ -24,6 +24,9 @@ echo
 ADDED=0
 echo "Files and dirs ADDED in this distribution:"
 for i in $(find .); do
+  if test "${i:0:9}" == "./PRIVATE";
+    then continue;
+  fi
   if test -d $i && ! test -e $ref/$i; then
     ADDED=$((ADDED+1))
     echo "  Dir : $i"
@@ -45,6 +48,9 @@ REMOVED=0
 echo
 echo "Files and dirs REMOVED in this distribution:"
 for i in $(find .); do
+  if test "${i:0:5}" == "./.hg";
+    then continue;
+  fi
   if test -d $i && ! test -e $new/$i; then
     REMOVED=$((REMOVED+1))
     echo "  Dir : $i"
