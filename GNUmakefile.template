@@ -352,13 +352,12 @@ distclean: clean
 
 clean:
 	@echo "Removing rebuildable files"
-	@rm -rf *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
+	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
 	@rm -f src/inlined-icons.h src/help-dialogs.h
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;
 	@rm -f documentation/config/version.tex
-	@if test -e $(PKGNAME); then rm -rf $(PKGNAME); fi
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/codec-specs clean;
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/documentation/user-manual clean;
 	@$(MAKE) --no-print-directory -C $(SRCDIR)/locale clean;

@@ -27,11 +27,39 @@
 #include "shellapi.h"
 #endif
 
+static void send_errormsg(int fd, char *format, ...)
+{  va_list argp;
+   char *msg;
+   int n;
+   
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+
+   n = strlen(msg);
+   n = write(fd, msg, n);
+   free(msg);
+}
+
+static int recv_errormsg(int fd, char **msg)
+{  char buf[256];
+   int n;
+  
+   n = read(fd, buf, 256);
+   if(!n) return n;
+
+   *msg = g_strdup(buf);
+   
+   return n;
+}
+
 void ShowURL(char *target)
 {  guint64 ignore;
    pid_t pid;
    int hyperlink = 0;
-   char *path;
+   char *path, *msg;
+   int err_pipe[2]; /* child may send down err msgs to us here */
+   int result;
    
    if(target && !strncmp(target, "http", 4))
    {  hyperlink = 1;
@@ -71,11 +99,18 @@ void ShowURL(char *target)
 #else
 
    /* fork xdg-open */
-   
+
+   result = pipe2(err_pipe, O_CLOEXEC);
+   if(result == -1)
+   {  CreateMessage(_("Could not create pipe before fork"), GTK_MESSAGE_ERROR);
+      return;
+   }
    pid = fork();
 
    if(pid == -1)
-   {  printf("fork failed\n");
+   {  close(err_pipe[0]);
+      close(err_pipe[1]);
+      CreateMessage(_("Could not fork to start xdg-open"), GTK_MESSAGE_ERROR);
       return;
    }
 
@@ -85,13 +120,33 @@ void ShowURL(char *target)
    {  char *argv[10];
       int argc = 0;
 
+      /* close reading end of error pipe */
+      close(err_pipe[0]);
+
+      /* prepare args and try to exec xdg-open */
+
       argv[argc++] = "xdg-open";
       argv[argc++] = path;
       argv[argc++] = NULL;
       execvp(argv[0], argv);
 
+      /* if we reach this, telegraph our parent that sth f*cked up */
+
+      send_errormsg(err_pipe[1],
+                   _("execvp could not execute \"xdg-open\":\n%s\nIs xdg-open installed correctly?\n"),
+                   strerror(errno));
+      close(err_pipe[1]);
       _exit(110); /* couldn't execute */
    }
+
+   /* Parent process. See if some error condition came down the pipe. */
+
+   close(err_pipe[1]);
+   result = recv_errormsg(err_pipe[0], &msg);
+   close(err_pipe[0]);
+
+   if(result)
+      CreateMessage(msg, GTK_MESSAGE_ERROR);
 #endif
 }
 
