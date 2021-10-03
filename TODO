@@ -12,14 +12,14 @@ work in progress (this release):
 upcoming (next releases):
 
 - split GUI code from core source to allow for command-line only build
-- remove obsolete features, especially from the GUI
+- restore adaptive reading for all codecs
 
 Versions 0.80.x: development releases
 * gtk-4 migration
 * lots of micro releases to revive the project and resolve outstanding issues
   
 - upgrade from gtk-2 to gtk-4
-- re-introduce adaptive reading
+- remove obsolete features, especially from the GUI
 - ... many more will likely be added ...
 
 Version 0.82: next milestone/stable release

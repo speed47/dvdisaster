@@ -20,10 +20,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
 
-0.79.9 12-05-2021
+0.79.9 14-05-2021
 - Revised code for clean compile under gcc-10 and Debian 11 (sid) or Slackware 15
 - added -Wno-deprecated-declarations to shield against a flood of warnings
   resulting from gtk-2 / glib mismatches
+- safeguarded install and uninstall against blanks in path names
 
 0.79.8 11-05-2021
 - Revised code for clean compile under gcc-8 and Debian 10 (Buster).
