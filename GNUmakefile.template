@@ -64,6 +64,10 @@ INTL_LIBS   = $(CFG_INTL_LIBS)
 CAM_LFLAGS = $(CFG_CAM_LFLAGS)
 CAM_LIBS   = $(CFG_CAM_LIBS)
 
+GLIB_CFLAGS   = $(CFG_GLIB2_CFLAGS)
+GLIB_LIBS     = $(CFG_GLIB2_LIBS)
+GLIB_BINDIR   = $(CFG_GLIB2_BINDIR)
+
 GTK_CFLAGS   = $(CFG_GTK2_CFLAGS) $(CFG_GLIB2_CFLAGS)
 GTK_LIBS     = $(CFG_GTK2_LIBS) $(CFG_GLIB2_LIBS)
 GTK_BINDIR   = $(CFG_GTK2_BINDIR) $(CFG_GLIB2_BINDIR)
@@ -80,10 +84,10 @@ SSE2_OPTIONS = $(CFG_SSE2_OPTIONS)
 ALTIVEC_OPTIONS = $(CFG_ALTIVEC_OPTIONS)
 
 LOCATIONS = -DSRCDIR="\"$(SRCDIR)\"" -DBINDIR="\"$(BINDIR)\"" -DDOCDIR="\"$(DOCSUBDIR)\"" -DLOCALEDIR="\"$(LOCALEDIR)\""
-COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(SYS_NAME) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS) $(MUDFLAP_CFLAGS)
-LOPTS = $(LDFLAGS) $(INTL_LFLAGS) $(CAM_LFLAGS) $(EFENCE_LFLAGS) $(MUDFLAP_LFLAGS)
+COPTS = $(CFLAGS) $(LOCATIONS) $(SYS_OPTIONS) $(SYS_NAME) $(HAVE_OPTIONS) $(WITH_OPTIONS) $(OTHER_OPTIONS) $(INTL_INCL) $(CAM_INCL) $(GTK_CFLAGS) $(GLIB_CFLAGS)
+LOPTS = $(LDFLAGS) $(INTL_LFLAGS) $(CAM_LFLAGS) $(EFENCE_LFLAGS)
 
-LIBS = $(INTL_LIBS) $(CAM_LIBS) $(GTK_LIBS) $(EFENCE_LIBS) $(MUDFLAP_LIBS) -lm
+LIBS = $(INTL_LIBS) $(CAM_LIBS) $(GTK_LIBS) $(GLIB_LIBS) $(EFENCE_LIBS) -lm
 
 CFILES = $(CFG_CFILES)
 OFILES = $(CFG_OFILES)
@@ -102,7 +106,7 @@ endif
 
 all: dvdisaster
 
-src/build.h:
+src/build.h: configure
 	@echo "Updating:" src/build.h
 	@$(SRCDIR)/scripts/time-stamper.bash $(SRCDIR)/src/build.h
 
@@ -349,6 +353,7 @@ distclean: clean
 	@echo "Removing configuration files"
 	@rm -f configure.log Makefile.config src/build.h GNUmakefile locale/Makefile
 	@for i in locale/?? locale/??_??; do rm -rf $$i; done
+	@rm -f dvdisaster-debug
 
 clean:
 	@echo "Removing rebuildable files"

@@ -18,7 +18,7 @@ jobs:
             msystem: MINGW32
             grep: 386
           - ui: cli
-            clionly: --with-cli-only
+            clionly: --with-gui=no
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
     defaults:
@@ -75,7 +75,7 @@ jobs:
         printf: [fmtdbg, normal]
         include:
           - ui: cli
-            clionly: --with-cli-only
+            clionly: --with-gui=no
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
     steps:

@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 /***
@@ -79,19 +81,12 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
 
-	 AboutText(box, _("This is <b>v0.79.6-pl9</b>. The patchlevel series are enhanced from the last upstream pre-release.\n"
-			  "We add support for a CLI version, BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+	 GuiAboutText(box, _("This is <b>v0.79.10-pl1</b>. The patchlevel series are enhanced from the last upstream release.\n"
+			  "We add support for BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
 			  "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 			  "\n"
-			  "Please refer to the <i>Help &gt; Change log</i> menu for all the details.\n"
-			  "The warning message from the pre-release version is retained below.\n"));
+			  "Please refer to the <i>Help &gt; Change log</i> menu for all the details."));
 
-	 AboutText(box, _("<i>Please note:</i>\n"
-			  "This is a <span color=\"#800000\">pre-release</span> for expert users.\n"
-			  "It may contain unfinished features.\n"
-			  "Adaptive reading is <span color=\"#800000\">unavailable</span> in this version.\n"
-			  "It will be re-introduced in one of the next releases."));
-	 
 	 gtk_box_pack_start(GTK_BOX(box), gtk_hseparator_new(), FALSE, FALSE, 10);
 
 	 button = gtk_check_button_new_with_label(_utf("Show this message again"));
@@ -112,7 +107,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
  * Create the window
  */
 
-void CreateWelcomePage(GtkNotebook *notebook)
+void GuiCreateWelcomePage(GtkNotebook *notebook)
 {  GtkWidget *box,*align,*ignore;
    int show_msg;
 
@@ -135,22 +130,22 @@ void CreateWelcomePage(GtkNotebook *notebook)
       widget  = gtk_image_new_from_stock("dvdisaster-create", GTK_ICON_SIZE_LARGE_TOOLBAR);
       gtk_box_pack_start(GTK_BOX(box), widget, FALSE, FALSE, 0);
 
-      AboutText(box, "<span weight=\"bold\" size=\"xx-large\">dvdisaster</span>");
+      GuiAboutText(box, "<span weight=\"bold\" size=\"xx-large\">dvdisaster</span>");
       return;
 #endif
    }
 
-   AboutText(box, _("<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"));
+   GuiAboutText(box, _("<span weight=\"bold\" size=\"xx-large\">Welcome to dvdisaster!</span>"));
 
-   AboutText(box, _("\ndvdisaster creates error correction data to protect\n"
-		    "optical media (CD,DVD,BD) against data loss.\n"));
+   GuiAboutText(box, _("\ndvdisaster creates error correction data to protect\n"
+		       "optical media (CD,DVD,BD) against data loss.\n"));
 
-   AboutTextWithLink(box, _("Please see the [manual] for typical uses of dvdisaster.\n\n"), 
+   GuiAboutTextWithLink(box, _("Please see the [manual] for typical uses of dvdisaster.\n\n"), 
 		     "manual.pdf");
 
-   AboutText(box, _("<i>New in this Version:</i>"));
+   GuiAboutText(box, _("<i>New in this Version:</i>"));
 
    /* actual list is generated in the expose event handler */
 
 }
-
+#endif /* WITH_GUI_YES */

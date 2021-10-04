@@ -232,8 +232,8 @@ RS02_ecc_create_after_partial_read yes
 RS02_fix_no_read_perm yes
 RS02_fix_no_write_perm yes
 RS02_fix_good_image yes
-RS02_fix_image_plus137 yes
-RS02_fix_image_error_in_plus137 yes
+RS02_fix_image_plus137 no
+RS02_fix_image_error_in_plus137 no
 RS02_fix_truncated_image yes
 RS02_fix_trailing_bytes yes
 RS02_fix_trailing_tao yes
@@ -378,6 +378,8 @@ RS03i_missing_header yes
 RS03i_missing_header2 yes
 RS03i_missing_header3 yes
 RS03i_missing_header4 yes
+RS03i_missing_header5 yes
+RS03i_missing_header6 yes
 RS03i_missing_header_truncated yes
 RS03i_missing_header_no_crcsec yes
 RS03i_random_image yes

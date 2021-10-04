@@ -311,5 +311,5 @@ GetImageFingerprint(16): read & cached
 rs03i-tmp.iso: present, contains 359295 medium sectors.
 * quick mode        : image NOT scanned
 
-medium.ecc: not present
+none.file: not present
 

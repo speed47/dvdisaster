@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "scsi-layer.h"
@@ -589,6 +591,9 @@ static int query_cd(DeviceHandle *dh, int probe_only)
    dh->sessions = buf[3];
    Verbose("#CD: %d sessions\n", dh->sessions);
 
+   if(dh->typeDescr)  /* dh may have been reused; avoid memleak */
+     g_free(dh->typeDescr);
+     
    if(control & 4)
      switch(buf[13])
      {  case 0x00: dh->typeDescr = g_strdup_printf("%s mode 1", dh->profileDescr); dh->subType = DATA1; break;
@@ -2206,10 +2211,7 @@ int TestUnitReady(DeviceHandle *dh)
 
       if(SendPacket(dh, cmd, 6, NULL, 0, &dh->sense, DATA_NONE) != -1)
       {
-#ifndef WITH_CLI_ONLY_YES
-         if(Closure->guiMode)
-	    SetLabelText(Closure->status, "");
-#endif
+	 GuiSetLabelText(Closure->status, "");
 	 return TRUE;
       }
 
@@ -2224,13 +2226,11 @@ int TestUnitReady(DeviceHandle *dh)
 	    continue_waiting = TRUE;
 
       if(continue_waiting)
-      {  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
+      {  PrintCLIorLabel(Closure->status,
 			 _("Waiting 10 seconds for drive: %d\n"),9-i);
 
-#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)
 	    return FALSE;
-#endif
 
 	 g_usleep(G_USEC_PER_SEC);
 	 continue;
@@ -2240,11 +2240,7 @@ int TestUnitReady(DeviceHandle *dh)
       break;  /* Something is wrong with the drive */
    }
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-      SetLabelText(Closure->status, "");
-#endif
-
+   GuiSetLabelText(Closure->status, "");
    return FALSE;
 }
 
@@ -2496,10 +2492,8 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       if(status)  /* current try was unsuccessful */
       {  int last_key, last_asc, last_ascq;
 
-#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)  /* user break */
 	    return status;
-#endif
 
 	 /* Do not attempt multiple re-reads if nsectors > 1 and sectorSkip == 0
 	    as these will be re-read with nsectors==1 anyways. */
@@ -2507,7 +2501,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 //       Why only apply this shortcut to raw reading?
 //	 if(dh->canReadDefective && nsectors > 1 && Closure->sectorSkip == 0)
 	 if(nsectors > 1 && Closure->sectorSkip == 0)
-	 {  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
+	 {  PrintCLIorLabel(Closure->status,
 			    _("Sectors %" PRId64 " - %" PRId64 ": %s\n"),
 			    s, s+nsectors-1, GetLastSenseString(FALSE));
 	    return status;
@@ -2521,13 +2515,13 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
 	 if(last_key == 3 && last_asc == 255 && last_ascq == 2 && dh->rawBuffer)
 	 {  unsigned char *frame = dh->rawBuffer->workBuf->buf;
-	    PrintCLIorLabel(STATUS_LABEL_OR_NULL,
+	    PrintCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ", try %d: %s Sector returned: %d.\n"),
 			    s, retry, GetLastSenseString(FALSE),
 			    MSFtoLBA(frame[12], frame[13], frame[14]));
 	 }
 	 else
-	    PrintCLIorLabel(STATUS_LABEL_OR_NULL,
+	    PrintCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ", try %d: %s\n"),
 			    s, retry, GetLastSenseString(FALSE));
 
@@ -2538,7 +2532,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
       }
       else /* good return status */
       {  if(recommended_attempts > 1 && retry > 1)
-	  PrintCLIorLabel(STATUS_LABEL_OR_NULL,
+	  PrintCLIorLabel(Closure->status,
 			  _("Sector %" PRId64 ", try %d: success\n"), s, retry);
 
          break;

@@ -1,4 +1,4 @@
-c7945e8f9e09517842c1bb435b51bc74
+3f793d792a261cc98268182085034ae7
 ignore
 This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
@@ -12,5 +12,7 @@ Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
 Creating new rs01-tmp.iso image.
 Sector 4992, try 1: Hardware Error; Focus servo failure.
 Sector 4992: Hardware Error; Focus servo failure. Skipping 15 sectors.
+Sector 6000, try 1: Hardware Error; Focus servo failure.
+Sector 6000: Hardware Error; Focus servo failure. Skipping 15 sectors.
 
-16 unreadable sectors.
+32 unreadable sectors.

@@ -7,9 +7,9 @@ REDUNDANCY=20
 
 MASTERISO=$ISODIR/rs03f-master.iso
 MASTERECC=$ISODIR/rs03f-master.ecc
-SIMISO=$ISODIR/rs03f-sim.iso
-TMPISO=$ISODIR/rs03f-tmp.iso
-TMPECC=$ISODIR/rs03f-tmp.ecc
+SIMISO=$TMPDIR/rs03f-sim.iso
+TMPISO=$TMPDIR/rs03f-tmp.iso
+TMPECC=$TMPDIR/rs03f-tmp.ecc
 CODEC_PREFIX=RS03f
 
 # Create master image
@@ -139,7 +139,7 @@ fi
 # Test with image a few bytes shorter than ecc (both not multiple of 2048)
 
 if try "image a few bytes shorter as expected; both not multiple of 2048" few_bytes_shorter; then
-  LONGISO=$ISODIR/rs03f-plus390-bytes.iso
+  LONGISO=$TMPDIR/rs03f-plus390-bytes.iso
 
   cp $MASTERISO $TMPISO
   dd if="$RNDSEQ" count=1 bs=56 >>$TMPISO 2>/dev/null
@@ -156,7 +156,7 @@ fi
 # Test with image a few bytes longer than ecc (both not multiple of 2048)
 
 if try "image a few bytes longer as expected; both not multiple of 2048" few_bytes_longer; then
-  SHORTISO=$ISODIR/rs03f-plus56-bytes.iso
+  SHORTISO=$TMPDIR/rs03f-plus56-bytes.iso
 
   cp $MASTERISO $SHORTISO
   dd if="$RNDSEQ" count=1 bs=56 >>$SHORTISO 2>/dev/null
@@ -645,12 +645,15 @@ if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_r
   replace_config method-name RS03
   replace_config ecc-target 0
   replace_config redundancy $REDUNDANCY
+  replace_config read-and-create 1
+  replace_config verbose 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs01 "-r -c -mRS03 -o file -n$REDUNDANCY -v" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
-# Tests whether CRC and ECC information is handed over correctly.
+# This will wrap the RS02 image with a RS03 ecc file;  CRC information from
+# the read process will be reused.
 
 if try "read image with ecc (RS02) and create new ecc" ecc_recreate_after_read_rs02; then
   cp $MASTERISO $SIMISO
@@ -661,6 +664,8 @@ if try "read image with ecc (RS02) and create new ecc" ecc_recreate_after_read_r
   replace_config method-name RS03
   replace_config ecc-target 0
   replace_config redundancy $REDUNDANCY
+  replace_config read-and-create 1
+  replace_config verbose 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs02 "-r -c -mRS03 -o file -n$REDUNDANCY -v" $TMPISO $TMPECC
 fi
@@ -677,6 +682,8 @@ if try "read image with ecc (RS03i) and create new ecc" ecc_recreate_after_read_
   replace_config method-name RS03
   replace_config ecc-target 0
   replace_config redundancy $REDUNDANCY
+  replace_config read-and-create 1
+  replace_config verbose 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03i "-r -c -mRS03 -o file -n$REDUNDANCY -v" $TMPISO $TMPECC
 fi
@@ -693,6 +700,8 @@ if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_
   replace_config method-name RS03
   replace_config ecc-target 0
   replace_config redundancy $REDUNDANCY
+  replace_config read-and-create 1
+  replace_config verbose 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03f "-r -c -mRS03 -o file -n$REDUNDANCY -v" $TMPISO $TMPECC
 fi
@@ -709,6 +718,8 @@ if try "create ecc after completing partial image" ecc_create_after_partial_read
   replace_config method-name RS03
   replace_config ecc-target 0
   replace_config redundancy $REDUNDANCY
+  replace_config read-and-create 1
+  replace_config verbose 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$MASTERISO  --fixed-speed-values"
   run_regtest ecc_create_after_partial_read "-r -c -mRS03 -o file -n$REDUNDANCY -v" $TMPISO $TMPECC
 fi
@@ -873,6 +884,7 @@ if try "fixing image with one additional sector" fix_additional_sector; then
 fi
 
 # Fix image with additional sectors (general case)
+# no truncate, answer "Cancel" in the GUI
 
 if try "fixing image with 17 additional sectors" fix_plus17; then
   cp $MASTERISO $TMPISO
@@ -900,6 +912,7 @@ if try "fixing image with CRC error in 56 additional bytes" fix_plus56; then
 fi
 
 # Fix image+56bytes+more bytes
+# no truncate, leaves image unchanged (answer "Cancel" in the GUI)
 
 if try "fixing image with CRC error in 56 additional bytes + few bytes more" fix_plus56_plus17; then
   cp $ISO_PLUS56 $TMPISO
@@ -1031,7 +1044,7 @@ if try "scanning image being shorter than expected" scan_shorter; then
 fi
 
 # Scan image which is longer than expected
-# Will return image in its original length.
+# Superflous sectors will be silently ignored.
 
 if try "scanning image being longer than expected" scan_longer; then
   cp $MASTERISO $SIMISO
@@ -1043,7 +1056,7 @@ if try "scanning image being longer than expected" scan_longer; then
 fi
 
 # Scan image with two multisession link sectors appended.
-# Will return image in its original length.
+# Superflous sectors will be silently ignored.
 
 if try "scanning image, tao tail case" scan_tao_tail; then
   cp $MASTERISO $SIMISO
@@ -1056,7 +1069,6 @@ if try "scanning image, tao tail case" scan_tao_tail; then
 fi
 
 # Scan image with two real sectors missing at the end.
-# -dao option prevents them from being clipped off.
 
 if try "scanning image, no tao tail case" scan_no_tao_tail; then
   cp $MASTERISO $SIMISO
@@ -1098,7 +1110,9 @@ if try "scanning image requiring a newer dvdisaster version" scan_incompatible_e
 fi
 
 # Scan an image containing a defective ECC header.
-# Will be treated like an ECC-less image since --assume is not set.
+# RS03RecognizeFile() will automatically perform an exhaustive search
+# regardless of the --asume setting.
+# Rationale: The ecc file is on a HD/SSD where seeking is cheap
 
 if try "scanning image with a defective header" scan_bad_header; then
 
@@ -1140,6 +1154,8 @@ fi
 
 # Image contains 1 row of missing sectors and a single one
 # in the ecc portion
+# Since we are scanning the image, defects in the ecc file will not
+# be reported.
 
 if try "scanning image with missing ecc sectors" scan_missing_ecc_sectors; then
    cp $MASTERISO $SIMISO
@@ -1173,6 +1189,8 @@ if try "scanning image with bad crc byte" scan_crc_bad_byte; then
 fi
 
 # Image contains bad byte in the ecc section
+# Since we are scanning the image, defects in the ecc file will not
+# be reported.
 
 if try "scanning image with bad ecc byte" scan_ecc_bad_byte; then
    cp $MASTERISO $SIMISO
@@ -1202,6 +1220,7 @@ if try "scanning image with missing ecc header and CRC blocks" scan_missing_ecc_
   cp $MASTERECC $TMPECC
   $NEWVER --debug -i $TMPECC --erase 0-16 >>$LOGFILE 2>&1
 
+  replace_config verbose 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_missing_ecc_header_and_crc "--spinup-delay=0 -s -v" $MASTERISO $TMPECC
 fi
@@ -1216,6 +1235,7 @@ if try "scanning image with ecc header missing, first CRC block defective" scan_
   $NEWVER --debug -i $TMPECC --erase 0 >>$LOGFILE 2>&1
   $NEWVER --debug -i $TMPECC --byteset 2,50,107 >>$LOGFILE 2>&1
 
+  replace_config verbose 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_missing_ecc_header_and_defective_crc "--spinup-delay=0 -s -v" $MASTERISO $TMPECC
 fi
@@ -1227,6 +1247,7 @@ if try "checksum error in ecc header" scan_ecc_header_crc_error; then
   cp $MASTERECC $TMPECC
   $NEWVER --debug -i $TMPECC --byteset 0,32,107 >>$LOGFILE 2>&1
 
+  replace_config verbose 1
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_ecc_header_crc_error "--spinup-delay=0 -s -v" $MASTERISO $TMPECC
 fi
@@ -1354,6 +1375,7 @@ if try "reading image with a defective header" read_bad_header; then
   cp $MASTERECC $TMPECC
   $NEWVER -i$TMPECC --debug --byteset 0,1,1 >>$LOGFILE 2>&1
 
+  replace_config verbose 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_bad_header "--spinup-delay=0 -r -v" $TMPISO $TMPECC
 fi
@@ -1388,6 +1410,7 @@ fi
 
 # Image contains 1 row of missing sectors and a single one
 # in the ecc portion
+# Problem goes unnoticed as the image is not affected.
 
 if try "reading image with missing ecc sectors" read_missing_ecc_sectors; then
    cp $MASTERISO $SIMISO

@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
@@ -432,19 +434,15 @@ RS02Layout *CalcRS02Layout(Image *image)
 
    /* See if user wants to pick a certain redundancy */
 
-#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode && Closure->redundancy)
-#else
-   if(Closure->redundancy)
-#endif
    {  int len = strlen(Closure->redundancy);
 
       switch(Closure->redundancy[len-1])
       {  case 'r':   /* pick number of roots */
-	 {  char buf[len+1];
+	 {  char buf[len];
  
             memcpy(buf, Closure->redundancy, len-1);
-	    buf[len-1]=0;
+	    buf[len-1]=0;  /* strip off the 'r' */
 	    requested_roots = atoi(buf);
 	    break;
 	 }
@@ -453,7 +451,7 @@ RS02Layout *CalcRS02Layout(Image *image)
 	    int percent;
  
             memcpy(buf, Closure->redundancy, len-1);
-	    buf[len-1]=0;
+	    buf[len-1]=0; /* strip off the '%' */
 	    percent = atoi(buf);
 
 	    for(requested_roots = 7; requested_roots < 171; requested_roots++)

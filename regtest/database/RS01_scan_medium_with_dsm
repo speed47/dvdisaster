@@ -21,5 +21,7 @@ Scanning medium for read errors.
 * Since the medium was already created defective it can not be
 * repaired by dvdisaster. Also it will not be possible to create
 * error correction data for it. Sorry for the bad news.
+* ... more unrecoverable sectors found ...
+* further messages are suppressed unless the -v option is given.
 
-All sectors successfully read.
+All sectors are readable, but 2 contain defective content.

@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #include "rs03-includes.h"
@@ -201,7 +203,7 @@ static void nroots_cb(GtkWidget *widget, gpointer data)
         set_range_value(GTK_RANGE(wl->redundancyScaleB), value);
    else set_range_value(GTK_RANGE(wl->redundancyScaleA), value);
 
-   UpdateMethodPreferences();
+   GuiUpdateMethodPreferences();
 }
 
 static void ecc_size_cb(GtkWidget *widget, gpointer data)
@@ -216,7 +218,7 @@ static void ecc_size_cb(GtkWidget *widget, gpointer data)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(Closure->redundancy));
    else gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(Closure->redundancy));
 
-   UpdateMethodPreferences();
+   GuiUpdateMethodPreferences();
 }
 
 static void toggle_cb(GtkWidget *widget, gpointer data)
@@ -295,7 +297,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 Closure->redundancy = g_strdup_printf("%dm", space);
       }
 
-      UpdateMethodPreferences();
+      GuiUpdateMethodPreferences();
    }
 }
 
@@ -346,8 +348,8 @@ static void prefetch_cb(GtkWidget *widget, gpointer data)
    utf  = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), utf);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), utf);
-   SetOnlineHelpLinkText(lwoh, text);
-   UpdateMethodPreferences();
+   GuiSetOnlineHelpLinkText(lwoh, text);
+   GuiUpdateMethodPreferences();
    g_free(text);
    g_free(utf);
 }
@@ -365,8 +367,8 @@ static void threads_cb(GtkWidget *widget, gpointer data)
    utf  = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), utf);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), utf);
-   SetOnlineHelpLinkText(lwoh, text);
-   UpdateMethodPreferences();
+   GuiSetOnlineHelpLinkText(lwoh, text);
+   GuiUpdateMethodPreferences();
    g_free(text);
    g_free(utf);
 }
@@ -491,9 +493,9 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-   lwoh = CreateLabelWithOnlineHelp(_("Error correction data storage"), 
-				    _("Store ECC data in: "));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Error correction data storage"), 
+				       _("Store ECC data in: "));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -527,31 +529,31 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else  
       {  wl->eccFileB  = radio1;
 	 wl->eccImageB = radio2;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, 
-		    _("<b>Error correction data storage</b>\n\n"
-		      "Select between two ways of storing the "
-		      "error correction information:\n"));
+   GuiAddHelpParagraph(lwoh, 
+		       _("<b>Error correction data storage</b>\n\n"
+			 "Select between two ways of storing the "
+			 "error correction information:\n"));
 
    
-    AddHelpListItem(lwoh, _("Augmented image (recommended)\n"
-			   "The error correction data will be stored along with the user data on the "
-			   "same medium. This requires the creation of an image file prior to writing the "
-			   "medium. The error correction data will be appended to that image "
-			   "and fill up the remaining space.\n"
-			   "Damaged sectors in the error correction "
-			   "information reduce the data recovery capacity, but do not make recovery "
-			   "impossible - a second medium for keeping or protecting the error correction "
-			   "information is not required.\n"));
+   GuiAddHelpListItem(lwoh, _("Augmented image (recommended)\n"
+      "The error correction data will be stored along with the user data on the "
+      "same medium. This requires the creation of an image file prior to writing the "
+      "medium. The error correction data will be appended to that image "
+      "and fill up the remaining space.\n"
+      "Damaged sectors in the error correction "
+      "information reduce the data recovery capacity, but do not make recovery "
+      "impossible - a second medium for keeping or protecting the error correction "
+      "information is not required.\n"));
 
-  AddHelpListItem(lwoh, _("Error correction file\n"
-			   "Error correction files are the only way of protecting existing media "
-			   "as they can be stored somewhere else. They are kept on a separate "
-			   "medium which must also be protected by dvdisaster. This prevents from losing the "
-			   "error correction files in case of a medium defect.\n"));
+   GuiAddHelpListItem(lwoh, _("Error correction file\n"
+      "Error correction files are the only way of protecting existing media "
+      "as they can be stored somewhere else. They are kept on a separate "
+      "medium which must also be protected by dvdisaster. This prevents from losing the "
+      "error correction files in case of a medium defect.\n"));
 
       /*** Redundancy selection */
 
@@ -582,8 +584,8 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    /* Normal redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Normal redundancy"), _("Normal"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Normal redundancy"), _("Normal"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -602,19 +604,19 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       {  wl->radio1B = radio;
          gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
          if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Normal redundancy</b>\n\n"
-			    "The preset \"normal\" creates a redundancy of 14.3%%.\n"
-			    "It invokes optimized program code to speed up the "
-			    "error correction file creation."));
+   GuiAddHelpParagraph(lwoh, _("<b>Normal redundancy</b>\n\n"
+      "The preset \"normal\" creates a redundancy of 14.3%%.\n"
+      "It invokes optimized program code to speed up the "
+      "error correction file creation."));
 
    /* High redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("High redundancy"), _("High"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("High redundancy"), _("High"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -632,20 +634,19 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->radio2B = radio;
          gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>High redundancy</b>\n\n"
-			    "The preset \"high\" creates a redundancy of 33.5%%.\n"
-			    "It invokes optimized program code to speed up the "
-			    "error correction file creation."));
-
+   GuiAddHelpParagraph(lwoh, _("<b>High redundancy</b>\n\n"
+      "The preset \"high\" creates a redundancy of 33.5%%.\n"
+      "It invokes optimized program code to speed up the "
+      "error correction file creation."));
 
    /* User-selected redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Other redundancy"), _("Other"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Other redundancy"), _("Other"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  hbox = gtk_hbox_new(FALSE, 4);
@@ -679,20 +680,21 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       }
       else
       {  wl->redundancyScaleB = scale;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Other redundancy</b>\n\n"
-			    "Specifies the redundancy by percent.\n"
-			    "An error correction file with x%% redundancy "
-			    "will be approximately x%% of the size of the "
-			    "corresponding image file."));
+   GuiAddHelpParagraph(lwoh, _("<b>Other redundancy</b>\n\n"
+      "Specifies the redundancy by percent.\n"
+      "An error correction file with x%% redundancy "
+      "will be approximately x%% of the size of the "
+      "corresponding image file."));
 
    /* Space-delimited redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Space-delimited redundancy"), _("Use at most"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Space-delimited redundancy"),
+				       _("Use at most"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  hbox = gtk_hbox_new(FALSE, 4);
@@ -729,18 +731,18 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->redundancySpinB = spin;
 	 wl->radio4LabelB = lab;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Space-delimited redundancy</b>\n\n"
-			    "Specifies the maximum size of the error correction file in MiB. "
-			    "dvdisaster will choose a suitable redundancy setting so that "
-			    "the overall size of the error correction file does not exceed "
-			    "the given limit.\n\n"
-			    "<b>Advance notice:</b> When using the same size setting for "
-			    "images of vastly different size, smaller images receive more "
-			    "redundancy than larger ones. This is usually not what you want."));
+   GuiAddHelpParagraph(lwoh, _("<b>Space-delimited redundancy</b>\n\n"
+      "Specifies the maximum size of the error correction file in MiB. "
+      "dvdisaster will choose a suitable redundancy setting so that "
+      "the overall size of the error correction file does not exceed "
+      "the given limit.\n\n"
+      "<b>Advance notice:</b> When using the same size setting for "
+      "images of vastly different size, smaller images receive more "
+      "redundancy than larger ones. This is usually not what you want."));
 
    /* Preset redundancy values
       FIXME: replace by ResetRS03Prefs()? */
@@ -786,13 +788,13 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
    text = g_strdup_printf(_("%d sectors"), Closure->prefetchSectors);
-   lwoh = CreateLabelWithOnlineHelp(_("Sector preloading"), text);
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Sector preloading"), text);
+   GuiRegisterPreferencesHelpWindow(lwoh);
    g_free(text);
 
    wl->prefetchLwoh = lwoh;
-   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d sectors"), 2222);
-   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d sectors"), 2222);
+   GuiLockLabelSize(lwoh->normalLabel, _utf("%d sectors"), 2222);
+   GuiLockLabelSize(lwoh->linkLabel, _utf("%d sectors"), 2222);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -822,25 +824,25 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->prefetchScaleB = scale; 
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Sector preloading</b>\n\n"
-			    "dvdisaster optimizes access to the image and error correction "
-			    "data by preloading and caching parts of them.\n\n"
-			    "The optimal preload value depends on the storage system "
-			    "used for the image and error correction files.\n"
-			    "Use small preload values for systems with low latency "
-			    "and seek time, e.g. SSDs. For magnetic hard disks "
-			    "performance may be better using larger preload values.\n\n"
-			    "A preload value of n will used approx. n MiB of RAM."));
+   GuiAddHelpParagraph(lwoh, _("<b>Sector preloading</b>\n\n"
+      "dvdisaster optimizes access to the image and error correction "
+      "data by preloading and caching parts of them.\n\n"
+      "The optimal preload value depends on the storage system "
+      "used for the image and error correction files.\n"
+      "Use small preload values for systems with low latency "
+      "and seek time, e.g. SSDs. For magnetic hard disks "
+      "performance may be better using larger preload values.\n\n"
+      "A preload value of n will used approx. n MiB of RAM."));
 
    /*** IO strategy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("I/O strategy"), 
-				    _("I/O strategy: "));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("I/O strategy"), 
+				       _("I/O strategy: "));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -874,11 +876,11 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else  
       {  wl->ioRadio1B = radio1;
 	 wl->ioRadio2B = radio2;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>I/O strategy</b>\n\n"
+   GuiAddHelpParagraph(lwoh, _("<b>I/O strategy</b>\n\n"
      "This option controls how dvdisaster performs its disk I/O while creating error "
      "correction data. Try both options and see which performs best on your hardware "
      "setting.\n\n" 
@@ -902,13 +904,13 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
 
    text = g_strdup_printf(_("%d threads"), Closure->codecThreads);
-   lwoh = CreateLabelWithOnlineHelp(_("Multithreading"), text);
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Multithreading"), text);
+   GuiRegisterPreferencesHelpWindow(lwoh);
    g_free(text);
 
    wl->threadsLwoh = lwoh;
-   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d threads"), 22);
-   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d threads"), 22);
+   GuiLockLabelSize(lwoh->normalLabel, _utf("%d threads"), 22);
+   GuiLockLabelSize(lwoh->linkLabel, _utf("%d threads"), 22);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -939,22 +941,22 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->threadsScaleB = scale; 
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Multithreading</b>\n\n"
-			    "RS03 can use multiple threads (and therefore CPU cores)"
-			    "for encoding.\n"
-			    "For systems with 4 cores or less, set the number of "
-			    "threads to the number of cores. If you have more cores, "
-			    "leave one unused for doing I/O and graphics updates.\n"
-			    "E.g. use 7 threads on an 8 core system.\n\n"
-			    "Performance will not scale linearly "
-			    "with the number of CPU cores. Hard disk performance "
-			    "is more limiting than raw CPU power. When using "
-			    "4 cores or more, memory bandwidth may also affect "
-			    "performance."));
+   GuiAddHelpParagraph(lwoh, _("<b>Multithreading</b>\n\n"
+      "RS03 can use multiple threads (and therefore CPU cores)"
+      "for encoding.\n"
+      "For systems with 4 cores or less, set the number of "
+      "threads to the number of cores. If you have more cores, "
+      "leave one unused for doing I/O and graphics updates.\n"
+      "E.g. use 7 threads on an 8 core system.\n\n"
+      "Performance will not scale linearly "
+      "with the number of CPU cores. Hard disk performance "
+      "is more limiting than raw CPU power. When using "
+      "4 cores or more, memory bandwidth may also affect "
+      "performance."));
 
    /*** Codec type */
 
@@ -965,9 +967,9 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
-   lwoh = CreateLabelWithOnlineHelp(_("Encoding algorithm"), 
-				    _("Use: "));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Encoding algorithm"), 
+				       _("Use: "));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1029,11 +1031,11 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio2B = radio2;
 	 wl->eaRadio3B = radio3;
 	 wl->eaRadio4B = radio4;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Encoding algorithm</b>\n\n"
+   GuiAddHelpParagraph(lwoh, _("<b>Encoding algorithm</b>\n\n"
      "This option affects the speed of generating RS03 error correction data.\n"
      "dvdisaster can either use a generic encoding algorithm using 32bit or 64bit "
      "wide operations running on the integer unit of the processor, or use "
@@ -1045,3 +1047,4 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
      "otherwise the 64bit algorithm will be used."
 			    ));
 }
+#endif /* WITH_GUI_YES */

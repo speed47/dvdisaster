@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
@@ -54,7 +56,12 @@ void register_rs02(void)
    method->finalizeCksums    = RS02FinalizeCksums;
    method->expectedImageSize = RS02ExpectedImageSize;
 
-#ifndef WITH_CLI_ONLY_YES
+   /*** Widget list must even exist with dummy values in CLI only version
+	to prevent null ptr references in SetLabel() etc. */
+
+   method->widgetList = g_malloc0(sizeof(RS02Widgets));
+
+#ifdef WITH_GUI_YES
    /*** Linkage to rs02-window.c */
 
    method->createCreateWindow = CreateRS02EncWindow;
@@ -72,7 +79,7 @@ void register_rs02(void)
    method->createVerifyWindow = CreateRS02VerifyWindow;
    method->resetVerifyWindow  = ResetRS02VerifyWindow;
 #endif
-
+   
    /*** Register ourself */
 
    method->destroy = destroy;
@@ -81,28 +88,23 @@ void register_rs02(void)
 }
 
 static void destroy(Method *method)
-{
-#ifndef WITH_CLI_ONLY_YES
-   RS02Widgets *wl = (RS02Widgets*)method->widgetList;
-#endif
+{  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
    RS02CksumClosure *csc = (RS02CksumClosure*)method->ckSumClosure;
 
    if(csc->lay)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
-#ifndef WITH_CLI_ONLY_YES
    if(wl)
-   {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
-
-      if(wl->cmpSpiral)
-	FreeSpiral(wl->cmpSpiral);
+   {
+#ifdef WITH_GUI_YES
+      GuiFreeCurve(wl->fixCurve);
+      GuiFreeSpiral(wl->cmpSpiral);
 
       if(wl->cmpLayout)
 	g_object_unref(wl->cmpLayout);
-
+#endif
       g_free(wl);
    }
-#endif
 }
 

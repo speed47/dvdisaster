@@ -20,10 +20,11 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "galois-inlines.h"
-
 
 /***
  *** Mapping between cd frame and parity vectors

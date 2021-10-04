@@ -7,9 +7,9 @@ REDUNDANCY="-n normal"
 
 MASTERISO=$ISODIR/rs01-master.iso
 MASTERECC=$ISODIR/rs01-master.ecc
-TMPISO=$ISODIR/rs01-tmp.iso
-TMPECC=$ISODIR/rs01-tmp.ecc
-SIMISO=$ISODIR/rs01-sim.iso
+TMPISO=$TMPDIR/rs01-tmp.iso
+TMPECC=$TMPDIR/rs01-tmp.ecc
+SIMISO=$TMPDIR/rs01-sim.iso
 
 CODEC_PREFIX=RS01
 
@@ -53,7 +53,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 if try "good image" good; then
 
-  run_regtest good "-t" $MASTERISO $MASTERECC
+   run_regtest good "-t" $MASTERISO $MASTERECC
 fi
 
 # Test good files
@@ -382,6 +382,7 @@ if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_r
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
@@ -395,19 +396,21 @@ if try "read image with ecc (RS02) and create additional ecc file" ecc_recreate_
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -c -mRS02 -n$((ISOSIZE+6000)) >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs02 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
-# Note: RS03 information will not be removed from the image. This ist intentional behaviour.
+# Note: RS03 information will not be removed from the image. This is intentional behaviour.
 
 if try "read image with ecc (RS03i) and create additional ecc file" ecc_recreate_after_read_rs03i; then
   cp $MASTERISO $SIMISO
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -c -mRS03 -n$((ISOSIZE+6000)) >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03i "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
@@ -420,6 +423,7 @@ if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8 -mRS03 -o file >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03f "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
@@ -433,6 +437,7 @@ if try "create ecc after completing partial image" ecc_create_after_partial_read
 
   $NEWVER --debug -i$TMPISO --erase 1000-1500 >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_create_after_partial_read "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
@@ -440,7 +445,7 @@ fi
 # Read image with wrong ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is taken from the read process,
 # not the wrong ecc file.
-# FIXME expected output not in database, disabling for now:
+# TODO
 
 if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recreate_after_read_wrong_rs01; then
   cp $MASTERISO $SIMISO
@@ -448,6 +453,7 @@ if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recrea
   $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE-777)) --random-seed 1337 >>$LOGFILE 2>&1
   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
 
+  replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_wrong_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
 fi
@@ -669,11 +675,11 @@ fi
 
 if try "scanning image, device access denied" scan_no_device_access; then
 
-  touch $ISODIR/sdz
-  chmod 000 $ISODIR/sdz
+  touch $TMPDIR/sdz
+  chmod 000 $TMPDIR/sdz
     
-  run_regtest scan_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $ISODIR/sdz -s" $ISODIR/no.iso  $ISODIR/no.ecc
-  rm -f $ISODIR/sdz
+  run_regtest scan_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -s" $ISODIR/no.iso  $ISODIR/no.ecc
+  rm -f $TMPDIR/sdz
 fi
 
 # Scan image from defective media without error correction data available
@@ -886,11 +892,13 @@ fi
 
 # Scan an image with a simulated hardware failure and 
 # --ignore-fatal-sense not set.
+# second failure is helpful for testing "ignore once" in the GUI.
 
 if try "scanning image with simulated hardware failure" scan_with_hardware_failure; then
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase "6000:hardware failure" >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_with_hardware_failure "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
@@ -915,6 +923,7 @@ if try "scanning medium containing dead sector markers" scan_medium_with_dsm; th
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "4999:pass as dead sector marker" >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase "5799:pass as dead sector marker" >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_medium_with_dsm "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
@@ -939,7 +948,7 @@ if try "reading good image in good file" read_no_ecc_good_file; then
   cp $MASTERISO $TMPISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest read_no_ecc_good_file "--spinup-delay=0 -r" $TMPISO
+  run_regtest read_no_ecc_good_file "--spinup-delay=0 -r" $TMPISO $ISODIR/no.ecc
 fi
 
 # Read image from non-existant device
@@ -955,11 +964,11 @@ fi
 
 if try "reading image, device access denied" read_no_device_access; then
 
-  touch $ISODIR/sdz
-  chmod 000 $ISODIR/sdz
+  touch $TMPDIR/sdz
+  chmod 000 $TMPDIR/sdz
     
-  run_regtest read_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $ISODIR/sdz -r" $TMPISO  $ISODIR/no.ecc
-  rm -f $ISODIR/sdz
+  run_regtest read_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -r" $TMPISO  $ISODIR/no.ecc
+  rm -f $TMPDIR/sdz
 fi
 
 # Read image from defective media without error correction data available
@@ -1036,7 +1045,7 @@ if try "completing truncated image, defective media, no ecc data" read_truncated
   run_regtest read_truncated_no_ecc_again "--spinup-delay=0 -j 1 -r" $TMPISO  $ISODIR/no.ecc
 fi
 
-# Complete a truncated image from simulated defective media
+# Complete a truncated image from simulated defective media w/ multiple passes
 
 if try "completing truncated image, defective media, multipass, no ecc data" read_multipass_no_ecc_again; then
 
@@ -1056,6 +1065,7 @@ fi
 
 # Complete a partially read image, but continue with gap between the last
 # read and the next sector.
+# range 15000-end must be entered manually in the GUI.
 
 if try "completing truncated image with reading gap, no ecc data" read_with_gap_no_ecc; then
 
@@ -1068,6 +1078,7 @@ if try "completing truncated image with reading gap, no ecc data" read_with_gap_
 fi
 
 # Read a new image, but only for a partial range.
+# range 10000-15000 must be entered manually in the GUI.
 
 if try "reading new image with given range, no ecc data" read_new_with_range_no_ecc; then
 
@@ -1223,6 +1234,7 @@ fi
 
 # Re-read image with error correction data available
 # and wrong fingerprint in existing image
+# Expected error: "Image file does not match the optical disc."
 
 if try "re-reading image, wrong fingerprint, ecc data" read_wrong_fp_with_ecc; then
 
@@ -1231,6 +1243,7 @@ if try "re-reading image, wrong fingerprint, ecc data" read_wrong_fp_with_ecc; t
   dd if=$MASTERISO of=$TMPISO bs=2048 count=800 >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --byteset 16,100,200 >>$LOGFILE 2>&1
     
+  replace_config confirm-deletion 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_wrong_fp_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
 fi
@@ -1253,6 +1266,8 @@ fi
 
 # Read an image for which ecc information is available,
 # but requiring a newer dvdisaster version.
+# CLI mode prints a warning and continues;
+# please click "OK" in GUI mode.
 
 if try "reading image ecc file requiring a newer dvdisaster version" read_with_incompatible_ecc; then
 
@@ -1270,11 +1285,13 @@ fi
 
 # Read an image with a simulated hardware failure and 
 # --ignore-fatal-sense not set.
+# Answer "Abort" in the GUI.
 
 if try "reading image with simulated hardware failure" read_with_hardware_failure; then
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase "6000:hardware failure" >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_hardware_failure "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
@@ -1287,6 +1304,7 @@ if try "reading image, ignoring simulated hardware failure" read_with_ignored_ha
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase "6000:hardware failure" >>$LOGFILE 2>&1
 
   replace_config ignore-fatal-sense 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
@@ -1377,7 +1395,7 @@ fi
 # Rationale: Sectors carrying the unreadable marker are physically
 # readable and re-reading them multiple times would not change the outcome.
 # When using the resulting image during a verify or create operation,
-# the unreable sectors will be treated correctly.
+# the unreadable sectors will be treated correctly.
 
 if try "reading medium containing dead sector markers, verbose output" read_medium_with_dsm_verbose; then
 
@@ -1392,6 +1410,10 @@ fi
 
 # Complete medium for image containing several uncorrectable dead sector markers
 # (sector displacement)
+# Note that the SIMISO is correct, just the medium file has the defective sectors
+# which is not very likely to happen in real world.
+# These errors are not reported during reading (as they did not appear in the
+# read medium). Verifying the defective image file will uncover them, though.
 
 if try "completing image with uncorrectable dead sector markers" read_medium_with_dsm_in_image; then
 
@@ -1409,6 +1431,8 @@ if try "completing image with uncorrectable dead sector markers" read_medium_wit
 fi
 
 # Complete medium for image containing several uncorrectable dead sector markers, verbose output
+# not applicable in GUI mode
+# See comments for test case above.
 
 if try "completing image with uncorrectable dead sector markers, verbose output" read_medium_with_dsm_in_image_verbose; then
 
@@ -1427,6 +1451,7 @@ fi
 
 # Complete medium for image containing several uncorrectable dead sector markers
 # (non matching fingerprint)
+# See comments for test cases above.
 
 if try "completing image with uncorrectable dead sector markers (2)" read_medium_with_dsm_in_image2; then
 
@@ -1451,6 +1476,7 @@ fi
 
 # Complete medium for image containing several uncorrectable dead sector markers, verbose
 # (non matching fingerprint)
+# See comments for test case above.
 
 if try "completing image with uncorrectable dead sector markers (2), verbose output" read_medium_with_dsm_in_image2_verbose; then
 
@@ -1504,11 +1530,11 @@ fi
 
 if try "reading image, device access denied" adaptive_no_device_access; then
 
-  touch $ISODIR/sdz
-  chmod 000 $ISODIR/sdz
+  touch $TMPDIR/sdz
+  chmod 000 $TMPDIR/sdz
     
-  run_regtest adaptive_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $ISODIR/sdz -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-  rm -f $ISODIR/sdz
+  run_regtest adaptive_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
+  rm -f $TMPDIR/sdz
 fi
 
 # Read image from defective media without error correction data available

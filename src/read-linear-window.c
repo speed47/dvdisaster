@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #include "read-linear.h"
@@ -52,9 +54,12 @@ static gboolean max_speed_idle_func(gpointer data)
    return FALSE;
 }
 
-void InitializeCurve(void *rc_ptr, int max_rate, int can_c2)
+void GuiInitializeCurve(void *rc_ptr, int max_rate, int can_c2)
 {  read_closure *rc = (read_closure*)rc_ptr;
    int i;
+
+   if(!Closure->guiMode)
+     return;
 
    Closure->readLinearCurve->maxY = max_rate;
    Closure->readLinearCurve->maxX = rc->image->dh->sectors/512;
@@ -101,7 +106,7 @@ static gboolean curve_idle_func(gpointer data)
    gtk_label_set_text(GTK_LABEL(Closure->readLinearSpeed), utf);
    g_free(utf);
 
-   g_snprintf(buf, 80, _("Unreadable / skipped sectors: %" PRId64 ""), Closure->readErrors);
+   g_snprintf(buf, 80, _("Unreadable / skipped sectors: %" PRId64), Closure->readErrors);
 
    utf = g_locale_to_utf8(buf, -1, NULL, NULL, NULL);
    gtk_label_set_text(GTK_LABEL(Closure->readLinearErrors), utf);
@@ -111,11 +116,11 @@ static gboolean curve_idle_func(gpointer data)
 
    for(i=rc->lastSegment; i<ci->percent; i++)
      switch(Closure->readLinearCurve->ivalue[i])
-     {  case 0: DrawSpiralSegment(Closure->readLinearSpiral, Closure->blueSector, i); break;
-        case 1: DrawSpiralSegment(Closure->readLinearSpiral, Closure->greenSector, i); break;
-        case 2: DrawSpiralSegment(Closure->readLinearSpiral, Closure->redSector, i); break;
-        case 3: DrawSpiralSegment(Closure->readLinearSpiral, Closure->darkSector, i); break;
-        case 4: DrawSpiralSegment(Closure->readLinearSpiral, Closure->yellowSector, i); break;
+     {  case 0: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->blueSector, i); break;
+        case 1: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->greenSector, i); break;
+        case 2: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->redSector, i); break;
+        case 3: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->darkSector, i); break;
+        case 4: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->yellowSector, i); break;
      }
 
    rc->lastSegment = ci->percent;
@@ -141,7 +146,7 @@ static gboolean curve_idle_func(gpointer data)
       gdk_window_clear(Closure->readLinearDrawingArea->window);
       redraw_curve();
       rc->lastPlotted = ci->percent;
-      rc->lastPlottedY = CurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
+      rc->lastPlottedY = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
       g_free(ci);
       g_mutex_lock(rc->rendererMutex);
       rc->activeRenderers--;
@@ -151,14 +156,14 @@ static gboolean curve_idle_func(gpointer data)
 
    /*** Draw the changed curve part */
    
-   x0 = CurveX(Closure->readLinearCurve, rc->lastPlotted);
-   y0 = CurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[rc->lastPlotted]);
+   x0 = GuiCurveX(Closure->readLinearCurve, rc->lastPlotted);
+   y0 = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[rc->lastPlotted]);
    if(rc->lastPlottedY) y0 = rc->lastPlottedY;
 
    for(i=rc->lastPlotted+1; i<=ci->percent; i++)
-   {  gint x1 = CurveX(Closure->readLinearCurve, i);
-      gint y1 = CurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[i]);
-      gint l1 = CurveLogY(Closure->readLinearCurve, Closure->readLinearCurve->lvalue[i]);
+   {  gint x1 = GuiCurveX(Closure->readLinearCurve, i);
+      gint y1 = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[i]);
+      gint l1 = GuiCurveLogY(Closure->readLinearCurve, Closure->readLinearCurve->lvalue[i]);
 
       if(Closure->readLinearCurve->lvalue[i])
       {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
@@ -191,12 +196,12 @@ static gboolean curve_idle_func(gpointer data)
  * Add one new data point
  */
 
-void AddCurveValues(void *rc_ptr, int percent, int color, int c2)
+void GuiAddCurveValues(void *rc_ptr, int percent, int color, int c2)
 {  read_closure *rc = (read_closure*)rc_ptr;
    curve_info *ci;
    int i;
 
-   if(percent < 0 || percent > 1000)
+   if(!Closure->guiMode || percent < 0 || percent > 1000)
      return;
 
    ci = g_malloc(sizeof(curve_info));
@@ -240,18 +245,23 @@ void AddCurveValues(void *rc_ptr, int percent, int color, int c2)
 
 static gboolean curve_mark_idle_func(gpointer data)
 {
-   DrawSpiral(Closure->readLinearSpiral);
+   GuiDrawSpiral(Closure->readLinearSpiral);
 
    return FALSE;
 }
 
-void MarkExistingSectors(void)
+void GuiMarkExistingSectors(void)
 {  int i;
-   int x = Closure->readLinearCurve->rightX + 20;
+   int x;
 
+   if(!Closure->guiMode)
+     return;
+
+   x = Closure->readLinearCurve->rightX + 20;
+   
    Closure->additionalSpiralColor = 3;
-   DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		   _("Already present"), Closure->darkSector, x, -1);
+   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+		      _("Already present"), Closure->darkSector, x, -1);
 
    for(i=0; i<1000; i++)
       if(Closure->readLinearSpiral->segmentColor[i] == Closure->greenSector)
@@ -274,8 +284,8 @@ static void update_geometry(void)
 
    /* Curve geometry */ 
 
-   UpdateCurveGeometry(Closure->readLinearCurve, "99x", 
-		       Closure->readLinearSpiral->diameter + 30);
+   GuiUpdateCurveGeometry(Closure->readLinearCurve, "99x", 
+			  Closure->readLinearSpiral->diameter + 30);
 
    /* Spiral center */
 
@@ -285,7 +295,7 @@ static void update_geometry(void)
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
    {  int w,h;
 
-      SetText(Closure->readLinearCurve->layout, _("Sectors with CRC errors"), &w, &h);
+      GuiSetText(Closure->readLinearCurve->layout, _("Sectors with CRC errors"), &w, &h);
 
       Closure->readLinearSpiral->my -= h;
    }
@@ -308,41 +318,41 @@ static void redraw_curve(void)
 
    x = Closure->readLinearCurve->rightX + 20;
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-   SetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
+   GuiSetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
    gdk_draw_layout(d, Closure->drawGC, 
 		   x,
 		   Closure->readLinearCurve->topY - h - 5, 
 		   Closure->readLinearCurve->layout);
 
    if(Closure->additionalSpiralColor == 0)
-     DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		     _("Not touched this time"), Closure->curveColor, x, -1);
+     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+			_("Not touched this time"), Closure->curveColor, x, -1);
 
    if(Closure->additionalSpiralColor == 3)
-     DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		     _("Already present"), Closure->darkSector, x, -1);
+     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+			_("Already present"), Closure->darkSector, x, -1);
 
-   DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		   _("Successfully read"), Closure->greenSector, x, pos++);
+   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+		      _("Successfully read"), Closure->greenSector, x, pos++);
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
-     DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		     _("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
+     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+			_("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
 
-   DrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		   _("Unreadable / skipped"), Closure->redSector, x, pos++);
+   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+		      _("Unreadable / skipped"), Closure->redSector, x, pos++);
 
-   DrawSpiral(Closure->readLinearSpiral);
+   GuiDrawSpiral(Closure->readLinearSpiral);
 
    /* Redraw the curve */
 
-   RedrawAxes(Closure->readLinearCurve);
-   RedrawCurve(Closure->readLinearCurve, 1000);
+   GuiRedrawAxes(Closure->readLinearCurve);
+   GuiRedrawCurve(Closure->readLinearCurve, 1000);
 }
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  
-   SetSpiralWidget(Closure->readLinearSpiral, widget);
+   GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
   
    if(event->count) /* Exposure compression */
      return TRUE;
@@ -357,13 +367,13 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
  *** Reset the notebook contents for new scan/read action
  ***/
 
-void ResetLinearReadWindow()
+void GuiResetLinearReadWindow()
 {  
    gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->readLinearNotebook), 0);
 
-   ZeroCurve(Closure->readLinearCurve);
-   FillSpiral(Closure->readLinearSpiral, Closure->background);
-   DrawSpiral(Closure->readLinearSpiral);
+   GuiZeroCurve(Closure->readLinearCurve);
+   GuiFillSpiral(Closure->readLinearSpiral, Closure->background);
+   GuiDrawSpiral(Closure->readLinearSpiral);
 }
 
 /*
@@ -390,16 +400,16 @@ static gboolean redraw_idle_func(gpointer data)
    return FALSE;
 }
 
-void RedrawReadLinearWindow(void)
-{
-   g_idle_add(redraw_idle_func, NULL);
+void GuiRedrawReadLinearWindow(void)
+{  if(Closure->guiMode)
+    g_idle_add(redraw_idle_func, NULL);
 }
 
 /***
  *** Create the notebook contents for the reading and scanning action
  ***/
 
-void CreateLinearReadWindow(GtkWidget *parent)
+void GuiCreateLinearReadWindow(GtkWidget *parent)
 {  GtkWidget *sep,*ignore,*d_area,*notebook,*hbox;
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
@@ -441,7 +451,8 @@ void CreateLinearReadWindow(GtkWidget *parent)
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), Closure->readLinearFootline, ignore);
 
-   Closure->readLinearCurve  = CreateCurve(d_area, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
+   Closure->readLinearCurve  = GuiCreateCurve(d_area, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
    Closure->readLinearCurve->leftLogLabel = g_strdup(_("C2 errors"));
-   Closure->readLinearSpiral = CreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
+   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
 }
+#endif /* WITH_GUI_YES */

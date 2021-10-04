@@ -2,17 +2,20 @@
 Tentative to do/ release schedule
 
 Versions 0.79.x: development releases
-* restart project, catch up wich recent compiler and OS version,
+* restart project, catch up wich recent compiler and OS version
 * last releases with gtk-2 
 
 work in progress (this release):
 
-- clean build for gcc-10 (Slackware 15, Debian testing)
+- split GUI code from core source to allow for command-line only build (done)
+- merge patches from Stéphane Lesimple (done) and Debian (done)
 
-upcoming (next releases):
+upcoming (next stable release):
 
-- split GUI code from core source to allow for command-line only build
 - restore adaptive reading for all codecs
+
+(no more releases for 0.79.x planned;
+ except for maintenance issues should the need arise)
 
 Versions 0.80.x: development releases
 * gtk-4 migration
@@ -22,14 +25,14 @@ Versions 0.80.x: development releases
 - remove obsolete features, especially from the GUI
 - ... many more will likely be added ...
 
-Version 0.82: next milestone/stable release
+Version 0.82: milestone/stable release
  - RS03 encoding considered feature complete
 
 Version 0.83: development releases
  - multithreaded decoding (error correction/repair) 
    for RS01/RS02/RS03
 
-Version 0.84: milestone release
+Version 0.84: milestone/stable release
  - RS03 decoding considered feature complete
 
 Version 0.90:

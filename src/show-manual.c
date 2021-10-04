@@ -20,6 +20,9 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #ifdef SYS_MINGW
@@ -27,6 +30,7 @@
 #include "shellapi.h"
 #endif
 
+#ifndef SYS_MINGW
 static void send_errormsg(int fd, char *format, ...)
 {  va_list argp;
    char *msg;
@@ -52,14 +56,19 @@ static int recv_errormsg(int fd, char **msg)
    
    return n;
 }
+#endif
 
-void ShowURL(char *target)
+void GuiShowURL(char *target)
 {  guint64 ignore;
-   pid_t pid;
    int hyperlink = 0;
-   char *path, *msg;
+   char *path;
+
+#ifndef SYS_MINGW
+   pid_t pid;
+   char *msg;
    int err_pipe[2]; /* child may send down err msgs to us here */
    int result;
+#endif
    
    if(target && !strncmp(target, "http", 4))
    {  hyperlink = 1;
@@ -71,7 +80,7 @@ void ShowURL(char *target)
    if(!hyperlink)
    {  if(!Closure->docDir)
       {  
-	 CreateMessage(_("Documentation not installed."), GTK_MESSAGE_ERROR);
+	 GuiCreateMessage(_("Documentation not installed."), GTK_MESSAGE_ERROR);
 	 return;
       }
 
@@ -86,7 +95,7 @@ void ShowURL(char *target)
 
      if(!LargeStat(path, &ignore))
      {  
-        CreateMessage(_("Documentation file\n%s\nnot found.\n"), GTK_MESSAGE_ERROR, path);
+        GuiCreateMessage(_("Documentation file\n%s\nnot found.\n"), GTK_MESSAGE_ERROR, path);
         g_free(path);
         return;
      }
@@ -102,7 +111,7 @@ void ShowURL(char *target)
 
    result = pipe2(err_pipe, O_CLOEXEC);
    if(result == -1)
-   {  CreateMessage(_("Could not create pipe before fork"), GTK_MESSAGE_ERROR);
+   {  GuiCreateMessage(_("Could not create pipe before fork"), GTK_MESSAGE_ERROR);
       return;
    }
    pid = fork();
@@ -110,7 +119,7 @@ void ShowURL(char *target)
    if(pid == -1)
    {  close(err_pipe[0]);
       close(err_pipe[1]);
-      CreateMessage(_("Could not fork to start xdg-open"), GTK_MESSAGE_ERROR);
+      GuiCreateMessage(_("Could not fork to start xdg-open"), GTK_MESSAGE_ERROR);
       return;
    }
 
@@ -124,7 +133,7 @@ void ShowURL(char *target)
       close(err_pipe[0]);
 
       /* prepare args and try to exec xdg-open */
-
+      
       argv[argc++] = "xdg-open";
       argv[argc++] = path;
       argv[argc++] = NULL;
@@ -133,8 +142,8 @@ void ShowURL(char *target)
       /* if we reach this, telegraph our parent that sth f*cked up */
 
       send_errormsg(err_pipe[1],
-                   _("execvp could not execute \"xdg-open\":\n%s\nIs xdg-open installed correctly?\n"),
-                   strerror(errno));
+		    _("execvp could not execute \"xdg-open\":\n%s\nIs xdg-open installed correctly?\n"),
+		    strerror(errno));
       close(err_pipe[1]);
       _exit(110); /* couldn't execute */
    }
@@ -146,7 +155,9 @@ void ShowURL(char *target)
    close(err_pipe[0]);
 
    if(result)
-      CreateMessage(msg, GTK_MESSAGE_ERROR);
+   {  GuiCreateMessage("%s", GTK_MESSAGE_ERROR, msg);
+   }
 #endif
 }
 
+#endif

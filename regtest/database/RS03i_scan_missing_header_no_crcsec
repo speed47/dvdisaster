@@ -4559,3 +4559,4 @@ CrcBuf contents, image path none (medium):
   full: e6ba3df8c139263743420793c037218a
   fp sector: 16; 33b0c14f099f69c29719b7a181c0241d
   missing crcs: 0
+FreeCrcBuf - buffer cleared

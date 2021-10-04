@@ -1,4 +1,4 @@
-1f6512e19177b3d371da6843711a58cf
+2ee5510fa6e73321c2759f89ac018026
 ignore
 This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
@@ -304,250 +304,109 @@ RS03: try number = 161, reading sector 343796
 RS03: try number = 162, reading sector 345205
 RS03: try number = 163, reading sector 346614
 RS03: try number = 164, reading sector 348023
--> 136 untested layers remaining
+-> 87 untested layers remaining
 - layer slice 1
-RS03: try number = 165, reading sector 140901
-RS03: try number = 166, reading sector 142310
-RS03: try number = 167, reading sector 143719
-RS03: try number = 168, reading sector 145128
-RS03: try number = 169, reading sector 146537
-RS03: try number = 170, reading sector 147946
-RS03: try number = 171, reading sector 149355
-RS03: try number = 172, reading sector 150764
-RS03: try number = 173, reading sector 152173
-RS03: try number = 174, reading sector 153582
-RS03: try number = 175, reading sector 154991
-RS03: try number = 176, reading sector 156400
-RS03: try number = 177, reading sector 157809
-RS03: try number = 178, reading sector 159218
-RS03: try number = 179, reading sector 160627
-RS03: try number = 180, reading sector 162036
-RS03: try number = 181, reading sector 163445
-RS03: try number = 182, reading sector 164854
-RS03: try number = 183, reading sector 166263
-RS03: try number = 184, reading sector 167672
-RS03: try number = 185, reading sector 169081
-RS03: try number = 186, reading sector 170490
-RS03: try number = 187, reading sector 171899
-RS03: try number = 188, reading sector 173308
-RS03: try number = 189, reading sector 174717
-RS03: try number = 190, reading sector 176126
-RS03: try number = 191, reading sector 177535
-RS03: try number = 192, reading sector 178944
-RS03: try number = 193, reading sector 180353
-RS03: try number = 194, reading sector 181762
-RS03: try number = 195, reading sector 183171
-RS03: try number = 196, reading sector 184580
-RS03: try number = 197, reading sector 185989
-RS03: try number = 198, reading sector 187398
-RS03: try number = 199, reading sector 188807
-RS03: try number = 200, reading sector 190216
-RS03: try number = 201, reading sector 191625
-RS03: try number = 202, reading sector 193034
-RS03: try number = 203, reading sector 194443
-RS03: try number = 204, reading sector 195852
-RS03: try number = 205, reading sector 197261
-RS03: try number = 206, reading sector 198670
-RS03: try number = 207, reading sector 200079
-RS03: try number = 208, reading sector 201488
-RS03: try number = 209, reading sector 202897
-RS03: try number = 210, reading sector 204306
-RS03: try number = 211, reading sector 205715
-RS03: try number = 212, reading sector 207124
-RS03: try number = 213, reading sector 208533
-RS03: try number = 214, reading sector 209942
-RS03: try number = 215, reading sector 211351
-RS03: try number = 216, reading sector 212760
-RS03: try number = 217, reading sector 214169
-RS03: try number = 218, reading sector 215578
-RS03: try number = 219, reading sector 216987
-RS03: try number = 220, reading sector 218396
-RS03: try number = 221, reading sector 219805
-RS03: try number = 222, reading sector 221214
-RS03: try number = 223, reading sector 222623
-RS03: try number = 224, reading sector 224032
-RS03: try number = 225, reading sector 225441
-RS03: try number = 226, reading sector 226850
-RS03: try number = 227, reading sector 228259
-RS03: try number = 228, reading sector 229668
-RS03: try number = 229, reading sector 231077
-RS03: try number = 230, reading sector 232486
-RS03: try number = 231, reading sector 233895
-RS03: try number = 232, reading sector 235304
+RS03: try number = 165, reading sector 211351
+RS03: try number = 166, reading sector 212760
+RS03: try number = 167, reading sector 214169
+RS03: try number = 168, reading sector 215578
+RS03: try number = 169, reading sector 216987
+RS03: try number = 170, reading sector 218396
+RS03: try number = 171, reading sector 219805
+RS03: try number = 172, reading sector 221214
+RS03: try number = 173, reading sector 222623
+RS03: try number = 174, reading sector 224032
+RS03: try number = 175, reading sector 225441
+RS03: try number = 176, reading sector 226850
+RS03: try number = 177, reading sector 228259
+RS03: try number = 178, reading sector 229668
+RS03: try number = 179, reading sector 231077
+RS03: try number = 180, reading sector 232486
+RS03: try number = 181, reading sector 233895
+RS03: try number = 182, reading sector 235304
 .. invalid CRC block 235304
-RS03: try number = 233, reading sector 236713
-RS03: try number = 234, reading sector 238122
-RS03: try number = 235, reading sector 239531
-RS03: try number = 236, reading sector 240940
-RS03: try number = 237, reading sector 242349
-RS03: try number = 238, reading sector 243758
-RS03: try number = 239, reading sector 245167
-RS03: try number = 240, reading sector 246576
-RS03: try number = 241, reading sector 247985
-RS03: try number = 242, reading sector 249394
-RS03: try number = 243, reading sector 250803
-RS03: try number = 244, reading sector 252212
-RS03: try number = 245, reading sector 253621
-RS03: try number = 246, reading sector 255030
-RS03: try number = 247, reading sector 256439
-RS03: try number = 248, reading sector 257848
-RS03: try number = 249, reading sector 259257
-RS03: try number = 250, reading sector 260666
-RS03: try number = 251, reading sector 262075
-RS03: try number = 252, reading sector 263484
-RS03: try number = 253, reading sector 264893
-RS03: try number = 254, reading sector 266302
-RS03: try number = 255, reading sector 267711
-RS03: try number = 256, reading sector 269120
-RS03: try number = 257, reading sector 270529
-RS03: try number = 258, reading sector 271938
-RS03: try number = 259, reading sector 273347
-RS03: try number = 260, reading sector 274756
-RS03: try number = 261, reading sector 276165
-RS03: try number = 262, reading sector 277574
-RS03: try number = 263, reading sector 278983
-RS03: try number = 264, reading sector 280392
-RS03: try number = 265, reading sector 281801
-RS03: try number = 266, reading sector 283210
-RS03: try number = 267, reading sector 284619
-RS03: try number = 268, reading sector 286028
-RS03: try number = 269, reading sector 287437
-RS03: try number = 270, reading sector 288846
-RS03: try number = 271, reading sector 290255
-RS03: try number = 272, reading sector 291664
-RS03: try number = 273, reading sector 293073
-RS03: try number = 274, reading sector 294482
-RS03: try number = 275, reading sector 295891
-RS03: try number = 276, reading sector 297300
-RS03: try number = 277, reading sector 298709
-RS03: try number = 278, reading sector 300118
-RS03: try number = 279, reading sector 301527
-RS03: try number = 280, reading sector 302936
-RS03: try number = 281, reading sector 304345
-RS03: try number = 282, reading sector 305754
-RS03: try number = 283, reading sector 307163
-RS03: try number = 284, reading sector 308572
-RS03: try number = 285, reading sector 309981
-RS03: try number = 286, reading sector 311390
-RS03: try number = 287, reading sector 312799
-RS03: try number = 288, reading sector 314208
-RS03: try number = 289, reading sector 315617
-RS03: try number = 290, reading sector 317026
-RS03: try number = 291, reading sector 318435
-RS03: try number = 292, reading sector 319844
-RS03: try number = 293, reading sector 321253
-RS03: try number = 294, reading sector 322662
-RS03: try number = 295, reading sector 324071
-RS03: try number = 296, reading sector 325480
-RS03: try number = 297, reading sector 326889
-RS03: try number = 298, reading sector 328298
-RS03: try number = 299, reading sector 329707
-RS03: try number = 300, reading sector 331116
--> 32 untested layers remaining
+RS03: try number = 183, reading sector 236713
+RS03: try number = 184, reading sector 238122
+RS03: try number = 185, reading sector 239531
+RS03: try number = 186, reading sector 240940
+RS03: try number = 187, reading sector 242349
+RS03: try number = 188, reading sector 243758
+RS03: try number = 189, reading sector 245167
+RS03: try number = 190, reading sector 246576
+RS03: try number = 191, reading sector 247985
+RS03: try number = 192, reading sector 249394
+RS03: try number = 193, reading sector 250803
+RS03: try number = 194, reading sector 252212
+RS03: try number = 195, reading sector 253621
+RS03: try number = 196, reading sector 255030
+RS03: try number = 197, reading sector 256439
+RS03: try number = 198, reading sector 257848
+RS03: try number = 199, reading sector 259257
+RS03: try number = 200, reading sector 260666
+RS03: try number = 201, reading sector 262075
+RS03: try number = 202, reading sector 263484
+RS03: try number = 203, reading sector 264893
+RS03: try number = 204, reading sector 266302
+RS03: try number = 205, reading sector 267711
+RS03: try number = 206, reading sector 269120
+RS03: try number = 207, reading sector 270529
+RS03: try number = 208, reading sector 271938
+RS03: try number = 209, reading sector 273347
+RS03: try number = 210, reading sector 274756
+RS03: try number = 211, reading sector 276165
+RS03: try number = 212, reading sector 277574
+RS03: try number = 213, reading sector 278983
+RS03: try number = 214, reading sector 280392
+RS03: try number = 215, reading sector 281801
+RS03: try number = 216, reading sector 283210
+RS03: try number = 217, reading sector 284619
+RS03: try number = 218, reading sector 286028
+RS03: try number = 219, reading sector 287437
+RS03: try number = 220, reading sector 288846
+RS03: try number = 221, reading sector 290255
+RS03: try number = 222, reading sector 291664
+RS03: try number = 223, reading sector 293073
+RS03: try number = 224, reading sector 294482
+RS03: try number = 225, reading sector 295891
+RS03: try number = 226, reading sector 297300
+RS03: try number = 227, reading sector 298709
+RS03: try number = 228, reading sector 300118
+RS03: try number = 229, reading sector 301527
+RS03: try number = 230, reading sector 302936
+RS03: try number = 231, reading sector 304345
+RS03: try number = 232, reading sector 305754
+RS03: try number = 233, reading sector 307163
+RS03: try number = 234, reading sector 308572
+RS03: try number = 235, reading sector 309981
+RS03: try number = 236, reading sector 311390
+RS03: try number = 237, reading sector 312799
+RS03: try number = 238, reading sector 314208
+RS03: try number = 239, reading sector 315617
+RS03: try number = 240, reading sector 317026
+RS03: try number = 241, reading sector 318435
+RS03: try number = 242, reading sector 319844
+RS03: try number = 243, reading sector 321253
+RS03: try number = 244, reading sector 322662
+RS03: try number = 245, reading sector 324071
+RS03: try number = 246, reading sector 325480
+RS03: try number = 247, reading sector 326889
+RS03: try number = 248, reading sector 328298
+RS03: try number = 249, reading sector 329707
+RS03: try number = 250, reading sector 331116
+RS03: try number = 251, reading sector 332525
+-> 1 untested layers remaining
 - layer slice 2
-RS03: try number = 301, reading sector 154992
-RS03: try number = 302, reading sector 156401
-RS03: try number = 303, reading sector 157810
-RS03: try number = 304, reading sector 159219
-RS03: try number = 305, reading sector 160628
-RS03: try number = 306, reading sector 162037
-RS03: try number = 307, reading sector 163446
-RS03: try number = 308, reading sector 164855
-RS03: try number = 309, reading sector 166264
-RS03: try number = 310, reading sector 167673
-RS03: try number = 311, reading sector 169082
-RS03: try number = 312, reading sector 170491
-RS03: try number = 313, reading sector 171900
-RS03: try number = 314, reading sector 173309
-RS03: try number = 315, reading sector 174718
-RS03: try number = 316, reading sector 176127
-RS03: try number = 317, reading sector 177536
-RS03: try number = 318, reading sector 178945
-RS03: try number = 319, reading sector 180354
-RS03: try number = 320, reading sector 181763
-RS03: try number = 321, reading sector 183172
-RS03: try number = 322, reading sector 184581
-RS03: try number = 323, reading sector 185990
-RS03: try number = 324, reading sector 187399
-RS03: try number = 325, reading sector 188808
-RS03: try number = 326, reading sector 190217
-RS03: try number = 327, reading sector 191626
-RS03: try number = 328, reading sector 193035
-RS03: try number = 329, reading sector 194444
-RS03: try number = 330, reading sector 195853
-RS03: try number = 331, reading sector 197262
-RS03: try number = 332, reading sector 235305
--> 32 untested layers remaining
+RS03: try number = 252, reading sector 235305
+-> 1 untested layers remaining
 - layer slice 3
-RS03: try number = 333, reading sector 154993
-RS03: try number = 334, reading sector 156402
-RS03: try number = 335, reading sector 157811
-RS03: try number = 336, reading sector 159220
-RS03: try number = 337, reading sector 160629
-RS03: try number = 338, reading sector 162038
-RS03: try number = 339, reading sector 163447
-RS03: try number = 340, reading sector 164856
-RS03: try number = 341, reading sector 166265
-RS03: try number = 342, reading sector 167674
-RS03: try number = 343, reading sector 169083
-RS03: try number = 344, reading sector 170492
-RS03: try number = 345, reading sector 171901
-RS03: try number = 346, reading sector 173310
-RS03: try number = 347, reading sector 174719
-RS03: try number = 348, reading sector 176128
-RS03: try number = 349, reading sector 177537
-RS03: try number = 350, reading sector 178946
-RS03: try number = 351, reading sector 180355
-RS03: try number = 352, reading sector 181764
-RS03: try number = 353, reading sector 183173
-RS03: try number = 354, reading sector 184582
-RS03: try number = 355, reading sector 185991
-RS03: try number = 356, reading sector 187400
-RS03: try number = 357, reading sector 188809
-RS03: try number = 358, reading sector 190218
-RS03: try number = 359, reading sector 191627
-RS03: try number = 360, reading sector 193036
-RS03: try number = 361, reading sector 194445
-RS03: try number = 362, reading sector 195854
-RS03: try number = 363, reading sector 197263
-RS03: try number = 364, reading sector 235306
+RS03: try number = 253, reading sector 235306
 .. invalid CRC block 235306
--> 31 untested layers remaining
+-> 1 untested layers remaining
 - layer slice 4
-RS03: try number = 365, reading sector 154994
-RS03: try number = 366, reading sector 156403
-RS03: try number = 367, reading sector 157812
-RS03: try number = 368, reading sector 159221
-RS03: try number = 369, reading sector 160630
-RS03: try number = 370, reading sector 162039
-RS03: try number = 371, reading sector 163448
-RS03: try number = 372, reading sector 164857
-RS03: try number = 373, reading sector 166266
-RS03: try number = 374, reading sector 167675
-RS03: try number = 375, reading sector 169084
-RS03: try number = 376, reading sector 170493
-RS03: try number = 377, reading sector 171902
-RS03: try number = 378, reading sector 173311
-RS03: try number = 379, reading sector 174720
-RS03: try number = 380, reading sector 176129
-RS03: try number = 381, reading sector 177538
-RS03: try number = 382, reading sector 178947
-RS03: try number = 383, reading sector 180356
-RS03: try number = 384, reading sector 181765
-RS03: try number = 385, reading sector 183174
-RS03: try number = 386, reading sector 184583
-RS03: try number = 387, reading sector 185992
-RS03: try number = 388, reading sector 187401
-RS03: try number = 389, reading sector 188810
-RS03: try number = 390, reading sector 190219
-RS03: try number = 391, reading sector 191628
-RS03: try number = 392, reading sector 193037
-RS03: try number = 393, reading sector 194446
-RS03: try number = 394, reading sector 195855
-RS03: try number = 395, reading sector 235307
+RS03: try number = 254, reading sector 235307
 -> 1 untested layers remaining
 - layer slice 5
-RS03: try number = 396, reading sector 235308
+RS03: try number = 255, reading sector 235308
 ** Success: sector 235308, rediscovered format with 87 roots
 ...augmented image found
 GetImageFingerprint(16): read & cached
@@ -575,4 +434,132 @@ Error correction properties:
 
 Data integrity:
 - medium sectors   : 359295 total / 235219 data
-* quick mode        : image NOT scanned
+CalcRS03Layout(): returning cached layout (augmented)
+* missing sectors  : 154991 - 154993 
+* missing sectors  : 156400 - 156402 
+* missing sectors  : 157809 - 157811 
+* missing sectors  : 159218 - 159220 
+* missing sectors  : 160627 - 160629 
+* missing sectors  : 162036 - 162038 
+* missing sectors  : 163445 - 163447 
+* missing sectors  : 164854 - 164856 
+* missing sectors  : 166263 - 166265 
+* missing sectors  : 167672 - 167674 
+* missing sectors  : 169081 - 169083 
+* missing sectors  : 170490 - 170492 
+* missing sectors  : 171899 - 171901 
+* missing sectors  : 173308 - 173310 
+* missing sectors  : 174717 - 174719 
+* missing sectors  : 176126 - 176128 
+* missing sectors  : 177535 - 177537 
+* missing sectors  : 178944 - 178946 
+* missing sectors  : 180353 - 180355 
+* missing sectors  : 181762 - 181764 
+* missing sectors  : 183171 - 183173 
+* missing sectors  : 184580 - 184582 
+* missing sectors  : 185989 - 185991 
+* missing sectors  : 187398 - 187400 
+* missing sectors  : 188807 - 188809 
+* missing sectors  : 190216 - 190218 
+* missing sectors  : 191625 - 191627 
+* missing sectors  : 193034 - 193036 
+* missing sectors  : 194443 - 194445 
+* missing sectors  : 195852 - 195854 
+* missing sectors  : 197261 - 197262 
+* missing sector   : 211350 
+* missing sector   : 212759 
+* missing sector   : 214168 
+* missing sector   : 215577 
+* missing sector   : 216986 
+* missing sector   : 218395 
+* missing sector   : 219804 
+* missing sector   : 221213 
+* missing sector   : 222622 
+* missing sector   : 224031 
+* missing sector   : 225440 
+* missing sector   : 226849 
+* missing sector   : 228258 
+* missing sector   : 229667 
+* missing sector   : 231076 
+* missing sector   : 232485 
+* missing sector   : 233894 
+* missing sector   : 235219 
+* missing sector   : 235303 
+* missing sector   : 235305 
+* missing sector   : 235307 
+* missing sector   : 236712 
+* missing sector   : 238121 
+* missing sector   : 239530 
+* missing sector   : 240939 
+* missing sector   : 242348 
+* missing sector   : 243757 
+* missing sector   : 245166 
+* missing sector   : 246575 
+* missing sector   : 247984 
+* missing sector   : 249393 
+* missing sector   : 250802 
+* missing sector   : 252211 
+* missing sector   : 253620 
+* missing sector   : 255029 
+* missing sector   : 256438 
+* missing sector   : 257847 
+* missing sector   : 259256 
+* missing sector   : 260665 
+* missing sector   : 262074 
+* missing sector   : 263483 
+* missing sector   : 264892 
+* missing sector   : 266301 
+* missing sector   : 267710 
+* missing sector   : 269119 
+* missing sector   : 270528 
+* missing sector   : 271937 
+* missing sector   : 273346 
+* missing sector   : 274755 
+* missing sector   : 276164 
+* missing sector   : 277573 
+* missing sector   : 278982 
+* missing sector   : 280391 
+* missing sector   : 281800 
+* missing sector   : 283209 
+* missing sector   : 284618 
+* missing sector   : 286027 
+* missing sector   : 287436 
+* missing sector   : 288845 
+* missing sector   : 290254 
+* missing sector   : 291663 
+* missing sector   : 293072 
+* missing sector   : 294481 
+* missing sector   : 295890 
+* missing sector   : 297299 
+* missing sector   : 298708 
+* missing sector   : 300117 
+* missing sector   : 301526 
+* missing sector   : 302935 
+* missing sector   : 304344 
+* missing sector   : 305753 
+* missing sector   : 307162 
+* missing sector   : 308571 
+* missing sector   : 309980 
+* missing sector   : 311389 
+* missing sector   : 312798 
+* missing sector   : 314207 
+* missing sector   : 315616 
+* missing sector   : 317025 
+* missing sector   : 318434 
+* missing sector   : 319843 
+* missing sector   : 321252 
+* missing sector   : 322661 
+* missing sector   : 324070 
+* missing sector   : 325479 
+* missing sector   : 326888 
+* missing sector   : 328297 
+* missing sector   : 329706 
+* missing sector   : 331115 
+* missing sector   : 332524 
+  ... data section   : 110 sectors missing; 0 CRC errors
+  ... crc section    : 3 sectors missing; 2 signature errors
+  ... ecc section    : 69 sectors missing
+* Ecc block test   : 1403 good, 6 bad; 9268 bad sub blocks
+- erasure counts   :  avg =  30.3; worst = 87 per ecc block.
+- prognosis        : 359295 of 359295 sectors recoverable (100.0%)
+FreeCrcBuf - buffer cleared

@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "scsi-layer.h"
@@ -171,13 +173,18 @@ int CheckAgainstCrcBuffer(CrcBuf *cb, gint64 idx, unsigned char *buf)
  * cached CRC and md5 informaton
  */
 
-int CrcBufValid(CrcBuf *crcbuf, Image *image, EccHeader *eh)
+int CrcBufValid(CrcBuf *crcbuf, Image *image, int mode)
 {
   if(!crcbuf)
   {  Verbose("CrcBufValid: crcbuf==NULL\n");
      return FALSE;
   }
 
+  if(!image)
+  {  Verbose("CrcBufValid: image==NULL\n");
+     return FALSE;
+  }
+  
   /* if still in building state we do not have all CRC sums */
 
   if(crcbuf->md5State & MD5_BUILDING)
@@ -192,7 +199,50 @@ int CrcBufValid(CrcBuf *crcbuf, Image *image, EccHeader *eh)
   {  Verbose("CrcBufValid: NOT complete\n");
      return FALSE;
   }
-    
+
+  /* compare fingerprints of buffer and image */
+
+  if(image->fpState != 2)
+  {  Verbose("CrcBufValid: image fingerprint not valid (%d)\n",
+	     image->fpState);
+     return FALSE;
+  }
+
+  if(!crcbuf->fpValid)
+  {  Verbose("CrcBufValid: crcbuf fingerprint not valid\n");
+     return FALSE;
+  }
+
+  if(crcbuf->fpSector != image->fpSector)
+  {  Verbose("CrcBufValid: crcbuf/image have different fingerprint sectors (%d/%" PRId64 ")\n",
+	     crcbuf->fpSector, image->fpSector);
+     return FALSE;
+  }
+  
+  if(memcmp(crcbuf->mediumFP, image->imageFP, 16))
+  {  Verbose("CrcBufValid: crcbuf/image have different fingerprints\n");
+     return FALSE;
+  }
+
+  /* additionally, compare the image sizes */
+
+  switch(mode)
+  {  case FULL_IMAGE:
+       if(image->sectorSize != crcbuf->allSectors)
+       {  Verbose("CrcBufValid(..., FULL_IMAGE): crcbuf/image have different size (%" PRId64 "/%" PRId64 " sectors)\n",
+		  image->sectorSize, crcbuf->allSectors);
+	  return FALSE;
+       }
+       break;
+     case DATA_SECTORS_ONLY:
+       if(image->sectorSize != crcbuf->dataSectors)
+       {  Verbose("CrcBufValid(..., DATA_SECTORS_ONLY): crcbuf/image have different size (%" PRId64 "/%" PRId64 " sectors)\n",
+		  image->sectorSize, crcbuf->dataSectors);
+	  return FALSE;
+       }
+       break;
+  }
+  
   Verbose("CrcBufValid: buffer VALID\n");
   return TRUE;
 }

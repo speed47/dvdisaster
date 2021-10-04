@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 extern gint64 CurrentMediumSize(int);  /* from scsi-layer.h */
@@ -158,14 +160,14 @@ typedef struct _prefs_context
    LabelWithOnlineHelp *minAttemptsScaleLwoh, *maxAttemptsScaleLwoh;
 } prefs_context;
 
-void FreePreferences(void *context)
+void GuiFreePreferences(void *context)
 {  prefs_context *pc = (prefs_context*)context;
    int i;
 
    for(i=0; i<pc->helpPages->len; i++)
    {  LabelWithOnlineHelp *lwoh = g_ptr_array_index(pc->helpPages,i);
 
-      FreeLabelWithOnlineHelp(lwoh);
+      GuiFreeLabelWithOnlineHelp(lwoh);
    }
    g_ptr_array_free(pc->helpPages, FALSE);
 
@@ -211,14 +213,14 @@ void FreePreferences(void *context)
 
 static gboolean delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
-   FreePreferences(Closure->prefsContext);
+   GuiFreePreferences(Closure->prefsContext);
 
    Closure->prefsWindow = NULL;
    Closure->prefsContext = NULL;
    return FALSE;
 }
 
-void HidePreferences(void)
+void GuiHidePreferences(void)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
    Method *method;
    const char *value1, *value2;
@@ -325,14 +327,14 @@ void HidePreferences(void)
 
 static void close_cb(GtkWidget *widget, gpointer data)
 {  
-   HidePreferences();
+   GuiHidePreferences();
 }
 
 /***
  *** Setting preferences from external functions 
  ***/
 
-void UpdatePrefsExhaustiveSearch(void)
+void GuiUpdatePrefsExhaustiveSearch(void)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
    if(Closure->prefsContext)
@@ -343,7 +345,7 @@ void UpdatePrefsExhaustiveSearch(void)
    }
 }
 
-void UpdatePrefsConfirmDeletion(void)
+void GuiUpdatePrefsConfirmDeletion(void)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
    if(Closure->prefsContext)
@@ -356,7 +358,7 @@ void UpdatePrefsConfirmDeletion(void)
  * Register a preferences help window 
  */
 
-void RegisterPreferencesHelpWindow(LabelWithOnlineHelp *lwoh)
+void GuiRegisterPreferencesHelpWindow(LabelWithOnlineHelp *lwoh)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
    g_ptr_array_add(pc->helpPages, lwoh);
@@ -448,9 +450,9 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	   activate_toggle_button(GTK_TOGGLE_BUTTON(pc->radioLinearA), TRUE);
 	   activate_toggle_button(GTK_TOGGLE_BUTTON(pc->radioLinearB), TRUE);
 
-	   ShowMessage(Closure->prefsWindow,
-		       _("Switched to the linear reading strategy."), 
-		       GTK_MESSAGE_INFO);
+	   GuiShowMessage(Closure->prefsWindow,
+			  _("Switched to the linear reading strategy."), 
+			  GTK_MESSAGE_INFO);
 	}
 	   
 	break;
@@ -800,12 +802,12 @@ static void color_ok_cb(GtkWidget *widget, gpointer data)
 
       case COLOR_RED_TEXT:
 	 update_color_buttons(pc->redTextA, pc->redTextB, TRUE);
-	 UpdateMarkup(&Closure->redMarkup, Closure->redText);
+	 GuiUpdateMarkup(&Closure->redMarkup, Closure->redText);
 	 break;
 
       case COLOR_GREEN_TEXT:
 	 update_color_buttons(pc->greenTextA, pc->greenTextB, TRUE);
-	 UpdateMarkup(&Closure->greenMarkup, Closure->greenText);
+	 GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 	 break;
 
       case COLOR_BAR:
@@ -842,7 +844,7 @@ static void color_choose_cb(GtkWidget *widget, gpointer data)
       g_signal_connect(G_OBJECT(csd->cancel_button), "clicked", G_CALLBACK(color_cancel_cb), cbi);
       g_signal_connect(G_OBJECT(csd->ok_button), "clicked", G_CALLBACK(color_ok_cb), cbi);
 
-      ReverseCancelOK(GTK_DIALOG(cbi->dialog));
+      GuiReverseCancelOK(GTK_DIALOG(cbi->dialog));
    }
 
    gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
@@ -852,7 +854,7 @@ static void color_choose_cb(GtkWidget *widget, gpointer data)
 static void default_color_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
-   DefaultColors();
+   GuiDefaultColors();
 
    update_color_buttons(pc->redA, pc->redB, FALSE);
    update_color_buttons(pc->yellowA, pc->yellowB, FALSE);
@@ -922,7 +924,7 @@ static void non_linear_cb(GtkWidget *widget, gpointer data)
 
 	gtk_range_set_value(GTK_RANGE(nli->pc->jumpScaleA), index);
 	gtk_label_set_markup(GTK_LABEL(nli->pc->jumpScaleInfoA->label), utf);
-	SetOnlineHelpLinkText(nli->pc->jumpScaleLwoh, text);
+	GuiSetOnlineHelpLinkText(nli->pc->jumpScaleLwoh, text);
 	break;
 
       case SLIDER_MIN_READ_ATTEMPTS:
@@ -935,7 +937,7 @@ static void non_linear_cb(GtkWidget *widget, gpointer data)
 
 	gtk_range_set_value(GTK_RANGE(nli->pc->minAttemptsScaleA), index);
 	gtk_label_set_markup(GTK_LABEL(nli->pc->minAttemptsScaleInfoA->label), utf);
-	SetOnlineHelpLinkText(nli->pc->minAttemptsScaleLwoh, text);
+	GuiSetOnlineHelpLinkText(nli->pc->minAttemptsScaleLwoh, text);
 
 	if(index > max)
 	{
@@ -955,7 +957,7 @@ static void non_linear_cb(GtkWidget *widget, gpointer data)
 
 	gtk_range_set_value(GTK_RANGE(nli->pc->maxAttemptsScaleA), index);
 	gtk_label_set_markup(GTK_LABEL(nli->pc->maxAttemptsScaleInfoA->label), utf);
-	SetOnlineHelpLinkText(nli->pc->maxAttemptsScaleLwoh, text);
+	GuiSetOnlineHelpLinkText(nli->pc->maxAttemptsScaleLwoh, text);
 
 	if(index < min)
 	{
@@ -1012,7 +1014,7 @@ static GtkWidget* non_linear_scale(GtkWidget **hbox_out, non_linear_info *nli,
    gtk_label_set_markup(GTK_LABEL(label), utf);
 
    if(nli->lwoh)
-   {    SetOnlineHelpLinkText(nli->lwoh, text);
+   {    GuiSetOnlineHelpLinkText(nli->lwoh, text);
         if (addTooltip) gtk_box_pack_start(GTK_BOX(hbox), nli->lwoh->tooltip, FALSE, FALSE, 0);
         gtk_box_pack_start(GTK_BOX(hbox), nli->lwoh->linkBox, FALSE, FALSE, 0);
    }
@@ -1055,9 +1057,9 @@ static void strategy_cb(GtkWidget *widget, gpointer data)
 
 	    activate_toggle_button(GTK_TOGGLE_BUTTON(pc->readAndCreateButtonA), FALSE);
 	    activate_toggle_button(GTK_TOGGLE_BUTTON(pc->readAndCreateButtonB), FALSE);
-	    ShowMessage(Closure->prefsWindow,
-			_("Disabled automatic error correction file generation."), 
-			GTK_MESSAGE_INFO);
+	    GuiShowMessage(Closure->prefsWindow,
+			   _("Disabled automatic error correction file generation."), 
+			   GTK_MESSAGE_INFO);
 	 }
       }
 
@@ -1220,7 +1222,7 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
    {  char filename[strlen(Closure->dDumpDir)+10];
 
       pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
-      ReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
+      GuiReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
 
       g_signal_connect(G_OBJECT(pc->cacheDefectiveChooser), "destroy",
 		       G_CALLBACK(cache_defective_select_cb), 
@@ -1292,7 +1294,7 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 	 if(!pc->logFileChooser)
 	 {  
 	    pc->logFileChooser = gtk_file_selection_new(_utf("Log file"));
-	    ReverseCancelOK(GTK_DIALOG(pc->logFileChooser));
+	    GuiReverseCancelOK(GTK_DIALOG(pc->logFileChooser));
 
 	    g_signal_connect(G_OBJECT(pc->logFileChooser), "destroy",
 			     G_CALLBACK(logfile_select_cb), 
@@ -1316,7 +1318,7 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 						    "%s", _utf("Delete the log file?"));
 	 int answer;
 	   
-	 ReverseCancelOK(GTK_DIALOG(dialog));
+	 GuiReverseCancelOK(GTK_DIALOG(dialog));
 	 answer = gtk_dialog_run(GTK_DIALOG(dialog));
 	 
 	 if(answer == GTK_RESPONSE_OK)
@@ -1381,7 +1383,7 @@ static gboolean notebook_idle_func(gpointer data)
  *** Assemble and open the preferences window.
  ***/
 
-void UpdateMethodPreferences(void)
+void GuiUpdateMethodPreferences(void)
 {  int i;
    
    for(i=0; i<Closure->methodList->len; i++)
@@ -1392,7 +1394,7 @@ void UpdateMethodPreferences(void)
    }
 }
 
-void CreatePreferencesWindow(void)
+void GuiCreatePreferencesWindow(void)
 {  
    if(!Closure->prefsWindow)  /* No window to reuse? */
    {  GtkWidget *window, *outer_box, *notebook, *space;
@@ -1450,8 +1452,9 @@ void CreatePreferencesWindow(void)
 
       /* Reading strategy */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Reading strategy"), _("Reading strategy: "));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Reading strategy"),
+					  _("Reading strategy: "));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1481,24 +1484,25 @@ void CreatePreferencesWindow(void)
          else activate_toggle_button(GTK_TOGGLE_BUTTON(radio1), TRUE);
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Reading strategy</b>\n\n"
-			 "Use the <b>linear strategy</b> for:\n"
-			 "- processing undamaged media, or\n"
-		         "- reading defective media when no error correction data is available.\n\n"
-			 "The <b>adaptive strategy</b> is optimized for\n"
-			 "- reading defective media\n"
-			 "- if (and only if) error correction data is available.\n\n"
-			 "Using the adaptive strategy without error correction data "
-			 "is possible but it is recommended to use linear reading in that case."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Reading strategy</b>\n\n"
+	   "Use the <b>linear strategy</b> for:\n"
+	   "- processing undamaged media, or\n"
+	   "- reading defective media when no error correction data is available.\n\n"
+	   "The <b>adaptive strategy</b> is optimized for\n"
+	   "- reading defective media\n"
+	   "- if (and only if) error correction data is available.\n\n"
+	   "Using the adaptive strategy without error correction data "
+	   "is possible but it is recommended to use linear reading in that case."));
 
       /* Reading range */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Reading range"), _("Read/Scan from sector"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Reading range"),
+					  _("Read/Scan from sector"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1535,19 +1539,19 @@ void CreatePreferencesWindow(void)
 	 gtk_box_pack_start(GTK_BOX(hbox), spin2, FALSE, FALSE, 0);
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(toggle), FALSE);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Reading range</b>\n\n"
-			 "Reading can be limited to a part of the medium (in sectors holding 2KB each). "
-			 "The values include the borders: 0-100 will read 101 sectors.\n\n"
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Reading range</b>\n\n"
+	   "Reading can be limited to a part of the medium (in sectors holding 2KB each). "
+	   "The values include the borders: 0-100 will read 101 sectors.\n\n"
 
-			 "<b>Note:</b> Limiting the reading range is not recommended for <i>adaptive reading</i> since it might "
-			 "prevent sectors from being read which are required for a successful error correction.\n\n"
-			 "These settings are only effective for the current session and will not be saved."));
+	   "<b>Note:</b> Limiting the reading range is not recommended for <i>adaptive reading</i> since it might "
+	   "prevent sectors from being read which are required for a successful error correction.\n\n"
+	   "These settings are only effective for the current session and will not be saved."));
 
       /*** Image recognization */
 
@@ -1560,8 +1564,9 @@ void CreatePreferencesWindow(void)
 
       /* RS02 */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Exhaustive RS02 header search"), _("Perform exhaustive search for RS02 headers"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Exhaustive RS02 header search"),
+					  _("Perform exhaustive search for RS02 headers"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -1577,31 +1582,32 @@ void CreatePreferencesWindow(void)
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->examineRS02);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RECOG_RS02));
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Exhaustive RS02 header search</b>\n\n"
-			 "When this setting is off only a quick check "
-			 "for RS02 data is performed. If the medium or "
-			 "image is damaged, the quick test may not suffice "
-			 "to identify the image as being augmented with RS02.\n\n"
-			 "Therefore you should turn this option <b>on</b> "
-			 "if a medium/image contains RS02 data, but is not "
-			 "being recognized as such. Searching for the RS02 "
-			 "information may cause a significant delay at the "
-			 "start of reading and scanning processes.\n\n"
-			 "Leave this option <b>off</b> when you are "
-			 "processing media or images which are not augmented "
-			 "with RS02 data. Otherwise you will waste a lot of "
-			 "time searching for the RS02 signatures and increase "
-			 "wear on the drive."
-			 ));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Exhaustive RS02 header search</b>\n\n"
+	   "When this setting is off only a quick check "
+	   "for RS02 data is performed. If the medium or "
+	   "image is damaged, the quick test may not suffice "
+	   "to identify the image as being augmented with RS02.\n\n"
+	   "Therefore you should turn this option <b>on</b> "
+	   "if a medium/image contains RS02 data, but is not "
+	   "being recognized as such. Searching for the RS02 "
+	   "information may cause a significant delay at the "
+	   "start of reading and scanning processes.\n\n"
+	   "Leave this option <b>off</b> when you are "
+	   "processing media or images which are not augmented "
+	   "with RS02 data. Otherwise you will waste a lot of "
+	   "time searching for the RS02 signatures and increase "
+	   "wear on the drive."
+	   ));
 
       /* RS03 */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Recover RS03 signatures"), _("Find and recover RS03 signatures"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Recover RS03 signatures"),
+					  _("Find and recover RS03 signatures"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -1617,26 +1623,26 @@ void CreatePreferencesWindow(void)
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->examineRS03);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RECOG_RS03));
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Exhaustive RS03 header search</b>\n\n"
-			 "When this setting is off only a quick check "
-			 "for RS03 data is performed. If the medium or "
-			 "image is damaged, the quick test may not suffice "
-			 "to identify the image as being augmented with RS03.\n\n"
-			 "Therefore you should turn this option <b>on</b> "
-			 "if a medium/image contains RS03 data, but is not "
-			 "being recognized as such. Searching for the RS03 "
-			 "information may cause a significant delay at the "
-			 "start of reading and scanning processes.\n\n"
-			 "Leave this option <b>off</b> when you are "
-			 "processing media or images which are not augmented "
-			 "with RS03 data. Otherwise you will waste a lot of "
-			 "time searching for the RS03 signatures and increase "
-			 "wear on the drive."
-			 ));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Exhaustive RS03 header search</b>\n\n"
+	   "When this setting is off only a quick check "
+	   "for RS03 data is performed. If the medium or "
+	   "image is damaged, the quick test may not suffice "
+	   "to identify the image as being augmented with RS03.\n\n"
+	   "Therefore you should turn this option <b>on</b> "
+	   "if a medium/image contains RS03 data, but is not "
+	   "being recognized as such. Searching for the RS03 "
+	   "information may cause a significant delay at the "
+	   "start of reading and scanning processes.\n\n"
+	   "Leave this option <b>off</b> when you are "
+	   "processing media or images which are not augmented "
+	   "with RS03 data. Otherwise you will waste a lot of "
+	   "time searching for the RS03 signatures and increase "
+	   "wear on the drive."
+	   ));
 
       /** Image properties */
 
@@ -1649,8 +1655,9 @@ void CreatePreferencesWindow(void)
 
       /* Query size from drive */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Ignore ISO/UDF meta data"), _("Ignore image size recorded in ISO/UDF file system"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Ignore ISO/UDF meta data"),
+					  _("Ignore image size recorded in ISO/UDF file system"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -1666,31 +1673,32 @@ void CreatePreferencesWindow(void)
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->ignoreIsoSize);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_SIZEDRIVE));
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Ignore image size recorded in ISO/UDF filesystem</b>\n\n"
-			 "When reading or scanning optical discs, the overall size of the medium "
-			 "needs to be determined. dvdisaster will always use the image size "
-			 "recorded in the error correction data if such data is present. "
-			 "Otherwise, image size is queried in the following order:\n\n"
-			 "1. Image size recorded in the ISO/UDF file system\n"
-			 "2. Image size reported by the optical drive.\n\n"
-			 "Using this order makes sense as image sizes reported by most drives "
-			 "are unreliable in many cases. However in some rare cases "
-			 "the image size recorded in the ISO/UDF filesystem is wrong. Some "
-			 "GNU/Linux live CDs may have this problem. If you read back the ISO "
-			 "image from such CDs and its md5sum does not match the advertised one, "
-			 "try re-reading the image with this option turned on.\n"
-			 "Do <b>not blindly turn this option on</b> as it will most likely "
-			 "create sub optimal or corrupted ISO images, especially if you "
-			 "plan to use the image for error correction data generation."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Ignore image size recorded in ISO/UDF filesystem</b>\n\n"
+	   "When reading or scanning optical discs, the overall size of the medium "
+	   "needs to be determined. dvdisaster will always use the image size "
+	   "recorded in the error correction data if such data is present. "
+	   "Otherwise, image size is queried in the following order:\n\n"
+	   "1. Image size recorded in the ISO/UDF file system\n"
+	   "2. Image size reported by the optical drive.\n\n"
+	   "Using this order makes sense as image sizes reported by most drives "
+	   "are unreliable in many cases. However in some rare cases "
+	   "the image size recorded in the ISO/UDF filesystem is wrong. Some "
+	   "GNU/Linux live CDs may have this problem. If you read back the ISO "
+	   "image from such CDs and its md5sum does not match the advertised one, "
+	   "try re-reading the image with this option turned on.\n"
+	   "Do <b>not blindly turn this option on</b> as it will most likely "
+	   "create sub optimal or corrupted ISO images, especially if you "
+	   "plan to use the image for error correction data generation."));
 
       /* DAO button */
 
-      lwoh = CreateLabelWithOnlineHelp(_("DAO mode"), _("Assume image to be written in DAO mode (don't truncate)"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("DAO mode"),
+					  _("Assume image to be written in DAO mode (don't truncate)"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -1706,22 +1714,22 @@ void CreatePreferencesWindow(void)
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->noTruncate);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_DAO));
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Assume DAO mode</b>\n\n"
-			 "Media written in \"TAO\" (\"track at once\") mode may contain two sectors "
-			 "with pseudo read errors at the end. By default these two sectors are ignored.\n\n"
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Assume DAO mode</b>\n\n"
+	   "Media written in \"TAO\" (\"track at once\") mode may contain two sectors "
+	   "with pseudo read errors at the end. By default these two sectors are ignored.\n\n"
 
-			 "If you are extremely unlucky to have a \"DAO\" (\"disc at once\") medium "
-			 "with exactly one or two real read errors at the end, dvdisaster may treat "
-			 "this as a \"TAO\" disc and truncate the image by two sectors. In that case "
-			 "activate this option to have the last two read errors handled correctly.\n\n"
+	   "If you are extremely unlucky to have a \"DAO\" (\"disc at once\") medium "
+	   "with exactly one or two real read errors at the end, dvdisaster may treat "
+	   "this as a \"TAO\" disc and truncate the image by two sectors. In that case "
+	   "activate this option to have the last two read errors handled correctly.\n\n"
 
-			 "<b>Tip:</b> To avoid these problems, consider using the \"DAO / Disc at once\" "
-			 "(sometimes also called \"SAO / Session at once\") mode for writing single "
-			 "session media."));
+	   "<b>Tip:</b> To avoid these problems, consider using the \"DAO / Disc at once\" "
+	   "(sometimes also called \"SAO / Session at once\") mode for writing single "
+	   "session media."));
 
       /*** Image format */
 
@@ -1734,8 +1742,9 @@ void CreatePreferencesWindow(void)
 
       /* new style missing sector marker */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Missing sector tags"), _("Use old style missing sector tags (not recommended)"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Missing sector tags"),
+					  _("Use old style missing sector tags (not recommended)"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -1751,33 +1760,33 @@ void CreatePreferencesWindow(void)
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), !Closure->dsmVersion);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_DSM));
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Missing sector tagging</b>\n\n"
-			 "Missing sectors are tagged with a special code sequence "
-			 "in the image. By default, an improved "
-			 "code is used which can detect some wilfully damaged "
-			 "content. This includes media which have been created "
-			 "from partially recovered images, and images containing "
-			 "files from such partial media.\n"
-			 "However only dvdisaster 0.72 and up will recognize "
-			 "the improved tags. Activate this switch to force using the "
-			 "older format when this image will be processed with older "
-			 "dvdisaster versions. Otherwise the older dvdisaster versions "
-			 "will not see any missing sectors in the resulting images.\n"
-			 "N.b.: dvdisaster >= 0.72 will automatically recognize "
-			 "both tag formats when reading images; setting this value "
-			 "only affects the creation of new images."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Missing sector tagging</b>\n\n"
+	   "Missing sectors are tagged with a special code sequence "
+	   "in the image. By default, an improved "
+	   "code is used which can detect some wilfully damaged "
+	   "content. This includes media which have been created "
+	   "from partially recovered images, and images containing "
+	   "files from such partial media.\n"
+	   "However only dvdisaster 0.72 and up will recognize "
+	   "the improved tags. Activate this switch to force using the "
+	   "older format when this image will be processed with older "
+	   "dvdisaster versions. Otherwise the older dvdisaster versions "
+	   "will not see any missing sectors in the resulting images.\n"
+	   "N.b.: dvdisaster >= 0.72 will automatically recognize "
+	   "both tag formats when reading images; setting this value "
+	   "only affects the creation of new images."));
 
       /** byte filling */
 
       if(Closure->debugMode)
       {
-	 lwoh = CreateLabelWithOnlineHelp(_("Filling of unreadable sectors"), 
-					  _("Fill unreadable sectors with byte:"));
-	 RegisterPreferencesHelpWindow(lwoh);
+	 lwoh = GuiCreateLabelWithOnlineHelp(_("Filling of unreadable sectors"), 
+					     _("Fill unreadable sectors with byte:"));
+	 GuiRegisterPreferencesHelpWindow(lwoh);
 
 	 for(i=0; i<2; i++)
 	 {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1802,7 +1811,7 @@ void CreatePreferencesWindow(void)
 	    else
 	    {  pc->byteCheckB = check;
 	       pc->byteEntryB = entry;
-	       AddHelpWidget(lwoh, hbox);
+	       GuiAddHelpWidget(lwoh, hbox);
 	    }
 
 	    if(Closure->fillUnreadable >= 0)
@@ -1815,23 +1824,23 @@ void CreatePreferencesWindow(void)
 	    else set_widget_sensitive(entry, FALSE);
 	 }
 
-	 AddHelpParagraph(lwoh, 
-			  _("<b>Filling of unreadable sectors</b>\n\n"
+	 GuiAddHelpParagraph(lwoh, 
+	    _("<b>Filling of unreadable sectors</b>\n\n"
 			    
-			    "dvdisaster marks unreadable sectors with a special filling pattern which "
-			    "is very unlikely to occur in undamaged media.\n"
-			    "In other data recovery software it is common to fill unreadable sectors "
-			    "with a certain byte value. To allow interoperability with such programs, "
-			    "you can specify the byte value they are using:\n"));
+	      "dvdisaster marks unreadable sectors with a special filling pattern which "
+	      "is very unlikely to occur in undamaged media.\n"
+	      "In other data recovery software it is common to fill unreadable sectors "
+	      "with a certain byte value. To allow interoperability with such programs, "
+	      "you can specify the byte value they are using:\n"));
 
-	 AddHelpListItem(lwoh,
-			 _("0xb0 (176 decimal): for compatibility with h2cdimage published by \"c't\", "
-			   "a German periodical.\n"));
+	 GuiAddHelpListItem(lwoh,
+	    _("0xb0 (176 decimal): for compatibility with h2cdimage published by \"c't\", "
+	      "a German periodical.\n"));
 
-	 AddHelpParagraph(lwoh,
-			  _("<b>Note:</b> Using zero filling (0x00, decimal 0) is highly discouraged. "
-			    "Most media contain regular zero filled sectors which can not be told apart "
-			    "from unreadable sectors if zero filling is used."));
+	 GuiAddHelpParagraph(lwoh,
+	    _("<b>Note:</b> Using zero filling (0x00, decimal 0) is highly discouraged. "
+	      "Most media contain regular zero filled sectors which can not be told apart "
+	      "from unreadable sectors if zero filling is used."));
       }
 
       /*** Drive parameters page */
@@ -1843,12 +1852,12 @@ void CreatePreferencesWindow(void)
       frame = gtk_frame_new(_utf("Drive initialisation"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Drive initialisation"), 
-				       _("Wait"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Drive initialisation"), 
+					  _("Wait"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
-      lwoh_clone = CloneLabelWithOnlineHelp(lwoh, _("seconds for drive to spin up"));
-      RegisterPreferencesHelpWindow(lwoh_clone);
+      lwoh_clone = GuiCloneLabelWithOnlineHelp(lwoh, _("seconds for drive to spin up"));
+      GuiRegisterPreferencesHelpWindow(lwoh_clone);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1872,14 +1881,14 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->spinUpB = spin;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Drive initialisation</b>\n\n"
-			 "Waits the specified amount of seconds for letting the drive spin up. "
-			 "This avoids speed jumps at the beginning of the reading curve."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Drive initialisation</b>\n\n"
+	   "Waits the specified amount of seconds for letting the drive spin up. "
+	   "This avoids speed jumps at the beginning of the reading curve."));
 
       /** Drive raw reading parameters */
 
@@ -1892,8 +1901,9 @@ void CreatePreferencesWindow(void)
 
       /* Raw reading mode */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Raw reading mode"), _("Raw reading mode: "));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Raw reading mode"),
+					  _("Raw reading mode: "));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -1954,42 +1964,42 @@ void CreatePreferencesWindow(void)
 	 }
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Raw reading mode</b>\n\n"
-			 "There are several ways to put the drive into a mode "
-			 "which transfers partially read data from defective sectors:\n\n"
-			 "<b>0x20</b> This is the <i>recommended</i> mode. "
-			 "The drive tries to apply "
-			 "the built-in error correction to the best possible extent "
-			 "before transferring a defective sector.\n\n"
-			 "<b>0x21</b> In this mode the drive skips the last stage "
-			 "of its internal error correction and returns the "
-			 "uncorrected sector instead. This may result in sectors "
-			 "being tagged and processed as defective which would come "
-			 "out good in other reading modes, causing unnecessary "
-			 "work or even uncorrectable sectors.\n" 
-			 "However some drives appear to be unable to transfer data "
-			 "in mode 0x20, but can do so in mode 0x21, so this is your "
-			 "last resort then. Also, if sectors are not recoverable "
-			 "after reading and caching sectors in mode 0x20, then adding "
-			 "some mode 0x21 reads to the cache might deliver additional information.\n\n"
-			 "<b>0x01</b> Some drives do the right thing when given this value, "
-			 "although this makes no sense according to the SCSI specs. Try entering "
-			 "this value in the \"other\" field if the other choices do not work. "
-			 "See the mode page 01h documentation in chapter 6 of MMC3 or later "
-			 "for additional information."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Raw reading mode</b>\n\n"
+	   "There are several ways to put the drive into a mode "
+	   "which transfers partially read data from defective sectors:\n\n"
+	   "<b>0x20</b> This is the <i>recommended</i> mode. "
+	   "The drive tries to apply "
+	   "the built-in error correction to the best possible extent "
+	   "before transferring a defective sector.\n\n"
+	   "<b>0x21</b> In this mode the drive skips the last stage "
+	   "of its internal error correction and returns the "
+	   "uncorrected sector instead. This may result in sectors "
+	   "being tagged and processed as defective which would come "
+	   "out good in other reading modes, causing unnecessary "
+	   "work or even uncorrectable sectors.\n" 
+	   "However some drives appear to be unable to transfer data "
+	   "in mode 0x20, but can do so in mode 0x21, so this is your "
+	   "last resort then. Also, if sectors are not recoverable "
+	   "after reading and caching sectors in mode 0x20, then adding "
+	   "some mode 0x21 reads to the cache might deliver additional information.\n\n"
+	   "<b>0x01</b> Some drives do the right thing when given this value, "
+	   "although this makes no sense according to the SCSI specs. Try entering "
+	   "this value in the \"other\" field if the other choices do not work. "
+	   "See the mode page 01h documentation in chapter 6 of MMC3 or later "
+	   "for additional information."));
 
       /* Firmware rereads */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Internal read attempts"), 
-				       _("Reread defective sectors"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Internal read attempts"), 
+					  _("Reread defective sectors"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
-      lwoh_clone = CloneLabelWithOnlineHelp(lwoh, _("times"));
-      RegisterPreferencesHelpWindow(lwoh_clone);
+      lwoh_clone = GuiCloneLabelWithOnlineHelp(lwoh, _("times"));
+      GuiRegisterPreferencesHelpWindow(lwoh_clone);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -2014,30 +2024,30 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->internalAttemptsB = spin;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Internal read attempts</b>\n\n"
-			 "The drive firmware usually retries unreadable sectors "
-			 "a few times before giving up and returning a read error.\n"
-			 "But it is usually more efficient to manage the reading "
-			 "attempts from the client software, e.g. through the "
-			 "settings in the \"Read attempts\" preferences tab.\n"
-			 "Lowering this value to 0 or 1 can speed up processing "
-			 "of damaged media and reduce the drive wear; however "
-			 "most drives will simply ignore what you enter here.\n"
-			 "Use the value -1 to leave the drive at its default setting."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Internal read attempts</b>\n\n"
+	   "The drive firmware usually retries unreadable sectors "
+	   "a few times before giving up and returning a read error.\n"
+	   "But it is usually more efficient to manage the reading "
+	   "attempts from the client software, e.g. through the "
+	   "settings in the \"Read attempts\" preferences tab.\n"
+	   "Lowering this value to 0 or 1 can speed up processing "
+	   "of damaged media and reduce the drive wear; however "
+	   "most drives will simply ignore what you enter here.\n"
+	   "Use the value -1 to leave the drive at its default setting."));
 
       /* Fatal error handling */
 
       frame = gtk_frame_new(_utf("Fatal error handling"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Fatal error handling"), 
-				       _("Ignore fatal errors"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Fatal error handling"), 
+					  _("Ignore fatal errors"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -2058,27 +2068,27 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  pc->fatalSenseB = toggle;
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }	 
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Fatal error handling</b>\n\n"
-			 "By default dvdisaster stops reading when the drive "
-			 "reports a fatal error. This prevents further fruitless "
-			 "read attempts and possible damage to the drive.\n"
-			 "However some drives produce unfounded fatal messages. "
-			 "For such drives ignoring fatal errors may be needed to "
-			 "do uninterrupted reading of damaged media."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Fatal error handling</b>\n\n"
+	   "By default dvdisaster stops reading when the drive "
+	   "reports a fatal error. This prevents further fruitless "
+	   "read attempts and possible damage to the drive.\n"
+	   "However some drives produce unfounded fatal messages. "
+	   "For such drives ignoring fatal errors may be needed to "
+	   "do uninterrupted reading of damaged media."));
 
       /* Eject medium */
 
       frame = gtk_frame_new(_utf("Media ejection"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Eject medium after successful read"),
-				       _("Eject medium after successful read"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Eject medium after successful read"), 
+					  _("Eject medium after successful read"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -2099,18 +2109,18 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  pc->ejectB = toggle;
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }	 
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Medium ejection</b>\n\n"
-			 "Activate this option to have the medium ejected after "
-			 "a successful read or scan operation.\n\n"
-			 "Note that the desktop environment "
-			 "may prevent other applications from ejecting media. "
-			 "In that case eject the medium through the desktop "
-			 "user interface."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Medium ejection</b>\n\n"
+	   "Activate this option to have the medium ejected after "
+	   "a successful read or scan operation.\n\n"
+	   "Note that the desktop environment "
+	   "may prevent other applications from ejecting media. "
+	   "In that case eject the medium through the desktop "
+	   "user interface."));
 
       /*** "Read attempts" page */
 
@@ -2127,8 +2137,9 @@ void CreatePreferencesWindow(void)
 
       /* Raw verify */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Raw reading"), _("Read and analyze raw sectors"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Raw reading"),
+					  _("Read and analyze raw sectors"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2145,31 +2156,32 @@ void CreatePreferencesWindow(void)
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RAW));
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Raw reading</b> (affects CD media only)\n\n"
-			 "Activating this option has several effects:\n\n"
-			 "C2 quality scanning will be performed when supported "
-			 "by the drive.\n\n"
-			 "Media sectors are read in raw mode. The L-EC P/Q "
-			 "vectors, EDC checksum and MSF address contained "
-			 "in the raw data are checked to make sure that the "
-			 "sector was correctly read.\n\n"
-			 "Additional data recovery heuristics and raw sector "
-			 "caching becomes available if either\n"
-			 "- adaptive reading is used, or\n"
-			 "- linear reading is configured to skip 0 sectors after a read error.\n"
-			 "Raw sector caching also needs checking of the respective option."
-			 ));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Raw reading</b> (affects CD media only)\n\n"
+	   "Activating this option has several effects:\n\n"
+	   "C2 quality scanning will be performed when supported "
+	   "by the drive.\n\n"
+	   "Media sectors are read in raw mode. The L-EC P/Q "
+	   "vectors, EDC checksum and MSF address contained "
+	   "in the raw data are checked to make sure that the "
+	   "sector was correctly read.\n\n"
+	   "Additional data recovery heuristics and raw sector "
+	   "caching becomes available if either\n"
+	   "- adaptive reading is used, or\n"
+	   "- linear reading is configured to skip 0 sectors after a read error.\n"
+	   "Raw sector caching also needs checking of the respective option."
+	   ));
 
       /* Minimum reading attempts */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Minimum number of reading attempts"), "ignore");
-      RegisterPreferencesHelpWindow(lwoh);
-      LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("Min. %d reading attempts per sector"), 99);
-      LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("Min. %d reading attempts per sector"), 99);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Minimum number of reading attempts"),
+					  "ignore");
+      GuiRegisterPreferencesHelpWindow(lwoh);
+      GuiLockLabelSize(lwoh->normalLabel, _utf("Min. %d reading attempts per sector"), 99);
+      GuiLockLabelSize(lwoh->linkLabel, _utf("Min. %d reading attempts per sector"), 99);
 
       pc->minAttemptsScaleLwoh = lwoh;
       pc->minAttemptsScaleInfoA = g_malloc0(sizeof(non_linear_info));
@@ -2192,23 +2204,24 @@ void CreatePreferencesWindow(void)
 	 else   pc->minAttemptsScaleB = scale;
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, scale_box);
+	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Minimum number of reading attempts</b>\n\n"
-			 "If an unreadable sector is encountered, "
-			 "dvdisaster tries to re-read it the given number of times.\n\n" 
-			 "Increasing the number of reading attempts may improve data recovery "
-			 "on marginal media, but will also increase processing time and "
-			 "mechanical wear on the drive."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Minimum number of reading attempts</b>\n\n"
+	   "If an unreadable sector is encountered, "
+	   "dvdisaster tries to re-read it the given number of times.\n\n" 
+	   "Increasing the number of reading attempts may improve data recovery "
+	   "on marginal media, but will also increase processing time and "
+	   "mechanical wear on the drive."));
 
       /* Maximum reading attempts */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Maximum number of reading attempts"), "ignore");
-      RegisterPreferencesHelpWindow(lwoh);
-      LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("Max. %d reading attempts per sector"), 100);
-      LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("Max. %d reading attempts per sector"), 100);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Maximum number of reading attempts"),
+					  "ignore");
+      GuiRegisterPreferencesHelpWindow(lwoh);
+      GuiLockLabelSize(lwoh->normalLabel, _utf("Max. %d reading attempts per sector"), 100);
+      GuiLockLabelSize(lwoh->linkLabel, _utf("Max. %d reading attempts per sector"), 100);
 
       pc->maxAttemptsScaleLwoh = lwoh;
       pc->maxAttemptsScaleInfoA = g_malloc0(sizeof(non_linear_info));
@@ -2231,34 +2244,35 @@ void CreatePreferencesWindow(void)
 	 else   pc->maxAttemptsScaleB = scale;
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, scale_box);
+	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Maximum number of reading attempts</b>\n\n"
-			 "When the minimum number of reading attempts is reached "
-			 "without success, dvdisaster might choose to perform additional "
-			 "reading attempts up to this number.\n\n"
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Maximum number of reading attempts</b>\n\n"
+	   "When the minimum number of reading attempts is reached "
+	   "without success, dvdisaster might choose to perform additional "
+	   "reading attempts up to this number.\n\n"
 
-			 "The decision to do more attempts depends on the quality of "
-			 "data gathered so far, which in turn is influenced by the "
-			 "capabilities of your optical drive and the operating system. "
-			 "So depending on your configuration, you may or "
-			 "may not see dvdisaster using the maximum value."
-			 ));
+	   "The decision to do more attempts depends on the quality of "
+	   "data gathered so far, which in turn is influenced by the "
+	   "capabilities of your optical drive and the operating system. "
+	   "So depending on your configuration, you may or "
+	   "may not see dvdisaster using the maximum value."
+	   ));
 
       /* Jump selector */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Treatment of unreadable areas"), "ignore");
-      RegisterPreferencesHelpWindow(lwoh);
-      if(  GetLabelWidth(GTK_LABEL(lwoh->normalLabel), _utf("Skip %d sectors after read error"), 20480)
-	 > GetLabelWidth(GTK_LABEL(lwoh->normalLabel), _utf("Stop reading when unreadable intervals &lt; %d"), 20480))
-      {    LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("Skip %d sectors after read error"), 20480);
-	   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("Skip %d sectors after read error"), 20480);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Treatment of unreadable areas"),
+					  "ignore");
+      GuiRegisterPreferencesHelpWindow(lwoh);
+      if(  GuiGetLabelWidth(GTK_LABEL(lwoh->normalLabel), _utf("Skip %d sectors after read error"), 20480)
+	 > GuiGetLabelWidth(GTK_LABEL(lwoh->normalLabel), _utf("Stop reading when unreadable intervals &lt; %d"), 20480))
+      {    GuiLockLabelSize(lwoh->normalLabel, _utf("Skip %d sectors after read error"), 20480);
+	   GuiLockLabelSize(lwoh->linkLabel, _utf("Skip %d sectors after read error"), 20480);
       }
       else 
-      {    LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("Stop reading when unreadable intervals &lt; %d"), 20480);
-	   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("Stop reading when unreadable intervals &lt; %d"), 20480);
+      {    GuiLockLabelSize(lwoh->normalLabel, _utf("Stop reading when unreadable intervals &lt; %d"), 20480);
+	   GuiLockLabelSize(lwoh->linkLabel, _utf("Stop reading when unreadable intervals &lt; %d"), 20480);
       }
 
       pc->jumpScaleLwoh = lwoh;
@@ -2285,44 +2299,44 @@ void CreatePreferencesWindow(void)
 	 else   pc->jumpScaleB = scale;
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, scale_box);
+	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Treatment of unreadable areas</b>\n\n"
-			 "Defective media usually contain numerous read errors in a contigous region. "
-			 "Skipping sectors after a read error reduces the processing time and the "
-			 "mechanical wear on the drive, but leaves larger gaps in the image file.\n\n"
-			 "Effects on the <b>linear reading strategy</b>:"));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Treatment of unreadable areas</b>\n\n"
+	   "Defective media usually contain numerous read errors in a contigous region. "
+	   "Skipping sectors after a read error reduces the processing time and the "
+	   "mechanical wear on the drive, but leaves larger gaps in the image file.\n\n"
+	   "Effects on the <b>linear reading strategy</b>:"));
 
-      AddHelpListItem(lwoh, 
-		       _("Skipping a large number of sectors (e.g. 1024) gives a quick overview of "
-			 "damaged areas, but will usually not collect enough data for repairing the image."));
+      GuiAddHelpListItem(lwoh, 
+	 _("Skipping a large number of sectors (e.g. 1024) gives a quick overview of "
+	   "damaged areas, but will usually not collect enough data for repairing the image."));
       
-      AddHelpListItem(lwoh, 
-		      _("Smaller values like 16, 32 or 64 are a good trade-off: The processing time will be"
-			 "considerably shortened, but still enough data for repairing the image is collected.\n"));
+      GuiAddHelpListItem(lwoh, 
+	 _("Smaller values like 16, 32 or 64 are a good trade-off: The processing time will be"
+	   "considerably shortened, but still enough data for repairing the image is collected.\n"));
 
-      AddHelpParagraph(lwoh, 
-		       _("The <b>adaptive reading strategy</b> uses this setting only if no error correction data "
-			 "is available. In that case the reading process will stop when no unread areas "
-			 "larger than the selected size remain. Values smaller than 128 <i>are not recommended</i> "
-			 "as they cause the drive to carry out lots of laser head repositioning during the "
-			 "final phase of the reading process. If adaptive reading with a setting of 128 is not "
-			 "sufficient, try reading the remaining sectors with an additional linear reading pass.\n\n"
+      GuiAddHelpParagraph(lwoh, 
+	 _("The <b>adaptive reading strategy</b> uses this setting only if no error correction data "
+	   "is available. In that case the reading process will stop when no unread areas "
+	   "larger than the selected size remain. Values smaller than 128 <i>are not recommended</i> "
+	   "as they cause the drive to carry out lots of laser head repositioning during the "
+	   "final phase of the reading process. If adaptive reading with a setting of 128 is not "
+	   "sufficient, try reading the remaining sectors with an additional linear reading pass.\n\n"
 
-			 "On DVD and BD media read errors do usually extend over at least 16 sectors for technical "
-			 "reasons. Therefore selecting a value less than 16 is not recommended for DVD and BD."
-			 ));
+	   "On DVD and BD media read errors do usually extend over at least 16 sectors for technical "
+	   "reasons. Therefore selecting a value less than 16 is not recommended for DVD and BD."
+	   ));
 
       /** Media re-reads */
       
       frame = gtk_frame_new(_utf("Media read attempts"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Media read attempts"), 
-				       _("Read the whole medium "));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Media read attempts"), 
+					  _("Read the whole medium "));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2347,15 +2361,15 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->readMediumB = spin;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Media read attempts</b> for the linear reading strategy\n\n"
-			 "If unreadable sectors remain after reading the medium from start to end, "
-			 "the medium is read again up to he given number of times.\n\n"
-			 "Only the missing sectors will be tried in the additional reading passes."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Media read attempts</b> for the linear reading strategy\n\n"
+	   "If unreadable sectors remain after reading the medium from start to end, "
+	   "the medium is read again up to he given number of times.\n\n"
+	   "Only the missing sectors will be tried in the additional reading passes."));
 
       /** Defective sector caching */
       
@@ -2368,9 +2382,9 @@ void CreatePreferencesWindow(void)
 
       /* Toggle button */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Raw sector caching"), 
-				       _("Keep uncorrectable raw sectors in the following directory:"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Raw sector caching"), 
+					  _("Keep uncorrectable raw sectors in the following directory:"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *table = gtk_table_new(3,2,FALSE);
@@ -2414,31 +2428,31 @@ void CreatePreferencesWindow(void)
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_CACHE_DEFECTIVE));
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), table, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, table);
+	 else   GuiAddHelpWidget(lwoh, table);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Raw sector caching</b>\n\n"
-			 "Some drives are capable of delivering partial data from defective "
-			 "sectors. While one partial sector is useless by itself, "
-			 "20 or more of them might combine into a complete sector.\n\n"
-			 "If you activate this button, dvdisaster will collect partial "
-			 "sectors in the selected directory. "
-			 "When enough parts have been gathered in subsequent reading passes, "
-			 "the respective sector is automatically recombined from the "
-			 "stored parts.\n\n"
-			 "Please note that not all drives and operating systems "
-			 "support reading partial data. "
-			 "It is not an error of the cache directory remains empty.\n"
-			 "dvdisaster will not remove any files from the given directory; "
-			 "you need to clean it up manually after a successful medium recovery."
-			 ));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Raw sector caching</b>\n\n"
+	   "Some drives are capable of delivering partial data from defective "
+	   "sectors. While one partial sector is useless by itself, "
+	   "20 or more of them might combine into a complete sector.\n\n"
+	   "If you activate this button, dvdisaster will collect partial "
+	   "sectors in the selected directory. "
+	   "When enough parts have been gathered in subsequent reading passes, "
+	   "the respective sector is automatically recombined from the "
+	   "stored parts.\n\n"
+	   "Please note that not all drives and operating systems "
+	   "support reading partial data. "
+	   "It is not an error of the cache directory remains empty.\n"
+	   "dvdisaster will not remove any files from the given directory; "
+	   "you need to clean it up manually after a successful medium recovery."
+	   ));
 
       /* Sector cache file prefix */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Raw sector file prefix"), 
-				       _("Raw sector file prefix: "));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Raw sector file prefix"), 
+					  _("Raw sector file prefix: "));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2456,13 +2470,13 @@ void CreatePreferencesWindow(void)
 	 else   pc->cacheDefectivePrefixB = entry;
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, hbox);
+	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Raw sector file prefix</b>\n\n"
-			 "Use a different prefix for each disc you are trying "
-			 "to recover, e.g. \"disc1-\" and so on."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Raw sector file prefix</b>\n\n"
+	   "Use a different prefix for each disc you are trying "
+	   "to recover, e.g. \"disc1-\" and so on."));
 
       /*** "Error correction" page */
 
@@ -2470,9 +2484,9 @@ void CreatePreferencesWindow(void)
 
       vbox = create_page(notebook, _utf("Error correction"));
 
-      lwoh = CreateLabelWithOnlineHelp(_("Error correction method"), 
-				       _("Storage method:"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Error correction method"), 
+					  _("Storage method:"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -2507,30 +2521,29 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->methodChooserB = chooser;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, _("<b>Error correction method</b>\n\n"
-			       "dvdisaster creates error correction data which is used to recover "
-			       "unreadable sectors if the disc becomes damaged later on. There are "
-			       "different codecs and ways available for storing the error correction "
-			       "information:\n"));
+      GuiAddHelpParagraph(lwoh, _("<b>Error correction method</b>\n\n"
+	 "dvdisaster creates error correction data which is used to recover "
+	 "unreadable sectors if the disc becomes damaged later on. There are "
+	 "different codecs and ways available for storing the error correction "
+	 "information:\n"));
 
-      AddHelpListItem(lwoh, _("The RS01 codec\n"
-			      "RS01 is the recommended codec for storing error correction data in separate files.\n"));
+      GuiAddHelpListItem(lwoh, _("The RS01 codec\n"
+	 "RS01 is the recommended codec for storing error correction data in separate files.\n"));
 
-      AddHelpListItem(lwoh, _("The RS02 codec\n"
-			      "RS02 is the currently recommended codec for "
-			      "augmenting images with error correction data.\n"));
+      GuiAddHelpListItem(lwoh, _("The RS02 codec\n"
+	 "RS02 is the currently recommended codec for "
+	 "augmenting images with error correction data.\n"));
 
-      AddHelpListItem(lwoh, _("The RS03 codec (Warning: experimental)\n"
-			      "RS03 can either store error correction data in a separate file "
-			      "or augment the image with it. It provides multithreading "
-			      "to scale with multicore processors and contains some subtle improvements "
-			      "over RS01 and RS02. However it should not be used for productive work "
-			      "unless a stable version is released with dvdisaster V0.80."));
-
+      GuiAddHelpListItem(lwoh, _("The RS03 codec (Warning: experimental)\n"
+	 "RS03 can either store error correction data in a separate file "
+	 "or augment the image with it. It provides multithreading "
+	 "to scale with multicore processors and contains some subtle improvements "
+	 "over RS01 and RS02. However it should not be used for productive work "
+	 "unless a stable version is released with dvdisaster V0.80."));
 
       /* sub pages for individual method configuration */
       
@@ -2573,8 +2586,9 @@ void CreatePreferencesWindow(void)
       gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Automatic file suffixes"), _("Automatically add .iso and .ecc file suffixes"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Automatic file suffixes"),
+					  _("Automatically add .iso and .ecc file suffixes"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2593,14 +2607,14 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->suffixB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Automatically add file suffixes</b>\n\n"
-			 "When this switch is set, files will be automatically appended with \".iso\" "
-			 "or \".ecc\" suffixes if no other file name extension is already present."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Automatically add file suffixes</b>\n\n"
+	   "When this switch is set, files will be automatically appended with \".iso\" "
+	   "or \".ecc\" suffixes if no other file name extension is already present."));
 
       /*** Automatic file creation and deletion */
 
@@ -2613,8 +2627,9 @@ void CreatePreferencesWindow(void)
 
       /* automatic creation */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Automatic .ecc file creation"), _("Create error correction file after reading image"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Automatic .ecc file creation"),
+					  _("Create error correction file after reading image"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2632,20 +2647,21 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->readAndCreateButtonB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Automatic error correction file creation</b>\n\n"
-			 "Automatically creates an error correction file after reading an image. "
-			 "Together with the \"Remove image\" option this will speed up error correction "
-			 "file generation for a series of different media."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Automatic error correction file creation</b>\n\n"
+	   "Automatically creates an error correction file after reading an image. "
+	   "Together with the \"Remove image\" option this will speed up error correction "
+	   "file generation for a series of different media."));
 
       /* automatic deletion */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Automatic image file removal"), _("Remove image after error correction file creation"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Automatic image file removal"),
+					  _("Remove image after error correction file creation"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2663,14 +2679,14 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->unlinkImageButtonB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Automatic image file removal</b>\n\n"
-			 "If this switch is set the image file will be deleted following the successful "
-			 "generation of the respective error correction file."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Automatic image file removal</b>\n\n"
+	   "If this switch is set the image file will be deleted following the successful "
+	   "generation of the respective error correction file."));
 
       /*** Deletion confirmation */
 
@@ -2683,8 +2699,9 @@ void CreatePreferencesWindow(void)
 
       /* automatic creation */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Confirm file overwriting"), _("Ask before overwriting image and ecc files"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Confirm file overwriting"),
+					  _("Ask before overwriting image and ecc files"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -2702,15 +2719,15 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->confirmDeletionB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Ask before overwriting image and ecc files</b>\n\n"
-			 "dvdisaster will ask you for confirmation "
-			 "when it is going to overwrite an existing image "
-			 "or error correction file if this option is checked."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Ask before overwriting image and ecc files</b>\n\n"
+	   "dvdisaster will ask you for confirmation "
+	   "when it is going to overwrite an existing image "
+	   "or error correction file if this option is checked."));
 
       /*** GUI page */
 
@@ -2737,8 +2754,8 @@ void CreatePreferencesWindow(void)
  
       /* Green color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Good sectors"), _("Good sector"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Good sectors"), _("Good sector"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2756,19 +2773,19 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->greenB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Good sectors</b>\n\n"
-		         "This color indicates good sectors."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Good sectors</b>\n\n"
+	   "This color indicates good sectors."));
 
       /* Yellow color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Checksum errors"), _("Checksum error"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Checksum errors"), _("Checksum error"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2786,19 +2803,19 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->yellowB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Checksum errors</b>\n\n"
-		         "This color is used for displaying sectors with wrong check sums."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Checksum errors</b>\n\n"
+	   "This color is used for displaying sectors with wrong check sums."));
 
       /* Red color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Unreadable sectors"), _("Unreadable"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Unreadable sectors"), _("Unreadable"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2816,19 +2833,19 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->redB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Unreadable sectors</b>\n\n"
-		         "This color is used for marking unreadable sectors."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Unreadable sectors</b>\n\n"
+	   "This color is used for marking unreadable sectors."));
 
       /* Dark color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Present sectors"), _("Present sector"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Present sectors"), _("Present sector"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2846,19 +2863,19 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->darkB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Present sectors</b>\n\n"
-		         "Sectors which are already present are marked with this color."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Present sectors</b>\n\n"
+	   "Sectors which are already present are marked with this color."));
 
       /* Blue color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Ignored sectors"), _("Ignored sector"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Ignored sectors"), _("Ignored sector"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2876,20 +2893,20 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->blueB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Ignored sectors</b>\n\n"
-		         "Sectors marked with this color will not be processed "
-			 "in the current run."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Ignored sectors</b>\n\n"
+	   "Sectors marked with this color will not be processed "
+	   "in the current run."));
 
       /* White color */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Highlit sectors"), _("Highlit sector"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Highlit sectors"), _("Highlit sector"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2907,15 +2924,15 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->whiteB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Highlit sectors</b>\n\n"
-		         "This color is used for temporarily highlighting "
-			 "sectors during adaptive reading."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Highlit sectors</b>\n\n"
+	   "This color is used for temporarily highlighting "
+	   "sectors during adaptive reading."));
 
       /** Text colors */
 
@@ -2929,8 +2946,8 @@ void CreatePreferencesWindow(void)
 
       /* Positive text */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Positive text"), _("Positive text"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Positive text"), _("Positive text"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2948,19 +2965,19 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->greenTextB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Positive text</b>\n\n"
-		         "Good news are printed in this color."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Positive text</b>\n\n"
+	   "Good news are printed in this color."));
 
       /* Positive text */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Negative text"), _("Negative text"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Negative text"), _("Negative text"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -2978,14 +2995,14 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->redTextB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Negative text</b>\n\n"
-		         "Bad news are printed in this color."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Negative text</b>\n\n"
+	   "Bad news are printed in this color."));
 
       /** Curve colors */
 
@@ -2998,8 +3015,8 @@ void CreatePreferencesWindow(void)
 
       /* Reading speed curve */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Curve color"), _("Curve color"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Curve color"), _("Curve color"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -3017,20 +3034,20 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->curveColorB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Curve color and labels</b>\n\n"
-		         "The reading speed curve, its left side and top labels "
-			 "are printed in this color."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Curve color and labels</b>\n\n"
+	   "The reading speed curve, its left side and top labels "
+	   "are printed in this color."));
 
       /* Logarithmic scale (C2 errors) */
 
-      lwoh = CreateLabelWithOnlineHelp(_("C2 errors"), _("C2 errors"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("C2 errors"), _("C2 errors"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -3048,21 +3065,21 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->logColorB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>C2 error color</b>\n\n"
-		         "The logarithmic bar graph showing the C2 errors "
-			 "is rendered in this color during the \"read\" "
-			 "and \"scan\" operations."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>C2 error color</b>\n\n"
+	   "The logarithmic bar graph showing the C2 errors "
+	   "is rendered in this color during the \"read\" "
+	   "and \"scan\" operations."));
 
       /* Error correction load */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Error correction load"), _("Error correction load"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Error correction load"), _("Error correction load"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
@@ -3080,15 +3097,15 @@ void CreatePreferencesWindow(void)
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	    pc->barColorB = cbi;
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Error correction load</b>\n\n"
-		         "The bar graph showing the error correction load "
-			 "is rendered in this color during the \"Fix\" operation."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Error correction load</b>\n\n"
+	   "The bar graph showing the error correction load "
+	   "is rendered in this color during the \"Fix\" operation."));
 
       /* Padding space */
 #if 0
@@ -3109,8 +3126,9 @@ void CreatePreferencesWindow(void)
       frame = gtk_frame_new(_utf("Dialog boxes"));
       gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Reverse OK / Cancel buttons"), _("Reverse OK / Cancel buttons"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Reverse OK / Cancel buttons"),
+					  _("Reverse OK / Cancel buttons"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -3129,15 +3147,15 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->cancelOKB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Reverse OK / Cancel buttons</b>\n\n"
-			 "This switch reverses the order of dialog buttons "
-			 "(e.g. OK, Cancel).\n\n"
-			 "Changes will become active after restarting dvdisaster."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Reverse OK / Cancel buttons</b>\n\n"
+	   "This switch reverses the order of dialog buttons "
+	   "(e.g. OK, Cancel).\n\n"
+	   "Changes will become active after restarting dvdisaster."));
 
       /*** "Misc" page */
 
@@ -3152,8 +3170,9 @@ void CreatePreferencesWindow(void)
       gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
-      lwoh = CreateLabelWithOnlineHelp(_("Verbose logging"), _("Verbose logging"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Verbose logging"),
+					  _("Verbose logging"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
@@ -3172,21 +3191,21 @@ void CreatePreferencesWindow(void)
 	 }
 	 else
 	 {  pc->verboseB = button;
-	    AddHelpWidget(lwoh, hbox);
+	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Verbose logging</b>\n\n"
-			 "More information will be supplied in the Log window "
-			 "and/or log file. Useful for debugging, but may lead "
-			 "to slower performance."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Verbose logging</b>\n\n"
+	   "More information will be supplied in the Log window "
+	   "and/or log file. Useful for debugging, but may lead "
+	   "to slower performance."));
 
       /** Log file */
 
-      lwoh = CreateLabelWithOnlineHelp(_("Logfile:"), 
-				       _("Copy log to file:"));
-      RegisterPreferencesHelpWindow(lwoh);
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Logfile:"), 
+					  _("Copy log to file:"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
       {  GtkWidget *table = gtk_table_new(4,2,FALSE);
@@ -3238,18 +3257,19 @@ void CreatePreferencesWindow(void)
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_LOGFILE));
 
 	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), table, FALSE, FALSE, 0);
-	 else   AddHelpWidget(lwoh, table);
+	 else   GuiAddHelpWidget(lwoh, table);
       }
 
-      AddHelpParagraph(lwoh, 
-		       _("<b>Logfile</b>\n\n"
-			 "A copy of the logging information from the log window "
-			 "is written to the specified log file. This is useful to "
-			 "collect information on program crashes, but affects "
-			 "performance negatively."));
+      GuiAddHelpParagraph(lwoh, 
+	 _("<b>Logfile</b>\n\n"
+	   "A copy of the logging information from the log window "
+	   "is written to the specified log file. This is useful to "
+	   "collect information on program crashes, but affects "
+	   "performance negatively."));
    }
 
    /* Show the created / reused window */
 
    gtk_widget_show_all(GTK_WIDGET(Closure->prefsWindow));
 }
+#endif /* WITH_GUI_YES */

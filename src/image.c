@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 #include "scsi-layer.h"
 #include "udf.h"
@@ -148,9 +150,10 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image || image->type == IMAGE_NONE)
   {  if(image) CloseImage(image);
-#ifndef WITH_CLI_ONLY_YES
+
+#ifdef WITH_GUI_YES
      if(Closure->guiMode)
-     {     CreateMessage(_("Image file %s not present or permission denied.\n"), GTK_MESSAGE_ERROR, Closure->imageName);
+     {     GuiCreateMessage(_("Image file %s not present or permission denied.\n"), GTK_MESSAGE_ERROR, Closure->imageName);
 	   return TRUE;
      }
      else
@@ -163,13 +166,14 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(image->eccFile && !image->eccFileMethod)
   {  CloseImage(image);
-#ifndef WITH_CLI_ONLY_YES
+
+#ifdef WITH_GUI_YES
      if(Closure->guiMode)
-     {   CreateMessage(_("\nError correction file type unknown.\n"), GTK_MESSAGE_ERROR);
+     {   GuiCreateMessage(_("\nError correction file type unknown.\n"), GTK_MESSAGE_ERROR);
 	 return TRUE;
      }
      else
-#endif
+#endif       
      {  Stop(_("\nError correction file type unknown.\n"));
      }
   }
@@ -178,9 +182,10 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image->eccFile && image->eccFileState == ECCFILE_NOPERM)
   {  CloseImage(image);
-#ifndef WITH_CLI_ONLY_YES
+
+#ifdef WITH_GUI_YES
      if(Closure->guiMode)
-       {    CreateMessage(_("\nPermission denied on ecc file (perhaps not writeable?).\n"),
+     {    GuiCreateMessage(_("\nPermission denied on ecc file (perhaps not writeable?).\n"),
 			  GTK_MESSAGE_ERROR);
 	  return TRUE;
      }
@@ -195,10 +200,11 @@ int ReportImageEccInconsistencies(Image *image)
 
   if(!image->eccFile && !image->eccMethod)
   {  CloseImage(image);
-#ifndef WITH_CLI_ONLY_YES
+
+#ifdef WITH_GUI_YES
      if(Closure->guiMode)
-     {    CreateMessage(_("\nNo error correction file present.\n"
-			  "No error correction data recognized in image.\n"), GTK_MESSAGE_ERROR);
+     {    GuiCreateMessage(_("\nNo error correction file present.\n"
+			     "No error correction data recognized in image.\n"), GTK_MESSAGE_ERROR);
 	  return TRUE;
      }
      else

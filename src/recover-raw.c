@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 /*
@@ -475,7 +477,7 @@ static int simple_lec(RawBuffer *rb, unsigned char *frame, char *msg)
 
    if(q_failures || p_failures || q_corrected || p_corrected)
    {
-     PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+     PrintCLIorLabel(Closure->status, 
 		     "Sector %" PRId64 "  L-EC P/Q results: %d/%d failures, %d/%d corrected (%s).\n",
 		     rb->lba, p_failures, q_failures, p_corrected, q_corrected, msg);
      return 1;
@@ -557,7 +559,7 @@ int ValidateRawSector(RawBuffer *rb, unsigned char *frame, char *msg)
   /* Tell user that L-EC succeeded */
 
   if(lec_did_sth)
-    PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+    PrintCLIorLabel(Closure->status, 
 		    "Sector %" PRId64 ": Recovered in raw reader by L-EC.\n",
 		    rb->lba);
 
@@ -890,7 +892,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
    {
-       PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+       PrintCLIorLabel(Closure->status, 
 		       "Sector %" PRId64 ": Good. Data section passes EDC test.\n",
 		       rb->lba);
        memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -906,7 +908,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
       if(CheckEDC(rb->recovered, rb->xaMode)
 	 && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
       {
-	 PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+	 PrintCLIorLabel(Closure->status, 
 			 "Sector %" PRId64 ": Recovered in raw reader after correcting sync pattern.\n",
 			 rb->lba);
 	 
@@ -923,7 +925,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
    {
-       PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+       PrintCLIorLabel(Closure->status, 
 		       "Sector %" PRId64 ": Recovered in raw reader by iterative L-EC.\n",
 		       rb->lba);
 
@@ -946,8 +948,8 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
-		      "Sector %lld: Recovered in raw reader by smart L-EC.\n",
+   {  PrintCLIorLabel(Closure->status, 
+		      "Sector %" PRId64 ": Recovered in raw reader by smart L-EC.\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
       return 0; 
@@ -958,7 +960,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by plausible sector search (0).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -969,7 +971,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by brute force plausible sector search (0).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -980,7 +982,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by mutual ack heuristic (0).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -991,7 +993,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by heuristic L-EC (0).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -1002,7 +1004,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by plausible sector search (1).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -1013,7 +1015,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by brute force plausible sector search (1).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -1024,7 +1026,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by mutual ack heuristic (1).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);
@@ -1035,7 +1037,7 @@ int TryCDFrameRecovery(RawBuffer *rb, unsigned char *outbuf)
 
    if(CheckEDC(rb->recovered, rb->xaMode)
       && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
-   {  PrintCLIorLabel(STATUS_LABEL_OR_NULL, 
+   {  PrintCLIorLabel(Closure->status, 
 		      "Sector %" PRId64 ": Recovered in raw reader by heuristic L-EC (1).\n",
 		      rb->lba);
       memcpy(outbuf, rb->recovered+rb->dataOffset, 2048);

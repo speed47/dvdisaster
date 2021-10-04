@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #include "rs03-includes.h"
@@ -39,8 +41,8 @@ static void update_geometry(RS03Widgets*);
 void ResetRS03EncWindow(Method *method)
 {  RS03Widgets *wl = (RS03Widgets*)method->widgetList;
 
-   SetProgress(wl->encPBar1, 0, 100);
-   SetProgress(wl->encPBar2, 0, 100);
+   GuiSetProgress(wl->encPBar1, 0, 100);
+   GuiSetProgress(wl->encPBar2, 0, 100);
 
    gtk_widget_hide(wl->encLabel2);
    gtk_widget_hide(wl->encPBar2);
@@ -58,13 +60,7 @@ void ResetRS03EncWindow(Method *method)
 
 void CreateRS03EncWindow(Method *method, GtkWidget *parent)
 {  GtkWidget *wid,*table,*pbar,*sep;
-   RS03Widgets *wl;
-
-   if(!method->widgetList)
-   {  wl = g_malloc0(sizeof(RS03Widgets));
-      method->widgetList = wl;
-   }
-   else wl = method->widgetList;
+   RS03Widgets *wl=method->widgetList;
 
    wl->encHeadline = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(wl->encHeadline), 0.0, 0.0); 
@@ -171,9 +167,9 @@ void RS03SetFixMaxValues(RS03Widgets *wl, int data_bytes, int ecc_bytes, gint64 
 static gboolean results_idle_func(gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
 
-   SetLabelText(GTK_LABEL(wl->fixCorrected), _("Repaired: %" PRId64 ""), wl->corrected); 
-   SetLabelText(GTK_LABEL(wl->fixUncorrected), _("Unrepairable: <span %s>%" PRId64 "</span>"),Closure->redMarkup, wl->uncorrected); 
-   SetLabelText(GTK_LABEL(wl->fixProgress), _("Progress: %3d.%1d%%"), wl->percent/10, wl->percent%10);
+   GuiSetLabelText(wl->fixCorrected, _("Repaired: %" PRId64 ""), wl->corrected); 
+   GuiSetLabelText(wl->fixUncorrected, _("Unrepairable: <span %s>%" PRId64 "</span>"),Closure->redMarkup, wl->uncorrected); 
+   GuiSetLabelText(wl->fixProgress, _("Progress: %3d.%1d%%"), wl->percent/10, wl->percent%10);
 
    return FALSE;
 }
@@ -192,9 +188,9 @@ void RS03UpdateFixResults(RS03Widgets *wl, gint64 corrected, gint64 uncorrected)
 
 static gboolean curve_idle_func(gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
-   gint x0 = CurveX(wl->fixCurve, (double)wl->lastPercent);
-   gint x1 = CurveX(wl->fixCurve, (double)wl->percent);
-   gint y = CurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
+   gint x0 = GuiCurveX(wl->fixCurve, (double)wl->lastPercent);
+   gint x1 = GuiCurveX(wl->fixCurve, (double)wl->percent);
+   gint y = GuiCurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
    gint i;
 
    /*** Mark unused ecc values */
@@ -228,7 +224,7 @@ static gboolean curve_idle_func(gpointer data)
 
    /* Redraw the ecc capacity threshold line */
 
-   y = CurveY(wl->fixCurve, wl->eccBytes);  
+   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
    gdk_draw_line(wl->fixCurve->widget->window,
 		 Closure->drawGC,
@@ -260,7 +256,7 @@ static void update_geometry(RS03Widgets *wl)
 {  
    /* Curve geometry */ 
 
-   UpdateCurveGeometry(wl->fixCurve, "999", 20);
+   GuiUpdateCurveGeometry(wl->fixCurve, "999", 20);
 
    /* Label positions in the foot line */
 
@@ -275,12 +271,12 @@ static void redraw_curve(RS03Widgets *wl)
 
    /* Redraw the curve */
 
-   RedrawAxes(wl->fixCurve);
-   RedrawCurve(wl->fixCurve, wl->percent);
+   GuiRedrawAxes(wl->fixCurve);
+   GuiRedrawCurve(wl->fixCurve, wl->percent);
 
    /* Ecc capacity threshold line */
 
-   y = CurveY(wl->fixCurve, wl->eccBytes);  
+   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
    gdk_draw_line(wl->fixCurve->widget->window,
 		 Closure->drawGC,
@@ -308,7 +304,7 @@ void ResetRS03FixWindow(Method *method)
 
    gtk_notebook_set_current_page(GTK_NOTEBOOK(wl->fixNotebook), 0);
 
-   ZeroCurve(wl->fixCurve);
+   GuiZeroCurve(wl->fixCurve);
    RS03UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
@@ -378,7 +374,8 @@ void CreateRS03FixWindow(Method *method, GtkWidget *parent)
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), wl->fixFootline, ignore);
 
-   wl->fixCurve  = CreateCurve(d_area, _("Errors/Ecc block"), "%d", 1000, CURVE_PERCENT);
+   wl->fixCurve  = GuiCreateCurve(d_area, _("Errors/Ecc block"), "%d", 1000, CURVE_PERCENT);
    wl->fixCurve->enable = DRAW_ICURVE;
 }
 
+#endif /* WITH_GUI_YES */

@@ -322,3 +322,4 @@ CrcBufValid: NOT complete
 Cache allocation: 120320K+8192K+5120K=130M (data+parity+descrambling)
 Error correction file "rs03f-tmp.ecc" created.
 Make sure to keep this file on a reliable medium.
+FreeCrcBuf - buffer cleared

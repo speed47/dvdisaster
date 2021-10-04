@@ -1189,3 +1189,4 @@ CrcBuf contents, image path none (medium):
   md5State: invalid
   fp sector: 16; 412f356de69d45a4645dbe573fa3a03e
   missing crcs: 1732
+FreeCrcBuf - buffer cleared

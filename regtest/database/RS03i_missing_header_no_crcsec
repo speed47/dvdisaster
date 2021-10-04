@@ -4535,7 +4535,9 @@ RS03: try number = 1572, reading sector 236711
 GetImageFingerprint(16): read & cached
 
 rs03i-tmp.iso: present, contains 359295 medium sectors.
-* quick mode        : image NOT scanned
+* missing sector   : 235219
+* missing sectors  : 235303 - 236711
+* BAD image        : 1410 sectors missing
 
-medium.ecc: not present
+none.file: not present
 

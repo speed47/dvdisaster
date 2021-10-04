@@ -2,10 +2,10 @@
 build=$(grep BUILDNUM $1 2>/dev/null | cut -d\  -f3)
 build=$((build+1))
 cat >$1 <<EOF
-#ifdef WITH_CLI_ONLY_YES
-#define FLAVOR NOGUI
-#else
+#ifdef WITH_GUI_YES
 #define FLAVOR GUI
+#else
+#define FLAVOR NOGUI
 #endif
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)

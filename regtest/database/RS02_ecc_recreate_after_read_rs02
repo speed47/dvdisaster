@@ -4,23 +4,216 @@ This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
+# *** OpenImageFromDevice(sim-cd) ***
+# InquireDevice returned: Simulated CD drive 1.00
 
 Device: sim-cd, Simulated CD drive 1.00
+# *** query_type(Simulated CD drive 1.00, 0) ***
+# *** get_configuration(Simulated CD drive 1.00) ***
+# 8 data len, 9 current
+-> profile 9: CD-R
+# trying READ DISC INFORMATION for size
+# size returned is 32
+# trying READ DISC INFORMATION for real info
+0000: 00 20 1e 00 00 00 00 00  00 00 00 00 00 00 00 00  . ...... ........ 
+0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ ........ 
+# status is 1e, disc type 0
+#CD: starting media probe
+#CD: querying size of READ TOC/PMA/ATIP (for TOC)
+#CD: size returned is 12
+#CD: querying real READ TOC/PMA/ATIP (for TOC)
+0000: 00 0a 00 00 00 14 00 00  00 00 00 00              ........ ....
+#CD: control is 0x14
+#CD: querying size of READ TOC/PMA/ATIP (for full TOC)
+# Warning: Realigning length from 26 to 24
+#CD: size returned is 24
+#CD: querying real READ TOC/PMA/ATIP (for full TOC)
+0000: 00 18 00 01 00 00 00 a0  00 00 00 00 00 00 00 00  ........ ........ 
+0010: 00 00 00 00 00 00 00 00                           ........ 
+#CD: 1 sessions
+#CD: CD medium detected, type: CD-R mode 1
+# query_type() returned.
+# deciding reading strategy...
 Using READ CD.
+GetImageFingerprint(16): read & cached
+
+ExamineUDF(Device: Simulated CD drive 1.00)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 30000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+# *** read_capacity(Simulated CD drive 1.00) ***
+ -> 49934
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: medium sim-cd
+try_sector: trying sector 30000
+try_sector: header at 30000: magic cookie found
+try_sector: CRC okay
+GetImageFingerprint(16): cached
+try_sector: fingerprint okay, header good
+Root sector search at +0 successful
+...augmented image found
+Expected size calculated from ecc header: 49935
+--> confirmed layout variant 1
+Calculated layout for RS02 image:
+data sectors      = 30000
+crc sectors       = 59
+protected sectors = 30061 (incl. 2 hdr sectors)
+reed solomon secs = 19796 (101 roots, 154 data)
+header repeats    = 39 (using modulo 512)
+added sectors     = 19935
+total image size  = 49935
+medium capacity   = n.a.
+
+Interleaving layout:
+196 sectors per ecc layer
+first layer sector with CRC data 14 (sector# 30002)
+
+# Calling query_size()
+# *** query_size(Simulated CD drive 1.00) ***
+Medium size obtained from ECC header: 49935 sectors
+# returned: 49935 sectors
 Medium "Random Image": CD-R mode 1, 49935 sectors, Ecc, created 16-07-2006.
 
 Creating new rs02-tmp.iso image.
-Reading CRC information from ecc data (RS02) ... done.
+Reading CRC information from ecc data (RS02) ... RS02LayoutFromImage(): returning cached layout
+done.
+GOOD Data md5sum
+GOOD CRC md5sum
+GOOD ECC md5sum
 
 All sectors successfully read. Checksums match.
+CrcBuf contents, image path none (medium):
+  crcSize: 49935, dataSectors: 30000, coveredSectors: 30000, allSectors: 49935
+  md5State: data_complete image_complete
+  data: cbadac3ca7b6e9bccfc889b7eaded254
+  full: 72f8ca714abb3807a2767e4ffce037d1
+  fp sector: 16; abe80d3600553a8dce779713afd94f3c
+  missing crcs: 0
 
-Opening rs02-tmp.iso: 49935 medium sectors.
+Opening rs02-tmp.iso
+ExamineUDF(File: rs02-tmp.iso)
+ Examining the ISO file system...
+  Sector 16:
+   Volume descriptor type    = 1
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> primary volume descriptor:
+    System identifier         : |                                |
+    Volume identifier         : |RANDOM IMAGE                    |
+    Volume space size         : 30000 sectors
+    Volume set size           : 1
+    Volume sequence size      : 1
+    Logical block size        : 2048
+    Path table size           : 10 bytes
+    L-Path table location     : 19
+    Opt L-Path table location : 0
+    M-Path table location     : 20
+    Opt M-Path table location : 0
+    Volume creation date/time : 16-07-2006 10:35:46.23
+    Volume modification d/t   : 16-07-2006 10:35:46.23
+    Volume expiration d/t     : 16-07-2106 10:35:46.23
+    Volume effective d/t      : 16-07-2006 10:35:46.23
+    File structure version    : 1
+  Sector 17:
+   Volume descriptor type    = 2
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> supplementary volume descriptor: *skipped*
+  Sector 18:
+   Volume descriptor type    = 255
+   Volume descriptor version = 1
+   Standard identifier       = CD001
+   -> volume descriptor set terminator;
+      end of ISO file system parsing.
+ Examining the UDF file system...
+  not yet implemented.
+
+ExamineECC() started
+...trying RS01
+...trying RS02
+RS02Recognize: file rs02-tmp.iso
+try_sector: trying sector 30000
+try_sector: header at 30000: magic cookie found
+try_sector: CRC okay
+GetImageFingerprint(16): read & cached
+try_sector: fingerprint okay, header good
+Root sector search at +0 successful
+...augmented image found
+Expected size calculated from ecc header: 49935
+--> confirmed layout variant 1
+Calculated layout for RS02 image:
+data sectors      = 30000
+crc sectors       = 59
+protected sectors = 30061 (incl. 2 hdr sectors)
+reed solomon secs = 19796 (101 roots, 154 data)
+header repeats    = 39 (using modulo 512)
+added sectors     = 19935
+total image size  = 49935
+medium capacity   = n.a.
+
+Interleaving layout:
+196 sectors per ecc layer
+first layer sector with CRC data 14 (sector# 30002)
+
+GetImageFingerprint(16): cached
+: 49935 medium sectors.
 * Warning: Image "rs02-tmp.iso" already contains error correction information.
 *          Truncating image to data part (30000 sectors).
 Image size is now: 30000 medium sectors.
+Calculated layout for RS02 image:
+data sectors      = 30000
+crc sectors       = 59
+protected sectors = 30061 (incl. 2 hdr sectors)
+reed solomon secs = 4795 (35 roots, 220 data)
+header repeats    = 38 (using modulo 128)
+added sectors     = 4932
+total image size  = 34932
+medium capacity   = 35000
+
+Interleaving layout:
+137 sectors per ecc layer
+first layer sector with CRC data 136 (sector# 30002)
+
 Augmenting image with Method RS02:
  58 MiB data, 9 MiB ecc (35 roots; 15.9% redundancy).
 * Warning: Using redundancies below 20% may not give
 *          the expected data loss protection.
+CrcBufValid: buffer VALID
 Image has been augmented with error correction data.
 New image size is 68 MiB (34932 sectors).
+FreeCrcBuf - buffer cleared

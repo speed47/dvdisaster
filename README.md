@@ -1,38 +1,54 @@
 # :cd: What is dvdisaster?
 
-**dvdisaster** provides additional [ECC](https://en.m.wikipedia.org/wiki/Error_correction_code) protection for optical media. If a medium gets damaged, dvdisaster can recover it as long as the amount of damage is smaller than the amount of ECC data you added to protect it.
+**dvdisaster** provides additional [ECC](https://en.m.wikipedia.org/wiki/Error_correction_code) protection for optical media.
+If a medium gets damaged, dvdisaster can recover it as long as the amount of damage is smaller than the amount of ECC data you added to protect it.
 
-It can loosely be compared to [.par2](https://en.m.wikipedia.org/wiki/Parchive) files, but the protection works at the *iso* level instead of working at the file level. This way, even if metadata from the optical medium filesystem is damaged, dvdisaster can still work flawlessly.
+It can loosely be compared to [.par2](https://en.m.wikipedia.org/wiki/Parchive) files, but the protection works at the *iso* level instead of working at the file level.
+This way, even if metadata from the optical medium filesystem is damaged, dvdisaster can still work flawlessly.
 
 Please refer to the [PDF manual](documentation/user-manual/manual.pdf) for more information.
 
 # :wrench: Unofficial version
 
-The last upstream version by Carsten Gnörlich is dated 2017, and could be found on the [official](https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html) [website](https://web.archive.org/web/20180509154525/http://dvdisaster.org/en/index.html) which is [now](http://www.dvdisaster.net) [down](http://www.dvdisaster.org). The original source code [repository](https://sourceforge.net/projects/dvdisaster/files/dvdisaster) doesn't have it, but [Debian sources](https://sources.debian.org/src/dvdisaster/) does, thanks to the maintainer there.
+The last upstream version by Carsten Gnörlich is dated 2017, and could be found on the
+[official](https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html)
+[website](https://web.archive.org/web/20180509154525/http://dvdisaster.org/en/index.html)
+which is [now](http://www.dvdisaster.net) [down](http://www.dvdisaster.org).
+The original source code [repository](https://sourceforge.net/projects/dvdisaster/files/dvdisaster) doesn't have it,
+but [Debian sources](https://sources.debian.org/src/dvdisaster/) does, thanks to the maintainer there.
 The original [README](README) has been left untouched in this repository.
+
 This version is built on top of the latest upstream version, with the following notable enhancements:
 
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
 - Added an option to use more space for ECC on BD-R
 - Windows build supported again (it was dropped upstream a few versions back)
-- A new CLI-only version, not depending on gtk (`./configure --with-cli-only && make clean && make -j4`)
+- A new CLI-only version, not depending on gtk (`./configure --with-gui=no && make clean && make -j4`)
 - Non-regression tests on each code change, for Linux64 and Windows32/64, CLI and GUI versions
 - Prebuilt binaries for Windows32, Windows64, Linux64 (static builds and AppImage builds), CLI and GUI versions
 - Fixed a bunch of (minor) quirks, a few (minor) bugs, added a couple (minor) features
 
 Please refer to the [CHANGELOG](CHANGELOG) for all the details.
 
-:loudspeaker: This version will never break compatibility with upstream versions, the goal is to ensure an optical media protected by upstream dvdisaster will still be able to be repaired with this version 10+ years from now. Regression tests are here to ensure this is the case.
+:loudspeaker: As of 2021, upstream development resumed [on a new website](https://dvdisaster.jcea.es/).
+We're working with the new team to upstream as much code as possible from this unofficial version.
+Even if at some point we succeed in upstreaming all our patches, and both codebases are exactly the same,
+this repository will stay up as it provides automated tests and prebuilt binaries.
 
-## :twisted_rightwards_arrows: Choose between 3 protection modes ("codecs")
+This version will never break compatibility with upstream versions,
+the goal is to ensure an optical media protected by upstream dvdisaster will still be able to be repaired
+with this version 10+ years from now. Regression tests are here to ensure this is the case.
+
+## :twisted_rightwards_arrows: 3 available protection modes ("codecs")
 
 For a more detailed explanation of the algorithms, please refer to the [codecs specification PDF](documentation/codecs.pdf).
 
 :one: **RS01** creates error correction files which are stored separately from the image they belong to.
 The artefact is an **ecc** file, which must be stored on another media than the one we're protecting.
 
-:two: **RS02** creates error correction data which is added to the medium to protect, we call this *augmenting* the image we're protecting. Damaged sectors in the error correction information reduce the data recovering capacity, but do not make recovery impossible - a second medium for keeping or protecting the error correction
-information is not required.
+:two: **RS02** creates error correction data which is added to the medium to protect, we call this *augmenting* the image we're protecting.
+Damaged sectors in the error correction information reduce the data recovering capacity,
+but do not make recovery impossible - a second medium for keeping or protecting the error correction information is not required.
 
 :three: **RS03** is a further development of RS01 and RS02. It can create both error correction files and
 augmented images, with the following added features:
@@ -57,8 +73,10 @@ Rough comparison table:
 
 # :bulb: Rationale
 
-Even if the optical media era is sunsetting now, and has been for a few years, it's still of some value for off-site backups. In any case, we still have media in our hands that we want to be able to repair, should it be damaged, during the next years/decades. Repairing is actually pretty much the very reason of dvdisaster existence (as long as parity data has been added, of course).
-The idea of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile, should upstream development never resume (we hope it does!).
+Even if the optical media era is sunsetting now, and has been for a few years, it's still of some value for off-site backups.
+In any case, we still have media in our hands that we want to be able to repair, should it be damaged, during the next years/decades.
+Repairing is actually pretty much the very reason of dvdisaster existence (as long as parity data has been added, of course).
+The idea of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile, ~~should upstream development never resume (we hope it does!)~~
 This is also why precompiled Windows binaries and a precompiled static CLI-only Linux version are available here.
 
 # :hammer: Compiling

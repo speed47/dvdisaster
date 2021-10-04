@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs03-includes.h"
@@ -32,41 +34,42 @@
 #define EXIT_CODE_CHECKSUM_ERROR 12
 #define EXIT_CODE_SYNDROME_ERROR 13
 
+#ifdef WITH_GUI_YES
+
 /***
  *** Reset the verify output window
  ***/
-#ifndef WITH_CLI_ONLY_YES
 
 void ResetRS03VerifyWindow(Method *self)
 {  RS03Widgets *wl = (RS03Widgets*)self->widgetList;
 
-   SetLabelText(GTK_LABEL(wl->cmpImageSectors), "");
-   SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "");
-   SetLabelText(GTK_LABEL(wl->cmpDataSection), "");
-   SetLabelText(GTK_LABEL(wl->cmpCrcSection), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccSection), "");
-   SetLabelText(GTK_LABEL(wl->cmpImageErasure), "");
-   SetLabelText(GTK_LABEL(wl->cmpImagePrognosis), "");
-   SetLabelText(GTK_LABEL(wl->cmpImageErasureCnt), "");
-   SetLabelText(GTK_LABEL(wl->cmpImagePrognosisMsg), "");
-   SetLabelText(GTK_LABEL(wl->cmpImageResult), "");
-   SwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
+   GuiSetLabelText(wl->cmpImageSectors, "");
+   GuiSetLabelText(wl->cmpImageMd5Sum, "");
+   GuiSetLabelText(wl->cmpDataSection, "");
+   GuiSetLabelText(wl->cmpCrcSection, "");
+   GuiSetLabelText(wl->cmpEccSection, "");
+   GuiSetLabelText(wl->cmpImageErasure, "");
+   GuiSetLabelText(wl->cmpImagePrognosis, "");
+   GuiSetLabelText(wl->cmpImageErasureCnt, "");
+   GuiSetLabelText(wl->cmpImagePrognosisMsg, "");
+   GuiSetLabelText(wl->cmpImageResult, "");
+   GuiSwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
 
-   SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), "dvdisaster");
-   SetLabelText(GTK_LABEL(wl->cmpEccMethod), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccType), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccRequires), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccDataCrc), _("Data checksum:"));
-   SetLabelText(GTK_LABEL(wl->cmpEccDataCrcVal), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("n/a"));
-   SetLabelText(GTK_LABEL(wl->cmpEccResult), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccSynLabel), "");
-   SetLabelText(GTK_LABEL(wl->cmpEccSyndromes), "");
+   GuiSetLabelText(wl->cmpEccCreatedBy, "dvdisaster");
+   GuiSetLabelText(wl->cmpEccMethod, "");
+   GuiSetLabelText(wl->cmpEccType, "");
+   GuiSetLabelText(wl->cmpEccRequires, "");
+   GuiSetLabelText(wl->cmpEccDataCrc, _("Data checksum:"));
+   GuiSetLabelText(wl->cmpEccDataCrcVal, "");
+   GuiSetLabelText(wl->cmpEccFingerprint, _("n/a"));
+   GuiSetLabelText(wl->cmpEccResult, "");
+   GuiSetLabelText(wl->cmpEccSynLabel, "");
+   GuiSetLabelText(wl->cmpEccSyndromes, "");
 
    wl->lastPercent = 0;
 
-   FillSpiral(wl->cmpSpiral, Closure->background);
-   DrawSpiral(wl->cmpSpiral);
+   GuiFillSpiral(wl->cmpSpiral, Closure->background);
+   GuiDrawSpiral(wl->cmpSpiral);
 }
 
 /***
@@ -88,7 +91,7 @@ static gboolean spiral_idle_func(gpointer data)
    int i;
 
    for(i=sii->from; i<=sii->to; i++)
-     DrawSpiralSegment(sii->cmpSpiral, sii->segColor, i-1);
+     GuiDrawSpiralSegment(sii->cmpSpiral, sii->segColor, i-1);
 
    g_free(sii);
    return FALSE;
@@ -123,16 +126,16 @@ static void add_verify_values(Method *method, int percent,
 static void redraw_spiral(RS03Widgets *wl)
 {  int x = wl->cmpSpiral->mx - wl->cmpSpiral->diameter/2 + 10;
 
-   DrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
-		   _("Good sectors"), Closure->greenSector, x, 1);
+   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+		      _("Good sectors"), Closure->greenSector, x, 1);
 
-   DrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
-		   _("Sectors with CRC errors"), Closure->yellowSector, x, 2);
+   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+		      _("Sectors with CRC errors"), Closure->yellowSector, x, 2);
 
-   DrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
-		   _("Missing sectors"), Closure->redSector, x, 3);
+   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+		      _("Missing sectors"), Closure->redSector, x, 3);
 
-   DrawSpiral(wl->cmpSpiral);
+   GuiDrawSpiral(wl->cmpSpiral);
 }
 
 /*
@@ -147,11 +150,11 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
    /* Finish spiral initialization */
 
    if(!wl->cmpLayout)
-   {  SetSpiralWidget(wl->cmpSpiral, widget);
+   {  GuiSetSpiralWidget(wl->cmpSpiral, widget);
       wl->cmpLayout = gtk_widget_create_pango_layout(widget, NULL);
    }
 
-   SetText(wl->cmpLayout, _("Missing sectors"), &w, &h);
+   GuiSetText(wl->cmpLayout, _("Missing sectors"), &w, &h);
    size = wl->cmpSpiral->diameter + 20 + 3*(10+h);  /* approx. size of spiral + labels */
 
    wl->cmpSpiral->mx = a->width / 2;
@@ -201,7 +204,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Type:"));
+   GuiSetLabelText(lab, _("Type:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccType = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -210,7 +213,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Method:"));
+   GuiSetLabelText(lab, _("Method:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccMethod = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -219,7 +222,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Created by:"));
+   GuiSetLabelText(lab, _("Created by:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccCreatedBy = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -228,7 +231,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Requires:"));
+   GuiSetLabelText(lab, _("Requires:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccRequires = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -237,7 +240,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = wl->cmpEccDataCrc = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Data checksum:"));
+   GuiSetLabelText(lab, _("Data checksum:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccDataCrcVal = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -246,7 +249,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Fingerprint:"));
+   GuiSetLabelText(lab, _("Fingerprint:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccFingerprint = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -262,7 +265,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    frame = gtk_frame_new(_utf("Image state"));
    gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 2, GTK_SHRINK | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
 
-   wl->cmpSpiral = CreateSpiral(Closure->grid, Closure->background, 10, 5, VERIFY_IMAGE_SEGMENTS);
+   wl->cmpSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, VERIFY_IMAGE_SEGMENTS);
    d_area = wl->cmpDrawingArea = gtk_drawing_area_new();
    gtk_widget_set_size_request(d_area, wl->cmpSpiral->diameter+20, -1);
    gtk_container_add(GTK_CONTAINER(frame), d_area);
@@ -290,7 +293,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Medium sectors:"));
+   GuiSetLabelText(lab, _("Medium sectors:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImageSectors = gtk_label_new("0");
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -299,7 +302,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Data checksum:"));
+   GuiSetLabelText(lab, _("Data checksum:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImageMd5Sum = gtk_label_new("0");
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -308,7 +311,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Data section:"));
+   GuiSetLabelText(lab, _("Data section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpDataSection = gtk_label_new(".");
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -317,7 +320,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Crc section:"));
+   GuiSetLabelText(lab, _("Crc section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpCrcSection = gtk_label_new(".");
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -326,7 +329,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
-   SetLabelText(GTK_LABEL(lab), _("Ecc section:"));
+   GuiSetLabelText(lab, _("Ecc section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccSection= gtk_label_new(".");
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -335,7 +338,7 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = wl->cmpEccSynLabel = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
-   SetLabelText(GTK_LABEL(lab), _("Ecc block test:")); 
+   GuiSetLabelText(lab, _("Ecc block test:")); 
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccSyndromes = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
@@ -362,7 +365,8 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 2, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 4);
 }
-#endif
+
+#endif /* WITH_GUI_YES */
 
 /***
  *** Check the consistency of the augmented image
@@ -376,9 +380,7 @@ typedef struct
 {  Image *image;
    EccHeader *eh;
    RS03Layout *lay;
-#ifndef WITH_CLI_ONLY_YES
    RS03Widgets *wl;
-#endif
    CrcBuf *crcBuf;
    Bitmap *map;
    unsigned char crcSum[16];
@@ -393,10 +395,7 @@ static void cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-      AllowActions(TRUE);
-#endif
+   GuiAllowActions(TRUE);
 
    if(vc->image) CloseImage(vc->image);
    if(vc->lay) 
@@ -414,10 +413,7 @@ static void cleanup(gpointer data)
 
    g_free(vc);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     g_thread_exit(0);
-#endif
+   GuiExitWorkerThread();
 }
 
 /***
@@ -425,30 +421,35 @@ static void cleanup(gpointer data)
  ***/
 
 static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
-{  int j,eccblock;
+{  RS03Layout *lay = vc->lay;
+   int j,eccblock;
    int worst_ecc = 0;
    gint64 damaged_sectors = 0, damaged_eccsecs = 0;
    gint64 correctable = 0;
    gint64 recoverable;
-
-   for(eccblock=0; eccblock<vc->lay->sectorsPerLayer; eccblock++)
+      
+   /* compute the load on the error correction */
+   
+   for(eccblock=0; eccblock < lay->sectorsPerLayer; eccblock++)
    {  int count = 255;
 
       /* Note: ecc file sectors are virtually mapped to augmented image sectors */
 
       for(j=0; j<255; j++)
-      {  gint64 sector = j*vc->lay->sectorsPerLayer+eccblock;
+      {  gint64 sector = j*lay->sectorsPerLayer+eccblock;
 
 	 if(GetBit(vc->map, sector))
 	      count--;
 	 else damaged_sectors++;
       }
 
-      if(count>0)                damaged_eccsecs++;
-      if(count>worst_ecc)        worst_ecc = count; 
-      if(count<=vc->lay->nroots) correctable += count;
+      if(count>0)            damaged_eccsecs++;
+      if(count>worst_ecc)    worst_ecc = count; 
+      if(count<=lay->nroots) correctable += count;
    }
 
+   /* now see what is correctable */
+   
    recoverable = expected - missing + correctable;
 
    if(damaged_sectors > 0)
@@ -460,25 +461,21 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-      {  SetLabelText(GTK_LABEL(vc->wl->cmpImageErasure), _("Erasure counts:"));
-	 SetLabelText(GTK_LABEL(vc->wl->cmpImagePrognosis), _("Prognosis:"));
+      GuiSetLabelText(vc->wl->cmpImageErasure, _("Erasure counts:"));
+      GuiSetLabelText(vc->wl->cmpImagePrognosis, _("Prognosis:"));
 
-	 SetLabelText(GTK_LABEL(vc->wl->cmpImageErasureCnt),
+      GuiSetLabelText(vc->wl->cmpImageErasureCnt,
 		      _("<span %s>avg =  %.1f; worst = %d per ecc block.</span>"),
-		      worst_ecc <= vc->lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
+		      worst_ecc <= lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
 		      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-	 SetLabelText(GTK_LABEL(vc->wl->cmpImagePrognosisMsg),
-		     _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
+      GuiSetLabelText(vc->wl->cmpImagePrognosisMsg,
+		      _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
 		      recoverable < expected ? Closure->redMarkup : Closure->greenMarkup,
-		     recoverable, expected, percentage/10, percentage%10);
-      }
-#endif
+		      recoverable, expected, percentage/10, percentage%10);
    }	      
 
-   if(damaged_sectors && worst_ecc <= vc->lay->nroots && recoverable >= expected)
+   if(damaged_sectors && worst_ecc <= lay->nroots && recoverable >= expected)
         return TRUE;
    else return FALSE;
 }
@@ -497,12 +494,9 @@ static int check_syndromes(verify_closure *vc)
    int bad_counted;
    int layer,i,j;
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetLabelText(GTK_LABEL(vc->wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
-		  _("Checking the image and error correction files."),
-		  _("- Checking ecc blocks (deep verify) -"));
-#endif
+   GuiSetLabelText(vc->wl->cmpHeadline, "<big>%s</big>\n<i>%s</i>",
+		   _("Checking the image and error correction files."),
+		   _("- Checking ecc blocks (deep verify) -"));
 
    /* Allocate buffers and initialize layer sector addresses */
 
@@ -515,12 +509,9 @@ static int check_syndromes(verify_closure *vc)
 	 for(j=0; j<i; j++)
 	    g_free(vc->eccBlock[j]);
 
-#ifndef WITH_CLI_ONLY_YES
-	 if(Closure->guiMode)
-	   SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-			_("<span %s>Out of memory; try reducing sector prefetch!</span>"),
-			Closure->redMarkup);
-#endif
+	 GuiSetLabelText(vc->wl->cmpEccSyndromes,
+			 _("<span %s>Out of memory; try reducing sector prefetch!</span>"),
+			 Closure->redMarkup);
 	 PrintLog(_("* Ecc block test   : out of memory; try reducing sector prefetch!\n"));
 	 return 0;
       }
@@ -541,15 +532,14 @@ static int check_syndromes(verify_closure *vc)
 
       /* Check for user interruption */
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	    SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes), 
-			 _("<span %s>Aborted by user request!</span>"),
-			 Closure->redMarkup); 
+	 {  GuiSetLabelText(vc->wl->cmpEccSyndromes, 
+			    _("<span %s>Aborted by user request!</span>"),
+			    Closure->redMarkup);
+	 }
          return 0;
       }
-#endif
 
       /* Reload cache? */
       
@@ -602,24 +592,16 @@ static int check_syndromes(verify_closure *vc)
       {  last_percent = percent;
 
 	 if(!ecc_bad)
-	 {
-#ifndef WITH_CLI_ONLY_YES
-	    if(Closure->guiMode)
-	      SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-			   _("%d%% tested"),
-			   percent);
-#endif
+	 {  GuiSetLabelText(vc->wl->cmpEccSyndromes,
+			    _("%d%% tested"),
+			    percent);
 	    PrintProgress(_("- Ecc block test   : %d%% tested"), percent);
 
 	 }
 	 else
-	 {
-#ifndef WITH_CLI_ONLY_YES
-	    if(Closure->guiMode)
-	      SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-			   _("<span %s>%" PRId64 " good, %" PRId64 " bad; %d%% tested</span>"),
-			   Closure->redMarkup, ecc_good, ecc_bad, percent);
-#endif
+	 {  GuiSetLabelText(vc->wl->cmpEccSyndromes,
+			    _("<span %s>%" PRId64 " good, %" PRId64 " bad; %d%% tested</span>"),
+			    Closure->redMarkup, ecc_good, ecc_bad, percent);
 	    PrintProgress(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %d%% tested")
 			  , ecc_good, ecc_bad, percent);
 	 }
@@ -629,22 +611,14 @@ static int check_syndromes(verify_closure *vc)
    /* Tell user about our findings */
 
    if(!ecc_bad)
-   {
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-       SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),_("pass"));
-#endif
+   {  GuiSetLabelText(vc->wl->cmpEccSyndromes,_("pass"));
       ClearProgress();
       PrintLog(_("- Ecc block test   : pass\n"));
    }
    else
-   {
-#ifndef WITH_CLI_ONLY_YES
-     if(Closure->guiMode)
-       SetLabelText(GTK_LABEL(vc->wl->cmpEccSyndromes),
-		    _("<span %s>%" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks</span>"),
-		    Closure->redMarkup, ecc_good, ecc_bad, ecc_bad_sub);
-#endif
+   {  GuiSetLabelText(vc->wl->cmpEccSyndromes,
+		   _("<span %s>%" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks</span>"),
+		   Closure->redMarkup, ecc_good, ecc_bad, ecc_bad_sub);
       PrintLog(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
 	       ecc_good, ecc_bad, ecc_bad_sub);
 
@@ -660,9 +634,7 @@ static int check_syndromes(verify_closure *vc)
 void RS03Verify(Image *image)
 {  Method *self = FindMethod("RS03");
    verify_closure *vc = g_malloc0(sizeof(verify_closure));
-#ifndef WITH_CLI_ONLY_YES
    RS03Widgets *wl = self->widgetList;
-#endif
    EccHeader *eh = NULL;
    RS03Layout *lay;
    RS03CksumClosure *csc;
@@ -683,25 +655,21 @@ void RS03Verify(Image *image)
    char *unstable="";
 
    char method[5];
-#ifndef WITH_CLI_ONLY_YES
-   char *img_advice = NULL;
    char *ecc_advice = NULL;
-#endif
    char *version;
-#ifndef WITH_CLI_ONLY_YES
-   int syn_error = 0;
-   int try_it;
-#endif
    int missing_sector_explained = 0;
    int matching_byte_size = TRUE;
-
+#ifdef WITH_GUI_YES
+   int try_it;
+   int syn_error = 0;
+   char *img_advice = NULL;
+#endif
+   
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, vc);
    vc->image = image;
-#ifndef WITH_CLI_ONLY_YES
    vc->wl = wl;
-#endif
 
    if(image->eccFileHeader && !strncmp((char*)(image->eccFileHeader->method), "RS03", 4)) 
    {      eh = image->eccFileHeader;
@@ -717,36 +685,27 @@ void RS03Verify(Image *image)
 
    if(image->file)
    {
-      PrintLog("\n%s present.\n", Closure->imageName);
+     PrintLog(_("\n%s present.\n"), Closure->imageName);
    }
    else  /* may only happen when ecc file is present */
-   {  PrintLog("\n%s not present.\n", Closure->imageName);
+   {  PrintLog(_("\n%s not present.\n"), Closure->imageName);
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
-#endif
+      GuiSwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
    }
 
    if(eh->methodFlags[0] & MFLAG_ECC_FILE)
    {
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
-		     _("Checking the image and error correction files."),
-		     _("- Checking image file -"));
-#endif
+      GuiSetLabelText(wl->cmpHeadline, "<big>%s</big>\n<i>%s</i>",
+		      _("Checking the image and error correction files."),
+		      _("- Checking image file -"));
 
       PrintLog(_("%s present.\n"), Closure->eccName);
    }
    else 
    {  
-#ifndef WITH_CLI_ONLY_YES
-     if(Closure->guiMode)
-       SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
-		    _("Checking the image file."),
-		    _("- Checking image file -"));
-#endif
+      GuiSetLabelText(wl->cmpHeadline, "<big>%s</big>\n<i>%s</i>",
+		      _("Checking the image file."),
+		      _("- Checking image file -"));
    }
 
    /*** Calculate the layout */
@@ -774,10 +733,8 @@ void RS03Verify(Image *image)
 	 else msg = g_strdup_printf(_("Ecc file is %" PRId64 " sectors longer than expected."), 
 				    eccfile_sectors - expected_eccfile_sectors);
 
-#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->guiMode)
 	    ecc_advice = g_strdup_printf("<span %s>%s</span>", Closure->redMarkup, msg);
-#endif
 
 	 PrintLog(_("* Warning          : %s\n"), msg);
 	 g_free(msg);
@@ -791,13 +748,12 @@ void RS03Verify(Image *image)
         PrintLog(_("- type             : Error correction file\n"));
    else PrintLog(_("- type             : Augmented image\n"));
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-   {  if(eh->methodFlags[0] & MFLAG_ECC_FILE)
-	   SetLabelText(GTK_LABEL(wl->cmpEccType), _("Error correction file"));
-      else SetLabelText(GTK_LABEL(wl->cmpEccType), _("Augmented image"));
+   if(eh->methodFlags[0] & MFLAG_ECC_FILE)
+   {    GuiSetLabelText(wl->cmpEccType, _("Error correction file"));
    }
-#endif
+   else
+   {    GuiSetLabelText(wl->cmpEccType, _("Augmented image"));
+   }
 
    /* Error correction method */
 
@@ -807,12 +763,9 @@ void RS03Verify(Image *image)
 	    method, eh->eccBytes, 
 	    ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetLabelText(GTK_LABEL(wl->cmpEccMethod), _("%4s, %d roots, %4.1f%% redundancy"),
-		  method, eh->eccBytes, 
-		  ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
-#endif
+   GuiSetLabelText(wl->cmpEccMethod, _("%4s, %d roots, %4.1f%% redundancy"),
+		   method, eh->eccBytes, 
+		   ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
    /* Creator version */
 
@@ -830,23 +783,16 @@ void RS03Verify(Image *image)
       PrintLog(format, _("- created by       : dvdisaster"), major, minor, micro, unstable);
       PrintLog("\n");
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-      {  SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format, 
+      GuiSetLabelText(wl->cmpEccCreatedBy, format, 
 		      "dvdisaster", major, minor, micro, unstable);
-      }
-#endif
    }
    else
    {  char *format = "%s-%d.%d%s";
       PrintLog(format, _("- created by       : dvdisaster"), major, minor, unstable);
       PrintLog("\n");
       
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccCreatedBy), format,
-		     "dvdisaster", major, minor, unstable);
-#endif
+      GuiSetLabelText(wl->cmpEccCreatedBy, format,
+		      "dvdisaster", major, minor, unstable);
    }
 
    /* Required dvdisaster version */
@@ -863,10 +809,7 @@ void RS03Verify(Image *image)
    if(Closure->version >= eh->neededVersion)
    {  PrintLog(_("- requires         : dvdisaster-%s\n"), version);
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(wl->cmpEccRequires), "dvdisaster-%s", version);
-#endif
+      GuiSetLabelText(wl->cmpEccRequires, "dvdisaster-%s", version);
    }
    else 
    {  PrintLog(_("* requires         : dvdisaster-%s (BAD)\n"
@@ -874,17 +817,13 @@ void RS03Verify(Image *image)
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       version);
 
-#ifndef WITH_CLI_ONLY_YES
-     if(Closure->guiMode)
-     {  SetLabelText(GTK_LABEL(wl->cmpEccRequires), 
-		     "<span %s>dvdisaster-%s</span>",
-		     Closure->redMarkup, version);
-        if(!ecc_advice) 
-	   ecc_advice = g_strdup_printf(_("<span %s>Please upgrade your version of dvdisaster!</span>"), Closure->redMarkup);
-     }
-#endif
+      GuiSetLabelText(wl->cmpEccRequires, 
+		      "<span %s>dvdisaster-%s</span>",
+		      Closure->redMarkup, version);
+      if(!ecc_advice) 
+	ecc_advice = g_strdup_printf(_("<span %s>Please upgrade your version of dvdisaster!</span>"), Closure->redMarkup);
 
-     exitCode = EXIT_CODE_VERSION_MISMATCH;
+      exitCode = EXIT_CODE_VERSION_MISMATCH;
    }
 
    g_free(version);
@@ -897,10 +836,7 @@ void RS03Verify(Image *image)
 
    PrintLog(_("- data md5sum      : %s\n"),hdr_digest);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetLabelText(GTK_LABEL(wl->cmpEccDataCrcVal), "%s", hdr_digest);
-#endif
+   GuiSetLabelText(wl->cmpEccDataCrcVal, "%s", hdr_digest);
 
    /* compare images in ecc file case */
 
@@ -909,50 +845,38 @@ void RS03Verify(Image *image)
       {  if(image->fpState != FP_PRESENT)
          {  PrintLog(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
 
-#ifndef WITH_CLI_ONLY_YES
-	    if(Closure->guiMode)
-	      SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("<span %s>missing sector prevents calculation</span>"), Closure->redMarkup);
-#endif
-	}
-	else
-	{ 
+	    GuiSetLabelText(wl->cmpEccFingerprint, _("<span %s>missing sector prevents calculation</span>"), Closure->redMarkup);
+	 }
+	 else
+	 { 
 	   if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	   {  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
 
-#ifndef WITH_CLI_ONLY_YES
-	      if(Closure->guiMode)
-	      {  SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), 
+	      GuiSetLabelText(wl->cmpEccFingerprint, 
 			      _("<span %s>mismatch</span>"), Closure->redMarkup);
 
-		if(!ecc_advice)
-		  ecc_advice = g_strdup_printf(_("<span %s>Image and error correction files do not belong together!</span>"), Closure->redMarkup);
-	      }
-#endif
+	      if(!ecc_advice)
+		ecc_advice = g_strdup_printf(_("<span %s>Image and error correction files do not belong together!</span>"), Closure->redMarkup);
 	   }
 	   else 
 	   {  PrintLog(_("- fingerprint match: good\n"));
-#ifndef WITH_CLI_ONLY_YES
-	      if(Closure->guiMode)
-		SetLabelText(GTK_LABEL(wl->cmpEccFingerprint), _("good"));
-#endif
+	      GuiSetLabelText(wl->cmpEccFingerprint, _("good"));
 	   }
-	}
+	 }
       }
    }
    
    /* print advice collected from above tests */
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-   {  if(ecc_advice) 
-      {  SetLabelText(GTK_LABEL(wl->cmpEccResult), "%s", ecc_advice);
-         g_free(ecc_advice);
-      }
-      else SetLabelText(GTK_LABEL(wl->cmpEccResult),
-			_("<span %s>Good error correction data.</span>"),
-			Closure->greenMarkup);
+   if(ecc_advice) 
+   {  GuiSetLabelText(wl->cmpEccResult, "%s", ecc_advice);
+      g_free(ecc_advice);
    }
-#endif
+   else
+   {  GuiSetLabelText(wl->cmpEccResult,
+		      _("<span %s>Good error correction data.</span>"),
+		      Closure->greenMarkup);
+   }
 
    if(!image->file)  /* Ecc file but no image */
       goto terminate;
@@ -976,25 +900,20 @@ void RS03Verify(Image *image)
    }
    else 
    {  virtual_expected = expected_image_sectors = lay->totalSectors;
-      SetBit(vc->map, lay->eccHeaderPos);
-      SetBit(vc->map, lay->eccHeaderPos+1);
    }
 
    /* Image size and expected size in ecc file match */
    
    if(expected_image_sectors == image->sectorSize && matching_byte_size)
    {  if(lay->target == ECC_FILE)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         if(Closure->guiMode)
-	 {  if(image->inLast == 2048)
-	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " in image; %" PRId64 " in ecc file"), 
-			   image->sectorSize, eccfile_sectors);
-	    else
-	      SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " sectors + %d bytes in image; %" PRId64 " in ecc file"), 
-			   image->sectorSize-1, image->inLast, eccfile_sectors);
+      {  if(image->inLast == 2048)
+	 {  GuiSetLabelText(wl->cmpImageSectors, _("%" PRId64 " in image; %" PRId64 " in ecc file"), 
+			    image->sectorSize, eccfile_sectors);
 	 }
-#endif
+	 else
+	 {  GuiSetLabelText(wl->cmpImageSectors, _("%" PRId64 " sectors + %d bytes in image; %" PRId64 " in ecc file"), 
+			    image->sectorSize-1, image->inLast, eccfile_sectors);
+	 }
 
 	 if(image->inLast == 2048)
 	      PrintLog(_("- sectors          : %" PRId64 " in image; "), image->sectorSize);
@@ -1003,12 +922,8 @@ void RS03Verify(Image *image)
 	 PrintLog(_("%" PRId64 " in ecc file\n"), eccfile_sectors);
       }
       else 
-      {  
-#ifndef WITH_CLI_ONLY_YES
-         if(Closure->guiMode)
-	   SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("%" PRId64 " total / %" PRId64 " data"), 
-			image->sectorSize, lay->dataSectors);
-#endif
+      {  GuiSetLabelText(wl->cmpImageSectors, _("%" PRId64 " total / %" PRId64 " data"), 
+			 image->sectorSize, lay->dataSectors);
 	 PrintLog(_("- medium sectors   : %" PRId64 " total / %" PRId64 " data\n"),
 		  image->sectorSize, lay->dataSectors);
       }
@@ -1024,28 +939,26 @@ void RS03Verify(Image *image)
            expected_size = g_strdup_printf("%lld", (long long int)expected_image_sectors);
       else expected_size = g_strdup_printf("%lld sectors + %d bytes", (long long int)expected_image_sectors-1, eh->inLast);
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-      {  SetLabelText(GTK_LABEL(wl->cmpImageSectors), _("<span %s>%s (%s expected)</span>"), 
+#ifdef WITH_GUI_YES
+      GuiSetLabelText(wl->cmpImageSectors, _("<span %s>%s (%s expected)</span>"), 
 		      Closure->redMarkup, image_size, expected_size);
 
-	 if(image->sectorSize == expected_image_sectors)
-	 {  if(image->inLast < eh->inLast)
-	         img_advice = g_strdup_printf(_("<span %s>Image file is %d bytes shorter than expected.</span>"),
-					      Closure->redMarkup, eh->inLast-image->inLast);
-	    else img_advice = g_strdup_printf(_("<span %s>Image file is %d bytes longer than expected.</span>"),
-					      Closure->redMarkup, image->inLast-eh->inLast);
-	 }
-
-	 if(expected_image_sectors > image->sectorSize)
-	    img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors shorter than expected.</span>"),
-					 Closure->redMarkup, expected_image_sectors - image->sectorSize);
-	 if(expected_image_sectors < image->sectorSize)
-	    img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors longer than expected.</span>"),
-					 Closure->redMarkup, image->sectorSize - expected_image_sectors);
+      if(image->sectorSize == expected_image_sectors)
+      {  if(image->inLast < eh->inLast)
+	   img_advice = g_strdup_printf(_("<span %s>Image file is %d bytes shorter than expected.</span>"),
+					Closure->redMarkup, eh->inLast-image->inLast);
+	 else img_advice = g_strdup_printf(_("<span %s>Image file is %d bytes longer than expected.</span>"),
+					   Closure->redMarkup, image->inLast-eh->inLast);
       }
-#endif
 
+      if(expected_image_sectors > image->sectorSize)
+	img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors shorter than expected.</span>"),
+				     Closure->redMarkup, expected_image_sectors - image->sectorSize);
+      if(expected_image_sectors < image->sectorSize)
+	img_advice = g_strdup_printf(_("<span %s>Image file is %" PRId64 " sectors longer than expected.</span>"),
+				     Closure->redMarkup, image->sectorSize - expected_image_sectors);
+#endif /* WITH_GUI_YES */
+      
       if(lay->target == ECC_FILE)
 	PrintLog(_("* sectors          : %s (%s expected); %" PRId64 " sectors in ecc file\n"),
 		 image_size, expected_size, eccfile_sectors);
@@ -1058,6 +971,10 @@ void RS03Verify(Image *image)
    
    if(Closure->quickVerify)
    {  PrintLog(_("* quick mode        : image NOT scanned\n"));
+#ifdef WITH_GUI_YES
+      if(img_advice)
+         g_free(img_advice);
+#endif
       goto terminate;
    }
 
@@ -1089,15 +1006,14 @@ void RS03Verify(Image *image)
 
       /* Check for user interruption */
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	    SetLabelText(GTK_LABEL(wl->cmpImageResult), 
-			 _("<span %s>Aborted by user request!</span>"),
-			 Closure->redMarkup); 
+	 {  GuiSetLabelText(wl->cmpImageResult, 
+			    _("<span %s>Aborted by user request!</span>"),
+			    Closure->redMarkup);
+	 }
          goto terminate;
       }
-#endif
 
       /* Read the next sector */
 
@@ -1211,7 +1127,7 @@ void RS03Verify(Image *image)
       if(!defective)
 	SetBit(vc->map, s);
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES      
       if(Closure->guiMode) 
       {   /* data part / spiral animation */
 	  percent = (VERIFY_IMAGE_SEGMENTS*(s+1))/virtual_expected;
@@ -1221,12 +1137,12 @@ void RS03Verify(Image *image)
 	    percent = (100*(s+1-lay->dataSectors)/(virtual_expected-lay->dataSectors));
       }  
       else
-#endif
-      percent = (100*(s+1))/virtual_expected;
+#endif /* WITH_GUI_YES */
+	percent = (100*(s+1))/virtual_expected;
 
       if(last_percent != percent) /* Update sector results */
       {  PrintProgress(_("- testing sectors  : %3d%%") ,percent);
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES	
 	 if(Closure->guiMode)
 	 {  if(lay->target == ECC_IMAGE)
 	    {  add_verify_values(self, percent, new_missing, new_crc_errors); 
@@ -1238,24 +1154,27 @@ void RS03Verify(Image *image)
 	          add_verify_values(self, image_percent, new_missing, new_crc_errors); 
 	       }
 	       else
-	       {  SetLabelText(GTK_LABEL(wl->cmpEccSyndromes),_("%d%% tested"),percent);
+	       {  GuiSetLabelText(wl->cmpEccSyndromes,_("%d%% tested"),percent);
 	       }
 	    }
 
 	    if(data_missing || data_crc_errors)
-	      SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-			   _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
-			   Closure->redMarkup, data_missing, data_crc_errors);
+	    {  GuiSetLabelText(wl->cmpDataSection, 
+			       _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
+			       Closure->redMarkup, data_missing, data_crc_errors);
+	    }
 	    if(crc_missing || csc->signatureErrors)
-	      SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-			   _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
-			   Closure->redMarkup, crc_missing, csc->signatureErrors);
+	    {  GuiSetLabelText(wl->cmpCrcSection, 
+			       _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
+			       Closure->redMarkup, crc_missing, csc->signatureErrors);
+	    }
 	    if(ecc_missing)
-	      SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-			   _("<span %s>%" PRId64 " sectors missing</span>"),
-			   Closure->redMarkup, ecc_missing);
+	    {  GuiSetLabelText(wl->cmpEccSection, 
+			       _("<span %s>%" PRId64 " sectors missing</span>"),
+			       Closure->redMarkup, ecc_missing);
+	    }
 	 }
-#endif
+#endif /* WITH_GUI_YES */
 	 last_percent = percent;
 	 new_missing = new_crc_errors = 0;
       }
@@ -1263,43 +1182,44 @@ void RS03Verify(Image *image)
       /* If we have processed the image and are about to switch over
 	 to the ecc file, do some bookkeeping. */
 
+#ifdef WITH_GUI_YES	
       if(lay->target == ECC_FILE && s == lay->dataSectors-1)
-      {	 
-#ifndef WITH_CLI_ONLY_YES
+      {
 	if(Closure->guiMode)
 	{  /* flush/complete spiral */
 	   add_verify_values(self, VERIFY_IMAGE_SEGMENTS, new_missing, new_crc_errors); 
 
-	   SetLabelText(GTK_LABEL(wl->cmpHeadline), "<big>%s</big>\n<i>%s</i>",
-			_("Checking the image and error correction files."),
-			_("- Checking ecc file -"));
+	   GuiSetLabelText(wl->cmpHeadline, "<big>%s</big>\n<i>%s</i>",
+			   _("Checking the image and error correction files."),
+			   _("- Checking ecc file -"));
 
-	   SetLabelText(GTK_LABEL(wl->cmpEccSynLabel), _("Error correction file:"));
+	   GuiSetLabelText(wl->cmpEccSynLabel, _("Error correction file:"));
 	   last_percent = 0; /* restart counting for ecc file */
 	}
-#endif
       }
+#endif /* WITH_GUI_YES */
    }
 
    /* Complete damage summary */
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(data_missing || data_crc_errors)
-        SetLabelText(GTK_LABEL(wl->cmpDataSection), 
-		     _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
-		     Closure->redMarkup, data_missing, data_crc_errors);
+      {  GuiSetLabelText(wl->cmpDataSection, 
+			 _("<span %s>%" PRId64 " sectors missing; %" PRId64 " CRC errors</span>"),
+			 Closure->redMarkup, data_missing, data_crc_errors);
+      }
       if(crc_missing || csc->signatureErrors)
-        SetLabelText(GTK_LABEL(wl->cmpCrcSection), 
-		     _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
-		     Closure->redMarkup, crc_missing, csc->signatureErrors);
+      {  GuiSetLabelText(wl->cmpCrcSection, 
+			 _("<span %s>%" PRId64 " sectors missing; %" PRId64 " signature errors</span>"),
+			 Closure->redMarkup, crc_missing, csc->signatureErrors);
+      }
       if(ecc_missing)
-	SetLabelText(GTK_LABEL(wl->cmpEccSection), 
-		     _("<span %s>%" PRId64 " sectors missing</span>"),
-		     Closure->redMarkup, ecc_missing);
+      {  GuiSetLabelText(wl->cmpEccSection, 
+			 _("<span %s>%" PRId64 " sectors missing</span>"),
+			 Closure->redMarkup, ecc_missing);
+      }
    }
-#endif
-
+   
    /* The image md5sum is only useful if all blocks have been successfully read. */
 
    MD5Final(medium_sum, &image_md5);
@@ -1334,87 +1254,84 @@ void RS03Verify(Image *image)
       PrintLog(_("  ... ecc section    : %" PRId64 " sectors missing\n"), ecc_missing);
    }
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(!data_missing && !data_crc_errors) 
-                        SetLabelText(GTK_LABEL(wl->cmpDataSection), _("complete"));
+      {  GuiSetLabelText(wl->cmpDataSection, _("complete"));
+      }
       if(!crc_missing && !csc->signatureErrors)  
-	                SetLabelText(GTK_LABEL(wl->cmpCrcSection), _("complete"));
-      if(!ecc_missing)  SetLabelText(GTK_LABEL(wl->cmpEccSection), _("complete"));
-     
-      SetLabelText(GTK_LABEL(wl->cmpImageMd5Sum), "%s", data_missing ? "-" : data_digest);
+      {  GuiSetLabelText(wl->cmpCrcSection, _("complete"));
+      }
+      if(!ecc_missing)
+      {  GuiSetLabelText(wl->cmpEccSection, _("complete"));
+      }
+      GuiSetLabelText(wl->cmpImageMd5Sum, "%s", data_missing ? "-" : data_digest);
    }
-#endif
-
+   
    /*** Test error syndromes */
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-   {  SetLabelText(GTK_LABEL(wl->cmpEccSynLabel), _("Ecc block test:"));
-      SetLabelText(GTK_LABEL(wl->cmpEccSyndromes), "");
-   }
-#endif
-   if(0&&total_missing + data_crc_errors != 0)
-   {
-#ifndef WITH_CLI_ONLY_YES
-     if(Closure->guiMode) 
-        SetLabelText(GTK_LABEL(wl->cmpEccSyndromes),
-		     _("<span %s>Skipped; not useful on known defective image</span>"),
-		     Closure->redMarkup);
-#endif
+   GuiSetLabelText(wl->cmpEccSynLabel, _("Ecc block test:"));
+   GuiSetLabelText(wl->cmpEccSyndromes, "");
+
+   if(0&&total_missing + data_crc_errors != 0)  // TODO: check why this is deactivated
+   {  GuiSetLabelText(wl->cmpEccSyndromes,
+		      _("<span %s>Skipped; not useful on known defective image</span>"),
+		      Closure->redMarkup);
 
      PrintLog(_("* Ecc block test   : skipped; not useful on defective image\n"));
    }
    else
-   {
-#ifndef WITH_CLI_ONLY_YES
-      syn_error =
+#ifdef WITH_GUI_YES
+     syn_error = check_syndromes(vc);
+#else
+     check_syndromes(vc);
 #endif
-         check_syndromes(vc);
-   }
-
+     
    /*** Print image advice */
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-   {
-      if(img_advice) 
-      {  SetLabelText(GTK_LABEL(wl->cmpImageResult), "%s", img_advice);
-         g_free(img_advice);
-      }
-      else 
-      {  if(!total_missing && !data_crc_errors && !syn_error)
-	    SetLabelText(GTK_LABEL(wl->cmpImageErasure),  /* avoid two blank lines */
+#ifdef WITH_GUI_YES
+   if(img_advice) 
+   {  GuiSetLabelText(wl->cmpImageResult, "%s", img_advice);
+      g_free(img_advice);
+   }
+   else 
+   {  if(!total_missing && !data_crc_errors && !syn_error)
+      {  GuiSetLabelText(wl->cmpImageErasure,  /* avoid two blank lines */
 			 _("<span %s>Good image.</span>"),
 			 Closure->greenMarkup);
-	 else
-           SetLabelText(GTK_LABEL(wl->cmpImageResult),
-			_("<span %s>Damaged image.</span>"),
-			Closure->redMarkup);
+      }
+      else
+      {  GuiSetLabelText(wl->cmpImageResult,
+			 _("<span %s>Damaged image.</span>"),
+			 Closure->redMarkup);
       }
    }
 #endif
-
+   
    /*** Print final results */
 
-#ifndef WITH_CLI_ONLY_YES
-   try_it =
+#ifdef WITH_GUI_YES
+   try_it = prognosis(vc, total_missing+data_crc_errors, lay->totalSectors);
+#else
+   prognosis(vc, total_missing+data_crc_errors, lay->totalSectors);
 #endif
-      prognosis(vc, total_missing+data_crc_errors, lay->totalSectors); 
-
-#ifndef WITH_CLI_ONLY_YES
+   
+#ifdef WITH_GUI_YES
    if(Closure->guiMode)
    {  if(total_missing || data_crc_errors)
-      {  if(try_it) SetLabelText(GTK_LABEL(wl->cmpImageResult),
-				 _("<span %s>Full data recovery is likely.</span>"),
-				 Closure->greenMarkup);
-         else       SetLabelText(GTK_LABEL(wl->cmpImageResult),
-				 _("<span %s>Full data recovery is NOT possible.</span>"),
-				 Closure->redMarkup);
+      {  if(try_it)
+	 {  GuiSetLabelText(wl->cmpImageResult,
+			    _("<span %s>Full data recovery is likely.</span>"),
+			    Closure->greenMarkup);
+	 }
+         else
+	 {  GuiSetLabelText(wl->cmpImageResult,
+			    _("<span %s>Full data recovery is NOT possible.</span>"),
+			    Closure->redMarkup);
+	 }
       }
    }
-#endif
-
+#endif /* WITH_GUI_YES */
+   
    /*** Close and clean up */
 
 terminate:

@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #define UNDO_SLOTS 100
@@ -128,7 +130,7 @@ static raw_editor_context* create_raw_editor_context()
    return rec;
 }
 
-void FreeRawEditorContext(void *rptr)
+void GuiFreeRawEditorContext(void *rptr)
 {  raw_editor_context *rec = rptr;
    int i;
 
@@ -151,7 +153,7 @@ void FreeRawEditorContext(void *rptr)
 
 static gboolean delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
-   FreeRawEditorContext(Closure->rawEditorContext);
+   GuiFreeRawEditorContext(Closure->rawEditorContext);
 
    return FALSE;
 }
@@ -295,7 +297,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->fileSel = gtk_file_selection_new(_utf("windowtitle|Raw sector dump selection"));
-	    ReverseCancelOK(GTK_DIALOG(rec->fileSel));
+	    GuiReverseCancelOK(GTK_DIALOG(rec->fileSel));
             g_signal_connect(G_OBJECT(rec->fileSel), "destroy",
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->ok_button),"clicked", 
@@ -325,8 +327,8 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	 calculate_failures(rec);
 	 evaluate_vectors(rec);
 	 render_sector(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("%s loaded, LBA %" PRId64 ", %d samples."),
-		      rec->filepath, rec->rb->lba, rec->rb->samplesRead);
+	 GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
+			 rec->filepath, rec->rb->lba, rec->rb->samplesRead);
 	 break;
 
       case ACTION_FILESEL_CANCEL:
@@ -416,7 +418,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->loadBufSel = gtk_file_selection_new(_utf("windowtitle|Load buffer from file"));
-	    ReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
+	    GuiReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
             g_signal_connect(G_OBJECT(rec->loadBufSel), "destroy",
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->ok_button),"clicked", 
@@ -434,7 +436,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->saveBufSel = gtk_file_selection_new(_utf("windowtitle|Save buffer to file"));
-	    ReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
+	    GuiReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
             g_signal_connect(G_OBJECT(rec->saveBufSel), "destroy",
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->ok_button),"clicked", 
@@ -471,7 +473,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 render_sector(rec);
 	 undo_remember(rec);
 	 
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Buffer loaded from %s."), path);
+	 GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
 	 break;
       }
 
@@ -486,7 +488,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
 	 LargeClose(file);
 
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Buffer saved to %s."), path);
+	 GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
 	 break;
       }
 
@@ -509,11 +511,11 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 static void calculate_geometry(raw_editor_context *rec)
 {  int w,h;
 
-   SetText(rec->layout, "w", &w, &h);
+   GuiSetText(rec->layout, "w", &w, &h);
    rec->charWidth  = w;
    rec->charHeight = h+h/4;
 
-   SetText(rec->layout, "34", &w, &h);
+   GuiSetText(rec->layout, "34", &w, &h);
    rec->byteWidth  = w+w/2;
    rec->byteHeight = h+h/4;
 
@@ -573,11 +575,12 @@ static void evaluate_vectors(raw_editor_context *rec)
    if(   CheckEDC(rb->recovered, rb->xaMode) 
 	 && CheckMSF(rb->recovered, rb->lba, STRICT_MSF_CHECK))
    {  gtk_widget_set_sensitive(rec->saveButton, TRUE);
-      SetLabelText(GTK_LABEL(rec->leftLabel), _("*** Well done: Sector has been recovered! ***"));
+      GuiSetLabelText(rec->leftLabel, _("*** Well done: Sector has been recovered! ***"));
    }
    else
-      SetLabelText(GTK_LABEL(rec->leftLabel), _("Current buffer state: P %d/%d, Q %d/%d"), 
-		   rec->p2, rec->p1, rec->q2, rec->q1);
+      GuiSetLabelText(rec->leftLabel,
+		      _("Current buffer state: P %d/%d, Q %d/%d"), 
+		      rec->p2, rec->p1, rec->q2, rec->q1);
 }
 
 /* Render the sector */
@@ -625,7 +628,7 @@ static void render_sector(raw_editor_context *rec)
 
 	 sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
 	 idx++;
-	 SetText(rec->layout, byte, &w, &h);
+	 GuiSetText(rec->layout, byte, &w, &h);
 	 gdk_draw_layout(d, Closure->drawGC, x, y, rec->layout);
       }
    }
@@ -687,7 +690,8 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 for(i=0; i<v_size; i++)
 	 {  if(!vector[i]) continue;
 	    if(erasures>2)
-	    {  SetLabelText(GTK_LABEL(rec->rightLabel), _("%c Vector %d has >2 erasures (nothing done)."), type, v);
+	    {  GuiSetLabelText(rec->rightLabel,
+		  _("%c Vector %d has >2 erasures (nothing done)."), type, v);
 	       return TRUE;
 	    }
 	    eras[erasures++] = i;
@@ -715,19 +719,19 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	    err = DecodePQ(rb->rt, vector, Q_PADDING, eras, e_scratch);
 	 }
 
-	 if(err==0) SetLabelText(GTK_LABEL(rec->rightLabel), 
-				 _("%c Vector %d already good."), type, v);
+	 if(err==0) GuiSetLabelText(rec->rightLabel, 
+		       _("%c Vector %d already good."), type, v);
 	 else if(err==1 || err==2)
 	 {  if(type=='P') SetPVector(rb->recovered, vector, v);
 	    else          SetQVector(rb->recovered, vector, v);
 	    evaluate_vectors(rec);
 	    render_sector(rec);
 	    undo_remember(rec);
-	    SetLabelText(GTK_LABEL(rec->rightLabel), 
-			 _("%c Vector %d corrected (%d erasures)."), type, v, e_scratch);
+	    GuiSetLabelText(rec->rightLabel, 
+	       _("%c Vector %d corrected (%d erasures)."), type, v, e_scratch);
 	 }
-	 else SetLabelText(GTK_LABEL(rec->rightLabel), 
-			   _("%c Vector %d not correctable (%d erasures)."), type, v, e_scratch);
+	 else GuiSetLabelText(rec->rightLabel, 
+		 _("%c Vector %d not correctable (%d erasures)."), type, v, e_scratch);
       }
 	 break;
 
@@ -741,8 +745,8 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 v = mouse_x/rec->charWidth;
 
 	 if(!rb->pn[v])
-	 {  SetLabelText(GTK_LABEL(rec->rightLabel), 
-			 _("no replacements for P vector %d available"), v);
+	 {  GuiSetLabelText(rec->rightLabel, 
+			    _("no replacements for P vector %d available"), v);
 	    return TRUE;
 	 }
 
@@ -757,7 +761,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 SetPVector(rb->recovered, rb->pList[v][i], v);
 	 evaluate_vectors(rec);
 	 render_sector(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), 
+	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged P vector %d with version %d (of %d)."),
 		      v, i+1, rb->pn[v]);
 	 rec->lastPFrame = i;
@@ -779,7 +783,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 ByteIndexToQ(bytepos, &v, &ignore);
 
 	 if(!rb->qn[v])
-	 {  SetLabelText(GTK_LABEL(rec->rightLabel), 
+	 {  GuiSetLabelText(rec->rightLabel, 
 			 _("no replacements for Q vector %d available"), v);
 	    return TRUE;
 	 }
@@ -793,7 +797,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 SetQVector(rb->recovered, rb->qList[v][i], v);
 	 evaluate_vectors(rec);
 	 render_sector(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), 
+	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged Q vector %d with version %d (of %d)."),
 		      v, i+1, rb->qn[v]);
 	 rec->lastQFrame = i;
@@ -855,7 +859,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 evaluate_vectors(rec);
 	 render_sector(rec);
 	 undo_remember(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Showing sample %d (of %d)."), 
+	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
 	 break;
 
@@ -868,7 +872,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 evaluate_vectors(rec);
 	 render_sector(rec);
 	 undo_remember(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Showing sample %d (of %d)."), 
+	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
 	 break;
 
@@ -914,7 +918,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 evaluate_vectors(rec);
 	 render_sector(rec);
 	 undo_remember(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Sector with lowest P failures selected."));
+	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest P failures selected."));
 	 break;
 
       case ACTION_SORT_BY_Q:
@@ -924,7 +928,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 evaluate_vectors(rec);
 	 render_sector(rec);
 	 undo_remember(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), _("Sector with lowest Q failures selected."));
+	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest Q failures selected."));
 	 break;
 
       case ACTION_SMART_LEC:
@@ -935,8 +939,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 evaluate_vectors(rec);
 	 render_sector(rec);
 	 undo_remember(rec);
-	 SetLabelText(GTK_LABEL(rec->rightLabel), 
-		      _("Smart L-EC: %s"), message);
+	 GuiSetLabelText(rec->rightLabel, _("Smart L-EC: %s"), message);
 	 break;
       }
    }
@@ -946,7 +949,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
  *** Raw sector editor widget creation
  ***/
 
-void CreateRawEditor(void)
+void GuiCreateRawEditor(void)
 {  raw_editor_context *rec = NULL;
 
    rec = create_raw_editor_context();
@@ -1130,3 +1133,4 @@ void CreateRawEditor(void)
 
    gtk_widget_show_all(GTK_WIDGET(rec->window));
 }
+#endif /* WITH_GUI_YES */

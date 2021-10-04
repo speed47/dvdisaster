@@ -39,8 +39,8 @@ fi
 
 # Set the package name and version
 
-PACKAGE dvdisaster 0.79.9
-DEFINE_INT PATCHLEVEL 9
+PACKAGE dvdisaster 0.79.10
+DEFINE_INT PATCHLEVEL 1
 DEFINE_STRING HAVE_UNSTABLE_RELEASE 1
 DEFINE_STRING HOMEPAGE "https://dvdisaster.jcea.es"
 
@@ -66,16 +66,10 @@ GET_BUILDTMP
 
 PRINT_MESSAGE "\nDetermining build flavor:"
 
-# old way of specifying --with-cli-only
-if [ "$CLI_ONLY" = 1 ]; then
-  cfg_with_cli_only=yes
-  unset CLI_ONLY
-fi
-
-WITH_OPTION cli-only no "[yes | no]"
+WITH_OPTION gui yes "[yes | no]"
 
 # Remove the useless CLI console under windows
-if [[ $(uname) =~ MINGW ]] && [ "$cfg_with_cli_only" != "yes" ]; then
+if [[ $(uname) =~ MINGW ]] && [ "$cfg_with_gui" == "yes" ]; then
   CFG_LDFLAGS="$CFG_LDFLAGS -mwindows"
 fi
 
@@ -84,10 +78,11 @@ fi
 PRINT_MESSAGE "\nLooking for includes and libraries:"
 
 REQUIRE_GLIB2 2 32 0
-if test "$cfg_with_cli_only" != "yes"; then
+echo
+
+if test "$cfg_with_gui" == "yes"; then
   REQUIRE_GTK2 2 6 0 WITH_THREADS
 fi
-echo
 
 if ! CHECK_INCLUDE locale.h locale || ! CHECK_INCLUDE libintl.h intl ; then
   echo " [previous test forces -with-nls=no]"
@@ -148,7 +143,7 @@ if ! EXECUTE_PROGRAM "xgettext --help" xgettext \
   cfg_force_with_nls=no
 fi
 
-if test "$cfg_with_cli_only" != "yes"; then
+if test "$cfg_with_gui" == "yes"; then
   if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
     echo "* gdk-pixbuf not installed"
     echo "* or path to gdk-pixbuf-csource is missing."
@@ -209,9 +204,6 @@ cfiles="src/method-link.c"
 ofiles="$BUILDTMP/method-link.o"
 
 for cfile in src/*.c; do
-  if test "$cfg_with_cli_only" == "yes"; then
-    grep -q 'DVDISASTER_GUI_FILE' "$cfile" && continue
-  fi
   cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
   cfiles="$cfiles $cfile"
   ofiles="$ofiles $BUILDTMP/$(basename $cfile_prefix.o)"
@@ -221,7 +213,7 @@ done
 echo
 echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
 echo "CFG_OFILES = $ofiles" >> Makefile.config
-if test "$cfg_with_cli_only" != "yes"; then
+if test "$cfg_with_gui" == "yes"; then
   echo "ICONS = src/inlined-icons.h" >> Makefile.config
 fi
 

@@ -19,7 +19,7 @@ jobs:
             msystem: MINGW32
             grep: 386
           - ui: cli
-            clionly: --with-cli-only
+            clionly: --with-gui=no
     defaults:
       run:
         shell: msys2 {0}
@@ -78,7 +78,7 @@ jobs:
     - name: install prerequisites
       run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
     - name: configure
-      run: ./configure --with-cli-only
+      run: ./configure --with-gui=no
     - name: make
       run: nproc && make -j$(nproc) && make static && mv -f dvdisaster-static dvdisaster
     - name: check executable

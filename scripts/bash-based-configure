@@ -18,6 +18,7 @@
 #  along with Bash based configure. If not, see <http://www.gnu.org/licenses/>.
 #/
 
+
 # Command overview:
 # 
 # PACKAGE               Define package name and version
@@ -69,7 +70,7 @@
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
 #			    to CFG_WITH_OPTIONS
 
-CONFIGURE_VERSION="0.59"
+CONFIGURE_VERSION="0.60"
 
 echo "Bash based configure V$CONFIGURE_VERSION"
 echo
@@ -282,7 +283,7 @@ fi
 
 # Find out where bash resides
 
-echo "SHELL = `which bash`" >>Makefile.config
+echo "SHELL = `type -P bash`" >>Makefile.config
 
 # Setup the log file
 
@@ -332,13 +333,13 @@ function REQUIRE_GMAKE()
 
    if (gmake -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
      then echo "yes"
-	  echo "MAKE = `which gmake`" >>Makefile.config
+	  echo "MAKE = `type -P gmake`" >>Makefile.config
 	  return 0
    fi;
 
    if (make -v 2>&1 | grep "GNU Make") > /dev/null 2>&1 ;
      then echo "yes"
-	  echo "MAKE = `which make`" >>Makefile.config
+	  echo "MAKE = `type -P make`" >>Makefile.config
 	  return 0
    fi;
 
@@ -358,11 +359,11 @@ function REQUIRE_GCC()
    # Try $CC first
 
    if test -n "$CC" && $CC -v >/dev/null 2>&1; then
-     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
-       then CC=`which $CC`
-       	    echo "yes ($CC)"
-	    echo "CC = `which $CC`" >>Makefile.config
-     	    return 0
+     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ; then
+       CC=`type -P $CC`
+       echo "yes ($CC)"
+       echo "CC = $CC" >>Makefile.config
+       return 0
      fi	   
    fi
 
@@ -370,11 +371,11 @@ function REQUIRE_GCC()
 
    CC=gcc
    if test -n "$CC" && $CC -v >/dev/null 2>&1; then
-     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
-       then CC=`which $CC`
-	    echo "yes ($CC)"
-	    echo "CC = $CC" >>Makefile.config
-     	    return 0
+     if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ; then
+       CC=`type -P $CC`
+       echo "yes ($CC)"
+       echo "CC = $CC" >>Makefile.config
+       return 0
      fi	   
    fi
 
@@ -383,11 +384,11 @@ function REQUIRE_GCC()
    if test "$cfg_uname" == "FreeBSD"; then
      CC=$(ls /usr/local/bin | grep -E "^gcc[0-9]*$" | sort -n -r | head -n 1)
      if test -n "$CC" && $CC -v >/dev/null 2>&1; then
-     	if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ;
-       	then CC=`which $CC`
-	     echo "yes ($CC)"
-	     echo "CC = $CC" >>Makefile.config
-     	     return 0
+     	if ($CC -v 2>&1 | grep "gcc") > /dev/null 2>&1 ; then
+       	  CC=`type -P $CC`
+	  echo "yes ($CC)"
+	  echo "CC = $CC" >>Makefile.config
+     	  return 0
 	fi 
      fi	   
    fi
@@ -470,7 +471,7 @@ function PACKAGE()
    echo "CFG_VERSION = $VERSION" >> Makefile.config
 }
 
-# Add -D$1="$2" to CFG_OTHER_OPTIONS
+# Add -D$1=$2 to CFG_OTHER_OPTIONS
 
 function DEFINE_STRING()
 {  
@@ -1490,7 +1491,7 @@ EOF
    CFG_GTK2_CFLAGS=`pkg-config --cflags gtk+-2.0`
    CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
 
-   CFG_GTK2_BINDIR=`which pkg-config`
+   CFG_GTK2_BINDIR=`type -P pkg-config`
    CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
 
    CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK2_CFLAGS"
@@ -2124,7 +2125,7 @@ function CHECK_PROGRAM()
      return 0
    fi
 
-   if (which $name) > /dev/null 2>&1; 
+   if (type -P $name) > /dev/null 2>&1; 
    then
      echo " $name: yes"
      return 0

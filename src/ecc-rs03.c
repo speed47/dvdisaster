@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs03-includes.h"
@@ -55,7 +57,9 @@ void register_rs03(void)
    method->recognizeEccFile  = RS03RecognizeFile;
    method->recognizeEccImage = RS03RecognizeImage;
 
-#ifndef WITH_CLI_ONLY_YES
+   method->widgetList = g_malloc0(sizeof(RS03Widgets));
+
+#ifdef WITH_GUI_YES
    /*** Linkage to rs03-window.c */
 
    method->createCreateWindow = CreateRS03EncWindow;
@@ -72,8 +76,8 @@ void register_rs03(void)
 
    method->createVerifyWindow = CreateRS03VerifyWindow;
    method->resetVerifyWindow  = ResetRS03VerifyWindow;
-#endif
-
+#endif /* WITH_GUI_YES */
+   
    /*** Register ourself */
 
    method->destroy = destroy;
@@ -82,28 +86,23 @@ void register_rs03(void)
 }
 
 static void destroy(Method *method)
-{
-#ifndef WITH_CLI_ONLY_YES
-   RS03Widgets *wl = (RS03Widgets*)method->widgetList;
-#endif
+{  RS03Widgets *wl = (RS03Widgets*)method->widgetList;
    RS03CksumClosure *csc = (RS03CksumClosure*)method->ckSumClosure;
 
    if(csc->lay)
       g_free(csc->lay);
    g_free(method->ckSumClosure);
 
-#ifndef WITH_CLI_ONLY_YES
    if(wl)
-   {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
-
-      if(wl->cmpSpiral)
-	FreeSpiral(wl->cmpSpiral);
+   {
+#ifdef WITH_GUI_YES
+      GuiFreeCurve(wl->fixCurve);
+      GuiFreeSpiral(wl->cmpSpiral);
 
       if(wl->cmpLayout)
 	g_object_unref(wl->cmpLayout);
-
+#endif
       g_free(wl);
    }
-#endif
 }
 

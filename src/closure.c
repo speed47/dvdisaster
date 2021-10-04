@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 #include "inlined-icons.h"
 
@@ -36,99 +38,9 @@
 /* safety margin in case we're getting UTF path names */
 #define WIN_MAX_PATH (4*MAX_PATH)
 
-/*
- * Find the place of our executable
- * (Windows only)
- */
-
-static char* get_exe_path()
-{  char path[WIN_MAX_PATH];
-   int n = GetModuleFileNameA(NULL, path, WIN_MAX_PATH);
-
-   if(n>0 && n<WIN_MAX_PATH-1)
-   {  char *backslash = strrchr(path, '\\');
-
-      if(backslash) *backslash=0;
-        return g_strdup(path);
-   }
-
-   return g_strdup(".");
-}
 #endif
 
-/***
- *** Locate the binary and documentation directory
- ***/
-
-static void get_base_dirs()
-{  
-   /*** Unless completely disabled through a configure option, the
-	source directory is supposed to hold the most recent files,
-	so try this first (never under Windows). */
-
-#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
-   if(DirStat(SRCDIR))
-   {  Closure->binDir = g_strdup(SRCDIR);
-      Closure->docDir = g_strdup_printf("%s/documentation",SRCDIR);
-      Verbose("Using paths from SRCDIR = %s\n", SRCDIR);
-      goto find_dotfile;
-   } 
-#endif /* WITH_EMBEDDED_SRC_PATH_YES */
-
-   /*** Otherwise try the installation directory. 
-	On Unices this is a hardcoded directory. */
-
-#ifndef SYS_MINGW
-   if(DirStat(BINDIR))
-     Closure->binDir = g_strdup(BINDIR);
-
-   if(DirStat(DOCDIR))
-     Closure->docDir = g_strdup(DOCDIR);
-   Verbose("Using hardcoded BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
-#else
-   Closure->binDir = get_exe_path();
-   /* We'll just put the 2 PDF in the same dir, portable mode */
-   Closure->docDir = g_strdup(Closure->binDir);
-   Verbose("Using path from get_exe_path() = %s\n", Closure->binDir);
-#endif
-
-   /* for AppImage, get docdir from env if there */
-   if (g_getenv("DVDISASTER_DOCDIR"))
-   {  if (Closure->docDir)
-         g_free(Closure->docDir);
-      Closure->docDir = g_strdup(g_getenv("DVDISASTER_DOCDIR"));
-   }
-
-   /*** The location of the dotfile depends on the operating system. 
-	Under Unix the users home directory is used. */
-
-#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
-find_dotfile:
-#endif /* WITH_EMBEDDED_SRC_PATH_YES */
-   
-#ifndef SYS_MINGW
-   Closure->homeDir = g_strdup(g_getenv("HOME"));
-#else
-   Closure->homeDir = g_strdup(Closure->binDir); /* portable mode */
-#endif
-   if(!Closure->dotFile) /* may have been set by the --resource-file option */
-#ifndef SYS_MINGW
-      Closure->dotFile = g_strdup_printf("%s/.dvdisaster", Closure->homeDir);
-#else
-      /* Windows doesn't really love dotfiles */
-      Closure->dotFile = g_strdup_printf("%s/dvdisaster.cfg", Closure->homeDir);
-#endif
-
-   Verbose("\nUsing file locations:\n"
-	   "- Homedir: %s\n"
-	   "- Bin dir: %s\n"
-	   "- Doc dir: %s\n"
-	   "- dotfile: %s\n\n",
-	   Closure->homeDir,
-	   Closure->binDir,
-	   Closure->docDir,
-	   Closure->dotFile);   
-}
+#ifdef WITH_GUI_YES
 
 /***
  *** Set/get color values
@@ -138,8 +50,7 @@ find_dotfile:
  * Update color string for the <span color="#f00baa">...</span> string
  */
 
-#ifndef WITH_CLI_ONLY_YES
-void UpdateMarkup(char **string, GdkColor *color)
+void GuiUpdateMarkup(char **string, GdkColor *color)
 {  int hexval;
  
    hexval  = (color->red  << 8) & 0xff0000;
@@ -154,7 +65,7 @@ void UpdateMarkup(char **string, GdkColor *color)
  * Default color values
  */
 
-void DefaultColors()
+void GuiDefaultColors()
 {
    Closure->redText->red        = 0xffff;
    Closure->redText->green      = 0;
@@ -200,8 +111,8 @@ void DefaultColors()
    Closure->whiteSector->green  = 0xffff;
    Closure->whiteSector->blue   = 0xffff;
 
-   UpdateMarkup(&Closure->redMarkup, Closure->redText);
-   UpdateMarkup(&Closure->greenMarkup, Closure->greenText);
+   GuiUpdateMarkup(&Closure->redMarkup, Closure->redText);
+   GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 }
 
 static void save_colors(FILE *dotfile, char *symbol, GdkColor *color)
@@ -223,7 +134,6 @@ static void get_color(GdkColor *color, char *value)
    color->green = hex&0xff00;
    color->blue  = (hex<<8)&0xff00;
 }
-#endif
 
 /***
  *** Save and restore user settings to/from the .dvdisaster file
@@ -231,7 +141,7 @@ static void get_color(GdkColor *color, char *value)
 
 #define MAX_LINE_LEN 512
 
-void ReadDotfile()
+void GuiReadDotfile()
 {  FILE *dotfile;
    char line[MAX_LINE_LEN];
 
@@ -247,7 +157,7 @@ void ReadDotfile()
       /* Get first MAX_LINE_LEN bytes of line, discard the rest */
      
       line[MAX_LINE_LEN-1] = 1;
-      if (!fgets(line, MAX_LINE_LEN, dotfile)) break;
+      if(!fgets(line, MAX_LINE_LEN, dotfile)) break;
       if(!line[MAX_LINE_LEN-1])  /* line longer than buffer */
 	while(!feof(dotfile) && fgetc(dotfile) != '\n')
 	  ;
@@ -337,13 +247,12 @@ void ReadDotfile()
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
       if(!strcmp(symbol, "welcome-msg"))     { Closure->welcomeMessage = atoi(value); continue; }
 
-#ifndef WITH_CLI_ONLY_YES
       if(!strcmp(symbol, "positive-text"))   { get_color(Closure->greenText, value); 
-	                                       UpdateMarkup(&Closure->greenMarkup, Closure->greenText);
+	                                       GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 	                                       continue; 
                                              }
       if(!strcmp(symbol, "negative-text"))   { get_color(Closure->redText, value);
-	                                       UpdateMarkup(&Closure->redMarkup, Closure->redText); 
+	                                       GuiUpdateMarkup(&Closure->redMarkup, Closure->redText); 
 					       continue; 
                                              }
       if(!strcmp(symbol, "bar-color"))       { get_color(Closure->barColor, value); continue; }
@@ -355,7 +264,6 @@ void ReadDotfile()
       if(!strcmp(symbol, "ignored-sector"))  { get_color(Closure->blueSector, value); continue; }
       if(!strcmp(symbol, "highlit-sector"))  { get_color(Closure->whiteSector, value); continue; }
       if(!strcmp(symbol, "present-sector"))  { get_color(Closure->darkSector, value); continue; }
-#endif
    }
 
    if(fclose(dotfile))
@@ -442,7 +350,6 @@ static void update_dotfile()
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);
    g_fprintf(dotfile, "welcome-msg:       %d\n\n", Closure->welcomeMessage);
 
-#ifndef WITH_CLI_ONLY_YES
    save_colors(dotfile, "positive-text",      Closure->greenText);
    save_colors(dotfile, "negative-text",      Closure->redText);
    save_colors(dotfile, "bar-color",          Closure->barColor);
@@ -454,11 +361,64 @@ static void update_dotfile()
    save_colors(dotfile, "ignored-sector",     Closure->blueSector);
    save_colors(dotfile, "highlit-sector",     Closure->whiteSector);
    save_colors(dotfile, "present-sector",     Closure->darkSector);
-#endif
 
    if(fclose(dotfile))
      g_printf("Error closing configuration file %s: %s\n", 
 	      Closure->dotFile, strerror(errno));
+}
+#endif /* WITH_GUI_YES */
+
+/***
+ *** Locate the binary and documentation directory
+ ***/
+
+static void get_base_dirs()
+{  
+   /*** Unless completely disabled through a configure option, the
+	source directory is supposed to hold the most recent files,
+	so try this first. */
+
+#ifdef WITH_EMBEDDED_SRC_PATH_YES
+   if(DirStat(SRCDIR))
+   {  Closure->binDir = g_strdup(SRCDIR);
+      Closure->docDir = g_strdup_printf("%s/documentation",SRCDIR);
+      Verbose("Using paths from SRCDIR = %s\n", SRCDIR);
+      goto find_dotfile;
+   } 
+#endif /* WITH_EMBEDDED_SRC_PATH_YES */
+
+   /*** Otherwise try the installation directory. 
+	On Unices this is a hardcoded directory. */
+
+#if defined(SYS_LINUX) || defined(SYS_FREEBSD) || defined(SYS_NETBSD) || defined(SYS_UNKNOWN)
+   if(DirStat(BINDIR))
+     Closure->binDir = g_strdup(BINDIR);
+
+   if(DirStat(DOCDIR))
+     Closure->docDir = g_strdup(DOCDIR);
+   Verbose("Using hardcoded BINDIR = %s, DOCDIR = %s\n", BINDIR, DOCDIR);
+#endif
+
+   /*** The location of the dotfile depends on the operating system. 
+	Under Unix the users home directory is used. */
+
+#ifdef WITH_EMBEDDED_SRC_PATH_YES
+find_dotfile:
+#endif /* WITH_EMBEDDED_SRC_PATH_YES */
+   
+   Closure->homeDir = g_strdup(g_getenv("HOME"));
+   if(!Closure->dotFile) /* may have been set by the --resource-file option */
+      Closure->dotFile = g_strdup_printf("%s/.dvdisaster", Closure->homeDir);
+
+   Verbose("\nUsing file locations:\n"
+	   "- Homedir: %s\n"
+	   "- Bin dir: %s\n"
+	   "- Doc dir: %s\n"
+	   "- dotfile: %s\n\n",
+	   Closure->homeDir,
+	   Closure->binDir,
+	   Closure->docDir,
+	   Closure->dotFile);   
 }
 
 /***
@@ -561,11 +521,11 @@ void InitClosure()
    Closure->bdSize3  = Closure->savedBDSize3  = BDXL_TL_SIZE;
    Closure->bdSize4  = Closure->savedBDSize4  = BDXL_QL_SIZE;
 
-#ifndef WITH_CLI_ONLY_YES
    Closure->logString = g_string_sized_new(1024);
    Closure->logLock   = g_malloc0(sizeof(GMutex));
      g_mutex_init(Closure->logLock);
 
+#ifdef WITH_GUI_YES     
    Closure->background = g_malloc0(sizeof(GdkColor));
    Closure->foreground = g_malloc0(sizeof(GdkColor));
    Closure->grid       = g_malloc0(sizeof(GdkColor));
@@ -582,12 +542,9 @@ void InitClosure()
    Closure->whiteSector = g_malloc0(sizeof(GdkColor));
    Closure->darkSector  = g_malloc0(sizeof(GdkColor));
 
-   DefaultColors();
-
-   Closure->tooltipOn  = gdk_pixbuf_new_from_inline(-1, dvdisaster_tooltip, FALSE, NULL);
-   Closure->tooltipOff = gdk_pixbuf_new_from_inline(-1, dvdisaster_nothing, FALSE, NULL);
-#endif
-
+   GuiDefaultColors();
+#endif  /* WITH_GUI_YES */
+   
    memset(Closure->bs, '\b', 255);
    memset(Closure->sp, ' ', 255);
 
@@ -631,12 +588,11 @@ void cond_free_ptr_array(GPtrArray *a)
     
 void FreeClosure()
 {
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES
    if(Closure->guiMode)
-#endif
-/* in CLI-only mode, always update dotfile */
      update_dotfile();
-
+#endif
+   
    cond_free(Closure->cookedVersion);
    cond_free(Closure->versionString);
    cond_free(Closure->device);
@@ -660,13 +616,9 @@ void FreeClosure()
    cond_free(Closure->dDumpDir);
    cond_free(Closure->dDumpPrefix);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->prefsContext)
-     FreePreferences(Closure->prefsContext);
-
-   if(Closure->rawEditorContext)
-      FreeRawEditorContext(Closure->rawEditorContext);
-
+   if(Closure->crcBuf)
+     FreeCrcBuf(Closure->crcBuf);
+   
    if(Closure->logString)
       g_string_free(Closure->logString, TRUE);
 
@@ -674,6 +626,13 @@ void FreeClosure()
    {  g_mutex_clear(Closure->logLock);
       g_free(Closure->logLock);
    }
+
+#ifdef WITH_GUI_YES
+   if(Closure->prefsContext)
+      GuiFreePreferences(Closure->prefsContext);
+
+   if(Closure->rawEditorContext)
+      GuiFreeRawEditorContext(Closure->rawEditorContext);
 
    if(Closure->drawGC)
      g_object_unref(Closure->drawGC);
@@ -697,21 +656,17 @@ void FreeClosure()
    cond_free(Closure->greenMarkup);
    cond_free(Closure->invisibleDash);
 
-   if(Closure->readLinearCurve)
-     FreeCurve(Closure->readLinearCurve);
-
-   if(Closure->readLinearSpiral)
-     FreeSpiral(Closure->readLinearSpiral);
-
-   if(Closure->readAdaptiveSpiral)
-     FreeSpiral(Closure->readAdaptiveSpiral);
+   GuiFreeCurve(Closure->readLinearCurve);
+   GuiFreeSpiral(Closure->readLinearSpiral);
+   GuiFreeSpiral(Closure->readAdaptiveSpiral);
 
    if(Closure->readAdaptiveSubtitle)
      g_free(Closure->readAdaptiveSubtitle);
 
    if(Closure->readAdaptiveErrorMsg)
      g_free(Closure->readAdaptiveErrorMsg);
-#endif
-
+#endif /* WITH_GUI_YES */
+   
    g_free(Closure);
 }
+
