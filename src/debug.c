@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
@@ -499,7 +501,6 @@ void Erase(char *arg)
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
-   ExamineUDF(image);  /* get the volume label */
 
    /** See if there is a special debugging option following
        the sector range. This is intentionally an undocumented feature. */

@@ -19,9 +19,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
+
+/*** src type: only GUI code ***/
 
 #include "dvdisaster.h"
+
+#ifdef WITH_GUI_YES
 
 /***
  *** Spiral drawing and updating
@@ -42,7 +45,7 @@ static int draw_text(GdkDrawable *d, PangoLayout *l, char *text, int x, int y, G
    int w,h,pw;
    int erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
 
-   SetText(l, text, &w, &h);
+   GuiSetText(l, text, &w, &h);
 
    pw = erase_to-x;
    if(pw > pixmap_width || h > pixmap_height)
@@ -141,7 +144,7 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
    if(Closure->readAdaptiveErrorMsg && erase_mask & REDRAW_ERRORMSG)
    {  gdk_gc_set_rgb_fg_color(Closure->drawGC, footer_color);
       
-      SetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
+      GuiSetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
       y = Closure->readAdaptiveSpiral->my + Closure->readAdaptiveSpiral->diameter/2 - h;
       gdk_draw_layout(d, Closure->drawGC, x, y, Closure->readLinearCurve->layout);
    }
@@ -149,7 +152,7 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
 
 static void redraw_spiral(GtkWidget *widget)
 {
-   DrawSpiral(Closure->readAdaptiveSpiral);
+   GuiDrawSpiral(Closure->readAdaptiveSpiral);
 }
 
 /* Calculate the geometry of the spiral */
@@ -165,7 +168,7 @@ static void update_geometry(GtkWidget *widget)
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  
-   SetSpiralWidget(Closure->readAdaptiveSpiral, widget);
+   GuiSetSpiralWidget(Closure->readAdaptiveSpiral, widget);
   
    if(event->count) /* Exposure compression */
      return TRUE;
@@ -193,7 +196,7 @@ static gboolean clip_idle_func(gpointer data)
       spiral->segmentClipping = spiral->segmentCount;
    
       for(i=clipping; i < spiral->segmentCount; i++)
-	DrawSpiralSegment(spiral, Closure->background, i);
+	GuiDrawSpiralSegment(spiral, Closure->background, i);
 
       spiral->outline = outline;
       spiral->segmentClipping = clipping;
@@ -201,13 +204,13 @@ static gboolean clip_idle_func(gpointer data)
       /* Now redraw the last turn */
 
       for(i=ADAPTIVE_READ_SPIRAL_SIZE-300; i<=clipping; i++)
-	DrawSpiralSegment(spiral, Closure->background, i);
+	GuiDrawSpiralSegment(spiral, Closure->background, i);
    }   
 
    return FALSE;
 }
 
-void ClipReadAdaptiveSpiral(int segments)
+void GuiClipReadAdaptiveSpiral(int segments)
 {
    Closure->readAdaptiveSpiral->segmentClipping = segments;
 
@@ -227,14 +230,14 @@ static gboolean segment_idle_func(gpointer data)
 {  int segment = GPOINTER_TO_INT(data);
   
    segment-=100;
-   DrawSpiralSegment(Closure->readAdaptiveSpiral,
-		     Closure->readAdaptiveSpiral->segmentColor[segment],
-		     segment);
+   GuiDrawSpiralSegment(Closure->readAdaptiveSpiral,
+			Closure->readAdaptiveSpiral->segmentColor[segment],
+			segment);
 
    return FALSE;
 }
 
-void ChangeSegmentColor(GdkColor *color, int segment)
+void GuiChangeSegmentColor(GdkColor *color, int segment)
 {  
    Closure->readAdaptiveSpiral->segmentColor[segment] = color;
    if(Closure->readAdaptiveSpiral->cursorPos == segment)
@@ -252,12 +255,12 @@ static gboolean remove_fill_idle_func(gpointer data)
 
    for(i=0; i<spiral->segmentCount; i++)
      if(spiral->segmentColor[i] == Closure->whiteSector)
-       DrawSpiralSegment(spiral, Closure->background, i);
+       GuiDrawSpiralSegment(spiral, Closure->background, i);
 
    return FALSE;
 }
 
-void RemoveFillMarkers()
+void GuiRemoveFillMarkers()
 {
    g_idle_add(remove_fill_idle_func, NULL);
 }
@@ -274,8 +277,11 @@ static gboolean label_redraw_idle_func(gpointer data)
    return FALSE;
 }
 
-void SetAdaptiveReadSubtitle(char *title)
+void GuiSetAdaptiveReadSubtitle(char *title)
 {
+   if(!Closure->guiMode)
+     return;
+  
    if(Closure->readAdaptiveSubtitle)
      g_free(Closure->readAdaptiveSubtitle);
 
@@ -284,8 +290,11 @@ void SetAdaptiveReadSubtitle(char *title)
    g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_SUBTITLE));
 }
 
-void SetAdaptiveReadFootline(char *msg, GdkColor *color)
+void GuiSetAdaptiveReadFootline(char *msg, GdkColor *color)
 {
+   if(!Closure->guiMode)
+     return;
+
    if(Closure->readAdaptiveErrorMsg)
      g_free(Closure->readAdaptiveErrorMsg);
 
@@ -295,12 +304,15 @@ void SetAdaptiveReadFootline(char *msg, GdkColor *color)
    g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_ERRORMSG));
 }
 
-void UpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
+void GuiUpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
 {  readable = r;
    correctable = c;
    missing = m;
    percent = p;
 
+   if(!Closure->guiMode)
+     return;
+   
    g_idle_remove_by_data(GINT_TO_POINTER(REDRAW_PROGRESS));
    g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_PROGRESS));
 }   
@@ -309,8 +321,8 @@ void UpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
  *** Reset the notebook contents for new read action
  ***/
 
-void ResetAdaptiveReadWindow()
-{  FillSpiral(Closure->readAdaptiveSpiral, Closure->background);
+void GuiResetAdaptiveReadWindow()
+{  GuiFillSpiral(Closure->readAdaptiveSpiral, Closure->background);
    //   DrawSpiral(Closure->readAdaptiveSpiral);
 
    if(Closure->readAdaptiveSubtitle)
@@ -342,7 +354,7 @@ void ResetAdaptiveReadWindow()
  * Set the minimum required data recovery value
  */
 
-void SetAdaptiveReadMinimumPercentage(int value)
+void GuiSetAdaptiveReadMinimumPercentage(int value)
 {  min_required = value;
 }
 
@@ -350,7 +362,7 @@ void SetAdaptiveReadMinimumPercentage(int value)
  *** Create the notebook contents for the reading and scanning action
  ***/
 
-void CreateAdaptiveReadWindow(GtkWidget *parent)
+void GuiCreateAdaptiveReadWindow(GtkWidget *parent)
 {  GtkWidget *sep,*d_area;
 
    Closure->readAdaptiveHeadline = gtk_label_new(NULL);
@@ -369,9 +381,10 @@ void CreateAdaptiveReadWindow(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
    g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), NULL);
 
-   Closure->readAdaptiveSpiral = CreateSpiral(Closure->grid, Closure->background, 10, 5, 
-					      ADAPTIVE_READ_SPIRAL_SIZE);
+   Closure->readAdaptiveSpiral
+     = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 
+		       ADAPTIVE_READ_SPIRAL_SIZE);
 
    gtk_widget_set_size_request(d_area, -1, Closure->readAdaptiveSpiral->diameter);
 }
-
+#endif /* WITH_GUI_YES */

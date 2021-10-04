@@ -20,13 +20,15 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 
 /*
  * Those are now declared as extern in dvdisaster.h,
  * and as such are accessible from everywhere.
- * MinGW didn't link these being declared directly
+ * MinGW didn't like these being declared directly
  * in dvdisaster.h (ended up having one copy of each
  * struct for every .c including dvdisaster.h)
  */
@@ -117,19 +119,19 @@ typedef enum
 int main(int argc, char *argv[])
 {  int mode = MODE_NONE; 
    int sequence = MODE_NONE;
-#ifndef WITH_CLI_ONLY_YES
-   int devices_queried = FALSE;
-#endif
    char *debug_arg = NULL;
    char *read_range = NULL;
+   int debug_mode_required=FALSE;
 #ifdef WITH_NLS_YES
    char *locale_test;
  #ifdef WITH_EMBEDDED_SRC_PATH_YES
    char src_locale_path[strlen(SRCDIR)+10];
  #endif /* WITH_EMBEDDED_SRC_PATH_YES */
 #endif
-   int debug_mode_required=FALSE;
-
+#ifdef WITH_GUI_YES
+   int devices_queried = FALSE;
+#endif
+   
 #ifdef WITH_MEMDEBUG_YES
     atexit(check_memleaks);
 #endif
@@ -778,7 +780,7 @@ int main(int argc, char *argv[])
    if(!Closure->device && mode == MODE_SEQUENCE 
       && (sequence & (1<<MODE_READ | 1<<MODE_SCAN))) 
    {  Closure->device = DefaultDevice();
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES     
       devices_queried = TRUE;
 #endif
    }
@@ -939,10 +941,10 @@ int main(int argc, char *argv[])
 
    /*** If no mode was selected, print the help screen. */
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES
    if(mode == MODE_HELP)
 #else
-   if(mode == MODE_HELP || mode == MODE_NONE)
+   if(mode == MODE_NONE || mode == MODE_HELP)
 #endif
    {  
      /* TRANSLATORS: Program options like -r and --read are not to be translated
@@ -1042,10 +1044,10 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
    }
 
-#ifndef WITH_CLI_ONLY_YES
    /* If no mode was selected at the command line, 
       start the graphical user interface. */
 
+#ifdef WITH_GUI_YES
    if(mode == MODE_NONE)
    {  
       /* We need to query devices in order to build
@@ -1070,11 +1072,11 @@ int main(int argc, char *argv[])
       }
 
       Closure->guiMode = TRUE;
-      ReadDotfile();
-      CreateMainWindow(&argc, &argv);
+      GuiReadDotfile();
+      GuiCreateMainWindow(&argc, &argv);
    }
 #endif
-
+   
    FreeClosure();
    exit(exitCode);
 }

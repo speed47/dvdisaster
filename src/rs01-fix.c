@@ -23,6 +23,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs01-includes.h"
@@ -54,10 +56,7 @@ static void read_crc(LargeFile *ecc, guint32 *buf, int first_sector, int n_secto
  */
 
 typedef struct
-{  
-#ifndef WITH_CLI_ONLY_YES
-   RS01Widgets *wl;
-#endif
+{  RS01Widgets *wl;
    GaloisTables *gt;
    ReedSolomonTables *rt;
    Image *image;
@@ -73,17 +72,16 @@ static void fix_cleanup(gpointer data)
 
    UnregisterCleanup();
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(fc->earlyTermination)
-         SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-			      fc->wl->fixFootline,
-			      _("<span %s>Aborted by unrecoverable error.</span>"),
-			      Closure->redMarkup); 
-      AllowActions(TRUE);
+      {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				 fc->wl->fixFootline,
+				 _("<span %s>Aborted by unrecoverable error.</span>"),
+				 Closure->redMarkup);
+      }
+      GuiAllowActions(TRUE);
    }
-#endif
-
+   
    /** Clean up */
 
    if(fc->image) CloseImage(fc->image);
@@ -101,10 +99,7 @@ static void fix_cleanup(gpointer data)
  
    g_free(fc);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-      g_thread_exit(0);
-#endif
+   GuiExitWorkerThread();
 }
 
 /*
@@ -112,11 +107,8 @@ static void fix_cleanup(gpointer data)
  */
 
 void RS01Fix(Image *image)
-{
-#ifndef WITH_CLI_ONLY_YES
-   Method *method = FindMethod("RS01");
+{  Method *method = FindMethod("RS01");
    RS01Widgets *wl = (RS01Widgets*)method->widgetList;
-#endif
    GaloisTables *gt;
    ReedSolomonTables *rt;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
@@ -141,9 +133,7 @@ void RS01Fix(Image *image)
    /*** Register the cleanup procedure for GUI mode */
 
    fc->image = image;
-#ifndef WITH_CLI_ONLY_YES
    fc->wl = wl;
-#endif
    fc->earlyTermination = TRUE;
    RegisterCleanup(_("Repairing of image aborted"), fix_cleanup, fc);
 
@@ -155,14 +145,14 @@ void RS01Fix(Image *image)
 			     eh->eccBytes, 
 			     ((double)eh->eccBytes*100.0)/(double)eh->dataBytes);
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES   
    if(Closure->guiMode)
-   {  SetLabelText(GTK_LABEL(wl->fixHeadline),
-		  _("<big>Repairing the image.</big>\n<i>%s</i>"),fc->msg);
+   {  GuiSetLabelText(wl->fixHeadline,
+		      _("<big>Repairing the image.</big>\n<i>%s</i>"),fc->msg);
       RS01SetFixMaxValues(wl, eh->dataBytes, eh->eccBytes, image->sectorSize);
    }    
 #endif
-
+   
    PrintLog(_("\nFix mode(%s): Repairable sectors will be fixed in the image.\n"),
 	    "RS01");
 
@@ -205,43 +195,42 @@ void RS01Fix(Image *image)
 
      if(diff>0 && diff<=2)
      {
-        int answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+        int answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 				  _("Image file is %" PRId64 " sectors longer than expected.\n"
 				    "Assuming this is a TAO mode medium.\n"
 				    "%" PRId64 " sectors will be removed from the image end.\n"),
 				  diff, diff);
 
         if(!answer)
-        {
-#ifndef WITH_CLI_ONLY_YES
-           SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-				fc->wl->fixFootline,
-				_("<span %s>Aborted by user request!</span>"),
-				Closure->redMarkup); 
-#endif
+        {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				   fc->wl->fixFootline,
+				   _("<span %s>Aborted by user request!</span>"),
+				   Closure->redMarkup); 
 	   fc->earlyTermination = FALSE;  /* suppress respective error message */
 	   goto terminate;
 	}
-
+	
+	/* in command line mode, 1-2 superflous sectors are silently removed. */
+	
         image->sectorSize -= diff;
 	image->inLast = eh->inLast;
 
         if(!LargeTruncate(image->file, expected_image_size))
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
      }
-     
-#ifndef WITH_CLI_ONLY_YES
+
+#ifdef WITH_GUI_YES     
      if(diff>2 && Closure->guiMode)
-     {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				 trans,
-				 diff, 
-				 _("Is it okay to remove the superfluous sectors?"));
+     {  int answer = GuiModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+				    trans,
+				    diff, 
+				    _("Is it okay to remove the superfluous sectors?"));
 
        if(!answer)
-       {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-			       fc->wl->fixFootline,
-			       _("<span %s>Aborted by user request!</span>"),
-			       Closure->redMarkup); 
+       {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				  fc->wl->fixFootline,
+				  _("<span %s>Aborted by user request!</span>"),
+				  Closure->redMarkup); 
 	  fc->earlyTermination = FALSE;  /* suppress respective error message */
 	  goto terminate;
        }
@@ -254,14 +243,9 @@ void RS01Fix(Image *image)
 
        PrintLog(_("Image has been truncated by %" PRId64 " sectors.\n"), diff);
      }
-#endif
-
-     if(diff>2 &&
-#ifndef WITH_CLI_ONLY_YES
-	!Closure->guiMode)
-#else
-        1)
-#endif
+#endif /* WITH_GUI_YES */
+     
+     if(diff>2 && !Closure->guiMode)
      {  if(!Closure->truncate)
 	   Stop(trans, 
 		diff,
@@ -281,30 +265,24 @@ void RS01Fix(Image *image)
    if(image->sectorSize == image->expectedSectors && image->inLast > eh->inLast)
    {  int difference = image->inLast - eh->inLast;
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode)
-      {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
-				  _("The image file is %d bytes longer than noted\n"
-				    "in the ecc file. Shall the superfluous bytes\n"
-				    "be removed from the image file?\n"),
-				    difference);
+      {  int answer = GuiModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+				     _("The image file is %d bytes longer than noted\n"
+				       "in the ecc file. Shall the superfluous bytes\n"
+				       "be removed from the image file?\n"),
+				     difference);
 
 	 if(!answer)
-	 {  SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-				 fc->wl->fixFootline,
-				 _("<span %s>Aborted by user request!</span>"),
-				 Closure->redMarkup); 
+	 {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				    fc->wl->fixFootline,
+				    _("<span %s>Aborted by user request!</span>"),
+				    Closure->redMarkup); 
 	    fc->earlyTermination = FALSE;  /* suppress respective error message */
 	    goto terminate;
 	 }
       }
-#endif
-
-#ifndef WITH_CLI_ONLY_YES
+      
       if(!Closure->guiMode && !Closure->truncate)
-#else
-      if(!Closure->truncate)
-#endif
         Stop(_("The image file is %d bytes longer than noted\n"
 	       "in the ecc file.\n"
                "Add the --truncate option to the program call\n"
@@ -321,17 +299,14 @@ void RS01Fix(Image *image)
    if(image->sectorSize < image->expectedSectors)
    {  int answer;
 
-      answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 			      "%s",_("Image file appears to be truncated.\n"
 			      "Consider completing it with another reading pass before going on.\n"));
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-			      fc->wl->fixFootline,
-			      _("<span %s>Aborted by user request!</span>"),
-			      Closure->redMarkup); 
-#endif
+      {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				 fc->wl->fixFootline,
+				 _("<span %s>Aborted by user request!</span>"),
+				 Closure->redMarkup); 
 	 fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
       }
@@ -340,18 +315,15 @@ void RS01Fix(Image *image)
    if(image->fpState != FP_PRESENT)
    {  int answer;
 
-      answer = ModalWarningOrCLI(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarning(GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Sector %d is missing. Can not compare image and ecc fingerprints.\n"
 			      "Double check that image and ecc file belong together.\n"),
 			    eh->fpSector);
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-			      fc->wl->fixFootline,
-			      _("<span %s>Aborted by user request!</span>"),
-			      Closure->redMarkup); 
-#endif
+      {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				 fc->wl->fixFootline,
+				 _("<span %s>Aborted by user request!</span>"),
+				 Closure->redMarkup); 
 	 fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
       }
@@ -399,17 +371,16 @@ void RS01Fix(Image *image)
 
    for(si=0; si<s; si++)
    { 
-#ifndef WITH_CLI_ONLY_YES
      if(Closure->stopActions) /* User hit the Stop button */
      {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	   SwitchAndSetFootline(fc->wl->fixNotebook, 1,
-				fc->wl->fixFootline,
-				_("<span %s>Aborted by user request!</span>"),
-				Closure->redMarkup); 
+	 {  GuiSwitchAndSetFootline(fc->wl->fixNotebook, 1,
+				    fc->wl->fixFootline,
+				    _("<span %s>Aborted by user request!</span>"),
+				    Closure->redMarkup);
+	 }
          fc->earlyTermination = FALSE;  /* suppress respective error message */
 	 goto terminate;
      }
-#endif
 
      /* Read the next batch of (cache_size * ndata) medium sectors
         if the cache ran empty. */
@@ -472,10 +443,7 @@ void RS01Fix(Image *image)
         and try to correct them. */
 
      if(erasure_count>nroots)   /* uncorrectable */
-     {
-#ifndef WITH_CLI_ONLY_YES
-        if(!Closure->guiMode)
-#endif
+     {  if(!Closure->guiMode)
 	{  PrintCLI(_("* %3d unrepairable sectors: "), erasure_count);
 
 	   for(i=0; i<erasure_count; i++)
@@ -785,7 +753,7 @@ skip:
 
      if(last_percent != percent) 
      {
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES       
         if(Closure->guiMode)
 	{  
 	   RS01AddFixValues(wl, percent, local_plot_max);
@@ -794,8 +762,8 @@ skip:
 	   RS01UpdateFixResults(wl, corrected, uncorrected);
 	}
         else
-#endif
-           PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+#endif	  
+	      PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 
@@ -811,13 +779,10 @@ skip:
    if(corrected > 0) PrintLog(_("Repaired sectors: %" PRId64 "     \n"),corrected);
    if(uncorrected > 0) 
    {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-        SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
-			     _("Image sectors could not be fully restored "
-			       "(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
-			     corrected, Closure->redMarkup, uncorrected);
-#endif
+      GuiSwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
+			      _("Image sectors could not be fully restored "
+				"(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
+			      corrected, Closure->redMarkup, uncorrected);
    }
    else
    {  if(!corrected)
@@ -833,12 +798,10 @@ skip:
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sec/(double)damaged_ecc,worst_ecc);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode && t)
-     SwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
-			  "%s %s", _("Repair results:"), t);
-#endif
-
+   if(t)
+   {  GuiSwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
+			      "%s %s", _("Repair results:"), t);
+   }
 
    /*** Clean up */
 

@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 /*
@@ -193,14 +195,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 			      (long long)rb->lba);
 
    if(!LargeStat(filename, &length))
-   {  
-      PrintCLIorLabel(
-#ifndef WITH_CLI_ONLY_YES
-         Closure->status,
-#else
-         NULL,
-#endif
-         _(" [Creating new cache file %s]\n"), filename);
+   {  PrintCLIorLabel(Closure->status,_(" [Creating new cache file %s]\n"), filename);
       init_defective_sector_file(filename, rb, &file, dsh);
    }
    else 
@@ -271,12 +266,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 
    LargeClose(file);
 
-   PrintCLIorLabel(
-#ifndef WITH_CLI_ONLY_YES
-      Closure->status,
-#else
-      NULL,
-#endif
+   PrintCLIorLabel(Closure->status,
 		   _(" [Appended %d/%d sectors to cache file %s; LBA=%" PRId64 ", ssize=%d, %d sectors]\n"), 
 		   count, rb->samplesRead, filename, dsh->lba, dsh->sectorSize, dsh->nSectors);
 
@@ -325,13 +315,7 @@ int TryDefectiveSectorCache(RawBuffer *rb, unsigned char *outbuf)
 
       status = TryCDFrameRecovery(rb, outbuf);
       if(!status) 
-      {
-         PrintCLIorLabel(
-#ifndef WITH_CLI_ONLY_YES
-            Closure->status,
-#else
-            NULL,
-#endif
+      {  PrintCLIorLabel(Closure->status,
 			 " [Success after processing cached sector %d]\n", i+1);
 	 return status; 
       }

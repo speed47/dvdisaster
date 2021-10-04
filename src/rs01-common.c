@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs01-includes.h"
@@ -206,30 +208,27 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 #define CRCBUFSIZE (1024*256)
 
 void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode)
-{
-#ifndef WITH_CLI_ONLY_YES
-   RS01Widgets *wl = NULL;
-#endif
-   unsigned char buf[2048];
+{  unsigned char buf[2048];
    guint32 *crcbuf = NULL;
    int unrecoverable_sectors = 0;
    int crcidx = 0;
    struct MD5Context image_md5;
    gint64 s, first_missing, last_missing;
-#ifndef WITH_CLI_ONLY_YES
-   gint64 prev_missing = 0;
-   gint64 prev_crc_errors = 0;
-#endif
    int last_percent,current_missing;
    char *msg;
+#ifdef WITH_GUI_YES
+   RS01Widgets *wl = NULL;
+   gint64 prev_crc_errors = 0;
+   gint64 prev_missing = 0;
+#endif
 
+#ifdef WITH_GUI_YES
    /* Extract widget list from method */
 
-#ifndef WITH_CLI_ONLY_YES
    if(method->widgetList)
      wl = (RS01Widgets*)method->widgetList;
 #endif
-
+   
    /* Position behind the ecc file header,
       initialize CRC buffer pointers */
 
@@ -263,13 +262,11 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 
       /* Check for user interruption */
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
       {  image->sectorsMissing += image->sectorSize - s;
 	 if(crcbuf) g_free(crcbuf);
          return;
       }
-#endif
 
       /* Read the next sector */
 
@@ -361,18 +358,18 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 
       MD5Update(&image_md5, buf, n);  /* update image md5sum */
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->guiMode && mode & PRINT_MODE) 
 	   percent = (VERIFY_IMAGE_SEGMENTS*(s+1))/image->sectorSize;
       else
-#endif
-           percent = (100*(s+1))/image->sectorSize;
+	   percent = (100*(s+1))/image->sectorSize;
+
       if(last_percent != percent) 
       {  PrintProgress(msg,percent);
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES	
          if(Closure->guiMode && mode & CREATE_CRC)
-	   SetProgress(wl->encPBar1, percent, 100);
+	 {  GuiSetProgress(wl->encPBar1, percent, 100);
+	 }
 
 	 if(Closure->guiMode && mode & PRINT_MODE)
  	 {  RS01AddVerifyValues(method, percent, image->sectorsMissing, image->crcErrors,
@@ -382,8 +379,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	    prev_missing = image->sectorsMissing;
 	    prev_crc_errors = image->crcErrors;
 	 }
-#endif
-
+#endif /* WITH_GUI_YES */
 	 last_percent = percent;
       }
    }

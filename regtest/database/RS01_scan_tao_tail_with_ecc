@@ -19,5 +19,5 @@ Sector 21001: Medium Error; Unrecovered read error.
 2 unreadable sectors.
 * Warning: 2 sectors missing at the end of the disc.
 *          This is okay if the CD was written in TAO (track at once) mode.
-*          The Image will be truncated accordingly. See the manual for details.
-*          Use the --dao option to disable image truncating.
+*          See the manual for details.
+*          Use the --dao option to disable this message.

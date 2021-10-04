@@ -19,7 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
+
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 
 #include "dvdisaster.h"
 
@@ -57,8 +60,8 @@ static void set_spin_button_value(GtkSpinButton *spin, int value)
 void ResetRS01EncodeWindow(Method *method)
 {  RS01Widgets *wl = (RS01Widgets*)method->widgetList;
 
-   SetProgress(wl->encPBar1, 0, 100);
-   SetProgress(wl->encPBar2, 0, 100);
+   GuiSetProgress(wl->encPBar1, 0, 100);
+   GuiSetProgress(wl->encPBar2, 0, 100);
 
    gtk_widget_hide(wl->encLabel2);
    gtk_widget_hide(wl->encPBar2);
@@ -103,14 +106,8 @@ static gboolean curve_button_cb(GtkWidget *wid, gpointer action)
  */
 
 void CreateRS01EWindow(Method *method, GtkWidget *parent)
-{  RS01Widgets *wl;
+{  RS01Widgets *wl = method->widgetList;
    GtkWidget *sep,*wid,*pbar,*table,*hbox;
-
-   if(!method->widgetList)
-   {  wl = g_malloc0(sizeof(RS01Widgets));
-      method->widgetList = wl;
-   }
-   else wl = method->widgetList;
 
    wl->encHeadline = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(wl->encHeadline), 0.0, 0.0); 
@@ -200,9 +197,9 @@ void RS01SetFixMaxValues(RS01Widgets *wl, int data_bytes, int ecc_bytes, gint64 
 static gboolean results_idle_func(gpointer data)
 {  RS01Widgets *wl = (RS01Widgets*)data;
 
-   SetLabelText(GTK_LABEL(wl->fixCorrected), _("Repaired: %" PRId64 ""), wl->corrected); 
-   SetLabelText(GTK_LABEL(wl->fixUncorrected), _("Unrepairable: <span %s>%" PRId64 "</span>"),Closure->redMarkup, wl->uncorrected); 
-   SetLabelText(GTK_LABEL(wl->fixProgress), _("Progress: %3d.%1d%%"), wl->percent/10, wl->percent%10);
+   GuiSetLabelText(wl->fixCorrected, _("Repaired: %" PRId64), wl->corrected); 
+   GuiSetLabelText(wl->fixUncorrected, _("Unrepairable: <span %s>%" PRId64 "</span>"),Closure->redMarkup, wl->uncorrected); 
+   GuiSetLabelText(wl->fixProgress, _("Progress: %3d.%1d%%"), wl->percent/10, wl->percent%10);
 
    return FALSE;
 }
@@ -221,9 +218,9 @@ void RS01UpdateFixResults(RS01Widgets *wl, gint64 corrected, gint64 uncorrected)
 
 static gboolean curve_idle_func(gpointer data)
 {  RS01Widgets *wl = (RS01Widgets*)data;
-   gint x0 = CurveX(wl->fixCurve, (double)wl->lastPercent);
-   gint x1 = CurveX(wl->fixCurve, (double)wl->percent);
-   gint y = CurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
+   gint x0 = GuiCurveX(wl->fixCurve, (double)wl->lastPercent);
+   gint x1 = GuiCurveX(wl->fixCurve, (double)wl->percent);
+   gint y = GuiCurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
    gint i;
 
    /*** Mark unused ecc values */
@@ -257,7 +254,7 @@ static gboolean curve_idle_func(gpointer data)
 
    /* Redraw the ecc capacity threshold line */
 
-   y = CurveY(wl->fixCurve, wl->eccBytes);  
+   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
    gdk_draw_line(wl->fixCurve->widget->window,
 		 Closure->drawGC,
@@ -289,7 +286,7 @@ static void update_geometry(RS01Widgets *wl)
 {  
    /* Curve geometry */ 
 
-   UpdateCurveGeometry(wl->fixCurve, "999", 20);
+   GuiUpdateCurveGeometry(wl->fixCurve, "999", 20);
 
    /* Label positions in the foot line */
 
@@ -304,12 +301,12 @@ static void redraw_curve(RS01Widgets *wl)
 
    /* Redraw the curve */
 
-   RedrawAxes(wl->fixCurve);
-   RedrawCurve(wl->fixCurve, wl->percent);
+   GuiRedrawAxes(wl->fixCurve);
+   GuiRedrawCurve(wl->fixCurve, wl->percent);
 
    /* Ecc capacity threshold line */
 
-   y = CurveY(wl->fixCurve, wl->eccBytes);  
+   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
    gdk_draw_line(wl->fixCurve->widget->window,
 		 Closure->drawGC,
@@ -342,7 +339,7 @@ void ResetRS01FixWindow(Method *method)
 
    gtk_notebook_set_current_page(GTK_NOTEBOOK(wl->fixNotebook), 0);
 
-   ZeroCurve(wl->fixCurve);
+   GuiZeroCurve(wl->fixCurve);
    RS01UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
@@ -359,14 +356,8 @@ void ResetRS01FixWindow(Method *method)
  */
 
 void CreateRS01FWindow(Method *method, GtkWidget *parent)
-{  RS01Widgets *wl;
+{  RS01Widgets *wl = method->widgetList;
    GtkWidget *sep,*ignore,*d_area,*notebook,*hbox;
-
-   if(!method->widgetList)
-   {  wl = g_malloc0(sizeof(RS01Widgets));
-      method->widgetList = wl;
-   }
-   else wl = method->widgetList;
 
    wl->fixHeadline = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(wl->fixHeadline), 0.0, 0.0); 
@@ -411,7 +402,7 @@ void CreateRS01FWindow(Method *method, GtkWidget *parent)
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), wl->fixFootline, ignore);
 
-   wl->fixCurve  = CreateCurve(d_area, _("Errors/Ecc block"), "%d", 1000, CURVE_PERCENT);
+   wl->fixCurve  = GuiCreateCurve(d_area, _("Errors/Ecc block"), "%d", 1000, CURVE_PERCENT);
    wl->fixCurve->enable = DRAW_ICURVE;
 }
 
@@ -468,8 +459,8 @@ static void cache_cb(GtkWidget *widget, gpointer data)
    utf  = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), utf);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), utf);
-   SetOnlineHelpLinkText(lwoh, text);
-   UpdateMethodPreferences();
+   GuiSetOnlineHelpLinkText(lwoh, text);
+   GuiUpdateMethodPreferences();
    g_free(text);
    g_free(utf);
 }
@@ -486,7 +477,7 @@ static void nroots_cb(GtkWidget *widget, gpointer data)
         set_range_value(GTK_RANGE(wl->redundancyScaleB), value);
    else set_range_value(GTK_RANGE(wl->redundancyScaleA), value);
 
-   UpdateMethodPreferences();
+   GuiUpdateMethodPreferences();
 }
 
 static void ecc_size_cb(GtkWidget *widget, gpointer data)
@@ -501,7 +492,7 @@ static void ecc_size_cb(GtkWidget *widget, gpointer data)
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(Closure->redundancy));
    else gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(Closure->redundancy));
 
-   UpdateMethodPreferences();
+   GuiUpdateMethodPreferences();
 }
 
 static void toggle_cb(GtkWidget *widget, gpointer data)
@@ -580,7 +571,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 Closure->redundancy = g_strdup_printf("%dm", space);
       }
 
-      UpdateMethodPreferences();
+      GuiUpdateMethodPreferences();
    }
 }
 
@@ -675,8 +666,8 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
 
    /* Normal redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Normal redundancy"), _("Normal"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Normal redundancy"), _("Normal"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -694,19 +685,19 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->radio1B = radio;
          gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Normal redundancy</b>\n\n"
-			    "The preset \"normal\" creates a redundancy of 14.3%%.\n"
-			    "It invokes optimized program code to speed up the "
-			    "error correction file creation."));
+   GuiAddHelpParagraph(lwoh, _("<b>Normal redundancy</b>\n\n"
+      "The preset \"normal\" creates a redundancy of 14.3%%.\n"
+      "It invokes optimized program code to speed up the "
+      "error correction file creation."));
 
    /* High redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("High redundancy"), _("High"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("High redundancy"), _("High"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -724,20 +715,20 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->radio2B = radio;
          gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>High redundancy</b>\n\n"
-			    "The preset \"high\" creates a redundancy of 33.5%%.\n"
-			    "It invokes optimized program code to speed up the "
-			    "error correction file creation."));
+   GuiAddHelpParagraph(lwoh, _("<b>High redundancy</b>\n\n"
+      "The preset \"high\" creates a redundancy of 33.5%%.\n"
+      "It invokes optimized program code to speed up the "
+      "error correction file creation."));
 
 
    /* User-selected redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Other redundancy"), _("Other"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Other redundancy"), _("Other"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  hbox = gtk_hbox_new(FALSE, 4);
@@ -771,20 +762,21 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       }
       else
       {  wl->redundancyScaleB = scale;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Other redundancy</b>\n\n"
-			    "Specifies the redundancy by percent.\n"
-			    "An error correction file with x%% redundancy "
-			    "will be approximately x%% of the size of the "
-			    "corresponding image file."));
+   GuiAddHelpParagraph(lwoh, _("<b>Other redundancy</b>\n\n"
+      "Specifies the redundancy by percent.\n"
+      "An error correction file with x%% redundancy "
+      "will be approximately x%% of the size of the "
+      "corresponding image file."));
 
    /* Space-delimited redundancy */
 
-   lwoh = CreateLabelWithOnlineHelp(_("Space-delimited redundancy"), _("Use at most"));
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("Space-delimited redundancy"),
+				       _("Use at most"));
+   GuiRegisterPreferencesHelpWindow(lwoh);
 
    for(i=0; i<2; i++)
    {  hbox = gtk_hbox_new(FALSE, 4);
@@ -821,18 +813,18 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->redundancySpinB = spin;
 	 wl->radio4LabelB = lab;
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>Space-delimited redundancy</b>\n\n"
-			    "Specifies the maximum size of the error correction file in MiB. "
-			    "dvdisaster will choose a suitable redundancy setting so that "
-			    "the overall size of the error correction file does not exceed "
-			    "the given limit.\n\n"
-			    "<b>Advance notice:</b> When using the same size setting for "
-			    "images of vastly different size, smaller images receive more "
-			    "redundancy than larger ones. This is usually not what you want."));
+   GuiAddHelpParagraph(lwoh, _("<b>Space-delimited redundancy</b>\n\n"
+      "Specifies the maximum size of the error correction file in MiB. "
+      "dvdisaster will choose a suitable redundancy setting so that "
+      "the overall size of the error correction file does not exceed "
+      "the given limit.\n\n"
+      "<b>Advance notice:</b> When using the same size setting for "
+      "images of vastly different size, smaller images receive more "
+      "redundancy than larger ones. This is usually not what you want."));
 
    /*** Preset redundancy values */
 
@@ -872,13 +864,13 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
 
    text = g_strdup_printf(_("%d MiB of file cache"), Closure->cacheMiB);
-   lwoh = CreateLabelWithOnlineHelp(_("File cache"), text);
-   RegisterPreferencesHelpWindow(lwoh);
+   lwoh = GuiCreateLabelWithOnlineHelp(_("File cache"), text);
+   GuiRegisterPreferencesHelpWindow(lwoh);
    g_free(text);
 
    wl->cacheLwoh = lwoh;
-   LockLabelSize(GTK_LABEL(lwoh->normalLabel), _utf("%d MiB of file cache"), 2222);
-   LockLabelSize(GTK_LABEL(lwoh->linkLabel), _utf("%d MiB of file cache"), 2222);
+   GuiLockLabelSize(lwoh->normalLabel, _utf("%d MiB of file cache"), 2222);
+   GuiLockLabelSize(lwoh->linkLabel, _utf("%d MiB of file cache"), 2222);
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_hbox_new(FALSE, 4);
@@ -909,12 +901,14 @@ void CreateRS01PrefsPage(Method *method, GtkWidget *parent)
       else
       {  wl->cacheScaleB = scale; 
 	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-	 AddHelpWidget(lwoh, hbox);
+	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
-   AddHelpParagraph(lwoh, _("<b>File cache</b>\n\n"
-			    "dvdisaster optimizes access to the image and error correction "
-			    "files by maintaining its own cache. "
-			    "The preset of 32MiB is suitable for most systems."));
+   GuiAddHelpParagraph(lwoh, _("<b>File cache</b>\n\n"
+      "dvdisaster optimizes access to the image and error correction "
+      "files by maintaining its own cache. "
+      "The preset of 32MiB is suitable for most systems."));
 }
+
+#endif /* WITH_GUI_YES */

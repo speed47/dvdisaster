@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs02-includes.h"
@@ -29,18 +31,16 @@
  *** Recognize RS02 error correction data in the image
  ***/
 
-#ifndef WITH_CLI_ONLY_YES
-
 /*
  * Dialog components for disabling RS02 search
  */
-
+#ifdef WITH_GUI_YES
 static void no_rs02_cb(GtkWidget *widget, gpointer data)
 {  int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
   
    Closure->examineRS02 = !state;
 
-   UpdatePrefsExhaustiveSearch();
+   GuiUpdatePrefsExhaustiveSearch();
 }
 
 static void insert_buttons(GtkDialog *dialog)
@@ -61,7 +61,7 @@ static void insert_buttons(GtkDialog *dialog)
    gtk_widget_show(align);
    gtk_widget_show(check);
 } 
-#endif
+#endif /* WITH_GUI_YES */
 
 /*
  * See whether a given header is valid for RS02
@@ -171,6 +171,7 @@ int RS02Recognize(Image *image)
    int read_count = 0;
    int answered_continue = FALSE;
    gint64 max_sectors = 0;
+
    switch(image->type)
    { case IMAGE_FILE:
        Verbose("RS02Recognize: file %s\n", image->file->path);
@@ -272,10 +273,8 @@ int RS02Recognize(Image *image)
       while(pos > 0)
       {  int result;
 	
-#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)
 	   goto bail_out;
-#endif
 
 	 if(GetBit(try_next_header, pos))
 	 {  Verbose("Sector %" PRId64 " cached; skipping\n", pos);
@@ -299,18 +298,16 @@ int RS02Recognize(Image *image)
 	       read_count++;
 	       if(!answered_continue && read_count > 5)
 	       {
-#ifndef WITH_CLI_ONLY_YES
-                  if(Closure->guiMode)
-    		  {  int answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-					      _("Faster medium initialization\n\n"
-						"Searching this medium for error correction data may take a long time.\n"
-						"Press \"Skip RS02 test\" if you are certain that this medium was\n"
-						"not augmented with RS02 error correction data."));
+		  if(Closure->guiMode)
+    		  {  int answer = GuiModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
+						 _("Faster medium initialization\n\n"
+						   "Searching this medium for error correction data may take a long time.\n"
+						   "Press \"Skip RS02 test\" if you are certain that this medium was\n"
+						   "not augmented with RS02 error correction data."));
 		 
 		    if(answer) goto bail_out;
 		    answered_continue = TRUE;
 		  }
-#endif
 	       }
 	       goto check_next_header;
 	    case TRY_NEXT_MODULO:

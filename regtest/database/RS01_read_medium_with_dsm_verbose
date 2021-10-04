@@ -200,7 +200,7 @@ Creating new rs01-tmp.iso image.
 * repaired by dvdisaster. Also it will not be possible to create
 * error correction data for it. Sorry for the bad news.
 
-All sectors successfully read.
+All sectors are readable, but 3 contain defective content.
 CrcBuf contents, image path none (medium):
   crcSize: 21000, dataSectors: 21000, coveredSectors: 21000, allSectors: 21000
   md5State: data_complete image_complete
@@ -208,3 +208,4 @@ CrcBuf contents, image path none (medium):
   full: 1c479ed0276128f79fd72f7b3d087441
   fp sector: 16; 15c0fd35a0cfa0f83b9ccbd8604c2592
   missing crcs: 0
+FreeCrcBuf - buffer cleared

@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "udf.h"
@@ -364,11 +366,8 @@ static IsoInfo* examine_iso(Image *image)
    /*** Iterate over the volume decriptors */
  
    for(sector=16; sector<32; sector++)
-   {
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->stopActions) 
+   {  if(Closure->stopActions) 
         continue;
-#endif
 
       if(ImageReadSectors(image, buf, sector, 1) != 1)
       {  Verbose("  Sector %2d: unreadable\n", sector);

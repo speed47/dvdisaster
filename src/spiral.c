@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 /***
@@ -32,14 +34,18 @@
  * Allocate and fill in the spiral data structure
  */
 
-Spiral* CreateSpiral(GdkColor *outline, GdkColor *fill, 
-		     int start_radius, int segment_size, int n_segments)
-{  Spiral *spiral = g_malloc0(sizeof(Spiral));
+Spiral* GuiCreateSpiral(GdkColor *outline, GdkColor *fill, 
+			int start_radius, int segment_size, int n_segments)
+{  Spiral *spiral;
    double a = 0.0;
    double scale_o = start_radius + segment_size;
    double ring_expand;
    int i;
 
+   if(!Closure->guiMode)
+     return NULL;
+   
+   spiral = g_malloc0(sizeof(Spiral));
    spiral->startRadius  = start_radius; 
    spiral->segmentSize  = segment_size;
    spiral->segmentCount = spiral->segmentClipping = n_segments;
@@ -63,7 +69,7 @@ Spiral* CreateSpiral(GdkColor *outline, GdkColor *fill,
    return spiral;
 }
 
-void SetSpiralWidget(Spiral *spiral, GtkWidget *widget)
+void GuiSetSpiralWidget(Spiral *spiral, GtkWidget *widget)
 {  GtkAllocation *al = &widget->allocation;
 
    if(!spiral->drawable)
@@ -73,8 +79,10 @@ void SetSpiralWidget(Spiral *spiral, GtkWidget *widget)
    }
 }   
 
-void FreeSpiral(Spiral *spiral)
-{  g_free(spiral->segmentPos);
+void GuiFreeSpiral(Spiral *spiral)
+{  if(!spiral) return;
+  
+   g_free(spiral->segmentPos);
    g_free(spiral->segmentColor);
    g_free(spiral);
 }
@@ -83,7 +91,7 @@ void FreeSpiral(Spiral *spiral)
  * Fill spiral segments with given color
  */
 
-void FillSpiral(Spiral *spiral, GdkColor *color)
+void GuiFillSpiral(Spiral *spiral, GdkColor *color)
 {  int i;
 
    if(spiral)
@@ -95,7 +103,7 @@ void FillSpiral(Spiral *spiral, GdkColor *color)
  * Draw the whole spiral
  */
 
-void DrawSpiral(Spiral *spiral)
+void GuiDrawSpiral(Spiral *spiral)
 {  double a;
    int xi0,yi0,xo0,yo0;
    double scale_i,scale_o;
@@ -142,7 +150,7 @@ void DrawSpiral(Spiral *spiral)
  * Draw just one segment of the spiral
  */
 
-void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
+void GuiDrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
 {  double a;
    double scale_i,scale_o,ring_expand;
    GdkPoint points[4];
@@ -183,12 +191,12 @@ void DrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
  * Draw a label above or below the spiral
  */
 
-void DrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
-		     char *text, GdkColor *color, int x, int line)
+void GuiDrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
+			char *text, GdkColor *color, int x, int line)
 {  GdkDrawable *d = spiral->drawable;
    int w,h,y;
 
-   SetText(layout, text, &w, &h);
+   GuiSetText(layout, text, &w, &h);
    if(line > 0) y = spiral->my + spiral->diameter / 2 + 20 + (line-1) * (10 + h); 
    else         y = spiral->my - spiral->diameter / 2 - 20 - h + (line+1) * (10 + h); 
    gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
@@ -204,8 +212,11 @@ void DrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
  * Moving to segment -1 means to disable the cursor.
  */
 
-void MoveSpiralCursor(Spiral *spiral, int to_segment)
+void GuiMoveSpiralCursor(Spiral *spiral, int to_segment)
 {
+  if(!Closure->guiMode)
+    return;
+  
   if(to_segment == spiral->cursorPos)
     return;
 
@@ -215,7 +226,7 @@ void MoveSpiralCursor(Spiral *spiral, int to_segment)
   /* Erase old cursor */
 
   if(spiral->cursorPos >= 0)
-    DrawSpiralSegment(spiral, spiral->colorUnderCursor, spiral->cursorPos);
+    GuiDrawSpiralSegment(spiral, spiral->colorUnderCursor, spiral->cursorPos);
 
   /* Moving to -1 means cursor off */
 
@@ -232,7 +243,7 @@ void MoveSpiralCursor(Spiral *spiral, int to_segment)
   /* Draw cursor at new place */
 
   spiral->colorUnderCursor = spiral->segmentColor[to_segment];
-  DrawSpiralSegment(spiral, Closure->blueSector, to_segment);
+  GuiDrawSpiralSegment(spiral, Closure->blueSector, to_segment);
 }
 
 /*
@@ -247,14 +258,17 @@ typedef struct _cursor_info
 static gboolean cursor_idle_func(gpointer data)
 {  cursor_info *ci = (cursor_info*)data;
 
-   MoveSpiralCursor(ci->spiral, ci->segment);
+   GuiMoveSpiralCursor(ci->spiral, ci->segment);
    g_free(ci);
 
    return FALSE;
 }
 
-void ChangeSpiralCursor(Spiral *spiral, int segment)
-{  
+void GuiChangeSpiralCursor(Spiral *spiral, int segment)
+{
+   if(!Closure->guiMode)
+     return;
+  
    if(segment != spiral->cursorPos)
    {  cursor_info *ci = g_malloc(sizeof(cursor_info));
 
@@ -263,3 +277,4 @@ void ChangeSpiralCursor(Spiral *spiral, int segment)
       g_idle_add(cursor_idle_func, ci);
    }
 }
+#endif /* WITH_GUI_YES */

@@ -20,10 +20,11 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs03-includes.h"
-
 
 /***
  *** Read and buffer CRC information from RS03 error correction data 

@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #ifdef WITH_MEMDEBUG_YES
 
 #define _GNU_SOURCE

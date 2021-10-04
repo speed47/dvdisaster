@@ -23,7 +23,6 @@
 #ifndef RS01INCLUDES_H
 #define RS01INCLUDES_H
 
-#ifndef WITH_CLI_ONLY_YES
 /* Data structs from rs01-window.c */
 
 typedef struct
@@ -97,7 +96,6 @@ typedef struct
    int    dataBytes;
    int    percent, lastPercent;
 } RS01Widgets;
-#endif
 
 /*
  * local working closure for internal checksums
@@ -107,7 +105,6 @@ typedef struct
 {  struct MD5Context md5ctxt;   /* Complete image checksum */
 } RS01CksumClosure;
 
-#ifndef WITH_CLI_ONLY_YES
 /* 
  * These are exported via the Method struct 
  */
@@ -123,7 +120,6 @@ void RS01ShowCurveButton(Method*);
 
 void ResetRS01VerifyWindow(Method*);
 void CreateRS01VerifyWindow(Method*, GtkWidget*);
-#endif
 
 /*
  * These are exported (resp. only used) in ecc-rs01.c and rs01*.c
@@ -159,13 +155,11 @@ void RS01Create(void);
 
 void RS01Fix(Image*);
 
-#ifndef WITH_CLI_ONLY_YES
 /* rs01-window.c */
 
 void RS01AddFixValues(RS01Widgets*, int, int);
 void RS01SetFixMaxValues(RS01Widgets*, int, int, gint64);
 void RS01UpdateFixResults(RS01Widgets*, gint64, gint64);
-#endif
 
 /* rs01-verify.c */
 

@@ -330,4 +330,13 @@ Error correction properties:
 
 Data integrity:
 - medium sectors   : 359295 total / 346612 data
-* quick mode        : image NOT scanned
+CalcRS03Layout(): returning cached layout (augmented)
+* missing sector   : 346612 
+* BAD image/file   : 1 sectors missing
+  ... data section   : 1 sectors missing; 0 CRC errors
+  ... crc section    : 0 sectors missing
+  ... ecc section    : 0 sectors missing
+* Ecc block test   : 1408 good, 1 bad; 324 bad sub blocks
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- prognosis        : 359295 of 359295 sectors recoverable (100.0%)
+FreeCrcBuf - buffer cleared

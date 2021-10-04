@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 /***
@@ -211,7 +213,7 @@ ssize_t LargeRead(LargeFile *lf, void *buf, size_t count)
  * Writing large files
  */
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
   gtk_dialog_add_buttons(dialog, 
@@ -226,9 +228,7 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
 
    /* Simply fail when going out of space in command line mode */
 
-#ifndef WITH_CLI_ONLY_YES
    if(!Closure->guiMode)
-#endif
    {  while(count)
       {  ssize_t n = write(fdes, buf, count);
       
@@ -243,7 +243,7 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
       return total;
    }
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES
    /* Give the user a chance to free more space in GUI mode.
       When running out of space, the last write() may complete
       with n<count but no error condition, so we try writing
@@ -257,10 +257,10 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
 
 	 if(errno != ENOSPC) return total;
 
-	 answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-			      _("Error while writing the file:\n\n%s\n\n"
-				"You can redo this operation after freeing some space."),
-			      strerror(errno));
+	 answer = GuiModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
+				 _("Error while writing the file:\n\n%s\n\n"
+				   "You can redo this operation after freeing some space."),
+				 strerror(errno));
 
 	 if(!answer) return total; 
       }
@@ -271,9 +271,9 @@ static ssize_t xwrite(int fdes, void *buf_base, size_t count)
 	 buf   += n;
       }
    }
-
+#endif /* WITH_GUI_YES */
+   
    return total;
-#endif
 }
 
 ssize_t LargeWrite(LargeFile *lf, void *buf, size_t count)

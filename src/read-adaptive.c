@@ -1,6 +1,6 @@
 /*  dvdisaster: Additional error correction for optical media.
  *  Copyright (C) 2004-2017 Carsten Gnoerlich.
- *  Copyright (C) 2019-2021 The dvdisaster development team.
+ *  Copyright (C) 2019-2021 The readdvdisaster development team.
  *
  *  Email: support@dvdisaster.org
  *
@@ -19,6 +19,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/*** src type: some GUI code ***/
 
 #include "dvdisaster.h"
 
@@ -368,14 +370,12 @@ static void cleanup(gpointer data)
    }
 
 bail_out:
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  if(rc->earlyTermination)
-        SetAdaptiveReadFootline(_("Aborted by unrecoverable error."), Closure->redText);
-
-      AllowActions(TRUE);
+      {  GuiSetAdaptiveReadFootline(_("Aborted by unrecoverable error."), Closure->redText);
+      }
+      GuiAllowActions(TRUE);
    }
-#endif
 
    if(rc->image)   
      if(!LargeClose(rc->image))
@@ -401,7 +401,7 @@ bail_out:
 
    g_free(rc);
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES   
    if(Closure->guiMode)
       g_thread_exit(0);
 #endif
@@ -490,10 +490,8 @@ static void print_progress(read_closure *rc, int immediate)
    int total = rc->readable+rc->correctable;
    int percent = (int)((1000LL*(long long)total)/rc->expectedSectors);
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
       return;
-#endif
 
    if(   rc->lastPercent >= percent 
       && rc->lastCorrectable == rc->correctable
@@ -541,12 +539,7 @@ static void print_progress(read_closure *rc, int immediate)
 
 static void clear_progress(read_closure *rc)
 {
-   if(!rc->progressMsgLen ||
-#ifndef WITH_CLI_ONLY_YES
-      Closure->guiMode)
-#else
-      0)
-#endif
+   if(!rc->progressMsgLen || Closure->guiMode)
      return;
 
    rc->progressSp[rc->progressMsgLen] = 0;
@@ -564,7 +557,9 @@ static void clear_progress(read_closure *rc)
  * Sector markup in the spiral
  */
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_NO
+#define mark_sector(r, s, c)
+#else
 static void mark_sector(read_closure *rc, gint64 sector, GdkColor *color)
 {  int segment;
    int changed = FALSE;
@@ -599,18 +594,19 @@ static void mark_sector(read_closure *rc, gint64 sector, GdkColor *color)
       }
 
       if(new != old)
-      {  ChangeSegmentColor(color, segment);
+      {  GuiChangeSegmentColor(color, segment);
 	 changed = TRUE;
       }
    }
    else changed = TRUE;
 
    if(changed)
-     UpdateAdaptiveResults(rc->readable, rc->correctable, 
-			   rc->expectedSectors-rc->readable-rc->correctable,
-			   (int)((1000LL*(rc->readable+rc->correctable))/rc->expectedSectors));
+   {  GuiUpdateAdaptiveResults(rc->readable, rc->correctable, 
+			       rc->expectedSectors-rc->readable-rc->correctable,
+			       (int)((1000LL*(rc->readable+rc->correctable))/rc->expectedSectors));
+   }
 }
-#endif
+#endif /* WITH_GUI_YES */
 
 /***
  *** Basic device and image handling and sanity checks.
@@ -653,10 +649,7 @@ static void open_and_determine_mode(read_closure *rc)
       rc->rs01LayerSectors = (rc->ei->sectors+rc->eh->dataBytes-1)/rc->eh->dataBytes;
 
       PrintLog(_("%s-type ECC found\n"), "RS01");
-
-#ifndef WITH_CLI_ONLY_YES
-      SetAdaptiveReadMinimumPercentage((1000*(rc->eh->dataBytes-rc->eh->eccBytes))/rc->eh->dataBytes);
-#endif
+      GuiSetAdaptiveReadMinimumPercentage((1000*(rc->eh->dataBytes-rc->eh->eccBytes))/rc->eh->dataBytes);
    }
    else   /* see if we have RS02 type ecc */
    if(rc->medium->eccHeader && !strncmp((char*)rc->medium->eccHeader->method,"RS02",4))
@@ -664,16 +657,14 @@ static void open_and_determine_mode(read_closure *rc)
       rc->eh  = rc->medium->eccHeader;
       rc->lay = RS02LayoutFromImage(rc->medium);
  
-#ifndef WITH_CLI_ONLY_YES
-      SetAdaptiveReadMinimumPercentage((1000*rc->lay->ndata)/255);
-#endif
+      GuiSetAdaptiveReadMinimumPercentage((1000*rc->lay->ndata)/255);
 
       PrintLog(_("%s-type ECC found\n"), "RS02");
 
       if(Closure->version < rc->eh->neededVersion)
 	 PrintCLI(_("* Warning: This image requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
-		    "*          Please visit http://www.dvdisaster.org for an upgrade.\n\n"), 
+		    "*          Please upgrade dvdisaster.\n\n"), 
 		  rc->eh->neededVersion/10000,
 		  (rc->eh->neededVersion%10000)/100);
 
@@ -699,18 +690,15 @@ static void open_and_determine_mode(read_closure *rc)
    if(rc->medium->eccHeader && !strncmp((char*)rc->medium->eccHeader->method,"RS03",4))
    {  int answer;
       PrintLog(_("%s-type ECC found\n"), "RS03");
-      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL, "%s",
+      answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Adaptive reading has not been adapted yet to handle RS03-augmented images properly.\n"
 			      "To quote the original author: \"behaviour with RS03 is unpredictable and undefined\".\n"
 			      "You should cancel and use the linear reading strategy instead. Continue at your own risk.\n"));
 
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
-#endif
-	 rc->earlyTermination = FALSE;
-	 cleanup((gpointer)rc);
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+         rc->earlyTermination = FALSE;
+         cleanup((gpointer)rc);
       }
    }
 
@@ -757,10 +745,9 @@ static void check_size(read_closure *rc)
    /* Compare size with answer from drive */
 
    if(rc->sectors < rc->dh->sectors)
-   {
-      int answer;
+   {  int answer;
 
-      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Medium contains %" PRId64 " sectors more as recorded in the .ecc file\n"
 			      "(Medium: %" PRId64 " sectors; expected from .ecc file: %" PRId64 " sectors).\n"
 			      "Only the first %" PRId64 " medium sectors will be processed.\n"),
@@ -768,29 +755,22 @@ static void check_size(read_closure *rc)
 			    rc->sectors);
 
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
-#endif
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 	 rc->earlyTermination = FALSE;
 	 cleanup((gpointer)rc);
       }
    }
 
    if(rc->sectors > rc->dh->sectors)
-   {  
-      int answer;
+   {  int answer;
 
-      answer =  ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer =  ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			     _("Medium contains %" PRId64 " sectors less as recorded in the .ecc file\n"
 			       "(Medium: %" PRId64 " sectors; expected from .ecc file: %" PRId64 " sectors).\n"),
 			     rc->sectors - rc->dh->sectors, rc->dh->sectors, rc->sectors);
 
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
-#endif
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 	 rc->earlyTermination = FALSE;
 	 cleanup((gpointer)rc);
       }
@@ -807,14 +787,10 @@ void GetReadingRange(gint64 sectors, gint64 *firstSector, gint64 *lastSector)
 {  gint64 first, last;
 
    if(Closure->readStart || Closure->readEnd)
-   {
-#ifndef WITH_CLI_ONLY_YES
-      if(!Closure->guiMode) /* more range checks are made below */ 
-#endif
+   {  if(!Closure->guiMode) /* more range checks are made below */ 
       {  first = Closure->readStart;
          last  = Closure->readEnd < 0 ? sectors-1 : Closure->readEnd;
       }
-#ifndef WITH_CLI_ONLY_YES
       else  /* be more permissive in GUI mode */
       {  first = 0;
  	 last  = sectors-1;
@@ -824,7 +800,6 @@ void GetReadingRange(gint64 sectors, gint64 *firstSector, gint64 *lastSector)
 	    last  = Closure->readEnd   < sectors ? Closure->readEnd   : sectors-1;
 	 }
       }
-#endif
 
       if(first > last || first < 0 || last >= sectors)
 	Stop(_("Sectors must be in range [0..%" PRId64 "].\n"), sectors-1);
@@ -851,19 +826,15 @@ static void check_ecc_fingerprint(read_closure *rc)
    fp_read = GetImageFingerprint(rc->medium, digest, rc->eh->fpSector);
 
    if(!fp_read) /* Not readable. Bad luck. */
-   {  
-      int answer;
+   {  int answer;
 
-      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Sector %d is missing. Can not compare medium and ecc fingerprints.\n"
 			      "Double check that the medium and the ecc file belong together.\n"),
 			    rc->eh->fpSector);
 
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
-#endif
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 	 rc->earlyTermination = FALSE;
 	 cleanup((gpointer)rc);
       }
@@ -911,18 +882,16 @@ int check_image_fingerprint(read_closure *rc)
 
    if(memcmp(image_fp, medium_fp, 16))
    {  	  
-#ifndef WITH_CLI_ONLY_YES
      if(!Closure->guiMode)
-#endif
        Stop(_("Image file does not match the optical disc."));
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES     
      else
-     {  int answer = ConfirmImageDeletion(Closure->imageName);
+     {  int answer = GuiConfirmImageDeletion(Closure->imageName);
 
         if(!answer)
 	{  rc->earlyTermination = FALSE;
-	   SetAdaptiveReadFootline(_("Reading aborted. Please select a different image file."), 
-				   Closure->redText);
+	   GuiSetAdaptiveReadFootline(_("Reading aborted. Please select a different image file."), 
+				      Closure->redText);
 	   cleanup((gpointer)rc);
 	}
 	else
@@ -931,7 +900,7 @@ int check_image_fingerprint(read_closure *rc)
 	   return TRUE; /* causes reopen of image in caller */
 	} 
      }
-#endif
+#endif /* WITH_GUI_YES */
    }
 
    return 0;  /* okay */
@@ -945,20 +914,16 @@ int check_image_fingerprint(read_closure *rc)
 void check_image_size(read_closure *rc, gint64 image_file_sectors)
 {  
    if(image_file_sectors > rc->expectedSectors)
-   {
-      int answer;
+   {  int answer;
 	 
-      answer = ModalWarningOrCLI(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
+      answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
 			    _("Image file is %" PRId64 " sectors longer than inserted medium\n"
 			      "(Image file: %" PRId64 " sectors; medium: %" PRId64 " sectors).\n"),
 			    image_file_sectors-rc->expectedSectors, 
 			    image_file_sectors, rc->expectedSectors);
 
       if(!answer)
-      {
-#ifndef WITH_CLI_ONLY_YES
-         SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
-#endif
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 	 rc->earlyTermination = FALSE;
 	 cleanup((gpointer)rc);
       }
@@ -976,15 +941,11 @@ static void load_crc_buf(read_closure *rc)
 {
    switch(rc->readMode)
    {  case ECC_IN_FILE:
-#ifndef WITH_CLI_ONLY_YES
-	 SetAdaptiveReadSubtitle(_utf("Loading CRC data."));
-#endif
+	 GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
 	 rc->crcBuf = GetCRCFromRS01_obsolete(rc->ei);
 	 break;
       case ECC_IN_IMAGE:
-#ifndef WITH_CLI_ONLY_YES
-	 SetAdaptiveReadSubtitle(_utf("Loading CRC data."));
-#endif
+	 GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
 	 rc->crcBuf = GetCRCFromRS02_obsolete(rc->lay, rc->dh, rc->image);
 	 break;
       default:
@@ -1014,24 +975,19 @@ static void build_interval_from_image(read_closure *rc)
    /*** Go through all sectors in the image file.
 	Check them for "dead sector markers" 
 	and for checksum failures if ecc data is present. */
-   
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetAdaptiveReadSubtitle(_("Analysing existing image file"));
-#endif
 
+   GuiSetAdaptiveReadSubtitle(_("Analysing existing image file"));
+   
    for(s=0; s<=rc->highestWrittenSector; s++)
    {  int n,percent;
 
       /* Check for user interruption. */
 
-#ifndef WITH_CLI_ONLY_YES
       if(Closure->stopActions)   
-      {  SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+      {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 	 rc->earlyTermination = FALSE;
 	 cleanup((gpointer)rc);
       }
-#endif
 
       /* Read the next sector */
 
@@ -1045,9 +1001,7 @@ static void build_interval_from_image(read_closure *rc)
 
       if(current_missing)
       {  int fixme=0;
-#ifndef WITH_CLI_ONLY_YES
 	 mark_sector(rc, s, Closure->redSector);
-#endif
 	 ExplainMissingSector(rc->buf, s, current_missing, SOURCE_IMAGE, &fixme);
       }
 
@@ -1067,9 +1021,7 @@ static void build_interval_from_image(read_closure *rc)
 	       make it missing due to the CRC failure. */
 	    if(!current_missing)
 	    {  current_missing = 1;
-#ifndef WITH_CLI_ONLY_YES
 	       mark_sector(rc, s, Closure->yellowSector);
-#endif
 	    }
       }
 
@@ -1084,9 +1036,7 @@ static void build_interval_from_image(read_closure *rc)
 	 if(rc->map)
 	   SetBit(rc->map, s);
 
-#ifndef WITH_CLI_ONLY_YES
 	 mark_sector(rc, s, Closure->greenSector);
-#endif
 
 #ifdef CHECK_VISITED
 	 rc->count[s]++;
@@ -1120,10 +1070,7 @@ static void build_interval_from_image(read_closure *rc)
 
       percent = (100*s)/(rc->highestWrittenSector+1);
       if(last_percent != percent) 
-      {
-#ifndef WITH_CLI_ONLY_YES
-         if(!Closure->guiMode)
-#endif
+      {  if(!Closure->guiMode)
 	    PrintProgress(_("Analysing existing image file: %2d%%"),percent);
 
 	 last_percent = percent;
@@ -1151,11 +1098,8 @@ static void build_interval_from_image(read_closure *rc)
    /*** Now that all readable sectors are known,
 	determine those which can already be corrected. */
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetAdaptiveReadSubtitle(_("Determining correctable sectors"));
-#endif
-
+   GuiSetAdaptiveReadSubtitle(_("Determining correctable sectors"));
+   
    /* RS01 type error correction. */
 
    if(rc->readMode == ECC_IN_FILE)
@@ -1186,9 +1130,7 @@ static void build_interval_from_image(read_closure *rc)
 #ifdef CHECK_VISITED
 		  rc->count[layer_idx]++;
 #endif
-#ifndef WITH_CLI_ONLY_YES
 		  mark_sector(rc, layer_idx, Closure->greenSector);
-#endif
 	       }
 
 	       layer_idx += rc->rs01LayerSectors;
@@ -1221,9 +1163,7 @@ static void build_interval_from_image(read_closure *rc)
 		   && !GetBit(rc->map, sector))
 	       {  SetBit(rc->map, sector);
 		  rc->correctable++;
-#ifndef WITH_CLI_ONLY_YES
 		  mark_sector(rc, sector, Closure->greenSector);
-#endif
 	       }
 	    }
 	 }
@@ -1238,13 +1178,10 @@ static void build_interval_from_image(read_closure *rc)
    else PrintLog(_("Analysing existing image file: %" PRId64 " readable, %" PRId64 " still missing.\n"),
 		 rc->readable, rc->expectedSectors-rc->readable-rc->correctable);
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     UpdateAdaptiveResults(rc->readable, rc->correctable, 
-			   rc->expectedSectors-rc->readable-rc->correctable,
-			   (int)((1000LL*(rc->readable+rc->correctable))/rc->expectedSectors));
-#endif
-
+   GuiUpdateAdaptiveResults(rc->readable, rc->correctable, 
+			    rc->expectedSectors-rc->readable-rc->correctable,
+			    (int)((1000LL*(rc->readable+rc->correctable))/rc->expectedSectors));
+   
    //   print_intervals(rc);
 }
 
@@ -1267,16 +1204,12 @@ static void mark_rs02_headers(read_closure *rc)
    while(hpos < end)
    {  if(!GetBit(rc->map, hpos))
       {  SetBit(rc->map, hpos);
-#ifndef WITH_CLI_ONLY_YES
 	 mark_sector(rc, hpos, Closure->greenSector);
-#endif
 	 rc->correctable++;
       }
       if(!GetBit(rc->map, hpos+1))
       {  SetBit(rc->map, hpos+1);
-#ifndef WITH_CLI_ONLY_YES
          mark_sector(rc, hpos+1, Closure->greenSector);
-#endif
 	 rc->correctable++;
       }
 
@@ -1288,7 +1221,7 @@ static void mark_rs02_headers(read_closure *rc)
  *** Main routine for adaptive reading
  ***/
 
-#ifndef WITH_CLI_ONLY_YES
+#ifdef WITH_GUI_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
   gtk_dialog_add_buttons(dialog, 
@@ -1333,12 +1266,10 @@ void fill_gap(read_closure *rc)
   t = g_strdup_printf(_("Filling image area [%" PRId64 "..%" PRId64 "]"), 
 		      firstUnwritten, rc->intervalStart-1);
   clear_progress(rc);
-#ifndef WITH_CLI_ONLY_YES
-  if(Closure->guiMode)
-  {  SetAdaptiveReadSubtitle(t);
-     ChangeSpiralCursor(Closure->readAdaptiveSpiral, -1); 
-  }
-#endif
+
+  GuiSetAdaptiveReadSubtitle(t);
+  GuiChangeSpiralCursor(Closure->readAdaptiveSpiral, -1); 
+
   PrintCLI("%s", t);
   g_free(t);
 
@@ -1364,51 +1295,43 @@ void fill_gap(read_closure *rc)
 
      /* Check whether user hit the Stop button */
 	     
-#ifndef WITH_CLI_ONLY_YES
      if(Closure->stopActions)
      {
-        if(Closure->guiMode)
-	 SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+        GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 
         rc->earlyTermination = FALSE;  /* suppress respective error message */
 	cleanup((gpointer)rc);
      }
-#endif
 
      /* Cycle the progress animation */
 
      if(j++ % 2000)
      {  int seq = (j/2000)%10;
 
-#ifndef WITH_CLI_ONLY_YES
 	if(!Closure->guiMode)
-#endif
 	{  g_printf("%s", anim[seq]);
 	   fflush(stdout);
 	}
      }
 	
      /* Show progress in the spiral */
-    
-#ifndef WITH_CLI_ONLY_YES
+
      if(Closure->guiMode)
      {  int segment = i / rc->sectorsPerSegment;
        
         if(Closure->readAdaptiveSpiral->segmentColor[segment] == Closure->background)
-	  ChangeSegmentColor(Closure->whiteSector, segment);
+	{  GuiChangeSegmentColor(Closure->whiteSector, segment);
+	}
      }
-#endif
   }
 
   PrintCLI("               \n");
   rc->highestWrittenSector = rc->intervalStart-1;
 
-#ifndef WITH_CLI_ONLY_YES
   if(Closure->guiMode)  /* remove temporary fill markers */
-  {  RemoveFillMarkers();
-     SetAdaptiveReadSubtitle(rc->subtitle);
+  {  GuiRemoveFillMarkers();
+     GuiSetAdaptiveReadSubtitle(rc->subtitle);
   }
-#endif
 }
 
 
@@ -1463,20 +1386,18 @@ void ReadMediumAdaptive(gpointer data)
    rc->earlyTermination = TRUE;
 
    RegisterCleanup(_("Reading aborted"), cleanup, rc);
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetLabelText(GTK_LABEL(Closure->readAdaptiveHeadline), "<big>%s</big>\n<i>%s</i>",
-		  _("Preparing for reading the medium image."),
-		  _("Medium: not yet determined"));
-#endif
+   GuiSetLabelText(Closure->readAdaptiveHeadline,
+		   "<big>%s</big>\n<i>%s</i>",
+		   _("Preparing for reading the medium image."),
+		   _("Medium: not yet determined"));
 
    /* Please note: Commenting the follwing Stop() out will provide
       adaptive reading for RS01 and RS02, but behaviour with RS03
-      is unpredictable and undefined. Therefore feel free to re-enable
+      is unpredictable und undefined. Therefore feel free to re-enable
       adaptive reading for your own use, but do not distibute such
       binaries to unsuspecting users.
       Adaptive reading will be re-introduced for all codecs
-      in one of the next versions. */
+      in version 0.79.11. */
 
     /* Unofficial version addendum: we enable adaptative reading, but
        we warn the user if we find RS03 data (see open_and_determine_mode()) */
@@ -1528,16 +1449,14 @@ void ReadMediumAdaptive(gpointer data)
 
    /*** Initialize segment state counters (only in GUI mode) */
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
    {  //rc->sectorsPerSegment = 1 + (rc->sectors / ADAPTIVE_READ_SPIRAL_SIZE);
       rc->sectorsPerSegment = ((rc->expectedSectors+ADAPTIVE_READ_SPIRAL_SIZE-1) / ADAPTIVE_READ_SPIRAL_SIZE);
       rc->segmentState = g_malloc0(ADAPTIVE_READ_SPIRAL_SIZE * sizeof(int));
       //      ClipReadAdaptiveSpiral(rc->sectors/rc->sectorsPerSegment);
-      ClipReadAdaptiveSpiral((rc->expectedSectors+rc->sectorsPerSegment-1)/rc->sectorsPerSegment);
+      GuiClipReadAdaptiveSpiral((rc->expectedSectors+rc->sectorsPerSegment-1)/rc->sectorsPerSegment);
    }
-#endif
-
+   
    /*** Initialize the interval list */
 
    rc->intervals = g_malloc(8*sizeof(gint64));
@@ -1552,13 +1471,10 @@ reopen_image:
 	Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
       PrintLog(_("Creating new %s image.\n"),Closure->imageName);
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(Closure->readAdaptiveHeadline),
-		     "<big>%s</big>\n<i>%s</i>",
-		     _("Reading new medium image."),
-		     rc->dh->mediumDescr);
-#endif
+      GuiSetLabelText(Closure->readAdaptiveHeadline,
+		      "<big>%s</big>\n<i>%s</i>",
+		      _("Reading new medium image."),
+		      rc->dh->mediumDescr);
 
       /* Mark RS02 header sectors as correctable. */
 
@@ -1574,13 +1490,10 @@ reopen_image:
    else 
    {  int reopen;
 
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	SetLabelText(GTK_LABEL(Closure->readAdaptiveHeadline),
-		     "<big>%s</big>\n<i>%s</i>",
-		     _("Completing existing medium image."),
-		     rc->dh->mediumDescr);
-#endif
+      GuiSetLabelText(Closure->readAdaptiveHeadline,
+		      "<big>%s</big>\n<i>%s</i>",
+		      _("Completing existing medium image."),
+		      rc->dh->mediumDescr);
 
       /* Open the existing image file. */
 
@@ -1616,10 +1529,7 @@ reopen_image:
 
 	 if(rc->readMode != IMAGE_ONLY)
 	 {  PrintLog("%s", t);
-#ifndef WITH_CLI_ONLY_YES
-	    if(Closure->guiMode)
-	       SetAdaptiveReadFootline(t, Closure->greenText);
-#endif
+	    GuiSetAdaptiveReadFootline(t, Closure->greenText);
 	 }
 	 goto finished;
       }
@@ -1637,10 +1547,7 @@ reopen_image:
 
    /*** Read the medium image. */
 
-#ifndef WITH_CLI_ONLY_YES
-   if(Closure->guiMode)
-     SetAdaptiveReadSubtitle(rc->subtitle);
-#endif
+   GuiSetAdaptiveReadSubtitle(rc->subtitle);
 
    for(;;)
    {  int cluster_mask = rc->dh->clusterSize-1;
@@ -1665,18 +1572,17 @@ reopen_image:
       for(s=rc->intervalStart; s<=rc->intervalEnd; ) /* s is incremented elsewhere */
       {  int nsectors,cnt;
  
-#ifndef WITH_CLI_ONLY_YES
 	 if(Closure->stopActions)          /* somebody hit the Stop button */
-	 {  if(Closure->guiMode)
-	       SetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+	 {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 
 	    rc->earlyTermination = FALSE;  /* suppress respective error message */
 	    goto terminate;
 	 }
 
-	 if(Closure->guiMode)
-	    ChangeSpiralCursor(Closure->readAdaptiveSpiral, s / rc->sectorsPerSegment);
-#endif
+	/* avoid a division by zero */
+	if (Closure->guiMode)
+	{   GuiChangeSpiralCursor(Closure->readAdaptiveSpiral, s / rc->sectorsPerSegment);
+	}
 	    
 	 /* Determine number of sectors to read. Read the next dh->clusterSize sectors
 	    unless we're at the end of the interval or at a position which is
@@ -1723,28 +1629,26 @@ reread:
 	    && rc->dh->sense.sense_key 
 	    && rc->dh->sense.sense_key != 3 && rc->dh->sense.sense_key != 5)
 	 {
-#ifndef WITH_CLI_ONLY_YES
-            int answer;
-
-	    if(!Closure->guiMode)
+#ifdef WITH_GUI_YES
+	    int answer;
 #endif
+	    if(!Closure->guiMode)
 	      Stop(_("Sector %" PRId64 ": %s\nCan not recover from above error.\n"
 		     "Use the --ignore-fatal-sense option to override."),
 		   s, GetLastSenseString(FALSE));
-
-#ifndef WITH_CLI_ONLY_YES
-	    answer = ModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
-				 _("Sector %" PRId64 ": %s\n\n"
-				   "It may not be possible to recover from this error.\n"
-				   "Should the reading continue and ignore this error?"),
-				 s, GetLastSenseString(FALSE));
+#ifdef WITH_GUI_YES
+	    answer = GuiModalDialog(GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, insert_buttons,
+				    _("Sector %" PRId64 ": %s\n\n"
+				      "It may not be possible to recover from this error.\n"
+				      "Should the reading continue and ignore this error?"),
+				    s, GetLastSenseString(FALSE));
 
 	    if(answer == 2)
 	      Closure->ignoreFatalSense = 2;
 
 	    if(!answer)
-	    {
-               SetAdaptiveReadFootline(_("Aborted by unrecoverable error."), Closure->redText);
+	    {  GuiSetAdaptiveReadFootline(_("Aborted by unrecoverable error."), Closure->redText);
+
 	       rc->earlyTermination = FALSE;  /* suppress respective error message */
 	       goto terminate;
 	    }
@@ -1802,9 +1706,7 @@ reread:
 			Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 			     b, "unv", strerror(errno));
 
-#ifndef WITH_CLI_ONLY_YES
 		     mark_sector(rc, b, Closure->yellowSector);
-#endif
 		     
 		     if(rc->highestWrittenSector < b)
 			rc->highestWrittenSector = b;
@@ -1821,9 +1723,7 @@ reread:
 			SetBit(rc->map, b);
 		     rc->readable++;
 
-#ifndef WITH_CLI_ONLY_YES
 		     mark_sector(rc, b, Closure->greenSector);
-#endif
 		    
 		     if(rc->highestWrittenSector < b)
 			rc->highestWrittenSector = b;
@@ -1876,9 +1776,7 @@ reread:
 			   && !GetBit(rc->map, layer_idx))
 			{  SetBit(rc->map, layer_idx);
 			   rc->correctable++;
-#ifndef WITH_CLI_ONLY_YES
 			   mark_sector(rc, layer_idx, Closure->greenSector);
-#endif
 
 #ifdef CHECK_VISITED
 			   rc->count[layer_idx]++;
@@ -1921,9 +1819,7 @@ reread:
 			   && !GetBit(rc->map, sector))
 			{  SetBit(rc->map, sector);
 			   rc->correctable++;
-#ifndef WITH_CLI_ONLY_YES
 			   mark_sector(rc, sector, Closure->greenSector);
-#endif
 			   fill_correctable_gap(rc, sector);
 			}
 		     }
@@ -1948,10 +1844,9 @@ reread:
 	       print_progress(rc, TRUE);
 	       if(rc->readMode != IMAGE_ONLY)
 	       {  PrintLog("%s", t);
-#ifndef WITH_CLI_ONLY_YES
-		  if(Closure->guiMode && rc->ei)
-		    SetAdaptiveReadFootline(t, Closure->foreground);
-#endif
+		  if(rc->ei)
+		  {  GuiSetAdaptiveReadFootline(t, Closure->foreground);
+		  }
 	       }
 	       if(Closure->eject)
 		  LoadMedium(rc->dh, FALSE);
@@ -1963,20 +1858,10 @@ reread:
 	 {  unsigned char buf[2048];
 
 	    PrintCLI("\n");
-	    if(nsectors>1) PrintCLIorLabel(
-#ifndef WITH_CLI_ONLY_YES
-Closure->status,
-#else
-NULL,
-#endif
+	    if(nsectors>1) PrintCLIorLabel(Closure->status,
 					   _("Sectors %" PRId64 "-%" PRId64 ": %s\n"),
 					   s, s+nsectors-1, GetLastSenseString(FALSE));  
-	    else	   PrintCLIorLabel(
-#ifndef WITH_CLI_ONLY_YES
-Closure->status,
-#else
-NULL,
-#endif
+	    else	   PrintCLIorLabel(Closure->status,
 					   _("Sector %" PRId64 ": %s\n"),
 					   s, GetLastSenseString(FALSE));  
 
@@ -1996,9 +1881,7 @@ NULL,
 		 Stop(_("Failed writing to sector %" PRId64 " in image [%s]: %s"),
 		      s, "nds", strerror(errno));
 
-#ifndef WITH_CLI_ONLY_YES
 	       mark_sector(rc, s+i, Closure->redSector);
-#endif
 	    }
 
 	    if(rc->highestWrittenSector < s+nsectors)
@@ -2093,12 +1976,10 @@ finished:
 
    /* Force output of final results */
 
-#ifndef WITH_CLI_ONLY_YES
    if(Closure->guiMode)
-   {  ChangeSpiralCursor(Closure->readAdaptiveSpiral, -1);
+   {  GuiChangeSpiralCursor(Closure->readAdaptiveSpiral, -1);
       mark_sector(rc, 0, NULL);
    }
-#endif
 
    /*** Summarize results. */
 
@@ -2114,10 +1995,7 @@ finished:
       PrintLog(_("\n%s\n"
 		  "(%" PRId64 " readable,  %" PRId64 " correctable,  %" PRId64 " still missing).\n"),
 		t, rc->readable, rc->correctable, rc->expectedSectors-total);
-#ifndef WITH_CLI_ONLY_YES
-      if(Closure->guiMode)
-	 SetAdaptiveReadFootline(t, Closure->foreground);
-#endif
+      GuiSetAdaptiveReadFootline(t, Closure->foreground);
 
       g_free(t);
       exitCode = EXIT_FAILURE;
@@ -2129,10 +2007,7 @@ finished:
    {  if(rc->readable == rc->expectedSectors)
       {  char *t = _("\nGood! All sectors have been read.\n"); 
 	 PrintLog("%s", t);
-#ifndef WITH_CLI_ONLY_YES
-	 if(Closure->guiMode)
-	   SetAdaptiveReadFootline(t, Closure->foreground);
-#endif
+	 GuiSetAdaptiveReadFootline(t, Closure->foreground);
 	 if(Closure->eject)
 	    LoadMedium(rc->dh, FALSE);
       }
@@ -2145,10 +2020,7 @@ finished:
 		     "%2d.%1d%% of the image have been read (%" PRId64 " sectors).\n"),
 		   t, percent/10, percent%10, rc->readable);
 
-#ifndef WITH_CLI_ONLY_YES
-	 if(Closure->guiMode)
-	   SetAdaptiveReadFootline(t, Closure->foreground);
-#endif
+	 GuiSetAdaptiveReadFootline(t, Closure->foreground);
 	 g_free(t);
 	 exitCode = EXIT_FAILURE;
       }
@@ -2166,9 +2038,7 @@ finished:
 
    rc->earlyTermination = FALSE;
 
-#ifndef WITH_CLI_ONLY_YES
 terminate:
-#endif
    cleanup((gpointer)rc);
 }
 

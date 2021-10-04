@@ -20,6 +20,8 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: some GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "rs01-includes.h"
@@ -53,7 +55,12 @@ void register_rs01(void)
    method->finalizeCksums    = RS01FinalizeCksums;
    method->expectedImageSize = RS01ExpectedImageSize;
 
-#ifndef WITH_CLI_ONLY_YES
+   /*** Widget list must even exist with dummy values in CLI only version
+	to prevent null ptr references in SetLabel() etc. */
+
+   method->widgetList = g_malloc0(sizeof(RS01Widgets));
+   
+#ifdef WITH_GUI_YES
    /*** Linkage to rs01-window.c */
 
    method->createCreateWindow = CreateRS01EWindow;
@@ -70,7 +77,7 @@ void register_rs01(void)
    method->createVerifyWindow = CreateRS01VerifyWindow;
    method->resetVerifyWindow  = ResetRS01VerifyWindow;
 #endif
-
+   
    /*** Register ourself */
 
    method->destroy = destroy;
@@ -79,26 +86,22 @@ void register_rs01(void)
 }
 
 static void destroy(Method *method)
-{
-#ifndef WITH_CLI_ONLY_YES
-   RS01Widgets *wl = (RS01Widgets*)method->widgetList;
-#endif
+{  RS01Widgets *wl = (RS01Widgets*)method->widgetList;
 
+   
    g_free(method->ckSumClosure);
 
-#ifndef WITH_CLI_ONLY_YES
    if(wl)
-   {  if(wl->fixCurve) FreeCurve(wl->fixCurve);
-
-      if(wl->cmpSpiral)
-	FreeSpiral(wl->cmpSpiral);
+   {
+#ifdef WITH_GUI_YES
+      GuiFreeCurve(wl->fixCurve);
+      GuiFreeSpiral(wl->cmpSpiral);
 
       if(wl->cmpLayout)
 	g_object_unref(wl->cmpLayout);
-
+#endif
       g_free(wl);
    }
-#endif
 }
 
 

@@ -23,6 +23,8 @@
 /* NetBSD support by Sergey Svishchev <svs@ropnet.ru>. 
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "scsi-layer.h"

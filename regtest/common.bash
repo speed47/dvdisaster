@@ -7,11 +7,21 @@ DATABASE=./database
 RNDSEQ="./fixed-random-sequence"
 
 NON_EXISTENT_DEVICE=/dev/sdz
+
+# directory for permanently storing test files
 ISODIR=/var/tmp/regtest
 if ! test -d $ISODIR; then
     echo "$ISODIR does not exist."
     echo "Please create it manually, or edit common.bash"
     exit 1
+fi
+
+# directory for temporary files; e.g. to keep them away from SSDs
+TMPDIR=/dev/shm
+if ! test -d $TMPDIR; then
+    echo "$TMPDIR does not exist."
+    echo "Please create it manually, or edit common.bash"
+    exit 0
 fi
 
 LOGDIR="/dev/shm"
@@ -201,6 +211,11 @@ function run_regtest()
 
    local interactive_diff=$(grep "INTERACTIVE_DIFF" $CONFIGFILE)
    interactive_diff=$(echo $interactive_diff | cut -d\  -f 2) 
+
+   if test -z "$testecc"; then
+       echo -e "broken test case $1\n--> run_regtest: 4 arguments required to ensure deterministic test behaviour."
+       exit 1
+   fi
    
    if test -n "${testecc}"; then
        testeccopt="-e ${testecc}"
@@ -209,7 +224,6 @@ function run_regtest()
    REFLOG=${DATABASE}/${CODEC_PREFIX}_${testsymbol}
 
    if test "$gui_mode" == "false"; then
-<<<<<<< HEAD
       rm -f $NEWLOG
 
       echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE 
@@ -238,14 +252,19 @@ function run_regtest()
 
          filter=cat
          echo "$options" | grep -qw SORTED && filter=sort
-         if [ "${CODEC_PREFIX}_${testsymbol}" = RS01_scan_no_device ] || \
-            [ "${CODEC_PREFIX}_${testsymbol}" = RS01_read_no_device ] || \
-            [ "${CODEC_PREFIX}_${testsymbol}" = RS01_adaptive_no_device ]; then
-            # for Windows
+
+         # for Windows
+         if [[ $testsymbol =~ _no_device$ ]]; then
             sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
          fi
 
-         if ! diff <(tail -n +3 $REFLOG | $filter) <(sed -re "s=[a-zA-Z:/]+/([a-z0-9_-]+\.(ecc|iso))=\1=g;s=$ISODIR/==g" $NEWLOG | $filter) >${DIFFLOG}; then
+         # for Windows, just remove any path we find:
+         sed -i -re "s=[A-Z]:/[A-Za-z0-9_/-]+/==g" $NEWLOG
+
+         # remove all paths to get reproducible output:
+         sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g" $NEWLOG
+
+         if ! diff <(tail -n +3 $REFLOG | $filter) <(cat $NEWLOG | $filter) >${DIFFLOG}; then
             if [ "$REGTEST_NO_UTF8" = 1 ]; then
                echo "BAD; diffs found (<expected; >created):"
             else
@@ -259,7 +278,7 @@ function run_regtest()
                   if test "$answer" == "a"; then
                      cp $REFLOG $LOGDIR
                      head -n 2 $LOGDIR/${CODEC_PREFIX}_${testsymbol} >$REFLOG 
-                     sed -re "s=[a-zA-Z:/]+/([a-z0-9_-]+\.(ecc|iso))=\1=g;s=$ISODIR/==g" $NEWLOG >>$REFLOG
+                     cat $NEWLOG >>$REFLOG
                      pass="skip"
                   elif test "$answer" == "v"; then
                      vimdiff $REFLOG $NEWLOG

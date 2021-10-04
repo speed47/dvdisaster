@@ -25,4 +25,4 @@ Reading CRC information from ecc data (RS03) ... done.
 * ... more unrecoverable sectors found ...
 * further messages are suppressed unless the -v option is given.
 
-All sectors successfully read, but incomplete or damaged checksums.
+All sectors are readable, but 3 contain defective content.

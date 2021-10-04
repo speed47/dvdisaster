@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 /***
@@ -31,7 +33,7 @@
  * Initialize the curve
  */
 
-Curve* CreateCurve(GtkWidget *widget, char *left_label, char *left_format, int n_values, int bottom_format)
+Curve* GuiCreateCurve(GtkWidget *widget, char *left_label, char *left_format, int n_values, int bottom_format)
 {  Curve *curve = g_malloc0(sizeof(Curve));
 
    curve->widget     = widget;
@@ -59,8 +61,9 @@ Curve* CreateCurve(GtkWidget *widget, char *left_label, char *left_format, int n
  * Get rid of it
  */
 
-void FreeCurve(Curve *curve)
-{
+void GuiFreeCurve(Curve *curve)
+{  if(!curve) return;
+  
    g_object_unref(curve->layout);
    g_free(curve->leftLabel);
    if(curve->leftLogLabel)
@@ -76,7 +79,7 @@ void FreeCurve(Curve *curve)
  * Reset the values
  */
 
-void ZeroCurve(Curve *curve)
+void GuiZeroCurve(Curve *curve)
 {  int i;
 
    if(curve)
@@ -95,19 +98,19 @@ void ZeroCurve(Curve *curve)
  * Calculate pixel coords from curve values
  */
 
-int CurveX(Curve *curve, gdouble x)
+int GuiCurveX(Curve *curve, gdouble x)
 {  gdouble width = (curve->rightX - curve->leftX - curve->margin);
 
    return 1 + curve->leftX + ((gdouble)x * width) / 1000.0;
 }
 
-int CurveLX(Curve *curve, gdouble x)
+int GuiCurveLX(Curve *curve, gdouble x)
 {  gdouble width = (curve->rightX - curve->leftX - curve->margin);
 
    return 1 + curve->leftX + (x * width) / (gdouble)curve->maxX;
 }
 
-int CurveY(Curve *curve, gdouble y)
+int GuiCurveY(Curve *curve, gdouble y)
 {  gdouble hfact;
 
    hfact =   (gdouble)(curve->bottomY - curve->topY) 
@@ -116,7 +119,7 @@ int CurveY(Curve *curve, gdouble y)
    return curve->bottomY - y * hfact;
 }
 
-int CurveLogY(Curve *curve, gdouble y) /* not really a log */
+int GuiCurveLogY(Curve *curve, gdouble y) /* not really a log */
 {  gdouble hfact;
 
    if(y<1) return curve->bottomLY;
@@ -131,21 +134,21 @@ int CurveLogY(Curve *curve, gdouble y) /* not really a log */
  *** Calculate the curve geometry
  ***/
 
-void UpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_padding)
+void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_padding)
 {  GtkAllocation *a = &curve->widget->allocation;
    int w,h; 
 
    /* Top and bottom margins */
 
-   SetText(curve->layout, curve->leftLabel, &w, &h);
+   GuiSetText(curve->layout, curve->leftLabel, &w, &h);
    curve->topY = h + 10;
 
-   SetText(curve->layout, "0123456789", &w, &h);
+   GuiSetText(curve->layout, "0123456789", &w, &h);
    curve->bottomY = a->height - h - 10;
 
    /* Left and right margins */
 
-   SetText(curve->layout, largest_left_label, &w, &h);
+   GuiSetText(curve->layout, largest_left_label, &w, &h);
    curve->leftX   = 5 + 6 + 3 + w;
    curve->rightX  = a->width - right_padding;
 
@@ -164,7 +167,7 @@ void UpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_paddi
  *** Redraw the coordinate axes
  ***/
 
-void RedrawAxes(Curve *curve)
+void GuiRedrawAxes(Curve *curve)
 {  GdkDrawable *d = curve->widget->window;
    int i,w,h,x,y; 
    int yg=0;
@@ -184,7 +187,7 @@ void RedrawAxes(Curve *curve)
    }
 
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-   SetText(curve->layout, curve->leftLabel, &w, &h);
+   GuiSetText(curve->layout, curve->leftLabel, &w, &h);
    x = curve->leftX - w/2;
    if(x < 5) x = 5;
    gdk_draw_layout(d, Closure->drawGC, 
@@ -198,7 +201,7 @@ void RedrawAxes(Curve *curve)
       char buf[16];
 
       gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
-      SetText(curve->layout, curve->leftLogLabel, &w, &h);
+      GuiSetText(curve->layout, curve->leftLogLabel, &w, &h);
 
       x = curve->leftX - w/2;
       if(x < 5) x = 5;
@@ -207,9 +210,9 @@ void RedrawAxes(Curve *curve)
 
       
       for(val=400; val>3; val/=2)
-      {  y = CurveLogY(curve, val);
+      {  y = GuiCurveLogY(curve, val);
 	 sprintf(buf,"%d",val);
-	 SetText(curve->layout, buf, &w, &h);
+	 GuiSetText(curve->layout, buf, &w, &h);
 	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
 	 gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
 	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
@@ -218,13 +221,13 @@ void RedrawAxes(Curve *curve)
 	 gdk_draw_line(d, Closure->drawGC, curve->leftX, y, curve->rightX, y);
 
 	 val /=2;
-	 y = CurveLogY(curve, val);
+	 y = GuiCurveLogY(curve, val);
 	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
 	 gdk_draw_line(d, Closure->drawGC, curve->leftX-3, y, curve->leftX, y);
 
 	 if(curve->bottomLY-curve->topLY > 8*h)
 	 {  sprintf(buf,"%d",val);
-	    SetText(curve->layout, buf, &w, &h);
+	    GuiSetText(curve->layout, buf, &w, &h);
 	    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
 	    gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
 	 }
@@ -240,9 +243,9 @@ void RedrawAxes(Curve *curve)
    {  char buf[4];
    
       g_snprintf(buf, 4, curve->leftFormat, i);
-      SetText(curve->layout, buf, &w, &h);
+      GuiSetText(curve->layout, buf, &w, &h);
 
-      y = yg = CurveY(curve, i);
+      y = yg = GuiCurveY(curve, i);
       gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
       gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
       gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
@@ -252,7 +255,7 @@ void RedrawAxes(Curve *curve)
       gdk_draw_line(d, Closure->drawGC, curve->leftX, y, curve->rightX, y);
 
       gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-      y = CurveY(curve, i+step/2);
+      y = GuiCurveY(curve, i+step/2);
       if(y >= curve->topY)
         gdk_draw_line(d, Closure->drawGC, curve->leftX-3, y, curve->leftX, y);
    }
@@ -304,9 +307,9 @@ void RedrawAxes(Curve *curve)
 	   else g_snprintf(buf, 10, "%3.1fG",(gdouble)i/1024.0);
 	   break;
       }
-      SetText(curve->layout, buf, &w, &h);
+      GuiSetText(curve->layout, buf, &w, &h);
 
-      x = CurveLX(curve,i)-1;
+      x = GuiCurveLX(curve,i)-1;
       gdk_draw_line(d, Closure->drawGC, x, bottom_y+6, x, bottom_y);
       gdk_draw_layout(d, Closure->drawGC, x-w/2, bottom_y+8, curve->layout);
 
@@ -319,7 +322,7 @@ void RedrawAxes(Curve *curve)
       }
 
       gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-      x = CurveLX(curve,i+step/2)-1;
+      x = GuiCurveLX(curve,i+step/2)-1;
       if(x < curve->rightX)
         gdk_draw_line(d, Closure->drawGC, x, bottom_y+3, x, bottom_y);
    }
@@ -329,21 +332,21 @@ void RedrawAxes(Curve *curve)
  * Redraw the curve
  */
 
-void RedrawCurve(Curve *curve, int last)
+void GuiRedrawCurve(Curve *curve, int last)
 {  int i,x0,x1,fy0,fy1;
 
-   x0  = CurveX(curve, 0);
-   fy0 = CurveY(curve, curve->fvalue[0]);
+   x0  = GuiCurveX(curve, 0);
+   fy0 = GuiCurveY(curve, curve->fvalue[0]);
 
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
 
    /* Draw the curve */
 
    for(i=1; i<=last; i++)
-   {  x1  = CurveX(curve, i);
+   {  x1  = GuiCurveX(curve, i);
 
       if(curve->enable & DRAW_ICURVE)
-      {  int iy  = CurveY(curve, curve->ivalue[i]);
+      {  int iy  = GuiCurveY(curve, curve->ivalue[i]);
 
 	 if(curve->ivalue[i] > 0)
 	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->barColor);
@@ -354,7 +357,7 @@ void RedrawCurve(Curve *curve, int last)
       }
 
       if(curve->enable & DRAW_LCURVE)
-      {  int iy  = CurveLogY(curve, curve->lvalue[i]);
+      {  int iy  = GuiCurveLogY(curve, curve->lvalue[i]);
 
 	 if(curve->lvalue[i] > 0)
 	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
@@ -365,7 +368,7 @@ void RedrawCurve(Curve *curve, int last)
       }
 
       if(curve->enable & DRAW_FCURVE && curve->fvalue[i] >= 0)
-      {  fy1 = CurveY(curve, curve->fvalue[i]);
+      {  fy1 = GuiCurveY(curve, curve->fvalue[i]);
 
 	 if(x0 < x1)
 	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
@@ -377,3 +380,4 @@ void RedrawCurve(Curve *curve, int last)
       x0 = x1;
    }
 }
+#endif /* WITH_GUI_YES */

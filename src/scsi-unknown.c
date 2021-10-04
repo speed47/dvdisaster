@@ -20,12 +20,14 @@
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*** src type: no GUI code ***/
+
 #include "dvdisaster.h"
 
 #include "scsi-layer.h"
 #include "udf.h"
 
-#if defined(SYS_UNKNOWN) || defined(SYS_HURD)
+#ifdef SYS_UNKNOWN
 
 /* Dummy routines so that we can compile on unknown architectures
    for which we don't have SCSI support yet. */
@@ -51,4 +53,4 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
    return -1;
 }
 
-#endif /* defined(SYS_UNKNOWN) || defined(SYS_HURD) */
+#endif /* SYS_UNKNOWN */

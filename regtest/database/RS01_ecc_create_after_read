@@ -309,3 +309,4 @@ CrcBufValid: buffer VALID
 Encoding with Method RS01: 32 roots, 14.3% redundancy.
 Error correction file "rs01-tmp.ecc" created.
 Make sure to keep this file on a reliable medium.
+FreeCrcBuf - buffer cleared

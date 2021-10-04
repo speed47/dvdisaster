@@ -19,8 +19,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
  */
-// DVDISASTER_GUI_FILE
 
+/*** src type: only GUI code ***/
+
+#ifdef WITH_GUI_YES
 #include "dvdisaster.h"
 
 #include "inlined-icons.h"
@@ -53,7 +55,7 @@ static GdkPixbuf* create_icon(GtkIconFactory *ifact, char *name, const guint8 *i
     return pb;
 }
 
-void CreateIconFactory()
+void GuiCreateIconFactory()
 {  GtkIconFactory *ifact;
 
    /*** Create and register our icon factory */ 
@@ -86,3 +88,4 @@ void CreateIconFactory()
    create_icon(ifact, "dvdisaster-gtk-quit", dvdisaster_gtk_quit);
    create_icon(ifact, "dvdisaster-gtk-stop", dvdisaster_gtk_stop);
 }
+#endif /* WITH_GUI_YES */

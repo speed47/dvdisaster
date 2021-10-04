@@ -34,6 +34,11 @@ Phil Karn
    Originalversion von Phils Bibliothek herunterladen, wenn Sie
    Reed-Solomon-Kode in Ihren eigenen Programmen verwenden möchten.
 
+Stéphane Lesimple <stephane@lesimple.fr>
+   hat das Projekt in einem eigenen GIT-Repository am Leben erhalten
+   sowie Patches und Erweiterungen beigesteuert. Er stellt weiterhin
+   eine Windows-Version bereit.
+
 Daniel Nylander (info@danielnylander.se)
    erstellt und pflegt die schwedische Übersetzung.
 
