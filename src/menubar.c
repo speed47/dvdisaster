@@ -118,7 +118,7 @@ static void menu_cb(GtkWidget *widget, gpointer data)
 	break;
 
       case MENU_HELP_MANUAL:
-	GuiShowURL(NULL);
+	GuiShowURL("manual.pdf");
 	break;
 
       case MENU_HELP_ABOUT:
