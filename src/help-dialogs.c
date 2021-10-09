@@ -480,6 +480,18 @@ char *find_file(char *file, size_t *size, char *lang)
       g_free(path);
    }
 
+   {  if(lang)
+           path = g_strdup_printf("%s.%s", file, lang_suffix);
+      else path = g_strdup_printf("%s", file);
+
+      if(LargeStat(path, &stat_size))
+      {	 *size = stat_size;
+	 return path;
+      }
+
+      g_free(path);
+   }
+
    return NULL;
 }
 
