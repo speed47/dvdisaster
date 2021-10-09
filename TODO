@@ -8,7 +8,7 @@ Versions 0.79.x: development releases
 work in progress (this release):
 
 - split GUI code from core source to allow for command-line only build (done)
-- merge patches from Stéphane Lesimple (done) and Debian (done)
+- merge patches from StÃ©phane Lesimple (done) and Debian (done)
 
 upcoming (next stable release):
 
