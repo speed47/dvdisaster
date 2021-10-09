@@ -739,7 +739,10 @@ void GuiAboutDialog()
    GuiAboutText(vbox, "%s",  text);
    g_free(text);
 
-   GuiAboutText(vbox, _("Copyright 2004-2017 Carsten Gnoerlich.\nCopyright 2019-2021 The dvdisaster development team."));
+   GuiAboutText(vbox, _(
+		"Copyright 2004-2017 Carsten Gnoerlich.\n"
+		"Copyright 2019-2021 The dvdisaster development team."
+   ));
 
    sep = gtk_hseparator_new();
    gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 10);
@@ -760,6 +763,13 @@ void GuiAboutDialog()
    text = g_strdup_printf("WWW: [%s]", HOMEPAGE);
    GuiAboutTextWithLink(vbox, text, HOMEPAGE);
    g_free(text);
+
+   GuiAboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
+			     "for Debian to support DVD-ROMs (with and without encryption),\n"
+			     "and subsequently patched again to support a CLI-only build, among other things.\n\n"
+			     "Please do not bother the original authors of dvdisaster\n"
+			     "but submit bugreports against [GitHub] instead.\n"),
+			     "https://github.com/speed47/dvdisaster");
    
 #ifdef SYS_NETBSD
    GuiAboutText(vbox, _("\nNetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;")); 
