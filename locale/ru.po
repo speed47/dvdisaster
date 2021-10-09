@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.70.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-09 16:22+0200\n"
+"POT-Creation-Date: 2021-10-09 17:07+0200\n"
 "PO-Revision-Date: 2009-07-23 08:11+0300\n"
 "Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -872,7 +872,7 @@ msgstr ""
 "<big>GNU General Public License</big>\n"
 "<i>Лицензионные условия dvdisaster'а.</i>"
 
-#: src/help-dialogs.c:503
+#: src/help-dialogs.c:515
 #, c-format
 msgid ""
 "File\n"
@@ -883,7 +883,7 @@ msgstr ""
 "%s\n"
 "отсутствует"
 
-#: src/help-dialogs.c:513
+#: src/help-dialogs.c:525
 #, c-format
 msgid ""
 "File\n"
@@ -891,23 +891,23 @@ msgid ""
 "not accessible"
 msgstr ""
 
-#: src/help-dialogs.c:525
+#: src/help-dialogs.c:537
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
 msgstr ""
 
-#: src/help-dialogs.c:724
+#: src/help-dialogs.c:736
 msgid "windowtitle|About dvdisaster"
 msgstr "О программе dvdisaster"
 
-#: src/help-dialogs.c:743 src/misc.c:219
+#: src/help-dialogs.c:755 src/misc.c:219
 msgid ""
 "Copyright 2004-2017 Carsten Gnoerlich.\n"
 "Copyright 2019-2021 The dvdisaster development team."
 msgstr ""
 
-#: src/help-dialogs.c:751
+#: src/help-dialogs.c:763
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -919,7 +919,7 @@ msgstr ""
 "Он создает данные для исправления ошибок, которые используются\n"
 "для восстановления нечитаемых секторов, если диск впоследствии повреждается.\n"
 
-#: src/help-dialogs.c:756
+#: src/help-dialogs.c:768
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -931,13 +931,13 @@ msgstr ""
 "\n"
 "Русский перевод Игоря Горбунова &lt;igor.gorbounov@gmail.com&gt;\n"
 
-#: src/help-dialogs.c:761
+#: src/help-dialogs.c:773
 msgid ""
 "\n"
 "e-mail: support@dvdisaster.org"
 msgstr ""
 
-#: src/help-dialogs.c:767
+#: src/help-dialogs.c:779
 msgid ""
 "\n"
 "This version is <b>not the original</b>. It has been patched\n"
@@ -948,7 +948,7 @@ msgid ""
 "but submit bugreports against [GitHub] instead.\n"
 msgstr ""
 
-#: src/help-dialogs.c:775
+#: src/help-dialogs.c:787
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
