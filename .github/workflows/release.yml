@@ -101,7 +101,7 @@ jobs:
         asset_content_type: application/zip
 
   linux64-appimage:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites
