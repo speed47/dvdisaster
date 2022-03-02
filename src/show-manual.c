@@ -109,9 +109,19 @@ void GuiShowURL(char *target)
 
    /* fork xdg-open */
 
-   result = pipe2(err_pipe, O_CLOEXEC);
+   result = pipe(err_pipe);
    if(result == -1)
    {  GuiCreateMessage(_("Could not create pipe before fork"), GTK_MESSAGE_ERROR);
+      return;
+   }
+   result = fcntl(err_pipe[0], F_SETFL, O_CLOEXEC);
+   if(result == -1)
+   {  GuiCreateMessage(_("Could not set pipe flags before fork"), GTK_MESSAGE_ERROR);
+      return;
+   }
+   result = fcntl(err_pipe[1], F_SETFL, O_CLOEXEC);
+   if(result == -1)
+   {  GuiCreateMessage(_("Could not set pipe flags before fork"), GTK_MESSAGE_ERROR);
       return;
    }
    pid = fork();

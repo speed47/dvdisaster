@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.72.rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-09 17:07+0200\n"
+"POT-Creation-Date: 2021-12-09 20:45+0100\n"
 "PO-Revision-Date: 2010-06-09 11:13+0200\n"
 "Last-Translator: cg <cg@dvdisaster.org>\n"
 "Language-Team: Portuguese\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/closure.c:296
+#: src/closure.c:314
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -30,15 +30,15 @@ msgstr ""
 "# que será sobreescrevido toda vez que o dvdisaster rodar.\n"
 "\n"
 
-#: src/closure.c:564
+#: src/closure.c:596
 msgid "medium.iso"
 msgstr "midia.iso"
 
-#: src/closure.c:565
+#: src/closure.c:597
 msgid "medium.ecc"
 msgstr "midia.ecc"
 
-#: src/closure.c:566
+#: src/closure.c:598
 msgid "sector-"
 msgstr "setor-"
 
@@ -871,7 +871,7 @@ msgstr ""
 "<big>Licença Pública Geral GNU</big>\n"
 "<i>Os termos de licença do dvdisaster.</i>"
 
-#: src/help-dialogs.c:515
+#: src/help-dialogs.c:503
 #, c-format
 msgid ""
 "File\n"
@@ -882,7 +882,7 @@ msgstr ""
 "%s\n"
 "não presente"
 
-#: src/help-dialogs.c:525
+#: src/help-dialogs.c:513
 #, c-format
 msgid ""
 "File\n"
@@ -890,23 +890,23 @@ msgid ""
 "not accessible"
 msgstr ""
 
-#: src/help-dialogs.c:537
+#: src/help-dialogs.c:525
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
 msgstr ""
 
-#: src/help-dialogs.c:736
+#: src/help-dialogs.c:724
 msgid "windowtitle|About dvdisaster"
 msgstr "windowtitle|Sobre o dvdisaster"
 
-#: src/help-dialogs.c:755 src/misc.c:219
+#: src/help-dialogs.c:743 src/misc.c:219
 msgid ""
 "Copyright 2004-2017 Carsten Gnoerlich.\n"
 "Copyright 2019-2021 The dvdisaster development team."
 msgstr ""
 
-#: src/help-dialogs.c:763
+#: src/help-dialogs.c:751
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -918,7 +918,7 @@ msgstr ""
 "Ele cria dados de correção de erros que são usados para recuperar\n"
 "setores ilegíveis se o disco ficar danificado posteriormente.\n"
 
-#: src/help-dialogs.c:768
+#: src/help-dialogs.c:756
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -930,13 +930,13 @@ msgstr ""
 "\n"
 "Tradução para português por Pablo Almeida (pabloalmeidaff9@gmail.com)\n"
 
-#: src/help-dialogs.c:773
+#: src/help-dialogs.c:761
 msgid ""
 "\n"
 "e-mail: support@dvdisaster.org"
 msgstr ""
 
-#: src/help-dialogs.c:779
+#: src/help-dialogs.c:767
 msgid ""
 "\n"
 "This version is <b>not the original</b>. It has been patched\n"
@@ -947,7 +947,7 @@ msgid ""
 "but submit bugreports against [GitHub] instead.\n"
 msgstr ""
 
-#: src/help-dialogs.c:787
+#: src/help-dialogs.c:775
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"

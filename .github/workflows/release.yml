@@ -5,6 +5,57 @@ on:
     types: [published]
 
 jobs:
+  mac:
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        ui: [cli, gui]
+        include:
+          - ui: cli
+            clionly: --with-gui=no
+    steps:
+    - uses: actions/checkout@v2
+    - name: install prerequisites
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: brew install ghostscript glib gdk-pixbuf
+    - name: install prerequisites (GUI)
+      if: matrix.ui == 'gui'
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: brew install gtk+
+    - name: configure
+      run: |
+          set +x
+          ./configure ${{ matrix.clionly }} --with-werror
+    - name: make
+      run: make -j$(sysctl -n hw.ncpu || 2)
+    - name: check executability
+      run: ./dvdisaster --version
+    - name: check executable (GUI)
+      if: matrix.ui == 'gui'
+      run: |
+          ./dvdisaster --version
+          if ./dvdisaster --version | grep NOGUI; then exit 1; fi
+    - name: check executable (CLI)
+      if: matrix.ui == 'cli'
+      run: |
+          ./dvdisaster --version
+          ./dvdisaster --version | grep NOGUI
+    - name: build dist
+      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+      id: dist
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./${{ steps.dist.outputs.archive }}
+        asset_name: ${{ steps.dist.outputs.archive }}
+        asset_content_type: application/zip
+
   win:
     runs-on: windows-latest
     strategy:
@@ -72,7 +123,7 @@ jobs:
         asset_content_type: application/zip
 
   linux64-cli:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: install prerequisites

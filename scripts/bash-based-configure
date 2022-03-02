@@ -127,6 +127,15 @@ case "$cfg_uname" in
         } 
 	;;
 
+  Darwin*) cfg_system=darwin
+        CFG_SYS_OPTIONS="-DSYS_DARWIN"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"Darwin\\\""
+        CFG_EXE_SUFFIX=""
+	function add_linker_flags()
+        {  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+        } 
+	;;
+
   FreeBSD*) cfg_system=freebsd-std
         CFG_SYS_OPTIONS="-DSYS_FREEBSD"
 	CFG_SYS_NAME="-DSYS_NAME=\\\"FreeBSD\\\""
@@ -345,6 +354,42 @@ function REQUIRE_GMAKE()
 
    echo "no"
    echo "This package requires GNU make (gmake)."
+   exit 1;
+}
+
+function REQUIRE_CLANG()
+{
+   if test -n "$cfg_help_mode"; then
+      return 0
+   fi
+
+   echo -n "Checking for clang: "
+
+   # Try $CC first
+
+   if test -n "$CC" && $CC -v >/dev/null 2>&1; then
+     if ($CC -v 2>&1 | grep "clang") > /dev/null 2>&1 ; then
+       CC=`type -P $CC`
+       echo "yes ($CC)"
+       echo "CC = $CC" >>Makefile.config
+       return 0
+     fi	   
+   fi
+
+   # Try clang binary
+
+   CC=clang
+   if test -n "$CC" && $CC -v >/dev/null 2>&1; then
+     if ($CC -v 2>&1 | grep "clang") > /dev/null 2>&1 ; then
+       CC=`type -P $CC`
+       echo "yes ($CC)"
+       echo "CC = $CC" >>Makefile.config
+       return 0
+     fi	   
+   fi
+
+   echo "no"
+   echo "This package requires the Clang C compiler (clang)."
    exit 1;
 }
 
