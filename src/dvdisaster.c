@@ -22,6 +22,7 @@
 
 /*** src type: some GUI code ***/
 
+#define SYS_DARWIN
 #include "dvdisaster.h"
 
 

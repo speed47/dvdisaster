@@ -100,6 +100,7 @@ void GuiShowURL(char *target)
         return;
      }
    }
+   return; // @@@ FIXME
 
 #ifdef SYS_MINGW
    /* Okay, Billy wins big time here ;-) */

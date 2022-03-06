@@ -164,6 +164,16 @@ case "$cfg_uname" in
 	}
 	;;
 
+  Darwin*) cfg_system=darwin
+        CFG_SYS_OPTIONS="-DSYS_DARWIN"
+	CFG_SYS_NAME="-DSYS_NAME=\\\"macOS\\\""
+        CFG_EXE_SUFFIX=""
+	CFG_SYS_LDFLAGS="-framework IOKit -framework CoreFoundation"
+	function add_linker_flags()
+	{  lflags_return="-L$1 -Wl,-rpath,$1 $2"
+	}
+	;;
+
   *) cfg_system=unknown-system
         CFG_SYS_OPTIONS="-DSYS_UNKNOWN"
 	CFG_SYS_NAME="-DSYS_NAME=\\\"Unknown\\\""
