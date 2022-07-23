@@ -264,6 +264,9 @@ function run_regtest()
          # remove all paths to get reproducible output:
          sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g" $NEWLOG
 
+         # remote tmp path of github actions
+         sed -i -re "s=[-A-Za-z0-9_~]+/AppData/Local/Temp/==g" $NEWLOG
+
          if ! diff <(tail -n +3 $REFLOG | $filter) <(cat $NEWLOG | $filter) >${DIFFLOG}; then
             if [ "$REGTEST_NO_UTF8" = 1 ]; then
                echo "BAD; diffs found (<expected; >created):"
