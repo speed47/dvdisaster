@@ -6,7 +6,7 @@ on:
 
 jobs:
   win:
-    runs-on: windows-2016
+    runs-on: windows-latest
     strategy:
       matrix:
         arch: [x86_64, i686]
