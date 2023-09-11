@@ -105,6 +105,10 @@ void GuiShowURL(char *target)
    /* Okay, Billy wins big time here ;-) */
 
    ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWNORMAL);
+#elif defined(SYS_DARWIN) 
+    char command[256];
+    snprintf(command, sizeof(command), "open \"%s\"", path);
+    system(command);
 #else
 
    /* fork xdg-open */
