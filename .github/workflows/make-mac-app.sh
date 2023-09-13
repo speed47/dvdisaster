@@ -42,8 +42,4 @@ mv dvdisaster.app dist
 
 create-dmg "$archive" dist
 
-mv "$archive" dist/
-
-rm -r dist/dvdisaster.app
-
 echo "dist done ($archive)"

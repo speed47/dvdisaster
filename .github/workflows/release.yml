@@ -14,47 +14,47 @@ jobs:
           - ui: cli
             clionly: --with-gui=no
     steps:
-    - uses: actions/checkout@v2
-    - name: install prerequisites
-      env:
-        HOMEBREW_NO_INSTALL_CLEANUP: 1
-      run: brew install ghostscript glib gdk-pixbuf
-    - name: install prerequisites (GUI)
-      if: matrix.ui == 'gui'
-      env:
-        HOMEBREW_NO_INSTALL_CLEANUP: 1
-      run: brew install gtk+
-    - name: configure
-      run: |
+      - uses: actions/checkout@v2
+      - name: install prerequisites
+        env:
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+        run: brew install ghostscript glib gdk-pixbuf
+      - name: install prerequisites (GUI)
+        if: matrix.ui == 'gui'
+        env:
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+        run: brew install gtk+ dylibbundler create-dmg
+      - name: configure
+        run: |
           set +x
           ./configure ${{ matrix.clionly }} --with-werror
-    - name: make
-      run: make -j$(sysctl -n hw.ncpu || 2)
-    - name: check executability
-      run: ./dvdisaster --version
-    - name: check executable (GUI)
-      if: matrix.ui == 'gui'
-      run: |
+      - name: make
+        run: make -j$(sysctl -n hw.ncpu || 2)
+      - name: check executability
+        run: ./dvdisaster --version
+      - name: check executable (GUI)
+        if: matrix.ui == 'gui'
+        run: |
           ./dvdisaster --version
           if ./dvdisaster --version | grep NOGUI; then exit 1; fi
-    - name: check executable (CLI)
-      if: matrix.ui == 'cli'
-      run: |
+      - name: check executable (CLI)
+        if: matrix.ui == 'cli'
+        run: |
           ./dvdisaster --version
           ./dvdisaster --version | grep NOGUI
-    - name: build dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
+      - name: build dist
+        run: ./.github/workflows/make-mac-app.sh ${{ github.ref }}
+        id: dist
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ steps.dist.outputs.archive }}
+          asset_name: ${{ steps.dist.outputs.archive }}
+          asset_content_type: application/zip
 
   win:
     runs-on: windows-latest
@@ -75,130 +75,129 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: ${{ matrix.msystem }}
-        update: false
-        install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
-    - name: install GUI prereqs
-      if: matrix.ui == 'gui'
-      run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk2
-    - name: git config
-      run: git config --global core.autocrlf input
-      shell: bash
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure ${{ matrix.clionly }}
-    - name: make
-      run: nproc && make -j$(nproc)
-    - name: check executable
-      run: |
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: false
+          install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
+      - name: install GUI prereqs
+        if: matrix.ui == 'gui'
+        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk2
+      - name: git config
+        run: git config --global core.autocrlf input
+        shell: bash
+      - uses: actions/checkout@v2
+      - name: configure
+        run: ./configure ${{ matrix.clionly }}
+      - name: make
+        run: nproc && make -j$(nproc)
+      - name: check executable
+        run: |
           ./dvdisaster.exe --version
           file dvdisaster.exe
           if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
           file dvdisaster.exe | grep -q '${{ matrix.grep }}, for MS Windows'
-    - name: check executable (GUI)
-      if: matrix.ui == 'gui'
-      run: if ./dvdisaster.exe --version | grep NOGUI; then exit 1; fi
-    - name: check executable (CLI)
-      if: matrix.ui == 'cli'
-      run: ./dvdisaster.exe --version | grep NOGUI
-    - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: check executability of dist from cmd.exe
-      shell: cmd
-      run: |
+      - name: check executable (GUI)
+        if: matrix.ui == 'gui'
+        run: if ./dvdisaster.exe --version | grep NOGUI; then exit 1; fi
+      - name: check executable (CLI)
+        if: matrix.ui == 'cli'
+        run: ./dvdisaster.exe --version | grep NOGUI
+      - name: prepare dist
+        run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+        id: dist
+      - name: check executability of dist from cmd.exe
+        shell: cmd
+        run: |
           cd dist
           dvdisaster.exe --version
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ steps.dist.outputs.archive }}
+          asset_name: ${{ steps.dist.outputs.archive }}
+          asset_content_type: application/zip
 
   linux64-cli:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
-    - name: configure
-      run: ./configure --with-gui=no
-    - name: make
-      run: nproc && make -j$(nproc) && make static && mv -f dvdisaster-static dvdisaster
-    - name: check executable
-      run: |
-        ./dvdisaster --version && ./dvdisaster --version | grep -q dirty || true
-        file dvdisaster && file dvdisaster | grep -q 'ELF 64' && file dvdisaster | grep -q 'statically linked'
+      - uses: actions/checkout@v2
+      - name: install prerequisites
+        run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
+      - name: configure
+        run: ./configure --with-gui=no
+      - name: make
+        run: nproc && make -j$(nproc) && make static && mv -f dvdisaster-static dvdisaster
+      - name: check executable
+        run: |
+          ./dvdisaster --version && ./dvdisaster --version | grep -q dirty || true
+          file dvdisaster && file dvdisaster | grep -q 'ELF 64' && file dvdisaster | grep -q 'statically linked'
 
-    - name: build dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-      id: dist
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
+      - name: build dist
+        run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+        id: dist
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ steps.dist.outputs.archive }}
+          asset_name: ${{ steps.dist.outputs.archive }}
+          asset_content_type: application/zip
 
   linux64-appimage:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - name: install prerequisites
-      run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard
-    - name: configure
-      run: ./configure --prefix=/usr
-    - name: make
-      run: nproc && make -j$(nproc) && make
-    - name: make install
-      run: touch documentation/user-manual/manual.pdf && mkdir /tmp/dist && make install DESTDIR=/tmp/dist
-    - name: copy things to dist
-      run: |
-        install -d /tmp/dist/usr/lib/gtk-2.0
-        cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /tmp/dist/usr/lib/gtk-2.0
-    - name: build appimage
-      run: |
-        wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-        chmod 755 linuxdeploy-x86_64.AppImage
-        export VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$')
-        ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /tmp/dist/ --output appimage
-    - name: apply glib workaround
-      run: |
-        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-        chmod 755 appimagetool-x86_64.AppImage
-        exe=$(ls -1 dvdisaster*.AppImage)
-        chmod 755 $exe
-        ./$exe --appimage-extract
-        rm -vf $exe
-        ./appimagetool-x86_64.AppImage -v squashfs-root
-        mv -v dvdisaster*AppImage $exe
-        chmod 755 $exe
-    - name: test appimage
-      id: dist
-      run: |
-        chmod 755 dvdisaster*.AppImage && ./dvdisaster*.AppImage --version
-        archive=$(ls -1 dvdisaster*.AppImage)
-        echo "::set-output name=archive::$archive"
-        echo "appimage is <$archive>"
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ steps.dist.outputs.archive }}
-        asset_name: ${{ steps.dist.outputs.archive }}
-        asset_content_type: application/zip
-
+      - uses: actions/checkout@v2
+      - name: install prerequisites
+        run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard
+      - name: configure
+        run: ./configure --prefix=/usr
+      - name: make
+        run: nproc && make -j$(nproc) && make
+      - name: make install
+        run: touch documentation/user-manual/manual.pdf && mkdir /tmp/dist && make install DESTDIR=/tmp/dist
+      - name: copy things to dist
+        run: |
+          install -d /tmp/dist/usr/lib/gtk-2.0
+          cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /tmp/dist/usr/lib/gtk-2.0
+      - name: build appimage
+        run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod 755 linuxdeploy-x86_64.AppImage
+          export VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$')
+          ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /tmp/dist/ --output appimage
+      - name: apply glib workaround
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod 755 appimagetool-x86_64.AppImage
+          exe=$(ls -1 dvdisaster*.AppImage)
+          chmod 755 $exe
+          ./$exe --appimage-extract
+          rm -vf $exe
+          ./appimagetool-x86_64.AppImage -v squashfs-root
+          mv -v dvdisaster*AppImage $exe
+          chmod 755 $exe
+      - name: test appimage
+        id: dist
+        run: |
+          chmod 755 dvdisaster*.AppImage && ./dvdisaster*.AppImage --version
+          archive=$(ls -1 dvdisaster*.AppImage)
+          echo "::set-output name=archive::$archive"
+          echo "appimage is <$archive>"
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ steps.dist.outputs.archive }}
+          asset_name: ${{ steps.dist.outputs.archive }}
+          asset_content_type: application/zip
