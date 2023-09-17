@@ -18,12 +18,12 @@ jobs:
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install ghostscript glib gdk-pixbuf
+        run: brew install ghostscript glib gdk-pixbuf dylibbundler create-dmg
       - name: install prerequisites (GUI)
         if: matrix.ui == 'gui'
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install gtk+ dylibbundler create-dmg
+        run: brew install gtk+
       - name: configure
         run: |
           set +x
@@ -123,7 +123,7 @@ jobs:
           asset_content_type: application/zip
 
   linux64-cli:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: install prerequisites
@@ -157,6 +157,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: docker
         run: |
+          sudo apt-get update && sudo apt-get install fuse
           mkdir /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
       - name: install prerequisites
