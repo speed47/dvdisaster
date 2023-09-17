@@ -6,7 +6,7 @@ on:
 
 jobs:
   mac:
-    runs-on: macos-10.15
+    runs-on: macos-11
     strategy:
       matrix:
         ui: [cli, gui]
@@ -152,21 +152,23 @@ jobs:
           asset_content_type: application/zip
 
   linux64-appimage:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install prerequisites
-        run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard
-      - name: configure
-        run: ./configure --prefix=/usr
-      - name: make
-        run: nproc && make -j$(nproc) && make
-      - name: make install
-        run: touch documentation/user-manual/manual.pdf && mkdir /tmp/dist && make install DESTDIR=/tmp/dist
-      - name: copy things to dist
+      - name: docker
         run: |
-          install -d /tmp/dist/usr/lib/gtk-2.0
-          cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /tmp/dist/usr/lib/gtk-2.0
+          mkdir /tmp/dist
+          docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
+      - name: install prerequisites
+        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard'
+      - name: configure
+        run: docker exec uu sh -c 'cd /code && ./configure --prefix=/usr'
+      - name: make
+        run: docker exec uu sh -c 'make -C /code -j$(nproc) && make -C /code'
+      - name: make install
+        run: docker exec uu sh -c 'cd /code && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
+      - name: copy things to dist
+        run: docker exec uu sh -c 'install -d /dist/usr/lib/gtk-2.0 && cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /dist/usr/lib/gtk-2.0'
       - name: build appimage
         run: |
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
