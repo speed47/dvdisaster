@@ -19,9 +19,7 @@ fi
 # directory for temporary files; e.g. to keep them away from SSDs
 TMPDIR=/dev/shm
 if ! test -d $TMPDIR; then
-    echo "$TMPDIR does not exist."
-    echo "Please create it manually, or edit common.bash"
-    exit 0
+    TMPDIR=/var/tmp
 fi
 
 LOGDIR="/dev/shm"
@@ -33,7 +31,14 @@ DIFFLOG="$LOGDIR/difflog.txt"
 NEWLOG="$LOGDIR/newlog.txt"
 TMPLOG="$LOGDIR/tmplog.txt"
 
-MD5SUM=md5sum
+UNAME="$(uname -s)"
+
+if [ "$UNAME" = Darwin ]; then
+    MD5SUM="md5 -r"
+else
+    MD5SUM=md5sum
+fi
+
 if ! $MD5SUM $RNDSEQ >/dev/null 2>&1; then
     MD5SUM=../simple-md5sum
 fi
@@ -115,7 +120,7 @@ function file_exists()
 
 function try()
 {  local doit=$(grep "${CODEC_PREFIX}_$2 " $CONFIGFILE)
-   if echo "$OS" | grep -q Windows && test -e "$CONFIGFILE_WIN" && grep -q "${CODEC_PREFIX}_$2 " "$CONFIGFILE_WIN"; then
+   if [[ $OS =~ Windows ]] && test -e "$CONFIGFILE_WIN" && grep -q "${CODEC_PREFIX}_$2 " "$CONFIGFILE_WIN"; then
        doit=$(grep "${CODEC_PREFIX}_$2 " "$CONFIGFILE_WIN")
    fi
 
@@ -221,7 +226,12 @@ function run_regtest()
        testeccopt="-e ${testecc}"
    fi
 
-   REFLOG=${DATABASE}/${CODEC_PREFIX}_${testsymbol}
+   REFLOG="${DATABASE}/${CODEC_PREFIX}_${testsymbol}"
+   if [ "$UNAME" = "Darwin" ] && [ -f "$REFLOG.darwin" ]; then
+      REFLOG="$REFLOG.darwin"
+   elif [[ $OS =~ Windows ]] && [ -f "$REFLOG.win" ]; then
+      REFLOG="$REFLOG.win"
+   fi
 
    if test "$gui_mode" == "false"; then
       rm -f $NEWLOG
@@ -253,16 +263,11 @@ function run_regtest()
          filter=cat
          echo "$options" | grep -qw SORTED && filter=sort
 
-         # for Windows
-         if [[ $testsymbol =~ _no_device$ ]]; then
-            sed -i -re "s=device $NON_EXISTENT_DEVICE\.=/dev/sdz: No such file or directory=" $NEWLOG
-         fi
-
          # for Windows, just remove any path we find:
          sed -i -re "s=[A-Z]:/[A-Za-z0-9_/-]+/==g" $NEWLOG
 
          # remove all paths to get reproducible output:
-         sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g" $NEWLOG
+         sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g;s=regtest/==g" $NEWLOG
 
          # remote tmp path of github actions
          sed -i -re "s=[-A-Za-z0-9_~]+/AppData/Local/Temp/==g" $NEWLOG

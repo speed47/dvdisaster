@@ -37,6 +37,20 @@
 #include <camlib.h>
 #endif
 
+#ifdef SYS_DARWIN
+#define REAL_VERSION VERSION
+#undef VERSION
+#include <CoreFoundation/CoreFoundation.h>
+#include <IOKit/IOKitLib.h>
+#include <IOKit/IOCFPlugIn.h>
+#include <IOKit/scsi/SCSITaskLib.h>
+#include <IOKit/storage/IODVDTypes.h>
+#include <mach/mach.h>
+#include <string.h>
+#include <stdlib.h>
+#define VERSION REAL_VERSION
+#endif
+
 /***
  *** Global settings
  ***/
@@ -113,6 +127,12 @@ typedef struct _DeviceHandle
    union ccb *ccb;
 #elif defined(SYS_MINGW)
    HANDLE fd;                 /* Windows SPTI file handle for the device */
+#elif defined(SYS_DARWIN)
+   IOCFPlugInInterface **plugInInterface;
+   MMCDeviceInterface **mmcDeviceInterface;
+   SCSITaskDeviceInterface **scsiTaskDeviceInterface;
+   SCSITaskInterface **taskInterface;
+   IOVirtualRange *range;
 #endif
 
   /*

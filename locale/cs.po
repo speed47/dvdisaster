@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-09 17:07+0200\n"
+"POT-Creation-Date: 2023-09-13 13:48+0200\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-Basepath: d:\\Preklady\\dvdisaster\\cvs\n"
 "X-Poedit-SearchPath-0: dvdisaster\n"
 
-#: src/closure.c:296
+#: src/closure.c:343
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -35,15 +35,15 @@ msgstr ""
 "# každém spuštění programu.\n"
 "\n"
 
-#: src/closure.c:564
+#: src/closure.c:648
 msgid "medium.iso"
 msgstr "disc.iso"
 
-#: src/closure.c:565
+#: src/closure.c:649
 msgid "medium.ecc"
 msgstr "disc.ecc"
 
-#: src/closure.c:566
+#: src/closure.c:650
 msgid "sector-"
 msgstr "sektor-"
 
@@ -890,7 +890,7 @@ msgstr ""
 "<big>GNU General Public License</big>\n"
 "<i>Licenční podmínky aplikace dvdisaster.</i>"
 
-#: src/help-dialogs.c:515
+#: src/help-dialogs.c:503
 #, c-format
 msgid ""
 "File\n"
@@ -901,7 +901,7 @@ msgstr ""
 "%s\n"
 "neexistuje"
 
-#: src/help-dialogs.c:525
+#: src/help-dialogs.c:513
 #, c-format
 msgid ""
 "File\n"
@@ -912,7 +912,7 @@ msgstr ""
 "%s\n"
 "není dostupný"
 
-#: src/help-dialogs.c:537
+#: src/help-dialogs.c:525
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
@@ -920,17 +920,17 @@ msgstr ""
 "\n"
 "<- Chyba: Textový soubor byl zkrácen"
 
-#: src/help-dialogs.c:736
+#: src/help-dialogs.c:724
 msgid "windowtitle|About dvdisaster"
 msgstr "O aplikaci dvdisaster"
 
-#: src/help-dialogs.c:755 src/misc.c:219
+#: src/help-dialogs.c:743 src/misc.c:219
 msgid ""
 "Copyright 2004-2017 Carsten Gnoerlich.\n"
 "Copyright 2019-2021 The dvdisaster development team."
 msgstr ""
 
-#: src/help-dialogs.c:763
+#: src/help-dialogs.c:751
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -942,7 +942,7 @@ msgstr ""
 "Vytvoří data pro opravu chyb, která je možné použít k obnovení\n"
 "nečitelných sektorů, pokud později dojde k poškození disku.\n"
 
-#: src/help-dialogs.c:768
+#: src/help-dialogs.c:756
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -952,13 +952,13 @@ msgstr ""
 "Jde o svobodný software a můžete jej šířit za dodržení\n"
 "podmínek [GNU General Public License].\n"
 
-#: src/help-dialogs.c:773
+#: src/help-dialogs.c:761
 msgid ""
 "\n"
 "e-mail: support@dvdisaster.org"
 msgstr ""
 
-#: src/help-dialogs.c:779
+#: src/help-dialogs.c:767
 msgid ""
 "\n"
 "This version is <b>not the original</b>. It has been patched\n"
@@ -969,7 +969,7 @@ msgid ""
 "but submit bugreports against [GitHub] instead.\n"
 msgstr ""
 
-#: src/help-dialogs.c:787
+#: src/help-dialogs.c:775
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -1519,6 +1519,40 @@ msgstr ""
 "Seznam dostupných metod:\n"
 "\n"
 
+#: src/misc-gui.c:241
+#, c-format
+msgid ""
+"The error correction file is already present:\n"
+"\n"
+"%s\n"
+"\n"
+"Overwrite it?"
+msgstr ""
+"Soubor pro opravu chyb již existuje:\n"
+"\n"
+"%s\n"
+"\n"
+"Chcete ho přepsat?"
+
+#: src/misc-gui.c:639
+msgid "Do not ask again"
+msgstr "Příště se již neptat"
+
+#: src/misc-gui.c:660
+#, c-format
+msgid ""
+"Image file already exists and does not match the medium:\n"
+"\n"
+"%s\n"
+"\n"
+"The existing image file will be deleted."
+msgstr ""
+"Soubor bitové kopie již existuje a nesouhlasí s diskem.\n"
+"\n"
+"%s\n"
+"\n"
+"Existující soubor bitové kopie bude smazán."
+
 #: src/misc.c:225
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
@@ -1579,40 +1613,6 @@ msgstr ""
 #: src/misc.c:801
 msgid "Image successfully truncated"
 msgstr ""
-
-#: src/misc-gui.c:241
-#, c-format
-msgid ""
-"The error correction file is already present:\n"
-"\n"
-"%s\n"
-"\n"
-"Overwrite it?"
-msgstr ""
-"Soubor pro opravu chyb již existuje:\n"
-"\n"
-"%s\n"
-"\n"
-"Chcete ho přepsat?"
-
-#: src/misc-gui.c:639
-msgid "Do not ask again"
-msgstr "Příště se již neptat"
-
-#: src/misc-gui.c:660
-#, c-format
-msgid ""
-"Image file already exists and does not match the medium:\n"
-"\n"
-"%s\n"
-"\n"
-"The existing image file will be deleted."
-msgstr ""
-"Soubor bitové kopie již existuje a nesouhlasí s diskem.\n"
-"\n"
-"%s\n"
-"\n"
-"Existující soubor bitové kopie bude smazán."
 
 #: src/preferences.c:454
 msgid "Switched to the linear reading strategy."
@@ -2854,9 +2854,9 @@ msgid "button|Smart L-EC"
 msgstr "Chytré L-EC"
 
 #: src/raw-sector-cache.c:37 src/raw-sector-cache.c:204
-#: src/raw-sector-cache.c:338 src/scsi-freebsd.c:133 src/scsi-freebsd.c:143
-#: src/scsi-linux.c:117 src/scsi-linux.c:126 src/scsi-netbsd.c:128
-#: src/scsi-netbsd.c:138 src/scsi-win32.c:256
+#: src/raw-sector-cache.c:338 src/scsi-darwin.c:218 src/scsi-freebsd.c:133
+#: src/scsi-freebsd.c:143 src/scsi-linux.c:117 src/scsi-linux.c:126
+#: src/scsi-netbsd.c:128 src/scsi-netbsd.c:138 src/scsi-win32.c:256
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Nepodařilo se otevřít %s: %s"
@@ -2899,6 +2899,36 @@ msgstr " [Vytvoření nového souboru mezipaměti %s]\n"
 #, c-format
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr " [Přidáno %d/%d sektorů do souboru mezipaměti %s; LBA=%<PRId64>, velikosts=%d, %d sektorů]\n"
+
+#: src/read-adaptive-window.c:84
+msgid "Adaptive reading:"
+msgstr "Adaptivní čtení:"
+
+#: src/read-adaptive-window.c:112
+msgid "Sectors processed"
+msgstr "Zpracované sektory"
+
+#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
+msgid "readable"
+msgstr "čitelné"
+
+#: src/read-adaptive-window.c:119
+msgid "correctable"
+msgstr "opravitelné"
+
+#: src/read-adaptive-window.c:123
+msgid "missing"
+msgstr "chybějící"
+
+#: src/read-adaptive-window.c:133
+#, c-format
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr "Čitelné: %d.%d%% / %d.%d%% požadovaných"
+
+#: src/read-adaptive-window.c:140
+#, c-format
+msgid "Total recoverable: %d.%d%%"
+msgstr "Celkem opravitelných: %d.%d%%"
 
 #: src/read-adaptive.c:57 src/rs01-create.c:1018
 #, c-format
@@ -3232,35 +3262,44 @@ msgid ""
 "%2d.%1d%% of the image have been read (%<PRId64> sectors).\n"
 msgstr ""
 
-#: src/read-adaptive-window.c:84
-msgid "Adaptive reading:"
-msgstr "Adaptivní čtení:"
-
-#: src/read-adaptive-window.c:112
-msgid "Sectors processed"
-msgstr "Zpracované sektory"
-
-#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
-msgid "readable"
-msgstr "čitelné"
-
-#: src/read-adaptive-window.c:119
-msgid "correctable"
-msgstr "opravitelné"
-
-#: src/read-adaptive-window.c:123
-msgid "missing"
-msgstr "chybějící"
-
-#: src/read-adaptive-window.c:133
+#: src/read-linear-window.c:102
 #, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr "Čitelné: %d.%d%% / %d.%d%% požadovaných"
+msgid "Current Speed: %d.%dx"
+msgstr "Aktuální rychlost: %d.%dx"
 
-#: src/read-adaptive-window.c:140
+#: src/read-linear-window.c:109 src/read-linear.c:515
 #, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Celkem opravitelných: %d.%d%%"
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr ""
+
+#: src/read-linear-window.c:264 src/read-linear-window.c:333
+msgid "Already present"
+msgstr "Již existuje"
+
+#: src/read-linear-window.c:298 src/read-linear-window.c:340
+#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
+msgid "Sectors with CRC errors"
+msgstr "Sektory s chybami CRC"
+
+#: src/read-linear-window.c:321
+msgid "Medium state"
+msgstr "Stav disku"
+
+#: src/read-linear-window.c:329
+msgid "Not touched this time"
+msgstr "Vynechán"
+
+#: src/read-linear-window.c:336
+msgid "Successfully read"
+msgstr "Úspěšně přečtený"
+
+#: src/read-linear-window.c:343
+msgid "Unreadable / skipped"
+msgstr "Nečitelný/přeskočený"
+
+#: src/read-linear-window.c:454
+msgid "Speed"
+msgstr "Rychlost"
 
 #: src/read-linear.c:122
 #, c-format
@@ -3314,11 +3353,6 @@ msgstr "dokončeno.\n"
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Čekám %d sekund na roztočení disku...\n"
-
-#: src/read-linear.c:515 src/read-linear-window.c:109
-#, c-format
-msgid "Unreadable / skipped sectors: %<PRId64>"
-msgstr ""
 
 #: src/read-linear.c:605
 #, c-format
@@ -3498,40 +3532,6 @@ msgid ""
 "The Image will be truncated accordingly. See the manual for details.\n"
 "Use the --dao option to disable image truncating.\n"
 msgstr ""
-
-#: src/read-linear-window.c:102
-#, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Aktuální rychlost: %d.%dx"
-
-#: src/read-linear-window.c:264 src/read-linear-window.c:333
-msgid "Already present"
-msgstr "Již existuje"
-
-#: src/read-linear-window.c:298 src/read-linear-window.c:340
-#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
-msgid "Sectors with CRC errors"
-msgstr "Sektory s chybami CRC"
-
-#: src/read-linear-window.c:321
-msgid "Medium state"
-msgstr "Stav disku"
-
-#: src/read-linear-window.c:329
-msgid "Not touched this time"
-msgstr "Vynechán"
-
-#: src/read-linear-window.c:336
-msgid "Successfully read"
-msgstr "Úspěšně přečtený"
-
-#: src/read-linear-window.c:343
-msgid "Unreadable / skipped"
-msgstr "Nečitelný/přeskočený"
-
-#: src/read-linear-window.c:454
-msgid "Speed"
-msgstr "Rychlost"
 
 #: src/recover-raw.c:66
 #, c-format
@@ -5812,6 +5812,15 @@ msgstr "<b>Výkon:</b>"
 msgid "<b>State:</b>"
 msgstr "<b>Stav:</b>"
 
+#: src/scsi-darwin.c:183
+msgid "No CD/DVD drives found."
+msgstr "Nebyly nalezeny žádné CD/DVD mechaniky."
+
+#: src/scsi-darwin.c:229
+#, c-format
+msgid "Could not open %s (%s)."
+msgstr ""
+
 #: src/scsi-freebsd.c:49 src/scsi-linux.c:53
 msgid ""
 "Can not access /dev for devices\n"
@@ -6236,15 +6245,19 @@ msgid ""
 "not found.\n"
 msgstr ""
 
-#: src/show-manual.c:114
+#: src/show-manual.c:118
 msgid "Could not create pipe before fork"
 msgstr ""
 
-#: src/show-manual.c:122
+#: src/show-manual.c:123 src/show-manual.c:128
+msgid "Could not set pipe flags before fork"
+msgstr ""
+
+#: src/show-manual.c:136
 msgid "Could not fork to start xdg-open"
 msgstr ""
 
-#: src/show-manual.c:145
+#: src/show-manual.c:159
 #, c-format
 msgid ""
 "execvp could not execute \"xdg-open\":\n"
@@ -7378,9 +7391,6 @@ msgstr "<i>Novinky v této verzi:</i>"
 #~ msgstr ""
 #~ "\n"
 #~ "Port pro Darwin (Mac OS X): Julian Einwag &lt;julian@einwag.de&gt;"
-
-#~ msgid "No CD/DVD drives found."
-#~ msgstr "Nebyly nalezeny žádné CD/DVD mechaniky."
 
 #~ msgid "dvdisaster-%s log\n"
 #~ msgstr "záznam programu dvdisaster-%s\n"

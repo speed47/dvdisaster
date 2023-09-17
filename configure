@@ -47,7 +47,12 @@ DEFINE_STRING HOMEPAGE "https://dvdisaster.jcea.es"
 # Check for some essential tools.
 
 REQUIRE_GMAKE
-REQUIRE_GCC
+
+if [[ $(uname) =~ Darwin ]]; then
+   REQUIRE_CLANG
+else
+   REQUIRE_GCC
+fi
 
 # Find out and verify the basedir of the source installation,
 # and where to install the binary.
@@ -121,6 +126,11 @@ SAVE_CFLAGS=$CFG_CFLAGS
 CFG_CFLAGS="$CFG_CFLAGS -D_LARGEFILE64_SOURCE"
 CHECK_SYMBOL fcntl.h O_LARGEFILE
 CFG_CFLAGS=$SAVE_CFLAGS
+
+if [[ $(uname) =~ Darwin ]]; then
+  CFG_CFLAGS="$CFG_CFLAGS -Wno-void-pointer-to-int-cast"
+  CFG_LDFLAGS="$CFG_LDFLAGS -framework CoreFoundation -framework IOKit"
+fi
 
 # Machine specific
 

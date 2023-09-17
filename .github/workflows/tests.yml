@@ -3,6 +3,53 @@ name: non-regression tests
 on: [pull_request]
 
 jobs:
+  mac:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        ui: [cli, gui]
+        printf: [fmtdbg, normal]
+        include:
+          - ui: cli
+            clionly: --with-gui=no
+          - printf: fmtdbg
+            debugprintf: --with-debug-printf-format
+    steps:
+    - uses: actions/checkout@v2
+    - name: install prerequisites
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: brew install ghostscript
+    - name: install prerequisites (GUI)
+      if: matrix.ui == 'gui'
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: brew install gtk+
+    - name: configure
+      run: |
+          set +x
+          ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
+    - name: make
+      run: make -j$(sysctl -n hw.ncpu || 2)
+    - name: check executability
+      run: ./dvdisaster --version
+    - name: check executable (GUI)
+      if: matrix.ui == 'gui'
+      run: |
+          ./dvdisaster --version
+          if ./dvdisaster --version | grep NOGUI; then exit 1; fi
+    - name: check executable (CLI)
+      if: matrix.ui == 'cli'
+      run: |
+          ./dvdisaster --version
+          ./dvdisaster --version | grep NOGUI
+    - name: prepare dist
+      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+    - name: regression tests
+      if: matrix.printf == 'normal'
+      env:
+        REGTEST_NO_UTF8: 1
+      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
   win:
     runs-on: windows-latest
     strategy:

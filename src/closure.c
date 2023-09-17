@@ -58,6 +58,35 @@ static char* get_exe_path()
 }
 #endif
 
+#ifdef SYS_DARWIN
+#include <mach-o/dyld.h>
+
+// Get the path of the current executable
+static char* get_bin_path() {
+    char path[PATH_MAX];
+    uint32_t size = sizeof(path);
+
+    if (_NSGetExecutablePath(path, &size) == 0) {
+        char *lastSlash = strrchr(path, '/');
+        if (lastSlash) {
+            *lastSlash = '\0';
+            return strdup(path);
+        }
+    }
+
+    return strdup(".");
+}
+
+// Check if the given path is within an app bundle
+int isWithinAppBundle(const char *filePath) {
+    // Check if "Contents/MacOS" exists in the path
+    if (strstr(filePath, ".app/Contents/MacOS") != NULL) {
+        return 1; // The binary is within an app bundle
+    }
+    return 0; // The binary is not within an app bundle
+}
+#endif
+
 #ifdef WITH_GUI_YES
 
 /***
@@ -396,7 +425,7 @@ static void get_base_dirs()
 	source directory is supposed to hold the most recent files,
 	so try this first. */
 
-#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
+#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW) && !defined(SYS_DARWIN)
    if(DirStat(SRCDIR))
    {  Closure->binDir = g_strdup(SRCDIR);
       Closure->docDir = g_strdup_printf("%s/documentation",SRCDIR);
@@ -404,6 +433,29 @@ static void get_base_dirs()
       goto find_dotfile;
    } 
 #endif /* WITH_EMBEDDED_SRC_PATH_YES */
+
+#if defined(WITH_EMBEDDED_SRC_PATH_YES) && defined(SYS_DARWIN)
+      char *binPath = get_bin_path();
+      Closure->binDir = g_strdup_printf("%s/../Resources",binPath);
+      Closure->docDir = g_strdup_printf("%s/../Resources/documentation",binPath);
+      free(binPath);
+      goto find_dotfile;
+#endif
+
+// We may also be in an app bundle
+#if defined(SYS_DARWIN)
+   // Obtain the path to the executable
+   const char *pathToExecutable = get_bin_path();
+
+   // Check if the executable is within an app bundle
+   if (isWithinAppBundle(pathToExecutable)) {
+         // Inside an app bundle, set directory paths accordingly
+         Closure->binDir = g_strdup_printf("%s/../Resources", pathToExecutable);
+         Closure->docDir = g_strdup_printf("%s/../Resources/documentation", pathToExecutable);
+         goto find_dotfile;
+   }
+
+#endif /* SYS_DARWIN */
 
    /*** Otherwise try the installation directory. 
 	On Unices this is a hardcoded directory. */

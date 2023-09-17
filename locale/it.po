@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-09 17:07+0200\n"
+"POT-Creation-Date: 2023-09-13 13:48+0200\n"
 "PO-Revision-Date: 2005-01-01 14:24+0100\n"
 "Last-Translator: Andrea Polverini <polve@polve.com>\n"
 "Language-Team: Italian <>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/closure.c:296
+#: src/closure.c:343
 #, c-format
 msgid ""
 "# dvdisaster-%s configuration file\n"
@@ -31,15 +31,15 @@ msgstr ""
 "# e sarà sovrascritto ogni volta che verrà eseguito dvdisaster\n"
 "\n"
 
-#: src/closure.c:564
+#: src/closure.c:648
 msgid "medium.iso"
 msgstr ""
 
-#: src/closure.c:565
+#: src/closure.c:649
 msgid "medium.ecc"
 msgstr ""
 
-#: src/closure.c:566
+#: src/closure.c:650
 msgid "sector-"
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 "<big>Licenza pubblica GNU</big>\n"
 "<i>Termini di Licenza di dvdisaster.</i>"
 
-#: src/help-dialogs.c:515
+#: src/help-dialogs.c:503
 #, c-format
 msgid ""
 "File\n"
@@ -866,7 +866,7 @@ msgstr ""
 "%s\n"
 "non presente"
 
-#: src/help-dialogs.c:525
+#: src/help-dialogs.c:513
 #, c-format
 msgid ""
 "File\n"
@@ -874,23 +874,23 @@ msgid ""
 "not accessible"
 msgstr ""
 
-#: src/help-dialogs.c:537
+#: src/help-dialogs.c:525
 msgid ""
 "\n"
 "<- Error: Text file truncated here"
 msgstr ""
 
-#: src/help-dialogs.c:736
+#: src/help-dialogs.c:724
 msgid "windowtitle|About dvdisaster"
 msgstr "Info su dvdisaster"
 
-#: src/help-dialogs.c:755 src/misc.c:219
+#: src/help-dialogs.c:743 src/misc.c:219
 msgid ""
 "Copyright 2004-2017 Carsten Gnoerlich.\n"
 "Copyright 2019-2021 The dvdisaster development team."
 msgstr ""
 
-#: src/help-dialogs.c:763
+#: src/help-dialogs.c:751
 msgid ""
 "dvdisaster provides a margin of safety against data loss\n"
 "on optical media caused by aging or scratches.\n"
@@ -902,7 +902,7 @@ msgstr ""
 "Crea dei dati di correzione degli errori che saranno poi utilizzati per recuperare\n"
 "i settori illeggibili se il supporto dovesse danneggiarsi col tempo.\n"
 
-#: src/help-dialogs.c:768
+#: src/help-dialogs.c:756
 msgid ""
 "This software comes with  <b>absolutely no warranty</b>.\n"
 "This is free software and you are welcome to redistribute it\n"
@@ -914,13 +914,13 @@ msgstr ""
 "\n"
 "Traduzione italiana di Andrea Polverini (info@polve.com).\n"
 
-#: src/help-dialogs.c:773
+#: src/help-dialogs.c:761
 msgid ""
 "\n"
 "e-mail: support@dvdisaster.org"
 msgstr ""
 
-#: src/help-dialogs.c:779
+#: src/help-dialogs.c:767
 msgid ""
 "\n"
 "This version is <b>not the original</b>. It has been patched\n"
@@ -931,7 +931,7 @@ msgid ""
 "but submit bugreports against [GitHub] instead.\n"
 msgstr ""
 
-#: src/help-dialogs.c:787
+#: src/help-dialogs.c:775
 msgid ""
 "\n"
 "NetBSD port: Sergey Svishchev &lt;svs@ropnet.ru&gt;"
@@ -1456,6 +1456,30 @@ msgstr ""
 "Elenco dei metodi disponibili:\n"
 "\n"
 
+#: src/misc-gui.c:241
+#, c-format
+msgid ""
+"The error correction file is already present:\n"
+"\n"
+"%s\n"
+"\n"
+"Overwrite it?"
+msgstr ""
+
+#: src/misc-gui.c:639
+msgid "Do not ask again"
+msgstr ""
+
+#: src/misc-gui.c:660
+#, c-format
+msgid ""
+"Image file already exists and does not match the medium:\n"
+"\n"
+"%s\n"
+"\n"
+"The existing image file will be deleted."
+msgstr ""
+
 #: src/misc.c:225
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
@@ -1515,30 +1539,6 @@ msgstr ""
 
 #: src/misc.c:801
 msgid "Image successfully truncated"
-msgstr ""
-
-#: src/misc-gui.c:241
-#, c-format
-msgid ""
-"The error correction file is already present:\n"
-"\n"
-"%s\n"
-"\n"
-"Overwrite it?"
-msgstr ""
-
-#: src/misc-gui.c:639
-msgid "Do not ask again"
-msgstr ""
-
-#: src/misc-gui.c:660
-#, c-format
-msgid ""
-"Image file already exists and does not match the medium:\n"
-"\n"
-"%s\n"
-"\n"
-"The existing image file will be deleted."
 msgstr ""
 
 #: src/preferences.c:454
@@ -2600,9 +2600,9 @@ msgid "button|Smart L-EC"
 msgstr ""
 
 #: src/raw-sector-cache.c:37 src/raw-sector-cache.c:204
-#: src/raw-sector-cache.c:338 src/scsi-freebsd.c:133 src/scsi-freebsd.c:143
-#: src/scsi-linux.c:117 src/scsi-linux.c:126 src/scsi-netbsd.c:128
-#: src/scsi-netbsd.c:138 src/scsi-win32.c:256
+#: src/raw-sector-cache.c:338 src/scsi-darwin.c:218 src/scsi-freebsd.c:133
+#: src/scsi-freebsd.c:143 src/scsi-linux.c:117 src/scsi-linux.c:126
+#: src/scsi-netbsd.c:128 src/scsi-netbsd.c:138 src/scsi-win32.c:256
 #, c-format
 msgid "Could not open %s: %s"
 msgstr "Non posso aprire %s: %s"
@@ -2645,6 +2645,36 @@ msgstr ""
 #, c-format
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr ""
+
+#: src/read-adaptive-window.c:84
+msgid "Adaptive reading:"
+msgstr "Modo di lettura adattivo:"
+
+#: src/read-adaptive-window.c:112
+msgid "Sectors processed"
+msgstr "Settori processati"
+
+#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
+msgid "readable"
+msgstr "Leggibile"
+
+#: src/read-adaptive-window.c:119
+msgid "correctable"
+msgstr "Correggibili"
+
+#: src/read-adaptive-window.c:123
+msgid "missing"
+msgstr "Mancanti"
+
+#: src/read-adaptive-window.c:133
+#, c-format
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr ""
+
+#: src/read-adaptive-window.c:140
+#, c-format
+msgid "Total recoverable: %d.%d%%"
+msgstr "Totale recuperabile: %d.%d%%"
 
 #: src/read-adaptive.c:57 src/rs01-create.c:1018
 #, c-format
@@ -2976,35 +3006,44 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% dell'immagine è stata letta (%<PRId64> settori).\n"
 
-#: src/read-adaptive-window.c:84
-msgid "Adaptive reading:"
-msgstr "Modo di lettura adattivo:"
-
-#: src/read-adaptive-window.c:112
-msgid "Sectors processed"
-msgstr "Settori processati"
-
-#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
-msgid "readable"
-msgstr "Leggibile"
-
-#: src/read-adaptive-window.c:119
-msgid "correctable"
-msgstr "Correggibili"
-
-#: src/read-adaptive-window.c:123
-msgid "missing"
-msgstr "Mancanti"
-
-#: src/read-adaptive-window.c:133
+#: src/read-linear-window.c:102
 #, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr ""
+msgid "Current Speed: %d.%dx"
+msgstr "Velocità corrente: %d.%dx"
 
-#: src/read-adaptive-window.c:140
+#: src/read-linear-window.c:109 src/read-linear.c:515
 #, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Totale recuperabile: %d.%d%%"
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr "Settori illeggibili / saltati: %<PRId64>"
+
+#: src/read-linear-window.c:264 src/read-linear-window.c:333
+msgid "Already present"
+msgstr "Già presente"
+
+#: src/read-linear-window.c:298 src/read-linear-window.c:340
+#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
+msgid "Sectors with CRC errors"
+msgstr "Settori con errori CRC"
+
+#: src/read-linear-window.c:321
+msgid "Medium state"
+msgstr "Stato del supporto"
+
+#: src/read-linear-window.c:329
+msgid "Not touched this time"
+msgstr "Non toccato questa volta"
+
+#: src/read-linear-window.c:336
+msgid "Successfully read"
+msgstr "letto con successo"
+
+#: src/read-linear-window.c:343
+msgid "Unreadable / skipped"
+msgstr "Illeggibili / Saltati"
+
+#: src/read-linear-window.c:454
+msgid "Speed"
+msgstr "Velocità"
 
 #: src/read-linear.c:122
 #, c-format
@@ -3058,11 +3097,6 @@ msgstr "compiuto.\n"
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Attendere %d secondi per far avviare il drive...\n"
-
-#: src/read-linear.c:515 src/read-linear-window.c:109
-#, c-format
-msgid "Unreadable / skipped sectors: %<PRId64>"
-msgstr "Settori illeggibili / saltati: %<PRId64>"
 
 #: src/read-linear.c:605
 #, c-format
@@ -3238,40 +3272,6 @@ msgid ""
 "The Image will be truncated accordingly. See the manual for details.\n"
 "Use the --dao option to disable image truncating.\n"
 msgstr ""
-
-#: src/read-linear-window.c:102
-#, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Velocità corrente: %d.%dx"
-
-#: src/read-linear-window.c:264 src/read-linear-window.c:333
-msgid "Already present"
-msgstr "Già presente"
-
-#: src/read-linear-window.c:298 src/read-linear-window.c:340
-#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
-msgid "Sectors with CRC errors"
-msgstr "Settori con errori CRC"
-
-#: src/read-linear-window.c:321
-msgid "Medium state"
-msgstr "Stato del supporto"
-
-#: src/read-linear-window.c:329
-msgid "Not touched this time"
-msgstr "Non toccato questa volta"
-
-#: src/read-linear-window.c:336
-msgid "Successfully read"
-msgstr "letto con successo"
-
-#: src/read-linear-window.c:343
-msgid "Unreadable / skipped"
-msgstr "Illeggibili / Saltati"
-
-#: src/read-linear-window.c:454
-msgid "Speed"
-msgstr "Velocità"
 
 #: src/recover-raw.c:66
 #, c-format
@@ -5397,6 +5397,15 @@ msgstr ""
 msgid "<b>State:</b>"
 msgstr ""
 
+#: src/scsi-darwin.c:183
+msgid "No CD/DVD drives found."
+msgstr "Nessun CD/DVD drive trovato."
+
+#: src/scsi-darwin.c:229
+#, c-format
+msgid "Could not open %s (%s)."
+msgstr ""
+
 #: src/scsi-freebsd.c:49 src/scsi-linux.c:53
 msgid ""
 "Can not access /dev for devices\n"
@@ -5812,15 +5821,19 @@ msgid ""
 "not found.\n"
 msgstr ""
 
-#: src/show-manual.c:114
+#: src/show-manual.c:118
 msgid "Could not create pipe before fork"
 msgstr ""
 
-#: src/show-manual.c:122
+#: src/show-manual.c:123 src/show-manual.c:128
+msgid "Could not set pipe flags before fork"
+msgstr ""
+
+#: src/show-manual.c:136
 msgid "Could not fork to start xdg-open"
 msgstr ""
 
-#: src/show-manual.c:145
+#: src/show-manual.c:159
 #, c-format
 msgid ""
 "execvp could not execute \"xdg-open\":\n"
@@ -6329,9 +6342,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Nessun CD/DVD drive trovato in /dev.\n"
 #~ "Nessun drive sarà preselezionato.\n"
-
-#~ msgid "No CD/DVD drives found."
-#~ msgstr "Nessun CD/DVD drive trovato."
 
 #~ msgid "dvdisaster-%s log\n"
 #~ msgstr "dvdisaster-%s protocollo\n"
