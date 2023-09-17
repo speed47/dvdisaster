@@ -148,6 +148,17 @@ char *DefaultDevice()
 
   /* Now probe the physical drives. */
 
+  scsiObjectIterator = getDVDIterator("IOBDServices");
+  for (i = 1; (scsiDevice = (io_object_t) IOIteratorNext(scsiObjectIterator)) != (io_object_t) NULL; i++)  {
+    deviceName = g_malloc0(80);
+    sprintf(deviceName,"IOBDServices/%d",i);
+
+    prodName = getProductName(scsiDevice);
+    g_ptr_array_add(Closure->deviceNodes, g_strdup(deviceName));
+    g_ptr_array_add(Closure->deviceNames, g_strdup(prodName));
+    g_free(deviceName);
+  }
+  IOObjectRelease(scsiObjectIterator);
   scsiObjectIterator = getDVDIterator("IODVDServices");
   for (i = 1; (scsiDevice = (io_object_t) IOIteratorNext(scsiObjectIterator)) != (io_object_t) NULL; i++)  {
     deviceName = g_malloc0(80);
@@ -339,9 +350,21 @@ int SendPacket(DeviceHandle *dh, unsigned char *cmd, int cdb_size, unsigned char
       Stop("Couldn't set scatter-gather.");     
     }
   }
+
+  // Set the timeout in the task
+  ioReturnValue = ( *taskInterface )->SetTimeoutDuration ( taskInterface, 5000 );
+  if ( ioReturnValue != kIOReturnSuccess ) {
+    Stop("Operation timed out.");;
+  }
+
+
   ioReturnValue = (*taskInterface)->ExecuteTaskSync(taskInterface, (SCSI_Sense_Data*) sense, &taskStatus, NULL);
   if (ioReturnValue != kIOReturnSuccess) {
     return -1;
+  }
+
+  if (taskStatus == kSCSITaskStatus_DeliveryFailure && cmd[0] == 0x00) {
+    return 0;
   }
 
   if (taskStatus != kSCSITaskStatus_GOOD) {

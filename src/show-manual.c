@@ -30,7 +30,7 @@
 #include "shellapi.h"
 #endif
 
-#ifndef SYS_MINGW
+#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
 static void send_errormsg(int fd, char *format, ...)
 {  va_list argp;
    char *msg;
@@ -63,7 +63,7 @@ void GuiShowURL(char *target)
    int hyperlink = 0;
    char *path;
 
-#ifndef SYS_MINGW
+#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
    pid_t pid;
    char *msg;
    int err_pipe[2]; /* child may send down err msgs to us here */
@@ -105,6 +105,10 @@ void GuiShowURL(char *target)
    /* Okay, Billy wins big time here ;-) */
 
    ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWNORMAL);
+#elif defined(SYS_DARWIN) 
+    char command[256];
+    snprintf(command, sizeof(command), "open \"%s\"", path);
+    system(command);
 #else
 
    /* fork xdg-open */
