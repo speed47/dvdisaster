@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 13:48+0200\n"
+"POT-Creation-Date: 2023-09-17 19:21+0200\n"
 "PO-Revision-Date: 2005-01-01 14:24+0100\n"
 "Last-Translator: Andrea Polverini <polve@polve.com>\n"
 "Language-Team: Italian <>\n"
@@ -1456,30 +1456,6 @@ msgstr ""
 "Elenco dei metodi disponibili:\n"
 "\n"
 
-#: src/misc-gui.c:241
-#, c-format
-msgid ""
-"The error correction file is already present:\n"
-"\n"
-"%s\n"
-"\n"
-"Overwrite it?"
-msgstr ""
-
-#: src/misc-gui.c:639
-msgid "Do not ask again"
-msgstr ""
-
-#: src/misc-gui.c:660
-#, c-format
-msgid ""
-"Image file already exists and does not match the medium:\n"
-"\n"
-"%s\n"
-"\n"
-"The existing image file will be deleted."
-msgstr ""
-
 #: src/misc.c:225
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
@@ -1539,6 +1515,30 @@ msgstr ""
 
 #: src/misc.c:801
 msgid "Image successfully truncated"
+msgstr ""
+
+#: src/misc-gui.c:241
+#, c-format
+msgid ""
+"The error correction file is already present:\n"
+"\n"
+"%s\n"
+"\n"
+"Overwrite it?"
+msgstr ""
+
+#: src/misc-gui.c:639
+msgid "Do not ask again"
+msgstr ""
+
+#: src/misc-gui.c:660
+#, c-format
+msgid ""
+"Image file already exists and does not match the medium:\n"
+"\n"
+"%s\n"
+"\n"
+"The existing image file will be deleted."
 msgstr ""
 
 #: src/preferences.c:454
@@ -2646,36 +2646,6 @@ msgstr ""
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr ""
 
-#: src/read-adaptive-window.c:84
-msgid "Adaptive reading:"
-msgstr "Modo di lettura adattivo:"
-
-#: src/read-adaptive-window.c:112
-msgid "Sectors processed"
-msgstr "Settori processati"
-
-#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
-msgid "readable"
-msgstr "Leggibile"
-
-#: src/read-adaptive-window.c:119
-msgid "correctable"
-msgstr "Correggibili"
-
-#: src/read-adaptive-window.c:123
-msgid "missing"
-msgstr "Mancanti"
-
-#: src/read-adaptive-window.c:133
-#, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr ""
-
-#: src/read-adaptive-window.c:140
-#, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Totale recuperabile: %d.%d%%"
-
 #: src/read-adaptive.c:57 src/rs01-create.c:1018
 #, c-format
 msgid ""
@@ -3006,44 +2976,35 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% dell'immagine è stata letta (%<PRId64> settori).\n"
 
-#: src/read-linear-window.c:102
+#: src/read-adaptive-window.c:84
+msgid "Adaptive reading:"
+msgstr "Modo di lettura adattivo:"
+
+#: src/read-adaptive-window.c:112
+msgid "Sectors processed"
+msgstr "Settori processati"
+
+#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
+msgid "readable"
+msgstr "Leggibile"
+
+#: src/read-adaptive-window.c:119
+msgid "correctable"
+msgstr "Correggibili"
+
+#: src/read-adaptive-window.c:123
+msgid "missing"
+msgstr "Mancanti"
+
+#: src/read-adaptive-window.c:133
 #, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Velocità corrente: %d.%dx"
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr ""
 
-#: src/read-linear-window.c:109 src/read-linear.c:515
+#: src/read-adaptive-window.c:140
 #, c-format
-msgid "Unreadable / skipped sectors: %<PRId64>"
-msgstr "Settori illeggibili / saltati: %<PRId64>"
-
-#: src/read-linear-window.c:264 src/read-linear-window.c:333
-msgid "Already present"
-msgstr "Già presente"
-
-#: src/read-linear-window.c:298 src/read-linear-window.c:340
-#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
-msgid "Sectors with CRC errors"
-msgstr "Settori con errori CRC"
-
-#: src/read-linear-window.c:321
-msgid "Medium state"
-msgstr "Stato del supporto"
-
-#: src/read-linear-window.c:329
-msgid "Not touched this time"
-msgstr "Non toccato questa volta"
-
-#: src/read-linear-window.c:336
-msgid "Successfully read"
-msgstr "letto con successo"
-
-#: src/read-linear-window.c:343
-msgid "Unreadable / skipped"
-msgstr "Illeggibili / Saltati"
-
-#: src/read-linear-window.c:454
-msgid "Speed"
-msgstr "Velocità"
+msgid "Total recoverable: %d.%d%%"
+msgstr "Totale recuperabile: %d.%d%%"
 
 #: src/read-linear.c:122
 #, c-format
@@ -3097,6 +3058,11 @@ msgstr "compiuto.\n"
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Attendere %d secondi per far avviare il drive...\n"
+
+#: src/read-linear.c:515 src/read-linear-window.c:109
+#, c-format
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr "Settori illeggibili / saltati: %<PRId64>"
 
 #: src/read-linear.c:605
 #, c-format
@@ -3272,6 +3238,40 @@ msgid ""
 "The Image will be truncated accordingly. See the manual for details.\n"
 "Use the --dao option to disable image truncating.\n"
 msgstr ""
+
+#: src/read-linear-window.c:102
+#, c-format
+msgid "Current Speed: %d.%dx"
+msgstr "Velocità corrente: %d.%dx"
+
+#: src/read-linear-window.c:264 src/read-linear-window.c:333
+msgid "Already present"
+msgstr "Già presente"
+
+#: src/read-linear-window.c:298 src/read-linear-window.c:340
+#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
+msgid "Sectors with CRC errors"
+msgstr "Settori con errori CRC"
+
+#: src/read-linear-window.c:321
+msgid "Medium state"
+msgstr "Stato del supporto"
+
+#: src/read-linear-window.c:329
+msgid "Not touched this time"
+msgstr "Non toccato questa volta"
+
+#: src/read-linear-window.c:336
+msgid "Successfully read"
+msgstr "letto con successo"
+
+#: src/read-linear-window.c:343
+msgid "Unreadable / skipped"
+msgstr "Illeggibili / Saltati"
+
+#: src/read-linear-window.c:454
+msgid "Speed"
+msgstr "Velocità"
 
 #: src/recover-raw.c:66
 #, c-format
@@ -5851,8 +5851,8 @@ msgstr ""
 
 #: src/welcome-window.c:84
 msgid ""
-"This is <b>v0.79.10-pl1</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-"We add support for BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+"This is <b>v0.79.10-pl2</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
+"We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
 "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 "\n"
 "Please refer to the <i>Help &gt; Change log</i> menu for all the details."
