@@ -267,7 +267,7 @@ function run_regtest()
          sed -i -re "s=[A-Z]:/[A-Za-z0-9_/-]+/==g" $NEWLOG
 
          # remove all paths to get reproducible output:
-         sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g" $NEWLOG
+         sed -i -re "s=$TMPDIR/*==g;s=$ISODIR/*==g;s=regtest/==g" $NEWLOG
 
          # remote tmp path of github actions
          sed -i -re "s=[-A-Za-z0-9_~]+/AppData/Local/Temp/==g" $NEWLOG

@@ -30,7 +30,7 @@
 #include "shellapi.h"
 #endif
 
-#ifndef SYS_MINGW
+#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
 static void send_errormsg(int fd, char *format, ...)
 {  va_list argp;
    char *msg;
@@ -63,7 +63,7 @@ void GuiShowURL(char *target)
    int hyperlink = 0;
    char *path;
 
-#ifndef SYS_MINGW
+#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
    pid_t pid;
    char *msg;
    int err_pipe[2]; /* child may send down err msgs to us here */
