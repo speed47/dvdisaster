@@ -3,12 +3,18 @@ set -e
 set -x
 
 github_ref="$1"
-archive="dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$').dmg"
 
+if ./dvdisaster --version | grep -q NOGUI; then
+  suffix="-cli-only"
+else
+  suffix=""
+fi
+
+archive="dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')$suffix.dmg"
 echo "Archive name is $archive"
 echo "::set-output name=archive::$archive"
 
-mkdir dist
+mkdir -p dist
 
 # Create directory structure for the macOS application bundle
 mkdir -p dvdisaster.app/Contents/{MacOS,Resources}

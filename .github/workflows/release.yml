@@ -155,36 +155,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: install prerequisites on host
+        run: sudo apt-get update && sudo apt-get install -y fuse
       - name: docker
         run: |
-          sudo apt-get update && sudo apt-get install fuse
-          mkdir /tmp/dist
+          mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
-      - name: install prerequisites
-        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man wget libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard'
-      - name: configure
+      - name: install prerequisites in docker
+        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard fuse'
+      - name: configure in docker
         run: docker exec uu sh -c 'cd /code && ./configure --prefix=/usr'
-      - name: make
+      - name: make in docker
         run: docker exec uu sh -c 'make -C /code -j$(nproc) && make -C /code'
-      - name: make install
+      - name: make install in docker
         run: docker exec uu sh -c 'cd /code && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
-      - name: copy things to dist
+      - name: copy things to dist in docker
         run: docker exec uu sh -c 'install -d /dist/usr/lib/gtk-2.0 && cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /dist/usr/lib/gtk-2.0'
-      - name: build appimage
+      - name: build appimage in docker
         run: |
-          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod 755 linuxdeploy-x86_64.AppImage
-          export VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$')
-          ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /tmp/dist/ --output appimage
+          docker exec -e LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') -e ARCH=x86_64 uu sh -c 'cd /code && ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /dist/ --output appimage'
+      - name: fix perms
+        run: docker exec uu sh -c "chown -R $UID /dist /code/*.AppImage"
       - name: apply glib workaround
+        env:
+          ARCH: x86_64
         run: |
-          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod 755 appimagetool-x86_64.AppImage
           exe=$(ls -1 dvdisaster*.AppImage)
           chmod 755 $exe
           ./$exe --appimage-extract
           rm -vf $exe
-          ./appimagetool-x86_64.AppImage -v squashfs-root
+          env LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') ./appimagetool-x86_64.AppImage -v squashfs-root
           mv -v dvdisaster*AppImage $exe
           chmod 755 $exe
       - name: test appimage
@@ -203,4 +207,4 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./${{ steps.dist.outputs.archive }}
           asset_name: ${{ steps.dist.outputs.archive }}
-          asset_content_type: application/zip
+          asset_content_type: application/octet-stream
