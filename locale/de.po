@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.52.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 13:48+0200\n"
+"POT-Creation-Date: 2023-09-17 19:21+0200\n"
 "PO-Revision-Date: 2004-11-30 19:48+0100\n"
 "Last-Translator: Carsten Gnörlich <carsten@dvdisaster.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -1566,40 +1566,6 @@ msgstr ""
 "Liste der verfügbaren Methoden:\n"
 "\n"
 
-#: src/misc-gui.c:241
-#, c-format
-msgid ""
-"The error correction file is already present:\n"
-"\n"
-"%s\n"
-"\n"
-"Overwrite it?"
-msgstr ""
-"Es gibt bereits eine Fehlerkorrektur-Datei:\n"
-"\n"
-"%s\n"
-"\n"
-"Soll sie überschrieben werden?"
-
-#: src/misc-gui.c:639
-msgid "Do not ask again"
-msgstr "Nicht mehr nachfragen"
-
-#: src/misc-gui.c:660
-#, c-format
-msgid ""
-"Image file already exists and does not match the medium:\n"
-"\n"
-"%s\n"
-"\n"
-"The existing image file will be deleted."
-msgstr ""
-"Die bereits vorhandene Abbild-Datei paßt nicht zu dem Datenträger:\n"
-"\n"
-"%s\n"
-"\n"
-"Soll die Abbild-Datei gelöscht werden?"
-
 #: src/misc.c:225
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
@@ -1658,6 +1624,40 @@ msgstr ""
 #: src/misc.c:801
 msgid "Image successfully truncated"
 msgstr ""
+
+#: src/misc-gui.c:241
+#, c-format
+msgid ""
+"The error correction file is already present:\n"
+"\n"
+"%s\n"
+"\n"
+"Overwrite it?"
+msgstr ""
+"Es gibt bereits eine Fehlerkorrektur-Datei:\n"
+"\n"
+"%s\n"
+"\n"
+"Soll sie überschrieben werden?"
+
+#: src/misc-gui.c:639
+msgid "Do not ask again"
+msgstr "Nicht mehr nachfragen"
+
+#: src/misc-gui.c:660
+#, c-format
+msgid ""
+"Image file already exists and does not match the medium:\n"
+"\n"
+"%s\n"
+"\n"
+"The existing image file will be deleted."
+msgstr ""
+"Die bereits vorhandene Abbild-Datei paßt nicht zu dem Datenträger:\n"
+"\n"
+"%s\n"
+"\n"
+"Soll die Abbild-Datei gelöscht werden?"
 
 #: src/preferences.c:454
 msgid "Switched to the linear reading strategy."
@@ -2963,36 +2963,6 @@ msgstr " [Erzeuge neue Datei %s]\n"
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr " [%d/%d Sektoren der Datei %s hinzugefügt; LBA=%<PRId64>, S.-Größe=%d, %d Sektoren]\n"
 
-#: src/read-adaptive-window.c:84
-msgid "Adaptive reading:"
-msgstr "Angepaßtes Leseverfahren:"
-
-#: src/read-adaptive-window.c:112
-msgid "Sectors processed"
-msgstr "Bearbeitete Sektoren"
-
-#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
-msgid "readable"
-msgstr "lesbar"
-
-#: src/read-adaptive-window.c:119
-msgid "correctable"
-msgstr "korrigierbar"
-
-#: src/read-adaptive-window.c:123
-msgid "missing"
-msgstr "fehlend"
-
-#: src/read-adaptive-window.c:133
-#, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr "Lesbar: %d.%d%% / %d.%d%% benötigt"
-
-#: src/read-adaptive-window.c:140
-#, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Insgesamt wiederherstellbar: %d.%d%%"
-
 #: src/read-adaptive.c:57 src/rs01-create.c:1018
 #, c-format
 msgid ""
@@ -3337,44 +3307,35 @@ msgstr ""
 "%s\n"
 "%2d.%1d%% des Abbilds wurden eingelesen (%<PRId64> Sektoren).\n"
 
-#: src/read-linear-window.c:102
+#: src/read-adaptive-window.c:84
+msgid "Adaptive reading:"
+msgstr "Angepaßtes Leseverfahren:"
+
+#: src/read-adaptive-window.c:112
+msgid "Sectors processed"
+msgstr "Bearbeitete Sektoren"
+
+#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
+msgid "readable"
+msgstr "lesbar"
+
+#: src/read-adaptive-window.c:119
+msgid "correctable"
+msgstr "korrigierbar"
+
+#: src/read-adaptive-window.c:123
+msgid "missing"
+msgstr "fehlend"
+
+#: src/read-adaptive-window.c:133
 #, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Momentane Geschwindigkeit: %d.%dx"
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr "Lesbar: %d.%d%% / %d.%d%% benötigt"
 
-#: src/read-linear-window.c:109 src/read-linear.c:515
+#: src/read-adaptive-window.c:140
 #, c-format
-msgid "Unreadable / skipped sectors: %<PRId64>"
-msgstr "Unlesbare / Übersprungene Sektoren: %<PRId64>"
-
-#: src/read-linear-window.c:264 src/read-linear-window.c:333
-msgid "Already present"
-msgstr "Bereits vorhanden"
-
-#: src/read-linear-window.c:298 src/read-linear-window.c:340
-#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
-msgid "Sectors with CRC errors"
-msgstr "Prüfsummen-Fehler"
-
-#: src/read-linear-window.c:321
-msgid "Medium state"
-msgstr "Datenträger-Zustand"
-
-#: src/read-linear-window.c:329
-msgid "Not touched this time"
-msgstr "Diesmal unberücksichtigt"
-
-#: src/read-linear-window.c:336
-msgid "Successfully read"
-msgstr "Erfolgreich gelesen"
-
-#: src/read-linear-window.c:343
-msgid "Unreadable / skipped"
-msgstr "Unlesbar / Übersprungen"
-
-#: src/read-linear-window.c:454
-msgid "Speed"
-msgstr "Geschwindigkeit"
+msgid "Total recoverable: %d.%d%%"
+msgstr "Insgesamt wiederherstellbar: %d.%d%%"
 
 #: src/read-linear.c:122
 #, c-format
@@ -3428,6 +3389,11 @@ msgstr "fertig.\n"
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Warte %d Sekunden auf das Hochdrehen des Laufwerks...\n"
+
+#: src/read-linear.c:515 src/read-linear-window.c:109
+#, c-format
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr "Unlesbare / Übersprungene Sektoren: %<PRId64>"
 
 #: src/read-linear.c:605
 #, c-format
@@ -3608,6 +3574,40 @@ msgid ""
 "The Image will be truncated accordingly. See the manual for details.\n"
 "Use the --dao option to disable image truncating.\n"
 msgstr ""
+
+#: src/read-linear-window.c:102
+#, c-format
+msgid "Current Speed: %d.%dx"
+msgstr "Momentane Geschwindigkeit: %d.%dx"
+
+#: src/read-linear-window.c:264 src/read-linear-window.c:333
+msgid "Already present"
+msgstr "Bereits vorhanden"
+
+#: src/read-linear-window.c:298 src/read-linear-window.c:340
+#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
+msgid "Sectors with CRC errors"
+msgstr "Prüfsummen-Fehler"
+
+#: src/read-linear-window.c:321
+msgid "Medium state"
+msgstr "Datenträger-Zustand"
+
+#: src/read-linear-window.c:329
+msgid "Not touched this time"
+msgstr "Diesmal unberücksichtigt"
+
+#: src/read-linear-window.c:336
+msgid "Successfully read"
+msgstr "Erfolgreich gelesen"
+
+#: src/read-linear-window.c:343
+msgid "Unreadable / skipped"
+msgstr "Unlesbar / Übersprungen"
+
+#: src/read-linear-window.c:454
+msgid "Speed"
+msgstr "Geschwindigkeit"
 
 #: src/recover-raw.c:66
 #, c-format
@@ -6400,8 +6400,8 @@ msgstr "Beispiel-Datenträger"
 
 #: src/welcome-window.c:84
 msgid ""
-"This is <b>v0.79.10-pl1</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-"We add support for BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+"This is <b>v0.79.10-pl2</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
+"We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
 "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 "\n"
 "Please refer to the <i>Help &gt; Change log</i> menu for all the details."

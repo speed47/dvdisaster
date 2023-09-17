@@ -81,8 +81,8 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
 						  bg->red>>8, bg->green>>8, bg->blue>>8);
 
-	 GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl1</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-			  "We add support for BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+	 GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl2</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
+			  "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
 			  "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 			  "\n"
 			  "Please refer to the <i>Help &gt; Change log</i> menu for all the details."), "https://github.com/speed47/dvdisaster");

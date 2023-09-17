@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dvdisaster 0.79\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 13:48+0200\n"
+"POT-Creation-Date: 2023-09-17 19:21+0200\n"
 "PO-Revision-Date: 2011-07-24 21:12+0100\n"
 "Last-Translator: Jindřich Šesták <khagaroth@users.sourceforge.net>\n"
 "Language-Team: none (individual translator)\n"
@@ -1519,40 +1519,6 @@ msgstr ""
 "Seznam dostupných metod:\n"
 "\n"
 
-#: src/misc-gui.c:241
-#, c-format
-msgid ""
-"The error correction file is already present:\n"
-"\n"
-"%s\n"
-"\n"
-"Overwrite it?"
-msgstr ""
-"Soubor pro opravu chyb již existuje:\n"
-"\n"
-"%s\n"
-"\n"
-"Chcete ho přepsat?"
-
-#: src/misc-gui.c:639
-msgid "Do not ask again"
-msgstr "Příště se již neptat"
-
-#: src/misc-gui.c:660
-#, c-format
-msgid ""
-"Image file already exists and does not match the medium:\n"
-"\n"
-"%s\n"
-"\n"
-"The existing image file will be deleted."
-msgstr ""
-"Soubor bitové kopie již existuje a nesouhlasí s diskem.\n"
-"\n"
-"%s\n"
-"\n"
-"Existující soubor bitové kopie bude smazán."
-
 #: src/misc.c:225
 msgid ""
 "This software comes with  ABSOLUTELY NO WARRANTY.  This\n"
@@ -1613,6 +1579,40 @@ msgstr ""
 #: src/misc.c:801
 msgid "Image successfully truncated"
 msgstr ""
+
+#: src/misc-gui.c:241
+#, c-format
+msgid ""
+"The error correction file is already present:\n"
+"\n"
+"%s\n"
+"\n"
+"Overwrite it?"
+msgstr ""
+"Soubor pro opravu chyb již existuje:\n"
+"\n"
+"%s\n"
+"\n"
+"Chcete ho přepsat?"
+
+#: src/misc-gui.c:639
+msgid "Do not ask again"
+msgstr "Příště se již neptat"
+
+#: src/misc-gui.c:660
+#, c-format
+msgid ""
+"Image file already exists and does not match the medium:\n"
+"\n"
+"%s\n"
+"\n"
+"The existing image file will be deleted."
+msgstr ""
+"Soubor bitové kopie již existuje a nesouhlasí s diskem.\n"
+"\n"
+"%s\n"
+"\n"
+"Existující soubor bitové kopie bude smazán."
 
 #: src/preferences.c:454
 msgid "Switched to the linear reading strategy."
@@ -2900,36 +2900,6 @@ msgstr " [Vytvoření nového souboru mezipaměti %s]\n"
 msgid " [Appended %d/%d sectors to cache file %s; LBA=%<PRId64>, ssize=%d, %d sectors]\n"
 msgstr " [Přidáno %d/%d sektorů do souboru mezipaměti %s; LBA=%<PRId64>, velikosts=%d, %d sektorů]\n"
 
-#: src/read-adaptive-window.c:84
-msgid "Adaptive reading:"
-msgstr "Adaptivní čtení:"
-
-#: src/read-adaptive-window.c:112
-msgid "Sectors processed"
-msgstr "Zpracované sektory"
-
-#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
-msgid "readable"
-msgstr "čitelné"
-
-#: src/read-adaptive-window.c:119
-msgid "correctable"
-msgstr "opravitelné"
-
-#: src/read-adaptive-window.c:123
-msgid "missing"
-msgstr "chybějící"
-
-#: src/read-adaptive-window.c:133
-#, c-format
-msgid "Readable: %d.%d%% / %d.%d%% required"
-msgstr "Čitelné: %d.%d%% / %d.%d%% požadovaných"
-
-#: src/read-adaptive-window.c:140
-#, c-format
-msgid "Total recoverable: %d.%d%%"
-msgstr "Celkem opravitelných: %d.%d%%"
-
 #: src/read-adaptive.c:57 src/rs01-create.c:1018
 #, c-format
 msgid ""
@@ -3262,44 +3232,35 @@ msgid ""
 "%2d.%1d%% of the image have been read (%<PRId64> sectors).\n"
 msgstr ""
 
-#: src/read-linear-window.c:102
+#: src/read-adaptive-window.c:84
+msgid "Adaptive reading:"
+msgstr "Adaptivní čtení:"
+
+#: src/read-adaptive-window.c:112
+msgid "Sectors processed"
+msgstr "Zpracované sektory"
+
+#: src/read-adaptive-window.c:115 src/scsi-layer.c:1762
+msgid "readable"
+msgstr "čitelné"
+
+#: src/read-adaptive-window.c:119
+msgid "correctable"
+msgstr "opravitelné"
+
+#: src/read-adaptive-window.c:123
+msgid "missing"
+msgstr "chybějící"
+
+#: src/read-adaptive-window.c:133
 #, c-format
-msgid "Current Speed: %d.%dx"
-msgstr "Aktuální rychlost: %d.%dx"
+msgid "Readable: %d.%d%% / %d.%d%% required"
+msgstr "Čitelné: %d.%d%% / %d.%d%% požadovaných"
 
-#: src/read-linear-window.c:109 src/read-linear.c:515
+#: src/read-adaptive-window.c:140
 #, c-format
-msgid "Unreadable / skipped sectors: %<PRId64>"
-msgstr ""
-
-#: src/read-linear-window.c:264 src/read-linear-window.c:333
-msgid "Already present"
-msgstr "Již existuje"
-
-#: src/read-linear-window.c:298 src/read-linear-window.c:340
-#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
-msgid "Sectors with CRC errors"
-msgstr "Sektory s chybami CRC"
-
-#: src/read-linear-window.c:321
-msgid "Medium state"
-msgstr "Stav disku"
-
-#: src/read-linear-window.c:329
-msgid "Not touched this time"
-msgstr "Vynechán"
-
-#: src/read-linear-window.c:336
-msgid "Successfully read"
-msgstr "Úspěšně přečtený"
-
-#: src/read-linear-window.c:343
-msgid "Unreadable / skipped"
-msgstr "Nečitelný/přeskočený"
-
-#: src/read-linear-window.c:454
-msgid "Speed"
-msgstr "Rychlost"
+msgid "Total recoverable: %d.%d%%"
+msgstr "Celkem opravitelných: %d.%d%%"
 
 #: src/read-linear.c:122
 #, c-format
@@ -3353,6 +3314,11 @@ msgstr "dokončeno.\n"
 #, c-format
 msgid "Waiting %d seconds for drive to spin up...\n"
 msgstr "Čekám %d sekund na roztočení disku...\n"
+
+#: src/read-linear.c:515 src/read-linear-window.c:109
+#, c-format
+msgid "Unreadable / skipped sectors: %<PRId64>"
+msgstr ""
 
 #: src/read-linear.c:605
 #, c-format
@@ -3532,6 +3498,40 @@ msgid ""
 "The Image will be truncated accordingly. See the manual for details.\n"
 "Use the --dao option to disable image truncating.\n"
 msgstr ""
+
+#: src/read-linear-window.c:102
+#, c-format
+msgid "Current Speed: %d.%dx"
+msgstr "Aktuální rychlost: %d.%dx"
+
+#: src/read-linear-window.c:264 src/read-linear-window.c:333
+msgid "Already present"
+msgstr "Již existuje"
+
+#: src/read-linear-window.c:298 src/read-linear-window.c:340
+#: src/rs01-verify.c:130 src/rs02-verify.c:123 src/rs03-verify.c:133
+msgid "Sectors with CRC errors"
+msgstr "Sektory s chybami CRC"
+
+#: src/read-linear-window.c:321
+msgid "Medium state"
+msgstr "Stav disku"
+
+#: src/read-linear-window.c:329
+msgid "Not touched this time"
+msgstr "Vynechán"
+
+#: src/read-linear-window.c:336
+msgid "Successfully read"
+msgstr "Úspěšně přečtený"
+
+#: src/read-linear-window.c:343
+msgid "Unreadable / skipped"
+msgstr "Nečitelný/přeskočený"
+
+#: src/read-linear-window.c:454
+msgid "Speed"
+msgstr "Rychlost"
 
 #: src/recover-raw.c:66
 #, c-format
@@ -6275,8 +6275,8 @@ msgstr "Vzorový disk"
 
 #: src/welcome-window.c:84
 msgid ""
-"This is <b>v0.79.10-pl1</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-"We add support for BD-R TL/QL, a Windows build, an option to produce bigger BD-R RS03,\n"
+"This is <b>v0.79.10-pl2</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
+"We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
 "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
 "\n"
 "Please refer to the <i>Help &gt; Change log</i> menu for all the details."
