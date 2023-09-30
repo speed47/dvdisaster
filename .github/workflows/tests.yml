@@ -15,7 +15,9 @@ jobs:
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - name: install prerequisites
       env:
         HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -83,7 +85,9 @@ jobs:
     - name: git config
       run: git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - name: configure
       run: |
           echo running ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
@@ -126,7 +130,9 @@ jobs:
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - name: install prerequisites
       env:
         DEBIAN_FRONTEND: noninteractive

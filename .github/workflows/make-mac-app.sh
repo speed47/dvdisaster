@@ -11,8 +11,8 @@ else
 fi
 
 archive="dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')$suffix.dmg"
-echo "Archive name is $archive"
-echo "::set-output name=archive::$archive"
+[ -n "$GITHUB_OUTPUT" ] && echo "archive=$archive" >> "$GITHUB_OUTPUT"
+echo "mac dmg is <$archive>"
 
 mkdir -p dist
 
