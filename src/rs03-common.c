@@ -533,34 +533,30 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       lay->mediumCapacity = DVD_SL_SIZE;       /* Single layered DVD */
 	    else if(get_roots(dataSectors, DVD_DL_SIZE) >= 8)
 	       lay->mediumCapacity = DVD_DL_SIZE;       /* Double layered DVD */
-	    else if(get_roots(dataSectors, BD_SL_SIZE) >= 8) {
-	       /* Single layered BD */
-	       if (Closure->noBdrDefectManagement)
-	          lay->mediumCapacity = BD_SL_SIZE_NODM;
-	       else
-	          lay->mediumCapacity = BD_SL_SIZE;
-	    }
-	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8) {
+	       /* Single layered BD w/o defect management, test it before the
+	          version w/ DM, even if it's larger in size, because if the
+	          user chose to disable DM, that's what they want over the w/ DM
+	          version anyway. This also applies to 2, 3 and 4 layered BDs:
+	        */
+	    else if(Closure->noBdrDefectManagement && get_roots(dataSectors, BD_SL_SIZE_NODM) >= 8)
+	       lay->mediumCapacity = BD_SL_SIZE_NODM;
+	    else if(get_roots(dataSectors, BD_SL_SIZE) >= 8)
+	       lay->mediumCapacity = BD_SL_SIZE;
 	       /* Double layered BD */
-	       if (Closure->noBdrDefectManagement)
+	    else if(Closure->noBdrDefectManagement && get_roots(dataSectors, BD_DL_SIZE_NODM) >= 8)
 	          lay->mediumCapacity = BD_DL_SIZE_NODM;
-	       else
+	    else if(get_roots(dataSectors, BD_DL_SIZE) >= 8)
 	          lay->mediumCapacity = BD_DL_SIZE;
-	    }
-	    else if(get_roots(dataSectors, BDXL_TL_SIZE) >= 8) {
 	       /* Triple layered BDXL */
-	       if (Closure->noBdrDefectManagement)
+	    else if(Closure->noBdrDefectManagement && get_roots(dataSectors, BDXL_TL_SIZE_NODM) >= 8)
 	          lay->mediumCapacity = BDXL_TL_SIZE_NODM;
-	       else
+	    else if(get_roots(dataSectors, BDXL_TL_SIZE_NODM) >= 8)
 	          lay->mediumCapacity = BDXL_TL_SIZE;
-	    }
-	    else {
 	       /* Quadruple layered BDXL */
-	       if (Closure->noBdrDefectManagement)
+	    else if(Closure->noBdrDefectManagement)
 	           lay->mediumCapacity = BDXL_QL_SIZE_NODM;
-	       else
+	    else
 	           lay->mediumCapacity = BDXL_QL_SIZE;
-	    }
 	 }
       }
 
