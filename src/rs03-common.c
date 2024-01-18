@@ -550,7 +550,7 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       /* Triple layered BDXL */
 	    else if(Closure->noBdrDefectManagement && get_roots(dataSectors, BDXL_TL_SIZE_NODM) >= 8)
 	          lay->mediumCapacity = BDXL_TL_SIZE_NODM;
-	    else if(get_roots(dataSectors, BDXL_TL_SIZE_NODM) >= 8)
+	    else if(get_roots(dataSectors, BDXL_TL_SIZE) >= 8)
 	          lay->mediumCapacity = BDXL_TL_SIZE;
 	       /* Quadruple layered BDXL */
 	    else if(Closure->noBdrDefectManagement)
