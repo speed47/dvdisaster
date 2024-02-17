@@ -747,6 +747,9 @@ static void stripecc_cleanup(gpointer data)
    if (image)
       CloseImage(image);
 
+   if(Closure->guiMode)
+      GuiAllowActions(TRUE);
+
    GuiExitWorkerThread();
 }
 
