@@ -703,14 +703,18 @@ static void read_next_chunk(ecc_closure *ec, guint64 chunk)
          (unless we are already in the last chunk).
          Additional space is provided in the ec->ioData buffer. */
 
+#ifdef HAVE_MMAP
       if(Closure->encodingIOStrategy == IO_STRATEGY_READWRITE)
       {
+#endif
 	 if(ec->ioChunk+ec->ioLayerSectors < lay->sectorsPerLayer)
 	 {  
 	    RS03ReadSectors(ec->image, lay, ec->ioData[layer]+ec->chunkBytes, 
 			    layer, ec->ioChunk+ec->ioLayerSectors, 1, RS03_READ_DATA);
 	 }
+#ifdef HAVE_MMAP
       }
+#endif
    } /* all layers from chunk finished */
 }
 
