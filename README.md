@@ -30,9 +30,10 @@ This version is built on top of the latest upstream version, with the following 
 
 Please refer to the [CHANGELOG](CHANGELOG) for all the details.
 
-:loudspeaker: As of 2021, upstream development resumed [on a new website](https://dvdisaster.jcea.es/).
-We're working with the new team to upstream as much code as possible from this unofficial version.
-Even if at some point we succeed in upstreaming all our patches, and both codebases are exactly the same,
+In 2021, upstream development briefly resumed [on a new website](https://dvdisaster.jcea.es/).
+The new team successfully picked up some of the improvements of this unofficial version.
+If/when upstream resumes development again, their changes will be merged back here when possible.
+In any case, even if at some point we succeed in upstreaming all our patches, and both codebases are exactly the same,
 this repository will stay up as it provides automated tests and prebuilt binaries.
 
 This version will never break compatibility with upstream versions,
