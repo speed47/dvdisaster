@@ -156,7 +156,7 @@ jobs:
           mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines pkg-config gnome-themes-standard fuse'
+        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines libgail-common pkg-config gnome-themes-standard fuse'
       - name: configure in docker
         run: docker exec uu sh -c 'cd /code && ./configure --prefix=/usr'
       - name: make in docker
@@ -164,7 +164,9 @@ jobs:
       - name: make install in docker
         run: docker exec uu sh -c 'cd /code && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
       - name: copy things to dist in docker
-        run: docker exec uu sh -c 'install -d /dist/usr/lib/gtk-2.0 && cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /dist/usr/lib/gtk-2.0'
+        run: |
+          docker exec uu sh -c 'install -d /dist/usr/lib/gtk-2.0 && cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /dist/usr/lib/gtk-2.0'
+          docker exec uu sh -c 'cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/modules /dist/usr/lib/gtk-2.0/'
       - name: build appimage in docker
         run: |
           wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
