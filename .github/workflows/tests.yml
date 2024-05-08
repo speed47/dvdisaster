@@ -32,7 +32,11 @@ jobs:
           set +x
           ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
     - name: make
-      run: make -j$(sysctl -n hw.ncpu || 2)
+      run: |
+        cat Makefile.config
+        echo xxxxxxxxxxxxxxxxxxxxxxx
+        grep -i icon GNUmakefile
+        make -j$(sysctl -n hw.ncpu || 2)
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)

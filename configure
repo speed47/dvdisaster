@@ -26,7 +26,7 @@
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build $@"
 REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
-RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length"
+RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length -Wno-unused-but-set-variable"
 DEBUG_CFLAGS="-ggdb -Wall"
 
 if test -e $BASH_BASED_CONFIGURE; then
