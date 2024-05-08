@@ -23,7 +23,10 @@
 /*** src type: some GUI code ***/
 
 #include "dvdisaster.h"
-#include "inlined-icons.h"
+
+#ifdef WITH_GUI_YES
+ #include "inlined-icons.h"
+#endif
 
 #if 0 
  #define Verbose g_printf

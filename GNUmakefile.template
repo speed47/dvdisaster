@@ -118,11 +118,11 @@ ${BUILDTMP}/build.o : src/build.c src/build.h
 	@echo "Compiling:" src/build.o
 	@$(CC) $(COPTS) -c src/build.c -o $@
 
-${BUILDTMP}/closure.o : src/closure.c src/inlined-icons.h
+${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 	@echo "Compiling:" src/closure.c
 	@$(CC) $(COPTS) -c src/closure.c -o $@
 
-${BUILDTMP}/icon-factory.o : src/icon-factory.c src/inlined-icons.h
+${BUILDTMP}/icon-factory.o : src/icon-factory.c $(ICONS)
 	@echo "Compiling:" src/icon-factory.c
 	@$(CC) $(COPTS) -c src/icon-factory.c -o $@
 

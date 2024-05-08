@@ -32,7 +32,9 @@ jobs:
           set +x
           ./configure ${{ matrix.clionly }} --with-werror
       - name: make
-        run: make -j$(sysctl -n hw.ncpu || 2)
+        run: |
+          cat Makefile.config
+          make -j$(sysctl -n hw.ncpu || 2)
       - name: check executability
         run: ./dvdisaster --version
       - name: check executable (GUI)
@@ -49,7 +51,7 @@ jobs:
         run: ./.github/workflows/make-mac-app.sh ${{ github.ref }}
         id: dist
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.dist.outputs.archive }}
           draft: true
@@ -112,7 +114,7 @@ jobs:
           cd dist
           dvdisaster.exe --version
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.dist.outputs.archive }}
           draft: true
@@ -138,7 +140,7 @@ jobs:
         run: ./.github/workflows/make-dist.sh ${{ github.ref }}
         id: dist
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.dist.outputs.archive }}
           draft: true
@@ -195,7 +197,7 @@ jobs:
           echo "archive=$archive" >> "$GITHUB_OUTPUT"
           echo "appimage is <$archive>"
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.dist.outputs.archive }}
           draft: true
