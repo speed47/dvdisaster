@@ -72,6 +72,10 @@ Rough comparison table:
 
 \*Robustness against corruption of the dvdisaster-added ECC parts themselves
 
+A rough decision chart follows:
+
+![dvdisaster codec decision chart](https://i.imgur.com/QTgiack.png)
+
 # :bulb: Rationale
 
 Even if the optical media era is sunsetting now, and has been for a few years, it's still of some value for off-site backups.
