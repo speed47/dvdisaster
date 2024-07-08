@@ -40,41 +40,59 @@ This version will never break compatibility with upstream versions,
 the goal is to ensure an optical media protected by upstream dvdisaster will still be able to be repaired
 with this version 10+ years from now. Regression tests are here to ensure this is the case.
 
-## :twisted_rightwards_arrows: 3 available protection modes ("codecs")
+# :twisted_rightwards_arrows: 3 available protection modes ("codecs")
 
 For a more detailed explanation of the algorithms, please refer to the [codecs specification PDF](documentation/codecs.pdf).
 
-:one: **RS01** creates error correction files which are stored separately from the image they belong to.
+:arrow_forward: **RS01** creates error correction files which are stored separately from the image they belong to.
 The artefact is an **ecc** file, which must be stored on another media than the one we're protecting.
 
-:two: **RS02** creates error correction data which is added to the medium to protect, we call this *augmenting* the image we're protecting.
+:arrow_forward: **RS02** creates error correction data which is added to the medium to protect, we call this *augmenting* the image we're protecting.
 Damaged sectors in the error correction information reduce the data recovering capacity,
 but do not make recovery impossible - a second medium for keeping or protecting the error correction information is not required.
+Intelligent adaptive reading is also available when reading a damaged RS02-protected disc: dvdisaster will only attempt
+to read the minimum amount of required sectors to be able to rebuild the image, using a so-called "divide and conquer"
+seeking mechanism, cutting off up to 90% of the time required to read and recover a damaged media.
 
-:three: **RS03** is a further development of RS01 and RS02. It can create both error correction files and
+:arrow_forward: **RS03** is a further development of RS01 and RS02. It can create both error correction files and
 augmented images, with the following added features:
 
-- RS03 can use multiple CPU cores and is therefore **much** faster than RS01/RS02 on modern hardware.
-- RS03 error correction files are - contrary to RS01, and to a lesser extent RS02 - robust against damage.
-- RS03 is more robust, but also more restrictive: The augmented image must completely fill the medium now while the size of augmented images can be freely chosen in RS02.
-  The changes for parallel computation and higher robustness make RS03 a bit less space efficient,
-  e.g. RS03 error correction data has slighly less (around -3%) error correction capacity than its RS01/RS02 counterparts on images with equal size.
+- It can use multiple CPU cores and is therefore **WAY** faster than RS01/RS02 on modern hardware.
+- RS03 augmented images and error correction files are - contrary to RS01, and to a lesser extent RS02 - robust against
+  damage of the dvdisaster-added recovery data itself
 
-Rough comparison table:
+There are, however, a few cons that must be noted:
 
-| Codecs           |              RS01              |              RS02              |              RS03              |
-|------------------|--------------------------------|--------------------------------|--------------------------------|
-| Robustness\*     | :star:                         | :star::star::star:             | :star::star::star::star::star: |
-| Speed            | :star::star:                   | :star:                         | :star::star::star::star::star: |
-| Space efficiency | :star::star::star::star::star: | :star::star::star::star::star: | :star::star::star::star:       |
-| Augmented images | :x:                            | :heavy_check_mark:             | :heavy_check_mark:             |
-| Separate files   | :heavy_check_mark:             | :x:                            | :heavy_check_mark:             |
+- In image mode, the RS03 augmented image file size will be picked up from a predefined list of well-known medium sizes,
+  while the size of augmented images can be freely chosen in RS02. This is the "price to pay" for the added robustness
+  of the correction data.
+- In image mode, intelligent adaptive reading is not available for RS03-protected images. The "divide and conquer"
+  algorithm will still be used, but dvdisaster will not stop as soon as enough sectors have been recovered to rebuild
+  the image: it'll attempt to read them all until you stop it, or until it tried to read all the sectors. You can still
+  stop it manually and attempt a "verify" of the resulting image file, to see if enough data has been read for recovery,
+  otherwise resuming the adaptive reading until this is the case.
+- The changes for parallel computation and higher robustness make RS03 a tiny bit less space efficient, e.g. RS03 error
+  correction data has slighly less (around -3%) error correction capacity than RS02 on images with equal size. This is
+  usually considered a cheap price to pay for the added robustness against corruption.
 
-\*Robustness against corruption of the dvdisaster-added ECC parts themselves
+# :mag: Comparison table
 
-A rough decision chart follows:
+| Codecs                               | RS01 (separate file, obsolete) | RS02 (augmented image)         | RS03 (in separate file mode)   | RS03 (in augmented image mode) |
+|--------------------------------------|--------------------------------|--------------------------------|--------------------------------|--------------------------------|
+| Robustness :one:                     | :star:                         | :star::star::star:             | :star::star::star::star::star: | :star::star::star::star::star: |
+| Space efficiency                     | :star::star:                   | :star::star::star::star::star: | :star::star::star::star:       | :star::star::star::star:       |
+| Computational generation speed :two: | :star::star:                   | :star::star:                   | :star::star::star::star::star: | :star::star::star::star::star: |
+| Computational repair speed :two:     | :star::star::star:             | :star::star::star:             | :star::star::star:             | :star::star::star:             |
+| Damaged media recovery speed :three: | :star:                         | :star::star::star:             | :star:                         | :star:                         |
+| Supports customizing redundancy size | :heavy_check_mark:             | :heavy_check_mark:             | :heavy_check_mark:             | :x: :four:                     |
 
-![dvdisaster codec decision chart](https://i.imgur.com/QTgiack.png)
+:one: Robustness against corruption of the dvdisaster-added ECC parts themselves. The higher the ranking, the less it is likely than a few badly located damaged sectors render the whole correction impossible because they affect dvdisaster metadata on-disc. For example corruption of the first dozens of sectors of an image can make RS02 entirely unusable regardless of the redundancy.
+
+:two: When algorithm is CPU-bound, i.e. generating or repairing an image stored on a SSD/NVMe drive.
+
+:three: Using adaptive reading when supported (RS02), limiting the number of damaged sectors that need to be read to what is strictly necessary for repair. Using linear reading otherwise (RS03 and separate file codecs), assuming a badly damaged media, taking into account the time the drive takes to try to read damaged sectors.
+
+:four: The robustness of RS03 comes at the cost of having to augment images strictly to well-known media sizes, as explained in the previous section. This usually doesn't make much difference as long as you intend to burn the augmented image to a classic medium (CD-R, DVD-R, BD-R, ...).
 
 # :bulb: Rationale
 
