@@ -312,6 +312,7 @@ static gboolean allow_actions_idle_func(gpointer data)
    gtk_widget_set_sensitive(Closure->createButton, s);
    gtk_widget_set_sensitive(Closure->fixButton, s);
    gtk_widget_set_sensitive(Closure->testButton, s);
+   gtk_widget_set_sensitive(Closure->stripButton, s);
 
    gtk_widget_set_sensitive(Closure->prefsButton, s);
    if(!s && Closure->prefsWindow)
