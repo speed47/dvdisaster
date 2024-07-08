@@ -950,94 +950,97 @@ int main(int argc, char *argv[])
      /* TRANSLATORS: Program options like -r and --read are not to be translated
 	to avoid confusion when discussing the program in international forums. */
       PrintCLI(_("\nCommon usage examples:\n"
-	     "  dvdisaster -r,--read   # Read the medium image to hard disk.\n"
-	     "                         # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
-	     "  dvdisaster -c,--create # Create .ecc information for the medium image.\n"
-	     "  dvdisaster -f,--fix    # Try to fix medium image using .ecc information.\n"
-	     "  dvdisaster -s,--scan   # Scan the medium for read errors.\n"
-	     "  dvdisaster -t,--test   # Test integrity of the .iso and .ecc files.\n"
-	     "  dvdisaster -z,--strip  # Strip ECC data from an augmented .iso.\n"
-	     "  dvdisaster -u,--unlink # Delete .iso files (when other actions complete)\n\n"));
+	     "  dvdisaster -r, --read   # Read the medium image to hard disk.\n"
+	     "                          # Use -rn-m to read a certain sector range, e.g. -r100-200\n"
+	     "  dvdisaster -c, --create # Create .ecc information for the medium image.\n"
+	     "  dvdisaster -f, --fix    # Try to fix medium image using .ecc information.\n"
+	     "  dvdisaster -s, --scan   # Scan the medium for read errors.\n"
+	     "  dvdisaster -t, --test   # Test integrity of the .iso and .ecc files.\n"
+	     "  dvdisaster -z, --strip  # Strip ECC data from an augmented .iso.\n"
+	     "  dvdisaster -u, --unlink # Delete .iso files (when other actions complete)\n\n"));
 
       PrintCLI(_("Drive and file specification:\n"
-	     "  -d,--device device     - read from given device   (default: %s)\n"
-	     "  -p,--prefix prefix     - prefix of .iso/.ecc file (default: medium.*  )\n"
-	     "  -i,--image  imagefile  - name of image file       (default: medium.iso)\n"
-	     "  -e,--ecc    eccfile    - name of parity file      (default: medium.ecc)\n"
-	     "  -o,--ecc-target [file image] - where to put ecc data in RS03\n"),
+	     "  -d, --device device         - read from given device   (default: %s)\n"
+	     "  -p, --prefix prefix         - prefix of .iso/.ecc file (default: medium.*  )\n"
+	     "  -i, --image imagefile       - name of image file       (default: medium.iso)\n"
+	     "  -e, --ecc eccfile           - name of parity file      (default: medium.ecc)\n"
+	     "  -o, --ecc-target imagefile  - where to put ecc data in RS03\n"),
 	       Closure->device);
 
       PrintCLI("\n");
 
       PrintCLI(_("Tweaking options (see manual before using!)\n"));
-      PrintCLI(_("  -a,--assume x,y,...    - assume image is augmented with codec(s) x,y,...\n"));
-      PrintCLI(_("  -j,--jump n            - jump n sectors forward after a read error (default: 16)\n"));
-      PrintCLI(_("  -m n                   - list/select error correction methods (default: RS01)\n"));
-      PrintCLI(_("  -n,--redundancy n%%     - error correction data redundancy\n"
-		 "                           allowed values depend on codec (see manual)\n"));
-      PrintCLI(_("  -v,--verbose           - more diagnostic messages\n"));
-      PrintCLI(_("  -x,--threads n         - use n threads for en-/decoding (if supported by codec)\n"));
-      PrintCLI(_("  --adaptive-read        - use optimized strategy for reading damaged media\n"));
-      PrintCLI(_("  --auto-suffix          - automatically add .iso and .ecc file suffixes\n"));
-      PrintCLI(_("  --cache-size n         - image cache size in MiB during -c mode (default: 32MiB)\n"));
-      PrintCLI(_("  --dao                  - assume DAO disc; do not trim image end\n"));
-      PrintCLI(_("  --defective-dump d     - directory for saving incomplete raw sectors\n"));
+      PrintCLI(_("  -a, --assume x             - assume image is augmented with given codec (RS02 or RS03)\n"));
+      PrintCLI(_("  -j, --jump n               - jump n sectors forward after a read error (default: 16)\n"));
+      PrintCLI(_("  -m, --method x             - list/select error correction methods (default: RS01)\n"));
+      PrintCLI(_("  -n, --redundancy n%%        - error correction data redundancy\n"
+		 "                               allowed values depend on codec (see manual)\n"));
+      PrintCLI(_("  -v, --verbose              - more diagnostic messages\n"));
+      PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
+      PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
+      PrintCLI(_("  --auto-suffix              - automatically add .iso and .ecc file suffixes\n"));
+      PrintCLI(_("  --cache-size n             - image cache size in MiB during -c mode (default: 32MiB)\n"));
+      PrintCLI(_("  --dao                      - assume DAO disc; do not trim image end\n"));
+      PrintCLI(_("  --defective-dump d         - directory for saving incomplete raw sectors\n"));
 #ifdef SYS_LINUX
-      PrintCLI(_("  --driver=sg/cdrom      - use sg(default) or alternative cdrom driver (see man page!)\n"));
+      PrintCLI(_("  --driver=sg/cdrom          - use sg(default) or alternative cdrom driver (see man page!)\n"));
 #endif
-      PrintCLI(_("  --eject                - eject medium after successful read\n"));
-      PrintCLI(_("  --encoding-algorithm n - possible values: 32bit,64bit,SSE2,AltiVec\n"));
-      PrintCLI(_("  --encoding-io-strategy n - possible values: readwrite, mmap\n"));
-      PrintCLI(_("  --fill-unreadable n    - fill unreadable sectors with byte n\n"));
-      PrintCLI(_("  --ignore-fatal-sense   - continue reading after potentially fatal error conditon\n"));
-      PrintCLI(_("  --ignore-iso-size      - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
-      PrintCLI(_("  --internal-rereads n   - drive may attempt n rereads before reporting an error\n"));
-      PrintCLI(_("  --medium-info          - print info about medium in drive\n"));
+      PrintCLI(_("  --eject                    - eject medium after successful read\n"));
+      PrintCLI(_("  --encoding-algorithm x     - possible values: 32bit, 64bit, SSE2, AltiVec\n"));
+      PrintCLI(_("  --encoding-io-strategy x   - possible values: readwrite, mmap\n"));
+      PrintCLI(_("  --fill-unreadable n        - fill unreadable sectors with byte n\n"));
+      PrintCLI(_("  --ignore-fatal-sense       - continue reading after potentially fatal error conditon\n"));
+      PrintCLI(_("  --ignore-iso-size          - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
+      PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
+      PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
-      PrintCLI(_("  --no-progress          - do not print progress information\n"));
-      PrintCLI(_("  --old-ds-marker        - mark missing sectors compatible with dvdisaster <= 0.70\n"));
-      PrintCLI(_("  --prefetch-sectors n   - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
-      PrintCLI(_("  --raw-mode n           - mode for raw reading CD media (20 or 21)\n"));
-      PrintCLI(_("  --read-attempts n-m    - attempts n up to m reads of a defective sector\n"));
-      PrintCLI(_("  --read-medium n        - read the whole medium up to n times\n"));
-      PrintCLI(_("  --read-raw             - performs read in raw mode if possible\n"));
-      PrintCLI(_("  --regtest              - tweaks output for compatibility with regtests\n"));
-      PrintCLI(_("  --resource-file p      - get resource file from given path\n"));
-      PrintCLI(_("  --speed-warning n      - print warning if speed changes by more than n percent\n"));
-      PrintCLI(_("  --spinup-delay n       - wait n seconds for drive to spin up\n"));
-      PrintCLI(_("  --version              - print version and some configuration info\n"));
+      PrintCLI(_("  --no-progress              - do not print progress information\n"));
+      PrintCLI(_("  --old-ds-marker            - mark missing sectors compatible with dvdisaster <= 0.70\n"));
+      PrintCLI(_("  --prefetch-sectors n       - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
+      PrintCLI(_("  --raw-mode n               - mode for raw reading CD media (20 or 21)\n"));
+      PrintCLI(_("  --read-attempts n-m        - attempts n up to m reads of a defective sector\n"));
+      PrintCLI(_("  --read-medium n            - read the whole medium up to n times\n"));
+      PrintCLI(_("  --read-raw                 - performs read in raw mode if possible\n"));
+      PrintCLI(_("  --regtest                  - tweaks output for compatibility with regtests\n"));
+      PrintCLI(_("  --resource-file p          - get resource file from given path\n"));
+      PrintCLI(_("  --speed-warning n          - print warning if speed changes by more than n percent\n"));
+      PrintCLI(_("  --spinup-delay n           - wait n seconds for drive to spin up\n"));
+      PrintCLI(_("  --version                  - print version and some configuration info\n"));
+      PrintCLI(_("  --debug                    - allow advanced dangerous options (use with --help for a list)\n"));
 
       if(Closure->debugMode)
       { PrintCLI("\n");
 	PrintCLI(_("Debugging options (purposefully undocumented and possibly harmful)\n"));
-	PrintCLI(_("  --debug           - enables the following options\n"));
 	PrintCLI(_("  --permissive-medium-type - allow more media types, even theoretically unsupported ones\n"));
-	PrintCLI(_("  --byteset s,i,b   - set byte i in sector s to b\n"));
-	PrintCLI(_("  --cdump           - creates C #include file dumps instead of hexdumps\n")); 
-	PrintCLI(_("  --compare-images a,b  - compare sectors in images a and b\n"));
-	PrintCLI(_("  --copy-sector a,n,b,m - copy sector n from image a to sector m in image b\n"));
-	PrintCLI(_("  --erase sector    - erase the given sector\n"));
-	PrintCLI(_("  --erase n-m       - erase sectors n - m, inclusively\n"));
-	PrintCLI(_("  --examine-rs02    - force RS02 exhaustive search\n"));
-	PrintCLI(_("  --examine-rs03    - force RS03 exhaustive search\n"));
-	PrintCLI(_("  --fixed-speed-values - output fixed speed values for better output diffing\n"));
-	PrintCLI(_("  --ignore-rs03-header - ignore RS03 header when repairing (forcing a full search)\n"));
-	PrintCLI(_("  --marked-image n  - create image with n marked random sectors\n"));
-	PrintCLI(_("  --merge-images a,b  merge image a with b (a receives sectors from b)\n"));
-	PrintCLI(_("  --random-errors e - seed image with (correctable) random errors\n"));
-	PrintCLI(_("  --random-image n  - create image with n sectors of random numbers\n"));
-	PrintCLI(_("  --random-seed n   - random seed for built-in random number generator\n"));
-	PrintCLI(_("  --raw-sector n    - shows hexdump of the given raw sector from medium in drive\n"));
-	PrintCLI(_("  --read-sector n   - shows hexdump of the given sector from medium in drive\n"));
-	PrintCLI(_("  --screen-shot     - useful for generating screen shots\n"));
-	PrintCLI(_("  --send-cdb arg    - executes given cdb at drive; kills system if used wrong\n"));
-	PrintCLI(_("  --set-version     - set program version for debugging purposes (dangerous!)\n"));
-	PrintCLI(_("  --show-header n   - assumes given sector is a ecc header and prints it\n"));
-	PrintCLI(_("  --show-sector n   - shows hexdump of the given sector in an image file\n"));
-	PrintCLI(_("  --sim-cd image    - simulate a SCSI-Level CD with contents supplied by the ISO image\n"));
-	PrintCLI(_("  --sim-defects n   - simulate n%% defective sectors on medium\n"));
-	PrintCLI(_("  --truncate n      - truncates image to n sectors\n")); 
-	PrintCLI(_("  --zero-unreadable - replace the \"unreadable sector\" markers with zeros\n\n"));
+	PrintCLI(_("  --byteset s,i,b          - set byte i in sector s to b\n"));
+	PrintCLI(_("  --cdump                  - creates C #include file dumps instead of hexdumps\n")); 
+	PrintCLI(_("  --compare-images a,b     - compare sectors in images a and b\n"));
+	PrintCLI(_("  --copy-sector a,n,b,m    - copy sector n from image a to sector m in image b\n"));
+	PrintCLI(_("  --erase sector           - erase the given sector\n"));
+	PrintCLI(_("  --erase n-m              - erase sectors n - m, inclusively\n"));
+	PrintCLI(_("  --examine-rs02           - force RS02 exhaustive search\n"));
+	PrintCLI(_("  --examine-rs03           - force RS03 exhaustive search\n"));
+	PrintCLI(_("  --fixed-speed-values     - output fixed speed values for better output diffing\n"));
+	PrintCLI(_("  --ignore-rs03-header     - ignore RS03 header when repairing (forcing a full search)\n"));
+	PrintCLI(_("  --marked-image n         - create image with n marked random sectors\n"));
+	PrintCLI(_("  --merge-images a,b       - merge image a with b (a receives sectors from b)\n"));
+	PrintCLI(_("  --random-errors e        - seed image with (correctable) random errors\n"));
+	PrintCLI(_("  --random-image n         - create image with n sectors of random numbers\n"));
+	PrintCLI(_("  --random-seed n          - random seed for built-in random number generator\n"));
+	PrintCLI(_("  --raw-sector n           - shows hexdump of the given raw sector from medium in drive\n"));
+	PrintCLI(_("  --read-sector n          - shows hexdump of the given sector from medium in drive\n"));
+	PrintCLI(_("  --redundancy n           - for RS03, specify the target augmented image size manually,\n"
+		   "                             note that you'll also need to specify it to verify or repair\n"
+		   "                             the image, so ensure you write this value down!\n"));
+	PrintCLI(_("  --screen-shot            - useful for generating screen shots\n"));
+	PrintCLI(_("  --send-cdb arg           - executes given cdb at drive; kills system if used wrong\n"));
+	PrintCLI(_("  --set-version            - set program version for debugging purposes (dangerous!)\n"));
+	PrintCLI(_("  --show-header n          - assumes given sector is a ecc header and prints it\n"));
+	PrintCLI(_("  --show-sector n          - shows hexdump of the given sector in an image file\n"));
+	PrintCLI(_("  --sim-cd image           - simulate a SCSI-Level CD with contents supplied by the ISO image\n"));
+	PrintCLI(_("  --sim-defects n          - simulate n%% defective sectors on medium\n"));
+	PrintCLI(_("  --truncate n             - truncates image to n sectors\n")); 
+	PrintCLI(_("  --zero-unreadable        - replace the \"unreadable sector\" markers with zeros\n\n"));
       }
 
       FreeClosure();
