@@ -734,33 +734,42 @@ void RS03Fix(Image *image)
 	   if(num1 != 0)
 	   {  int location = loc[j];
 
-	      if(erasure_map[location] != 1)  /* erasure came from CRC error */
-	      {  int old = fc->imgBlock[location][offset];
-		 int new = old ^ gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
-		 char *msg, *type;
-		 gint64 sector;
+	      if((Closure->debugMode && Closure->verbose) || Closure->regtestMode)
+	      {  if (erasure_map[location] != 1)  /* erasure came from CRC error */
+	         {  int old = fc->imgBlock[location][offset];
+		    int new = old ^ gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
+		    char *msg, *type;
+		    gint64 sector;
 
-		 if(erasure_map[location] == 3)  /* erasure came from CRC error */
-		 {  msg = _("-> CRC-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n");
-		 }
-		 else
-		 {  msg = _("-> Non-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n");
-		    if(erasure_map[location] == 0) /* remember error location */
-		    {  erasure_map[location] = 7;
-		       error_count++;  
+		    if(erasure_map[location] == 3)  /* erasure came from CRC error */
+		    {  msg = _("-> CRC-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n");
 		    }
-		 }
+		    else
+		    {  msg = _("-> Non-predicted error in sector %lld%s at byte %4d (value %02x '%c', expected %02x '%c')\n");
+		       if(erasure_map[location] == 0) /* remember error location */
+		       {  erasure_map[location] = 7;
+		          error_count++;  
+		       }
+		    }
 
-		 sector = RS03SectorIndex(lay, location, s);
-		 if(eh->methodFlags[0] & MFLAG_ECC_FILE && location >= ndata-1)
-		   type="(ecc)";
-		 else
-		   type="";
+		    sector = RS03SectorIndex(lay, location, s);
+		    if(eh->methodFlags[0] & MFLAG_ECC_FILE && location >= ndata-1)
+		      type="(ecc)";
+		    else
+		      type="";
 		 
-		 PrintCLI(msg,
-	                  sector, type, bi, 
-			  old, canprint(old) ? old : '.',
-			  new, canprint(new) ? new : '.');
+		    PrintCLI(msg,
+	                     sector, type, bi, 
+			     old, canprint(old) ? old : '.',
+			     new, canprint(new) ? new : '.');
+	         }
+	      }
+	      else  /* in non-debug mode, apply the only non-printf-preparing code of the above block */
+	      {
+	         if (erasure_map[location] == 0)
+	         {  erasure_map[location] = 7;
+	            error_count++;
+	         }
 	      }
 
 	      fc->imgBlock[location][offset] ^= gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
