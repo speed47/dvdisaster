@@ -252,7 +252,6 @@ GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
    add_menu_button(menu_strip, _("menu|To do list"), MENU_HELP_TODO);
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Help"));
-   gtk_menu_item_right_justify(GTK_MENU_ITEM(menu_anchor));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
    gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
