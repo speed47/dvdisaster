@@ -2496,7 +2496,7 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
          if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 
-	 chooser = gtk_combo_box_new_text();
+	 chooser = gtk_combo_box_text_new();
 
        	 g_signal_connect(G_OBJECT(chooser), "changed", G_CALLBACK(method_select_cb), pc);
 
@@ -2505,7 +2505,7 @@ void GuiCreatePreferencesWindow(void)
 	    char *utf;
 
 	    utf  = g_locale_to_utf8(method->menuEntry, -1, NULL, NULL, NULL);
-	    gtk_combo_box_append_text(GTK_COMBO_BOX(chooser), utf); 
+	    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(chooser), utf);
 	    g_free(utf);
 
 	    if(!strncmp(Closure->methodName, method->name, 4))

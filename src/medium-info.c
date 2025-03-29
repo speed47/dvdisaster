@@ -368,22 +368,22 @@ void GuiCreateMediumInfoWindow()
   lab = gtk_label_new(" ");
   gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
 
-  combo_box = gtk_combo_box_new_text();
+  combo_box = gtk_combo_box_text_new();
   gtk_box_pack_start(GTK_BOX(hbox), combo_box, FALSE, FALSE, 0);
 
   g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(drive_select_cb), NULL);
 
   for(i=0; i<Closure->deviceNames->len; i++)   
   {
-    gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), 
-			      g_ptr_array_index(Closure->deviceNames,i));
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box),
+			           g_ptr_array_index(Closure->deviceNames,i));
 
     if(!strcmp(Closure->device, g_ptr_array_index(Closure->deviceNodes,i)))
       dev_idx = i;
   }
 
   if(!Closure->deviceNodes->len)
-  {  gtk_combo_box_append_text(GTK_COMBO_BOX(combo_box), _utf("No drives found"));
+  {  gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _utf("No drives found"));
   }
 
   gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
