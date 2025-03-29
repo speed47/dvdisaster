@@ -288,52 +288,43 @@ static void calculate_failures(raw_editor_context *rec)
 
 static void file_select_cb(GtkWidget *widget, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
-   int action = GPOINTER_TO_INT(data);
+   GtkWidget *dialog;
 
-   switch(action)
-   {  
-      case ACTION_BROWSE_LOAD:  /* open the dialog */
-	 if(!rec->fileSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+   if(!rec->fileSel)
+   {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->fileSel = gtk_file_selection_new(_utf("windowtitle|Raw sector dump selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->fileSel));
-            g_signal_connect(G_OBJECT(rec->fileSel), "destroy",
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->ok_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->fileSel), filename);
-         }
-	 gtk_widget_show(rec->fileSel);
-	 break;
+      if (!Closure->reverseCancelOK)
+         dialog = gtk_file_chooser_dialog_new("Raw sector dump selection",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              NULL);
+      else
+         dialog = gtk_file_chooser_dialog_new("Raw sector dump selection",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              NULL);
+      sprintf(filename, "%s/", Closure->dDumpDir);
+      gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 
-      case ACTION_FILESEL_DESTROY:
-	 rec->fileSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_OK:
-	 if(rec->filepath)
-	    g_free(rec->filepath);
-	 rec->filepath = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->fileSel)));
-	 gtk_widget_hide(rec->fileSel);
-	 ResetRawBuffer(rec->rb);
-	 ReadDefectiveSectorFile(rec->dsh, rec->rb, rec->filepath);
-	 PrintPQStats(rec->rb);
-	 memcpy(rec->rb->recovered, rec->rb->rawBuf[0], rec->rb->sampleSize);
-	 memcpy(rec->undoRing[0], rec->rb->rawBuf[0], rec->rb->sampleSize);
-	 calculate_failures(rec);
-	 evaluate_vectors(rec);
-	 render_sector(rec);
-	 GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
-			 rec->filepath, rec->rb->lba, rec->rb->samplesRead);
-	 break;
-
-      case ACTION_FILESEL_CANCEL:
-	 gtk_widget_hide(rec->fileSel);
-	 break;
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      {  if(rec->filepath)
+            g_free(rec->filepath);
+         rec->filepath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+         ResetRawBuffer(rec->rb);
+         ReadDefectiveSectorFile(rec->dsh, rec->rb, rec->filepath);
+         PrintPQStats(rec->rb);
+         memcpy(rec->rb->recovered, rec->rb->rawBuf[0], rec->rb->sampleSize);
+         memcpy(rec->undoRing[0], rec->rb->rawBuf[0], rec->rb->sampleSize);
+         calculate_failures(rec);
+         evaluate_vectors(rec);
+         render_sector(rec);
+         GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
+                         rec->filepath, rec->rb->lba, rec->rb->samplesRead);
+      }
    }
 }
 
@@ -843,8 +834,8 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
    switch(action)
    {  case ACTION_BROWSE_LOAD:
-	 file_select_cb(NULL, GINT_TO_POINTER(ACTION_BROWSE_LOAD));
-	 break;
+         file_select_cb(NULL, GINT_TO_POINTER(ACTION_BROWSE_LOAD));
+         break;
 
       case ACTION_BROWSE_SAVE:
 	 save_sector(rec);
