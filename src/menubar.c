@@ -302,81 +302,68 @@ static void drive_select_cb(GtkWidget *widget, gpointer data)
 
 static void file_select_cb(GtkWidget *widget, gpointer data)
 {  int action = GPOINTER_TO_INT(data);
+   GtkWidget *dialog;
 
    switch(action)
    {  /*** Image file selection */
 
       case MENU_FILE_IMAGE:
-	 if(!Closure->imageFileSel)
-         {  Closure->imageFileSel = gtk_file_selection_new(_utf("windowtitle|Image file selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(Closure->imageFileSel));
-            g_signal_connect(G_OBJECT(Closure->imageFileSel), "destroy",
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->imageFileSel)->ok_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_OK));
-    
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->imageFileSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_CANCEL));
+         if (!Closure->reverseCancelOK)
+            dialog = gtk_file_chooser_dialog_new("Image file selection",
+                                                 Closure->window,
+                                                 GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                 GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                 NULL);
+         else
+            dialog = gtk_file_chooser_dialog_new("Image file selection",
+                                                 Closure->window,
+                                                 GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                 GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                 NULL);
+         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
+                                       gtk_entry_get_text(GTK_ENTRY(Closure->imageEntry)));
+         if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+         {  g_free(Closure->imageName);
+            Closure->imageName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            if(Closure->autoSuffix)
+               Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
+            gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+            gtk_editable_set_position(GTK_EDITABLE(Closure->imageEntry), -1);
          }
-	 gtk_file_selection_set_filename(GTK_FILE_SELECTION(Closure->imageFileSel),
-					 gtk_entry_get_text(GTK_ENTRY(Closure->imageEntry)));
-	 gtk_widget_show(Closure->imageFileSel);
-	 break;
-
-      case MENU_FILE_IMAGE_DESTROY:
-	 Closure->imageFileSel = NULL;
-	 break;
-
-      case MENU_FILE_IMAGE_OK:
-	 g_free(Closure->imageName);
-	 Closure->imageName = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(Closure->imageFileSel)));
-	 if(Closure->autoSuffix)
-	   Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
-	 gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
-	 gtk_editable_set_position(GTK_EDITABLE(Closure->imageEntry), -1);
-	 gtk_widget_hide(Closure->imageFileSel);
-	 break;
-
-      case MENU_FILE_IMAGE_CANCEL:
-	 gtk_widget_hide(Closure->imageFileSel);
-	 break;
+         gtk_widget_destroy (dialog);
+         break;
 
       /*** Same stuff again for ecc file selection */
 
       case MENU_FILE_ECC:
-	 if(!Closure->eccFileSel)
-         {  Closure->eccFileSel = gtk_file_selection_new(_utf("windowtitle|Error correction file selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(Closure->eccFileSel));
-            g_signal_connect(G_OBJECT(Closure->eccFileSel), "destroy",
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_ECC_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->eccFileSel)->ok_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_ECC_OK));
-    
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->eccFileSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_ECC_CANCEL));
+         if (!Closure->reverseCancelOK)
+            dialog = gtk_file_chooser_dialog_new("Error correction file selection",
+                                                 Closure->window,
+                                                 GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                 GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                 NULL);
+         else
+            dialog = gtk_file_chooser_dialog_new("Error correction file selection",
+                                                 Closure->window,
+                                                 GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                 GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                 NULL);
+         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
+                                       gtk_entry_get_text(GTK_ENTRY(Closure->imageEntry)));
+         if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+         {  g_free(Closure->imageName);
+            Closure->eccName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            if(Closure->autoSuffix)
+               Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
+            gtk_entry_set_text(GTK_ENTRY(Closure->eccName), Closure->eccName);
+            gtk_editable_set_position(GTK_EDITABLE(Closure->eccName), -1);
          }
-	 gtk_file_selection_set_filename(GTK_FILE_SELECTION(Closure->eccFileSel),
-					 gtk_entry_get_text(GTK_ENTRY(Closure->eccEntry)));
-	 gtk_widget_show(Closure->eccFileSel);
-	 break;
-
-      case MENU_FILE_ECC_DESTROY:
-	 Closure->eccFileSel = NULL;
-	 break;
-
-      case MENU_FILE_ECC_OK:
-	 g_free(Closure->eccName);
-	 Closure->eccName = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(Closure->eccFileSel)));
-	 if(Closure->autoSuffix)
-	   Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
-	 gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
-	 gtk_editable_set_position(GTK_EDITABLE(Closure->eccEntry), -1);
-	 gtk_widget_hide(Closure->eccFileSel);
-	 break;
-
-      case MENU_FILE_ECC_CANCEL:
-	 gtk_widget_hide(Closure->eccFileSel);
-	 break;
+         gtk_widget_destroy (dialog);
+         break;
    }
 }
 
