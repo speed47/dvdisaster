@@ -284,8 +284,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    Closure->readButton = wid = create_button(_("button|Read"), "dvdisaster-read");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_READ);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Read Image"),
-		    _("Reads an optical disc image into a file (or tries to complete an existing image file)."));
+   GuiAttachTooltip(wid, _("tooltip|Read Image"));
 
    content = gtk_vbox_new(FALSE, 0);   /* read linear window */
    ignore = gtk_label_new("read_tab_l");
@@ -302,48 +301,42 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    Closure->createButton = wid = create_button(_("button|Create"), "dvdisaster-create");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_CREATE);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Create error correction data"),
-		    _("Creates error correction data. Requires an image file."));
+   GuiAttachTooltip(wid, _("tooltip|Create error correction data"));
 
    /*** Scan */
 
    Closure->scanButton = wid = create_button(_("button|Scan"), "dvdisaster-scan");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_SCAN);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Scan medium"),
-		    _("Scans medium for unreadable sectors."));
+   GuiAttachTooltip(wid, _("tooltip|Scan medium"));
 
    /*** Fix */
 
    Closure->fixButton = wid = create_button(_("button|Fix"), "dvdisaster-fix");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_FIX);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Repair image"),
-		    _("Repairs an image. Requires an image file and error correction data."));
+   GuiAttachTooltip(wid, _("tooltip|Repair image"));
 
    /*** Verify */
 
    Closure->testButton = wid = create_button(_("button|Verify"), "dvdisaster-verify");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_VERIFY);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Consistency check"),
-		    _("Tests consistency of error correction data and image file."));
+   GuiAttachTooltip(wid, _("tooltip|Consistency check"));
 
    /*** Strip */
 
    Closure->stripButton = wid = create_button(_("button|Strip"), "dvdisaster-strip");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STRIP);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Strip ECC"),
-		   _("Strip ECC data from an augmented image."));
+   GuiAttachTooltip(wid, _("tooltip|Strip ECC"));
 
    /*** Stop */
 
    wid = create_button(_("button|Stop"), "dvdisaster-gtk-stop");
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STOP);
    gtk_box_pack_end(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
-   GuiAttachTooltip(wid, _("tooltip|Abort action"),
-		    _("Aborts an ongoing action."));
+   GuiAttachTooltip(wid, _("tooltip|Abort action"));
 
    /*** Block drive related actions if no drives were found */
 
@@ -439,10 +432,6 @@ void GuiCreateMainWindow(int *argc, char ***argv)
 
     g_signal_connect(window, "destroy", G_CALLBACK(destroy_cb), NULL);
 
-    /*** Initialize the tooltips struct */
-
-    Closure->tooltips = gtk_tooltips_new();
-
     /*** Create the sub parts of the GUI */
 
     outer_box = gtk_vbox_new(FALSE, 0);
@@ -499,9 +488,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
     gtk_box_pack_end(GTK_BOX(status_box), button, FALSE, FALSE, 5);
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(log_cb), NULL);
-    GuiAttachTooltip(button, 
-		     _("tooltip|Protocol for current action"), 
-		     _("Displays additional information created during the current or last action."));
+    GuiAttachTooltip(button,  _("tooltip|Protocol for current action"));
 
     box = gtk_hbox_new(FALSE, 0);
     gtk_container_add(GTK_CONTAINER(button), box);

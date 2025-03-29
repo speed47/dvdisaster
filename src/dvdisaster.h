@@ -87,7 +87,7 @@ typedef void GtkNotebook;
 typedef int  GtkMessageType;
 typedef void GtkScrolledWindow;
 typedef void GtkTextBuffer;
-typedef void GtkTooltips;
+typedef void GtkTooltip;
 typedef void GtkWidget;
 typedef void GtkWindow;
 
@@ -348,7 +348,7 @@ typedef struct _GlobalClosure
    /*** Widgets of the main window */
 
    GtkWindow *window;        /* main window */
-   GtkTooltips *tooltips;    /* our global tooltips structure */
+   GtkTooltip *tooltips;     /* our global tooltips structure */
    GdkPixbuf *windowIcon;    /* main window icon */
    GdkPixbuf *tooltipOn;     /* pixbuf of the tooltip icon */
    GdkPixbuf *tooltipOff;    /* pixbuf of a fully transparent icon */
@@ -1112,7 +1112,7 @@ void    check_memleaks(void);
  ***/
 
 #ifdef WITH_GUI_YES
-void GuiAttachTooltip(GtkWidget*, char*, char*);
+void GuiAttachTooltip(GtkWidget*, char*);
 GtkWidget* GuiCreateMenuBar(GtkWidget*);
 GtkWidget* GuiCreateToolBar(GtkWidget*);
 #endif
