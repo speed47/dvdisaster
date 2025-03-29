@@ -399,6 +399,24 @@ static int get_configuration(DeviceHandle *dh)
 		 dh->subType = BD_RE;
 	         break;
 
+      case 0x50: dh->profileDescr = "HD-DVD";
+                 dh->shortProfile = "HD-DVD";
+                 dh->mainType = HD_DVD;
+                 dh->subType = HD_DVD;
+                 break;
+
+      case 0x51: dh->profileDescr = "HD-DVD-R";
+                 dh->shortProfile = "HD-DVD-R";
+                 dh->mainType = HD_DVD;
+                 dh->subType = HD_DVD_R;
+                 break;
+
+      case 0x52: dh->profileDescr = "HD-DVD-RW";
+                 dh->shortProfile = "HD-DVD-RW";
+                 dh->mainType = HD_DVD;
+                 dh->subType = HD_DVD_RW;
+                 break;
+
       default:   dh->profileDescr = "Unknown profile";
 	         dh->mainType = UNSUPPORTED;
 		 dh->subType = UNSUPPORTED;
@@ -875,13 +893,16 @@ static int query_dvd(DeviceHandle *dh, int probe_only)
                dh->rewriteable = TRUE;
 	       break;
       case  4: dh->bookDescr = "HD DVD-ROM";
-	       dh->subType = UNSUPPORTED;
+	       dh->subType = HD_DVD;
 	       break;
       case  5: dh->bookDescr = "HD DVD-RAM";
 	       dh->subType = UNSUPPORTED;
 	       break;
       case  6: dh->bookDescr = "HD DVD-R";
-	       dh->subType = UNSUPPORTED;
+	       dh->subType = HD_DVD_R;
+	       break;
+      case  7: dh->bookDescr = "HD DVD-RW";
+	       dh->subType = HD_DVD_RW;
 	       break;
       case  9: dh->bookDescr = "DVD+RW"; 
                dh->rewriteable = TRUE;
@@ -1180,6 +1201,22 @@ static int query_type(DeviceHandle *dh, int probe_only)
 	}
 	else
 	{	if(query_bd(dh, TRUE)) return TRUE;
+		ret = query_incomplete(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
+	}
+	break; /* unreachable */
+
+      case HD_DVD:
+	dh->read        = read_dvd_sector;
+	dh->singleRate  = 36000.0/8.0;  /* 1x = 36 kbit */
+	dh->maxRate     = 3;
+	dh->clusterSize = 32;
+	if(!dh->incomplete)
+	{	ret = query_dvd(dh, probe_only);
+		return (probe_only == 2 ? TRUE : ret);
+	}
+	else
+	{	if(query_dvd(dh, TRUE)) return TRUE;
 		ret = query_incomplete(dh, probe_only);
 		return (probe_only == 2 ? TRUE : ret);
 	}
@@ -1911,6 +1948,13 @@ static gint64 query_size(Image *image)
 
    if(dh->mainType == BD)
    {  Verbose("BD medium - using size from READ CAPACITY: %" PRId64 " sectors\n", dh->readCapacity+1);
+      return dh->readCapacity+1;  /* size is the number of the last sector, starting with 0 */
+   }
+
+   /* HD-DVD: no clue. Stick with READ CAPACITY. */
+
+   if(dh->mainType == HD_DVD)
+   {  Verbose("HD-DVD medium - using size from READ CAPACITY: %" PRId64 " sectors\n", dh->readCapacity+1);
       return dh->readCapacity+1;  /* size is the number of the last sector, starting with 0 */
    }
 
@@ -2723,6 +2767,7 @@ Image* OpenImageFromDevice(char *device, int query_only)
 
    switch(subTypeMasked)
    {  case BD:
+      case HD_DVD:
       case DVD:
       case CD:
       {  char *tmp;

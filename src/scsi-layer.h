@@ -235,6 +235,10 @@ typedef struct _DeviceHandle
 #define BD_R           0x41
 #define BD_RE          0x42
 
+#define HD_DVD         0x50
+#define HD_DVD_R       0x51
+#define HD_DVD_RW      0x52
+
 #define UNSUPPORTED    0x00 
 
 /* transport io modes */
