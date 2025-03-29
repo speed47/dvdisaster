@@ -336,7 +336,6 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
       case MENU_FILE_IMAGE:
 	 if(!Closure->imageFileSel)
          {  Closure->imageFileSel = gtk_file_selection_new(_utf("windowtitle|Image file selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(Closure->imageFileSel));
             g_signal_connect(G_OBJECT(Closure->imageFileSel), "destroy",
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_IMAGE_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->imageFileSel)->ok_button),"clicked", 
@@ -373,7 +372,6 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
       case MENU_FILE_ECC:
 	 if(!Closure->eccFileSel)
          {  Closure->eccFileSel = gtk_file_selection_new(_utf("windowtitle|Error correction file selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(Closure->eccFileSel));
             g_signal_connect(G_OBJECT(Closure->eccFileSel), "destroy",
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(MENU_FILE_ECC_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(Closure->eccFileSel)->ok_button),"clicked", 

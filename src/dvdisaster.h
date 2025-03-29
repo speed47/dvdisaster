@@ -296,7 +296,6 @@ typedef struct _GlobalClosure
    int defectiveDump;   /* dump non-recoverable sectors into given path */
    char *dDumpDir;      /* directory for above */
    char *dDumpPrefix;   /* file name prefix for above */
-   int reverseCancelOK; /* if TRUE the button order is reversed */
    int eject;           /* eject medium on success */
    int readingPasses;   /* try to read medium n times */
    int pauseAfter;      /* pause after given amount of minutes */
@@ -1209,7 +1208,6 @@ void GuiExitWorkerThread();
 int GuiGetLabelWidth(GtkLabel*, char*, ...) PRINTF_FORMAT(2);
 void GuiLockLabelSize(GtkWidget*, char*, ...) PRINTF_FORMAT(2);
 int GuiModalDialog(GtkMessageType, GtkButtonsType, void (*)(GtkDialog*), char*, ...) PRINTF_FORMAT(4);
-void GuiReverseCancelOK(GtkDialog*);
 void GuiSetLabelText(GtkWidget*, char*, ...) PRINTF_FORMAT(2);
 void GuiShowMessage(GtkWindow*, char*, GtkMessageType);
 void GuiSetProgress(GtkWidget*, int, int);
@@ -1225,7 +1223,6 @@ void GuiSwitchAndSetFootline(GtkWidget*, int, GtkWidget*, char*, ...) PRINTF_FOR
 #define GuiGetLabelWidth(l, c, args...) (0)
 #define GuiLockLabelSize(w, c, args...)
 #define GuiModalDialog(a, b, c, d, args...) (0)
-#define GuiReverseCancelOK(d)
 #define GuiSetLabelText(w, c, args...)
 #define GuiShowMessage(w, a, b)
 #define GuiSetProgress(w, a, b)

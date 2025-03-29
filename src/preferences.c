@@ -383,7 +383,6 @@ enum
    TOGGLE_RAW_21H,
    TOGGLE_RAW_OTHER,
    TOGGLE_CACHE_DEFECTIVE,
-   TOGGLE_CANCEL_OK,
    TOGGLE_FATAL_SENSE,
    TOGGLE_EJECT,
    TOGGLE_VERBOSE,
@@ -485,12 +484,6 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	Closure->logFileEnabled = state;
 	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->logFileA), state);
 	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->logFileB), state);
-	break;
-
-      case TOGGLE_CANCEL_OK:
-	Closure->reverseCancelOK = state;
-	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->cancelOKA), state);
-	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->cancelOKB), state);
 	break;
 
       case TOGGLE_SIZEDRIVE:
@@ -843,8 +836,6 @@ static void color_choose_cb(GtkWidget *widget, gpointer data)
       csd = (GtkColorSelectionDialog*)cbi->dialog;
       g_signal_connect(G_OBJECT(csd->cancel_button), "clicked", G_CALLBACK(color_cancel_cb), cbi);
       g_signal_connect(G_OBJECT(csd->ok_button), "clicked", G_CALLBACK(color_ok_cb), cbi);
-
-      GuiReverseCancelOK(GTK_DIALOG(cbi->dialog));
    }
 
    gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
@@ -1222,7 +1213,6 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
    {  char filename[strlen(Closure->dDumpDir)+10];
 
       pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
-      GuiReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
 
       g_signal_connect(G_OBJECT(pc->cacheDefectiveChooser), "destroy",
 		       G_CALLBACK(cache_defective_select_cb), 
@@ -1294,7 +1284,6 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 	 if(!pc->logFileChooser)
 	 {  
 	    pc->logFileChooser = gtk_file_selection_new(_utf("Log file"));
-	    GuiReverseCancelOK(GTK_DIALOG(pc->logFileChooser));
 
 	    g_signal_connect(G_OBJECT(pc->logFileChooser), "destroy",
 			     G_CALLBACK(logfile_select_cb), 
@@ -1318,7 +1307,6 @@ static void logfile_cb(GtkWidget *widget, gpointer data)
 						    "%s", _utf("Delete the log file?"));
 	 int answer;
 	   
-	 GuiReverseCancelOK(GTK_DIALOG(dialog));
 	 answer = gtk_dialog_run(GTK_DIALOG(dialog));
 	 
 	 if(answer == GTK_RESPONSE_OK)
@@ -3120,42 +3108,6 @@ void GuiCreatePreferencesWindow(void)
 		       1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 5, 5);
 
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(default_color_cb), NULL);
-
-      /** Reverse OK and Cancel buttons */
-
-      frame = gtk_frame_new(_utf("Dialog boxes"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
-
-      lwoh = GuiCreateLabelWithOnlineHelp(_("Reverse OK / Cancel buttons"),
-					  _("Reverse OK / Cancel buttons"));
-      GuiRegisterPreferencesHelpWindow(lwoh);
-
-      for(i=0; i<2; i++)
-      {  GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
-	 GtkWidget *button = gtk_check_button_new();
-
-	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-      	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->reverseCancelOK);
-	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_CANCEL_OK));
-
-	 if(!i)
-	 {  pc->cancelOKA = button;
-	    gtk_container_add(GTK_CONTAINER(frame), hbox);
-	 }
-	 else
-	 {  pc->cancelOKB = button;
-	    GuiAddHelpWidget(lwoh, hbox);
-	 }
-      }
-
-      GuiAddHelpParagraph(lwoh, 
-	 _("<b>Reverse OK / Cancel buttons</b>\n\n"
-	   "This switch reverses the order of dialog buttons "
-	   "(e.g. OK, Cancel).\n\n"
-	   "Changes will become active after restarting dvdisaster."));
 
       /*** "Misc" page */
 

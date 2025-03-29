@@ -291,7 +291,6 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "read-raw"))        { Closure->readRaw = atoi(value); continue; }
       if(!strcmp(symbol, "redundancy"))      { if(Closure->redundancy) g_free(Closure->redundancy);
                                                Closure->redundancy  = g_strdup(value); continue; }
-      if(!strcmp(symbol, "reverse-cancel-ok")) { Closure->reverseCancelOK = atoi(value); continue; }
       if(!strcmp(symbol, "spinup-delay"))    { Closure->spinupDelay = atoi(value); continue; }
       if(!strcmp(symbol, "unlink"))          { Closure->unlinkImage = atoi(value); continue; }
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
@@ -394,7 +393,6 @@ static void update_dotfile()
    g_fprintf(dotfile, "read-raw:          %d\n", Closure->readRaw);
    if(Closure->redundancy)
      g_fprintf(dotfile, "redundancy:        %s\n", Closure->redundancy);
-   g_fprintf(dotfile, "reverse-cancel-ok: %d\n", Closure->reverseCancelOK);
    g_fprintf(dotfile, "spinup-delay:      %d\n", Closure->spinupDelay);
    g_fprintf(dotfile, "unlink:            %d\n", Closure->unlinkImage);
    g_fprintf(dotfile, "verbose:           %d\n", Closure->verbose);

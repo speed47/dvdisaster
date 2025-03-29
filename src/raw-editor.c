@@ -297,7 +297,6 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->fileSel = gtk_file_selection_new(_utf("windowtitle|Raw sector dump selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->fileSel));
             g_signal_connect(G_OBJECT(rec->fileSel), "destroy",
 	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->ok_button),"clicked", 
@@ -418,7 +417,6 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->loadBufSel = gtk_file_selection_new(_utf("windowtitle|Load buffer from file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
             g_signal_connect(G_OBJECT(rec->loadBufSel), "destroy",
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->ok_button),"clicked", 
@@ -436,7 +434,6 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 	 {  char filename[strlen(Closure->dDumpDir)+10];
 
 	    rec->saveBufSel = gtk_file_selection_new(_utf("windowtitle|Save buffer to file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
             g_signal_connect(G_OBJECT(rec->saveBufSel), "destroy",
 	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_DESTROY));
             g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->ok_button),"clicked", 

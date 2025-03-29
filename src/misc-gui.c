@@ -436,7 +436,6 @@ static gboolean modal_idle_func(gpointer data)
 
    if(mi->button_fn)
          mi->button_fn(GTK_DIALOG(dialog));
-   else  GuiReverseCancelOK(GTK_DIALOG(dialog));
 
    response = gtk_dialog_run(GTK_DIALOG(dialog));
 
@@ -538,34 +537,6 @@ void GuiSetText(PangoLayout *layout, char *text, int *w, int *h)
 }
 
 /*
- * Rearrange buttons to OK Cancel order
- * in file dialogs
- * 
- * gtk_dialog_set_alternative_button_order()
- * has been introduced since gtk+2.6,
- * but does not seem to work correctly.
- */
-
-void GuiReverseCancelOK(GtkDialog *dialog)
-{  GtkWidget *box, *button ;
-
-   if(!Closure->guiMode || !Closure->reverseCancelOK)
-      return;
-
-   box = dialog->action_area; 
-   button = ((GtkBoxChild*)(g_list_first(GTK_BOX(box)->children)->data))->widget;
-
-   gtk_box_reorder_child(GTK_BOX(box), button, 1);
-
-#if 0
-   gtk_dialog_set_alternative_button_order(GTK_DIALOG(dialog),
-					   GTK_RESPONSE_OK,
-					   GTK_RESPONSE_CANCEL,
-					   -1);
-#endif
-}
-
-/*
  * Get the width of a label text
  */
 
@@ -644,7 +615,6 @@ static void insert_button(GtkDialog *dialog)
 
    gtk_widget_show(align);
    gtk_widget_show(check);
-   GuiReverseCancelOK(GTK_DIALOG(dialog));
 } 
 
 int GuiConfirmImageDeletion(char *file)
