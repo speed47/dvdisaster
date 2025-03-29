@@ -218,7 +218,7 @@ GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|File"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_bar_append(GTK_MENU_BAR(menu_bar), menu_anchor);
+   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
    /* The tools menu */
 
@@ -232,7 +232,7 @@ GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
    
    Closure->toolMenuAnchor = menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_bar_append(GTK_MENU_BAR(menu_bar), menu_anchor);
+   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
 
    /* The help menu */
 
