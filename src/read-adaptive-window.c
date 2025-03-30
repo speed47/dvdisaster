@@ -158,10 +158,11 @@ static void redraw_spiral(GtkWidget *widget)
 /* Calculate the geometry of the spiral */
 
 static void update_geometry(GtkWidget *widget)
-{  GtkAllocation *a = &widget->allocation;
+{  GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
 
-   Closure->readAdaptiveSpiral->mx = a->width - 15 - Closure->readAdaptiveSpiral->diameter / 2;
-   Closure->readAdaptiveSpiral->my = a->height / 2;
+   Closure->readAdaptiveSpiral->mx = a.width - 15 - Closure->readAdaptiveSpiral->diameter / 2;
+   Closure->readAdaptiveSpiral->my = a.height / 2;
 }
 
 /* Expose event handler */
@@ -339,11 +340,12 @@ void GuiResetAdaptiveReadWindow()
 
    if(Closure->readAdaptiveDrawingArea->window)
    {  static GdkRectangle rect;
-      GtkAllocation *a = &Closure->readAdaptiveDrawingArea->allocation;
+      GtkAllocation a = {0};
+      gtk_widget_get_allocation(Closure->readAdaptiveDrawingArea, &a);
 
       rect.x = rect.y = 0;
-      rect.width  = a->width;
-      rect.height = a->height;
+      rect.width  = a.width;
+      rect.height = a.height;
 
       gdk_window_clear(Closure->readAdaptiveDrawingArea->window);
       gdk_window_invalidate_rect(Closure->readAdaptiveDrawingArea->window, &rect, FALSE);

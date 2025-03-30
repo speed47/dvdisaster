@@ -144,7 +144,8 @@ static void redraw_spiral(RS03Widgets *wl)
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
-   GtkAllocation *a = &widget->allocation;
+   GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
    int w,h,size;
 
    /* Finish spiral initialization */
@@ -157,8 +158,8 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
    GuiSetText(wl->cmpLayout, _("Missing sectors"), &w, &h);
    size = wl->cmpSpiral->diameter + 20 + 3*(10+h);  /* approx. size of spiral + labels */
 
-   wl->cmpSpiral->mx = a->width / 2;
-   wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a->height - size)/2;
+   wl->cmpSpiral->mx = a.width / 2;
+   wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a.height - size)/2;
 
    if(!event->count)      /* Exposure compression */
      redraw_spiral(wl);   /* Redraw the spiral */

@@ -135,8 +135,10 @@ int GuiCurveLogY(Curve *curve, gdouble y) /* not really a log */
  ***/
 
 void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_padding)
-{  GtkAllocation *a = &curve->widget->allocation;
+{  GtkAllocation a = {0};
    int w,h; 
+
+   gtk_widget_get_allocation(curve->widget, &a);
 
    /* Top and bottom margins */
 
@@ -144,13 +146,13 @@ void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_pa
    curve->topY = h + 10;
 
    GuiSetText(curve->layout, "0123456789", &w, &h);
-   curve->bottomY = a->height - h - 10;
+   curve->bottomY = a.height - h - 10;
 
    /* Left and right margins */
 
    GuiSetText(curve->layout, largest_left_label, &w, &h);
    curve->leftX   = 5 + 6 + 3 + w;
-   curve->rightX  = a->width - right_padding;
+   curve->rightX  = a.width - right_padding;
 
    /* Add space for the lograithmic curve */
 
