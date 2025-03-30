@@ -47,7 +47,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
    {  GdkColor *bg = &widget->style->bg[0];
       GdkColormap *cmap = gdk_colormap_get_system();
 
-      Closure->drawGC = gdk_gc_new(widget->window);
+      Closure->drawGC = gdk_gc_new(gtk_widget_get_window(widget));
 
       memcpy(Closure->background, bg, sizeof(GdkColor));
 

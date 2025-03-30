@@ -74,7 +74,7 @@ void GuiSetSpiralWidget(Spiral *spiral, GtkWidget *widget)
    gtk_widget_get_allocation(widget, &a);
 
    if(!spiral->drawable)
-   {  spiral->drawable     = widget->window;
+   {  spiral->drawable     = gtk_widget_get_window(widget);
       spiral->mx           = a.width/2;
       spiral->my           = a.height/2;
    }

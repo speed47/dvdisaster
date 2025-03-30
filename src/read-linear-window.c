@@ -47,7 +47,7 @@ static void update_geometry(void);
 
 static gboolean max_speed_idle_func(gpointer data)
 {  
-   gdk_window_clear(Closure->readLinearDrawingArea->window);
+   gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
    update_geometry();
    redraw_curve();
 
@@ -143,7 +143,7 @@ static gboolean curve_idle_func(gpointer data)
    {  Closure->readLinearCurve->maxY = Closure->readLinearCurve->fvalue[ci->percent] + 1;
 
       update_geometry();
-      gdk_window_clear(Closure->readLinearDrawingArea->window);
+      gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
       redraw_curve();
       rc->lastPlotted = ci->percent;
       rc->lastPlottedY = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
@@ -311,7 +311,7 @@ static void update_geometry(void)
 }
 
 static void redraw_curve(void)
-{  GdkDrawable *d = Closure->readLinearDrawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(Closure->readLinearDrawingArea);
    int x,w,h;
    int pos = 1;
 

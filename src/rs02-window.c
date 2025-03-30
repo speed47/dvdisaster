@@ -175,7 +175,7 @@ static gboolean curve_idle_func(gpointer data)
       wl->fixCurve->maxY = wl->fixCurve->maxY - (wl->fixCurve->maxY % 5) + 5;
 
       update_geometry(wl);
-      gdk_window_clear(wl->fixCurve->widget->window);
+      gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
       redraw_curve(wl);
       wl->lastPercent = wl->percent;
 
@@ -278,7 +278,7 @@ void ResetRS02FixWindow(Method *method)
    RS02UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
-   {  gdk_window_clear(wl->fixCurve->widget->window);
+   {  gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
       redraw_curve(wl);
    }
 

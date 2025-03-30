@@ -338,7 +338,7 @@ void GuiResetAdaptiveReadWindow()
    readable = correctable = missing = 0;
    percent = min_required = 0;
 
-   if(Closure->readAdaptiveDrawingArea->window)
+   if(gtk_widget_get_window(Closure->readAdaptiveDrawingArea))
    {  static GdkRectangle rect;
       GtkAllocation a = {0};
       gtk_widget_get_allocation(Closure->readAdaptiveDrawingArea, &a);
@@ -347,8 +347,8 @@ void GuiResetAdaptiveReadWindow()
       rect.width  = a.width;
       rect.height = a.height;
 
-      gdk_window_clear(Closure->readAdaptiveDrawingArea->window);
-      gdk_window_invalidate_rect(Closure->readAdaptiveDrawingArea->window, &rect, FALSE);
+      gdk_window_clear(gtk_widget_get_window(Closure->readAdaptiveDrawingArea));
+      gdk_window_invalidate_rect(gtk_widget_get_window(Closure->readAdaptiveDrawingArea), &rect, FALSE);
    }
 }
 
