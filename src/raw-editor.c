@@ -550,7 +550,7 @@ static void evaluate_vectors(raw_editor_context *rec)
 /* Render the sector */
 
 static void render_sector(raw_editor_context *rec)
-{  GdkDrawable *d = rec->drawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(rec->drawingArea);
    unsigned char *buf = rec->rb->recovered;
    int idx=0;
    int i,j,w,h,x,y;

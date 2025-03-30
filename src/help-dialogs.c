@@ -72,7 +72,7 @@ static int* get_new_int(LabelWithOnlineHelp* lwoh)
  */
 
 static gint help_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  GtkWidget *lab = GTK_BIN(widget)->child;
+{  GtkWidget *lab = gtk_bin_get_child(GTK_BIN(widget));
    LabelWithOnlineHelp *lwoh = (LabelWithOnlineHelp*)data;
 
    switch(event->type)
@@ -358,7 +358,7 @@ static gboolean log_jump_func(gpointer data)
    gtk_text_buffer_place_cursor(Closure->logBuffer, &end);
 
    a = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(Closure->logScroll));
-   gtk_adjustment_set_value(a, a->upper - a->page_size);
+   gtk_adjustment_set_value(a, gtk_adjustment_get_upper(a) - gtk_adjustment_get_page_size(a));
    gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(Closure->logScroll), a);
    g_mutex_unlock(Closure->logLock);
 
@@ -550,7 +550,7 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
 
    vbox = gtk_vbox_new(FALSE, 0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), vbox, TRUE, TRUE, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox, TRUE, TRUE, 0);
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
    lab = gtk_label_new(NULL);
@@ -593,7 +593,7 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
  */
 
 static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  GtkWidget *lab = GTK_BIN(widget)->child;
+{  GtkWidget *lab = gtk_bin_get_child(GTK_BIN(widget));
    char *label = (char*)data;
    char text[strlen(label)+80];
    char *utf;
@@ -730,7 +730,7 @@ void GuiAboutDialog()
    g_signal_connect_swapped(about, "response", G_CALLBACK(gtk_widget_destroy), about);
 
    vbox = gtk_vbox_new(FALSE, 0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(about)->vbox), vbox, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(about))), vbox, FALSE, FALSE, 0);
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
 
    /* Insert the labels */

@@ -756,7 +756,7 @@ static void update_color_buttons(color_button_info *a, color_button_info *b, int
       if(window) 
       {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
 
-	 gdk_window_invalidate_rect(a->button->window, &rect, TRUE); 
+	 gdk_window_invalidate_rect(gtk_widget_get_window(a->button), &rect, TRUE);
       }
    }
 

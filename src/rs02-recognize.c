@@ -51,7 +51,7 @@ static void insert_buttons(GtkDialog *dialog)
 			  _utf("Continue searching"), 0, NULL);
 
    align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), align, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), align, FALSE, FALSE, 0);
 
    check = gtk_check_button_new_with_label(_utf("Disable RS02 initialization in the preferences"));
    gtk_container_add(GTK_CONTAINER(align), check);
