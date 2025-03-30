@@ -1188,67 +1188,41 @@ static void defective_prefix_cb(GtkWidget *widget, gpointer data)
  * Run the file chooser for the raw sector files directory
  */
 
-static void cache_defective_select_cb(GtkWidget *widget, gpointer data)
-{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-   int action = GPOINTER_TO_INT(data);
-
-   switch(action)
-   {  case 0:  /* destroy */
-	 pc->cacheDefectiveChooser = NULL;
-	 break;
-
-      case 1: /* OK */
-	 if(Closure->dDumpDir)
-	    g_free(Closure->dDumpDir);
-	 Closure->dDumpDir = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)));
-	 if(pc->cacheDefectiveDirA)
-	    gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirA), Closure->dDumpDir);
-	 if(pc->cacheDefectiveDirB)
-	    gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirB), Closure->dDumpDir);
-	 gtk_widget_hide(pc->cacheDefectiveChooser);
-	 break;
-
-      case 2: /* Cancel */
-	 gtk_widget_hide(pc->cacheDefectiveChooser);
-	 break;
-   }
-}
-
 static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)data;
-   GtkWidget *file_list;
+   GtkWidget *dialog;
 
    if(!pc->cacheDefectiveChooser)
    {  char filename[strlen(Closure->dDumpDir)+10];
 
-      pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
-      GuiReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
-
-      g_signal_connect(G_OBJECT(pc->cacheDefectiveChooser), "destroy",
-		       G_CALLBACK(cache_defective_select_cb), 
-		       GINT_TO_POINTER(0));
-      g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->ok_button),
-		       "clicked", G_CALLBACK(cache_defective_select_cb), GINT_TO_POINTER(1));
-      g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->cancel_button),
-		       "clicked", G_CALLBACK(cache_defective_select_cb), GINT_TO_POINTER(2));
-
+      if (!Closure->reverseCancelOK)
+         dialog = gtk_file_chooser_dialog_new("Raw sector caching",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              NULL);
+      else
+         dialog = gtk_file_chooser_dialog_new("Raw sector caching",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              NULL);
       sprintf(filename, "%s/", Closure->dDumpDir);
-      gtk_file_selection_set_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser),
-				      filename);
-      gtk_file_selection_hide_fileop_buttons(GTK_FILE_SELECTION(pc->cacheDefectiveChooser));
+      gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 
-      /* Hide the file selection parts */
-
-      file_list = GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->file_list;
-      set_widget_sensitive(file_list, FALSE);
-      gtk_widget_hide(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry);
-      set_entry_text(GTK_ENTRY(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry), "");
-#if 0
-      gtk_widget_hide(file_list->parent);
-#endif
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      {  if(Closure->dDumpDir)
+            g_free(Closure->dDumpDir);
+         Closure->dDumpDir = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+         if(pc->cacheDefectiveDirA)
+            gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirA), Closure->dDumpDir);
+         if(pc->cacheDefectiveDirB)
+            gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirB), Closure->dDumpDir);
+      }
+      gtk_widget_destroy (dialog);
    }
-
-   gtk_widget_show(pc->cacheDefectiveChooser);
 }
 
 
