@@ -395,101 +395,74 @@ static void save_sector(raw_editor_context *rec)
 }
 
 /***
- *** Raw sector buffer loading/savinf
+ *** Raw sector buffer loading/saving
  ***/
 
 static void buffer_io_cb(GtkWidget *widget, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
    int action = GPOINTER_TO_INT(data);
+   LargeFile *file;
+   char *path;
+   GtkWidget *dialog;
 
    switch(action)
-   {  
+   {
       case ACTION_LOAD_BUFFER:  /* open the dialog */
-	 if(!rec->loadBufSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+         if(!rec->loadBufSel)
+         {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->loadBufSel = gtk_file_selection_new(_utf("windowtitle|Load buffer from file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
-            g_signal_connect(G_OBJECT(rec->loadBufSel), "destroy",
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->ok_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->loadBufSel), filename);
+            if (!Closure->reverseCancelOK)
+               dialog = gtk_file_chooser_dialog_new("Load buffer from file",
+                                                    Closure->window,
+                                                    GTK_FILE_CHOOSER_ACTION_OPEN,
+                                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                    NULL);
+            else
+               dialog = gtk_file_chooser_dialog_new("Load buffer from file",
+                                                    Closure->window,
+                                                    GTK_FILE_CHOOSER_ACTION_OPEN,
+                                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                    NULL);
+            sprintf(filename, "%s/", Closure->dDumpDir);
+            gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+
+            path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            file = LargeOpen(path, O_RDONLY, IMG_PERMS);
+            LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
+            LargeClose(file);
+
+            calculate_failures(rec);
+            evaluate_vectors(rec);
+            render_sector(rec);
+            undo_remember(rec);
+
+            GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
          }
-	 gtk_widget_show(rec->loadBufSel);
-	 break;
+         break;
 
       case ACTION_SAVE_BUFFER:  /* open the dialog */
-	 if(!rec->saveBufSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+         if(!rec->saveBufSel)
+         {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->saveBufSel = gtk_file_selection_new(_utf("windowtitle|Save buffer to file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
-            g_signal_connect(G_OBJECT(rec->saveBufSel), "destroy",
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->ok_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->saveBufSel), filename);
+            GtkWidget *dialog = gtk_file_chooser_dialog_new("Save buffer to file",
+                                                            Closure->window,
+                                                            GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                            NULL);
+            sprintf(filename, "%s/", Closure->dDumpDir);
+            gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+
+            path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
+            LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
+            LargeClose(file);
+
+            GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
          }
-	 gtk_widget_show(rec->saveBufSel);
-	 break;
-
-      case ACTION_FILESEL_LOAD_DESTROY:
-	 rec->loadBufSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_SAVE_DESTROY:
-	 rec->saveBufSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_LOAD_OK:
-      {  LargeFile *file;
-	 char *path;
-
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
-	 gtk_widget_hide(rec->loadBufSel);
-
-	 file = LargeOpen(path, O_RDONLY, IMG_PERMS);
-	 LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
-	 LargeClose(file);
-
-	 calculate_failures(rec);
-	 evaluate_vectors(rec);
-	 render_sector(rec);
-	 undo_remember(rec);
-	 
-	 GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
-	 break;
-      }
-
-      case ACTION_FILESEL_SAVE_OK:
-      {  LargeFile *file;
-	 char *path;
-
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
-	 gtk_widget_hide(rec->saveBufSel);
-
-	 file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
-	 LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
-	 LargeClose(file);
-
-	 GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
-	 break;
-      }
-
-      case ACTION_FILESEL_LOAD_CANCEL:
-	 gtk_widget_hide(rec->loadBufSel);
-	 break;
-
-      case ACTION_FILESEL_SAVE_CANCEL:
-	 gtk_widget_hide(rec->saveBufSel);
-	 break;
+         break;
    }
 }
 
