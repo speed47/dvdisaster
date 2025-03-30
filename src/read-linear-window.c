@@ -280,7 +280,8 @@ void GuiMarkExistingSectors(void)
 
 static void update_geometry(void)
 {  GtkWidget *widget = Closure->readLinearDrawingArea;
-   GtkAllocation *a = &widget->allocation;
+   GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
 
    /* Curve geometry */ 
 
@@ -289,8 +290,8 @@ static void update_geometry(void)
 
    /* Spiral center */
 
-   Closure->readLinearSpiral->mx = a->width - 15 - Closure->readLinearSpiral->diameter / 2;
-   Closure->readLinearSpiral->my = a->height / 2;
+   Closure->readLinearSpiral->mx = a.width - 15 - Closure->readLinearSpiral->diameter / 2;
+   Closure->readLinearSpiral->my = a.height / 2;
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
    {  int w,h;

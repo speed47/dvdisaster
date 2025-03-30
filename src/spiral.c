@@ -70,12 +70,13 @@ Spiral* GuiCreateSpiral(GdkColor *outline, GdkColor *fill,
 }
 
 void GuiSetSpiralWidget(Spiral *spiral, GtkWidget *widget)
-{  GtkAllocation *al = &widget->allocation;
+{  GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
 
    if(!spiral->drawable)
    {  spiral->drawable     = widget->window;
-      spiral->mx           = al->width/2;
-      spiral->my           = al->height/2;
+      spiral->mx           = a.width/2;
+      spiral->my           = a.height/2;
    }
 }   
 

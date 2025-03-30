@@ -235,7 +235,9 @@ void GuiFreeLabelWithOnlineHelp(LabelWithOnlineHelp *lwoh)
 
 static gboolean wrapper_fix_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  int *last_width = (int*)data;
-   int label_width = widget->allocation.width;
+   GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
+   int label_width = a.width;
    
    if(*last_width == label_width)  /* short circuit expose events */ 
       return FALSE;                /* without size changes */
