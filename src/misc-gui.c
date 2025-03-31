@@ -349,7 +349,6 @@ static gboolean message_idle_func(gpointer data)
 					       GTK_BUTTONS_CLOSE,
 					       mi->msg, NULL);
 
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
    gtk_widget_show(dialog);
 
@@ -397,7 +396,6 @@ GtkWidget* GuiCreateMessage(char *format, GtkMessageType type, ...)
 				   GTK_BUTTONS_CLOSE,
 				   utf8, NULL);
 
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
    gtk_widget_show(dialog);
    g_free(text);
@@ -432,7 +430,6 @@ static gboolean modal_idle_func(gpointer data)
 				   mi->message_type,
 				   mi->button_type,
 				   "%s", mi->msg);
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
 
    if(mi->button_fn)
          mi->button_fn(GTK_DIALOG(dialog));
