@@ -39,48 +39,40 @@ static GdkColor *footer_color;
 #define REDRAW_PROGRESS   1<<2
 #define REDRAW_ERRORMSG   1<<3
 
-static int draw_text(GdkDrawable *d, PangoLayout *l, char *text, int x, int y, GdkColor *color, int redraw)
-{  static GdkPixmap *pixmap;
-   static int pixmap_width, pixmap_height;
-   int w,h,pw;
-   int erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
+static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkColor *color, int redraw)
+{  int w,h,pw;
+   int erase_to;
 
    GuiSetText(l, text, &w, &h);
 
-   pw = erase_to-x;
-   if(pw > pixmap_width || h > pixmap_height)
-   {  if(pixmap) g_object_unref(pixmap);
-     
-      pixmap = gdk_pixmap_new(d, pw, h, -1);
-      pixmap_width = pw;
-      pixmap_height = h;
-   }
+   if(redraw)
+   {  erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
+      pw = erase_to-x;
 
+      gdk_cairo_set_source_color(cr, Closure->background);
+      cairo_rectangle(cr, x, y, pw, h);
+      cairo_fill(cr);
 
-   if(redraw)  /* redraw using double buffering to prevent flicker */
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->background);
-      gdk_draw_rectangle(pixmap, Closure->drawGC, TRUE, 0, 0, pw, h);
-
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
-      gdk_draw_layout(pixmap, Closure->drawGC, 0, 0, l);
-      gdk_draw_drawable(d, Closure->drawGC, pixmap, 0, 0, x, y, pw, h);
+      gdk_cairo_set_source_color(cr, color);
+      cairo_move_to(cr, x, y);
+      pango_cairo_show_layout(cr, l);
    }
 
    return h;
 }
 
 static void redraw_labels(GtkWidget *widget, int erase_mask)
-{  GdkDrawable *d = Closure->readAdaptiveDrawingArea->window;
+{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(Closure->readAdaptiveDrawingArea));
    char buf[256];
    int x,y,w,h;
 
    /* Draw the labels */
 
    x = 10; 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+   gdk_cairo_set_source_color(cr, Closure->foreground);
 
    y = Closure->readAdaptiveSpiral->my - Closure->readAdaptiveSpiral->diameter/2;
-   h = draw_text(d, Closure->readLinearCurve->layout, 
+   h = draw_text(cr, Closure->readLinearCurve->layout,
 		 _("Adaptive reading:"), x, y, Closure->foreground, erase_mask & REDRAW_TITLE); 
 
    y += h+h/2;
@@ -92,36 +84,39 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
 
       if(c)                   /* split text into two lines */
       {  *c = 0;
-	 h = draw_text(d, Closure->readLinearCurve->layout, 
+	 h = draw_text(cr, Closure->readLinearCurve->layout,
 		       Closure->readAdaptiveSubtitle, x, y, Closure->foreground, 
 		       erase_mask & REDRAW_SUBTITLE); 
-	 h = draw_text(d, Closure->readLinearCurve->layout, 
+	 h = draw_text(cr, Closure->readLinearCurve->layout,
 			c+1, x, y+h, Closure->foreground, 
 			erase_mask & REDRAW_SUBTITLE); 
 	 *c = ' ';
       }
       else                    /* draw text in one line */
-      {  h = draw_text(d, Closure->readLinearCurve->layout, 
+      {  h = draw_text(cr, Closure->readLinearCurve->layout,
 		       Closure->readAdaptiveSubtitle, x, y, Closure->foreground, 
 		       erase_mask & REDRAW_SUBTITLE); 
       }
    }
 
    y += 4*h;
-   h = draw_text(d, Closure->readLinearCurve->layout, 
+   h = draw_text(cr, Closure->readLinearCurve->layout,
 		 _("Sectors processed"), x, y, Closure->foreground, erase_mask & REDRAW_TITLE); 
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("readable"), readable);
-   h = draw_text(d, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground, erase_mask & REDRAW_PROGRESS); 
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+                 erase_mask & REDRAW_PROGRESS);
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("correctable"), correctable);
-   h = draw_text(d, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground, erase_mask & REDRAW_PROGRESS); 
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+                 erase_mask & REDRAW_PROGRESS);
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("missing"), missing);
-   h = draw_text(d, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground, erase_mask & REDRAW_PROGRESS); 
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+                 erase_mask & REDRAW_PROGRESS);
 
    if(min_required > 0 && readable > 0)
    {  int percent = round(((1000*readable)/(readable+correctable+missing)));
@@ -133,20 +128,24 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
       snprintf(buf, 255, _("Readable: %d.%d%% / %d.%d%% required"), 
 	       percent/10, percent%10,
 	       min_required/10, min_required%10);
-      h = draw_text(d, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground, erase_mask & REDRAW_PROGRESS); 
+      h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+                    erase_mask & REDRAW_PROGRESS);
    }
 
    y += h;
    snprintf(buf, 255, _("Total recoverable: %d.%d%%"), percent/10, percent%10);
-   h = draw_text(d, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground, erase_mask & REDRAW_PROGRESS); 
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+                 erase_mask & REDRAW_PROGRESS);
 
 
    if(Closure->readAdaptiveErrorMsg && erase_mask & REDRAW_ERRORMSG)
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, footer_color);
+   {  gdk_cairo_set_source_color(cr, footer_color);
       
       GuiSetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
       y = Closure->readAdaptiveSpiral->my + Closure->readAdaptiveSpiral->diameter/2 - h;
-      gdk_draw_layout(d, Closure->drawGC, x, y, Closure->readLinearCurve->layout);
+      cairo_move_to(cr, x, y);
+      gdk_cairo_set_source_color(cr, Closure->foreground);
+      pango_cairo_show_layout(cr, Closure->readLinearCurve->layout);
    }
 }
 
