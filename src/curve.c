@@ -170,30 +170,33 @@ void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_pa
  ***/
 
 void GuiRedrawAxes(Curve *curve)
-{  GdkDrawable *d = curve->widget->window;
+{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(curve->widget));
    int i,w,h,x,y; 
    int yg=0;
    int step;
    int bottom_y;
 
    /* Draw and label the left coordinate axis */
+   cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
+   cairo_set_line_width(cr, 1);
+   gdk_cairo_set_source_color(cr, Closure->foreground);
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-
-   gdk_draw_line(d, Closure->drawGC,
-		 curve->leftX, curve->topY, curve->leftX, curve->bottomY);
+   cairo_move_to(cr, curve->leftX + 0.5, curve->topY + 0.5);
+   cairo_line_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
+   cairo_stroke(cr);
 
    if(curve->enable & DRAW_LCURVE)
-   {  gdk_draw_line(d, Closure->drawGC,
-		    curve->leftX, curve->topLY, curve->leftX, curve->bottomLY);
+   {  cairo_move_to(cr, curve->leftX + 0.5, curve->topLY + 0.5);
+      cairo_line_to(cr, curve->leftX + 0.5, curve->bottomLY + 0.5);
+      cairo_stroke(cr);
    }
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
+   gdk_cairo_set_source_color(cr, Closure->curveColor);
    GuiSetText(curve->layout, curve->leftLabel, &w, &h);
    x = curve->leftX - w/2;
    if(x < 5) x = 5;
-   gdk_draw_layout(d, Closure->drawGC, 
-		   x, curve->topY - h - 5, curve->layout);
+   cairo_move_to(cr, x, curve->topY - h - 5);
+   pango_cairo_show_layout(cr, curve->layout);
 
 
    /* Draw and label the grid lines for the log curve */
@@ -202,37 +205,44 @@ void GuiRedrawAxes(Curve *curve)
    {  int val;
       char buf[16];
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
+      gdk_cairo_set_source_color(cr, Closure->logColor);
       GuiSetText(curve->layout, curve->leftLogLabel, &w, &h);
 
       x = curve->leftX - w/2;
       if(x < 5) x = 5;
-      gdk_draw_layout(d, Closure->drawGC, 
-		      x, curve->topLY - h - 5, curve->layout);
+      cairo_move_to(cr, x, curve->topLY - h - 5);
+      pango_cairo_show_layout(cr, curve->layout);
 
       
       for(val=400; val>3; val/=2)
       {  y = GuiCurveLogY(curve, val);
-	 sprintf(buf,"%d",val);
-	 GuiSetText(curve->layout, buf, &w, &h);
-	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
-	 gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
-	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-	 gdk_draw_line(d, Closure->drawGC, curve->leftX-6, y, curve->leftX, y);
-	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->grid);
-	 gdk_draw_line(d, Closure->drawGC, curve->leftX, y, curve->rightX, y);
+         sprintf(buf,"%d",val);
+         GuiSetText(curve->layout, buf, &w, &h);
+         gdk_cairo_set_source_color(cr, Closure->logColor);
+         cairo_move_to(cr, curve->leftX-9-w, y-h/2);
+         pango_cairo_show_layout(cr, curve->layout);
+         gdk_cairo_set_source_color(cr, Closure->foreground);
+         cairo_move_to(cr, curve->leftX-6 + 0.5, y + 0.5);
+         cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
+         cairo_stroke(cr);
+         gdk_cairo_set_source_color(cr, Closure->grid);
+         cairo_move_to(cr, curve->leftX + 0.5, y + 0.5);
+         cairo_line_to(cr, curve->rightX + 0.5, y + 0.5);
+         cairo_stroke(cr);
 
-	 val /=2;
-	 y = GuiCurveLogY(curve, val);
-	 gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-	 gdk_draw_line(d, Closure->drawGC, curve->leftX-3, y, curve->leftX, y);
+         val /=2;
+         y = GuiCurveLogY(curve, val);
+         gdk_cairo_set_source_color(cr, Closure->foreground);
+         cairo_move_to(cr, curve->leftX-3 + 0.5, y + 0.5);
+         cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
+         cairo_stroke(cr);
 
-	 if(curve->bottomLY-curve->topLY > 8*h)
-	 {  sprintf(buf,"%d",val);
-	    GuiSetText(curve->layout, buf, &w, &h);
-	    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
-	    gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
-	 }
+         if(curve->bottomLY-curve->topLY > 8*h)
+         {  sprintf(buf,"%d",val);
+            GuiSetText(curve->layout, buf, &w, &h);
+            gdk_cairo_set_source_color(cr, Closure->logColor);
+            pango_cairo_show_layout(cr, curve->layout);
+         }
       }
    }
 
@@ -248,42 +258,55 @@ void GuiRedrawAxes(Curve *curve)
       GuiSetText(curve->layout, buf, &w, &h);
 
       y = yg = GuiCurveY(curve, i);
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-      gdk_draw_layout(d, Closure->drawGC, curve->leftX-9-w, y-h/2, curve->layout);
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
-      gdk_draw_line(d, Closure->drawGC, curve->leftX-6, y, curve->leftX, y);
+      gdk_cairo_set_source_color(cr, Closure->curveColor);
+      cairo_move_to(cr, curve->leftX-9-w, y-h/2);
+      pango_cairo_show_layout(cr, curve->layout);
+      gdk_cairo_set_source_color(cr, Closure->foreground);
+      cairo_move_to(cr, curve->leftX-6 + 0.5, y + 0.5);
+      cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
+      cairo_stroke(cr);
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->grid);
-      gdk_draw_line(d, Closure->drawGC, curve->leftX, y, curve->rightX, y);
+      gdk_cairo_set_source_color(cr, Closure->grid);
+      cairo_move_to(cr, curve->leftX + 0.5, y + 0.5);
+      cairo_line_to(cr, curve->rightX + 0.5, y + 0.5);
+      cairo_stroke(cr);
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+      gdk_cairo_set_source_color(cr, Closure->foreground);
       y = GuiCurveY(curve, i+step/2);
-      if(y >= curve->topY)
-        gdk_draw_line(d, Closure->drawGC, curve->leftX-3, y, curve->leftX, y);
+      if(y >= curve->topY) {
+         cairo_move_to(cr, curve->leftX-3 + 0.5, y + 0.5);
+         cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
+         cairo_stroke(cr);
+      }
    }
 
 
    /* Draw the right coordinate axis */
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+   gdk_cairo_set_source_color(cr, Closure->foreground);
 
-   gdk_draw_line(d, Closure->drawGC,
-		 curve->rightX, curve->topY, curve->rightX, curve->bottomY);
+   cairo_move_to(cr, curve->rightX + 0.5, curve->topY + 0.5);
+   cairo_line_to(cr, curve->rightX + 0.5, curve->bottomY + 0.5);
+   cairo_stroke(cr);
 
-   if(curve->enable & DRAW_LCURVE)
-      gdk_draw_line(d, Closure->drawGC,
-		    curve->rightX, curve->topLY, curve->rightX, curve->bottomLY);
+   if(curve->enable & DRAW_LCURVE) {
+      cairo_move_to(cr, curve->rightX + 0.5, curve->topLY + 0.5);
+      cairo_line_to(cr, curve->rightX + 0.5, curve->bottomLY + 0.5);
+      cairo_stroke(cr);
+   }
 
    /* Draw and label the bottom coordinate axis */
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+   gdk_cairo_set_source_color(cr, Closure->foreground);
 
-   gdk_draw_line(d, Closure->drawGC,
-		 curve->leftX, curve->bottomY, curve->rightX, curve->bottomY);
+   cairo_move_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
+   cairo_line_to(cr, curve->rightX + 0.5, curve->bottomY + 0.5);
+   cairo_stroke(cr);
 
    if(curve->enable & DRAW_LCURVE)
-   {  gdk_draw_line(d, Closure->drawGC,
-		    curve->leftX, curve->bottomLY, curve->rightX, curve->bottomLY);
+   {  cairo_move_to(cr, curve->leftX + 0.5, curve->bottomLY + 0.5);
+      cairo_line_to(cr, curve->rightX + 0.5, curve->bottomLY + 0.5);
+      cairo_stroke(cr);
       bottom_y = curve->bottomLY;
    }
    else bottom_y = curve->bottomY;
@@ -312,21 +335,32 @@ void GuiRedrawAxes(Curve *curve)
       GuiSetText(curve->layout, buf, &w, &h);
 
       x = GuiCurveLX(curve,i)-1;
-      gdk_draw_line(d, Closure->drawGC, x, bottom_y+6, x, bottom_y);
-      gdk_draw_layout(d, Closure->drawGC, x-w/2, bottom_y+8, curve->layout);
+      cairo_move_to(cr, x + 0.5, bottom_y+6 + 0.5);
+      cairo_line_to(cr, x + 0.5, bottom_y + 0.5);
+      cairo_stroke(cr);
+      cairo_move_to(cr, x-w/2, bottom_y+8);
+      pango_cairo_show_layout(cr, curve->layout);
 
       if(i && x < curve->rightX)
-      {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->grid);
-         gdk_draw_line(d, Closure->drawGC, x, curve->bottomY-1, x, yg);
+      {  gdk_cairo_set_source_color(cr, Closure->grid);
+         cairo_move_to(cr, x + 0.5, curve->bottomY-1 + 0.5);
+         cairo_line_to(cr, x + 0.5, yg + 0.5);
+         cairo_stroke(cr);
 
-	 if(curve->enable & DRAW_LCURVE)
-	    gdk_draw_line(d, Closure->drawGC, x, curve->bottomLY-1, x, curve->topLY);
+         if(curve->enable & DRAW_LCURVE) {
+            cairo_move_to(cr, x + 0.5, curve->bottomLY-1 + 0.5);
+            cairo_line_to(cr, x + 0.5, curve->topLY + 0.5);
+            cairo_stroke(cr);
+         }
       }
 
-      gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->foreground);
+      gdk_cairo_set_source_color(cr, Closure->foreground);
       x = GuiCurveLX(curve,i+step/2)-1;
-      if(x < curve->rightX)
-        gdk_draw_line(d, Closure->drawGC, x, bottom_y+3, x, bottom_y);
+      if(x < curve->rightX) {
+         cairo_move_to(cr, x + 0.5, bottom_y+3 + 0.5);
+         cairo_line_to(cr, x + 0.5, bottom_y + 0.5);
+         cairo_stroke(cr);
+      }
    }
 }
 
@@ -335,12 +369,14 @@ void GuiRedrawAxes(Curve *curve)
  */
 
 void GuiRedrawCurve(Curve *curve, int last)
-{  int i,x0,x1,fy0,fy1;
+{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(curve->widget));
+   int i,x0,x1,fy0,fy1;
 
    x0  = GuiCurveX(curve, 0);
    fy0 = GuiCurveY(curve, curve->fvalue[0]);
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
+   gdk_cairo_set_source_color(cr, Closure->curveColor);
+   cairo_set_line_width(cr, 1.0);
 
    /* Draw the curve */
 
@@ -351,10 +387,9 @@ void GuiRedrawCurve(Curve *curve, int last)
       {  int iy  = GuiCurveY(curve, curve->ivalue[i]);
 
 	 if(curve->ivalue[i] > 0)
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->barColor);
-	    gdk_draw_rectangle(curve->widget->window,
-			       Closure->drawGC, TRUE,
-			       x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomY-iy);
+	 {  gdk_cairo_set_source_color(cr, Closure->barColor);
+	    cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomY-iy);
+            cairo_fill(cr);
 	 }
       }
 
@@ -362,19 +397,20 @@ void GuiRedrawCurve(Curve *curve, int last)
       {  int iy  = GuiCurveLogY(curve, curve->lvalue[i]);
 
 	 if(curve->lvalue[i] > 0)
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
-	    gdk_draw_rectangle(curve->widget->window,
-			       Closure->drawGC, TRUE,
-			       x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomLY-iy);
-	 }
+         {  gdk_cairo_set_source_color(cr, Closure->logColor);
+            cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomLY-iy);
+            cairo_fill(cr);
+         }
       }
 
       if(curve->enable & DRAW_FCURVE && curve->fvalue[i] >= 0)
       {  fy1 = GuiCurveY(curve, curve->fvalue[i]);
 
 	 if(x0 < x1)
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-	    gdk_draw_line(curve->widget->window, Closure->drawGC, x0, fy0, x1, fy1);
+         {  gdk_cairo_set_source_color(cr, Closure->curveColor);
+            cairo_move_to(cr, x0, fy0);
+            cairo_line_to(cr, x1, fy1);
+            cairo_stroke(cr);
 	    fy0 = fy1;
 	 }
       }
