@@ -73,8 +73,8 @@ void GuiSetSpiralWidget(Spiral *spiral, GtkWidget *widget)
 {  GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
 
-   if(!spiral->drawable)
-   {  spiral->drawable     = gtk_widget_get_window(widget);
+   if(!spiral->widget)
+   {  spiral->widget       = widget;
       spiral->mx           = a.width/2;
       spiral->my           = a.height/2;
    }
@@ -105,13 +105,15 @@ void GuiFillSpiral(Spiral *spiral, GdkColor *color)
  */
 
 void GuiDrawSpiral(Spiral *spiral)
-{  double a;
+{  GdkDrawable *d;
+   double a;
    int xi0,yi0,xo0,yo0;
    double scale_i,scale_o;
    int i;
    GdkPoint points[4];
 
-   if(!spiral->drawable) return;
+   if(!spiral->widget) return;
+   d = gtk_widget_get_window(spiral->widget);
 
    scale_i = spiral->startRadius;
    scale_o = spiral->startRadius + spiral->segmentSize;
@@ -138,9 +140,9 @@ void GuiDrawSpiral(Spiral *spiral)
       points[3].x = xi1; points[3].y = yi1;
 
       gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->segmentColor[i]);
-      gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
+      gdk_draw_polygon(d, Closure->drawGC, TRUE, points, 4);
       gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->outline);
-      gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
+      gdk_draw_polygon(d, Closure->drawGC, FALSE, points, 4);
 
       xi0 = xi1; yi0 = yi1;
       xo0 = xo1; yo0 = yo1;
@@ -152,7 +154,8 @@ void GuiDrawSpiral(Spiral *spiral)
  */
 
 void GuiDrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
-{  double a;
+{  GdkDrawable *d = gtk_widget_get_window(spiral->widget);
+   double a;
    double scale_i,scale_o,ring_expand;
    GdkPoint points[4];
 
@@ -183,9 +186,9 @@ void GuiDrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
 
    spiral->segmentColor[segment] = color;
    gdk_gc_set_rgb_fg_color(Closure->drawGC, color);
-   gdk_draw_polygon(spiral->drawable, Closure->drawGC, TRUE, points, 4);
+   gdk_draw_polygon(d, Closure->drawGC, TRUE, points, 4);
    gdk_gc_set_rgb_fg_color(Closure->drawGC, spiral->outline);
-   gdk_draw_polygon(spiral->drawable, Closure->drawGC, FALSE, points, 4);
+   gdk_draw_polygon(d, Closure->drawGC, FALSE, points, 4);
 }
 
 /*
@@ -194,7 +197,7 @@ void GuiDrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
 
 void GuiDrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
 			char *text, GdkColor *color, int x, int line)
-{  GdkDrawable *d = spiral->drawable;
+{  GdkDrawable *d = gtk_widget_get_window(spiral->widget);
    int w,h,y;
 
    GuiSetText(layout, text, &w, &h);

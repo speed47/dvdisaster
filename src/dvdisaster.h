@@ -1525,7 +1525,7 @@ void EndIterativeSmartLEC(void*);
  ***/
 
 typedef struct _Spiral
-{  GdkDrawable *drawable;
+{  GtkWidget *widget;
    int mx, my;
    int startRadius;
    int segmentSize;
