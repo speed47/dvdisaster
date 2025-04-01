@@ -176,28 +176,8 @@ void GuiRedrawAxes(Curve *curve)
    int step;
    int bottom_y;
 
-   /* Draw and label the left coordinate axis */
    cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
    cairo_set_line_width(cr, 1);
-   gdk_cairo_set_source_color(cr, Closure->foreground);
-
-   cairo_move_to(cr, curve->leftX + 0.5, curve->topY + 0.5);
-   cairo_line_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
-   cairo_stroke(cr);
-
-   if(curve->enable & DRAW_LCURVE)
-   {  cairo_move_to(cr, curve->leftX + 0.5, curve->topLY + 0.5);
-      cairo_line_to(cr, curve->leftX + 0.5, curve->bottomLY + 0.5);
-      cairo_stroke(cr);
-   }
-
-   gdk_cairo_set_source_color(cr, Closure->curveColor);
-   GuiSetText(curve->layout, curve->leftLabel, &w, &h);
-   x = curve->leftX - w/2;
-   if(x < 5) x = 5;
-   cairo_move_to(cr, x, curve->topY - h - 5);
-   pango_cairo_show_layout(cr, curve->layout);
-
 
    /* Draw and label the grid lines for the log curve */
 
@@ -280,6 +260,26 @@ void GuiRedrawAxes(Curve *curve)
       }
    }
 
+
+   /* Draw and label the left coordinate axis */
+   gdk_cairo_set_source_color(cr, Closure->foreground);
+
+   cairo_move_to(cr, curve->leftX + 0.5, curve->topY + 0.5);
+   cairo_line_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
+   cairo_stroke(cr);
+
+   if(curve->enable & DRAW_LCURVE)
+   {  cairo_move_to(cr, curve->leftX + 0.5, curve->topLY + 0.5);
+      cairo_line_to(cr, curve->leftX + 0.5, curve->bottomLY + 0.5);
+      cairo_stroke(cr);
+   }
+
+   gdk_cairo_set_source_color(cr, Closure->curveColor);
+   GuiSetText(curve->layout, curve->leftLabel, &w, &h);
+   x = curve->leftX - w/2;
+   if(x < 5) x = 5;
+   cairo_move_to(cr, x, curve->topY - h - 5);
+   pango_cairo_show_layout(cr, curve->layout);
 
    /* Draw the right coordinate axis */
 
