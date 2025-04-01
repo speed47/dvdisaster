@@ -414,7 +414,7 @@ typedef struct _GlobalClosure
    /*** Widgets for the linear reading/scanning action */
 
    GtkWidget *readLinearHeadline;
-   GtkWidget *readLinearDrawingArea;
+   GtkWidget *readLinearCurveArea;
    struct _Curve  *readLinearCurve;
    struct _Spiral *readLinearSpiral;
    GtkWidget *readLinearNotebook;

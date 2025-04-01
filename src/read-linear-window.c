@@ -47,7 +47,7 @@ static void update_geometry(void);
 
 static gboolean max_speed_idle_func(gpointer data)
 {  
-   gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
+   gdk_window_clear(gtk_widget_get_window(Closure->readLinearCurveArea));
    update_geometry();
    redraw_curve();
 
@@ -143,7 +143,7 @@ static gboolean curve_idle_func(gpointer data)
    {  Closure->readLinearCurve->maxY = Closure->readLinearCurve->fvalue[ci->percent] + 1;
 
       update_geometry();
-      gdk_window_clear(gtk_widget_get_window(Closure->readLinearDrawingArea));
+      gdk_window_clear(gtk_widget_get_window(Closure->readLinearCurveArea));
       redraw_curve();
       rc->lastPlotted = ci->percent;
       rc->lastPlottedY = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
@@ -276,22 +276,17 @@ void GuiMarkExistingSectors(void)
  * Redraw the whole curve
  */
 
-/* Calculate the geometry of the curve and spiral */
+static void redraw_curve(void)
+{
+   GuiRedrawAxes(Closure->readLinearCurve);
+   GuiRedrawCurve(Closure->readLinearCurve, 1000);
+}
+
+/* Calculate the geometry of the curve */
 
 static void update_geometry(void)
-{  GtkWidget *widget = Closure->readLinearDrawingArea;
-   GtkAllocation a = {0};
-   gtk_widget_get_allocation(widget, &a);
-
-   /* Curve geometry */ 
-
-   GuiUpdateCurveGeometry(Closure->readLinearCurve, "99x", 
-			  Closure->readLinearSpiral->diameter + 30);
-
-   /* Spiral center */
-
-   Closure->readLinearSpiral->mx = a.width - 15 - Closure->readLinearSpiral->diameter / 2;
-   Closure->readLinearSpiral->my = a.height / 2;
+{
+   GuiUpdateCurveGeometry(Closure->readLinearCurve, "99x", 10);
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
    {  int w,h;
@@ -310,14 +305,14 @@ static void update_geometry(void)
 
 }
 
-static void redraw_curve(void)
-{  GdkWindow *d = gtk_widget_get_window(Closure->readLinearDrawingArea);
+static void redraw_spiral_labels(void)
+{  GdkWindow *d = gtk_widget_get_window(Closure->readLinearSpiral->widget);
    int x,w,h;
    int pos = 1;
 
    /* Draw and label the spiral */
 
-   x = Closure->readLinearCurve->rightX + 20;
+   x = 10;
    gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
    GuiSetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
    gdk_draw_layout(d, Closure->drawGC, 
@@ -344,22 +339,26 @@ static void redraw_curve(void)
 		      _("Unreadable / skipped"), Closure->redSector, x, pos++);
 
    GuiDrawSpiral(Closure->readLinearSpiral);
-
-   /* Redraw the curve */
-
-   GuiRedrawAxes(Closure->readLinearCurve);
-   GuiRedrawCurve(Closure->readLinearCurve, 1000);
 }
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  
-   GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
-  
-   if(event->count) /* Exposure compression */
-     return TRUE;
-
+static gboolean expose_curve_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
    update_geometry();
    redraw_curve();
+
+   return TRUE;
+}
+
+static gboolean expose_spiral_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{  GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
+
+   GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
+
+   /* Override spiral center */
+   Closure->readLinearSpiral->mx = a.width - 15 - Closure->readLinearSpiral->diameter / 2;
+
+   redraw_spiral_labels();
 
    return TRUE;
 }
@@ -391,7 +390,7 @@ static gboolean redraw_idle_func(gpointer data)
 
    /* Trigger an expose event for the drawing area. */
 
-   window = gtk_widget_get_parent_window(Closure->readLinearDrawingArea);
+   window = gtk_widget_get_parent_window(Closure->readLinearCurveArea);
    if(window) 
    {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
 
@@ -411,7 +410,7 @@ void GuiRedrawReadLinearWindow(void)
  ***/
 
 void GuiCreateLinearReadWindow(GtkWidget *parent)
-{  GtkWidget *sep,*ignore,*d_area,*notebook,*hbox;
+{  GtkWidget *sep,*ignore,*curve,*spiral,*notebook,*hbox;
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(Closure->readLinearHeadline), 0.0, 0.0); 
@@ -425,9 +424,18 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    sep = gtk_hseparator_new();
    gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
 
-   d_area = Closure->readLinearDrawingArea = gtk_drawing_area_new();
-   gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), NULL);
+   hbox = gtk_hbox_new(FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(parent), hbox, TRUE, TRUE, 0);
+
+   curve = Closure->readLinearCurveArea = gtk_drawing_area_new();
+   gtk_box_pack_start(GTK_BOX(hbox), curve, TRUE, TRUE, 0);
+   g_signal_connect(G_OBJECT(curve), "expose_event", G_CALLBACK(expose_curve_cb), NULL);
+
+   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
+   spiral = gtk_drawing_area_new();
+   gtk_widget_set_size_request(spiral, Closure->readLinearSpiral->diameter + 20, -1);
+   gtk_box_pack_start(GTK_BOX(hbox), spiral, FALSE, FALSE, 0);
+   g_signal_connect(G_OBJECT(spiral), "expose_event", G_CALLBACK(expose_spiral_cb), NULL);
 
    notebook = Closure->readLinearNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
@@ -452,8 +460,7 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), Closure->readLinearFootline, ignore);
 
-   Closure->readLinearCurve  = GuiCreateCurve(d_area, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
+   Closure->readLinearCurve  = GuiCreateCurve(curve, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
    Closure->readLinearCurve->leftLogLabel = g_strdup(_("C2 errors"));
-   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
 }
 #endif /* WITH_GUI_YES */
