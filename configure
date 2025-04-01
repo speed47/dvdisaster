@@ -86,7 +86,7 @@ REQUIRE_GLIB2 2 32 0
 echo
 
 if test "$cfg_with_gui" == "yes"; then
-  REQUIRE_GTK2 2 6 0 WITH_THREADS
+  REQUIRE_GTK3 3 4 0 WITH_THREADS
 fi
 
 if ! CHECK_INCLUDE locale.h locale || ! CHECK_INCLUDE libintl.h intl ; then
