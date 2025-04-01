@@ -370,52 +370,60 @@ void GuiRedrawAxes(Curve *curve)
 
 void GuiRedrawCurve(Curve *curve, int last)
 {  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(curve->widget));
-   int i,x0,x1,fy0,fy1;
-
-   x0  = GuiCurveX(curve, 0);
-   fy0 = GuiCurveY(curve, curve->fvalue[0]);
+   int i,x0,x1,fy0;
 
    gdk_cairo_set_source_color(cr, Closure->curveColor);
    cairo_set_line_width(cr, 1.0);
 
-   /* Draw the curve */
+   /* Draw integer bar curve */
 
-   for(i=1; i<=last; i++)
-   {  x1  = GuiCurveX(curve, i);
-
-      if(curve->enable & DRAW_ICURVE)
-      {  int iy  = GuiCurveY(curve, curve->ivalue[i]);
-
-	 if(curve->ivalue[i] > 0)
-	 {  gdk_cairo_set_source_color(cr, Closure->barColor);
-	    cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomY-iy);
-            cairo_fill(cr);
-	 }
-      }
-
-      if(curve->enable & DRAW_LCURVE)
-      {  int iy  = GuiCurveLogY(curve, curve->lvalue[i]);
-
-	 if(curve->lvalue[i] > 0)
-         {  gdk_cairo_set_source_color(cr, Closure->logColor);
-            cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomLY-iy);
+   if(curve->enable & DRAW_ICURVE)
+   {  gdk_cairo_set_source_color(cr, Closure->barColor);
+      x0 = GuiCurveX(curve, 0);
+      for(i=1; i<=last; i++)
+      {  x1 = GuiCurveX(curve, i);
+         int iy = GuiCurveY(curve, curve->ivalue[i]);
+         if(curve->ivalue[i] > 0)
+         {  cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomY-iy);
             cairo_fill(cr);
          }
+         x0 = x1;
       }
+   }
 
-      if(curve->enable & DRAW_FCURVE && curve->fvalue[i] >= 0)
-      {  fy1 = GuiCurveY(curve, curve->fvalue[i]);
+   /* Draw logarithmic integer curve */
 
-	 if(x0 < x1)
-         {  gdk_cairo_set_source_color(cr, Closure->curveColor);
-            cairo_move_to(cr, x0, fy0);
-            cairo_line_to(cr, x1, fy1);
-            cairo_stroke(cr);
-	    fy0 = fy1;
-	 }
+   if(curve->enable & DRAW_LCURVE)
+   {  x0 = GuiCurveX(curve, 0);
+      for(i=1; i<=last; i++)
+      {  gdk_cairo_set_source_color(cr, Closure->logColor);
+         x1 = GuiCurveX(curve, i);
+         int iy = GuiCurveLogY(curve, curve->lvalue[i]);
+
+         if(curve->lvalue[i] > 0)
+         {  cairo_rectangle(cr, x0, iy, x0==x1 ? 1 : x1-x0, curve->bottomLY-iy);
+            cairo_fill(cr);
+         }
+         x0 = x1;
       }
+   }
 
-      x0 = x1;
+   /* Draw regular (floating point) curve */
+
+   if(curve->enable & DRAW_FCURVE)
+   {  x0 = GuiCurveX(curve, 0);
+      fy0 = GuiCurveY(curve, curve->fvalue[0]);
+      gdk_cairo_set_source_color(cr, Closure->curveColor);
+      cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+      cairo_move_to(cr, x0, fy0);
+      for(i=1; i<=last; i++)
+      {  x1 = GuiCurveX(curve, i);
+         if(x0 < x1 && curve->fvalue[i] >= 0)
+         {  cairo_line_to(cr, x1, GuiCurveY(curve, curve->fvalue[i]));
+            x0 = x1;
+         }
+      }
+      cairo_stroke(cr);
    }
 }
 #endif /* WITH_GUI_YES */
