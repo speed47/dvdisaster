@@ -197,7 +197,7 @@ static gboolean clip_idle_func(gpointer data)
       spiral->segmentClipping = spiral->segmentCount;
    
       for(i=clipping; i < spiral->segmentCount; i++)
-	GuiDrawSpiralSegment(spiral, Closure->background, i);
+	GuiSetSpiralSegmentColor(spiral, Closure->background, i);
 
       spiral->outline = outline;
       spiral->segmentClipping = clipping;
@@ -205,7 +205,7 @@ static gboolean clip_idle_func(gpointer data)
       /* Now redraw the last turn */
 
       for(i=ADAPTIVE_READ_SPIRAL_SIZE-300; i<=clipping; i++)
-	GuiDrawSpiralSegment(spiral, Closure->background, i);
+	GuiSetSpiralSegmentColor(spiral, Closure->background, i);
    }   
 
    return FALSE;
@@ -231,7 +231,7 @@ static gboolean segment_idle_func(gpointer data)
 {  int segment = GPOINTER_TO_INT(data);
   
    segment-=100;
-   GuiDrawSpiralSegment(Closure->readAdaptiveSpiral,
+   GuiSetSpiralSegmentColor(Closure->readAdaptiveSpiral,
 			Closure->readAdaptiveSpiral->segmentColor[segment],
 			segment);
 
@@ -256,7 +256,7 @@ static gboolean remove_fill_idle_func(gpointer data)
 
    for(i=0; i<spiral->segmentCount; i++)
      if(spiral->segmentColor[i] == Closure->whiteSector)
-       GuiDrawSpiralSegment(spiral, Closure->background, i);
+       GuiSetSpiralSegmentColor(spiral, Closure->background, i);
 
    return FALSE;
 }

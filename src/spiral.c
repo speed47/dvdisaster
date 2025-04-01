@@ -156,7 +156,7 @@ void GuiDrawSpiral(Spiral *spiral)
  * Draw just one segment of the spiral
  */
 
-void GuiDrawSpiralSegment(Spiral *spiral, GdkColor *color, int segment)
+void GuiSetSpiralSegmentColor(Spiral *spiral, GdkColor *color, int segment)
 {
    if (spiral->segmentColor[segment] != color)
    {  spiral->segmentColor[segment] = color;

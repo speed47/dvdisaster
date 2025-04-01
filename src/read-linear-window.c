@@ -112,15 +112,15 @@ static gboolean curve_idle_func(gpointer data)
    gtk_label_set_text(GTK_LABEL(Closure->readLinearErrors), utf);
    g_free(utf);
 
-   /*** Draw the changed spiral segments */
+   /*** Update color of the changed spiral segments */
 
    for(i=rc->lastSegment; i<ci->percent; i++)
      switch(Closure->readLinearCurve->ivalue[i])
-     {  case 0: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->blueSector, i); break;
-        case 1: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->greenSector, i); break;
-        case 2: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->redSector, i); break;
-        case 3: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->darkSector, i); break;
-        case 4: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->yellowSector, i); break;
+     {  case 0: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->blueSector, i); break;
+        case 1: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->greenSector, i); break;
+        case 2: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->redSector, i); break;
+        case 3: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->darkSector, i); break;
+        case 4: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->yellowSector, i); break;
      }
 
    rc->lastSegment = ci->percent;

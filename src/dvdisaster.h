@@ -1546,10 +1546,10 @@ void GuiFreeSpiral(Spiral*);
 
 void GuiFillSpiral(Spiral*, GdkColor*);
 void GuiDrawSpiral(Spiral*);
-void GuiDrawSpiralSegment(Spiral*, GdkColor*, int);
 void GuiDrawSpiralLabel(Spiral*, PangoLayout*, char*, GdkColor*, int, int);
 void GuiChangeSpiralCursor(Spiral*, int);
 void GuiMoveSpiralCursor(Spiral*, int);
+void GuiSetSpiralSegmentColor(Spiral*, GdkColor*, int);
 #else
 #define GuiChangeSpiralCursor(a, b)
 #define GuiFreeSpiral(s)
