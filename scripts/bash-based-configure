@@ -1,5 +1,5 @@
 #  Bash based configure - library of test functions
-#  Copyright (C) 2004-2016 Carsten Gnörlich
+#  Copyright (C) 2004-2016 Carsten Gnï¿½rlich
 #  Copyright (C) 2019-2021 The dvdisaster development team.
 #
 #  Email: support@dvdisaster.org
@@ -1477,13 +1477,13 @@ EOF
 }
 
 #
-# Require the GTK2 includes and libraries.
+# Require the GTK3 includes and libraries.
 # Unlike with the other packages, we don't have to fid out about the includes
 # and libraries by ourselves, but just query pkg-config about them.
 # It seems that people have more trouble with getting GTK+ to work
 # than with other toolkits, so we try a bit harder to diagnose them here.
 
-function REQUIRE_GTK2()
+function REQUIRE_GTK3()
 {  local want_major="$1"
    local want_minor="$2"
    local want_micro="$3"
@@ -1496,33 +1496,33 @@ function REQUIRE_GTK2()
 
    if test "$want_threads" == "WITH_THREADS"; then threads="--libs gthread-2.0"; fi
 
-   echo -e "\n/* *** REQUIRE_GTK2 */\n" >>$LOGFILE
+   echo -e "\n/* *** REQUIRE_GTK3 */\n" >>$LOGFILE
 
    echo "Gtk+ ${want_major}.${want_minor}.${want_micro} is required..."
 
    # See if pkgconfig returns something
 
    echo -n " pkg-config... "
-   if pkg-config --cflags gtk+-2.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-2.0 >>config.tmp 2>&1 ; then
+   if pkg-config --cflags gtk+-3.0 >>config.tmp 2>&1 && pkg-config $threads --libs gtk+-3.0 >>config.tmp 2>&1 ; then
         echo "works"
 	rm config.tmp
-   else 
+   else
 	echo "failed"
 	echo -e "\nError message(s) from pkg-config were:"
 	cat config.tmp
 	rm config.tmp
- 	cat <<EOF
+	cat <<EOF
 
 Make sure you have the following packages installed:
 - pkg-config (sometimes, the obvious is overlooked ;-)
 - glib2
 - pango
 - atk
-- gtk2
+- gtk3
 
 Some GNU/Linux distributions (e.g. SuSE) distinguish between
-end-user packages of the libraries (e.g. 'gtk2') and
-versions suitable for building programs (e.g. 'gtk2-devel').
+end-user packages of the libraries (e.g. 'gtk3') and
+versions suitable for building programs (e.g. 'gtk3-devel').
 You might have to install the development versions explicitly
 even if you have already GTK+ or Gnome applications running
 on your system.
@@ -1533,17 +1533,17 @@ EOF
 
    # Do a test compile to make sure they did not return some junk
 
-   CFG_GTK2_CFLAGS=`pkg-config --cflags gtk+-2.0`
-   CFG_GTK2_LIBS=`pkg-config $threads --libs gtk+-2.0`
+   CFG_GTK3_CFLAGS=`pkg-config --cflags gtk+-3.0`
+   CFG_GTK3_LIBS=`pkg-config $threads --libs gtk+-3.0`
 
-   CFG_GTK2_BINDIR=`type -P pkg-config`
-   CFG_GTK2_BINDIR=`echo $CFG_GTK2_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
+   CFG_GTK3_BINDIR=`which pkg-config`
+   CFG_GTK3_BINDIR=`echo $CFG_GTK3_BINDIR | sed -e 's/.exe//' | sed -e 's/\/pkg-config//'`
 
-   CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK2_CFLAGS"
-   CFG_LIBS="$CFG_LIBS $CFG_GTK2_LIBS"
+   CFG_CFLAGS="$CFG_CFLAGS $CFG_GTK3_CFLAGS"
+   CFG_LIBS="$CFG_LIBS $CFG_GTK3_LIBS"
 
    cat >conftest.c <<EOF
-#include <gtk/gtkversion.h>
+#include <gtk/gtk.h>
 
 CPPABUSE GTK_MAJOR_VERSION.GTK_MINOR_VERSION.GTK_MICRO_VERSION
 EOF
@@ -1568,9 +1568,9 @@ EOF
 
    # Successfully finished
 
-   echo "CFG_GTK2_CFLAGS = $CFG_GTK2_CFLAGS" >> Makefile.config
-   echo "CFG_GTK2_LIBS = $CFG_GTK2_LIBS" >> Makefile.config
-   echo "CFG_GTK2_BINDIR = $CFG_GTK2_BINDIR" >> Makefile.config
+   echo "CFG_GTK3_CFLAGS = $CFG_GTK3_CFLAGS" >> Makefile.config
+   echo "CFG_GTK3_LIBS = $CFG_GTK3_LIBS" >> Makefile.config
+   echo "CFG_GTK3_BINDIR = $CFG_GTK3_BINDIR" >> Makefile.config
    return 1
 }
 
