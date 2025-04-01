@@ -393,7 +393,6 @@ typedef struct _GlobalClosure
 
    /*** Common stuff for drawing curves and spirals */
 
-   gboolean  colors_initialized;
    GdkRGBA   *redText;
    char      *redMarkup;
    GdkRGBA   *greenText;
@@ -407,7 +406,6 @@ typedef struct _GlobalClosure
    GdkRGBA   *blueSector;
    GdkRGBA   *whiteSector;
    GdkRGBA   *darkSector;
-   char      *invisibleDash;
 
    /*** Widgets for the linear reading/scanning action */
 

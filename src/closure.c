@@ -668,7 +668,6 @@ void FreeClosure()
 
    cond_free(Closure->redMarkup);
    cond_free(Closure->greenMarkup);
-   cond_free(Closure->invisibleDash);
 
    GuiFreeCurve(Closure->readLinearCurve);
    GuiFreeSpiral(Closure->readLinearSpiral);

@@ -40,50 +40,12 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
    Closure->welcomeMessage = state;
 }
 
-static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
-{  GtkWidget *box = (GtkWidget*)data;
-
-   if(!Closure->colors_initialized)
-   {
-      Closure->colors_initialized = TRUE;
-
-      /* Dirty trick for indenting the list:
-	 draw an invisible dash before each indented line */
-
-      if(Closure->welcomeMessage || Closure->version != Closure->dotFileVersion)
-      {  GtkWidget *button;
-
-	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
-						  0xff, 0xff, 0xff); // FIXME
-
-	 GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl3</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-			  "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
-			  "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
-			  "\n"
-			  "Please refer to the <i>Help &gt; Change log</i> menu for all the details."), "https://github.com/speed47/dvdisaster");
-
-	 gtk_box_pack_start(GTK_BOX(box), gtk_hseparator_new(), FALSE, FALSE, 10);
-
-	 button = gtk_check_button_new_with_label(_utf("Show this message again"));
-	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), Closure->welcomeMessage);
-	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), NULL);
-	 gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 0);
-
-	 gtk_widget_show_all(box);
-      }
-   }
-
-   Closure->dotFileVersion = Closure->version;
-
-   return FALSE;
-}
-
 /*
  * Create the window
  */
 
 void GuiCreateWelcomePage(GtkNotebook *notebook)
-{  GtkWidget *box,*align,*ignore;
+{  GtkWidget *box,*button,*align,*ignore;
    int show_msg;
 
    show_msg = Closure->welcomeMessage || Closure->version != Closure->dotFileVersion;
@@ -92,7 +54,6 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    ignore = gtk_label_new("welcome_tab");
    box = show_msg ? gtk_vbox_new(FALSE, 0) : gtk_hbox_new(FALSE, 10);
 
-   g_signal_connect(G_OBJECT(align), "draw", G_CALLBACK(draw_cb), box);
    gtk_notebook_append_page(notebook, align, ignore);
 
    gtk_container_add(GTK_CONTAINER(align), box);
@@ -120,7 +81,21 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
 
    GuiAboutText(box, _("<i>New in this Version:</i>"));
 
-   /* actual list is generated in the expose event handler */
+   GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl3</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
+      "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
+      "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
+      "\n"
+      "Please refer to the <i>Help &gt; Change log</i> menu for all the details."), "https://github.com/speed47/dvdisaster");
 
+   gtk_box_pack_start(GTK_BOX(box), gtk_hseparator_new(), FALSE, FALSE, 10);
+
+   button = gtk_check_button_new_with_label(_utf("Show this message again"));
+   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), Closure->welcomeMessage);
+   g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), NULL);
+   gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 0);
+
+   gtk_widget_show_all(box);
+
+   Closure->dotFileVersion = Closure->version;
 }
 #endif /* WITH_GUI_YES */
