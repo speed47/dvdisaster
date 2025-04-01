@@ -98,7 +98,8 @@ jobs:
           ./dvdisaster.exe --version
           file dvdisaster.exe
           if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
-          file dvdisaster.exe | grep -q '${{ matrix.grep }}, for MS Windows'
+          file dvdisaster.exe | grep -q '${{ matrix.grep }}'
+          file dvdisaster.exe | grep -q 'for MS Windows'
       - name: check executable (GUI)
         if: matrix.ui == 'gui'
         run: if ./dvdisaster.exe --version | grep NOGUI; then exit 1; fi
