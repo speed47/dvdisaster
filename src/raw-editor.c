@@ -321,7 +321,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
          memcpy(rec->undoRing[0], rec->rb->rawBuf[0], rec->rb->sampleSize);
          calculate_failures(rec);
          evaluate_vectors(rec);
-         render_sector(rec);
+         gtk_widget_queue_draw(GTK_WIDGET(rec->window));
          GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
                          rec->filepath, rec->rb->lba, rec->rb->samplesRead);
       }
@@ -435,7 +435,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 
             calculate_failures(rec);
             evaluate_vectors(rec);
-            render_sector(rec);
+            gtk_widget_queue_draw(GTK_WIDGET(rec->window));
             undo_remember(rec);
 
             GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
@@ -689,7 +689,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 {  if(type=='P') SetPVector(rb->recovered, vector, v);
 	    else          SetQVector(rb->recovered, vector, v);
 	    evaluate_vectors(rec);
-	    render_sector(rec);
+	    gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	    undo_remember(rec);
 	    GuiSetLabelText(rec->rightLabel, 
 	       _("%c Vector %d corrected (%d erasures)."), type, v, e_scratch);
@@ -724,7 +724,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 i = (last+1)%rb->pn[v];
 	 SetPVector(rb->recovered, rb->pList[v][i], v);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged P vector %d with version %d (of %d)."),
 		      v, i+1, rb->pn[v]);
@@ -760,7 +760,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 i = (last+1)%rb->qn[v];
 	 SetQVector(rb->recovered, rb->qList[v][i], v);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged Q vector %d with version %d (of %d)."),
 		      v, i+1, rb->qn[v]);
@@ -775,7 +775,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
       {  int bytepos = 12 + mouse_x/rec->charWidth + N_P_VECTORS*(mouse_y/rec->charHeight);
 
 	 rec->tags[bytepos] ^= 1;
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
       }
 	 break;
@@ -821,7 +821,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->sectorChanged = FALSE;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
@@ -834,7 +834,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->sectorChanged = FALSE;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
@@ -842,7 +842,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
       case ACTION_UNTAG:
 	 memset(rec->tags, 0, 2352);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 break;
 
@@ -857,7 +857,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	       if(byte != rec->rb->rawBuf[j][i])
 		  rec->tags[i] = 1;
 	 }
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 break;
       }
@@ -865,13 +865,13 @@ static void action_cb(GtkWidget *widget, gpointer data)
       case ACTION_UNDO:
 	 undo(rec);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 break;
 
       case ACTION_REDO:
 	 redo(rec);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 break;
 
       case ACTION_SORT_BY_P:
@@ -880,7 +880,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->currentSample = 0;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest P failures selected."));
 	 break;
@@ -890,7 +890,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->currentSample = 0;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest Q failures selected."));
 	 break;
@@ -901,7 +901,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	    rec->smartLECHandle = PrepareIterativeSmartLEC(rec->rb);
 	 SmartLECIteration(rec->smartLECHandle, message);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Smart L-EC: %s"), message);
 	 break;
