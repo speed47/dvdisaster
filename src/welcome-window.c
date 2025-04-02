@@ -40,7 +40,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
    Closure->welcomeMessage = state;
 }
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  GtkWidget *box = (GtkWidget*)data;
 
    if(!Closure->colors_initialized)
@@ -117,7 +117,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    ignore = gtk_label_new("welcome_tab");
    box = show_msg ? gtk_vbox_new(FALSE, 0) : gtk_hbox_new(FALSE, 10);
 
-   g_signal_connect(G_OBJECT(align), "expose_event", G_CALLBACK(expose_cb), box);
+   g_signal_connect(G_OBJECT(align), "draw", G_CALLBACK(draw_cb), box);
    gtk_notebook_append_page(notebook, align, ignore);
 
    gtk_container_add(GTK_CONTAINER(align), box);

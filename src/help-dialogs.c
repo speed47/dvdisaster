@@ -233,7 +233,7 @@ void GuiFreeLabelWithOnlineHelp(LabelWithOnlineHelp *lwoh)
  * Add a paragraph of text to the help window
  */
 
-static gboolean wrapper_fix_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean wrapper_fix_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  int *last_width = (int*)data;
    GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
@@ -276,7 +276,7 @@ void GuiAddHelpParagraph(LabelWithOnlineHelp *lwoh, char *format, ...)
       which is, well, stupid. */ 
 
    gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
-   g_signal_connect(label, "expose_event", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
+   g_signal_connect(label, "draw", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
 }
 
 /*
@@ -314,7 +314,7 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
       which is, well, stupid. */ 
 
    gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
-   g_signal_connect(label, "expose_event", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
+   g_signal_connect(label, "draw", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
 }
 
 /*

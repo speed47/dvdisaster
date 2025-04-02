@@ -228,15 +228,11 @@ static void redraw_curve(cairo_t *cr, RS03Widgets *wl)
 }
 
 /*
- * Expose callback
+ * Draw callback
  */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
-   RS03Widgets *wl = (RS03Widgets*)data;
-
-   if(event->count) /* Exposure compression */
-     return TRUE;
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{  RS03Widgets *wl = (RS03Widgets*)data;
 
    update_geometry(wl);
    redraw_curve(cr, wl);
@@ -287,7 +283,7 @@ void CreateRS03FixWindow(Method *method, GtkWidget *parent)
 
    d_area = wl->fixDrawingArea = gtk_drawing_area_new();
    gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT (d_area), "expose_event", G_CALLBACK(expose_cb), (gpointer)wl);
+   g_signal_connect(G_OBJECT (d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
    
    notebook = wl->fixNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);

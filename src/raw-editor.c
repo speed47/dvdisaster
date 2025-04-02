@@ -601,18 +601,15 @@ static void render_sector(raw_editor_context *rec)
    }
 }
 
-/* Expose event handler */
+/* Draw event handler */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
 
    if(!rec->layout)
    {  rec->layout = gtk_widget_create_pango_layout(widget, NULL);
       calculate_geometry(rec);
    }
-
-   if(event->count) /* Exposure compression */
-     return TRUE;
 
    evaluate_vectors(rec);
    render_sector(rec);
@@ -1094,7 +1091,7 @@ void GuiCreateRawEditor(void)
       rec->drawingArea = gtk_drawing_area_new();
       gtk_widget_add_events(rec->drawingArea, GDK_BUTTON_PRESS_MASK);
       gtk_box_pack_start(GTK_BOX(hbox), rec->drawingArea, TRUE, TRUE, 0);
-      g_signal_connect(G_OBJECT(rec->drawingArea), "expose_event", G_CALLBACK(expose_cb), NULL);
+      g_signal_connect(G_OBJECT(rec->drawingArea), "draw", G_CALLBACK(draw_cb), NULL);
       g_signal_connect(G_OBJECT(rec->drawingArea), "button_press_event", G_CALLBACK(button_cb), NULL);
    }
 

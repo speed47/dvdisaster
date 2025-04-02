@@ -158,14 +158,11 @@ static void update_geometry(GtkWidget *widget)
    Closure->readAdaptiveSpiral->my = a.height / 2;
 }
 
-/* Expose event handler */
+/* Draw event handler */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
    GuiSetSpiralWidget(Closure->readAdaptiveSpiral, widget);
-  
-   if(event->count) /* Exposure compression */
-     return TRUE;
 
    update_geometry(widget);
    redraw_labels(cr, widget, ~0);
@@ -365,7 +362,7 @@ void GuiCreateAdaptiveReadWindow(GtkWidget *parent)
 
    d_area = Closure->readAdaptiveDrawingArea = gtk_drawing_area_new();
    gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), NULL);
+   g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), NULL);
 
    Closure->readAdaptiveSpiral
      = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 

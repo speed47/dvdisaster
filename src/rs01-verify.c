@@ -136,12 +136,11 @@ static void redraw_spiral(cairo_t *cr, RS01Widgets *wl)
 }
 
 /*
- * expose event handler for the spiral
+ * Draw event handler for the spiral
  */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
-   RS01Widgets *wl = (RS01Widgets*)data;
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{  RS01Widgets *wl = (RS01Widgets*)data;
    GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
    int w,h,size;
@@ -158,10 +157,6 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
    wl->cmpSpiral->mx = a.width / 2;
    wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a.height - size)/2;
-
-   if(event->count) /* Exposure compression */
-   {  return TRUE;
-   }
 
    /* Redraw the spiral */
 
@@ -258,7 +253,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    d_area = wl->cmpDrawingArea = gtk_drawing_area_new();
    gtk_widget_set_size_request(d_area, wl->cmpSpiral->diameter+20, -1);
    gtk_container_add(GTK_CONTAINER(frame), d_area);
-   g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), (gpointer)wl);
+   g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
 
    /*** Ecc info */
 

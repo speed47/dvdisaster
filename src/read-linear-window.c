@@ -273,17 +273,16 @@ static void redraw_spiral_labels(cairo_t *cr)
    GuiDrawSpiral(cr, Closure->readLinearSpiral);
 }
 
-static gboolean expose_curve_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
+static gboolean draw_curve_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
    update_geometry();
    redraw_curve(cr);
 
    return TRUE;
 }
 
-static gboolean expose_spiral_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
-   GtkAllocation a = {0};
+static gboolean draw_spiral_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{  GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
 
    GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
@@ -346,13 +345,13 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 
    curve = Closure->readLinearCurveArea = gtk_drawing_area_new();
    gtk_box_pack_start(GTK_BOX(hbox), curve, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT(curve), "expose_event", G_CALLBACK(expose_curve_cb), NULL);
+   g_signal_connect(G_OBJECT(curve), "draw", G_CALLBACK(draw_curve_cb), NULL);
 
    Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
    spiral = gtk_drawing_area_new();
    gtk_widget_set_size_request(spiral, Closure->readLinearSpiral->diameter + 20, -1);
    gtk_box_pack_start(GTK_BOX(hbox), spiral, FALSE, FALSE, 0);
-   g_signal_connect(G_OBJECT(spiral), "expose_event", G_CALLBACK(expose_spiral_cb), NULL);
+   g_signal_connect(G_OBJECT(spiral), "draw", G_CALLBACK(draw_spiral_cb), NULL);
 
    notebook = Closure->readLinearNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
