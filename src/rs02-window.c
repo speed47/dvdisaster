@@ -152,56 +152,6 @@ void RS02UpdateFixResults(RS02Widgets *wl, gint64 corrected, gint64 uncorrected)
    g_idle_add(results_idle_func, wl);
 }
 
-/*
- * Update the error curve 
- */
-
-static gboolean curve_idle_func(gpointer data)
-{  RS02Widgets *wl = (RS02Widgets*)data;
-   gint x0 = GuiCurveX(wl->fixCurve, (double)wl->lastPercent);
-   gint x1 = GuiCurveX(wl->fixCurve, (double)wl->percent);
-   gint y = GuiCurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
-   gint i;
-
-   /*** Mark unused ecc values */
-
-   for(i=wl->lastPercent+1; i<wl->percent; i++)
-      wl->fixCurve->ivalue[i] = wl->fixCurve->ivalue[wl->percent];
-
-   /*** Resize the Y axes if error values exceeds current maximum */
-
-   if(wl->fixCurve->ivalue[wl->percent] > wl->fixCurve->maxY)
-   {  wl->fixCurve->maxY = wl->fixCurve->ivalue[wl->percent];
-      wl->fixCurve->maxY = wl->fixCurve->maxY - (wl->fixCurve->maxY % 5) + 5;
-
-      update_geometry(wl);
-      gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
-      redraw_curve(wl);
-      wl->lastPercent = wl->percent;
-
-      return FALSE;
-   }
-
-   /*** Draw the error value */
-
-   if(wl->fixCurve->ivalue[wl->percent] > 0)
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->barColor);
-      gdk_draw_rectangle(wl->fixCurve->widget->window,
-			 Closure->drawGC, TRUE,
-			 x0, y, x0==x1 ? 1 : x1-x0, wl->fixCurve->bottomY-y);
-   }
-   wl->lastPercent = wl->percent;
-
-   /* Redraw the ecc capacity threshold line */
-
-   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
-		 Closure->drawGC,
-		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
-   return FALSE;
-}
-
 /* 
  * Add one new data point 
  */
@@ -213,7 +163,7 @@ void RS02AddFixValues(RS02Widgets *wl, int percent, int ecc_max)
 
    wl->fixCurve->ivalue[percent] = ecc_max;
    wl->percent = percent;
-   g_idle_add(curve_idle_func, wl);
+   gtk_widget_queue_draw(wl->fixCurve->widget);
 }
   
 /*

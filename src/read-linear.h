@@ -88,7 +88,6 @@ typedef struct
    gint lastCopied;
    gint lastSegment;
    gint lastPlotted;
-   gint lastPlottedY;
    gint activeRenderers;
    GMutex *rendererMutex;
 
