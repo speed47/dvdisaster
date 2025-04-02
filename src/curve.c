@@ -228,8 +228,10 @@ void GuiRedrawAxes(Curve *curve)
 
    /* Draw and label the grid lines for the normal curve */
 
-   if(curve->maxY < 20) step = 4;
-   else step = 10;
+   if(curve->maxY > 20) step = 10;
+   else if(curve->maxY > 10) step = 4;
+   else if(curve->maxY > 4) step = 2;
+   else step = 1;
 
    for(i=0; i<=curve->maxY; i+=step)
    {  char buf[4];
