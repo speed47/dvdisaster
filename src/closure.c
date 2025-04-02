@@ -718,6 +718,9 @@ void FreeClosure()
      g_free(Closure->readAdaptiveErrorMsg);
 #endif /* WITH_GUI_YES */
 
+   if(Closure->crcBuf)
+     FreeCrcBuf(Closure->crcBuf);
+
    cond_free(Closure->cookedVersion);
    cond_free(Closure->versionString);
    cond_free(Closure->device);
@@ -740,9 +743,6 @@ void FreeClosure()
    cond_free(Closure->simulateCD);
    cond_free(Closure->dDumpDir);
    cond_free(Closure->dDumpPrefix);
-
-   if(Closure->crcBuf)
-     FreeCrcBuf(Closure->crcBuf);
 
    if(Closure->logString)
       g_string_free(Closure->logString, TRUE);
