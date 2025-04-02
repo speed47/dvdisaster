@@ -189,10 +189,13 @@ static void redraw_curve(RS02Widgets *wl)
    /* Ecc capacity threshold line */
 
    y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
-		 Closure->drawGC,
-		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
+
+   cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(wl->fixCurve->widget));
+   gdk_cairo_set_source_color(cr, Closure->greenSector);
+   cairo_set_line_width(cr, 1.0);
+   cairo_move_to(cr, wl->fixCurve->leftX-5.5, y+0.5);
+   cairo_line_to(cr, wl->fixCurve->rightX+5.5, y+0.5);
+   cairo_stroke(cr);
 }
 
 /*
