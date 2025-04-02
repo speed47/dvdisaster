@@ -44,32 +44,13 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  GtkWidget *box = (GtkWidget*)data;
 
    if(!Closure->colors_initialized)
-   {  GdkColor *bg = &gtk_widget_get_style(widget)->bg[0];
-      GdkVisual *cmap = gdk_visual_get_system();
-
-      memcpy(Closure->background, bg, sizeof(GdkColor));
-
-      gdk_colormap_alloc_color(cmap, Closure->foreground, FALSE, TRUE);
-
-      Closure->grid->red = bg->red-bg->red/8;
-      Closure->grid->green = bg->green-bg->green/8;
-      Closure->grid->blue = bg->blue-bg->blue/8;
-      gdk_colormap_alloc_color(cmap, Closure->grid, FALSE, TRUE);
-
-      /* This can't be done at closure.c */
-
-      gdk_colormap_alloc_color(cmap, Closure->redText, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->greenText, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->barColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->logColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->curveColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->redSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->yellowSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->greenSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->blueSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->whiteSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->darkSector, FALSE, TRUE);
-
+   {
+      GdkRGBA fg = {0};
+      GtkStyleContext *context = gtk_widget_get_style_context(widget);
+      gtk_style_context_get_color(context, GTK_STATE_FLAG_NORMAL, &fg);
+      *Closure->foreground   = fg;
+      *Closure->grid         = fg;
+      Closure->grid->alpha   = 0.75;
       Closure->colors_initialized = TRUE;
 
       /* Dirty trick for indenting the list:
@@ -79,7 +60,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
       {  GtkWidget *button;
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
-						  bg->red>>8, bg->green>>8, bg->blue>>8);
+						  0xff, 0xff, 0xff); // FIXME
 
 	 GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl3</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
 			  "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"

@@ -560,7 +560,7 @@ static void clear_progress(read_closure *rc)
 #ifdef WITH_GUI_NO
 #define mark_sector(r, s, c)
 #else
-static void mark_sector(read_closure *rc, gint64 sector, GdkColor *color)
+static void mark_sector(read_closure *rc, gint64 sector, GdkRGBA *color)
 {  int segment;
    int changed = FALSE;
 
@@ -569,8 +569,8 @@ static void mark_sector(read_closure *rc, gint64 sector, GdkColor *color)
    segment = sector / rc->sectorsPerSegment;
 
    if(color)
-   {  GdkColor *old = Closure->readAdaptiveSpiral->segmentColor[segment];
-      GdkColor *new = old;
+   {  GdkRGBA *old = Closure->readAdaptiveSpiral->segmentColor[segment];
+      GdkRGBA *new = old;
 
       if(color == Closure->redSector && old != Closure->redSector)
 	new = color;

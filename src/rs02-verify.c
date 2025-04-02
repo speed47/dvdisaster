@@ -72,7 +72,7 @@ void ResetRS02VerifyWindow(Method *self)
 
 typedef struct _spiral_idle_info
 {  Spiral *cmpSpiral;
-   GdkColor *segColor;
+   GdkRGBA *segColor;
    int from, to;
 } spiral_idle_info;
 

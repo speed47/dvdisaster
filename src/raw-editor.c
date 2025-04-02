@@ -558,7 +558,7 @@ static void render_sector(raw_editor_context *rec)
    if(!d) return;
    cairo_t *cr = gdk_cairo_create(d);
 
-   gdk_cairo_set_source_color(cr, Closure->background);
+   gdk_cairo_set_source_rgba(cr, Closure->background);
    cairo_rectangle(cr, 0, 0, rec->daWidth, rec->daHeight);
    cairo_fill(cr);
 
@@ -568,29 +568,29 @@ static void render_sector(raw_editor_context *rec)
       {  char byte[3];
 
          if(rec->tags[idx])
-         {  gdk_cairo_set_source_color(cr, Closure->curveColor);
+         {  gdk_cairo_set_source_rgba(cr, Closure->curveColor);
             cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
             cairo_fill(cr);
          }
          else if(rec->rb->byteState[idx])
          {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
-            {  gdk_cairo_set_source_color(cr, Closure->yellowSector);
+            {  gdk_cairo_set_source_rgba(cr, Closure->yellowSector);
                cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
                cairo_fill(cr);
             }
             else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
-            {  gdk_cairo_set_source_color(cr, Closure->greenText);
+            {  gdk_cairo_set_source_rgba(cr, Closure->greenText);
                cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
                cairo_fill(cr);
             }
             else
-            {  gdk_cairo_set_source_color(cr, Closure->redText);
+            {  gdk_cairo_set_source_rgba(cr, Closure->redText);
                cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
                cairo_fill(cr);
             }
          }
 
-         gdk_cairo_set_source_color(cr, Closure->foreground);
+         gdk_cairo_set_source_rgba(cr, Closure->foreground);
 
          sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
          idx++;

@@ -220,7 +220,7 @@ static void redraw_curve(cairo_t *cr, RS03Widgets *wl)
 
    y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
 
-   gdk_cairo_set_source_color(cr, Closure->greenSector);
+   gdk_cairo_set_source_rgba(cr, Closure->greenSector);
    cairo_set_line_width(cr, 1.0);
    cairo_move_to(cr, wl->fixCurve->leftX-5.5, y+0.5);
    cairo_line_to(cr, wl->fixCurve->rightX+5.5, y+0.5);

@@ -248,7 +248,7 @@ static void redraw_spiral_labels(cairo_t *cr)
 
    x = 10;
    GuiSetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
-   gdk_cairo_set_source_color(cr, Closure->curveColor);
+   gdk_cairo_set_source_rgba(cr, Closure->curveColor);
    cairo_move_to(cr, x, Closure->readLinearCurve->topY - h - 5);
    pango_cairo_show_layout(cr, Closure->readLinearCurve->layout);
 

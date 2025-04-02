@@ -100,12 +100,12 @@ int isWithinAppBundle(const char *filePath) {
  * Update color string for the <span color="#f00baa">...</span> string
  */
 
-void GuiUpdateMarkup(char **string, GdkColor *color)
+void GuiUpdateMarkup(char **string, GdkRGBA *color)
 {  int hexval;
  
-   hexval  = (color->red  << 8) & 0xff0000;
-   hexval |=  color->green      & 0xff00;
-   hexval |= (color->blue >> 8) & 0xff;
+   hexval  = (int)(color->red * 255.0 + 0.5) << 16;
+   hexval |= (int)(color->green * 255.0 + 0.5) << 8;
+   hexval |= (int)(color->blue * 255.0 + 0.5);
 
    if(*string) g_free(*string);
    *string = g_strdup_printf("color=\"#%06x\"", hexval);
@@ -117,55 +117,23 @@ void GuiUpdateMarkup(char **string, GdkColor *color)
 
 void GuiDefaultColors()
 {
-   Closure->redText->red        = 0xffff;
-   Closure->redText->green      = 0;
-   Closure->redText->blue       = 0;
-
-   Closure->greenText->red      = 0;
-   Closure->greenText->green    = 0x8000;
-   Closure->greenText->blue     = 0;
-
-   Closure->barColor->red       = 0xffff;
-   Closure->barColor->green     = 0;
-   Closure->barColor->blue      = 0;
-
-   Closure->logColor->red       = 0xffff;
-   Closure->logColor->green     = 0;
-   Closure->logColor->blue      = 0xffff;
-
-   Closure->curveColor->red     = 0;
-   Closure->curveColor->green   = 0;
-   Closure->curveColor->blue    = 0xffff;
-
-   Closure->redSector->red      = 0xffff;
-   Closure->redSector->green    = 0;
-   Closure->redSector->blue     = 0;
-
-   Closure->yellowSector->red   = 0xffff;
-   Closure->yellowSector->green = 0xc000;
-   Closure->yellowSector->blue  = 0;
-      
-   Closure->greenSector->red    = 0;
-   Closure->greenSector->green  = 0xdb00;
-   Closure->greenSector->blue   = 0;
-
-   Closure->darkSector->red     = 0;
-   Closure->darkSector->green   = 0x8000;
-   Closure->darkSector->blue    = 0;
-
-   Closure->blueSector->red     = 0;
-   Closure->blueSector->green   = 0;
-   Closure->blueSector->blue    = 0xffff;
-
-   Closure->whiteSector->red    = 0xffff;
-   Closure->whiteSector->green  = 0xffff;
-   Closure->whiteSector->blue   = 0xffff;
+   *Closure->redText      = (GdkRGBA){1.0, 0.0, 0.0, 1.0};
+   *Closure->greenText    = (GdkRGBA){0.0, 0.5, 0.0, 1.0};
+   *Closure->barColor     = (GdkRGBA){1.0, 0.0, 0.0, 1.0};
+   *Closure->logColor     = (GdkRGBA){1.0, 0.0, 1.0, 1.0};
+   *Closure->curveColor   = (GdkRGBA){0.0, 0.0, 1.0, 1.0};
+   *Closure->redSector    = (GdkRGBA){1.0, 0.0, 0.0, 1.0};
+   *Closure->yellowSector = (GdkRGBA){1.0, 0.75, 0.0, 1.0};
+   *Closure->greenSector  = (GdkRGBA){0.0, 0.86, 0.0, 1.0};
+   *Closure->darkSector   = (GdkRGBA){0.0, 0.5, 0.0, 1.0};
+   *Closure->curveColor   = (GdkRGBA){0.0, 0.0, 1.0, 1.0};
+   *Closure->whiteSector  = (GdkRGBA){1.0, 1.0, 1.0, 1.0};
 
    GuiUpdateMarkup(&Closure->redMarkup, Closure->redText);
    GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
 }
 
-static void save_colors(FILE *dotfile, char *symbol, GdkColor *color)
+static void save_colors(FILE *dotfile, char *symbol, GdkRGBA *color)
 {  char *blanks="                    ";
    char *pad;
    int len=strlen(symbol);
@@ -174,15 +142,17 @@ static void save_colors(FILE *dotfile, char *symbol, GdkColor *color)
    else       pad=blanks+len;
 
    fprintf(dotfile, "%s:%s%02x%02x%02x\n", symbol, pad,
-	   color->red>>8, color->green>>8, color->blue>>8);
+           (int)(color->red * 255.0 + 0.5),
+           (int)(color->green * 255.0 + 0.5),
+           (int)(color->blue * 255.0 + 0.5));
 }
 
-static void get_color(GdkColor *color, char *value)
+static void get_color(GdkRGBA *color, char *value)
 {  unsigned int hex = strtol(value, NULL, 16);
-   
-   color->red   = (hex>>8)&0xff00;
-   color->green = hex&0xff00;
-   color->blue  = (hex<<8)&0xff00;
+   color->red = (double)(hex >> 16) / 255.0;
+   color->green = (double)((hex >> 8) & 0xff) / 255.0;
+   color->blue = (double)(hex & 0xff) / 255.0;
+   color->alpha = 1.0;
 }
 
 /***
@@ -613,21 +583,21 @@ void InitClosure()
      g_mutex_init(Closure->logLock);
 
 #ifdef WITH_GUI_YES     
-   Closure->background = g_malloc0(sizeof(GdkColor));
-   Closure->foreground = g_malloc0(sizeof(GdkColor));
-   Closure->grid       = g_malloc0(sizeof(GdkColor));
+   Closure->background = g_malloc0(sizeof(GdkRGBA));
+   Closure->foreground = g_malloc0(sizeof(GdkRGBA));
+   Closure->grid       = g_malloc0(sizeof(GdkRGBA));
 
-   Closure->redText     = g_malloc0(sizeof(GdkColor));
-   Closure->greenText   = g_malloc0(sizeof(GdkColor));
-   Closure->barColor    = g_malloc0(sizeof(GdkColor));
-   Closure->logColor    = g_malloc0(sizeof(GdkColor));
-   Closure->curveColor  = g_malloc0(sizeof(GdkColor));
-   Closure->redSector   = g_malloc0(sizeof(GdkColor));
-   Closure->yellowSector= g_malloc0(sizeof(GdkColor));
-   Closure->greenSector = g_malloc0(sizeof(GdkColor));
-   Closure->blueSector  = g_malloc0(sizeof(GdkColor));
-   Closure->whiteSector = g_malloc0(sizeof(GdkColor));
-   Closure->darkSector  = g_malloc0(sizeof(GdkColor));
+   Closure->redText     = g_malloc0(sizeof(GdkRGBA));
+   Closure->greenText   = g_malloc0(sizeof(GdkRGBA));
+   Closure->barColor    = g_malloc0(sizeof(GdkRGBA));
+   Closure->logColor    = g_malloc0(sizeof(GdkRGBA));
+   Closure->curveColor  = g_malloc0(sizeof(GdkRGBA));
+   Closure->redSector   = g_malloc0(sizeof(GdkRGBA));
+   Closure->yellowSector= g_malloc0(sizeof(GdkRGBA));
+   Closure->greenSector = g_malloc0(sizeof(GdkRGBA));
+   Closure->blueSector  = g_malloc0(sizeof(GdkRGBA));
+   Closure->whiteSector = g_malloc0(sizeof(GdkRGBA));
+   Closure->darkSector  = g_malloc0(sizeof(GdkRGBA));
 
    GuiDefaultColors();
 #endif  /* WITH_GUI_YES */

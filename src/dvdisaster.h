@@ -91,7 +91,7 @@ typedef void GtkTooltip;
 typedef void GtkWidget;
 typedef void GtkWindow;
 
-typedef void GdkColor;
+typedef void GdkRGBA;
 typedef void GdkDrawable;
 typedef void GdkGC;
 typedef void GdkPixbuf;
@@ -395,20 +395,20 @@ typedef struct _GlobalClosure
    /*** Common stuff for drawing curves and spirals */
 
    gboolean  colors_initialized;
-   GdkColor  *background,*foreground,*grid;
-   GdkColor  *redText;
+   GdkRGBA   *background,*foreground,*grid;
+   GdkRGBA   *redText;
    char      *redMarkup;
-   GdkColor  *greenText;
+   GdkRGBA   *greenText;
    char      *greenMarkup;
-   GdkColor  *barColor;
-   GdkColor  *logColor;
-   GdkColor  *curveColor;
-   GdkColor  *redSector;
-   GdkColor  *yellowSector;
-   GdkColor  *greenSector;
-   GdkColor  *blueSector;
-   GdkColor  *whiteSector;
-   GdkColor  *darkSector;
+   GdkRGBA   *barColor;
+   GdkRGBA   *logColor;
+   GdkRGBA   *curveColor;
+   GdkRGBA   *redSector;
+   GdkRGBA   *yellowSector;
+   GdkRGBA   *greenSector;
+   GdkRGBA   *blueSector;
+   GdkRGBA   *whiteSector;
+   GdkRGBA   *darkSector;
    char      *invisibleDash;
 
    /*** Widgets for the linear reading/scanning action */
@@ -576,7 +576,7 @@ int  VerifySignature(void);
 #ifdef WITH_GUI_YES
 void GuiDefaultColors(void);
 void GuiReadDotfile(void);
-void GuiUpdateMarkup(char**, GdkColor*);
+void GuiUpdateMarkup(char**, GdkRGBA*);
 #endif
 
 /***
@@ -1341,11 +1341,11 @@ void ReadMediumAdaptive(gpointer);
 
 #ifdef WITH_GUI_YES
 void GuiClipReadAdaptiveSpiral(int);
-void GuiChangeSegmentColor(GdkColor*, int);
+void GuiChangeSegmentColor(GdkRGBA*, int);
 void GuiRemoveFillMarkers();
 
 void GuiSetAdaptiveReadSubtitle(char*);
-void GuiSetAdaptiveReadFootline(char*, GdkColor*);
+void GuiSetAdaptiveReadFootline(char*, GdkRGBA*);
 void GuiSetAdaptiveReadMinimumPercentage(int);
 void GuiUpdateAdaptiveResults(gint64, gint64, gint64, int);
 
@@ -1531,25 +1531,25 @@ typedef struct _Spiral
    int segmentSize;
    int segmentCount;
    double *segmentPos;
-   GdkColor **segmentColor;
-   GdkColor *outline;
+   GdkRGBA **segmentColor;
+   GdkRGBA *outline;
    int diameter;
    int segmentClipping;
    int cursorPos;
-   GdkColor *colorUnderCursor;
+   GdkRGBA *colorUnderCursor;
 } Spiral;
 
 #ifdef WITH_GUI_YES
-Spiral* GuiCreateSpiral(GdkColor*, GdkColor*, int, int, int);
+Spiral* GuiCreateSpiral(GdkRGBA*, GdkRGBA*, int, int, int);
 void GuiSetSpiralWidget(Spiral*, GtkWidget*);
 void GuiFreeSpiral(Spiral*);
 
-void GuiFillSpiral(Spiral*, GdkColor*);
+void GuiFillSpiral(Spiral*, GdkRGBA*);
 void GuiDrawSpiral(cairo_t *cr, Spiral*);
-void GuiDrawSpiralLabel(cairo_t *cr, Spiral*, PangoLayout*, char*, GdkColor*, int, int);
+void GuiDrawSpiralLabel(cairo_t *cr, Spiral*, PangoLayout*, char*, GdkRGBA*, int, int);
 void GuiChangeSpiralCursor(Spiral*, int);
 void GuiMoveSpiralCursor(Spiral*, int);
-void GuiSetSpiralSegmentColor(Spiral*, GdkColor*, int);
+void GuiSetSpiralSegmentColor(Spiral*, GdkRGBA*, int);
 #else
 #define GuiChangeSpiralCursor(a, b)
 #define GuiFreeSpiral(s)
