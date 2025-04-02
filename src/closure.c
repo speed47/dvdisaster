@@ -678,43 +678,7 @@ void FreeClosure()
 #ifdef WITH_GUI_YES
    if(Closure->guiMode)
      update_dotfile();
-#endif
-   
-   cond_free(Closure->cookedVersion);
-   cond_free(Closure->versionString);
-   cond_free(Closure->device);
-   cond_free_ptr_array(Closure->deviceNames);
-   cond_free_ptr_array(Closure->deviceNodes);
-   cond_free(Closure->imageName);
-   cond_free(Closure->eccName);
-   cond_free(Closure->redundancy);
 
-   CallMethodDestructors();
-   cond_free_ptr_array(Closure->methodList);
-
-   cond_free(Closure->methodName);
-   cond_free(Closure->homeDir);
-   cond_free(Closure->dotFile);
-   cond_free(Closure->logFile);
-   cond_free(Closure->binDir);
-   cond_free(Closure->docDir);
-   cond_free(Closure->errorTitle);
-   cond_free(Closure->simulateCD);
-   cond_free(Closure->dDumpDir);
-   cond_free(Closure->dDumpPrefix);
-
-   if(Closure->crcBuf)
-     FreeCrcBuf(Closure->crcBuf);
-   
-   if(Closure->logString)
-      g_string_free(Closure->logString, TRUE);
-
-   if(Closure->logLock)
-   {  g_mutex_clear(Closure->logLock);
-      g_free(Closure->logLock);
-   }
-
-#ifdef WITH_GUI_YES
    if(Closure->prefsContext)
       GuiFreePreferences(Closure->prefsContext);
 
@@ -753,6 +717,40 @@ void FreeClosure()
    if(Closure->readAdaptiveErrorMsg)
      g_free(Closure->readAdaptiveErrorMsg);
 #endif /* WITH_GUI_YES */
+
+   cond_free(Closure->cookedVersion);
+   cond_free(Closure->versionString);
+   cond_free(Closure->device);
+   cond_free_ptr_array(Closure->deviceNames);
+   cond_free_ptr_array(Closure->deviceNodes);
+   cond_free(Closure->imageName);
+   cond_free(Closure->eccName);
+   cond_free(Closure->redundancy);
+
+   CallMethodDestructors();
+   cond_free_ptr_array(Closure->methodList);
+
+   cond_free(Closure->methodName);
+   cond_free(Closure->homeDir);
+   cond_free(Closure->dotFile);
+   cond_free(Closure->logFile);
+   cond_free(Closure->binDir);
+   cond_free(Closure->docDir);
+   cond_free(Closure->errorTitle);
+   cond_free(Closure->simulateCD);
+   cond_free(Closure->dDumpDir);
+   cond_free(Closure->dDumpPrefix);
+
+   if(Closure->crcBuf)
+     FreeCrcBuf(Closure->crcBuf);
+
+   if(Closure->logString)
+      g_string_free(Closure->logString, TRUE);
+
+   if(Closure->logLock)
+   {  g_mutex_clear(Closure->logLock);
+      g_free(Closure->logLock);
+   }
    
    g_free(Closure);
 }
