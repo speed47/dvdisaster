@@ -556,44 +556,47 @@ static void render_sector(raw_editor_context *rec)
    int i,j,w,h,x,y;
 
    if(!d) return;
+   cairo_t *cr = gdk_cairo_create(d);
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->background);
-   gdk_draw_rectangle(d, Closure->drawGC, TRUE, 0, 0, rec->daWidth, rec->daHeight);
+   gdk_cairo_set_source_color(cr, Closure->background);
+   cairo_rectangle(cr, 0, 0, rec->daWidth, rec->daHeight);
+   cairo_fill(cr);
 
    idx = 12;
    for(j=0,y=0; j<P_VECTOR_SIZE; j++, y+=rec->charHeight)
    {  for(i=0,x=0; i<N_P_VECTORS; i++, x+=rec->charWidth)
       {  char byte[3];
 
-	 if(rec->tags[idx])
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->curveColor);
-	    gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-			       rec->charWidth, rec->charHeight);
-	 }
-	 else if(rec->rb->byteState[idx])
-	 {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->yellowSector);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-				  rec->charWidth, rec->charHeight);
-	    } 
-	    else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->greenText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-				  rec->charWidth, rec->charHeight);
-	    }
-	    else 
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->redText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y,
-				  rec->charWidth, rec->charHeight);
-	    }
-	 }
+         if(rec->tags[idx])
+         {  gdk_cairo_set_source_color(cr, Closure->curveColor);
+            cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+            cairo_fill(cr);
+         }
+         else if(rec->rb->byteState[idx])
+         {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
+            {  gdk_cairo_set_source_color(cr, Closure->yellowSector);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+            else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
+            {  gdk_cairo_set_source_color(cr, Closure->greenText);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+            else
+            {  gdk_cairo_set_source_color(cr, Closure->redText);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+         }
 
-         gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->foreground);
+         gdk_cairo_set_source_color(cr, Closure->foreground);
 
-	 sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
-	 idx++;
-	 GuiSetText(rec->layout, byte, &w, &h);
-	 gdk_draw_layout(d, Closure->drawGC, x, y, rec->layout);
+         sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
+         idx++;
+         GuiSetText(rec->layout, byte, &w, &h);
+         cairo_move_to(cr, x, y);
+         pango_cairo_show_layout(cr, rec->layout);
       }
    }
 }
