@@ -241,19 +241,17 @@ static void update_geometry(void)
 }
 
 static void redraw_spiral_labels(void)
-{  GdkWindow *d = gtk_widget_get_window(Closure->readLinearSpiral->widget);
+{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(Closure->readLinearSpiral->widget));
    int x,w,h;
    int pos = 1;
 
    /* Draw and label the spiral */
 
    x = 10;
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
    GuiSetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
-   gdk_draw_layout(d, Closure->drawGC, 
-		   x,
-		   Closure->readLinearCurve->topY - h - 5, 
-		   Closure->readLinearCurve->layout);
+   gdk_cairo_set_source_color(cr, Closure->curveColor);
+   cairo_move_to(cr, x, Closure->readLinearCurve->topY - h - 5);
+   pango_cairo_show_layout(cr, Closure->readLinearCurve->layout);
 
    if(Closure->additionalSpiralColor == 0)
      GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
