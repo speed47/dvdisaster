@@ -815,7 +815,7 @@ static GtkWidget* non_linear_scale(GtkWidget **hbox_out, non_linear_info *nli,
    nli->pc     = pc;
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-   scale = gtk_hscale_new_with_range(0,n-1,1);
+   scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, n-1, 1);
    gtk_scale_set_value_pos(GTK_SCALE(scale), GTK_POS_RIGHT);
    gtk_range_set_increments(GTK_RANGE(scale), 1, 1);
    gtk_range_set_value(GTK_RANGE(scale), index > 0 ? index-1 : index);

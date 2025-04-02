@@ -1344,7 +1344,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 	if(cache_size[index] > Closure->cacheMiB)
 	  break;
 
-      scale = gtk_hscale_new_with_range(0,n_entries-1,1);
+      scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, n_entries-1, 1);
       gtk_scale_set_value_pos(GTK_SCALE(scale), GTK_POS_RIGHT);
       gtk_range_set_increments(GTK_RANGE(scale), 1, 1);
       gtk_range_set_value(GTK_RANGE(scale), index > 0 ? index-1 : index);
