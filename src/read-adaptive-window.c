@@ -32,14 +32,14 @@
 
 static long long int readable, correctable, missing;
 static int percent,min_required;
-static GdkColor *footer_color;
+static GdkRGBA *footer_color;
 
 #define REDRAW_TITLE      1<<0
 #define REDRAW_SUBTITLE   1<<1
 #define REDRAW_PROGRESS   1<<2
 #define REDRAW_ERRORMSG   1<<3
 
-static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkColor *color, int redraw)
+static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkRGBA *color, int redraw)
 {  int w,h,pw;
    int erase_to;
 
@@ -49,11 +49,11 @@ static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkC
    {  erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
       pw = erase_to-x;
 
-      gdk_cairo_set_source_color(cr, Closure->background);
+      gdk_cairo_set_source_rgba(cr, Closure->background);
       cairo_rectangle(cr, x, y, pw, h);
       cairo_fill(cr);
 
-      gdk_cairo_set_source_color(cr, color);
+      gdk_cairo_set_source_rgba(cr, color);
       cairo_move_to(cr, x, y);
       pango_cairo_show_layout(cr, l);
    }
@@ -68,7 +68,7 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
    /* Draw the labels */
 
    x = 10; 
-   gdk_cairo_set_source_color(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, Closure->foreground);
 
    y = Closure->readAdaptiveSpiral->my - Closure->readAdaptiveSpiral->diameter/2;
    h = draw_text(cr, Closure->readLinearCurve->layout,
@@ -138,7 +138,7 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
 
 
    if(Closure->readAdaptiveErrorMsg && erase_mask & REDRAW_ERRORMSG)
-   {  gdk_cairo_set_source_color(cr, footer_color);
+   {  gdk_cairo_set_source_rgba(cr, footer_color);
       
       GuiSetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
       y = Closure->readAdaptiveSpiral->my + Closure->readAdaptiveSpiral->diameter/2 - h;
@@ -216,7 +216,7 @@ static gboolean segment_idle_func(gpointer data)
    return FALSE;
 }
 
-void GuiChangeSegmentColor(GdkColor *color, int segment)
+void GuiChangeSegmentColor(GdkRGBA *color, int segment)
 {  
    Closure->readAdaptiveSpiral->segmentColor[segment] = color;
    g_idle_add(segment_idle_func, 0);
@@ -266,7 +266,7 @@ void GuiSetAdaptiveReadSubtitle(char *title)
    g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_SUBTITLE));
 }
 
-void GuiSetAdaptiveReadFootline(char *msg, GdkColor *color)
+void GuiSetAdaptiveReadFootline(char *msg, GdkRGBA *color)
 {
    if(!Closure->guiMode)
      return;

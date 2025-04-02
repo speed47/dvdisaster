@@ -34,7 +34,7 @@
  * Allocate and fill in the spiral data structure
  */
 
-Spiral* GuiCreateSpiral(GdkColor *outline, GdkColor *fill, 
+Spiral* GuiCreateSpiral(GdkRGBA *outline, GdkRGBA *fill,
 			int start_radius, int segment_size, int n_segments)
 {  Spiral *spiral;
    double a = 0.0;
@@ -50,8 +50,8 @@ Spiral* GuiCreateSpiral(GdkColor *outline, GdkColor *fill,
    spiral->segmentSize  = segment_size;
    spiral->segmentCount = spiral->segmentClipping = n_segments;
    spiral->segmentPos   = g_malloc(n_segments * sizeof(double));
-   spiral->segmentColor = g_malloc(n_segments * sizeof(GdkColor*));
-   spiral->segmentOutline = g_malloc(n_segments * sizeof(GdkColor*));
+   spiral->segmentColor = g_malloc(n_segments * sizeof(GdkRGBA*));
+   spiral->segmentOutline = g_malloc(n_segments * sizeof(GdkRGBA*));
    spiral->cursorPos    = -1;
    spiral->lastRenderedCursorPos = -1;
 
@@ -96,7 +96,7 @@ void GuiFreeSpiral(Spiral *spiral)
  * Also resets the cursor (this function serves to reset the spiral)
  */
 
-void GuiFillSpiral(Spiral *spiral, GdkColor *color)
+void GuiFillSpiral(Spiral *spiral, GdkRGBA *color)
 {  int i;
 
    if(spiral)
@@ -140,16 +140,16 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
       yo1 = spiral->my + scale_o*sin(a);
 
 
-      GdkColor *outline = spiral->segmentOutline[i] ? spiral->segmentOutline[i] : Closure->grid;
+      GdkRGBA *outline = spiral->segmentOutline[i] ? spiral->segmentOutline[i] : Closure->grid;
 
       cairo_move_to(cr, xi0, yi0);
       cairo_line_to(cr, xo0, yo0);
       cairo_line_to(cr, xo1, yo1);
       cairo_line_to(cr, xi1, yi1);
       cairo_close_path(cr);
-      gdk_cairo_set_source_color(cr, spiral->segmentColor[i]);
+      gdk_cairo_set_source_rgba(cr, spiral->segmentColor[i]);
       cairo_fill_preserve(cr);
-      gdk_cairo_set_source_color(cr, outline);
+      gdk_cairo_set_source_rgba(cr, outline);
       cairo_stroke(cr);
 
       xi0 = xi1; yi0 = yi1;
@@ -161,7 +161,7 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
  * Draw just one segment of the spiral
  */
 
-void GuiSetSpiralSegmentColor(Spiral *spiral, GdkColor *color, GdkColor *outline, int segment)
+void GuiSetSpiralSegmentColor(Spiral *spiral, GdkRGBA *color, GdkRGBA *outline, int segment)
 {
    if(segment<0 || segment>=spiral->segmentClipping)
      return;
@@ -178,21 +178,21 @@ void GuiSetSpiralSegmentColor(Spiral *spiral, GdkColor *color, GdkColor *outline
  */
 
 void GuiDrawSpiralLabel(cairo_t *cr, Spiral *spiral, PangoLayout *layout,
-			char *text, GdkColor *color, int x, int line)
+			char *text, GdkRGBA *color, int x, int line)
 {  int w,h,y;
 
    GuiSetText(layout, text, &w, &h);
    if(line > 0) y = spiral->my + spiral->diameter / 2 + 20 + (line-1) * (10 + h); 
    else         y = spiral->my - spiral->diameter / 2 - 20 - h + (line+1) * (10 + h); 
    cairo_rectangle(cr, x + 0.5, y+(h-6)/2 + 0.5, 6, 6);
-   gdk_cairo_set_source_color(cr, color);
+   gdk_cairo_set_source_rgba(cr, color);
    cairo_fill_preserve(cr);
-   gdk_cairo_set_source_color(cr, Closure->grid);
+   gdk_cairo_set_source_rgba(cr, Closure->grid);
    cairo_set_line_width(cr, 1.0);
    cairo_stroke(cr);
 
    cairo_move_to(cr, x+10, y);
-   gdk_cairo_set_source_color(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, Closure->foreground);
    pango_cairo_show_layout(cr, layout);
 }
 
