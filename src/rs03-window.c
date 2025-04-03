@@ -141,14 +141,6 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
  * Set the media size and ecc capacity
  */
 
-static gboolean set_max_idle_func(gpointer data)
-{  RS03Widgets *wl = (RS03Widgets*)data;
-
-   redraw_curve(wl);
-
-   return FALSE;
-}
-
 void RS03SetFixMaxValues(RS03Widgets *wl, int data_bytes, int ecc_bytes, gint64 sectors)
 {
    wl->dataBytes = data_bytes;
@@ -157,7 +149,7 @@ void RS03SetFixMaxValues(RS03Widgets *wl, int data_bytes, int ecc_bytes, gint64 
    wl->fixCurve->maxX = 100;
    wl->fixCurve->maxY = ecc_bytes - (ecc_bytes % 5) + 5;
 
-   g_idle_add(set_max_idle_func, wl);
+   gtk_widget_queue_draw(wl->fixCurve->widget);
 }
 
 /*
@@ -258,9 +250,7 @@ void ResetRS03FixWindow(Method *method)
    RS03UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
-   {  gdk_window_clear(gtk_widget_get_window(wl->fixCurve->widget));
-      redraw_curve(wl);
-   }
+      gtk_widget_queue_draw(wl->fixCurve->widget);
 
    wl->percent = 0;
    wl->lastPercent = 0;
