@@ -104,15 +104,14 @@ void GuiFillSpiral(Spiral *spiral, GdkColor *color)
  * Draw the whole spiral
  */
 
-void GuiDrawSpiral(Spiral *spiral)
-{  cairo_t *cr;
-   double a;
+void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
+{  double a;
    double xi0,yi0,xo0,yo0;
    double scale_i,scale_o;
    int i;
 
    if(!spiral->widget) return;
-   cr = gdk_cairo_create(gtk_widget_get_window(spiral->widget));
+
    cairo_set_line_width(cr, 1.0);
 
    scale_i = spiral->startRadius;
@@ -165,10 +164,9 @@ void GuiSetSpiralSegmentColor(Spiral *spiral, GdkColor *color, int segment)
  * Draw a label above or below the spiral
  */
 
-void GuiDrawSpiralLabel(Spiral *spiral, PangoLayout *layout,
+void GuiDrawSpiralLabel(cairo_t *cr, Spiral *spiral, PangoLayout *layout,
 			char *text, GdkColor *color, int x, int line)
-{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(spiral->widget));
-   int w,h,y;
+{  int w,h,y;
 
    GuiSetText(layout, text, &w, &h);
    if(line > 0) y = spiral->my + spiral->diameter / 2 + 20 + (line-1) * (10 + h); 

@@ -123,19 +123,19 @@ static void add_verify_values(Method *method, int percent,
  * Redraw whole spiral
  */
 
-static void redraw_spiral(RS03Widgets *wl)
+static void redraw_spiral(cairo_t *cr, RS03Widgets *wl)
 {  int x = wl->cmpSpiral->mx - wl->cmpSpiral->diameter/2 + 10;
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Good sectors"), Closure->greenSector, x, 1);
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Sectors with CRC errors"), Closure->yellowSector, x, 2);
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Missing sectors"), Closure->redSector, x, 3);
 
-   GuiDrawSpiral(wl->cmpSpiral);
+   GuiDrawSpiral(cr, wl->cmpSpiral);
 }
 
 /*
@@ -143,7 +143,8 @@ static void redraw_spiral(RS03Widgets *wl)
  */
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  RS03Widgets *wl = (RS03Widgets*)data;
+{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
+   RS03Widgets *wl = (RS03Widgets*)data;
    GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
    int w,h,size;
@@ -162,7 +163,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
    wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a.height - size)/2;
 
    if(!event->count)      /* Exposure compression */
-     redraw_spiral(wl);   /* Redraw the spiral */
+     redraw_spiral(cr, wl);   /* Redraw the spiral */
 
    return TRUE;
 }

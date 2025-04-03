@@ -61,9 +61,8 @@ static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkC
    return h;
 }
 
-static void redraw_labels(GtkWidget *widget, int erase_mask)
-{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(Closure->readAdaptiveDrawingArea));
-   char buf[256];
+static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
+{  char buf[256];
    int x,y,w,h;
 
    /* Draw the labels */
@@ -162,15 +161,15 @@ static void update_geometry(GtkWidget *widget)
 /* Expose event handler */
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  
+{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
    GuiSetSpiralWidget(Closure->readAdaptiveSpiral, widget);
   
    if(event->count) /* Exposure compression */
      return TRUE;
 
    update_geometry(widget);
-   redraw_labels(widget, ~0);
-   GuiDrawSpiral(Closure->readAdaptiveSpiral);
+   redraw_labels(cr, widget, ~0);
+   GuiDrawSpiral(cr, Closure->readAdaptiveSpiral);
 
    return TRUE;
 }

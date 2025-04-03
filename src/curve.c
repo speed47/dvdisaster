@@ -169,9 +169,8 @@ void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_pa
  *** Redraw the coordinate axes
  ***/
 
-void GuiRedrawAxes(Curve *curve)
-{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(curve->widget));
-   int i,w,h,x,y; 
+void GuiRedrawAxes(cairo_t *cr, Curve *curve)
+{  int i,w,h,x,y;
    int yg=0;
    int step;
    int bottom_y;
@@ -370,9 +369,8 @@ void GuiRedrawAxes(Curve *curve)
  * Redraw the curve
  */
 
-void GuiRedrawCurve(Curve *curve, int last)
-{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(curve->widget));
-   int i,x0,x1,fy0;
+void GuiRedrawCurve(cairo_t *cr, Curve *curve, int last)
+{  int i,x0,x1,fy0;
 
    gdk_cairo_set_source_color(cr, Closure->curveColor);
    cairo_set_line_width(cr, 1.0);

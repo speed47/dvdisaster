@@ -34,7 +34,7 @@
  *** Forward declarations
  ***/
 
-static void redraw_curve(void);
+static void redraw_curve(cairo_t *cr);
 static void update_geometry(void);
 
 /***
@@ -211,10 +211,10 @@ void GuiMarkExistingSectors(void)
  * Redraw the whole curve
  */
 
-static void redraw_curve(void)
+static void redraw_curve(cairo_t *cr)
 {
-   GuiRedrawAxes(Closure->readLinearCurve);
-   GuiRedrawCurve(Closure->readLinearCurve, 1000);
+   GuiRedrawAxes(cr, Closure->readLinearCurve);
+   GuiRedrawCurve(cr, Closure->readLinearCurve, 1000);
 }
 
 /* Calculate the geometry of the curve */
@@ -240,9 +240,8 @@ static void update_geometry(void)
 
 }
 
-static void redraw_spiral_labels(void)
-{  cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(Closure->readLinearSpiral->widget));
-   int x,w,h;
+static void redraw_spiral_labels(cairo_t *cr)
+{  int x,w,h;
    int pos = 1;
 
    /* Draw and label the spiral */
@@ -254,36 +253,37 @@ static void redraw_spiral_labels(void)
    pango_cairo_show_layout(cr, Closure->readLinearCurve->layout);
 
    if(Closure->additionalSpiralColor == 0)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Not touched this time"), Closure->curveColor, x, -1);
 
    if(Closure->additionalSpiralColor == 3)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Already present"), Closure->darkSector, x, -1);
 
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+   GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		      _("Successfully read"), Closure->greenSector, x, pos++);
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
 
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+   GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		      _("Unreadable / skipped"), Closure->redSector, x, pos++);
 
-   GuiDrawSpiral(Closure->readLinearSpiral);
+   GuiDrawSpiral(cr, Closure->readLinearSpiral);
 }
 
 static gboolean expose_curve_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{
+{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
    update_geometry();
-   redraw_curve();
+   redraw_curve(cr);
 
    return TRUE;
 }
 
 static gboolean expose_spiral_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  GtkAllocation a = {0};
+{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
+   GtkAllocation a = {0};
    gtk_widget_get_allocation(widget, &a);
 
    GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
@@ -291,7 +291,7 @@ static gboolean expose_spiral_cb(GtkWidget *widget, GdkEventExpose *event, gpoin
    /* Override spiral center */
    Closure->readLinearSpiral->mx = a.width - 15 - Closure->readLinearSpiral->diameter / 2;
 
-   redraw_spiral_labels();
+   redraw_spiral_labels(cr);
 
    return TRUE;
 }

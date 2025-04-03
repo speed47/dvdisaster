@@ -34,7 +34,7 @@ extern gint64 CurrentMediumSize(int);  /* from scsi-layer.h */
  *** Forward declarations
  ***/
 
-static void redraw_curve(RS02Widgets*);
+static void redraw_curve(cairo_t *cr, RS02Widgets*);
 static void update_geometry(RS02Widgets*);
 
 /***
@@ -178,19 +178,18 @@ static void update_geometry(RS02Widgets *wl)
 			     TRUE, TRUE, wl->fixCurve->leftX, GTK_PACK_START);
 }
 
-static void redraw_curve(RS02Widgets *wl)
+static void redraw_curve(cairo_t *cr, RS02Widgets *wl)
 {  int y;
 
    /* Redraw the curve */
 
-   GuiRedrawAxes(wl->fixCurve);
-   GuiRedrawCurve(wl->fixCurve, wl->percent);
+   GuiRedrawAxes(cr, wl->fixCurve);
+   GuiRedrawCurve(cr, wl->fixCurve, wl->percent);
 
    /* Ecc capacity threshold line */
 
    y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
 
-   cairo_t *cr = gdk_cairo_create(gtk_widget_get_window(wl->fixCurve->widget));
    gdk_cairo_set_source_color(cr, Closure->greenSector);
    cairo_set_line_width(cr, 1.0);
    cairo_move_to(cr, wl->fixCurve->leftX-5.5, y+0.5);
@@ -203,13 +202,14 @@ static void redraw_curve(RS02Widgets *wl)
  */
 
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  RS02Widgets *wl = (RS02Widgets*)data; 
+{  cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(widget));
+   RS02Widgets *wl = (RS02Widgets*)data;
 
    if(event->count) /* Exposure compression */
      return TRUE;
 
    update_geometry(wl);
-   redraw_curve(wl);
+   redraw_curve(cr, wl);
 
    return TRUE;
 }
