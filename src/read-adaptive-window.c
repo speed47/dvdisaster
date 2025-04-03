@@ -150,11 +150,6 @@ static void redraw_labels(GtkWidget *widget, int erase_mask)
    }
 }
 
-static void redraw_spiral(GtkWidget *widget)
-{
-   GuiDrawSpiral(Closure->readAdaptiveSpiral);
-}
-
 /* Calculate the geometry of the spiral */
 
 static void update_geometry(GtkWidget *widget)
@@ -176,7 +171,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
 
    update_geometry(widget);
    redraw_labels(widget, ~0);
-   redraw_spiral(widget);
+   GuiDrawSpiral(Closure->readAdaptiveSpiral);
 
    return TRUE;
 }
@@ -270,14 +265,6 @@ void GuiRemoveFillMarkers()
  *** Redraw the label in our window
  ***/
 
-static gboolean label_redraw_idle_func(gpointer data)
-{  int erase_mask = GPOINTER_TO_INT(data);
-
-   redraw_labels(Closure->readAdaptiveDrawingArea, erase_mask);
-
-   return FALSE;
-}
-
 void GuiSetAdaptiveReadSubtitle(char *title)
 {
    if(!Closure->guiMode)
@@ -288,7 +275,7 @@ void GuiSetAdaptiveReadSubtitle(char *title)
 
    Closure->readAdaptiveSubtitle = g_strdup(title);
 
-   g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_SUBTITLE));
+   gtk_widget_queue_draw(Closure->readAdaptiveDrawingArea);
 }
 
 void GuiSetAdaptiveReadFootline(char *msg, GdkColor *color)
@@ -302,7 +289,7 @@ void GuiSetAdaptiveReadFootline(char *msg, GdkColor *color)
    Closure->readAdaptiveErrorMsg = g_strdup(msg);
    footer_color = color;
 
-   g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_ERRORMSG));
+   gtk_widget_queue_draw(Closure->readAdaptiveDrawingArea);
 }
 
 void GuiUpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
@@ -315,7 +302,7 @@ void GuiUpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
      return;
    
    g_idle_remove_by_data(GINT_TO_POINTER(REDRAW_PROGRESS));
-   g_idle_add(label_redraw_idle_func, GINT_TO_POINTER(REDRAW_PROGRESS));
+   gtk_widget_queue_draw(Closure->readAdaptiveDrawingArea);
 }   
 
 /***
@@ -347,8 +334,7 @@ void GuiResetAdaptiveReadWindow()
       rect.width  = a.width;
       rect.height = a.height;
 
-      gdk_window_clear(gtk_widget_get_window(Closure->readAdaptiveDrawingArea));
-      gdk_window_invalidate_rect(gtk_widget_get_window(Closure->readAdaptiveDrawingArea), &rect, FALSE);
+      gtk_widget_queue_draw(Closure->readAdaptiveDrawingArea);
    }
 }
 
