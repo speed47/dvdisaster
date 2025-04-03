@@ -187,13 +187,6 @@ void GuiAddCurveValues(void *rc_ptr, int percent, int color, int c2)
  * Mark existing sectors with the dark green color.
  */
 
-static gboolean curve_mark_idle_func(gpointer data)
-{
-   GuiDrawSpiral(Closure->readLinearSpiral);
-
-   return FALSE;
-}
-
 void GuiMarkExistingSectors(void)
 {  int i;
    int x;
@@ -204,8 +197,6 @@ void GuiMarkExistingSectors(void)
    x = Closure->readLinearCurve->rightX + 20;
    
    Closure->additionalSpiralColor = 3;
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		      _("Already present"), Closure->darkSector, x, -1);
 
    for(i=0; i<1000; i++)
       if(Closure->readLinearSpiral->segmentColor[i] == Closure->greenSector)
@@ -213,7 +204,7 @@ void GuiMarkExistingSectors(void)
 	 Closure->readLinearCurve->ivalue[i] = 3;
       }
 
-   g_idle_add(curve_mark_idle_func, NULL);
+   gtk_widget_queue_draw(Closure->readLinearCurve->widget);
 }
 
 /*
@@ -317,7 +308,8 @@ void GuiResetLinearReadWindow()
 
    GuiZeroCurve(Closure->readLinearCurve);
    GuiFillSpiral(Closure->readLinearSpiral, Closure->background);
-   GuiDrawSpiral(Closure->readLinearSpiral);
+   if (Closure->readLinearSpiral->widget)
+      gtk_widget_queue_draw(Closure->readLinearSpiral->widget);
 }
 
 /*
