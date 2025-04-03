@@ -43,11 +43,9 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {  GtkWidget *box = (GtkWidget*)data;
 
-   if(!Closure->drawGC)
+   if(!Closure->colors_initialized)
    {  GdkColor *bg = &widget->style->bg[0];
       GdkColormap *cmap = gdk_colormap_get_system();
-
-      Closure->drawGC = gdk_gc_new(gtk_widget_get_window(widget));
 
       memcpy(Closure->background, bg, sizeof(GdkColor));
 
@@ -71,6 +69,8 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
       gdk_colormap_alloc_color(cmap, Closure->blueSector, FALSE, TRUE);
       gdk_colormap_alloc_color(cmap, Closure->whiteSector, FALSE, TRUE);
       gdk_colormap_alloc_color(cmap, Closure->darkSector, FALSE, TRUE);
+
+      Closure->colors_initialized = TRUE;
 
       /* Dirty trick for indenting the list:
 	 draw an invisible dash before each indented line */

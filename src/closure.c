@@ -721,9 +721,6 @@ void FreeClosure()
    if(Closure->rawEditorContext)
       GuiFreeRawEditorContext(Closure->rawEditorContext);
 
-   if(Closure->drawGC)
-     g_object_unref(Closure->drawGC);
-
    cond_free(Closure->background);
    cond_free(Closure->foreground);
    cond_free(Closure->grid);
