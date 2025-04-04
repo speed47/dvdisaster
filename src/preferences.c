@@ -72,19 +72,6 @@ typedef struct
    struct _prefs_context *pc;
 } non_linear_info;
 
-/* color button housekeeping */
-
-typedef struct 
-{  GtkWidget *button;
-   GtkWidget *dialog;
-   GtkWidget *frame;
-   GtkWidget *image;
-   GdkColor  *color;
-   GdkPixmap *pixmap;
-   GdkGC     *gc;
-   int userData;
-} color_button_info;
-
 /***
  *** Preferences window housekeeping
  ***/
@@ -140,17 +127,17 @@ typedef struct _prefs_context
    GtkWidget *logFilePathA, *logFilePathB;
    GtkWidget *logFileChooser;
 
-   color_button_info *redA, *redB;
-   color_button_info *yellowA, *yellowB;
-   color_button_info *greenA, *greenB;
-   color_button_info *blueA, *blueB;
-   color_button_info *whiteA, *whiteB;
-   color_button_info *darkA, *darkB;
-   color_button_info *redTextA, *redTextB;
-   color_button_info *greenTextA, *greenTextB;
-   color_button_info *barColorA, *barColorB;
-   color_button_info *logColorA, *logColorB;
-   color_button_info *curveColorA, *curveColorB;
+   GtkWidget *redA, *redB;
+   GtkWidget *yellowA, *yellowB;
+   GtkWidget *greenA, *greenB;
+   GtkWidget *blueA, *blueB;
+   GtkWidget *whiteA, *whiteB;
+   GtkWidget *darkA, *darkB;
+   GtkWidget *redTextA, *redTextB;
+   GtkWidget *greenTextA, *greenTextB;
+   GtkWidget *barColorA, *barColorB;
+   GtkWidget *logColorA, *logColorB;
+   GtkWidget *curveColorA, *curveColorB;
 
    non_linear_info *jumpScaleInfoA, *jumpScaleInfoB;
    LabelWithOnlineHelp *jumpScaleLwoh;
@@ -184,29 +171,6 @@ void GuiFreePreferences(void *context)
    if(pc->maxAttemptsScaleInfoB->format) g_free(pc->maxAttemptsScaleInfoB->format);
    if(pc->maxAttemptsScaleInfoA) g_free(pc->maxAttemptsScaleInfoA);
    if(pc->maxAttemptsScaleInfoB) g_free(pc->maxAttemptsScaleInfoB);
-
-   if(pc->redA) g_free(pc->redA);
-   if(pc->redB) g_free(pc->redB);
-   if(pc->yellowA) g_free(pc->yellowA);
-   if(pc->yellowB) g_free(pc->yellowB);
-   if(pc->greenA) g_free(pc->greenA);
-   if(pc->greenB) g_free(pc->greenB);
-   if(pc->blueA) g_free(pc->blueA);
-   if(pc->blueB) g_free(pc->blueB);
-   if(pc->whiteA) g_free(pc->whiteA);
-   if(pc->whiteB) g_free(pc->whiteB);
-   if(pc->darkA) g_free(pc->darkA);
-   if(pc->darkB) g_free(pc->darkB);
-   if(pc->redTextA) g_free(pc->redTextA);
-   if(pc->redTextB) g_free(pc->redTextB);
-   if(pc->greenTextA) g_free(pc->greenTextA);
-   if(pc->greenTextB) g_free(pc->greenTextB);
-   if(pc->barColorA) g_free(pc->barColorA);
-   if(pc->barColorB) g_free(pc->barColorB);
-   if(pc->logColorA) g_free(pc->logColorA);
-   if(pc->logColorB) g_free(pc->logColorB);
-   if(pc->curveColorA) g_free(pc->curveColorA);
-   if(pc->curveColorB) g_free(pc->curveColorB);
 
    g_free(pc);
 }
@@ -716,182 +680,98 @@ static void read_range_cb(GtkWidget *widget, gpointer data)
  *** Color buttons
  ***/
 
-/*
- * Create a color button. We need to do this manually as the GTK color button
- * won't let us manipulate the button order.
- */
+static void update_color_buttons()
+{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
-#define COLOR_BUTTON_WIDTH 32
-#define COLOR_BUTTON_HEIGHT 12
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->redA), Closure->redSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->redB), Closure->redSector);
 
-static gboolean color_delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->yellowA), Closure->yellowSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->yellowB), Closure->yellowSector);
 
-   cbi->dialog = NULL;
-   return FALSE;
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->greenA), Closure->greenSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->greenB), Closure->greenSector);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->blueA), Closure->blueSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->blueB), Closure->blueSector);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->whiteA), Closure->whiteSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->whiteB), Closure->whiteSector);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->darkA), Closure->darkSector);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->darkB), Closure->darkSector);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->redTextA), Closure->redText);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->redTextB), Closure->redText);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->greenTextA), Closure->greenText);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->greenTextB), Closure->greenText);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->barColorA), Closure->barColor);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->barColorB), Closure->barColor);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->logColorA), Closure->logColor);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->logColorB), Closure->logColor);
+
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->curveColorA), Closure->curveColor);
+   gtk_color_button_set_color(GTK_COLOR_BUTTON(pc->curveColorB), Closure->curveColor);
 }
 
-static void update_color_buttons(color_button_info *a, color_button_info *b, int redraw)
-{  GdkRectangle rect;
-   GdkWindow *window;
-   gint ignore;
-
-   /* Note that a->color and b->color point to the same object. */
-
-   gdk_colormap_alloc_color(gdk_colormap_get_system(), a->color, FALSE, TRUE);
-
-   gdk_gc_set_rgb_fg_color(a->gc, a->color);   
-   gdk_gc_set_rgb_bg_color(a->gc, a->color);
-   gdk_gc_set_rgb_fg_color(b->gc, b->color);   
-   gdk_gc_set_rgb_bg_color(b->gc, b->color);
-
-   gdk_draw_rectangle(a->pixmap, a->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-   gdk_draw_rectangle(b->pixmap, b->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-
-   /* Trigger an expose event for the button. Since the button has no own window
-      this will actually redraw the whole dialog box. */
-
-   if(redraw) /* Useful when all buttons are reset to default at once */
-   {  window = gtk_widget_get_parent_window(a->button);
-      if(window) 
-      {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
-
-	 gdk_window_invalidate_rect(gtk_widget_get_window(a->button), &rect, TRUE);
-      }
-   }
-
-   window = gtk_widget_get_parent_window(b->button);
-   if(window)
-   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
-	 
-      gdk_window_invalidate_rect(window, &rect, TRUE); 
-   }
-}
-
-static void color_ok_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-   prefs_context *pc = (prefs_context*)Closure->prefsContext;
-
-
-   gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
-
-   switch(cbi->userData)
+static void color_set_cb(GtkWidget *widget, gpointer data)
+{
+   switch(GPOINTER_TO_INT(data))
    {  case COLOR_RED:
-	 update_color_buttons(pc->redA, pc->redB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->redSector);
+         break;
 
       case COLOR_YELLOW:
-	 update_color_buttons(pc->yellowA, pc->yellowB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->yellowSector);
+         break;
 
       case COLOR_GREEN:
-	 update_color_buttons(pc->greenA, pc->greenB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->greenSector);
+         break;
 
       case COLOR_BLUE:
-	 update_color_buttons(pc->blueA, pc->blueB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->blueSector);
+         break;
 
       case COLOR_WHITE:
-	 update_color_buttons(pc->whiteA, pc->whiteB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->whiteSector);
+         break;
 
       case COLOR_DARK:
-	 update_color_buttons(pc->darkA, pc->darkB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->darkSector);
+         break;
 
       case COLOR_RED_TEXT:
-	 update_color_buttons(pc->redTextA, pc->redTextB, TRUE);
-	 GuiUpdateMarkup(&Closure->redMarkup, Closure->redText);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->redText);
+         break;
 
       case COLOR_GREEN_TEXT:
-	 update_color_buttons(pc->greenTextA, pc->greenTextB, TRUE);
-	 GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->greenText);
+         break;
 
       case COLOR_BAR:
-	 update_color_buttons(pc->barColorA, pc->barColorB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->barColor);
+         break;
 
       case COLOR_LOG:
-	 update_color_buttons(pc->logColorA, pc->logColorB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->logColor);
+         break;
 
       case COLOR_CURVE:
-	 update_color_buttons(pc->curveColorA, pc->curveColorB, TRUE);
-	 break;
+         gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), Closure->curveColor);
+         break;
    }
 
-   gtk_widget_hide(cbi->dialog);
-}
-
-static void color_cancel_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-
-   gtk_widget_hide(cbi->dialog);
-}
-
-static void color_choose_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-
-   if(!cbi->dialog)
-   {  GtkColorSelectionDialog *csd;
-      cbi->dialog = gtk_color_selection_dialog_new(_utf("Color selection"));
-      g_signal_connect(cbi->dialog, "delete_event", G_CALLBACK(color_delete_cb), cbi);
-
-      csd = (GtkColorSelectionDialog*)cbi->dialog;
-      g_signal_connect(G_OBJECT(csd->cancel_button), "clicked", G_CALLBACK(color_cancel_cb), cbi);
-      g_signal_connect(G_OBJECT(csd->ok_button), "clicked", G_CALLBACK(color_ok_cb), cbi);
-
-      GuiReverseCancelOK(GTK_DIALOG(cbi->dialog));
-   }
-
-   gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
-   gtk_widget_show(cbi->dialog);
+   update_color_buttons();
 }
 
 static void default_color_cb(GtkWidget *widget, gpointer data)
-{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-
+{
    GuiDefaultColors();
-
-   update_color_buttons(pc->redA, pc->redB, FALSE);
-   update_color_buttons(pc->yellowA, pc->yellowB, FALSE);
-   update_color_buttons(pc->greenA, pc->greenB, FALSE);
-   update_color_buttons(pc->blueA, pc->blueB, FALSE);
-   update_color_buttons(pc->whiteA, pc->whiteB, FALSE);
-   update_color_buttons(pc->darkA, pc->darkB, FALSE);
-   update_color_buttons(pc->redTextA, pc->redTextB, FALSE);
-   update_color_buttons(pc->greenTextA, pc->greenTextB, FALSE);
-   update_color_buttons(pc->barColorA, pc->barColorB, FALSE);
-   update_color_buttons(pc->logColorA, pc->logColorB, FALSE);
-   update_color_buttons(pc->curveColorA, pc->curveColorB, TRUE);
-}
-
-static color_button_info *create_color_button(GdkColor *color, int user_data)
-{  color_button_info *cbi = g_malloc0(sizeof(color_button_info));
-
-   cbi->button = gtk_button_new();
-   cbi->frame  = gtk_frame_new(NULL);
-   gtk_container_set_border_width(GTK_CONTAINER(cbi->frame), 1);
-   gtk_frame_set_shadow_type(GTK_FRAME(cbi->frame), GTK_SHADOW_ETCHED_OUT);
-   gtk_container_add(GTK_CONTAINER(cbi->button), cbi->frame); 
-   cbi->pixmap = gdk_pixmap_new(gdk_get_default_root_window(), COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT, -1);
-   cbi->image  = gtk_image_new_from_pixmap(cbi->pixmap, NULL);
-   gtk_container_add(GTK_CONTAINER(cbi->frame), cbi->image); 
-
-   cbi->gc    = gdk_gc_new(cbi->pixmap);
-   gdk_gc_set_foreground(cbi->gc, color);   
-   gdk_gc_set_background(cbi->gc, color);
-   gdk_draw_rectangle(cbi->pixmap, cbi->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-   cbi->color = color;
-   cbi->userData = user_data;
-   g_signal_connect(G_OBJECT(cbi->button), "clicked", G_CALLBACK(color_choose_cb), cbi);
-
-   return cbi;
-
-  //   gtk_widget_modify_bg(ebox, GTK_STATE_NORMAL, color);
+   update_color_buttons();
 }
 
 /***
@@ -2710,22 +2590,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->greenSector, COLOR_GREEN);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->greenSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_GREEN);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->greenA = cbi;
+            pc->greenA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->greenB = cbi;
+            pc->greenB = button;
 	 }
       }
 
@@ -2740,22 +2620,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->yellowSector, COLOR_YELLOW);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->yellowSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_YELLOW);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->yellowA = cbi;
+            pc->yellowA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->yellowB = cbi;
+            pc->yellowB = button;
 	 }
       }
 
@@ -2770,22 +2650,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->redSector, COLOR_RED);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->redSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_RED);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->redA = cbi;
+            pc->redA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->redB = cbi;
+            pc->redB = button;
 	 }
       }
 
@@ -2800,22 +2680,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->darkSector, COLOR_DARK);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->darkSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_DARK);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->darkA = cbi;
+            pc->darkA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->darkB = cbi;
+            pc->darkB = button;
 	 }
       }
 
@@ -2830,22 +2710,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->blueSector, COLOR_BLUE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->blueSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_BLUE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->blueA = cbi;
+            pc->blueA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->blueB = cbi;
+            pc->blueB = button;
 	 }
       }
 
@@ -2861,22 +2741,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->whiteSector, COLOR_WHITE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->whiteSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_WHITE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->whiteA = cbi;
+            pc->whiteA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->whiteB = cbi;
+            pc->whiteB = button;
 	 }
       }
 
@@ -2902,22 +2782,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->greenText, COLOR_GREEN_TEXT);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->greenText);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_GREEN_TEXT);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->greenTextA = cbi;
+            pc->greenTextA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->greenTextB = cbi;
+            pc->greenTextB = button;
 	 }
       }
 
@@ -2932,22 +2812,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->redText, COLOR_RED_TEXT);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->redText);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_RED_TEXT);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->redTextA = cbi;
+            pc->redTextA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->redTextB = cbi;
+            pc->redTextB = button;
 	 }
       }
 
@@ -2971,22 +2851,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->curveColor, COLOR_CURVE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->curveColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_CURVE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->curveColorA = cbi;
+            pc->curveColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->curveColorB = cbi;
+            pc->curveColorB = button;
 	 }
       }
 
@@ -3002,22 +2882,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->logColor, COLOR_LOG);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->logColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_LOG);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->logColorA = cbi;
+            pc->logColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->logColorB = cbi;
+            pc->logColorB = button;
 	 }
       }
 
@@ -3034,22 +2914,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->barColor, COLOR_BAR);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_color(Closure->barColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_BAR);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->barColorA = cbi;
+            pc->barColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->barColorB = cbi;
+            pc->barColorB = button;
 	 }
       }
 
