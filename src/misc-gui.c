@@ -349,7 +349,6 @@ static gboolean message_idle_func(gpointer data)
 					       GTK_BUTTONS_CLOSE,
 					       mi->msg, NULL);
 
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
    gtk_widget_show(dialog);
 
@@ -397,7 +396,6 @@ GtkWidget* GuiCreateMessage(char *format, GtkMessageType type, ...)
 				   GTK_BUTTONS_CLOSE,
 				   utf8, NULL);
 
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
    gtk_widget_show(dialog);
    g_free(text);
@@ -432,7 +430,6 @@ static gboolean modal_idle_func(gpointer data)
 				   mi->message_type,
 				   mi->button_type,
 				   "%s", mi->msg);
-   gtk_label_set_line_wrap(GTK_LABEL(((struct _GtkMessageDialog*)dialog)->label), FALSE);
 
    if(mi->button_fn)
          mi->button_fn(GTK_DIALOG(dialog));
@@ -540,29 +537,16 @@ void GuiSetText(PangoLayout *layout, char *text, int *w, int *h)
 /*
  * Rearrange buttons to OK Cancel order
  * in file dialogs
- * 
- * gtk_dialog_set_alternative_button_order()
- * has been introduced since gtk+2.6,
- * but does not seem to work correctly.
  */
 
 void GuiReverseCancelOK(GtkDialog *dialog)
-{  GtkWidget *box, *button ;
-
-   if(!Closure->guiMode || !Closure->reverseCancelOK)
+{  if(!Closure->guiMode || !Closure->reverseCancelOK)
       return;
 
-   box = dialog->action_area; 
-   button = ((GtkBoxChild*)(g_list_first(GTK_BOX(box)->children)->data))->widget;
-
-   gtk_box_reorder_child(GTK_BOX(box), button, 1);
-
-#if 0
    gtk_dialog_set_alternative_button_order(GTK_DIALOG(dialog),
 					   GTK_RESPONSE_OK,
 					   GTK_RESPONSE_CANCEL,
 					   -1);
-#endif
 }
 
 /*
@@ -635,7 +619,7 @@ static void insert_button(GtkDialog *dialog)
 {  GtkWidget *check,*align;
 
    align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), align, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), align, FALSE, FALSE, 0);
 
    check = gtk_check_button_new_with_label(_utf("Do not ask again"));
    gtk_container_add(GTK_CONTAINER(align), check);

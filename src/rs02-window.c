@@ -34,7 +34,7 @@ extern gint64 CurrentMediumSize(int);  /* from scsi-layer.h */
  *** Forward declarations
  ***/
 
-static void redraw_curve(RS02Widgets*);
+static void redraw_curve(cairo_t *cr, RS02Widgets*);
 static void update_geometry(RS02Widgets*);
 
 /***
@@ -108,14 +108,6 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
  * Set the media size and ecc capacity
  */
 
-static gboolean set_max_idle_func(gpointer data)
-{  RS02Widgets *wl = (RS02Widgets*)data;
-
-   redraw_curve(wl);
-
-   return FALSE;
-}
-
 void RS02SetFixMaxValues(RS02Widgets *wl, int data_bytes, int ecc_bytes, gint64 sectors)
 {
    wl->dataBytes = data_bytes;
@@ -124,7 +116,7 @@ void RS02SetFixMaxValues(RS02Widgets *wl, int data_bytes, int ecc_bytes, gint64 
    wl->fixCurve->maxX = 100;
    wl->fixCurve->maxY = ecc_bytes - (ecc_bytes % 5) + 5;
 
-   g_idle_add(set_max_idle_func, wl);
+   gtk_widget_queue_draw(wl->fixCurve->widget);
 }
 
 /*
@@ -152,56 +144,6 @@ void RS02UpdateFixResults(RS02Widgets *wl, gint64 corrected, gint64 uncorrected)
    g_idle_add(results_idle_func, wl);
 }
 
-/*
- * Update the error curve 
- */
-
-static gboolean curve_idle_func(gpointer data)
-{  RS02Widgets *wl = (RS02Widgets*)data;
-   gint x0 = GuiCurveX(wl->fixCurve, (double)wl->lastPercent);
-   gint x1 = GuiCurveX(wl->fixCurve, (double)wl->percent);
-   gint y = GuiCurveY(wl->fixCurve, wl->fixCurve->ivalue[wl->percent]);
-   gint i;
-
-   /*** Mark unused ecc values */
-
-   for(i=wl->lastPercent+1; i<wl->percent; i++)
-      wl->fixCurve->ivalue[i] = wl->fixCurve->ivalue[wl->percent];
-
-   /*** Resize the Y axes if error values exceeds current maximum */
-
-   if(wl->fixCurve->ivalue[wl->percent] > wl->fixCurve->maxY)
-   {  wl->fixCurve->maxY = wl->fixCurve->ivalue[wl->percent];
-      wl->fixCurve->maxY = wl->fixCurve->maxY - (wl->fixCurve->maxY % 5) + 5;
-
-      update_geometry(wl);
-      gdk_window_clear(wl->fixCurve->widget->window);
-      redraw_curve(wl);
-      wl->lastPercent = wl->percent;
-
-      return FALSE;
-   }
-
-   /*** Draw the error value */
-
-   if(wl->fixCurve->ivalue[wl->percent] > 0)
-   {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->barColor);
-      gdk_draw_rectangle(wl->fixCurve->widget->window,
-			 Closure->drawGC, TRUE,
-			 x0, y, x0==x1 ? 1 : x1-x0, wl->fixCurve->bottomY-y);
-   }
-   wl->lastPercent = wl->percent;
-
-   /* Redraw the ecc capacity threshold line */
-
-   y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
-		 Closure->drawGC,
-		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
-   return FALSE;
-}
-
 /* 
  * Add one new data point 
  */
@@ -213,7 +155,7 @@ void RS02AddFixValues(RS02Widgets *wl, int percent, int ecc_max)
 
    wl->fixCurve->ivalue[percent] = ecc_max;
    wl->percent = percent;
-   g_idle_add(curve_idle_func, wl);
+   gtk_widget_queue_draw(wl->fixCurve->widget);
 }
   
 /*
@@ -236,35 +178,34 @@ static void update_geometry(RS02Widgets *wl)
 			     TRUE, TRUE, wl->fixCurve->leftX, GTK_PACK_START);
 }
 
-static void redraw_curve(RS02Widgets *wl)
+static void redraw_curve(cairo_t *cr, RS02Widgets *wl)
 {  int y;
 
    /* Redraw the curve */
 
-   GuiRedrawAxes(wl->fixCurve);
-   GuiRedrawCurve(wl->fixCurve, wl->percent);
+   GuiRedrawAxes(cr, wl->fixCurve);
+   GuiRedrawCurve(cr, wl->fixCurve, wl->percent);
 
    /* Ecc capacity threshold line */
 
    y = GuiCurveY(wl->fixCurve, wl->eccBytes);  
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->greenSector);
-   gdk_draw_line(wl->fixCurve->widget->window,
-		 Closure->drawGC,
-		 wl->fixCurve->leftX-6, y, wl->fixCurve->rightX+6, y);
+
+   gdk_cairo_set_source_rgba(cr, Closure->greenSector);
+   cairo_set_line_width(cr, 1.0);
+   cairo_move_to(cr, wl->fixCurve->leftX-5.5, y+0.5);
+   cairo_line_to(cr, wl->fixCurve->rightX+5.5, y+0.5);
+   cairo_stroke(cr);
 }
 
 /*
- * Expose callback
+ * Draw callback
  */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  RS02Widgets *wl = (RS02Widgets*)data; 
-
-   if(event->count) /* Exposure compression */
-     return TRUE;
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{  RS02Widgets *wl = (RS02Widgets*)data;
 
    update_geometry(wl);
-   redraw_curve(wl);
+   redraw_curve(cr, wl);
 
    return TRUE;
 }
@@ -278,9 +219,7 @@ void ResetRS02FixWindow(Method *method)
    RS02UpdateFixResults(wl, 0, 0);
 
    if(wl->fixCurve && wl->fixCurve->widget)
-   {  gdk_window_clear(wl->fixCurve->widget->window);
-      redraw_curve(wl);
-   }
+      gtk_widget_queue_draw(wl->fixCurve->widget);
 
    wl->percent = 0;
    wl->lastPercent = 0;
@@ -313,7 +252,7 @@ void CreateRS02FixWindow(Method *method, GtkWidget *parent)
 
    d_area = wl->fixDrawingArea = gtk_drawing_area_new();
    gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT (d_area), "expose_event", G_CALLBACK(expose_cb), (gpointer)wl);
+   g_signal_connect(G_OBJECT (d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
    
    notebook = wl->fixNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);

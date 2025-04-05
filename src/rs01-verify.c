@@ -56,7 +56,7 @@ void ResetRS01VerifyWindow(Method *self)
    wl->lastPercent = 0;
 
    GuiFillSpiral(wl->cmpSpiral, Closure->background);
-   GuiDrawSpiral(wl->cmpSpiral);
+   gtk_widget_queue_draw(wl->cmpSpiral->widget);
 }
 
 /***
@@ -69,7 +69,7 @@ void ResetRS01VerifyWindow(Method *self)
 
 typedef struct _spiral_idle_info
 {  Spiral *cmpSpiral;
-   GdkColor *segColor;
+   GdkRGBA *segColor;
    int from, to;
 } spiral_idle_info;
 
@@ -78,7 +78,7 @@ static gboolean spiral_idle_func(gpointer data)
    int i;
 
    for(i=sii->from; i<=sii->to; i++)
-     GuiDrawSpiralSegment(sii->cmpSpiral, sii->segColor, i-1);
+     GuiSetSpiralSegmentColor(sii->cmpSpiral, sii->segColor, i-1);
 
    g_free(sii);
    return FALSE;
@@ -120,28 +120,29 @@ void RS01AddVerifyValues(Method *method, int percent,
  * Redraw whole spiral
  */
 
-static void redraw_spiral(RS01Widgets *wl)
+static void redraw_spiral(cairo_t *cr, RS01Widgets *wl)
 {  int x = wl->cmpSpiral->mx - wl->cmpSpiral->diameter/2 + 10;
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Good sectors"), Closure->greenSector, x, 1);
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Sectors with CRC errors"), Closure->yellowSector, x, 2);
 
-   GuiDrawSpiralLabel(wl->cmpSpiral, wl->cmpLayout,
+   GuiDrawSpiralLabel(cr, wl->cmpSpiral, wl->cmpLayout,
 		      _("Missing sectors"), Closure->redSector, x, 3);
 
-   GuiDrawSpiral(wl->cmpSpiral);
+   GuiDrawSpiral(cr, wl->cmpSpiral);
 }
 
 /*
- * expose event handler for the spiral
+ * Draw event handler for the spiral
  */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  RS01Widgets *wl = (RS01Widgets*)data;
-   GtkAllocation *a = &widget->allocation;
+   GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
    int w,h,size;
 
    /* Finish spiral initialization */
@@ -154,16 +155,12 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
    GuiSetText(wl->cmpLayout, _("Missing sectors"), &w, &h);
    size = wl->cmpSpiral->diameter + 20 + 3*(10+h);  /* approx. size of spiral + labels */
 
-   wl->cmpSpiral->mx = a->width / 2;
-   wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a->height - size)/2;
-
-   if(event->count) /* Exposure compression */
-   {  return TRUE;
-   }
+   wl->cmpSpiral->mx = a.width / 2;
+   wl->cmpSpiral->my = (wl->cmpSpiral->diameter + a.height - size)/2;
 
    /* Redraw the spiral */
 
-   redraw_spiral(wl);
+   redraw_spiral(cr, wl);
 
    return TRUE;
 }
@@ -256,7 +253,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    d_area = wl->cmpDrawingArea = gtk_drawing_area_new();
    gtk_widget_set_size_request(d_area, wl->cmpSpiral->diameter+20, -1);
    gtk_container_add(GTK_CONTAINER(frame), d_area);
-   g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), (gpointer)wl);
+   g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
 
    /*** Ecc info */
 

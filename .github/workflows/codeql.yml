@@ -52,7 +52,7 @@ jobs:
 
     - name: Build app
       run: |
-        sudo apt-get update && sudo apt-get install -y libglib2.0-dev ghostscript man jq libgtk2.0-dev
+        sudo apt-get update && sudo apt-get install -y libglib2.0-dev ghostscript man jq libgtk3.0-dev
         ./configure --with-werror
         nproc && make -j$(nproc)
       env:

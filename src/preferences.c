@@ -72,19 +72,6 @@ typedef struct
    struct _prefs_context *pc;
 } non_linear_info;
 
-/* color button housekeeping */
-
-typedef struct 
-{  GtkWidget *button;
-   GtkWidget *dialog;
-   GtkWidget *frame;
-   GtkWidget *image;
-   GdkColor  *color;
-   GdkPixmap *pixmap;
-   GdkGC     *gc;
-   int userData;
-} color_button_info;
-
 /***
  *** Preferences window housekeeping
  ***/
@@ -140,17 +127,17 @@ typedef struct _prefs_context
    GtkWidget *logFilePathA, *logFilePathB;
    GtkWidget *logFileChooser;
 
-   color_button_info *redA, *redB;
-   color_button_info *yellowA, *yellowB;
-   color_button_info *greenA, *greenB;
-   color_button_info *blueA, *blueB;
-   color_button_info *whiteA, *whiteB;
-   color_button_info *darkA, *darkB;
-   color_button_info *redTextA, *redTextB;
-   color_button_info *greenTextA, *greenTextB;
-   color_button_info *barColorA, *barColorB;
-   color_button_info *logColorA, *logColorB;
-   color_button_info *curveColorA, *curveColorB;
+   GtkWidget *redA, *redB;
+   GtkWidget *yellowA, *yellowB;
+   GtkWidget *greenA, *greenB;
+   GtkWidget *blueA, *blueB;
+   GtkWidget *whiteA, *whiteB;
+   GtkWidget *darkA, *darkB;
+   GtkWidget *redTextA, *redTextB;
+   GtkWidget *greenTextA, *greenTextB;
+   GtkWidget *barColorA, *barColorB;
+   GtkWidget *logColorA, *logColorB;
+   GtkWidget *curveColorA, *curveColorB;
 
    non_linear_info *jumpScaleInfoA, *jumpScaleInfoB;
    LabelWithOnlineHelp *jumpScaleLwoh;
@@ -184,29 +171,6 @@ void GuiFreePreferences(void *context)
    if(pc->maxAttemptsScaleInfoB->format) g_free(pc->maxAttemptsScaleInfoB->format);
    if(pc->maxAttemptsScaleInfoA) g_free(pc->maxAttemptsScaleInfoA);
    if(pc->maxAttemptsScaleInfoB) g_free(pc->maxAttemptsScaleInfoB);
-
-   if(pc->redA) g_free(pc->redA);
-   if(pc->redB) g_free(pc->redB);
-   if(pc->yellowA) g_free(pc->yellowA);
-   if(pc->yellowB) g_free(pc->yellowB);
-   if(pc->greenA) g_free(pc->greenA);
-   if(pc->greenB) g_free(pc->greenB);
-   if(pc->blueA) g_free(pc->blueA);
-   if(pc->blueB) g_free(pc->blueB);
-   if(pc->whiteA) g_free(pc->whiteA);
-   if(pc->whiteB) g_free(pc->whiteB);
-   if(pc->darkA) g_free(pc->darkA);
-   if(pc->darkB) g_free(pc->darkB);
-   if(pc->redTextA) g_free(pc->redTextA);
-   if(pc->redTextB) g_free(pc->redTextB);
-   if(pc->greenTextA) g_free(pc->greenTextA);
-   if(pc->greenTextB) g_free(pc->greenTextB);
-   if(pc->barColorA) g_free(pc->barColorA);
-   if(pc->barColorB) g_free(pc->barColorB);
-   if(pc->logColorA) g_free(pc->logColorA);
-   if(pc->logColorB) g_free(pc->logColorB);
-   if(pc->curveColorA) g_free(pc->curveColorA);
-   if(pc->curveColorB) g_free(pc->curveColorB);
 
    g_free(pc);
 }
@@ -716,182 +680,98 @@ static void read_range_cb(GtkWidget *widget, gpointer data)
  *** Color buttons
  ***/
 
-/*
- * Create a color button. We need to do this manually as the GTK color button
- * won't let us manipulate the button order.
- */
+static void update_color_buttons()
+{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
-#define COLOR_BUTTON_WIDTH 32
-#define COLOR_BUTTON_HEIGHT 12
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redA), Closure->redSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redB), Closure->redSector);
 
-static gboolean color_delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->yellowA), Closure->yellowSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->yellowB), Closure->yellowSector);
 
-   cbi->dialog = NULL;
-   return FALSE;
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->greenA), Closure->greenSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->greenB), Closure->greenSector);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->blueA), Closure->blueSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->blueB), Closure->blueSector);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->whiteA), Closure->whiteSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->whiteB), Closure->whiteSector);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->darkA), Closure->darkSector);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->darkB), Closure->darkSector);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redTextA), Closure->redText);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redTextB), Closure->redText);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->greenTextA), Closure->greenText);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->greenTextB), Closure->greenText);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->barColorA), Closure->barColor);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->barColorB), Closure->barColor);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->logColorA), Closure->logColor);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->logColorB), Closure->logColor);
+
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->curveColorA), Closure->curveColor);
+   gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->curveColorB), Closure->curveColor);
 }
 
-static void update_color_buttons(color_button_info *a, color_button_info *b, int redraw)
-{  GdkRectangle rect;
-   GdkWindow *window;
-   gint ignore;
-
-   /* Note that a->color and b->color point to the same object. */
-
-   gdk_colormap_alloc_color(gdk_colormap_get_system(), a->color, FALSE, TRUE);
-
-   gdk_gc_set_rgb_fg_color(a->gc, a->color);   
-   gdk_gc_set_rgb_bg_color(a->gc, a->color);
-   gdk_gc_set_rgb_fg_color(b->gc, b->color);   
-   gdk_gc_set_rgb_bg_color(b->gc, b->color);
-
-   gdk_draw_rectangle(a->pixmap, a->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-   gdk_draw_rectangle(b->pixmap, b->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-
-   /* Trigger an expose event for the button. Since the button has no own window
-      this will actually redraw the whole dialog box. */
-
-   if(redraw) /* Useful when all buttons are reset to default at once */
-   {  window = gtk_widget_get_parent_window(a->button);
-      if(window) 
-      {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
-
-	 gdk_window_invalidate_rect(a->button->window, &rect, TRUE); 
-      }
-   }
-
-   window = gtk_widget_get_parent_window(b->button);
-   if(window)
-   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
-	 
-      gdk_window_invalidate_rect(window, &rect, TRUE); 
-   }
-}
-
-static void color_ok_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-   prefs_context *pc = (prefs_context*)Closure->prefsContext;
-
-
-   gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
-
-   switch(cbi->userData)
+static void color_set_cb(GtkWidget *widget, gpointer data)
+{
+   switch(GPOINTER_TO_INT(data))
    {  case COLOR_RED:
-	 update_color_buttons(pc->redA, pc->redB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->redSector);
+         break;
 
       case COLOR_YELLOW:
-	 update_color_buttons(pc->yellowA, pc->yellowB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->yellowSector);
+         break;
 
       case COLOR_GREEN:
-	 update_color_buttons(pc->greenA, pc->greenB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->greenSector);
+         break;
 
       case COLOR_BLUE:
-	 update_color_buttons(pc->blueA, pc->blueB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->blueSector);
+         break;
 
       case COLOR_WHITE:
-	 update_color_buttons(pc->whiteA, pc->whiteB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->whiteSector);
+         break;
 
       case COLOR_DARK:
-	 update_color_buttons(pc->darkA, pc->darkB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->darkSector);
+         break;
 
       case COLOR_RED_TEXT:
-	 update_color_buttons(pc->redTextA, pc->redTextB, TRUE);
-	 GuiUpdateMarkup(&Closure->redMarkup, Closure->redText);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->redText);
+         break;
 
       case COLOR_GREEN_TEXT:
-	 update_color_buttons(pc->greenTextA, pc->greenTextB, TRUE);
-	 GuiUpdateMarkup(&Closure->greenMarkup, Closure->greenText);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->greenText);
+         break;
 
       case COLOR_BAR:
-	 update_color_buttons(pc->barColorA, pc->barColorB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->barColor);
+         break;
 
       case COLOR_LOG:
-	 update_color_buttons(pc->logColorA, pc->logColorB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->logColor);
+         break;
 
       case COLOR_CURVE:
-	 update_color_buttons(pc->curveColorA, pc->curveColorB, TRUE);
-	 break;
+         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), Closure->curveColor);
+         break;
    }
 
-   gtk_widget_hide(cbi->dialog);
-}
-
-static void color_cancel_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-
-   gtk_widget_hide(cbi->dialog);
-}
-
-static void color_choose_cb(GtkWidget *widget, gpointer data)
-{  color_button_info *cbi = (color_button_info*)data;
-
-   if(!cbi->dialog)
-   {  GtkColorSelectionDialog *csd;
-      cbi->dialog = gtk_color_selection_dialog_new(_utf("Color selection"));
-      g_signal_connect(cbi->dialog, "delete_event", G_CALLBACK(color_delete_cb), cbi);
-
-      csd = (GtkColorSelectionDialog*)cbi->dialog;
-      g_signal_connect(G_OBJECT(csd->cancel_button), "clicked", G_CALLBACK(color_cancel_cb), cbi);
-      g_signal_connect(G_OBJECT(csd->ok_button), "clicked", G_CALLBACK(color_ok_cb), cbi);
-
-      GuiReverseCancelOK(GTK_DIALOG(cbi->dialog));
-   }
-
-   gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(((GtkColorSelectionDialog*)cbi->dialog)->colorsel), cbi->color);
-   gtk_widget_show(cbi->dialog);
+   update_color_buttons();
 }
 
 static void default_color_cb(GtkWidget *widget, gpointer data)
-{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-
+{
    GuiDefaultColors();
-
-   update_color_buttons(pc->redA, pc->redB, FALSE);
-   update_color_buttons(pc->yellowA, pc->yellowB, FALSE);
-   update_color_buttons(pc->greenA, pc->greenB, FALSE);
-   update_color_buttons(pc->blueA, pc->blueB, FALSE);
-   update_color_buttons(pc->whiteA, pc->whiteB, FALSE);
-   update_color_buttons(pc->darkA, pc->darkB, FALSE);
-   update_color_buttons(pc->redTextA, pc->redTextB, FALSE);
-   update_color_buttons(pc->greenTextA, pc->greenTextB, FALSE);
-   update_color_buttons(pc->barColorA, pc->barColorB, FALSE);
-   update_color_buttons(pc->logColorA, pc->logColorB, FALSE);
-   update_color_buttons(pc->curveColorA, pc->curveColorB, TRUE);
-}
-
-static color_button_info *create_color_button(GdkColor *color, int user_data)
-{  color_button_info *cbi = g_malloc0(sizeof(color_button_info));
-
-   cbi->button = gtk_button_new();
-   cbi->frame  = gtk_frame_new(NULL);
-   gtk_container_set_border_width(GTK_CONTAINER(cbi->frame), 1);
-   gtk_frame_set_shadow_type(GTK_FRAME(cbi->frame), GTK_SHADOW_ETCHED_OUT);
-   gtk_container_add(GTK_CONTAINER(cbi->button), cbi->frame); 
-   cbi->pixmap = gdk_pixmap_new(gdk_get_default_root_window(), COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT, -1);
-   cbi->image  = gtk_image_new_from_pixmap(cbi->pixmap, NULL);
-   gtk_container_add(GTK_CONTAINER(cbi->frame), cbi->image); 
-
-   cbi->gc    = gdk_gc_new(cbi->pixmap);
-   gdk_gc_set_foreground(cbi->gc, color);   
-   gdk_gc_set_background(cbi->gc, color);
-   gdk_draw_rectangle(cbi->pixmap, cbi->gc, TRUE, 0, 0, COLOR_BUTTON_WIDTH, COLOR_BUTTON_HEIGHT);
-   cbi->color = color;
-   cbi->userData = user_data;
-   g_signal_connect(G_OBJECT(cbi->button), "clicked", G_CALLBACK(color_choose_cb), cbi);
-
-   return cbi;
-
-  //   gtk_widget_modify_bg(ebox, GTK_STATE_NORMAL, color);
+   update_color_buttons();
 }
 
 /***
@@ -1188,67 +1068,41 @@ static void defective_prefix_cb(GtkWidget *widget, gpointer data)
  * Run the file chooser for the raw sector files directory
  */
 
-static void cache_defective_select_cb(GtkWidget *widget, gpointer data)
-{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-   int action = GPOINTER_TO_INT(data);
-
-   switch(action)
-   {  case 0:  /* destroy */
-	 pc->cacheDefectiveChooser = NULL;
-	 break;
-
-      case 1: /* OK */
-	 if(Closure->dDumpDir)
-	    g_free(Closure->dDumpDir);
-	 Closure->dDumpDir = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)));
-	 if(pc->cacheDefectiveDirA)
-	    gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirA), Closure->dDumpDir);
-	 if(pc->cacheDefectiveDirB)
-	    gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirB), Closure->dDumpDir);
-	 gtk_widget_hide(pc->cacheDefectiveChooser);
-	 break;
-
-      case 2: /* Cancel */
-	 gtk_widget_hide(pc->cacheDefectiveChooser);
-	 break;
-   }
-}
-
 static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)data;
-   GtkWidget *file_list;
+   GtkWidget *dialog;
 
    if(!pc->cacheDefectiveChooser)
    {  char filename[strlen(Closure->dDumpDir)+10];
 
-      pc->cacheDefectiveChooser = gtk_file_selection_new(_utf("Raw sector caching"));
-      GuiReverseCancelOK(GTK_DIALOG(pc->cacheDefectiveChooser));
-
-      g_signal_connect(G_OBJECT(pc->cacheDefectiveChooser), "destroy",
-		       G_CALLBACK(cache_defective_select_cb), 
-		       GINT_TO_POINTER(0));
-      g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->ok_button),
-		       "clicked", G_CALLBACK(cache_defective_select_cb), GINT_TO_POINTER(1));
-      g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->cancel_button),
-		       "clicked", G_CALLBACK(cache_defective_select_cb), GINT_TO_POINTER(2));
-
+      if (!Closure->reverseCancelOK)
+         dialog = gtk_file_chooser_dialog_new("Raw sector caching",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              NULL);
+      else
+         dialog = gtk_file_chooser_dialog_new("Raw sector caching",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              NULL);
       sprintf(filename, "%s/", Closure->dDumpDir);
-      gtk_file_selection_set_filename(GTK_FILE_SELECTION(pc->cacheDefectiveChooser),
-				      filename);
-      gtk_file_selection_hide_fileop_buttons(GTK_FILE_SELECTION(pc->cacheDefectiveChooser));
+      gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 
-      /* Hide the file selection parts */
-
-      file_list = GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->file_list;
-      set_widget_sensitive(file_list, FALSE);
-      gtk_widget_hide(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry);
-      set_entry_text(GTK_ENTRY(GTK_FILE_SELECTION(pc->cacheDefectiveChooser)->selection_entry), "");
-#if 0
-      gtk_widget_hide(file_list->parent);
-#endif
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      {  if(Closure->dDumpDir)
+            g_free(Closure->dDumpDir);
+         Closure->dDumpDir = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+         if(pc->cacheDefectiveDirA)
+            gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirA), Closure->dDumpDir);
+         if(pc->cacheDefectiveDirB)
+            gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirB), Closure->dDumpDir);
+      }
+      gtk_widget_destroy (dialog);
    }
-
-   gtk_widget_show(pc->cacheDefectiveChooser);
 }
 
 
@@ -1258,75 +1112,52 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
 
 static void logfile_select_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-   int action = GPOINTER_TO_INT(data);
+   GtkWidget *dialog;
 
-   switch(action)
-   {  case 0:  /* destroy */
-	 pc->logFileChooser = NULL;
-	 break;
+   if(!pc->logFileChooser)
+   {  if (!Closure->reverseCancelOK)
+         dialog = gtk_file_chooser_dialog_new("Log file",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SAVE,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              NULL);
+      else
+         dialog = gtk_file_chooser_dialog_new("Log file",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_SAVE,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              NULL);
+      gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), Closure->logFile);
 
-      case 1: /* OK */
-	 g_free(Closure->logFile);
-	 Closure->logFile = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(pc->logFileChooser)));
-	 Closure->logFileStamped = FALSE;
-	 if(pc->logFilePathA)
-	    gtk_label_set_text(GTK_LABEL(pc->logFilePathA), Closure->logFile);
-	 if(pc->logFilePathB)
-	    gtk_label_set_text(GTK_LABEL(pc->logFilePathB), Closure->logFile);
-	 gtk_widget_hide(pc->logFileChooser);
-	 break;
-
-      case 2: /* Cancel */
-	 gtk_widget_hide(pc->logFileChooser);
-	 break;
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      {  g_free(Closure->logFile);
+         Closure->logFile = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+         Closure->logFileStamped = FALSE;
+         if(pc->logFilePathA)
+            gtk_label_set_text(GTK_LABEL(pc->logFilePathA), Closure->logFile);
+         if(pc->logFilePathB)
+            gtk_label_set_text(GTK_LABEL(pc->logFilePathB), Closure->logFile);
+      }
+      gtk_widget_destroy (dialog);
    }
 }
 
-#define LOGFILE_SELECT 1
-#define LOGFILE_DELETE 2
+static void logfile_delete_cb(GtkWidget *widget, gpointer data)
+{  GtkWidget *dialog = gtk_message_dialog_new(Closure->prefsWindow,
+                                              GTK_DIALOG_DESTROY_WITH_PARENT,
+                                              GTK_MESSAGE_QUESTION,
+                                              GTK_BUTTONS_OK_CANCEL,
+                                              "%s", _utf("Delete the log file?"));
+   int answer;
 
-static void logfile_cb(GtkWidget *widget, gpointer data)
-{  prefs_context *pc = (prefs_context*)Closure->prefsContext;
-   int action = GPOINTER_TO_INT(data);
+   GuiReverseCancelOK(GTK_DIALOG(dialog));
+   answer = gtk_dialog_run(GTK_DIALOG(dialog));
 
-   switch(action)
-   {  case LOGFILE_SELECT:
-	 if(!pc->logFileChooser)
-	 {  
-	    pc->logFileChooser = gtk_file_selection_new(_utf("Log file"));
-	    GuiReverseCancelOK(GTK_DIALOG(pc->logFileChooser));
-
-	    g_signal_connect(G_OBJECT(pc->logFileChooser), "destroy",
-			     G_CALLBACK(logfile_select_cb), 
-			     GINT_TO_POINTER(0));
-	    g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->logFileChooser)->ok_button),
-			     "clicked", G_CALLBACK(logfile_select_cb), GINT_TO_POINTER(1));
-	    g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(pc->logFileChooser)->cancel_button),
-			     "clicked", G_CALLBACK(logfile_select_cb), GINT_TO_POINTER(2));
-	    
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(pc->logFileChooser),
-					    Closure->logFile);
-	 }
-	 gtk_widget_show(pc->logFileChooser);
-	 break;
-
-      case LOGFILE_DELETE:
-      {  GtkWidget *dialog = gtk_message_dialog_new(Closure->prefsWindow,
-						    GTK_DIALOG_DESTROY_WITH_PARENT,
-						    GTK_MESSAGE_QUESTION,
-						    GTK_BUTTONS_OK_CANCEL,
-						    "%s", _utf("Delete the log file?"));
-	 int answer;
-	   
-	 GuiReverseCancelOK(GTK_DIALOG(dialog));
-	 answer = gtk_dialog_run(GTK_DIALOG(dialog));
-	 
-	 if(answer == GTK_RESPONSE_OK)
-	    LargeUnlink(Closure->logFile);
-	 gtk_widget_destroy(dialog);
-	 break;
-      }
-   }
+   if(answer == GTK_RESPONSE_OK)
+      LargeUnlink(Closure->logFile);
+   gtk_widget_destroy(dialog);
 }
 
 /***
@@ -2496,7 +2327,7 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
          if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 
-	 chooser = gtk_combo_box_new_text();
+	 chooser = gtk_combo_box_text_new();
 
        	 g_signal_connect(G_OBJECT(chooser), "changed", G_CALLBACK(method_select_cb), pc);
 
@@ -2505,7 +2336,7 @@ void GuiCreatePreferencesWindow(void)
 	    char *utf;
 
 	    utf  = g_locale_to_utf8(method->menuEntry, -1, NULL, NULL, NULL);
-	    gtk_combo_box_append_text(GTK_COMBO_BOX(chooser), utf); 
+	    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(chooser), utf);
 	    g_free(utf);
 
 	    if(!strncmp(Closure->methodName, method->name, 4))
@@ -2759,22 +2590,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->greenSector, COLOR_GREEN);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->greenSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_GREEN);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->greenA = cbi;
+            pc->greenA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->greenB = cbi;
+            pc->greenB = button;
 	 }
       }
 
@@ -2789,22 +2620,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->yellowSector, COLOR_YELLOW);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->yellowSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_YELLOW);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->yellowA = cbi;
+            pc->yellowA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->yellowB = cbi;
+            pc->yellowB = button;
 	 }
       }
 
@@ -2819,22 +2650,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->redSector, COLOR_RED);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->redSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_RED);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->redA = cbi;
+            pc->redA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->redB = cbi;
+            pc->redB = button;
 	 }
       }
 
@@ -2849,22 +2680,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->darkSector, COLOR_DARK);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->darkSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_DARK);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->darkA = cbi;
+            pc->darkA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->darkB = cbi;
+            pc->darkB = button;
 	 }
       }
 
@@ -2879,22 +2710,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->blueSector, COLOR_BLUE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->blueSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_BLUE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->blueA = cbi;
+            pc->blueA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->blueB = cbi;
+            pc->blueB = button;
 	 }
       }
 
@@ -2910,22 +2741,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->whiteSector, COLOR_WHITE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->whiteSector);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_WHITE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->whiteA = cbi;
+            pc->whiteA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->whiteB = cbi;
+            pc->whiteB = button;
 	 }
       }
 
@@ -2951,22 +2782,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->greenText, COLOR_GREEN_TEXT);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->greenText);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_GREEN_TEXT);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->greenTextA = cbi;
+            pc->greenTextA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->greenTextB = cbi;
+            pc->greenTextB = button;
 	 }
       }
 
@@ -2981,22 +2812,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->redText, COLOR_RED_TEXT);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->redText);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_RED_TEXT);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->redTextA = cbi;
+            pc->redTextA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->redTextB = cbi;
+            pc->redTextB = button;
 	 }
       }
 
@@ -3020,22 +2851,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->curveColor, COLOR_CURVE);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->curveColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_CURVE);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->curveColorA = cbi;
+            pc->curveColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->curveColorB = cbi;
+            pc->curveColorB = button;
 	 }
       }
 
@@ -3051,22 +2882,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->logColor, COLOR_LOG);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->logColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_LOG);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->logColorA = cbi;
+            pc->logColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->logColorB = cbi;
+            pc->logColorB = button;
 	 }
       }
 
@@ -3083,22 +2914,22 @@ void GuiCreatePreferencesWindow(void)
 
       for(i=0; i<2; i++)
       {  GtkWidget *hbox  = gtk_hbox_new(FALSE, 4);
-	 color_button_info *cbi;
 
-	 cbi = create_color_button(Closure->barColor, COLOR_BAR);
-	 gtk_box_pack_start(GTK_BOX(hbox), cbi->button, FALSE, FALSE, 0);
+         button = gtk_color_button_new_with_rgba(Closure->barColor);
+         g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), (gpointer)COLOR_BAR);
+         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
 
 	 if(!i)
 	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
             gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
-	    pc->barColorA = cbi;
+            pc->barColorA = button;
 	 }
 	 else
 	 {  
 	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
 	    GuiAddHelpWidget(lwoh, hbox);
-	    pc->barColorB = cbi;
+            pc->barColorB = button;
 	 }
       }
 
@@ -3233,13 +3064,11 @@ void GuiCreatePreferencesWindow(void)
 
 	 gtk_table_attach(GTK_TABLE(table), select, 
 			  2, 3, 0, 2, GTK_SHRINK, GTK_SHRINK, 10, 0);
-	 g_signal_connect(G_OBJECT(select), "clicked", G_CALLBACK(logfile_cb), 
-			  GINT_TO_POINTER(LOGFILE_SELECT));
+	 g_signal_connect(G_OBJECT(select), "clicked", G_CALLBACK(logfile_select_cb), 0);
 
 	 gtk_table_attach(GTK_TABLE(table), delete, 
 			  3, 4, 0, 2, GTK_SHRINK, GTK_SHRINK, 0, 0);
-	 g_signal_connect(G_OBJECT(delete), "clicked", G_CALLBACK(logfile_cb),
-			  GINT_TO_POINTER(LOGFILE_DELETE));
+	 g_signal_connect(G_OBJECT(delete), "clicked", G_CALLBACK(logfile_delete_cb), 0);
 
 
  	 if(!i) 

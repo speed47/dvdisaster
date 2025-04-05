@@ -40,37 +40,18 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
    Closure->welcomeMessage = state;
 }
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  GtkWidget *box = (GtkWidget*)data;
 
-   if(!Closure->drawGC)
-   {  GdkColor *bg = &widget->style->bg[0];
-      GdkColormap *cmap = gdk_colormap_get_system();
-
-      Closure->drawGC = gdk_gc_new(widget->window);
-
-      memcpy(Closure->background, bg, sizeof(GdkColor));
-
-      gdk_colormap_alloc_color(cmap, Closure->foreground, FALSE, TRUE);
-
-      Closure->grid->red = bg->red-bg->red/8;
-      Closure->grid->green = bg->green-bg->green/8;
-      Closure->grid->blue = bg->blue-bg->blue/8;
-      gdk_colormap_alloc_color(cmap, Closure->grid, FALSE, TRUE);
-
-      /* This can't be done at closure.c */
-
-      gdk_colormap_alloc_color(cmap, Closure->redText, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->greenText, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->barColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->logColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->curveColor, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->redSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->yellowSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->greenSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->blueSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->whiteSector, FALSE, TRUE);
-      gdk_colormap_alloc_color(cmap, Closure->darkSector, FALSE, TRUE);
+   if(!Closure->colors_initialized)
+   {
+      GdkRGBA fg = {0};
+      GtkStyleContext *context = gtk_widget_get_style_context(widget);
+      gtk_style_context_get_color(context, GTK_STATE_FLAG_NORMAL, &fg);
+      *Closure->foreground   = fg;
+      *Closure->grid         = fg;
+      Closure->grid->alpha   = 0.75;
+      Closure->colors_initialized = TRUE;
 
       /* Dirty trick for indenting the list:
 	 draw an invisible dash before each indented line */
@@ -79,7 +60,7 @@ static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer dat
       {  GtkWidget *button;
 
 	 Closure->invisibleDash = g_strdup_printf("<span color=\"#%02x%02x%02x\">-</span>",
-						  bg->red>>8, bg->green>>8, bg->blue>>8);
+						  0xff, 0xff, 0xff); // FIXME
 
 	 GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl3</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
 			  "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
@@ -117,7 +98,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    ignore = gtk_label_new("welcome_tab");
    box = show_msg ? gtk_vbox_new(FALSE, 0) : gtk_hbox_new(FALSE, 10);
 
-   g_signal_connect(G_OBJECT(align), "expose_event", G_CALLBACK(expose_cb), box);
+   g_signal_connect(G_OBJECT(align), "draw", G_CALLBACK(draw_cb), box);
    gtk_notebook_append_page(notebook, align, ignore);
 
    gtk_container_add(GTK_CONTAINER(align), box);

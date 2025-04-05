@@ -34,25 +34,12 @@
  *** Forward declarations
  ***/
 
-static void redraw_curve(void);
+static void redraw_curve(cairo_t *cr);
 static void update_geometry(void);
 
 /***
  *** Routines for updating the GUI from the action thread.
  ***/
-
-/*
- * Set the (predicted) maximum reading speed
- */
-
-static gboolean max_speed_idle_func(gpointer data)
-{  
-   gdk_window_clear(Closure->readLinearDrawingArea->window);
-   update_geometry();
-   redraw_curve();
-
-   return FALSE;
-}
 
 void GuiInitializeCurve(void *rc_ptr, int max_rate, int can_c2)
 {  read_closure *rc = (read_closure*)rc_ptr;
@@ -70,14 +57,12 @@ void GuiInitializeCurve(void *rc_ptr, int max_rate, int can_c2)
 
    rc->lastCopied = (1000*rc->firstSector)/rc->image->dh->sectors;
    rc->lastPlotted = rc->lastSegment = rc->lastCopied;
-   rc->lastPlottedY = 0;
 
    if(Closure->readLinearSpiral)
      for(i=rc->lastCopied-1; i>=0; i--)
      {  Closure->readLinearSpiral->segmentColor[i] = Closure->blueSector;
         Closure->readLinearCurve->ivalue[i] = 0;
      }
-   g_idle_add(max_speed_idle_func, NULL);
 }
 
 /*
@@ -92,10 +77,8 @@ typedef struct
 static gboolean curve_idle_func(gpointer data)
 {  curve_info *ci = (curve_info*)data;
    read_closure *rc=ci->rc;
-   gint x0,y0;
    char *utf,buf[80];
    gint i;
-   gint resize_curve = FALSE;
 
    /*** Update the textual output */
 
@@ -112,20 +95,22 @@ static gboolean curve_idle_func(gpointer data)
    gtk_label_set_text(GTK_LABEL(Closure->readLinearErrors), utf);
    g_free(utf);
 
-   /*** Draw the changed spiral segments */
+   /*** Update color of the changed spiral segments */
 
    for(i=rc->lastSegment; i<ci->percent; i++)
      switch(Closure->readLinearCurve->ivalue[i])
-     {  case 0: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->blueSector, i); break;
-        case 1: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->greenSector, i); break;
-        case 2: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->redSector, i); break;
-        case 3: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->darkSector, i); break;
-        case 4: GuiDrawSpiralSegment(Closure->readLinearSpiral, Closure->yellowSector, i); break;
+     {  case 0: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->blueSector, i); break;
+        case 1: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->greenSector, i); break;
+        case 2: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->redSector, i); break;
+        case 3: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->darkSector, i); break;
+        case 4: GuiSetSpiralSegmentColor(Closure->readLinearSpiral, Closure->yellowSector, i); break;
      }
 
    rc->lastSegment = ci->percent;
 
-   if(rc->pass)      /* 2nd or higher reading pass, don't touch the curve */
+   /* Don't touch the curve 2nd or higher reading pass, of if there is no new data */
+
+   if(rc->pass || rc->lastPlotted >= ci->percent)
    {  g_free(ci);
       g_mutex_lock(rc->rendererMutex);
       rc->activeRenderers--;
@@ -137,53 +122,12 @@ static gboolean curve_idle_func(gpointer data)
 
    for(i=rc->lastPlotted+1; i<=ci->percent; i++)
      if(Closure->readLinearCurve->fvalue[i] > Closure->readLinearCurve->maxY)
-       resize_curve = TRUE;
+        Closure->readLinearCurve->maxY = Closure->readLinearCurve->fvalue[i];
 
-   if(resize_curve)
-   {  Closure->readLinearCurve->maxY = Closure->readLinearCurve->fvalue[ci->percent] + 1;
+   /*** Schedule the curve for redrawing */
 
-      update_geometry();
-      gdk_window_clear(Closure->readLinearDrawingArea->window);
-      redraw_curve();
-      rc->lastPlotted = ci->percent;
-      rc->lastPlottedY = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[ci->percent]); 
-      g_free(ci);
-      g_mutex_lock(rc->rendererMutex);
-      rc->activeRenderers--;
-      g_mutex_unlock(rc->rendererMutex);
-      return FALSE;
-   }
-
-   /*** Draw the changed curve part */
-   
-   x0 = GuiCurveX(Closure->readLinearCurve, rc->lastPlotted);
-   y0 = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[rc->lastPlotted]);
-   if(rc->lastPlottedY) y0 = rc->lastPlottedY;
-
-   for(i=rc->lastPlotted+1; i<=ci->percent; i++)
-   {  gint x1 = GuiCurveX(Closure->readLinearCurve, i);
-      gint y1 = GuiCurveY(Closure->readLinearCurve, Closure->readLinearCurve->fvalue[i]);
-      gint l1 = GuiCurveLogY(Closure->readLinearCurve, Closure->readLinearCurve->lvalue[i]);
-
-      if(Closure->readLinearCurve->lvalue[i])
-      {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->logColor);
-      
-	 gdk_draw_rectangle(Closure->readLinearDrawingArea->window,
-			    Closure->drawGC, TRUE,
-			    x0, l1,
-			    x0==x1 ? 1 : x1-x0, Closure->readLinearCurve->bottomLY-l1);
-      }
-      if(x0<x1)
-      {  gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
-	 gdk_draw_line(Closure->readLinearDrawingArea->window,
-		      Closure->drawGC,
-		      x0, y0, x1, y1);
-
-	 rc->lastPlotted = ci->percent;
-	 x0 = x1;
-	 rc->lastPlottedY = y0 = y1;
-      }
-   }
+   rc->lastPlotted = ci->percent;
+   gtk_widget_queue_draw(Closure->readLinearCurveArea);
 
    g_free(ci);
    g_mutex_lock(rc->rendererMutex);
@@ -243,13 +187,6 @@ void GuiAddCurveValues(void *rc_ptr, int percent, int color, int c2)
  * Mark existing sectors with the dark green color.
  */
 
-static gboolean curve_mark_idle_func(gpointer data)
-{
-   GuiDrawSpiral(Closure->readLinearSpiral);
-
-   return FALSE;
-}
-
 void GuiMarkExistingSectors(void)
 {  int i;
    int x;
@@ -260,8 +197,6 @@ void GuiMarkExistingSectors(void)
    x = Closure->readLinearCurve->rightX + 20;
    
    Closure->additionalSpiralColor = 3;
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
-		      _("Already present"), Closure->darkSector, x, -1);
 
    for(i=0; i<1000; i++)
       if(Closure->readLinearSpiral->segmentColor[i] == Closure->greenSector)
@@ -269,28 +204,24 @@ void GuiMarkExistingSectors(void)
 	 Closure->readLinearCurve->ivalue[i] = 3;
       }
 
-   g_idle_add(curve_mark_idle_func, NULL);
+   gtk_widget_queue_draw(Closure->readLinearCurve->widget);
 }
 
 /*
  * Redraw the whole curve
  */
 
-/* Calculate the geometry of the curve and spiral */
+static void redraw_curve(cairo_t *cr)
+{
+   GuiRedrawAxes(cr, Closure->readLinearCurve);
+   GuiRedrawCurve(cr, Closure->readLinearCurve, 1000);
+}
+
+/* Calculate the geometry of the curve */
 
 static void update_geometry(void)
-{  GtkWidget *widget = Closure->readLinearDrawingArea;
-   GtkAllocation *a = &widget->allocation;
-
-   /* Curve geometry */ 
-
-   GuiUpdateCurveGeometry(Closure->readLinearCurve, "99x", 
-			  Closure->readLinearSpiral->diameter + 30);
-
-   /* Spiral center */
-
-   Closure->readLinearSpiral->mx = a->width - 15 - Closure->readLinearSpiral->diameter / 2;
-   Closure->readLinearSpiral->my = a->height / 2;
+{
+   GuiUpdateCurveGeometry(Closure->readLinearCurve, "99x", 10);
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
    {  int w,h;
@@ -309,56 +240,57 @@ static void update_geometry(void)
 
 }
 
-static void redraw_curve(void)
-{  GdkDrawable *d = Closure->readLinearDrawingArea->window;
-   int x,w,h;
+static void redraw_spiral_labels(cairo_t *cr)
+{  int x,w,h;
    int pos = 1;
 
    /* Draw and label the spiral */
 
-   x = Closure->readLinearCurve->rightX + 20;
-   gdk_gc_set_rgb_fg_color(Closure->drawGC, Closure->curveColor);
+   x = 10;
    GuiSetText(Closure->readLinearCurve->layout, _("Medium state"), &w, &h);
-   gdk_draw_layout(d, Closure->drawGC, 
-		   x,
-		   Closure->readLinearCurve->topY - h - 5, 
-		   Closure->readLinearCurve->layout);
+   gdk_cairo_set_source_rgba(cr, Closure->curveColor);
+   cairo_move_to(cr, x, Closure->readLinearCurve->topY - h - 5);
+   pango_cairo_show_layout(cr, Closure->readLinearCurve->layout);
 
    if(Closure->additionalSpiralColor == 0)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Not touched this time"), Closure->curveColor, x, -1);
 
    if(Closure->additionalSpiralColor == 3)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Already present"), Closure->darkSector, x, -1);
 
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+   GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		      _("Successfully read"), Closure->greenSector, x, pos++);
 
    if(Closure->crcBuf && Closure->crcBuf->crcCached)
-     GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+     GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 			_("Sectors with CRC errors"), Closure->yellowSector, x, pos++);
 
-   GuiDrawSpiralLabel(Closure->readLinearSpiral, Closure->readLinearCurve->layout,
+   GuiDrawSpiralLabel(cr, Closure->readLinearSpiral, Closure->readLinearCurve->layout,
 		      _("Unreadable / skipped"), Closure->redSector, x, pos++);
 
-   GuiDrawSpiral(Closure->readLinearSpiral);
-
-   /* Redraw the curve */
-
-   GuiRedrawAxes(Closure->readLinearCurve);
-   GuiRedrawCurve(Closure->readLinearCurve, 1000);
+   GuiDrawSpiral(cr, Closure->readLinearSpiral);
 }
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{  
-   GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
-  
-   if(event->count) /* Exposure compression */
-     return TRUE;
-
+static gboolean draw_curve_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
    update_geometry();
-   redraw_curve();
+   redraw_curve(cr);
+
+   return TRUE;
+}
+
+static gboolean draw_spiral_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
+{  GtkAllocation a = {0};
+   gtk_widget_get_allocation(widget, &a);
+
+   GuiSetSpiralWidget(Closure->readLinearSpiral, widget);
+
+   /* Override spiral center */
+   Closure->readLinearSpiral->mx = a.width - 15 - Closure->readLinearSpiral->diameter / 2;
+
+   redraw_spiral_labels(cr);
 
    return TRUE;
 }
@@ -373,7 +305,8 @@ void GuiResetLinearReadWindow()
 
    GuiZeroCurve(Closure->readLinearCurve);
    GuiFillSpiral(Closure->readLinearSpiral, Closure->background);
-   GuiDrawSpiral(Closure->readLinearSpiral);
+   if (Closure->readLinearSpiral->widget)
+      gtk_widget_queue_draw(Closure->readLinearSpiral->widget);
 }
 
 /*
@@ -383,26 +316,9 @@ void GuiResetLinearReadWindow()
  * contents have already been carried out.
  */
 
-static gboolean redraw_idle_func(gpointer data)
-{  GdkRectangle rect;
-   GdkWindow *window;
-   gint ignore;
-
-   /* Trigger an expose event for the drawing area. */
-
-   window = gtk_widget_get_parent_window(Closure->readLinearDrawingArea);
-   if(window) 
-   {  gdk_window_get_geometry(window, &rect.x, &rect.y, &rect.width, &rect.height, &ignore);
-
-      gdk_window_invalidate_rect(window, &rect, TRUE); 
-   }
-
-   return FALSE;
-}
-
 void GuiRedrawReadLinearWindow(void)
 {  if(Closure->guiMode)
-    g_idle_add(redraw_idle_func, NULL);
+      gtk_widget_queue_draw(Closure->readLinearCurveArea);
 }
 
 /***
@@ -410,7 +326,7 @@ void GuiRedrawReadLinearWindow(void)
  ***/
 
 void GuiCreateLinearReadWindow(GtkWidget *parent)
-{  GtkWidget *sep,*ignore,*d_area,*notebook,*hbox;
+{  GtkWidget *sep,*ignore,*curve,*spiral,*notebook,*hbox;
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
    gtk_misc_set_alignment(GTK_MISC(Closure->readLinearHeadline), 0.0, 0.0); 
@@ -424,9 +340,18 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    sep = gtk_hseparator_new();
    gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
 
-   d_area = Closure->readLinearDrawingArea = gtk_drawing_area_new();
-   gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
-   g_signal_connect(G_OBJECT(d_area), "expose_event", G_CALLBACK(expose_cb), NULL);
+   hbox = gtk_hbox_new(FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(parent), hbox, TRUE, TRUE, 0);
+
+   curve = Closure->readLinearCurveArea = gtk_drawing_area_new();
+   gtk_box_pack_start(GTK_BOX(hbox), curve, TRUE, TRUE, 0);
+   g_signal_connect(G_OBJECT(curve), "draw", G_CALLBACK(draw_curve_cb), NULL);
+
+   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
+   spiral = gtk_drawing_area_new();
+   gtk_widget_set_size_request(spiral, Closure->readLinearSpiral->diameter + 20, -1);
+   gtk_box_pack_start(GTK_BOX(hbox), spiral, FALSE, FALSE, 0);
+   g_signal_connect(G_OBJECT(spiral), "draw", G_CALLBACK(draw_spiral_cb), NULL);
 
    notebook = Closure->readLinearNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
@@ -451,8 +376,7 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), Closure->readLinearFootline, ignore);
 
-   Closure->readLinearCurve  = GuiCreateCurve(d_area, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
+   Closure->readLinearCurve  = GuiCreateCurve(curve, _("Speed"), "%dx", 1000, CURVE_MEGABYTES);
    Closure->readLinearCurve->leftLogLabel = g_strdup(_("C2 errors"));
-   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
 }
 #endif /* WITH_GUI_YES */

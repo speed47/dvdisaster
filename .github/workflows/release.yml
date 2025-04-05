@@ -82,7 +82,7 @@ jobs:
           install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
       - name: install GUI prereqs
         if: matrix.ui == 'gui'
-        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk2
+        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
@@ -159,7 +159,7 @@ jobs:
           mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk2.0-dev gtk2-engines-pixbuf gtk2-engines libgail-common pkg-config gnome-themes-standard fuse'
+        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk3-dev libgail-common pkg-config gnome-themes-standard fuse'
       - name: configure in docker
         run: docker exec uu sh -c 'cd /code && ./configure --prefix=/usr'
       - name: make in docker

@@ -288,52 +288,43 @@ static void calculate_failures(raw_editor_context *rec)
 
 static void file_select_cb(GtkWidget *widget, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
-   int action = GPOINTER_TO_INT(data);
+   GtkWidget *dialog;
 
-   switch(action)
-   {  
-      case ACTION_BROWSE_LOAD:  /* open the dialog */
-	 if(!rec->fileSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+   if(!rec->fileSel)
+   {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->fileSel = gtk_file_selection_new(_utf("windowtitle|Raw sector dump selection"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->fileSel));
-            g_signal_connect(G_OBJECT(rec->fileSel), "destroy",
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->ok_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->fileSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(file_select_cb), GINT_TO_POINTER(ACTION_FILESEL_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->fileSel), filename);
-         }
-	 gtk_widget_show(rec->fileSel);
-	 break;
+      if (!Closure->reverseCancelOK)
+         dialog = gtk_file_chooser_dialog_new("Raw sector dump selection",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              NULL);
+      else
+         dialog = gtk_file_chooser_dialog_new("Raw sector dump selection",
+                                              Closure->window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                              NULL);
+      sprintf(filename, "%s/", Closure->dDumpDir);
+      gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 
-      case ACTION_FILESEL_DESTROY:
-	 rec->fileSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_OK:
-	 if(rec->filepath)
-	    g_free(rec->filepath);
-	 rec->filepath = g_strdup(gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->fileSel)));
-	 gtk_widget_hide(rec->fileSel);
-	 ResetRawBuffer(rec->rb);
-	 ReadDefectiveSectorFile(rec->dsh, rec->rb, rec->filepath);
-	 PrintPQStats(rec->rb);
-	 memcpy(rec->rb->recovered, rec->rb->rawBuf[0], rec->rb->sampleSize);
-	 memcpy(rec->undoRing[0], rec->rb->rawBuf[0], rec->rb->sampleSize);
-	 calculate_failures(rec);
-	 evaluate_vectors(rec);
-	 render_sector(rec);
-	 GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
-			 rec->filepath, rec->rb->lba, rec->rb->samplesRead);
-	 break;
-
-      case ACTION_FILESEL_CANCEL:
-	 gtk_widget_hide(rec->fileSel);
-	 break;
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      {  if(rec->filepath)
+            g_free(rec->filepath);
+         rec->filepath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+         ResetRawBuffer(rec->rb);
+         ReadDefectiveSectorFile(rec->dsh, rec->rb, rec->filepath);
+         PrintPQStats(rec->rb);
+         memcpy(rec->rb->recovered, rec->rb->rawBuf[0], rec->rb->sampleSize);
+         memcpy(rec->undoRing[0], rec->rb->rawBuf[0], rec->rb->sampleSize);
+         calculate_failures(rec);
+         evaluate_vectors(rec);
+         gtk_widget_queue_draw(GTK_WIDGET(rec->window));
+         GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
+                         rec->filepath, rec->rb->lba, rec->rb->samplesRead);
+      }
    }
 }
 
@@ -404,101 +395,74 @@ static void save_sector(raw_editor_context *rec)
 }
 
 /***
- *** Raw sector buffer loading/savinf
+ *** Raw sector buffer loading/saving
  ***/
 
 static void buffer_io_cb(GtkWidget *widget, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
    int action = GPOINTER_TO_INT(data);
+   LargeFile *file;
+   char *path;
+   GtkWidget *dialog;
 
    switch(action)
-   {  
+   {
       case ACTION_LOAD_BUFFER:  /* open the dialog */
-	 if(!rec->loadBufSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+         if(!rec->loadBufSel)
+         {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->loadBufSel = gtk_file_selection_new(_utf("windowtitle|Load buffer from file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->loadBufSel));
-            g_signal_connect(G_OBJECT(rec->loadBufSel), "destroy",
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->ok_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->loadBufSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_LOAD_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->loadBufSel), filename);
+            if (!Closure->reverseCancelOK)
+               dialog = gtk_file_chooser_dialog_new("Load buffer from file",
+                                                    Closure->window,
+                                                    GTK_FILE_CHOOSER_ACTION_OPEN,
+                                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                    NULL);
+            else
+               dialog = gtk_file_chooser_dialog_new("Load buffer from file",
+                                                    Closure->window,
+                                                    GTK_FILE_CHOOSER_ACTION_OPEN,
+                                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                    NULL);
+            sprintf(filename, "%s/", Closure->dDumpDir);
+            gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+
+            path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            file = LargeOpen(path, O_RDONLY, IMG_PERMS);
+            LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
+            LargeClose(file);
+
+            calculate_failures(rec);
+            evaluate_vectors(rec);
+            gtk_widget_queue_draw(GTK_WIDGET(rec->window));
+            undo_remember(rec);
+
+            GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
          }
-	 gtk_widget_show(rec->loadBufSel);
-	 break;
+         break;
 
       case ACTION_SAVE_BUFFER:  /* open the dialog */
-	 if(!rec->saveBufSel)
-	 {  char filename[strlen(Closure->dDumpDir)+10];
+         if(!rec->saveBufSel)
+         {  char filename[strlen(Closure->dDumpDir)+10];
 
-	    rec->saveBufSel = gtk_file_selection_new(_utf("windowtitle|Save buffer to file"));
-	    GuiReverseCancelOK(GTK_DIALOG(rec->saveBufSel));
-            g_signal_connect(G_OBJECT(rec->saveBufSel), "destroy",
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_DESTROY));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->ok_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_OK));
-            g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(rec->saveBufSel)->cancel_button),"clicked", 
-	                     G_CALLBACK(buffer_io_cb), GINT_TO_POINTER(ACTION_FILESEL_SAVE_CANCEL));
-	    sprintf(filename, "%s/", Closure->dDumpDir);
-	    gtk_file_selection_set_filename(GTK_FILE_SELECTION(rec->saveBufSel), filename);
+            GtkWidget *dialog = gtk_file_chooser_dialog_new("Save buffer to file",
+                                                            Closure->window,
+                                                            GTK_FILE_CHOOSER_ACTION_SAVE,
+                                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                                            NULL);
+            sprintf(filename, "%s/", Closure->dDumpDir);
+            gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+
+            path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+            file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
+            LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
+            LargeClose(file);
+
+            GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
          }
-	 gtk_widget_show(rec->saveBufSel);
-	 break;
-
-      case ACTION_FILESEL_LOAD_DESTROY:
-	 rec->loadBufSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_SAVE_DESTROY:
-	 rec->saveBufSel = NULL;
-	 break;
-
-      case ACTION_FILESEL_LOAD_OK:
-      {  LargeFile *file;
-	 char *path;
-
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->loadBufSel));
-	 gtk_widget_hide(rec->loadBufSel);
-
-	 file = LargeOpen(path, O_RDONLY, IMG_PERMS);
-	 LargeRead(file, rec->rb->recovered, rec->rb->sampleSize);
-	 LargeClose(file);
-
-	 calculate_failures(rec);
-	 evaluate_vectors(rec);
-	 render_sector(rec);
-	 undo_remember(rec);
-	 
-	 GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
-	 break;
-      }
-
-      case ACTION_FILESEL_SAVE_OK:
-      {  LargeFile *file;
-	 char *path;
-
-	 path = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(rec->saveBufSel));
-	 gtk_widget_hide(rec->saveBufSel);
-
-	 file = LargeOpen(path, O_RDWR | O_CREAT, IMG_PERMS);
-	 LargeWrite(file, rec->rb->recovered, rec->rb->sampleSize);
-	 LargeClose(file);
-
-	 GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
-	 break;
-      }
-
-      case ACTION_FILESEL_LOAD_CANCEL:
-	 gtk_widget_hide(rec->loadBufSel);
-	 break;
-
-      case ACTION_FILESEL_SAVE_CANCEL:
-	 gtk_widget_hide(rec->saveBufSel);
-	 break;
+         break;
    }
 }
 
@@ -586,66 +550,66 @@ static void evaluate_vectors(raw_editor_context *rec)
 /* Render the sector */
 
 static void render_sector(raw_editor_context *rec)
-{  GdkDrawable *d = rec->drawingArea->window;
+{  GdkWindow *d = gtk_widget_get_window(rec->drawingArea);
    unsigned char *buf = rec->rb->recovered;
    int idx=0;
    int i,j,w,h,x,y;
 
    if(!d) return;
+   cairo_t *cr = gdk_cairo_create(d);
 
-   gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->background);
-   gdk_draw_rectangle(d, Closure->drawGC, TRUE, 0, 0, rec->daWidth, rec->daHeight);
+   gdk_cairo_set_source_rgba(cr, Closure->background);
+   cairo_rectangle(cr, 0, 0, rec->daWidth, rec->daHeight);
+   cairo_fill(cr);
 
    idx = 12;
    for(j=0,y=0; j<P_VECTOR_SIZE; j++, y+=rec->charHeight)
    {  for(i=0,x=0; i<N_P_VECTORS; i++, x+=rec->charWidth)
       {  char byte[3];
 
-	 if(rec->tags[idx])
-	 {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->curveColor);
-	    gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-			       rec->charWidth, rec->charHeight);
-	 }
-	 else if(rec->rb->byteState[idx])
-	 {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->yellowSector);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-				  rec->charWidth, rec->charHeight);
-	    } 
-	    else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->greenText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y, 
-				  rec->charWidth, rec->charHeight);
-	    }
-	    else 
-	    {  gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->redText);
-	       gdk_draw_rectangle(d, Closure->drawGC, TRUE, x, y,
-				  rec->charWidth, rec->charHeight);
-	    }
-	 }
+         if(rec->tags[idx])
+         {  gdk_cairo_set_source_rgba(cr, Closure->curveColor);
+            cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+            cairo_fill(cr);
+         }
+         else if(rec->rb->byteState[idx])
+         {  if(rec->rb->byteState[idx] & (P1_CPOS | Q1_CPOS))
+            {  gdk_cairo_set_source_rgba(cr, Closure->yellowSector);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+            else if(rec->rb->byteState[idx] & (P1_ERROR | Q1_ERROR))
+            {  gdk_cairo_set_source_rgba(cr, Closure->greenText);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+            else
+            {  gdk_cairo_set_source_rgba(cr, Closure->redText);
+               cairo_rectangle(cr, x, y, rec->charWidth, rec->charHeight);
+               cairo_fill(cr);
+            }
+         }
 
-         gdk_gc_set_rgb_fg_color(Closure->drawGC,Closure->foreground);
+         gdk_cairo_set_source_rgba(cr, Closure->foreground);
 
-	 sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
-	 idx++;
-	 GuiSetText(rec->layout, byte, &w, &h);
-	 gdk_draw_layout(d, Closure->drawGC, x, y, rec->layout);
+         sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
+         idx++;
+         GuiSetText(rec->layout, byte, &w, &h);
+         cairo_move_to(cr, x, y);
+         pango_cairo_show_layout(cr, rec->layout);
       }
    }
 }
 
-/* Expose event handler */
+/* Draw event handler */
 
-static gboolean expose_cb(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
 
    if(!rec->layout)
    {  rec->layout = gtk_widget_create_pango_layout(widget, NULL);
       calculate_geometry(rec);
    }
-
-   if(event->count) /* Exposure compression */
-     return TRUE;
 
    evaluate_vectors(rec);
    render_sector(rec);
@@ -725,7 +689,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 {  if(type=='P') SetPVector(rb->recovered, vector, v);
 	    else          SetQVector(rb->recovered, vector, v);
 	    evaluate_vectors(rec);
-	    render_sector(rec);
+	    gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	    undo_remember(rec);
 	    GuiSetLabelText(rec->rightLabel, 
 	       _("%c Vector %d corrected (%d erasures)."), type, v, e_scratch);
@@ -760,7 +724,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 i = (last+1)%rb->pn[v];
 	 SetPVector(rb->recovered, rb->pList[v][i], v);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged P vector %d with version %d (of %d)."),
 		      v, i+1, rb->pn[v]);
@@ -796,7 +760,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
 	 i = (last+1)%rb->qn[v];
 	 SetQVector(rb->recovered, rb->qList[v][i], v);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 GuiSetLabelText(rec->rightLabel, 
 		      _("Exchanged Q vector %d with version %d (of %d)."),
 		      v, i+1, rb->qn[v]);
@@ -811,7 +775,7 @@ static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer dat
       {  int bytepos = 12 + mouse_x/rec->charWidth + N_P_VECTORS*(mouse_y/rec->charHeight);
 
 	 rec->tags[bytepos] ^= 1;
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
       }
 	 break;
@@ -843,8 +807,8 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
    switch(action)
    {  case ACTION_BROWSE_LOAD:
-	 file_select_cb(NULL, GINT_TO_POINTER(ACTION_BROWSE_LOAD));
-	 break;
+         file_select_cb(NULL, GINT_TO_POINTER(ACTION_BROWSE_LOAD));
+         break;
 
       case ACTION_BROWSE_SAVE:
 	 save_sector(rec);
@@ -857,7 +821,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->sectorChanged = FALSE;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
@@ -870,7 +834,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->sectorChanged = FALSE;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Showing sample %d (of %d)."), 
 		      rec->currentSample, rec->rb->samplesRead);
@@ -878,7 +842,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
       case ACTION_UNTAG:
 	 memset(rec->tags, 0, 2352);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 break;
 
@@ -893,7 +857,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	       if(byte != rec->rb->rawBuf[j][i])
 		  rec->tags[i] = 1;
 	 }
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 break;
       }
@@ -901,13 +865,13 @@ static void action_cb(GtkWidget *widget, gpointer data)
       case ACTION_UNDO:
 	 undo(rec);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 break;
 
       case ACTION_REDO:
 	 redo(rec);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 break;
 
       case ACTION_SORT_BY_P:
@@ -916,7 +880,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->currentSample = 0;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest P failures selected."));
 	 break;
@@ -926,7 +890,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	 rec->currentSample = 0;
 	 memcpy(rec->rb->recovered, rec->rbInfo[rec->currentSample].rawSector, rec->rb->sampleSize);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Sector with lowest Q failures selected."));
 	 break;
@@ -937,7 +901,7 @@ static void action_cb(GtkWidget *widget, gpointer data)
 	    rec->smartLECHandle = PrepareIterativeSmartLEC(rec->rb);
 	 SmartLECIteration(rec->smartLECHandle, message);
 	 evaluate_vectors(rec);
-	 render_sector(rec);
+	 gtk_widget_queue_draw(GTK_WIDGET(rec->window));
 	 undo_remember(rec);
 	 GuiSetLabelText(rec->rightLabel, _("Smart L-EC: %s"), message);
 	 break;
@@ -1127,7 +1091,7 @@ void GuiCreateRawEditor(void)
       rec->drawingArea = gtk_drawing_area_new();
       gtk_widget_add_events(rec->drawingArea, GDK_BUTTON_PRESS_MASK);
       gtk_box_pack_start(GTK_BOX(hbox), rec->drawingArea, TRUE, TRUE, 0);
-      g_signal_connect(G_OBJECT(rec->drawingArea), "expose_event", G_CALLBACK(expose_cb), NULL);
+      g_signal_connect(G_OBJECT(rec->drawingArea), "draw", G_CALLBACK(draw_cb), NULL);
       g_signal_connect(G_OBJECT(rec->drawingArea), "button_press_event", G_CALLBACK(button_cb), NULL);
    }
 
