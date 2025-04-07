@@ -409,14 +409,6 @@ void GuiCreateMainWindow(int *argc, char ***argv)
 
     gtk_init(argc, argv);
 
-    /*** Some style tinkering */
-
-    gtk_rc_parse_string("style \"dvdisaster-style\"\n"
-                       "{  GtkMenuBar::shadow_type = none\n"
-                       "}\n"
-
-                       "class \"GtkMenuBar\" style \"dvdisaster-style\"\n");
-
     /*** Create our icons */
 
     GuiCreateIconFactory();
