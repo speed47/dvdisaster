@@ -601,17 +601,17 @@ static void dont_ask_again_cb(GtkWidget *widget, gpointer data)
 }
 
 static void insert_button(GtkDialog *dialog)
-{  GtkWidget *check,*align;
+{  GtkWidget *check,*hbox;
 
-   align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), align, FALSE, FALSE, 0);
+   hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
 
    check = gtk_check_button_new_with_label(_utf("Do not ask again"));
-   gtk_container_add(GTK_CONTAINER(align), check);
-   gtk_container_set_border_width(GTK_CONTAINER(align), 10);
+   gtk_box_set_center_widget(GTK_BOX(hbox), check);
+   gtk_container_set_border_width(GTK_CONTAINER(check), 10);
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
 
-   gtk_widget_show(align);
+   gtk_widget_show(hbox);
    gtk_widget_show(check);
 } 
 

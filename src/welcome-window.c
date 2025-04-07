@@ -45,18 +45,17 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
  */
 
 void GuiCreateWelcomePage(GtkNotebook *notebook)
-{  GtkWidget *box,*button,*align,*ignore;
+{  GtkWidget *box,*button,*ignore;
    int show_msg;
 
    show_msg = Closure->welcomeMessage || Closure->version != Closure->dotFileVersion;
 
-   align = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
    ignore = gtk_label_new("welcome_tab");
    box = show_msg ? gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) : gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+   gtk_widget_set_halign(box, GTK_ALIGN_CENTER);
+   gtk_widget_set_valign(box, GTK_ALIGN_CENTER);
 
-   gtk_notebook_append_page(notebook, align, ignore);
-
-   gtk_container_add(GTK_CONTAINER(align), box);
+   gtk_notebook_append_page(notebook, box, ignore);
 
    if(!show_msg)
      {  return;  // simply leave the window blank 
