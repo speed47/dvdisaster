@@ -354,7 +354,8 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 {  GtkWidget *sep,*ignore,*curve,*spiral,*notebook,*hbox;
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(Closure->readLinearHeadline), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(Closure->readLinearHeadline), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(Closure->readLinearHeadline), 5, 0);
    gtk_label_set_ellipsize(GTK_LABEL(Closure->readLinearHeadline), PANGO_ELLIPSIZE_END);
    gtk_box_pack_start(GTK_BOX(parent), Closure->readLinearHeadline, FALSE, FALSE, 3);
@@ -385,18 +386,20 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 
    hbox = Closure->readLinearFootlineBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    Closure->readLinearSpeed = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(Closure->readLinearSpeed), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(Closure->readLinearSpeed), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearSpeed), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearSpeed, FALSE, FALSE, 0);
 
    Closure->readLinearErrors = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(Closure->readLinearErrors), 1.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(Closure->readLinearErrors), 1.0);
+   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearErrors), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearErrors, TRUE, TRUE, 0);
 
    ignore = gtk_label_new("progress_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), hbox, ignore);
 
    Closure->readLinearFootline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(Closure->readLinearFootline), 0.0, 0.5); 
+   gtk_label_set_xalign(GTK_LABEL(Closure->readLinearFootline), 0.0);
    gtk_misc_set_padding(GTK_MISC(Closure->readLinearFootline), 5, 0);
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), Closure->readLinearFootline, ignore);

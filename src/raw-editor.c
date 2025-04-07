@@ -935,11 +935,13 @@ void GuiCreateRawEditor(void)
       gtk_box_pack_start(GTK_BOX(outer_box), hbox, FALSE, FALSE, 0);
 
       rec->leftLabel = label = gtk_label_new("Reed-Solomon Sudoku");
-      gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
+      gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+      gtk_label_set_yalign(GTK_LABEL(label), 0.0);
       gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
 
       rec->rightLabel = label = gtk_label_new(_("Please load a raw sector file!"));
-      gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
+      gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+      gtk_label_set_yalign(GTK_LABEL(label), 0.0);
       gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);

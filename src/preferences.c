@@ -2150,8 +2150,10 @@ void GuiCreatePreferencesWindow(void)
 
 	 gtk_table_attach(GTK_TABLE(table), tinybox, 0, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
-	 gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0);
-	 gtk_misc_set_alignment(GTK_MISC(lwoh->normalLabel), 0.0, 0.0);
+         gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
+         gtk_label_set_yalign(GTK_LABEL(lwoh->linkLabel), 0.0);
+         gtk_label_set_xalign(GTK_LABEL(lwoh->normalLabel), 0.0);
+         gtk_label_set_yalign(GTK_LABEL(lwoh->normalLabel), 0.0);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
@@ -2936,8 +2938,10 @@ void GuiCreatePreferencesWindow(void)
 
 	 gtk_table_attach(GTK_TABLE(table), tinybox, 0, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
-	 gtk_misc_set_alignment(GTK_MISC(lwoh->linkLabel), 0.0, 0.0);
-	 gtk_misc_set_alignment(GTK_MISC(lwoh->normalLabel), 0.0, 0.0);
+         gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
+         gtk_label_set_yalign(GTK_LABEL(lwoh->linkLabel), 0.0);
+         gtk_label_set_xalign(GTK_LABEL(lwoh->normalLabel), 0.0);
+         gtk_label_set_yalign(GTK_LABEL(lwoh->normalLabel), 0.0);
 	 gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);

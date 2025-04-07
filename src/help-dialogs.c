@@ -268,7 +268,8 @@ void GuiAddHelpParagraph(LabelWithOnlineHelp *lwoh, char *format, ...)
    g_free(utf);
    g_free(text);
 
-   gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(label), 0.0);
    gtk_box_pack_start(GTK_BOX(lwoh->vbox), label, FALSE, FALSE, 0);
 
    /* Work around some bugs in the gtk line wrapper code.
@@ -294,7 +295,8 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
 
    gtk_box_pack_start(GTK_BOX(lwoh->vbox), hbox, FALSE, FALSE, 0);
 
-   gtk_misc_set_alignment(GTK_MISC(bullet), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(bullet), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(bullet), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), bullet, FALSE, FALSE, 0);
 
    va_start(argp, format);
@@ -306,7 +308,8 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
    g_free(utf);
    g_free(text);
 
-   gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(label), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), label, TRUE, TRUE, 0);
 
    /* Work around some bugs in the gtk line wrapper code.
@@ -558,7 +561,8 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
    utf = g_locale_to_utf8(explanation, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lab), utf);
    g_free(utf);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_box_pack_start(GTK_BOX(vbox), lab, FALSE, FALSE, 0);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
@@ -637,7 +641,8 @@ void GuiAboutText(GtkWidget *parent, char *format, ...)
    tmp = g_strdup_vprintf(format, argp);
    utf_text = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lab), utf_text);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_box_pack_start(GTK_BOX(parent), lab, FALSE, FALSE, 0);
 
    g_free(tmp);

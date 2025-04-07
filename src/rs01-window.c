@@ -110,7 +110,8 @@ void CreateRS01EWindow(Method *method, GtkWidget *parent)
    GtkWidget *sep,*wid,*pbar,*table,*hbox;
 
    wl->encHeadline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->encHeadline), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(wl->encHeadline), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wl->encHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->encHeadline), 5, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
 
@@ -126,7 +127,8 @@ void CreateRS01EWindow(Method *method, GtkWidget *parent)
    wl->encLabel1 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>1. Calculating image sector checksums:</b>"));
-   gtk_misc_set_alignment(GTK_MISC(wid), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 20, 20);
 
    pbar = wl->encPBar1 = gtk_progress_bar_new();
@@ -135,19 +137,20 @@ void CreateRS01EWindow(Method *method, GtkWidget *parent)
    wl->encLabel2 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>2. Creating error correction data:</b>"));
-   gtk_misc_set_alignment(GTK_MISC(wid), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 20, 20);
 
    pbar = wl->encPBar2 = gtk_progress_bar_new();
    gtk_table_attach(GTK_TABLE(table), pbar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND, 20, 20);
 
    wl->encFootline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->encFootline), 0.0, 0.5); 
+   gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->encFootline), 20, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->encFootline, FALSE, FALSE, 3);
 
    wl->encFootline2 = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->encFootline2), 0.0, 0.5); 
+   gtk_label_set_xalign(GTK_LABEL(wl->encFootline2), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->encFootline2), 20, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->encFootline2, FALSE, FALSE, 3);
 
@@ -317,7 +320,8 @@ void CreateRS01FWindow(Method *method, GtkWidget *parent)
    GtkWidget *sep,*ignore,*d_area,*notebook,*hbox;
 
    wl->fixHeadline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->fixHeadline), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(wl->fixHeadline), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wl->fixHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->fixHeadline), 5, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
 
@@ -340,22 +344,24 @@ void CreateRS01FWindow(Method *method, GtkWidget *parent)
    gtk_box_set_homogeneous(GTK_BOX(hbox), TRUE);
 
    wl->fixCorrected = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->fixCorrected), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(wl->fixCorrected), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wl->fixCorrected), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixCorrected, TRUE, TRUE, 0);
 
    wl->fixProgress = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->fixProgress), 0.5, 0.0); 
+   gtk_label_set_yalign(GTK_LABEL(wl->fixProgress), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixProgress, TRUE, TRUE, 0);
 
    wl->fixUncorrected = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->fixUncorrected), 1.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(wl->fixUncorrected), 1.0);
+   gtk_label_set_yalign(GTK_LABEL(wl->fixUncorrected), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixUncorrected, TRUE, TRUE, 0);
 
    ignore = gtk_label_new("progress_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), hbox, ignore);
 
    wl->fixFootline = gtk_label_new("Footline");
-   gtk_misc_set_alignment(GTK_MISC(wl->fixFootline), 0.0, 0.5); 
+   gtk_label_set_xalign(GTK_LABEL(wl->fixFootline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->fixFootline), 5, 0);
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), wl->fixFootline, ignore);

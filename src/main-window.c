@@ -489,8 +489,9 @@ void GuiCreateMainWindow(int *argc, char ***argv)
 
     Closure->status = gtk_label_new(NULL);
     gtk_label_set_ellipsize(GTK_LABEL(Closure->status), PANGO_ELLIPSIZE_END);
-    gtk_misc_set_alignment(GTK_MISC(Closure->status), 0.0, 0.5);
-    gtk_box_pack_start(GTK_BOX(status_box), GTK_WIDGET(Closure->status), TRUE, TRUE, 5);
+    gtk_label_set_xalign(GTK_LABEL(Closure->status), 0.0);
+    gtk_label_set_yalign(GTK_LABEL(Closure->status), 0.0);
+     gtk_box_pack_start(GTK_BOX(status_box), GTK_WIDGET(Closure->status), TRUE, TRUE, 5);
 
     button = gtk_button_new();
     gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);

@@ -345,7 +345,8 @@ void GuiCreateMediumInfoWindow()
   gtk_label_set_markup(GTK_LABEL(lab), 
 		       _utf("<big>Medium info</big>\n"
 			    "<i>Properties of the currently inserted medium</i>"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_box_pack_start(GTK_BOX(vbox), lab, FALSE, FALSE, 0);
 
   sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
@@ -405,67 +406,83 @@ void GuiCreateMediumInfoWindow()
   gtk_container_add(GTK_CONTAINER(frame), table);
 
   lab = gtk_label_new(_utf("Medium type:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->physicalType = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Book type:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->bookType = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Manuf.-ID:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->manufID = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Drive profile:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->profileDescr = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Disc status:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->discStatus = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 4, 5, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Used sectors:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->usedCapacity1 = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 5, 6, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(" ");
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->usedCapacity2 = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 6, 7, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Blank capacity:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->blankCapacity = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 7, 8, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   /*** Filesystem info */
@@ -478,27 +495,33 @@ void GuiCreateMediumInfoWindow()
   gtk_container_add(GTK_CONTAINER(frame), table);
 
   lab = gtk_label_new(_utf("Medium label:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->isoLabel = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("File system size:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->isoSize = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Creation time:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->isoTime = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   /*** Error correction info */
@@ -511,35 +534,43 @@ void GuiCreateMediumInfoWindow()
   gtk_container_add(GTK_CONTAINER(frame), table);
 
   lab = gtk_label_new(_utf("Error correction data:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->eccState = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Augmented image size:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->eccSize = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("dvdisaster version:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->eccVersion = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
 
   lab = gtk_label_new(_utf("Exhaustive search:"));
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->exhaustiveSearch = lab;
-  gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
   gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
   mi->exhaustiveSearchButton = gtk_button_new_with_label(_utf("Run exhaustive search"));
   g_signal_connect(G_OBJECT(mi->exhaustiveSearchButton), "clicked", G_CALLBACK(es_cb), mi);

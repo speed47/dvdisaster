@@ -582,7 +582,8 @@ void GuiLockLabelSize(GtkWidget *wid, char *format, ...)
    pango_layout_get_pixel_extents(layout, NULL, &rect);
 
    gtk_widget_set_size_request(wid, rect.width, rect.height);
-   gtk_misc_set_alignment(GTK_MISC(wid), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
 
    g_free(text);
 }

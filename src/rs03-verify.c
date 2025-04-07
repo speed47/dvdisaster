@@ -178,7 +178,8 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    int y1,y2;
 
    wl->cmpHeadline = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(wl->cmpHeadline), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(wl->cmpHeadline), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(wl->cmpHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->cmpHeadline), 5, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
 
@@ -205,61 +206,74 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    y1=0; y2=1;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Type:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccType = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Method:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccMethod = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Created by:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccCreatedBy = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Requires:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccRequires = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpEccDataCrc = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Data checksum:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccDataCrcVal = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Fingerprint:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccFingerprint = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpEccResult = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 2, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 4);
 
    /*** Image spiral */
@@ -294,77 +308,94 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    y1=0; y2=1;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Medium sectors:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImageSectors = gtk_label_new("0");
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Data checksum:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImageMd5Sum = gtk_label_new("0");
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Data section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpDataSection = gtk_label_new(".");
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Crc section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpCrcSection = gtk_label_new(".");
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Ecc section:"));
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccSection= gtk_label_new(".");
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpEccSynLabel = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    GuiSetLabelText(lab, _("Ecc block test:")); 
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpEccSyndromes = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpImageErasure = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImageErasureCnt = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpImagePrognosis = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 1, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
    lab = wl->cmpImagePrognosisMsg = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0); 
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 1, 2, y1, y2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
    y1++; y2++;
 
    lab = wl->cmpImageResult = gtk_label_new(NULL);
-   gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.0);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
    gtk_table_attach(GTK_TABLE(table2), lab, 0, 2, y1, y2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 4);
 }
 
