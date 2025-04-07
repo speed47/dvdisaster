@@ -1148,7 +1148,7 @@ void GuiCreatePreferencesWindow(void)
 {  
    if(!Closure->prefsWindow)  /* No window to reuse? */
    {  GtkWidget *window, *outer_box, *notebook, *space;
-      GtkWidget *hbox, *vbox, *vbox2, *vbox3, *button, *frame, *table;
+      GtkWidget *hbox, *vbox, *vbox2, *vbox3, *button, *frame, *grid;
       GtkWidget *lab;
       LabelWithOnlineHelp *lwoh,*lwoh_clone;
       prefs_context *pc = g_malloc0(sizeof(prefs_context));
@@ -2137,7 +2137,7 @@ void GuiCreatePreferencesWindow(void)
       GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
-      {  GtkWidget *table = gtk_table_new(3,2,FALSE);
+      {  GtkWidget *grid = gtk_grid_new();
 	 GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *label = gtk_label_new(Closure->dDumpDir);
@@ -2147,19 +2147,18 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_box_pack_start(GTK_BOX(tinybox), button, FALSE, FALSE, 0);
 	 gtk_box_pack_start(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
 	 if (!i) gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+         gtk_widget_set_hexpand(tinybox, TRUE);
 
-	 gtk_table_attach(GTK_TABLE(table), tinybox, 0, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+         gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 1, 1, 1);
 
          gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
          gtk_label_set_xalign(GTK_LABEL(lwoh->normalLabel), 0.0);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-	 gtk_table_attach(GTK_TABLE(table), hbox, 
-			  1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+         gtk_grid_attach(GTK_GRID(grid), hbox, 1, 2, 1, 1);
 
-	 gtk_table_attach(GTK_TABLE(table), select, 
-			  2, 3, 0, 2, GTK_SHRINK, GTK_SHRINK, 0, 0);
+         gtk_grid_attach(GTK_GRID(grid), select, 2, 1, 1, 2);
 	 g_signal_connect(G_OBJECT(select), "clicked", G_CALLBACK(cache_defective_dir_cb), pc);
 
 
@@ -2177,8 +2176,8 @@ void GuiCreatePreferencesWindow(void)
 	 else activate_toggle_button(GTK_TOGGLE_BUTTON(button), FALSE);
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_CACHE_DEFECTIVE));
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), table, FALSE, FALSE, 0);
-	 else   GuiAddHelpWidget(lwoh, table);
+	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), grid, FALSE, FALSE, 0);
+	 else   GuiAddHelpWidget(lwoh, grid);
       }
 
       GuiAddHelpParagraph(lwoh, 
@@ -2484,14 +2483,16 @@ void GuiCreatePreferencesWindow(void)
       vbox = create_page(notebook, _utf("Appearance"));
 
       /** Color scheme
-          Using a table gives better control over spacing between the frames. */
+          Using a grid gives better control over spacing between the frames. */
 
-      table = gtk_table_new(2, 4, FALSE);
-      gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, FALSE, 0);
+      grid = gtk_grid_new();
+	  gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
+	  gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
+      gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
 
       vbox3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_table_attach(GTK_TABLE(table), vbox3, 
-		       0, 1, 0, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 5, 5);
+      gtk_widget_set_hexpand(vbox3, TRUE);
+      gtk_grid_attach(GTK_GRID(grid), vbox3, 1, 1, 1, 3);
 
       frame = gtk_frame_new(_utf("Sector coloring"));
       gtk_box_pack_start(GTK_BOX(vbox3), frame, FALSE, FALSE, 0);
@@ -2687,8 +2688,8 @@ void GuiCreatePreferencesWindow(void)
       /** Text colors */
 
       frame = gtk_frame_new(_utf("Text colors"));
-      gtk_table_attach(GTK_TABLE(table), frame, 
-		       1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 5, 5);
+      gtk_widget_set_hexpand(frame, TRUE);
+      gtk_grid_attach(GTK_GRID(grid), frame, 2, 1, 1, 1);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
@@ -2757,8 +2758,8 @@ void GuiCreatePreferencesWindow(void)
       /** Curve colors */
 
       frame = gtk_frame_new(_utf("Curve colors"));
-      gtk_table_attach(GTK_TABLE(table), frame, 
-		       1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 5, 5);
+      gtk_widget_set_hexpand(frame, TRUE);
+      gtk_grid_attach(GTK_GRID(grid), frame, 2, 2, 1, 1);
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
@@ -2857,17 +2858,10 @@ void GuiCreatePreferencesWindow(void)
 	   "The bar graph showing the error correction load "
 	   "is rendered in this color during the \"Fix\" operation."));
 
-      /* Padding space */
-#if 0
-      lab = gtk_label_new("");
-      gtk_table_attach(GTK_TABLE(table), lab, 
-		       1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
-#endif
       /* Default color scheme */
 
       button = gtk_button_new_with_label(_utf("Default color scheme"));
-      gtk_table_attach(GTK_TABLE(table), button, 
-		       1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 5, 5);
+      gtk_grid_attach(GTK_GRID(grid), button, 2, 3, 1, 1);
 
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(default_color_cb), NULL);
 
@@ -2922,35 +2916,35 @@ void GuiCreatePreferencesWindow(void)
       GuiRegisterPreferencesHelpWindow(lwoh);
 
       for(i=0; i<2; i++)
-      {  GtkWidget *table = gtk_table_new(4,2,FALSE);
+      {  GtkWidget *grid = gtk_grid_new();
 	 GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *label = gtk_label_new(Closure->logFile);
 	 GtkWidget *select = gtk_button_new_with_label(_utf("Select"));
 	 GtkWidget *delete = gtk_button_new_with_label(_utf("Delete"));
 
+	 gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
+
 	 button = gtk_check_button_new();
 	 gtk_box_pack_start(GTK_BOX(tinybox), button, FALSE, FALSE, 0);
 	 gtk_box_pack_start(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
 	 if (!i) gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
 
-	 gtk_table_attach(GTK_TABLE(table), tinybox, 0, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+	 gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 1, 3, 1);
 
          gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
          gtk_label_set_xalign(GTK_LABEL(lwoh->normalLabel), 0.0);
 	 gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
+	 gtk_widget_set_hexpand(label, TRUE);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 gtk_box_pack_start(GTK_BOX(hbox), label, TRUE, TRUE, 0);
-	 gtk_table_attach(GTK_TABLE(table), hbox, 
-			  0, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+	 gtk_grid_attach(GTK_GRID(grid), hbox, 1, 2, 1, 1);
 
-	 gtk_table_attach(GTK_TABLE(table), select, 
-			  2, 3, 0, 2, GTK_SHRINK, GTK_SHRINK, 10, 0);
+	 gtk_grid_attach(GTK_GRID(grid), select, 2, 2, 1, 1);
 	 g_signal_connect(G_OBJECT(select), "clicked", G_CALLBACK(logfile_select_cb), 0);
 
-	 gtk_table_attach(GTK_TABLE(table), delete, 
-			  3, 4, 0, 2, GTK_SHRINK, GTK_SHRINK, 0, 0);
+	 gtk_grid_attach(GTK_GRID(grid), delete, 3, 2, 1, 1);
 	 g_signal_connect(G_OBJECT(delete), "clicked", G_CALLBACK(logfile_delete_cb), 0);
 
 
@@ -2968,8 +2962,8 @@ void GuiCreatePreferencesWindow(void)
 	 else activate_toggle_button(GTK_TOGGLE_BUTTON(button), FALSE);
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_LOGFILE));
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), table, FALSE, FALSE, 0);
-	 else   GuiAddHelpWidget(lwoh, table);
+	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), grid, FALSE, FALSE, 0);
+	 else   GuiAddHelpWidget(lwoh, grid);
       }
 
       GuiAddHelpParagraph(lwoh, 
