@@ -355,7 +355,7 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearHeadline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(Closure->readLinearHeadline), 5, 0);
+   gtk_widget_set_margin_start(Closure->readLinearHeadline, 5);
    gtk_label_set_ellipsize(GTK_LABEL(Closure->readLinearHeadline), PANGO_ELLIPSIZE_END);
    gtk_box_pack_start(GTK_BOX(parent), Closure->readLinearHeadline, FALSE, FALSE, 3);
 
@@ -397,7 +397,7 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 
    Closure->readLinearFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearFootline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(Closure->readLinearFootline), 5, 0);
+   gtk_widget_set_margin_start(Closure->readLinearFootline, 5);
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), Closure->readLinearFootline, ignore);
 

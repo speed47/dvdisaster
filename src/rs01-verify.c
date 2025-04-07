@@ -178,7 +178,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
 
    wl->cmpHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->cmpHeadline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->cmpHeadline), 5, 0);
+   gtk_widget_set_margin_start(wl->cmpHeadline, 5);
    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);

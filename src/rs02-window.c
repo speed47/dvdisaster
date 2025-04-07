@@ -60,7 +60,7 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
 
    wl->encHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encHeadline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->encHeadline), 5, 0);
+   gtk_widget_set_margin_start(wl->encHeadline, 5);
    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
@@ -91,12 +91,12 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
 
    wl->encFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->encFootline), 20, 0);
+   gtk_widget_set_margin_start(wl->encFootline, 20);
    gtk_box_pack_start(GTK_BOX(parent), wl->encFootline, FALSE, FALSE, 3);
 
    wl->encFootline2 = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline2), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->encFootline2), 20, 0);
+   gtk_widget_set_margin_start(wl->encFootline2, 20);
    gtk_box_pack_start(GTK_BOX(parent), wl->encFootline2, FALSE, FALSE, 3);
 }
 
@@ -260,7 +260,7 @@ void CreateRS02FixWindow(Method *method, GtkWidget *parent)
 
    wl->fixHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixHeadline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->fixHeadline), 5, 0);
+   gtk_widget_set_margin_start(wl->fixHeadline, 5);
    gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
@@ -297,7 +297,7 @@ void CreateRS02FixWindow(Method *method, GtkWidget *parent)
 
    wl->fixFootline = gtk_label_new("Footline");
    gtk_label_set_xalign(GTK_LABEL(wl->fixFootline), 0.0);
-   gtk_misc_set_padding(GTK_MISC(wl->fixFootline), 5, 0);
+   gtk_widget_set_margin_start(wl->fixFootline, 5);
    ignore = gtk_label_new("footer_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), wl->fixFootline, ignore);
 
