@@ -316,7 +316,7 @@ static void mi_destroy_cb(GtkWidget *widget, gpointer data)
  ***/
 
 void GuiCreateMediumInfoWindow()
-{ GtkWidget *dialog,*vbox,*hbox,*table,*button,*lab,*sep,*frame,*combo_box;
+{ GtkWidget *dialog,*vbox,*hbox,*grid,*button,*lab,*sep,*frame,*combo_box;
   medium_info *mi;
   int i;
   int dev_idx = 0;
@@ -400,152 +400,164 @@ void GuiCreateMediumInfoWindow()
   frame = gtk_frame_new(_utf("Physical medium info"));
   gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-  table = gtk_table_new(2, 8, FALSE);
-  gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-  gtk_container_add(GTK_CONTAINER(frame), table);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  gtk_widget_set_margin_start(grid, 5);
+  gtk_widget_set_margin_top(grid, 2);
+  gtk_widget_set_margin_bottom(grid, 2);
+  gtk_container_add(GTK_CONTAINER(frame), grid);
 
   lab = gtk_label_new(_utf("Medium type:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 1, 1, 1);
   lab = gtk_label_new(" ");
   mi->physicalType = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 1, 1, 1);
 
   lab = gtk_label_new(_utf("Book type:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 2, 1, 1);
   lab = gtk_label_new(" ");
   mi->bookType = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 2, 1, 1);
 
   lab = gtk_label_new(_utf("Manuf.-ID:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 3, 1, 1);
   lab = gtk_label_new(" ");
   mi->manufID = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 3, 1, 1);
 
   lab = gtk_label_new(_utf("Drive profile:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 4, 1, 1);
   lab = gtk_label_new(" ");
   mi->profileDescr = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 4, 1, 1);
 
   lab = gtk_label_new(_utf("Disc status:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 5, 1, 1);
   lab = gtk_label_new(" ");
   mi->discStatus = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 4, 5, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 5, 1, 1);
 
   lab = gtk_label_new(_utf("Used sectors:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 6, 1, 1);
   lab = gtk_label_new(" ");
   mi->usedCapacity1 = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 5, 6, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 6, 1, 1);
 
-  lab = gtk_label_new(" ");
-  gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
   lab = gtk_label_new(" ");
   mi->usedCapacity2 = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 6, 7, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 7, 1, 1);
 
   lab = gtk_label_new(_utf("Blank capacity:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 8, 1, 1);
   lab = gtk_label_new(" ");
   mi->blankCapacity = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 7, 8, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 8, 1, 1);
 
   /*** Filesystem info */
 
   frame = gtk_frame_new(_utf("Filesystem info"));
   gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-  table = gtk_table_new(2, 3, FALSE);
-  gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-  gtk_container_add(GTK_CONTAINER(frame), table);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  gtk_widget_set_margin_start(grid, 5);
+  gtk_widget_set_margin_top(grid, 2);
+  gtk_widget_set_margin_bottom(grid, 2);
+  gtk_container_add(GTK_CONTAINER(frame), grid);
 
   lab = gtk_label_new(_utf("Medium label:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 1, 1, 1);
   lab = gtk_label_new(" ");
   mi->isoLabel = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 1, 1, 1);
 
   lab = gtk_label_new(_utf("File system size:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 2, 1, 1);
   lab = gtk_label_new(" ");
   mi->isoSize = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 2, 1, 1);
 
   lab = gtk_label_new(_utf("Creation time:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 3, 1, 1);
   lab = gtk_label_new(" ");
   mi->isoTime = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 3, 1, 1);
 
   /*** Error correction info */
 
   frame = gtk_frame_new(_utf("Augmented image info"));
   gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
 
-  table = gtk_table_new(3, 4, FALSE);
-  gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-  gtk_container_add(GTK_CONTAINER(frame), table);
+  grid = gtk_grid_new();
+  gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
+  gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  gtk_widget_set_margin_start(grid, 5);
+  gtk_widget_set_margin_top(grid, 2);
+  gtk_widget_set_margin_bottom(grid, 2);
+  gtk_container_add(GTK_CONTAINER(frame), grid);
 
   lab = gtk_label_new(_utf("Error correction data:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 1, 1, 1);
   lab = gtk_label_new(" ");
   mi->eccState = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 0, 1, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 1, 2, 1);
 
   lab = gtk_label_new(_utf("Augmented image size:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 2, 1, 1);
   lab = gtk_label_new(" ");
   mi->eccSize = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 1, 2, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 2, 2, 1);
 
   lab = gtk_label_new(_utf("dvdisaster version:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 3, 1, 1);
   lab = gtk_label_new(" ");
   mi->eccVersion = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 3, 2, 3, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 3, 2, 1);
 
   lab = gtk_label_new(_utf("Exhaustive search:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 2 );
+  gtk_grid_attach(GTK_GRID(grid), lab, 1, 4, 1, 1);
   lab = gtk_label_new(" ");
   mi->exhaustiveSearch = lab;
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
-  gtk_table_attach(GTK_TABLE(table), lab, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_widget_set_hexpand(lab, TRUE);
+  gtk_grid_attach(GTK_GRID(grid), lab, 2, 4, 1, 1);
   mi->exhaustiveSearchButton = gtk_button_new_with_label(_utf("Run exhaustive search"));
+  gtk_widget_set_valign(mi->exhaustiveSearchButton, GTK_ALIGN_END);
   g_signal_connect(G_OBJECT(mi->exhaustiveSearchButton), "clicked", G_CALLBACK(es_cb), mi);
-  gtk_table_attach(GTK_TABLE(table), mi->exhaustiveSearchButton, 2, 3, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 0, 0);
+  gtk_grid_attach(GTK_GRID(grid), mi->exhaustiveSearchButton, 3, 3, 1, 2);
 
   /*** Show it */
 
