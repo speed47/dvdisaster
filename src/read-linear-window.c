@@ -322,7 +322,7 @@ void GuiResetLinearReadWindow()
    gtk_notebook_set_current_page(GTK_NOTEBOOK(Closure->readLinearNotebook), 0);
 
    GuiZeroCurve(Closure->readLinearCurve);
-   GuiFillSpiral(Closure->readLinearSpiral, Closure->background);
+   GuiFillSpiral(Closure->readLinearSpiral, &transparent);
    if (Closure->readLinearSpiral->widget)
       gtk_widget_queue_draw(Closure->readLinearSpiral->widget);
 }
@@ -372,7 +372,7 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(hbox), curve, TRUE, TRUE, 0);
    g_signal_connect(G_OBJECT(curve), "draw", G_CALLBACK(draw_curve_cb), NULL);
 
-   Closure->readLinearSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 1000);
+   Closure->readLinearSpiral = GuiCreateSpiral(&transparent, 10, 5, 1000);
    spiral = gtk_drawing_area_new();
    gtk_widget_set_size_request(spiral, Closure->readLinearSpiral->diameter + 20, -1);
    gtk_box_pack_start(GTK_BOX(hbox), spiral, FALSE, FALSE, 0);

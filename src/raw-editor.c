@@ -548,9 +548,11 @@ static void render_sector(cairo_t *cr, raw_editor_context *rec)
 
    if(!d) return;
 
-   gdk_cairo_set_source_rgba(cr, Closure->background);
-   cairo_rectangle(cr, 0, 0, rec->daWidth, rec->daHeight);
-   cairo_fill(cr);
+   /* Get foreground color */
+
+   GdkRGBA fg = {0};
+   GtkStyleContext *context = gtk_widget_get_style_context(rec->drawingArea);
+   gtk_style_context_get_color(context, gtk_widget_get_state_flags(rec->drawingArea), &fg);
 
    idx = 12;
    for(j=0,y=0; j<P_VECTOR_SIZE; j++, y+=rec->charHeight)
@@ -580,7 +582,7 @@ static void render_sector(cairo_t *cr, raw_editor_context *rec)
             }
          }
 
-         gdk_cairo_set_source_rgba(cr, Closure->foreground);
+         gdk_cairo_set_source_rgba(cr, &fg);
 
          sprintf(byte, "%c", canprint(buf[idx]) ? buf[idx] : '.');
          idx++;

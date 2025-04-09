@@ -49,10 +49,6 @@ static int draw_text(cairo_t *cr, PangoLayout *l, char *text, int x, int y, GdkR
    {  erase_to = Closure->readAdaptiveSpiral->mx - Closure->readAdaptiveSpiral->diameter/2;
       pw = erase_to-x;
 
-      gdk_cairo_set_source_rgba(cr, Closure->background);
-      cairo_rectangle(cr, x, y, pw, h);
-      cairo_fill(cr);
-
       gdk_cairo_set_source_rgba(cr, color);
       cairo_move_to(cr, x, y);
       pango_cairo_show_layout(cr, l);
@@ -65,14 +61,20 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
 {  char buf[256];
    int x,y,w,h;
 
+   /* Get foreground color */
+
+   GdkRGBA fg = {0};
+   GtkStyleContext *context = gtk_widget_get_style_context(widget);
+   gtk_style_context_get_color(context, gtk_widget_get_state_flags(widget), &fg);
+
    /* Draw the labels */
 
    x = 10; 
-   gdk_cairo_set_source_rgba(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, &fg);
 
    y = Closure->readAdaptiveSpiral->my - Closure->readAdaptiveSpiral->diameter/2;
    h = draw_text(cr, Closure->readLinearCurve->layout,
-		 _("Adaptive reading:"), x, y, Closure->foreground, erase_mask & REDRAW_TITLE); 
+		 _("Adaptive reading:"), x, y, &fg, erase_mask & REDRAW_TITLE);
 
    y += h+h/2;
    if(Closure->readAdaptiveSubtitle)
@@ -84,37 +86,37 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
       if(*c)                  /* split text into two lines */
       {  *c = 0;
 	 h = draw_text(cr, Closure->readLinearCurve->layout,
-		       Closure->readAdaptiveSubtitle, x, y, Closure->foreground, 
+		       Closure->readAdaptiveSubtitle, x, y, &fg,
 		       erase_mask & REDRAW_SUBTITLE); 
 	 h = draw_text(cr, Closure->readLinearCurve->layout,
-			c+1, x, y+h, Closure->foreground, 
+			c+1, x, y+h, &fg,
 			erase_mask & REDRAW_SUBTITLE); 
 	 *c = ' ';
       }
       else                    /* draw text in one line */
       {  h = draw_text(cr, Closure->readLinearCurve->layout,
-		       Closure->readAdaptiveSubtitle, x, y, Closure->foreground, 
+		       Closure->readAdaptiveSubtitle, x, y, &fg,
 		       erase_mask & REDRAW_SUBTITLE); 
       }
    }
 
    y += 4*h;
    h = draw_text(cr, Closure->readLinearCurve->layout,
-		 _("Sectors processed"), x, y, Closure->foreground, erase_mask & REDRAW_TITLE); 
+		 _("Sectors processed"), x, y, &fg, erase_mask & REDRAW_TITLE);
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("readable"), readable);
-   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, &fg,
                  erase_mask & REDRAW_PROGRESS);
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("correctable"), correctable);
-   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, &fg,
                  erase_mask & REDRAW_PROGRESS);
 
    y += h;
    snprintf(buf, 255, "  %s: %lld", _("missing"), missing);
-   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, &fg,
                  erase_mask & REDRAW_PROGRESS);
 
    if(min_required > 0 && readable > 0)
@@ -127,18 +129,18 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
       snprintf(buf, 255, _("Readable: %d.%d%% / %d.%d%% required"), 
 	       percent/10, percent%10,
 	       min_required/10, min_required%10);
-      h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+      h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, &fg,
                     erase_mask & REDRAW_PROGRESS);
    }
 
    y += h;
    snprintf(buf, 255, _("Total recoverable: %d.%d%%"), percent/10, percent%10);
-   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, Closure->foreground,
+   h = draw_text(cr, Closure->readLinearCurve->layout, buf, x, y, &fg,
                  erase_mask & REDRAW_PROGRESS);
 
 
    if(Closure->readAdaptiveErrorMsg && erase_mask & REDRAW_ERRORMSG)
-   {  gdk_cairo_set_source_rgba(cr, footer_color);
+   {  gdk_cairo_set_source_rgba(cr, footer_color ? footer_color : &fg);
       
       GuiSetText(Closure->readLinearCurve->layout, Closure->readAdaptiveErrorMsg, &w, &h);
       y = Closure->readAdaptiveSpiral->my + Closure->readAdaptiveSpiral->diameter/2 - h;
@@ -184,14 +186,14 @@ static gboolean clip_idle_func(gpointer data)
       spiral->segmentClipping = spiral->segmentCount;
    
       for(i=clipping; i < spiral->segmentCount; i++)
-	GuiSetSpiralSegmentColor(spiral, Closure->background, Closure->background, i);
+	GuiSetSpiralSegmentColor(spiral, &transparent, &transparent, i);
 
       spiral->segmentClipping = clipping;
 
       /* Now redraw the last turn */
 
       for(i=ADAPTIVE_READ_SPIRAL_SIZE-300; i<=clipping; i++)
-	GuiSetSpiralSegmentColor(spiral, Closure->background, 0, i);
+	GuiSetSpiralSegmentColor(spiral, &transparent, 0, i);
    }   
 
    return FALSE;
@@ -232,7 +234,7 @@ static gboolean remove_fill_idle_func(gpointer data)
 
    for(i=0; i<spiral->segmentCount; i++)
       if(spiral->segmentColor[i] == Closure->whiteSector)
-         GuiSetSpiralSegmentColor(spiral, Closure->background, 0, i);
+         GuiSetSpiralSegmentColor(spiral, &transparent, 0, i);
 
    return FALSE;
 }
@@ -298,7 +300,7 @@ void GuiUpdateAdaptiveResults(gint64 r, gint64 c, gint64 m, int p)
  ***/
 
 void GuiResetAdaptiveReadWindow()
-{  GuiFillSpiral(Closure->readAdaptiveSpiral, Closure->background);
+{  GuiFillSpiral(Closure->readAdaptiveSpiral, &transparent);
    //   DrawSpiral(Closure->readAdaptiveSpiral);
 
    if(Closure->readAdaptiveSubtitle)
@@ -358,8 +360,7 @@ void GuiCreateAdaptiveReadWindow(GtkWidget *parent)
    g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), NULL);
 
    Closure->readAdaptiveSpiral
-     = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, 
-		       ADAPTIVE_READ_SPIRAL_SIZE);
+     = GuiCreateSpiral(&transparent, 10, 5, ADAPTIVE_READ_SPIRAL_SIZE);
 
    gtk_widget_set_size_request(d_area, -1, Closure->readAdaptiveSpiral->diameter);
 }

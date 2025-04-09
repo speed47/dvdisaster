@@ -45,12 +45,6 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
    if(!Closure->colors_initialized)
    {
-      GdkRGBA fg = {0};
-      GtkStyleContext *context = gtk_widget_get_style_context(widget);
-      gtk_style_context_get_color(context, GTK_STATE_FLAG_NORMAL, &fg);
-      *Closure->foreground   = fg;
-      *Closure->grid         = fg;
-      Closure->grid->alpha   = 0.25;
       Closure->colors_initialized = TRUE;
 
       /* Dirty trick for indenting the list:

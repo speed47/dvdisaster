@@ -1316,14 +1316,16 @@ void fill_gap(read_closure *rc)
 	
      /* Show progress in the spiral */
 
+#ifdef WITH_GUI_YES
      if(Closure->guiMode)
      {  int segment = i / rc->sectorsPerSegment;
        
-        if(Closure->readAdaptiveSpiral->segmentColor[segment] == Closure->background)
+        if(Closure->readAdaptiveSpiral->segmentColor[segment] == &transparent)
 	{  GuiChangeSegmentColor(Closure->whiteSector, segment);
 	}
      }
-  }
+#endif  /* WITH_GUI_YES */
+   }
 
   PrintCLI("               \n");
   rc->highestWrittenSector = rc->intervalStart-1;
@@ -1845,7 +1847,7 @@ reread:
 	       if(rc->readMode != IMAGE_ONLY)
 	       {  PrintLog("%s", t);
 		  if(rc->ei)
-		  {  GuiSetAdaptiveReadFootline(t, Closure->foreground);
+		  {  GuiSetAdaptiveReadFootline(t, 0);
 		  }
 	       }
 	       if(Closure->eject)
@@ -1995,7 +1997,7 @@ finished:
       PrintLog(_("\n%s\n"
 		  "(%" PRId64 " readable,  %" PRId64 " correctable,  %" PRId64 " still missing).\n"),
 		t, rc->readable, rc->correctable, rc->expectedSectors-total);
-      GuiSetAdaptiveReadFootline(t, Closure->foreground);
+      GuiSetAdaptiveReadFootline(t, 0);
 
       g_free(t);
       exitCode = EXIT_FAILURE;
@@ -2007,7 +2009,7 @@ finished:
    {  if(rc->readable == rc->expectedSectors)
       {  char *t = _("\nGood! All sectors have been read.\n"); 
 	 PrintLog("%s", t);
-	 GuiSetAdaptiveReadFootline(t, Closure->foreground);
+	 GuiSetAdaptiveReadFootline(t, 0);
 	 if(Closure->eject)
 	    LoadMedium(rc->dh, FALSE);
       }
@@ -2020,7 +2022,7 @@ finished:
 		     "%2d.%1d%% of the image have been read (%" PRId64 " sectors).\n"),
 		   t, percent/10, percent%10, rc->readable);
 
-	 GuiSetAdaptiveReadFootline(t, Closure->foreground);
+	 GuiSetAdaptiveReadFootline(t, 0);
 	 g_free(t);
 	 exitCode = EXIT_FAILURE;
       }

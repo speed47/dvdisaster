@@ -55,7 +55,7 @@ void ResetRS01VerifyWindow(Method *self)
 
    wl->lastPercent = 0;
 
-   GuiFillSpiral(wl->cmpSpiral, Closure->background);
+   GuiFillSpiral(wl->cmpSpiral, &transparent);
    if (wl->cmpSpiral->widget)
       gtk_widget_queue_draw(wl->cmpSpiral->widget);
 }
@@ -251,7 +251,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    frame = gtk_frame_new(_utf("Image state"));
    gtk_table_attach(GTK_TABLE(table), frame, 1, 2, 0, 2, GTK_SHRINK | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
 
-   wl->cmpSpiral = GuiCreateSpiral(Closure->grid, Closure->background, 10, 5, VERIFY_IMAGE_SEGMENTS);
+   wl->cmpSpiral = GuiCreateSpiral(&transparent, 10, 5, VERIFY_IMAGE_SEGMENTS);
    d_area = wl->cmpDrawingArea = gtk_drawing_area_new();
    gtk_widget_set_size_request(d_area, wl->cmpSpiral->diameter+20, -1);
    gtk_container_add(GTK_CONTAINER(frame), d_area);

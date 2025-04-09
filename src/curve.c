@@ -177,6 +177,15 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
 
    cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
    cairo_set_line_width(cr, 1);
+   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+      /* Get foreground and grid colors */
+
+   GdkRGBA fg = {0};
+   GtkStyleContext *context = gtk_widget_get_style_context(curve->widget);
+   gtk_style_context_get_color(context, gtk_widget_get_state_flags(curve->widget), &fg);
+   GdkRGBA grid = fg;
+   grid.alpha   = 0.25;
 
    /* Draw and label the grid lines for the log curve */
 
@@ -200,18 +209,18 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
          gdk_cairo_set_source_rgba(cr, Closure->logColor);
          cairo_move_to(cr, curve->leftX-9-w, y-h/2);
          pango_cairo_show_layout(cr, curve->layout);
-         gdk_cairo_set_source_rgba(cr, Closure->foreground);
+         gdk_cairo_set_source_rgba(cr, &fg);
          cairo_move_to(cr, curve->leftX-6 + 0.5, y + 0.5);
          cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
          cairo_stroke(cr);
-         gdk_cairo_set_source_rgba(cr, Closure->grid);
+         gdk_cairo_set_source_rgba(cr, &grid);
          cairo_move_to(cr, curve->leftX + 0.5, y + 0.5);
          cairo_line_to(cr, curve->rightX + 0.5, y + 0.5);
          cairo_stroke(cr);
 
          val /=2;
          y = GuiCurveLogY(curve, val);
-         gdk_cairo_set_source_rgba(cr, Closure->foreground);
+         gdk_cairo_set_source_rgba(cr, &fg);
          cairo_move_to(cr, curve->leftX-3 + 0.5, y + 0.5);
          cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
          cairo_stroke(cr);
@@ -243,17 +252,17 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
       gdk_cairo_set_source_rgba(cr, Closure->curveColor);
       cairo_move_to(cr, curve->leftX-9-w, y-h/2);
       pango_cairo_show_layout(cr, curve->layout);
-      gdk_cairo_set_source_rgba(cr, Closure->foreground);
+      gdk_cairo_set_source_rgba(cr, &fg);
       cairo_move_to(cr, curve->leftX-6 + 0.5, y + 0.5);
       cairo_line_to(cr, curve->leftX + 0.5, y + 0.5);
       cairo_stroke(cr);
 
-      gdk_cairo_set_source_rgba(cr, Closure->grid);
+      gdk_cairo_set_source_rgba(cr, &grid);
       cairo_move_to(cr, curve->leftX + 0.5, y + 0.5);
       cairo_line_to(cr, curve->rightX + 0.5, y + 0.5);
       cairo_stroke(cr);
 
-      gdk_cairo_set_source_rgba(cr, Closure->foreground);
+      gdk_cairo_set_source_rgba(cr, &fg);
       y = GuiCurveY(curve, i+step/2);
       if(y >= curve->topY) {
          cairo_move_to(cr, curve->leftX-3 + 0.5, y + 0.5);
@@ -264,7 +273,7 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
 
 
    /* Draw and label the left coordinate axis */
-   gdk_cairo_set_source_rgba(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, &fg);
 
    cairo_move_to(cr, curve->leftX + 0.5, curve->topY + 0.5);
    cairo_line_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
@@ -285,7 +294,7 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
 
    /* Draw the right coordinate axis */
 
-   gdk_cairo_set_source_rgba(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, &fg);
 
    cairo_move_to(cr, curve->rightX + 0.5, curve->topY + 0.5);
    cairo_line_to(cr, curve->rightX + 0.5, curve->bottomY + 0.5);
@@ -299,7 +308,7 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
 
    /* Draw and label the bottom coordinate axis */
 
-   gdk_cairo_set_source_rgba(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, &fg);
 
    cairo_move_to(cr, curve->leftX + 0.5, curve->bottomY + 0.5);
    cairo_line_to(cr, curve->rightX + 0.5, curve->bottomY + 0.5);
@@ -344,7 +353,7 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
       pango_cairo_show_layout(cr, curve->layout);
 
       if(i && x < curve->rightX)
-      {  gdk_cairo_set_source_rgba(cr, Closure->grid);
+      {  gdk_cairo_set_source_rgba(cr, &grid);
          cairo_move_to(cr, x + 0.5, curve->bottomY-1 + 0.5);
          cairo_line_to(cr, x + 0.5, yg + 0.5);
          cairo_stroke(cr);
@@ -356,7 +365,7 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
          }
       }
 
-      gdk_cairo_set_source_rgba(cr, Closure->foreground);
+      gdk_cairo_set_source_rgba(cr, &fg);
       x = GuiCurveLX(curve,i+step/2)-1;
       if(x < curve->rightX) {
          cairo_move_to(cr, x + 0.5, bottom_y+3 + 0.5);

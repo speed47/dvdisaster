@@ -34,8 +34,7 @@
  * Allocate and fill in the spiral data structure
  */
 
-Spiral* GuiCreateSpiral(GdkRGBA *outline, GdkRGBA *fill,
-			int start_radius, int segment_size, int n_segments)
+Spiral* GuiCreateSpiral(GdkRGBA *fill, int start_radius, int segment_size, int n_segments)
 {  Spiral *spiral;
    double a = 0.0;
    double scale_o = start_radius + segment_size;
@@ -59,7 +58,7 @@ Spiral* GuiCreateSpiral(GdkRGBA *outline, GdkRGBA *fill,
    { 
      spiral->segmentPos[i] = a; 
      spiral->segmentColor[i] = fill;
-     spiral->segmentOutline[i] = outline;
+     spiral->segmentOutline[i] = 0; /* foreground */
 
      ring_expand =  ((double)segment_size * a) / (2.0*M_PI);
      a += atan((double)segment_size / scale_o);
@@ -119,6 +118,15 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
    if(!spiral->widget) return;
 
    cairo_set_line_width(cr, 1.0);
+   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+   /* Get foreground and grid colors */
+
+   GdkRGBA fg = {0};
+   GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
+   gtk_style_context_get_color(context, gtk_widget_get_state_flags(spiral->widget), &fg);
+   GdkRGBA outline_default = fg;
+   outline_default.alpha   = 0.25;
 
    scale_i = spiral->startRadius;
    scale_o = spiral->startRadius + spiral->segmentSize;
@@ -140,7 +148,7 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
       yo1 = spiral->my + scale_o*sin(a);
 
 
-      GdkRGBA *outline = spiral->segmentOutline[i] ? spiral->segmentOutline[i] : Closure->grid;
+      GdkRGBA *outline = spiral->segmentOutline[i] ? spiral->segmentOutline[i] : &outline_default;
 
       cairo_move_to(cr, xi0, yi0);
       cairo_line_to(cr, xo0, yo0);
@@ -181,18 +189,28 @@ void GuiDrawSpiralLabel(cairo_t *cr, Spiral *spiral, PangoLayout *layout,
 			char *text, GdkRGBA *color, int x, int line)
 {  int w,h,y;
 
+   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+   /* Get foreground and grid colors */
+
+   GdkRGBA fg = {0};
+   GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
+   gtk_style_context_get_color(context, gtk_widget_get_state_flags(spiral->widget), &fg);
+   GdkRGBA outline = fg;
+   outline.alpha   = 0.25;
+
    GuiSetText(layout, text, &w, &h);
    if(line > 0) y = spiral->my + spiral->diameter / 2 + 20 + (line-1) * (10 + h); 
    else         y = spiral->my - spiral->diameter / 2 - 20 - h + (line+1) * (10 + h); 
    cairo_rectangle(cr, x + 0.5, y+(h-6)/2 + 0.5, 6, 6);
    gdk_cairo_set_source_rgba(cr, color);
    cairo_fill_preserve(cr);
-   gdk_cairo_set_source_rgba(cr, Closure->grid);
+   gdk_cairo_set_source_rgba(cr, &outline);
    cairo_set_line_width(cr, 1.0);
    cairo_stroke(cr);
 
    cairo_move_to(cr, x+10, y);
-   gdk_cairo_set_source_rgba(cr, Closure->foreground);
+   gdk_cairo_set_source_rgba(cr, &fg);
    pango_cairo_show_layout(cr, layout);
 }
 
