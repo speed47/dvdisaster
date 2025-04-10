@@ -137,7 +137,7 @@ dvdisaster: $(ICONS) $(OFILES)
 	else $(MAKE) --no-print-directory -C locale; \
 	fi
 
-src/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/create.svg icons/fix.svg icons/help.svg icons/log.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan.svg icons/stop.svg icons/strip.svg icons/verify.svg
+src/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/close.svg icons/create.svg icons/fix.svg icons/help.svg icons/log.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan.svg icons/stop.svg icons/strip.svg icons/verify.svg
 	@echo "Generating:" $(ICONS)
 	glib-compile-resources --generate-source --target=$(ICONS) --sourcedir=icons icons/icons.gresource.xml
 

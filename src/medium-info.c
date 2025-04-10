@@ -330,7 +330,7 @@ void GuiCreateMediumInfoWindow()
 
   dialog = gtk_dialog_new_with_buttons(_utf("windowtitle|Medium info"), 
 				       Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
-				       GTK_STOCK_CLOSE, GTK_RESPONSE_ACCEPT, NULL);
+				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
 
   Closure->mediumInfoContext = mi = g_malloc0(sizeof(medium_info));

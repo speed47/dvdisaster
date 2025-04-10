@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/dvdisaster">
     <file compressed="true" preprocess="xml-stripblanks">cd.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">close.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">create.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">fix.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">help.svg</file>

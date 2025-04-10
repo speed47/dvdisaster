@@ -1183,7 +1183,15 @@ void GuiCreatePreferencesWindow(void)
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_pack_start(GTK_BOX(outer_box), hbox, FALSE, FALSE, 0);
 
-      button = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+      button = gtk_button_new();
+      GtkWidget *button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+      gtk_container_add(GTK_CONTAINER(button), button_box);
+
+      GtkWidget *icon = gtk_image_new_from_icon_name("close", GTK_ICON_SIZE_SMALL_TOOLBAR);
+      gtk_box_pack_start(GTK_BOX(button_box), icon, FALSE, FALSE, 2);
+      lab = gtk_label_new(_("Close"));
+      gtk_box_pack_start(GTK_BOX(button_box), lab, FALSE, FALSE, 0);
+
       gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 0);
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(close_cb), NULL);
 
