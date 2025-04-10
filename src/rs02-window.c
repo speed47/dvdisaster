@@ -55,7 +55,7 @@ void ResetRS02EncWindow(Method *method)
 }
 
 void CreateRS02EncWindow(Method *method, GtkWidget *parent)
-{  GtkWidget *wid,*table,*pbar,*sep;
+{  GtkWidget *wid,*grid,*pbar,*sep;
    RS02Widgets *wl = method->widgetList;
 
    wl->encHeadline = gtk_label_new(NULL);
@@ -69,25 +69,35 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
 
-   table = gtk_table_new(2, 2, FALSE);
-   gtk_box_pack_start(GTK_BOX(parent), table, FALSE, FALSE, 30);
+   grid = gtk_grid_new();
+   gtk_widget_set_margin_start(grid, 20);
+   gtk_widget_set_margin_end(grid, 20);
+   gtk_widget_set_margin_top(grid, 20);
+   gtk_widget_set_margin_bottom(grid, 20);
+   gtk_grid_set_column_spacing(GTK_GRID(grid), 40);
+   gtk_grid_set_row_spacing(GTK_GRID(grid), 40);
+   gtk_box_pack_start(GTK_BOX(parent), grid, FALSE, FALSE, 30);
 
    wl->encLabel1 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>1. Preparing image:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 20, 20);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 1, 1, 1);
 
    pbar = wl->encPBar1 = gtk_progress_bar_new();
-   gtk_table_attach(GTK_TABLE(table), pbar, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_EXPAND, 20, 20);
+   gtk_widget_set_valign(pbar, GTK_ALIGN_CENTER);
+   gtk_widget_set_hexpand(pbar, TRUE);
+   gtk_grid_attach(GTK_GRID(grid), pbar, 2, 1, 1, 1);
 
    wl->encLabel2 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>2. Creating error correction data:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 20, 20);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 2, 1, 1);
 
    pbar = wl->encPBar2 = gtk_progress_bar_new();
-   gtk_table_attach(GTK_TABLE(table), pbar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND, 20, 20);
+   gtk_widget_set_valign(pbar, GTK_ALIGN_CENTER);
+   gtk_widget_set_hexpand(pbar, TRUE);
+   gtk_grid_attach(GTK_GRID(grid), pbar, 2, 2, 1, 1);
 
    wl->encFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);

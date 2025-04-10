@@ -59,7 +59,7 @@ void ResetRS03EncWindow(Method *method)
 }
 
 void CreateRS03EncWindow(Method *method, GtkWidget *parent)
-{  GtkWidget *wid,*table,*pbar,*sep;
+{  GtkWidget *wid,*grid,*pbar,*sep;
    RS03Widgets *wl=method->widgetList;
 
    wl->encHeadline = gtk_label_new(NULL);
@@ -73,54 +73,68 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
 
-   table = gtk_table_new(2, 5, FALSE);
-   gtk_box_pack_start(GTK_BOX(parent), table, FALSE, FALSE, 30);
+   grid = gtk_grid_new();
+   gtk_widget_set_margin_start(grid, 20);
+   gtk_widget_set_margin_end(grid, 20);
+   gtk_widget_set_margin_top(grid, 5);
+   gtk_widget_set_margin_bottom(grid, 5);
+   gtk_grid_set_column_spacing(GTK_GRID(grid), 20);
+   gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
+   gtk_box_pack_start(GTK_BOX(parent), grid, FALSE, FALSE, 30);
 
    wl->encLabel1 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>1. Reserving space:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 20);
+   gtk_widget_set_margin_top(wid, 15);
+   gtk_widget_set_margin_bottom(wid, 15);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 1, 1, 1);
 
    pbar = wl->encPBar1 = gtk_progress_bar_new();
-   gtk_table_attach(GTK_TABLE(table), pbar, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_EXPAND, 10, 20);
+   gtk_widget_set_valign(pbar, GTK_ALIGN_CENTER);
+   gtk_widget_set_hexpand(pbar, TRUE);
+   gtk_grid_attach(GTK_GRID(grid), pbar, 2, 1, 1, 1);
 
    wl->encLabel2 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>2. Creating error correction data:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 20);
+   gtk_widget_set_margin_top(wid, 15);
+   gtk_widget_set_margin_bottom(wid, 15);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 2, 1, 1);
 
    pbar = wl->encPBar2 = gtk_progress_bar_new();
-   gtk_table_attach(GTK_TABLE(table), pbar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND, 10, 20);
+   gtk_widget_set_valign(pbar, GTK_ALIGN_CENTER);
+   gtk_widget_set_hexpand(pbar, TRUE);
+   gtk_grid_attach(GTK_GRID(grid), pbar, 2, 2, 1, 1);
 
 
    wl->encLabel3 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>Encoder info:</b>"));
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 3, 1, 1);
    
    wl->encThreads = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10,5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 2, 3, 1, 1);
 
    wl->encLabel4 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>Performance:</b>"));
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 4, 1, 1);
 
    wl->encPerformance = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 2, 4, 1, 1);
 
    wl->encLabel5 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>State:</b>"));
-   gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 1, 5, 1, 1);
 
    wl->encBottleneck = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
+   gtk_grid_attach(GTK_GRID(grid), wid, 2, 5, 1, 1);
 
    wl->encFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);
