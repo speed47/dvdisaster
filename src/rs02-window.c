@@ -716,7 +716,7 @@ void ReadRS02Preferences(Method *method)
 
 void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 {  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
-   GtkWidget *frame, *hbox, *vbox, *vbox2, *tinybox, *lab, *scale, *table;
+   GtkWidget *frame, *hbox, *vbox, *vbox2, *tinybox, *lab, *scale, *grid;
    GtkWidget *radio, *icon; 
    LabelWithOnlineHelp *lwoh;
    unsigned int index;
@@ -774,40 +774,44 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 	"one/two layered DVD and BD are given in the table. You can edit "
 	"these sizes according to your needs."));
 
-   table = gtk_table_new(5, 6, FALSE);
-   gtk_box_pack_start(GTK_BOX(hbox), table, FALSE, FALSE, 0);
+   grid = gtk_grid_new();
+   gtk_widget_set_margin_start(grid, 5);
+   gtk_widget_set_margin_end(grid, 5);
+   gtk_widget_set_margin_top(grid, 5);
+   gtk_widget_set_margin_bottom(grid, 5);
+   gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
+   gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
+   gtk_box_pack_start(GTK_BOX(hbox), grid, FALSE, FALSE, 0);
 
-   gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
    tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
    gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-   gtk_table_attach(GTK_TABLE(table), tinybox, 0, 5, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 1, 4, 1);
 
    /* CD capacity table row */
 
    lwoh = GuiCreateLabelWithOnlineHelp(_("CD-R / CD-RW:"), _("CD-R / CD-RW:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
-     tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
-     gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+   gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
+   gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+   gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 2, 1, 1);
 
-     wl->cdEntryA = gtk_entry_new();
-     gtk_entry_set_width_chars(GTK_ENTRY(wl->cdEntryA), 9);
-     g_signal_connect(G_OBJECT(wl->cdEntryA), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->cdEntryA, 1, 2, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   wl->cdEntryA = gtk_entry_new();
+   gtk_entry_set_width_chars(GTK_ENTRY(wl->cdEntryA), 9);
+   g_signal_connect(G_OBJECT(wl->cdEntryA), "activate", G_CALLBACK(entry_tracker_cb), wl);
+   gtk_grid_attach(GTK_GRID(grid), wl->cdEntryA, 2, 2, 1, 1);
 
-     wl->cdButtonA = gtk_button_new_with_label(_utf("query medium"));
-     g_signal_connect(G_OBJECT(wl->cdButtonA), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->cdButtonA, 2, 3, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   wl->cdButtonA = gtk_button_new_with_label(_utf("query medium"));
+   g_signal_connect(G_OBJECT(wl->cdButtonA), "clicked", G_CALLBACK(query_cb), wl);
+   gtk_grid_attach(GTK_GRID(grid), wl->cdButtonA, 3, 2, 1, 1);
 
-     icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
-     wl->cdUndoButtonA = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->cdUndoButtonA), icon);
-     g_signal_connect(G_OBJECT(wl->cdUndoButtonA), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->cdUndoButtonA, 3, 4, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+   icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+   wl->cdUndoButtonA = gtk_button_new();
+   gtk_container_add(GTK_CONTAINER(wl->cdUndoButtonA), icon);
+   g_signal_connect(G_OBJECT(wl->cdUndoButtonA), "clicked", G_CALLBACK(query_cb), wl);
+   gtk_grid_attach(GTK_GRID(grid), wl->cdUndoButtonA, 4, 2, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -852,26 +856,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("DVD 1 layer:"), _("DVD 1 layer:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 3, 1, 1);
 
      wl->dvdEntry1A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->dvdEntry1A), 9);
      g_signal_connect(G_OBJECT(wl->dvdEntry1A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdEntry1A, 1, 2, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdEntry1A, 2, 3, 1, 1);
 
      wl->dvdButton1A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->dvdButton1A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdButton1A, 2, 3, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdButton1A, 3, 3, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->dvdUndoButton1A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton1A), icon);
      g_signal_connect(G_OBJECT(wl->dvdUndoButton1A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdUndoButton1A, 3, 4, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdUndoButton1A, 4, 3, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -916,26 +919,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("DVD 2 layers:"), _("DVD 2 layers:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 4, 1, 1);
 
      wl->dvdEntry2A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->dvdEntry2A), 9);
      g_signal_connect(G_OBJECT(wl->dvdEntry2A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdEntry2A, 1, 2, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdEntry2A, 2, 4, 1, 1);
 
      wl->dvdButton2A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->dvdButton2A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdButton2A, 2, 3, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdButton2A, 3, 4, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->dvdUndoButton2A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton2A), icon);
      g_signal_connect(G_OBJECT(wl->dvdUndoButton2A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->dvdUndoButton2A, 3, 4, 3, 4, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->dvdUndoButton2A, 4, 4, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -980,26 +982,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("BD 1 layer:"), _("BD 1 layer:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 5, 1, 1);
 
      wl->bdEntry1A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry1A), 9);
      g_signal_connect(G_OBJECT(wl->bdEntry1A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdEntry1A, 1, 2, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdEntry1A, 2, 5, 1, 1);
 
      wl->bdButton1A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->bdButton1A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdButton1A, 2, 3, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdButton1A, 3, 5, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->bdUndoButton1A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->bdUndoButton1A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton1A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdUndoButton1A, 3, 4, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton1A, 4, 5, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -1043,26 +1044,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("BD 2 layers:"), _("BD 2 layers:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 6, 1, 1);
 
      wl->bdEntry2A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry2A), 9);
      g_signal_connect(G_OBJECT(wl->bdEntry2A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdEntry2A, 1, 2, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdEntry2A, 2, 6, 1, 1);
 
      wl->bdButton2A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->bdButton2A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdButton2A, 2, 3, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdButton2A, 3, 6, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->bdUndoButton2A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->bdUndoButton2A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton2A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdUndoButton2A, 3, 4, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton2A, 4, 6, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -1106,26 +1106,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("BDXL 3 layers:"), _("BDXL 3 layers:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 7, 1, 1);
 
      wl->bdEntry3A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry3A), 9);
      g_signal_connect(G_OBJECT(wl->bdEntry3A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdEntry3A, 1, 2, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdEntry3A, 2, 7, 1, 1);
 
      wl->bdButton3A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->bdButton3A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdButton3A, 2, 3, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdButton3A, 3, 7, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->bdUndoButton3A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->bdUndoButton3A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton3A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdUndoButton3A, 3, 4, 6, 7, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton3A, 4, 7, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -1171,26 +1170,25 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    lwoh = GuiCreateLabelWithOnlineHelp(_("BDXL 4 layers:"), _("BDXL 4 layers:"));
    GuiRegisterPreferencesHelpWindow(lwoh);
 
-     gtk_label_set_xalign(GTK_LABEL(lwoh->linkLabel), 0.0);
      tinybox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->linkBox, FALSE, FALSE, 0);
      gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
-     gtk_table_attach(GTK_TABLE(table), tinybox, 0, 1, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 8, 1, 1);
 
      wl->bdEntry4A = gtk_entry_new();
      gtk_entry_set_width_chars(GTK_ENTRY(wl->bdEntry4A), 9);
      g_signal_connect(G_OBJECT(wl->bdEntry4A), "activate", G_CALLBACK(entry_tracker_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdEntry4A, 1, 2, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdEntry4A, 2, 8, 1, 1);
 
      wl->bdButton4A = gtk_button_new_with_label(_utf("query medium"));
      g_signal_connect(G_OBJECT(wl->bdButton4A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdButton4A, 2, 3, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdButton4A, 3, 8, 1, 1);
 
      icon = gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_SMALL_TOOLBAR);
      wl->bdUndoButton4A = gtk_button_new();
      gtk_container_add(GTK_CONTAINER(wl->bdUndoButton4A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton4A), "clicked", G_CALLBACK(query_cb), wl);
-     gtk_table_attach(GTK_TABLE(table), wl->bdUndoButton4A, 3, 4, 7, 8, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 5, 5);
+     gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton4A, 4, 8, 1, 1);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 
