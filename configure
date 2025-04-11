@@ -26,8 +26,9 @@
 BASH_BASED_CONFIGURE=./scripts/bash-based-configure
 BASH_BASED_CONFIGURE_OPTS="--buildtmp=$(pwd)/build $@"
 REQUIRED_CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe"
-RECOMMENDED_CFLAGS="-O2 -fomit-frame-pointer -Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length -Wno-unused-but-set-variable"
-DEBUG_CFLAGS="-ggdb -Wall"
+RECOMMENDED_CFLAGS="-Wall -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-stringop-truncation -Wno-format-zero-length -Wno-unused-but-set-variable"
+NODEBUG_CFLAGS="-O2 -fomit-frame-pointer"
+DEBUG_CFLAGS="-ggdb"
 
 if test -e $BASH_BASED_CONFIGURE; then
    source $BASH_BASED_CONFIGURE $BASH_BASED_CONFIGURE_OPTS
@@ -173,6 +174,8 @@ PRINT_MESSAGE "\nDebugging options (do not use in production system):"
 WITH_OPTION memdebug no "[no | yes]"
 WITH_OPTION debug-printf-format no "[no | yes]"
 WITH_OPTION werror no "[no | yes]"
+WITH_OPTION debug no "[no | yes]"
+WITH_OPTION efence no "[no | yes]"
 
 if test "$cfg_with_debug_printf_format" == "yes"; then
   # don't use the binary compiled with this,
@@ -188,6 +191,12 @@ fi
 
 if test "$cfg_with_werror" == "yes"; then
   CFG_CFLAGS="$CFG_CFLAGS -Werror"
+fi
+
+if test "$cfg_with_debug" == "yes"; then
+  CFG_CFLAGS="$CFG_CFLAGS $DEBUG_CFLAGS"
+else
+  CFG_CFLAGS="$CFG_CFLAGS $NODEBUG_CFLAGS"
 fi
 
 if test "$cfg_with_efence" == "yes"; then
