@@ -689,6 +689,10 @@ void Stop(char *format, ...)
    {    FreeClosure();
         exit(EXIT_FAILURE);
    }
+
+   /* code below should never be reachable, exit to make static analysis happy,
+      and make the ((noreturn)) attribute right in all cases */
+   exit(EXIT_FAILURE);
 }
 
 /*

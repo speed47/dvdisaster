@@ -367,7 +367,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
       {  PrintProgress(msg,percent);
 
 #ifdef WITH_GUI_YES	
-         if(Closure->guiMode && mode & CREATE_CRC)
+         if(Closure->guiMode && mode & CREATE_CRC && wl)
 	 {  GuiSetProgress(wl->encPBar1, percent, 100);
 	 }
 

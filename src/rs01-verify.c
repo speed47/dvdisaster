@@ -87,11 +87,12 @@ static gboolean spiral_idle_func(gpointer data)
 void RS01AddVerifyValues(Method *method, int percent, 
 			 gint64 totalMissing, gint64 totalCrcErrors,
 			 gint64 newMissing, gint64 newCrcErrors)
-{  RS01Widgets *wl = (RS01Widgets*)method->widgetList;
-   spiral_idle_info *sii = g_malloc(sizeof(spiral_idle_info));
-
+{  
    if(percent < 0 || percent > VERIFY_IMAGE_SEGMENTS)
      return;
+
+   RS01Widgets *wl = (RS01Widgets*)method->widgetList;
+   spiral_idle_info *sii = g_malloc(sizeof(spiral_idle_info));
 
    if(newMissing) 
    {  GuiSetLabelText(wl->cmpMissingSectors, "<span %s>%" PRId64 "</span>", 

@@ -393,6 +393,7 @@ static IsoInfo* examine_iso(Image *image)
       {  case 0: Verbose("   -> boot record: *skipped*\n");
 	         break;
 	 case 1: Verbose("   -> primary volume descriptor:\n");
+	         if (ii) FreeIsoInfo(ii);
 	         ii = examine_primary_vd(buf);
 		 break;
 	 case 2: Verbose("   -> supplementary volume descriptor: *skipped*\n");

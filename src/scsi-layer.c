@@ -1786,12 +1786,13 @@ static int query_copyright(DeviceHandle *dh)
  */
 
 static int check_sector(DeviceHandle *dh, GString *msg_out, guint64 sector, int n_sectors)
-{  AlignedBuffer *scratch = CreateAlignedBuffer(MAX_CLUSTER_SIZE);
+{  
    int status,result;
    char *msg;
 
    if(sector<2) return 4;
 
+   AlignedBuffer *scratch = CreateAlignedBuffer(MAX_CLUSTER_SIZE);
    status = read_dvd_sector(dh, scratch->buf, sector, n_sectors);
    FreeAlignedBuffer(scratch);
 
@@ -2161,10 +2162,10 @@ void SpinupDevice(DeviceHandle *dh)
       double elapsed;
       gulong ignore;
 
-      if(s>=dh->sectors) return;
+      if(s>=dh->sectors) break;
  
       status = ReadSectorsFast(dh, ab->buf, s, dh->clusterSize);
-      if(status) return;
+      if(status) break;
 
       elapsed = g_timer_elapsed(timer, &ignore);
       if(elapsed > Closure->spinupDelay)

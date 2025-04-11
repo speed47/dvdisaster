@@ -216,7 +216,8 @@ void GuiReadDotfile()
 
       if(feof(dotfile)) break;
       if(*line == '#') continue;
-      if(!sscanf(line, "%40[0-9a-zA-Z-]%n", symbol, &n)) continue;
+      int result = sscanf(line, "%40[0-9a-zA-Z-]%n", symbol, &n);
+      if(result == EOF || !result) continue;
       if(line[n] != ':') continue;
 
       /* Separate line contents into symbol: value pair */

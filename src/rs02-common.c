@@ -678,10 +678,11 @@ RS02Layout *RS02LayoutFromImage(Image *image)
          if(expected_size == lay2->dataSectors+lay2->eccSectors)
          {  Verbose("--> confirmed layout variant 2\n");
 	    memcpy(lay, lay2, sizeof(RS02Layout));
-	    g_free(lay2);
          }
 	 else
 	   Verbose("--> FAIL: did not map to expected variants!\n");
+
+	 g_free(lay2);
       }
 
       goto finish;

@@ -367,9 +367,9 @@ int main(int argc, char *argv[])
 		      }
 		      break;
 		   }
-         case 'o': if(!strcmp(optarg, "file"))
+         case 'o': if(optarg && !strcmp(optarg, "file"))
 		     Closure->eccTarget = ECC_FILE;
-	           else if(!strcmp(optarg, "image"))
+	           else if(optarg && !strcmp(optarg, "image"))
 		     Closure->eccTarget = ECC_IMAGE;
 	           else Stop(_("-o/--ecc-target expects 'file' or 'image'"));
 	           break;

@@ -89,11 +89,12 @@ static gboolean spiral_idle_func(gpointer data)
 
 static void add_verify_values(Method *method, int percent, 
 			       gint64 newMissing, gint64 newCrcErrors)
-{  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
-   spiral_idle_info *sii = g_malloc(sizeof(spiral_idle_info));
-
+{
    if(percent < 0 || percent > VERIFY_IMAGE_SEGMENTS)
      return;
+
+   RS02Widgets *wl = (RS02Widgets*)method->widgetList;
+   spiral_idle_info *sii = g_malloc(sizeof(spiral_idle_info));
 
    sii->cmpSpiral = wl->cmpSpiral;
 

@@ -409,6 +409,7 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	 {  Verbose("CalcRS03Layout(): removed cached layout from RS03, wrong target\n");
 	    g_free(image->cachedLayout);
 	 }
+	 else
 	 {  Verbose("CalcRS03Layout(): returning cached layout (%s)\n",
 		    ((RS03Layout*)image->cachedLayout)->target == ECC_FILE ? "file" : "augmented");
 	    memcpy(lay, image->cachedLayout, sizeof(RS03Layout));

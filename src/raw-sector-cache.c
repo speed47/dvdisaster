@@ -86,7 +86,7 @@ static void open_defective_sector_file(RawBuffer *rb, char *path, LargeFile **fi
 #endif
 
     dsh->nSectors = (length-sizeof(DefectiveSectorHeader))/dsh->sectorSize;
-    if(dsh->nSectors*dsh->sectorSize+sizeof(DefectiveSectorHeader) != length)
+    if((guint64)dsh->nSectors*dsh->sectorSize+sizeof(DefectiveSectorHeader) != length)
        Stop(_("Defective sector file is truncated"));
 
     /* Expand the old non-C2 raw dumps to new size */
@@ -99,7 +99,7 @@ static void open_defective_sector_file(RawBuffer *rb, char *path, LargeFile **fi
        PrintCLI(" * Expanding raw dump for sector %lld from 2352 to %d bytes *\n",
 		(long long)dsh->lba,  MAX_RAW_TRANSFER_SIZE);
 
-       buf = g_malloc(dsh->sectorSize*dsh->nSectors);
+       buf = g_malloc((gsize)dsh->sectorSize*dsh->nSectors);
        for(i=0, ptr=buf; i<dsh->nSectors; i++, ptr+=2352)
        {  int n=LargeRead(*file, ptr, dsh->sectorSize);
 	 
@@ -210,7 +210,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
    {  if(!LargeSeek(file, sizeof(DefectiveSectorHeader)))
 	 Stop(_("Failed seeking in defective sector file: %s"), strerror(errno));
 
-      cache_sectors = g_malloc(dsh->sectorSize*dsh->nSectors);
+      cache_sectors = g_malloc((gsize)dsh->sectorSize*dsh->nSectors);
       for(i=0, idx=0; i<dsh->nSectors; i++, idx+=dsh->sectorSize)
       {  int n=LargeRead(file, cache_sectors+idx, dsh->sectorSize);
 	 
@@ -221,7 +221,7 @@ int SaveDefectiveSector(RawBuffer *rb, int can_c2_scan)
 
    /* Store sectors which are not already cached */
    
-   offset = sizeof(DefectiveSectorHeader) + dsh->sectorSize*dsh->nSectors;
+   offset = sizeof(DefectiveSectorHeader) + (guint64)dsh->sectorSize*dsh->nSectors;
    if(!LargeSeek(file, offset))
       Stop(_("Failed seeking in defective sector file: %s"), strerror(errno));
 

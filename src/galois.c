@@ -150,7 +150,7 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
    * respectively (ndata+sp) mod nroots = 0 after working in all ndata layers.
    */
 
-   rt->shiftInit = rt->nroots - rt->ndata % rt->nroots;
+   rt->shiftInit = (rt->nroots == 0 ? 0 : rt->nroots - rt->ndata % rt->nroots);
    if(rt->shiftInit == rt->nroots)
      rt->shiftInit = 0;
 
