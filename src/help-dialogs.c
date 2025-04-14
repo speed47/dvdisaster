@@ -130,6 +130,7 @@ LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
    gtk_window_set_title(GTK_WINDOW(window), lwoh->windowTitle);
    gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+   gtk_window_set_default_size(GTK_WINDOW(window), 420, 0);
 
    lwoh->outerPadding = 12;
    gtk_container_set_border_width(GTK_CONTAINER(window), lwoh->outerPadding);
