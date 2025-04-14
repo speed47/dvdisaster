@@ -1074,6 +1074,9 @@ int main(int argc, char *argv[])
 	 }
       }
 
+      /* Going to use the GUI, tell the user most command-line options are ignored as we're restoring the GUI prefs */
+      PrintCLI(_("Using GUI mode: most command-line options are ignored. Look at the preferences in the GUI instead.\n"));
+
       Closure->guiMode = TRUE;
       GuiReadDotfile();
       GuiCreateMainWindow(&argc, &argv);
