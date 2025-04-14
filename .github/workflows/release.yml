@@ -2,12 +2,15 @@ name: autobuild
 
 on:
   push:
+    branches:
+      - 'master'
+      - 'dev'
     tags:
-      - "v*"
+      - 'v*'
 
 jobs:
   mac:
-    runs-on: macos-11
+    runs-on: macos-13
     strategy:
       matrix:
         ui: [cli, gui]
@@ -16,8 +19,6 @@ jobs:
             clionly: --with-gui=no
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -50,11 +51,44 @@ jobs:
       - name: build dist
         run: ./.github/workflows/make-mac-app.sh ${{ github.ref }}
         id: dist
-      - name: Release
+      - name: Tag for Continuous Build
+        if: github.ref_name == 'master'
+        run: |
+          git tag -f latest
+          git push -f origin latest
+      - name: Upload to Continuous Build
+        if: github.ref_name == 'master'
         uses: softprops/action-gh-release@v2
         with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          name: "Continuous Build"
+          tag_name: latest
           files: ${{ steps.dist.outputs.archive }}
+      - name: Tag for Dev Build
+        if: github.ref_name == 'dev'
+        run: |
+          git tag -f devel
+          git push -f origin devel
+      - name: Upload to Dev Build
+        if: github.ref_name == 'dev'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
           draft: true
+          name: "Dev Build"
+          tag_name: devel
+          files: ${{ steps.dist.outputs.archive }}
+      - name: Upload to Draft Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: ${{ steps.dist.outputs.archive }}
 
   win:
     runs-on: windows-latest
@@ -87,8 +121,6 @@ jobs:
         run: git config --global core.autocrlf input
         shell: bash
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - name: configure
         run: ./configure ${{ matrix.clionly }}
       - name: make
@@ -114,18 +146,49 @@ jobs:
         run: |
           cd dist
           dvdisaster.exe --version
-      - name: Release
+      - name: Tag for Continuous Build
+        if: github.ref_name == 'master'
+        run: |
+          git tag -f latest
+          git push -f origin latest
+      - name: Upload to Continuous Build
+        if: github.ref_name == 'master'
         uses: softprops/action-gh-release@v2
         with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          name: "Continuous Build"
+          tag_name: latest
           files: ${{ steps.dist.outputs.archive }}
+      - name: Tag for Dev Build
+        if: github.ref_name == 'dev'
+        run: |
+          git tag -f devel
+          git push -f origin devel
+      - name: Upload to Dev Build
+        if: github.ref_name == 'dev'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
           draft: true
+          name: "Dev Build"
+          tag_name: devel
+          files: ${{ steps.dist.outputs.archive }}
+      - name: Upload to Draft Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: ${{ steps.dist.outputs.archive }}
 
   linux64-cli:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - name: install prerequisites
         run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
       - name: configure
@@ -140,53 +203,93 @@ jobs:
       - name: build dist
         run: ./.github/workflows/make-dist.sh ${{ github.ref }}
         id: dist
-      - name: Release
+      - name: Tag for Continuous Build
+        if: github.ref_name == 'master'
+        run: |
+          git tag -f latest
+          git push -f origin latest
+      - name: Upload to Continuous Build
+        if: github.ref_name == 'master'
         uses: softprops/action-gh-release@v2
         with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          name: "Continuous Build"
+          tag_name: latest
           files: ${{ steps.dist.outputs.archive }}
+      - name: Tag for Dev Build
+        if: github.ref_name == 'dev'
+        run: |
+          git tag -f devel
+          git push -f origin devel
+      - name: Upload to Dev Build
+        if: github.ref_name == 'dev'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
           draft: true
+          name: "Dev Build"
+          tag_name: devel
+          files: ${{ steps.dist.outputs.archive }}
+      - name: Upload to Draft Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: ${{ steps.dist.outputs.archive }}
 
   linux64-appimage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - name: install prerequisites on host
         run: sudo apt-get update && sudo apt-get install -y fuse
       - name: docker
         run: |
           mkdir -p /tmp/dist
-          docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/code -v /tmp/dist:/dist ubuntu:14.04 sleep 1800
+          docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/dvdisaster -v /tmp/dist:/dist ubuntu:18.04 sleep 1800
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man libgtk3-dev libgail-common pkg-config gnome-themes-standard fuse'
+        run: docker exec uu sh -c 'apt update && apt install -y ghostscript man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev'
       - name: configure in docker
-        run: docker exec uu sh -c 'cd /code && ./configure --prefix=/usr'
+        run: docker exec uu sh -c 'cd /dvdisaster && ./configure --prefix=/usr'
       - name: make in docker
-        run: docker exec uu sh -c 'make -C /code -j$(nproc) && make -C /code'
+        run: docker exec uu sh -c 'make -C /dvdisaster -j$(nproc) && make -C /dvdisaster'
       - name: make install in docker
-        run: docker exec uu sh -c 'cd /code && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
-      - name: copy things to dist in docker
+        run: docker exec uu sh -c 'cd /dvdisaster && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
+      - name: copy gtk3 and gio stuff to dist in docker
         run: |
-          docker exec uu sh -c 'install -d /dist/usr/lib/gtk-2.0 && cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/$(pkg-config --variable=gtk_binary_version gtk+-2.0)/* /dist/usr/lib/gtk-2.0'
-          docker exec uu sh -c 'cp -va $(pkg-config --variable=libdir gtk+-2.0)/gtk-2.0/modules /dist/usr/lib/gtk-2.0/'
-      - name: build appimage in docker
+          set -euo pipefail
+          docker exec uu sh -c 'install -d /dist/usr/lib/gtk-3.0 && cp -va $(pkg-config --variable=libdir gtk+-3.0)/gtk-3.0/* /dist/usr/lib/gtk-3.0'
+          docker exec uu sh -c 'install -d /dist/usr/lib/gio/modules && cp -va $(dirname $(dpkg -L glib-networking | grep -F /libgiolibproxy.so | head -n1))/* /dist/usr/lib/gio/modules/'
+          docker exec uu sh -c 'gio-querymodules /dist/usr/lib/gio/modules'
+          docker exec uu sh -c 'install -d /dist/usr/lib/gdk-pixbuf2 && timeout 10 cp -va $(dirname $(find /usr/lib -name "libpixbufloader-*.so" | head -n1))/../* /dist/usr/lib/gdk-pixbuf2/'
+          docker exec uu sh -c 'gdk-pixbuf-query-loaders > /dist/usr/lib/gdk-pixbuf2/loaders.cache'
+          IM_BASEPATH=$(dirname $(cd /tmp/dist; find . -name immodules.cache))/immodules
+          sudo sed -i -re 's=^"/.+/immodules/(.+)="'$IM_BASEPATH'/\1=' $(find /tmp/dist/ -name immodules.cache)
+          PIX_BASEPATH=$(dirname $(cd /tmp/dist; find . -name loaders.cache))/
+          sudo sed -i -re 's=^"/.+/loaders/(.+)="'$PIX_BASEPATH'/loaders/\1=' $(find /tmp/dist/ -name loaders.cache)
+      - name: build appimage in docker with linuxdeploy
         run: |
           wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod 755 linuxdeploy-x86_64.AppImage
-          docker exec -e LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') -e ARCH=x86_64 uu sh -c 'cd /code && ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /dist/ --output appimage'
+          docker exec -e LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') -e ARCH=x86_64 uu sh -c 'cd /dvdisaster && ./linuxdeploy-x86_64.AppImage -d contrib/dvdisaster.desktop -i contrib/dvdisaster64.png -i contrib/dvdisaster48.png -i contrib/dvdisaster32.png -i contrib/dvdisaster16.png --icon-filename dvdisaster --custom-apprun=contrib/AppRun.sh --appdir /dist/ --output appimage'
       - name: fix perms
-        run: docker exec uu sh -c "chown -R $UID /dist /code/*.AppImage"
-      - name: apply glib workaround
+        run: docker exec uu sh -c "chown -R $UID /dist /dvdisaster/*.AppImage"
+      - name: patch libgio and apply glib workaround by repackaging with appimagetool
         env:
           ARCH: x86_64
         run: |
-          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod 755 appimagetool-x86_64.AppImage
           exe=$(ls -1 dvdisaster*.AppImage)
           chmod 755 $exe
           ./$exe --appimage-extract
           rm -vf $exe
+          sed -i -re "s=gio/modules=:::::::::::=g" squashfs-root/usr/lib/libgio*.so*
           env LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') ./appimagetool-x86_64.AppImage -v squashfs-root
           mv -v dvdisaster*AppImage $exe
           chmod 755 $exe
@@ -197,8 +300,41 @@ jobs:
           archive=$(ls -1 dvdisaster*.AppImage)
           echo "archive=$archive" >> "$GITHUB_OUTPUT"
           echo "appimage is <$archive>"
-      - name: Release
+      - name: Tag for Continuous Build
+        if: github.ref_name == 'master'
+        run: |
+          git tag -f latest
+          git push -f origin latest
+      - name: Upload to Continuous Build
+        if: github.ref_name == 'master'
         uses: softprops/action-gh-release@v2
         with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          name: "Continuous Build"
+          tag_name: latest
           files: ${{ steps.dist.outputs.archive }}
+      - name: Tag for Dev Build
+        if: github.ref_name == 'dev'
+        run: |
+          git tag -f devel
+          git push -f origin devel
+      - name: Upload to Dev Build
+        if: github.ref_name == 'dev'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
           draft: true
+          name: "Dev Build"
+          tag_name: devel
+          files: ${{ steps.dist.outputs.archive }}
+      - name: Upload to Draft Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: ${{ steps.dist.outputs.archive }}

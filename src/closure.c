@@ -386,6 +386,15 @@ static void update_dotfile()
 
 static void get_base_dirs()
 {  
+
+   /* If specified in environment (for example in AppImage), use it */
+   if (g_getenv("DVDISASTER_APPIMAGE") && atoi(g_getenv("DVDISASTER_APPIMAGE")) && g_getenv("DOCDIR") && g_getenv("BINDIR"))
+   {  Closure->binDir = g_strdup(g_getenv("BINDIR"));
+      Closure->docDir = g_strdup(g_getenv("DOCDIR"));
+      Verbose("Using paths from environment\n");
+      goto find_dotfile;
+   }
+
    /*** Unless completely disabled through a configure option, the
 	source directory is supposed to hold the most recent files,
 	so try this first. */
@@ -442,9 +451,7 @@ static void get_base_dirs()
    /*** The location of the dotfile depends on the operating system. 
 	Under Unix the users home directory is used. */
 
-#if defined(WITH_EMBEDDED_SRC_PATH_YES) && !defined(SYS_MINGW)
 find_dotfile:
-#endif /* WITH_EMBEDDED_SRC_PATH_YES */
    
 #ifndef SYS_MINGW
    Closure->homeDir = g_strdup(g_getenv("HOME"));
@@ -608,10 +615,16 @@ void InitClosure()
 
 void LocalizedFileDefaults()
 {  
-   /* Storing the files in the cwd appears to be a sane default. */
-
-   Closure->imageName   = g_strdup(_("medium.iso"));
-   Closure->eccName     = g_strdup(_("medium.ecc"));
+   if (g_getenv("DVDISASTER_APPIMAGE") && atoi(g_getenv("DVDISASTER_APPIMAGE")) && g_getenv("ORIGINAL_PWD"))
+   {  /* Under AppImage mode, use the ORIGINAL_PWD as the cwd is non-writable. */
+      Closure->imageName   = g_strdup_printf("%s/%s", g_getenv("ORIGINAL_PWD"), _("medium.iso"));
+      Closure->eccName     = g_strdup_printf("%s/%s", g_getenv("ORIGINAL_PWD"), _("medium.ecc"));
+   }
+   else
+   {  /* Storing the files in the cwd appears to be a sane default. */
+      Closure->imageName   = g_strdup(_("medium.iso"));
+      Closure->eccName     = g_strdup(_("medium.ecc"));
+   }
    Closure->dDumpPrefix = g_strdup(_("sector-"));
 }
 

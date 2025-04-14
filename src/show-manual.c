@@ -141,6 +141,35 @@ void GuiShowURL(char *target)
       /* close reading end of error pipe */
       close(err_pipe[0]);
 
+      /* cleanup env if we're called from AppImage */
+      if (g_getenv("DVDISASTER_APPIMAGE") && atoi(g_getenv("DVDISASTER_APPIMAGE")))
+      {
+         const char *namelist[] = {
+            "GDK_BACKEND",
+            "GDK_PIXBUF_MODULE_FILE",
+            "GIO_EXTRA_MODULES",
+            "GTK_IM_MODULE",
+            "GTK_IM_MODULE_FILE",
+            "GTK_MODULES",
+            "GTK_PATH",
+            "LD_LIBRARY_PATH",
+            "NO_AT_BRIDGE",
+            NULL,
+         };
+         for (int i = 0; namelist[i]; i++) {
+            gchar *original_name = g_strdup_printf("%s_ORIGINAL", namelist[i]);
+            if (g_getenv(original_name)) {
+              g_setenv(namelist[i], g_getenv(original_name), 1);
+              g_unsetenv(original_name);
+            }
+            else {
+              g_unsetenv(namelist[i]);
+            }
+            g_free(original_name);
+         }
+         g_unsetenv("DVDISASTER_APPIMAGE");
+      }
+
       /* prepare args and try to exec xdg-open */
       
       argv[argc++] = "xdg-open";
