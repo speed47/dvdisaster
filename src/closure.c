@@ -28,13 +28,6 @@
  #include "inlined-icons.h"
 #endif
 
-#if 0 
- #define Verbose g_printf
-#else
- #define Verbose(format, ...)
-#endif
-
-
 #ifdef SYS_MINGW
 #include <windows.h>
 

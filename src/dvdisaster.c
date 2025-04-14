@@ -975,7 +975,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  -m, --method x             - list/select error correction methods (default: RS01)\n"));
       PrintCLI(_("  -n, --redundancy n%%        - error correction data redundancy\n"
 		 "                               allowed values depend on codec (see manual)\n"));
-      PrintCLI(_("  -v, --verbose              - more diagnostic messages\n"));
+      PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
       PrintCLI(_("  --auto-suffix              - automatically add .iso and .ecc file suffixes\n"));

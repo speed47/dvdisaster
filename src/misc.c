@@ -411,7 +411,7 @@ void Verbose(char *format, ...)
       va_end(argp);
    }
 
-   if(!Closure->verbose)
+   if(!Closure->verbose && !g_getenv("VERBOSE"))
     return;
 
    va_start(argp, format);
