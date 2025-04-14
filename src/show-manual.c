@@ -45,16 +45,11 @@ static void send_errormsg(int fd, char *format, ...)
    free(msg);
 }
 
-static int recv_errormsg(int fd, char **msg)
-{  char buf[256];
-   int n;
-  
-   n = read(fd, buf, 256);
-   if(!n) return n;
-
-   *msg = g_strdup(buf);
-   
-   return n;
+static const char *recv_errormsg(int fd)
+{  static char buf[256];
+   if (read(fd, buf, 256))
+      return buf;
+   return NULL;
 }
 #endif
 
@@ -65,7 +60,7 @@ void GuiShowURL(char *target)
 
 #if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
    pid_t pid;
-   char *msg;
+   const char *msg;
    int err_pipe[2]; /* child may send down err msgs to us here */
    int result;
 #endif
@@ -165,10 +160,10 @@ void GuiShowURL(char *target)
    /* Parent process. See if some error condition came down the pipe. */
 
    close(err_pipe[1]);
-   result = recv_errormsg(err_pipe[0], &msg);
+   msg = recv_errormsg(err_pipe[0]);
    close(err_pipe[0]);
 
-   if(result)
+   if(msg)
    {  GuiCreateMessage("%s", GTK_MESSAGE_ERROR, msg);
    }
 #endif
