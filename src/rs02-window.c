@@ -503,9 +503,17 @@ static void query_cb(GtkWidget *widget, gpointer data)
 {  RS02Widgets *wl = (RS02Widgets*)data;
    char value[40];
    gint64 size;
- 
-   size = CurrentMediumSize(TRUE);
-   g_snprintf(value, 40, "%lld", (long long int)size);
+
+   if(widget == wl->cdButtonA || widget == wl->cdButtonB ||
+      widget == wl->dvdButton1A || widget == wl->dvdButton1B ||
+      widget == wl->dvdButton2A || widget == wl->dvdButton2B ||
+      widget == wl->bdButton1A || widget == wl->bdButton1B ||
+      widget == wl->bdButton2A || widget == wl->bdButton2B ||
+      widget == wl->bdButton3A || widget == wl->bdButton3B ||
+      widget == wl->bdButton4A || widget == wl->bdButton4B)
+   {  size = CurrentMediumSize(TRUE);
+      g_snprintf(value, 40, "%lld", (long long int)size);
+   }
 
    if(widget == wl->cdButtonA || widget == wl->cdButtonB)
    {  gtk_entry_set_text(GTK_ENTRY(wl->cdEntryA), value);
