@@ -122,10 +122,6 @@ ${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 	@echo "Compiling:" src/closure.c
 	@$(CC) $(COPTS) -c src/closure.c -o $@
 
-${BUILDTMP}/icon-factory.o : src/icon-factory.c $(ICONS)
-	@echo "Compiling:" src/icon-factory.c
-	@$(CC) $(COPTS) -c src/icon-factory.c -o $@
-
 # Building the dvdisaster binary
 
 dvdisaster: $(ICONS) $(OFILES)
@@ -141,28 +137,9 @@ dvdisaster: $(ICONS) $(OFILES)
 	else $(MAKE) --no-print-directory -C locale; \
 	fi
 
-# gdk-pixbuf-csource sometimes produces truncated output, so we have to ensure the output
-# is valid before appending it to inlined-icons.h:
-src/inlined-icons.h: icons/read.png icons/create.png icons/scan.png icons/fix.png icons/verify.png icons/strip.png icons/open-ecc.png icons/open-img.png icons/cd.png icons/gtk-help.png icons/gtk-index.png icons/gtk-preferences.png icons/gtk-quit.png icons/gtk-stop.png icons/tooltip.png icons/nothing.png
-	@echo "Building:" src/inlined-icons.h
-	@rm -f src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_read            icons/read.png            >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_create          icons/create.png          >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_scan            icons/scan.png            >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_fix             icons/fix.png             >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_verify          icons/verify.png          >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_strip           icons/strip.png           >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_open_ecc        icons/open-ecc.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_open_img        icons/open-img.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_cd              icons/cd.png              >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_help        icons/gtk-help.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_index       icons/gtk-index.png       >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_preferences icons/gtk-preferences.png >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_quit        icons/gtk-quit.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_gtk_stop        icons/gtk-stop.png        >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_tooltip         icons/tooltip.png         >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@while gdk-pixbuf-csource --raw --name=dvdisaster_nothing         icons/nothing.png         >src/.icons.tmp; do grep -q '"};' src/.icons.tmp && break; done; cat src/.icons.tmp >>src/inlined-icons.h
-	@rm -f src/.icons.tmp
+src/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/create.svg icons/fix.svg icons/help.svg icons/log.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan.svg icons/stop.svg icons/strip.svg icons/verify.svg
+	@echo "Generating:" $(ICONS)
+	glib-compile-resources --generate-source --target=$(ICONS) --sourcedir=icons icons/icons.gresource.xml
 
 $(BUILDTMP)/rs-encoder-sse2.o: src/rs-encoder-sse2.c
 	@echo "Compiling:" src/rs-encoder-sse2.c

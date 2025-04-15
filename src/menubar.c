@@ -446,7 +446,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(box), ebox, FALSE, FALSE, 0);
    GuiAttachTooltip(ebox, _("tooltip|Drive selection"),
 		    _("Use the nearby drop-down list to select the input drive."));
-   icon = gtk_image_new_from_stock("dvdisaster-cd", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("cd", GTK_ICON_SIZE_LARGE_TOOLBAR);
    gtk_container_add(GTK_CONTAINER(ebox), icon);
 
    Closure->driveCombo = combo_box = gtk_combo_box_text_new();
@@ -480,7 +480,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Image file selection */
 
-   icon = gtk_image_new_from_stock("dvdisaster-open-img", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("open-img", GTK_ICON_SIZE_LARGE_TOOLBAR);
    button = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(button), icon);
@@ -508,7 +508,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Ecc file selection */
 
-   icon = gtk_image_new_from_stock("dvdisaster-open-ecc", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("open-ecc", GTK_ICON_SIZE_LARGE_TOOLBAR);
    button = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(button), icon);
@@ -537,7 +537,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Preferences button */
 
-   icon = gtk_image_new_from_stock("dvdisaster-gtk-preferences", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("preferences", GTK_ICON_SIZE_LARGE_TOOLBAR);
    Closure->prefsButton = prefs = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(prefs), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(prefs), icon);
@@ -549,7 +549,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Help button */
 
-   icon = gtk_image_new_from_stock("dvdisaster-gtk-help", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("help", GTK_ICON_SIZE_LARGE_TOOLBAR);
    Closure->helpButton = help = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(help), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(help), icon);
@@ -560,7 +560,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Quit button */
 
-   icon = gtk_image_new_from_stock("dvdisaster-gtk-quit", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("quit", GTK_ICON_SIZE_LARGE_TOOLBAR);
    quit = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(quit), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(quit), icon);

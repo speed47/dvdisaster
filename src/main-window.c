@@ -250,14 +250,13 @@ void GuiContinueWithAction(int action)
  * Create the action buttons and the associated notebook pages
  */
 
-static GtkWidget *create_button(char *label, char *icon)
+static GtkWidget *create_button(char *label, char *icon, gint scale)
 {  GtkWidget *button,*box,*image,*lab;
    char *utf_label = g_locale_to_utf8(label, -1, NULL, NULL, NULL);
- 
 
    button = gtk_button_new();
    box    = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   image  = gtk_image_new_from_stock(icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   image  = gtk_image_new_from_icon_name(icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
    lab    = gtk_label_new(utf_label);
    g_free(utf_label);
 
@@ -275,6 +274,8 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    int window_number = FIRST_CREATE_WINDOW; 
    unsigned int i;  
 
+   gint scale = gtk_widget_get_scale_factor(GTK_WIDGET(notebook));
+
    outer_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
    gtk_box_set_homogeneous(GTK_BOX(outer_vbox), TRUE);
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);   /* needed for vertical spacing */
@@ -282,7 +283,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Read */
 
-   Closure->readButton = wid = create_button(_("button|Read"), "dvdisaster-read");
+   Closure->readButton = wid = create_button(_("button|Read"), "read", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_READ);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Read Image"),
@@ -300,7 +301,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Create */
 
-   Closure->createButton = wid = create_button(_("button|Create"), "dvdisaster-create");
+   Closure->createButton = wid = create_button(_("button|Create"), "create", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_CREATE);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Create error correction data"),
@@ -308,7 +309,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Scan */
 
-   Closure->scanButton = wid = create_button(_("button|Scan"), "dvdisaster-scan");
+   Closure->scanButton = wid = create_button(_("button|Scan"), "scan", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_SCAN);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Scan medium"),
@@ -316,7 +317,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Fix */
 
-   Closure->fixButton = wid = create_button(_("button|Fix"), "dvdisaster-fix");
+   Closure->fixButton = wid = create_button(_("button|Fix"), "fix", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_FIX);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Repair image"),
@@ -324,7 +325,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Verify */
 
-   Closure->testButton = wid = create_button(_("button|Verify"), "dvdisaster-verify");
+   Closure->testButton = wid = create_button(_("button|Verify"), "verify", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_VERIFY);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Consistency check"),
@@ -332,7 +333,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Strip */
 
-   Closure->stripButton = wid = create_button(_("button|Strip"), "dvdisaster-strip");
+   Closure->stripButton = wid = create_button(_("button|Strip"), "strip", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STRIP);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Strip ECC"),
@@ -340,7 +341,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Stop */
 
-   wid = create_button(_("button|Stop"), "dvdisaster-gtk-stop");
+   wid = create_button(_("button|Stop"), "stop", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STOP);
    gtk_box_pack_end(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Abort action"),
@@ -409,9 +410,9 @@ void GuiCreateMainWindow(int *argc, char ***argv)
 
     gtk_init(argc, argv);
 
-    /*** Create our icons */
+    /*** Set path to our icons */
 
-    GuiCreateIconFactory();
+    gtk_icon_theme_add_resource_path(gtk_icon_theme_get_default(), "/dvdisaster/");
 
     /*** Open the main window */
 
@@ -495,8 +496,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_add(GTK_CONTAINER(button), box);
 
-    icon = gtk_image_new_from_stock("dvdisaster-gtk-index", GTK_ICON_SIZE_SMALL_TOOLBAR);
-
+    icon = gtk_image_new_from_icon_name("log", GTK_ICON_SIZE_SMALL_TOOLBAR);
     gtk_box_pack_start(GTK_BOX(box), icon, FALSE, FALSE, 2);
 
     wid = gtk_label_new(_utf("View log"));

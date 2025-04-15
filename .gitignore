@@ -10,7 +10,7 @@ locale/Makefile
 GNUmakefile
 .gitignore
 simple-md5sum
-inlined-icons.h
+inlined-icons.c
 help-dialogs.h
 dvdisaster
 build.h

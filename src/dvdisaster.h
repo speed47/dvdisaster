@@ -878,14 +878,6 @@ int BruteForceSearchPlausibleSector(struct _RawBuffer*);
 int AckHeuristic(struct _RawBuffer*);
 
 /***
- *** icon-factory.c
- ***/
-
-#ifdef WITH_GUI_YES
-void GuiCreateIconFactory();
-#endif
-
-/***
  *** image.c
  ***/
 

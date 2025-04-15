@@ -24,10 +24,6 @@
 
 #include "dvdisaster.h"
 
-#ifdef WITH_GUI_YES
- #include "inlined-icons.h"
-#endif
-
 #ifdef SYS_MINGW
 #include <windows.h>
 

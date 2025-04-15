@@ -155,9 +155,9 @@ if ! EXECUTE_PROGRAM "xgettext --help" xgettext \
 fi
 
 if test "$cfg_with_gui" == "yes"; then
-  if ! EXECUTE_PROGRAM "gdk-pixbuf-csource --help" gdk_pixbuf_csource ; then
-    echo "* gdk-pixbuf not installed"
-    echo "* or path to gdk-pixbuf-csource is missing."
+  if ! EXECUTE_PROGRAM "glib-compile-resources --help" gdk_pixbuf_csource ; then
+    echo "* glib-compile-resources not installed"
+    echo "* or path to glib-compile-resources is missing."
     exit 1
   fi
 fi
@@ -233,7 +233,7 @@ echo
 echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
 echo "CFG_OFILES = $ofiles" >> Makefile.config
 if test "$cfg_with_gui" == "yes"; then
-  echo "ICONS = src/inlined-icons.h" >> Makefile.config
+  echo "ICONS = src/inlined-icons.c" >> Makefile.config
 fi
 
 # Create the method wrapper
