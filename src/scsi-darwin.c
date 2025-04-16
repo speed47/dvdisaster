@@ -101,7 +101,7 @@ io_iterator_t getDVDIterator(char* ioClass)
 	if (matchingDict == (CFMutableDictionaryRef) NULL) {
 		return (io_iterator_t) NULL;
 	}	
-	ioReturnValue = IOServiceGetMatchingServices(kIOMasterPortDefault, matchingDict, &scsiObjectIterator);
+	ioReturnValue = IOServiceGetMatchingServices(0, matchingDict, &scsiObjectIterator);
 	if (scsiObjectIterator == (io_iterator_t) NULL || (ioReturnValue != kIOReturnSuccess)) {
 		return (io_iterator_t) NULL;
 	}
