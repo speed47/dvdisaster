@@ -444,16 +444,21 @@ int RS03RecognizeImage(Image *image)
       Verbose("Warning: image size set to %" PRId64 " for debugging!\n", Closure->mediumSize);
    }
    else
-   {  if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
+   {
+      const guint64 bd_sl_sz = (Closure->noBdrDefectManagement ? BD_SL_SIZE_NODM : BD_SL_SIZE);
+      const guint64 bd_dl_sz = (Closure->noBdrDefectManagement ? BD_DL_SIZE_NODM : BD_DL_SIZE);
+      const guint64 bd_tl_sz = (Closure->noBdrDefectManagement ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE);
+      const guint64 bd_ql_sz = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE);
+      if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
       else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX; 
       else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX; 
-      else if(image_sectors < BD_SL_SIZE)
-         layer_size = (Closure->noBdrDefectManagement ? BD_SL_SIZE_NODM : BD_SL_SIZE)/GF_FIELDMAX;
-      else if(image_sectors < BD_DL_SIZE)
-         layer_size = (Closure->noBdrDefectManagement ? BD_DL_SIZE_NODM : BD_DL_SIZE)/GF_FIELDMAX;
-      else if(image_sectors < BDXL_TL_SIZE)
-         layer_size = (Closure->noBdrDefectManagement ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE)/GF_FIELDMAX;
-      else layer_size = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE)/GF_FIELDMAX;
+      else if(image_sectors < bd_sl_sz)
+         layer_size = bd_sl_sz/GF_FIELDMAX;
+      else if(image_sectors < bd_dl_sz)
+         layer_size = bd_dl_sz/GF_FIELDMAX;
+      else if(image_sectors < bd_tl_sz)
+         layer_size = bd_tl_sz/GF_FIELDMAX;
+      else layer_size = bd_ql_sz/GF_FIELDMAX;
    }
 
    Verbose(".. trying layer size %" PRId64 "\n", layer_size);
