@@ -355,7 +355,6 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
 
    Closure->readLinearHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearHeadline), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(Closure->readLinearHeadline), 5, 0);
    gtk_label_set_ellipsize(GTK_LABEL(Closure->readLinearHeadline), PANGO_ELLIPSIZE_END);
    gtk_box_pack_start(GTK_BOX(parent), Closure->readLinearHeadline, FALSE, FALSE, 3);
@@ -387,12 +386,10 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    hbox = Closure->readLinearFootlineBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    Closure->readLinearSpeed = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearSpeed), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearSpeed), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearSpeed, FALSE, FALSE, 0);
 
    Closure->readLinearErrors = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearErrors), 1.0);
-   gtk_label_set_yalign(GTK_LABEL(Closure->readLinearErrors), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearErrors, TRUE, TRUE, 0);
 
    ignore = gtk_label_new("progress_tab");

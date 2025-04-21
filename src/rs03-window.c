@@ -64,7 +64,6 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
 
    wl->encHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encHeadline), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wl->encHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->encHeadline), 5, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
 
@@ -81,7 +80,6 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>1. Reserving space:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 0, 1, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 20);
 
    pbar = wl->encPBar1 = gtk_progress_bar_new();
@@ -91,7 +89,6 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
    gtk_label_set_markup(GTK_LABEL(wid),
 			_utf("<b>2. Creating error correction data:</b>"));
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 1, 2, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 20);
 
    pbar = wl->encPBar2 = gtk_progress_bar_new();
@@ -100,35 +97,29 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
 
    wl->encLabel3 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>Encoder info:</b>"));
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
    
    wl->encThreads = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 2, 3, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10,5);
 
    wl->encLabel4 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>Performance:</b>"));
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
 
    wl->encPerformance = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 4, 5, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
 
    wl->encLabel5 = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 1.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>State:</b>"));
    gtk_table_attach(GTK_TABLE(table), wid, 0, 1, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
 
    wl->encBottleneck = wid = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wid), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wid), 0.0);
    gtk_table_attach(GTK_TABLE(table), wid, 1, 2, 5, 6, GTK_SHRINK | GTK_FILL, GTK_SHRINK, 10, 5);
 
    wl->encFootline = gtk_label_new(NULL);
@@ -300,7 +291,6 @@ void CreateRS03FixWindow(Method *method, GtkWidget *parent)
 
    wl->fixHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixHeadline), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wl->fixHeadline), 0.0);
    gtk_misc_set_padding(GTK_MISC(wl->fixHeadline), 5, 0);
    gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
 
@@ -324,16 +314,13 @@ void CreateRS03FixWindow(Method *method, GtkWidget *parent)
 
    wl->fixCorrected = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixCorrected), 0.0);
-   gtk_label_set_yalign(GTK_LABEL(wl->fixCorrected), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixCorrected, TRUE, TRUE, 0);
 
    wl->fixProgress = gtk_label_new(NULL);
-   gtk_label_set_yalign(GTK_LABEL(wl->fixProgress), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixProgress, TRUE, TRUE, 0);
 
    wl->fixUncorrected = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixUncorrected), 1.0);
-   gtk_label_set_yalign(GTK_LABEL(wl->fixUncorrected), 0.0);
    gtk_box_pack_start(GTK_BOX(hbox), wl->fixUncorrected, TRUE, TRUE, 0);
 
    ignore = gtk_label_new("progress_tab");
