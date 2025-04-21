@@ -124,7 +124,7 @@ ${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 
 # Building the dvdisaster binary
 
-dvdisaster: $(ICONS) $(OFILES)
+dvdisaster: $(OFILES)
 	@echo "Linking  : dvdisaster"
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
 	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null ; \
@@ -137,7 +137,7 @@ dvdisaster: $(ICONS) $(OFILES)
 	else $(MAKE) --no-print-directory -C locale; \
 	fi
 
-src/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/close.svg icons/create.svg icons/fix.svg icons/help.svg icons/log.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan.svg icons/stop.svg icons/strip.svg icons/verify.svg
+$(BUILDTMP)/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/close.svg icons/create.svg icons/fix.svg icons/help.svg icons/log.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan.svg icons/stop.svg icons/strip.svg icons/verify.svg
 	@echo "Generating:" $(ICONS)
 	glib-compile-resources --generate-source --target=$(ICONS) --sourcedir=icons icons/icons.gresource.xml
 
@@ -335,7 +335,7 @@ distclean: clean
 clean:
 	@echo "Removing rebuildable files"
 	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
-	@rm -f src/inlined-icons.h src/help-dialogs.h
+	@rm -f "$(BUILDTMP)"/inlined-icons.c src/help-dialogs.h
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;

@@ -222,7 +222,14 @@ rm -f src/conftest.c src/method-link.c
 cfiles="src/method-link.c"
 ofiles="$BUILDTMP/method-link.o"
 
-for cfile in src/*.c; do
+# Only include icons in GUI builds
+if test "$cfg_with_gui" == "yes"; then
+  icons="$BUILDTMP/inlined-icons.c"
+else
+  icons=""
+fi
+
+for cfile in $icons src/*.c; do
   cfile_prefix=`echo $cfile | sed -e 's/\.c//'`
   cfiles="$cfiles $cfile"
   ofiles="$ofiles $BUILDTMP/$(basename $cfile_prefix.o)"
@@ -233,7 +240,7 @@ echo
 echo -e "\nCFG_CFILES = $cfiles" >> Makefile.config
 echo "CFG_OFILES = $ofiles" >> Makefile.config
 if test "$cfg_with_gui" == "yes"; then
-  echo "ICONS = src/inlined-icons.c" >> Makefile.config
+  echo "ICONS = $icons" >> Makefile.config
 fi
 
 # Create the method wrapper
