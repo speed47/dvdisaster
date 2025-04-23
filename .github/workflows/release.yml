@@ -116,7 +116,7 @@ jobs:
           install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
       - name: install GUI prereqs
         if: matrix.ui == 'gui'
-        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3
+        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3 mingw-w64-${{ matrix.arch }}-librsvg
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
