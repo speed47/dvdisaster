@@ -690,7 +690,7 @@ void GuiFreeCurve(Curve*);
 void GuiUpdateCurveGeometry(Curve*, char*, int);
 
 int  GuiCurveX(Curve*, gdouble);
-int  GuiCurveY(Curve*, gdouble);
+gdouble GuiCurveY(Curve*, gdouble);
 int  GuiCurveLogY(Curve*, gdouble);
 
 void GuiRedrawAxes(cairo_t *cr, Curve*);

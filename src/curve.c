@@ -110,7 +110,7 @@ int GuiCurveLX(Curve *curve, gdouble x)
    return 1 + curve->leftX + (x * width) / (gdouble)curve->maxX;
 }
 
-int GuiCurveY(Curve *curve, gdouble y)
+gdouble GuiCurveY(Curve *curve, gdouble y)
 {  gdouble hfact;
 
    hfact =   (gdouble)(curve->bottomY - curve->topY) 
@@ -380,7 +380,8 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
  */
 
 void GuiRedrawCurve(cairo_t *cr, Curve *curve, int last)
-{  int i,x0,x1,fy0;
+{  int i,x0,x1;
+   gdouble fy0;
 
    gdk_cairo_set_source_rgba(cr, Closure->curveColor);
    cairo_set_line_width(cr, 1.0);
