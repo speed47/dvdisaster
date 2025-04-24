@@ -38,12 +38,12 @@
     <linearGradient id="linearGradient6458" x1="32.899" x2="27.251" y1="4.9968" y2="9.8403" gradientTransform="matrix(0 .67045 .67397 0 1.2947 1.3625)" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient6262"/>
     <linearGradient id="linearGradient6460" x1="32.899" x2="27.251" y1="4.9968" y2="9.8403" gradientTransform="matrix(.67045 0 0 .67397 1.2231 1.368)" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient6262"/>
   </defs>
-  <path transform="matrix(1.0243 0 0 1.1628 -.065744 -2.7836)" d="m22.519 20.024a10.739 3.01 0 11-21.479 0 10.739 3.01 0 1121.479 0z" color="#000000" fill="url(#radialGradient5881)" fill-rule="evenodd" opacity=".59825"/>
+  <path transform="matrix(1.0243 0 0 1.1628 -.065744 -2.7836)" d="m22.519 20.024a10.739 3.01 0 1 1 -21.479 0 10.739 3.01 0 1121.479 0z" color="#000000" fill="url(#radialGradient5881)" fill-rule="evenodd" opacity=".59825"/>
   <g fill="none" stroke="#8f5902" stroke-width=".64071">
-    <path transform="matrix(1.3337 -1.3337 -.91322 -.91322 3.6669 24.791)" d="m3.7812 2.4406a1.4856 2.4673 0 11-2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
-    <path transform="matrix(1.3337 1.3337 -.91322 .91322 3.6669 -.79064)" d="m3.7812 2.4406a1.4856 2.4673 0 11-2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
-    <path transform="matrix(-1.3337 1.3337 .91322 .91322 20.333 -.79064)" d="m3.7812 2.4406a1.4856 2.4673 0 11-2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
-    <path transform="matrix(-1.3337 -1.3337 .91322 -.91322 20.333 24.791)" d="m3.7812 2.4406a1.4856 2.4673 0 11-2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
+    <path transform="matrix(1.3337 -1.3337 -.91322 -.91322 3.6669 24.791)" d="m3.7812 2.4406a1.4856 2.4673 0 1 1 -2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
+    <path transform="matrix(1.3337 1.3337 -.91322 .91322 3.6669 -.79064)" d="m3.7812 2.4406a1.4856 2.4673 0 1 1 -2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
+    <path transform="matrix(-1.3337 1.3337 .91322 .91322 20.333 -.79064)" d="m3.7812 2.4406a1.4856 2.4673 0 1 1 -2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
+    <path transform="matrix(-1.3337 -1.3337 .91322 -.91322 20.333 24.791)" d="m3.7812 2.4406a1.4856 2.4673 0 1 1 -2.9711 0 1.4856 2.4673 0 112.9711 0z" color="#000000"/>
   </g>
   <g fill-rule="evenodd">
     <g>
