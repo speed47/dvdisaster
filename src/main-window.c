@@ -283,7 +283,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Read */
 
-   Closure->readButton = wid = create_button(_("button|Read"), "read", scale);
+   Closure->readButton = wid = create_button(_("button|Read"), "read-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_READ);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Read Image"),
@@ -309,7 +309,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Scan */
 
-   Closure->scanButton = wid = create_button(_("button|Scan"), "scan", scale);
+   Closure->scanButton = wid = create_button(_("button|Scan"), "scan-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_SCAN);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Scan medium"),
@@ -317,7 +317,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Fix */
 
-   Closure->fixButton = wid = create_button(_("button|Fix"), "fix", scale);
+   Closure->fixButton = wid = create_button(_("button|Fix"), "fix-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_FIX);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Repair image"),
@@ -325,7 +325,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    /*** Verify */
 
-   Closure->testButton = wid = create_button(_("button|Verify"), "verify", scale);
+   Closure->testButton = wid = create_button(_("button|Verify"), "verify-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_VERIFY);
    gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
    GuiAttachTooltip(wid, _("tooltip|Consistency check"),
