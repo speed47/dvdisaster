@@ -1,0 +1,9 @@
+<svg version="1.1" viewBox="0 0 576 576" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .no-fill {
+      fill: none !important;
+    }
+  </style>
+  <path d="m49.2 329.6c49.768-155.03 234.28-230.88 504-235.2" class="no-fill" stroke="#4658f5" stroke-width="24"/>
+  <path d="m38 56v8h-26v16h26v80h-26v16h26v80h-26v16h26v80h-26v16h26v80h-26v16h26v21h16v-21h104v18h16v-18h104v15h16v-15h104v15h16v-15h104v15h16v-15h16v-16h-496v-392z"/>
+</svg>

@@ -4,7 +4,7 @@
     <file compressed="true" preprocess="xml-stripblanks">cd.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">close.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">create.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">fix.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">fix-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">help.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">log.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">open-ecc.svg</file>
@@ -12,10 +12,10 @@
     <file compressed="true" preprocess="xml-stripblanks">preferences.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">quit.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">read-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">scan.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">scan-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">stop.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">strip.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">verify.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">verify-symbolic.svg</file>
   </gresource>
 </gresources>
 
