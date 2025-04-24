@@ -549,7 +549,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Help button */
 
-   icon = gtk_image_new_from_icon_name("help", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("manual", GTK_ICON_SIZE_LARGE_TOOLBAR);
    Closure->helpButton = help = gtk_button_new();
    gtk_button_set_relief(GTK_BUTTON(help), GTK_RELIEF_NONE);
    gtk_container_add(GTK_CONTAINER(help), icon);

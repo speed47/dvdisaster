@@ -5,8 +5,8 @@
     <file compressed="true" preprocess="xml-stripblanks">close.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">create.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">fix-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">help.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">log.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">manual.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">open-ecc.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">open-img.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">preferences.svg</file>
