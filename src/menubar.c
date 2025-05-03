@@ -249,7 +249,10 @@ GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
    add_menu_separator(menu_strip);
 
    add_menu_button(menu_strip, _("menu|Change log"), MENU_HELP_CHANGELOG);
-   add_menu_button(menu_strip, _("menu|To do list"), MENU_HELP_TODO);
+
+   /* Hide the todo list menu in the patchlevel series, as we're not upstream
+    * add_menu_button(menu_strip, _("menu|To do list"), MENU_HELP_TODO);
+    */
 
    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Help"));
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
