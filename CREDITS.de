@@ -14,6 +14,9 @@ Jesus Cea <jcea@jcea.es>
    hat das Projekt am Leben erhalten und ermöglicht momentan das
    Datenhosting.
 
+Paul Dicker (@pitdicker on GitHub)
+   migrierte die Anwendung von GTK2 nach GTK3.
+
 Julian Einwag (julian@einwag.de)
    erstellt und pflegt die Mac OS X / Darwin - spezifischen Anpassungen.
 
