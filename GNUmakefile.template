@@ -139,7 +139,7 @@ dvdisaster: $(OFILES)
 
 $(BUILDTMP)/inlined-icons.c: icons/icons.gresource.xml icons/cd.svg icons/close.svg icons/create.svg icons/fix-symbolic.svg icons/log.svg icons/manual.svg icons/open-ecc.svg icons/open-img.svg icons/preferences.svg icons/quit.svg icons/read-symbolic.svg icons/scan-symbolic.svg icons/stop.svg icons/strip.svg icons/verify-symbolic.svg
 	@echo "Generating:" $(ICONS)
-	glib-compile-resources --generate-source --target=$(ICONS) --sourcedir=icons icons/icons.gresource.xml
+	@glib-compile-resources --generate-source --target=$(ICONS) --sourcedir=icons icons/icons.gresource.xml
 
 $(BUILDTMP)/rs-encoder-sse2.o: src/rs-encoder-sse2.c
 	@echo "Compiling:" src/rs-encoder-sse2.c
