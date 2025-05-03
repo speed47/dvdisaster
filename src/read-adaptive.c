@@ -691,9 +691,11 @@ static void open_and_determine_mode(read_closure *rc)
    {  int answer;
       PrintLog(_("%s-type ECC found\n"), "RS03");
       answer = ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL, NULL,
-			    _("Adaptive reading has not been adapted yet to handle RS03-augmented images properly.\n"
-			      "To quote the original author: \"behaviour with RS03 is unpredictable and undefined\".\n"
-			      "You should cancel and use the linear reading strategy instead. Continue at your own risk.\n"));
+			    _("Adaptive reading has not been adapted yet to handle RS03-augmented images in an optimal way.\n"
+			      "The 'divide and conquer' reading method will still be applied, by attempting to detect and skip\n"
+                              "badly damaged zones and give priority to good zones first. However we won't stop reading automatically\n"
+                              "once enough data and ECC data have been recovered to be able to rebuild the image, as we do for RS02.\n"
+			      "You should stop the reading and launch a 'verify' yourself from time to time to see if this is the case.\n"));
 
       if(!answer)
       {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
