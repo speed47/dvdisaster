@@ -10,35 +10,25 @@ Please refer to the [PDF manual](documentation/user-manual/manual.pdf) for more 
 
 # :wrench: Unofficial version
 
-The last upstream version by Carsten Gnörlich is dated 2017, and could be found on the
-[official](https://web.archive.org/web/20180428070843/http://dvdisaster.net/en/index.html)
-[website](https://web.archive.org/web/20180509154525/http://dvdisaster.org/en/index.html)
-which is [now](http://www.dvdisaster.net) [down](http://www.dvdisaster.org).
-The original source code [repository](https://sourceforge.net/projects/dvdisaster/files/dvdisaster) doesn't have it,
-but [Debian sources](https://sources.debian.org/src/dvdisaster/) does, thanks to the maintainer there.
-The original [README](README) has been left untouched in this repository.
+The last upstream version dates back to 2021, and can be found on the [official website](https://dvdisaster.jcea.es).
 
 This version is built on top of the latest upstream version, with the following notable enhancements:
 
 - Added pre-defined sizes for BD-R Triple Layer (100GB), BD-R Quadruple Layer (128GB)
-- Added an option to use more space for ECC on BD-R
-- Windows build supported again (it was dropped upstream a few versions back)
+- Added an option to use more space for ECC on BD-R when using RS03 (`--no-bdr-defect-management`)
+- Re-enabled adaptive reading for RS01 and RS02, and optionally for RS03 on user request (more on that below)
+- Ability to strip an augmented image from its additional ECC-data
 - A new CLI-only version, not depending on gtk (`./configure --with-gui=no && make clean && make -j4`)
-- Non-regression tests on each code change, for Linux64 and Windows32/64, CLI and GUI versions
-- Prebuilt binaries for Windows32, Windows64, Linux64 (static builds and AppImage builds), CLI and GUI versions
-- Fixed a bunch of (minor) quirks, a few (minor) bugs, added a couple (minor) features
+- GUI codebase ported from gtk2 to gtk3 to ensure future-proofness
+- Windows and macOS builds are supported again, those were dropped upstream a few versions back
+- Non-regression tests on each code change, along with prebuilt binaries for Linux64, Windows32/64 and macOS, for both CLI and GUI versions
+- Fixed a bunch of other (minor) quirks, a few (minor) bugs, added a couple other (minor) features
 
 Please refer to the [CHANGELOG](CHANGELOG) for all the details.
 
-In 2021, upstream development briefly resumed [on a new website](https://dvdisaster.jcea.es/).
-The new team successfully picked up some of the improvements of this unofficial version.
-If/when upstream resumes development again, their changes will be merged back here when possible.
-In any case, even if at some point we succeed in upstreaming all our patches, and both codebases are exactly the same,
-this repository will stay up as it provides automated tests and prebuilt binaries.
-
 This version will never break compatibility with upstream versions,
 the goal is to ensure an optical media protected by upstream dvdisaster will still be able to be repaired
-with this version 10+ years from now. Regression tests are here to ensure this is the case.
+with this version, decades from now. Regression tests are here to ensure this is the case.
 
 # :twisted_rightwards_arrows: 3 available protection modes ("codecs")
 
@@ -61,7 +51,7 @@ augmented images, with the following added features:
 - RS03 augmented images and error correction files are - contrary to RS01, and to a lesser extent RS02 - robust against
   damage of the dvdisaster-added recovery data itself
 
-There are, however, a few cons that must be noted:
+There are, however, a few cons that must be noted for RS03:
 
 - In image mode, the RS03 augmented image file size will be picked up from a predefined list of well-known medium sizes,
   while the size of augmented images can be freely chosen in RS02. This is the "price to pay" for the added robustness
@@ -77,6 +67,8 @@ There are, however, a few cons that must be noted:
 
 # :mag: Comparison table
 
+This attempts to summarize the differences, pros and cons of each codec:
+
 | Codecs                               | RS01 (separate file, obsolete) | RS02 (augmented image)         | RS03 (in separate file mode)   | RS03 (in augmented image mode) |
 |--------------------------------------|--------------------------------|--------------------------------|--------------------------------|--------------------------------|
 | Robustness :one:                     | :star:                         | :star::star::star:             | :star::star::star::star::star: | :star::star::star::star::star: |
@@ -86,21 +78,22 @@ There are, however, a few cons that must be noted:
 | Damaged media recovery speed :three: | :star:                         | :star::star::star:             | :star:                         | :star:                         |
 | Supports customizing redundancy size | :heavy_check_mark:             | :heavy_check_mark:             | :heavy_check_mark:             | :x: :four:                     |
 
-:one: Robustness against corruption of the dvdisaster-added ECC parts themselves. The higher the ranking, the less it is likely than a few badly located damaged sectors render the whole correction impossible because they affect dvdisaster metadata on-disc. For example corruption of the first dozens of sectors of an image can make RS02 entirely unusable regardless of the redundancy.
+:one: Here we're talking about the robustness against corruption of the dvdisaster-added ECC parts _themselves_. The higher the ranking, the less it is likely than a few badly located damaged sectors render the whole correction impossible because they affect dvdisaster metadata on-disc. For example, corruption of the first dozens of sectors of an image can make RS02 entirely unusable regardless of the redundancy data originally stored on it.
 
-:two: When algorithm is CPU-bound, i.e. generating or repairing an image stored on a SSD/NVMe drive.
+:two: When algorithm is CPU-bound, i.e. generating or repairing an image stored on a SSD/NVMe drive where the storage i/o speed is not an issue.
 
 :three: Using adaptive reading when supported (RS02), limiting the number of damaged sectors that need to be read to what is strictly necessary for repair. Using linear reading otherwise (RS03 and separate file codecs), assuming a badly damaged media, taking into account the time the drive takes to try to read damaged sectors.
 
-:four: The robustness of RS03 comes at the cost of having to augment images strictly to well-known media sizes, as explained in the previous section. This usually doesn't make much difference as long as you intend to burn the augmented image to a classic medium (CD-R, DVD-R, BD-R, ...).
+:four: The robustness of RS03 comes at the cost of having to augment images strictly to well-known media sizes, as explained in the previous section above. This usually doesn't make much difference as long as you intend to burn the augmented image to a classic medium (CD-R, DVD-R, BD-R, ...).
 
 # :bulb: Rationale
 
-Even if the optical media era is sunsetting now, and has been for a few years, it's still of some value for off-site backups.
+Even if the peak of the optical media era is well behind us, optical media is still of some value for specific use cases such as off-site backups.
 In any case, we still have media in our hands that we want to be able to repair, should it be damaged, during the next years/decades.
 Repairing is actually pretty much the very reason of dvdisaster existence (as long as parity data has been added, of course).
-The idea of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile, ~~should upstream development never resume (we hope it does!)~~
-This is also why precompiled Windows binaries and a precompiled static CLI-only Linux version are available here.
+The main purpose of this unofficial version is to ensure dvdisaster doesn't get hard to find, use or compile on recent systems.
+To this effect, prebuilt binaries are available for the 3 main categories of operating systems, and on top of that we've also fixed a few
+bugs and added a few tiny features.
 
 # :hammer: Compiling
 
