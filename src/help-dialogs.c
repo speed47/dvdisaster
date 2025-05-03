@@ -780,11 +780,13 @@ void GuiAboutDialog()
    GuiAboutTextWithLink(vbox, text, HOMEPAGE);
    g_free(text);
 
-   GuiAboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been patched\n"
-			     "for Debian to support DVD-ROMs (with and without encryption),\n"
-			     "and subsequently patched again to support a CLI-only build, among other things.\n\n"
-			     "Please do not bother the original authors of dvdisaster\n"
-			     "but submit bugreports against [GitHub] instead.\n"),
+   GuiAboutTextWithLink(vbox, _("\nThis version is <b>not the original</b>. It has been enhanced mainly to\n"
+			     "add support for BD-R TL/QL and HD-DVD, add support for stripping ECC from ISOs,\n"
+                             "add an option to generate BD-R RS03 images with more redundancy,\n"
+			     "re-enable adaptive reading support,\n"
+                             "port the GUI to GTK3, and a lot of other things.\n\n"
+			     "Please do not bother the original authors of dvdisaster,\n"
+			     "submit bugreports against [GitHub] instead.\n"),
 			     "https://github.com/speed47/dvdisaster");
    
 #ifdef SYS_NETBSD

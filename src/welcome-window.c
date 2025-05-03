@@ -80,9 +80,14 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
 
    GuiAboutText(box, _("<i>New in this Version:</i>"));
 
-   GuiAboutTextWithLink(box, _("This is <b>v0.79.10-pl3</b>. The [patchlevel series] are enhanced from the last upstream release.\n"
-      "We add support for BD-R TL/QL, Windows and MacOS builds, an option to produce bigger BD-R RS03,\n"
-      "images, support for stripping ECC from ISOs, re-enabled adaptive reading (except for RS03), and more.\n"
+   GuiAboutTextWithLink(box, _(
+      "This is <b>v0.79.10-pl4</b>. The [patchlevel series] are enhanced on top of the last upstream release to:\n"
+      "- add support for BD-R TL/QL and HD-DVD,\n"
+      "- add support for stripping ECC from ISOs,\n"
+      "- add an option to generate BD-R RS03 images with more redundancy,\n"
+      "- re-enable adaptive reading support,\n"
+      "- port the GUI to GTK3,\n"
+      "- ... and a lot more.\n"
       "\n"
       "Please refer to the <i>Help &gt; Change log</i> menu for all the details."), "https://github.com/speed47/dvdisaster");
 
