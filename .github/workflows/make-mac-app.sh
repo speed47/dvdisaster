@@ -10,7 +10,7 @@ else
   suffix=""
 fi
 
-archive="dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')$suffix.dmg"
+archive="dvdisaster-$(echo "$github_ref" | grep -Eo '[^/]+$')-macos$suffix.dmg"
 [ -n "$GITHUB_OUTPUT" ] && echo "archive=$archive" >> "$GITHUB_OUTPUT"
 echo "mac dmg is <$archive>"
 
