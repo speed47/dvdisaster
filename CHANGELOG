@@ -20,7 +20,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
 
-0.79.10.patchlevel-4 xx-05-2025 *UNOFFICIAL*
+0.79.10.patchlevel-4 04-05-2025 *UNOFFICIAL*
 - enh: port the GUI to gtk3
 - enh: speedup RS03 repair
 - enh: add support for HD-DVD(-R(W))
