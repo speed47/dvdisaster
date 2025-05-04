@@ -31,8 +31,11 @@ cp -va locale/*/ dist/locale/
 if [ "$os" != "linux64" ]; then
   lookup_dependencies="dvdisaster"
   if [ "$GUI" = 1 ]; then
+    echo "!> Copying glib2 schemas..."
+    mkdir -p dist/share/glib-2.0
+    cp -va "$MINGW_PREFIX/share/glib-2.0/schemas" dist/share/glib-2.0/
     echo "!> Copying default icons..."
-    mkdir -p dist/share
+    mkdir -p dist/share/
     cp -va "$MINGW_PREFIX/share/icons" dist/share/
     loaders_cache="$(find "$MINGW_PREFIX/lib/gdk-pixbuf-2.0/" -name loaders.cache | head -n1)"
     pixbuf_dir="$(dirname "$loaders_cache")"
