@@ -368,12 +368,12 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
          gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
                                        gtk_entry_get_text(GTK_ENTRY(Closure->eccEntry)));
          if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-         {  g_free(Closure->imageName);
+         {  g_free(Closure->eccName);
             Closure->eccName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
             if(Closure->autoSuffix)
                Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
-            gtk_entry_set_text(GTK_ENTRY(Closure->eccName), Closure->eccName);
-            gtk_editable_set_position(GTK_EDITABLE(Closure->eccName), -1);
+            gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+            gtk_editable_set_position(GTK_EDITABLE(Closure->eccEntry), -1);
          }
          gtk_widget_destroy (dialog);
          break;
