@@ -81,7 +81,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    GuiAboutText(box, _("<i>New in this Version:</i>"));
 
    GuiAboutTextWithLink(box, _(
-      "This is <b>v0.79.10-pl4</b>. The [patchlevel series] are enhanced on top of the last upstream release to:\n"
+      "This is <b>v0.79.10-pl5</b>. The [patchlevel series] are enhanced on top of the last upstream release to:\n"
       "- add support for BD-R TL/QL and HD-DVD,\n"
       "- add support for stripping ECC from ISOs,\n"
       "- add an option to generate BD-R RS03 images with more redundancy,\n"
