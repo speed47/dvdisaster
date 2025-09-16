@@ -40,7 +40,9 @@ static void destroy_cb(GtkWidget *widget, gpointer data)
       g_thread_join(Closure->subThread);
    }
 
-   gtk_main_quit();
+   /* gtk_main_quit is deprecated in GTK4, use g_main_loop_quit instead */
+   /* For now, using exit as a temporary workaround */
+   exit(0);
 }
 
 static gboolean delete_cb(GtkWidget *widget, GdkEvent *event, gpointer data)

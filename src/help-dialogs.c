@@ -153,9 +153,9 @@ LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
    gtk_container_add(GTK_CONTAINER(button), button_box);
 
    GtkWidget *icon = gtk_image_new_from_icon_name("close", GTK_ICON_SIZE_SMALL_TOOLBAR);
-   gtk_box_pack_start(GTK_BOX(button_box), icon, FALSE, FALSE, 2);
+   gtk_box_append(GTK_BOX(button_box), icon, FALSE, FALSE, 2);
    GtkWidget *lab = gtk_label_new(_("Close"));
-   gtk_box_pack_start(GTK_BOX(button_box), lab, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(button_box), lab, FALSE, FALSE, 0);
 
    gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 0);
    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(close_cb), lwoh);
@@ -278,7 +278,7 @@ void GuiAddHelpParagraph(LabelWithOnlineHelp *lwoh, char *format, ...)
 
    gtk_label_set_xalign(GTK_LABEL(label), 0.0);
    gtk_label_set_yalign(GTK_LABEL(label), 0.0);
-   gtk_box_pack_start(GTK_BOX(lwoh->vbox), label, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(lwoh->vbox), label, FALSE, FALSE, 0);
 
    /* Work around some bugs in the gtk line wrapper code.
       By default lines are wrapped at the length of 
@@ -301,11 +301,11 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
    va_list argp;
    char *text,*utf;
 
-   gtk_box_pack_start(GTK_BOX(lwoh->vbox), hbox, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(lwoh->vbox), hbox, FALSE, FALSE, 0);
 
    gtk_label_set_xalign(GTK_LABEL(bullet), 0.0);
    gtk_label_set_yalign(GTK_LABEL(bullet), 0.0);
-   gtk_box_pack_start(GTK_BOX(hbox), bullet, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(hbox), bullet, FALSE, FALSE, 0);
 
    va_start(argp, format);
    text = g_strdup_vprintf(format, argp);
@@ -318,7 +318,7 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
 
    gtk_label_set_xalign(GTK_LABEL(label), 0.0);
    gtk_label_set_yalign(GTK_LABEL(label), 0.0);
-   gtk_box_pack_start(GTK_BOX(hbox), label, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), label, TRUE, TRUE, 0);
 
    /* Work around some bugs in the gtk line wrapper code.
       By default lines are wrapped at the length of 
@@ -335,8 +335,8 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
 
 void GuiAddHelpWidget(LabelWithOnlineHelp *lwoh, GtkWidget *widget)
 {  
-   gtk_box_pack_start(GTK_BOX(lwoh->vbox), widget, FALSE, FALSE, 10);
-   gtk_box_pack_start(GTK_BOX(lwoh->vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 10);
+   gtk_box_append(GTK_BOX(lwoh->vbox), widget, FALSE, FALSE, 10);
+   gtk_box_append(GTK_BOX(lwoh->vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 10);
 }
 
 /***
@@ -559,11 +559,11 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
 				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
    g_free(utf);
    gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 600);
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox, TRUE, TRUE, 0);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+   gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
+   /* gtk_container_set_border_width is deprecated in GTK4 */
 
    lab = gtk_label_new(NULL);
    utf = g_locale_to_utf8(explanation, -1, NULL, NULL, NULL);
@@ -571,13 +571,13 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
    g_free(utf);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
-   gtk_box_pack_start(GTK_BOX(vbox), lab, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), lab);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), sep);
 
-   scroll_win = gtk_scrolled_window_new(NULL, NULL);
-   gtk_box_pack_start(GTK_BOX(vbox), scroll_win, TRUE, TRUE, 5);
+   scroll_win = gtk_scrolled_window_new();
+   gtk_box_append(GTK_BOX(vbox), scroll_win);
    if(scroll_out) *scroll_out = GTK_SCROLLED_WINDOW(scroll_win);
 
    view   = gtk_text_view_new();
@@ -651,7 +651,7 @@ void GuiAboutText(GtkWidget *parent, char *format, ...)
    gtk_label_set_markup(GTK_LABEL(lab), utf_text);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_label_set_yalign(GTK_LABEL(lab), 0.0);
-   gtk_box_pack_start(GTK_BOX(parent), lab, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), lab, FALSE, FALSE, 0);
 
    g_free(tmp);
    g_free(utf_text);
@@ -671,7 +671,7 @@ void GuiAboutLink(GtkWidget *parent, char *label, char *action)
    g_signal_connect(G_OBJECT(ebox), "enter_notify_event", G_CALLBACK(about_cb), (gpointer)label_copy);
    g_signal_connect(G_OBJECT(ebox), "leave_notify_event", G_CALLBACK(about_cb), (gpointer)label_copy);
 
-   gtk_box_pack_start(GTK_BOX(parent), ebox, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), ebox, FALSE, FALSE, 0);
 
    lab  = gtk_label_new(NULL);
    g_sprintf(text, "<span color=\"blue\">%s</span>", label);
@@ -699,7 +699,7 @@ void GuiAboutTextWithLink(GtkWidget *parent, char *text, char *action)
       if(link_start && link_end)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
-         gtk_box_pack_start(GTK_BOX(parent), hbox, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(parent), hbox, FALSE, FALSE, 0);
 	 *link_start++ = *link_end++ = 0;
 
          if(*head) 
@@ -707,7 +707,7 @@ void GuiAboutTextWithLink(GtkWidget *parent, char *text, char *action)
 
 	    utf = g_locale_to_utf8(head, -1, NULL, NULL, NULL);
 	    gtk_label_set_markup(GTK_LABEL(lab), utf);
-	    gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
 	    g_free(utf);
 	 }
 
@@ -718,7 +718,7 @@ void GuiAboutTextWithLink(GtkWidget *parent, char *text, char *action)
 
 	    utf = g_locale_to_utf8(link_end, -1, NULL, NULL, NULL);
 	    gtk_label_set_markup(GTK_LABEL(lab), utf);
-	    gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
 	    g_free(utf);
 	 }
       }
@@ -741,10 +741,10 @@ void GuiAboutDialog()
 				       Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
 				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
 
-   g_signal_connect_swapped(about, "response", G_CALLBACK(gtk_widget_destroy), about);
+   g_signal_connect_swapped(about, "response", G_CALLBACK(gtk_window_destroy), about);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(about))), vbox, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(about))), vbox, FALSE, FALSE, 0);
    gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
 
    /* Insert the labels */
@@ -761,7 +761,7 @@ void GuiAboutDialog()
    ));
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 10);
+   gtk_box_append(GTK_BOX(vbox), sep, FALSE, FALSE, 10);
 
 
    GuiAboutText(vbox, _("dvdisaster provides a margin of safety against data loss\n"
