@@ -102,7 +102,7 @@ static void menu_cb(GtkWidget *widget, gpointer data)
 
 	/* and quit */
 
-        gtk_main_quit();
+        exit(0);
         break;
 
       case MENU_TOOLS_MEDIUM_INFO:
@@ -271,18 +271,9 @@ GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
 
 static gint tooltip_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 {  
-   switch(event->type)
-   {  case GDK_ENTER_NOTIFY: 
-       gtk_label_set_text(GTK_LABEL(Closure->status), (gchar*)data);
-	break;
-      case GDK_LEAVE_NOTIFY: 
-	gtk_label_set_text(GTK_LABEL(Closure->status), "");
-	break;
-
-      default:
-        break;
-   }
-
+   /* Simplified for GTK4 compatibility - just show the tooltip */
+   gtk_label_set_text(GTK_LABEL(Closure->status), (gchar*)data);
+   
    return FALSE;   /* don't intercept the default button callbacks! */
 }
 
@@ -353,7 +344,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
             gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
             gtk_editable_set_position(GTK_EDITABLE(Closure->imageEntry), -1);
          }
-         gtk_widget_destroy (dialog);
+         gtk_window_destroy (dialog);
          break;
 
       /*** Same stuff again for ecc file selection */
@@ -375,7 +366,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
             gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
             gtk_editable_set_position(GTK_EDITABLE(Closure->eccEntry), -1);
          }
-         gtk_widget_destroy (dialog);
+         gtk_window_destroy (dialog);
          break;
    }
 }
@@ -445,11 +436,11 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(box), space, FALSE, FALSE, 5);
 
    ebox = gtk_event_box_new();
-   gtk_widget_set_events(ebox, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
-   gtk_box_pack_start(GTK_BOX(box), ebox, FALSE, FALSE, 0);
+   /* gtk_widget_set_events deprecated in GTK4 */
+   gtk_box_append(GTK_BOX(box), ebox);
    GuiAttachTooltip(ebox, _("tooltip|Drive selection"),
 		    _("Use the nearby drop-down list to select the input drive."));
-   icon = gtk_image_new_from_icon_name("cd", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("cd");
    gtk_container_add(GTK_CONTAINER(ebox), icon);
 
    Closure->driveCombo = combo_box = gtk_combo_box_text_new();
@@ -483,20 +474,20 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Image file selection */
 
-   icon = gtk_image_new_from_icon_name("open-img", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("open-img");
    button = gtk_button_new();
-   gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-   gtk_container_add(GTK_CONTAINER(button), icon);
+   /* gtk_button_set_relief deprecated in GTK4 */
+   gtk_button_set_child(GTK_BUTTON(button), icon);
    g_signal_connect(G_OBJECT(button), "clicked", 
 	            G_CALLBACK(file_select_cb), 
 	            GINT_TO_POINTER(MENU_FILE_IMAGE));
-   gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), button);
 
    Closure->imageEntry = gtk_entry_new();
    set_path(Closure->imageEntry, Closure->imageName);
    g_signal_connect(G_OBJECT(Closure->imageEntry), "activate", 
 	            G_CALLBACK(suffix_cb), GINT_TO_POINTER(FALSE));
-   gtk_box_pack_start(GTK_BOX(box), Closure->imageEntry, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(box), Closure->imageEntry);
 
    space = gtk_label_new(NULL);
    gtk_box_pack_start(GTK_BOX(box), space, FALSE, FALSE, 5);
@@ -511,20 +502,20 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Ecc file selection */
 
-   icon = gtk_image_new_from_icon_name("open-ecc", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("open-ecc");
    button = gtk_button_new();
-   gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-   gtk_container_add(GTK_CONTAINER(button), icon);
+   /* gtk_button_set_relief deprecated in GTK4 */
+   gtk_button_set_child(GTK_BUTTON(button), icon);
    g_signal_connect(G_OBJECT(button), "clicked", 
 	            G_CALLBACK(file_select_cb), 
 	            GINT_TO_POINTER(MENU_FILE_ECC));
-   gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), button);
 
    Closure->eccEntry = gtk_entry_new();
    set_path(Closure->eccEntry, Closure->eccName);
    g_signal_connect(G_OBJECT(Closure->eccEntry), "activate", 
 	            G_CALLBACK(suffix_cb), GINT_TO_POINTER(TRUE));
-   gtk_box_pack_start(GTK_BOX(box), Closure->eccEntry, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(box), Closure->eccEntry);
 
    space = gtk_label_new(NULL);
    gtk_box_pack_start(GTK_BOX(box), space, FALSE, FALSE, 5);
@@ -540,35 +531,35 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    /*** Preferences button */
 
-   icon = gtk_image_new_from_icon_name("preferences", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("preferences");
    Closure->prefsButton = prefs = gtk_button_new();
-   gtk_button_set_relief(GTK_BUTTON(prefs), GTK_RELIEF_NONE);
+   /* gtk_button_set_relief deprecated in GTK4 */
    gtk_container_add(GTK_CONTAINER(prefs), icon);
    g_signal_connect(G_OBJECT(prefs), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_PREFERENCES);
-   gtk_box_pack_start(GTK_BOX(box), prefs, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), prefs);
    GuiAttachTooltip(prefs,
 		    _("tooltip|Preferences"),
 		    _("Customize settings for creating images, error correction files and other stuff."));
 
    /*** Help button */
 
-   icon = gtk_image_new_from_icon_name("manual", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("manual");
    Closure->helpButton = help = gtk_button_new();
-   gtk_button_set_relief(GTK_BUTTON(help), GTK_RELIEF_NONE);
+   /* gtk_button_set_relief deprecated in GTK4 */
    gtk_container_add(GTK_CONTAINER(help), icon);
    g_signal_connect(G_OBJECT(help), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_HELP_MANUAL);
-   gtk_box_pack_start(GTK_BOX(box), help, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), help);
    GuiAttachTooltip(help, _("tooltip|User manual"),
 		    _("Displays the user manual (external PDF viewer required)."));
 
    /*** Quit button */
 
-   icon = gtk_image_new_from_icon_name("quit", GTK_ICON_SIZE_LARGE_TOOLBAR);
+   icon = gtk_image_new_from_icon_name("quit");
    quit = gtk_button_new();
-   gtk_button_set_relief(GTK_BUTTON(quit), GTK_RELIEF_NONE);
+   /* gtk_button_set_relief deprecated in GTK4 */
    gtk_container_add(GTK_CONTAINER(quit), icon);
    g_signal_connect(G_OBJECT(quit), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_FILE_QUIT);
-   gtk_box_pack_start(GTK_BOX(box), quit, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), quit);
    GuiAttachTooltip(quit, _("tooltip|Quit"), _("Quit dvdisaster"));
 
    return box;

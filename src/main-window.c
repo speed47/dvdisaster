@@ -266,7 +266,7 @@ static GtkWidget *create_button(char *label, char *icon, gint scale)
    gtk_box_append(GTK_BOX(box), lab);
 
    gtk_button_set_child(GTK_BUTTON(button), box);
-   //   gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+   //   /* gtk_button_set_relief deprecated in GTK4 */
 
    return button;
 }
@@ -281,13 +281,13 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
    outer_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
    gtk_box_set_homogeneous(GTK_BOX(outer_vbox), TRUE);
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);   /* needed for vertical spacing */
-   gtk_box_pack_start(GTK_BOX(outer_vbox), vbox, TRUE, TRUE, 3);
+   gtk_box_append(GTK_BOX(outer_vbox), vbox);
 
    /*** Read */
 
    Closure->readButton = wid = create_button(_("button|Read"), "read-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_READ);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Read Image"),
 		    _("Reads an optical disc image into a file (or tries to complete an existing image file)."));
 
@@ -305,7 +305,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    Closure->createButton = wid = create_button(_("button|Create"), "create", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_CREATE);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Create error correction data"),
 		    _("Creates error correction data. Requires an image file."));
 
@@ -313,7 +313,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    Closure->scanButton = wid = create_button(_("button|Scan"), "scan-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_SCAN);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Scan medium"),
 		    _("Scans medium for unreadable sectors."));
 
@@ -321,7 +321,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    Closure->fixButton = wid = create_button(_("button|Fix"), "fix-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_FIX);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Repair image"),
 		    _("Repairs an image. Requires an image file and error correction data."));
 
@@ -329,7 +329,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    Closure->testButton = wid = create_button(_("button|Verify"), "verify-symbolic", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_VERIFY);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Consistency check"),
 		    _("Tests consistency of error correction data and image file."));
 
@@ -337,7 +337,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    Closure->stripButton = wid = create_button(_("button|Strip"), "strip", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STRIP);
-   gtk_box_pack_start(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Strip ECC"),
 		   _("Strip ECC data from an augmented image."));
 
@@ -441,15 +441,15 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     /*** Create the sub parts of the GUI */
 
     outer_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_add(GTK_CONTAINER(window), outer_box);
+    gtk_window_set_child(GTK_WINDOW(window), outer_box);
 
     /* Menu and tool bar */
 
     wid = GuiCreateMenuBar(outer_box);
-    gtk_box_pack_start(GTK_BOX(outer_box), wid, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(outer_box), wid);
 
     sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_start(GTK_BOX(outer_box), sep, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(outer_box), sep);
 
     wid = GuiCreateToolBar(outer_box);
     gtk_box_pack_start(GTK_BOX(outer_box), wid, FALSE, FALSE, 3);
@@ -457,15 +457,15 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     /* Middle part */
 
     sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_start(GTK_BOX(outer_box), sep, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(outer_box), sep);
 
     middle_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_start(GTK_BOX(outer_box), middle_box, TRUE, TRUE, 0);
+    gtk_box_append(GTK_BOX(outer_box), middle_box);
 
     wid = Closure->notebook = gtk_notebook_new();
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(wid), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(wid), FALSE);
-    gtk_box_pack_start(GTK_BOX(middle_box), wid, TRUE, TRUE, 0);
+    gtk_box_append(GTK_BOX(middle_box), wid);
 
     GuiCreateWelcomePage(GTK_NOTEBOOK(Closure->notebook));
 
@@ -473,15 +473,15 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     gtk_box_pack_end(GTK_BOX(middle_box), wid, FALSE, FALSE, 3);
 
     sep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-    gtk_box_pack_end(GTK_BOX(middle_box), sep, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(middle_box), sep);
 
     /* Status bar enclosure */
 
     status_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_end(GTK_BOX(outer_box), status_box, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(outer_box), status_box);
 
     sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_end(GTK_BOX(outer_box), sep, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(outer_box), sep);
 
     /* Status bar contents. */
 

@@ -487,10 +487,10 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    /*** Target for error correction data */
 
    frame = gtk_frame_new(_utf("Error correction data storage"));
-   gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), frame);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
+   
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
    lwoh = GuiCreateLabelWithOnlineHelp(_("Error correction data storage"), 
@@ -501,18 +501,18 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
       GtkWidget *radio1, *radio2;
 
-      gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-      if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+      if (!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
       radio1 = gtk_radio_button_new(NULL);
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(eccmethod_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio1, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("File"));
       gtk_container_add(GTK_CONTAINER(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(eccmethod_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("Image"));
       gtk_container_add(GTK_CONTAINER(radio2), lab);
 
@@ -524,7 +524,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->eccFileA  = radio1;
 	 wl->eccImageA = radio2;
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else  
       {  wl->eccFileB  = radio1;
@@ -558,7 +558,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       /*** Redundancy selection */
 
    frame = gtk_frame_new(_utf("Redundancy for new error correction files"));
-   gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), frame);
 
    /* Notebook for disabling redundancy selection for embedded images */
       
@@ -578,7 +578,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    /* real entry for error correction files */
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
+   
    gtk_notebook_append_page(GTK_NOTEBOOK(wl->redundancyNotebook), vbox, 
 			    gtk_label_new(""));
 
@@ -592,18 +592,18 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       radio = gtk_radio_button_new(NULL);
       g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(toggle_cb), method);
-      gtk_box_pack_start(GTK_BOX(hbox), radio, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio);
 
       if(!i)
       {  wl->radio1A = radio;
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else
       {  wl->radio1B = radio;
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
-         if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
+         if (!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
@@ -623,17 +623,17 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
       g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(toggle_cb), method);
-      gtk_box_pack_start(GTK_BOX(hbox), radio, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio);
 
       if(!i)
       {  wl->radio2A = radio;
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else
       {  wl->radio2B = radio;
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
@@ -653,16 +653,16 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
       g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(toggle_cb), method);
-      gtk_box_pack_start(GTK_BOX(hbox), radio, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio);
 
       if(!i)
       {  wl->radio3A = radio;
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
       }
       else
       {  wl->radio3B = radio;
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
       }
 
       scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 8, 170, 1);
@@ -676,7 +676,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       if(!i)
       {  wl->redundancyScaleA = scale;
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else
       {  wl->redundancyScaleB = scale;
@@ -701,32 +701,32 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
       g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(toggle_cb), method);
-      gtk_box_pack_start(GTK_BOX(hbox), radio, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio);
 
       if(!i)
       {  wl->radio4A = radio;
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
       }
       else
       {  wl->radio4B = radio;
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
       }
 
       spin = gtk_spin_button_new_with_range(0, 100000, 100);
       g_signal_connect(spin, "value-changed", G_CALLBACK(ecc_size_cb), (gpointer)wl);
       gtk_entry_set_width_chars(GTK_ENTRY(spin), 8);
-      gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), spin);
 
       lab = gtk_label_new(_utf("MiB for error correction data"));
-      gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), lab);
       gtk_widget_set_sensitive(spin, FALSE);
       gtk_widget_set_sensitive(lab, FALSE);
 
       if(!i)
       {  wl->redundancySpinA = spin;
 	 wl->radio4LabelA = lab;
-         gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else
       {  wl->redundancySpinB = spin;
@@ -781,10 +781,10 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    /* Prefetch sectors */
 
    frame = gtk_frame_new(_utf("I/O parameters"));
-   gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), frame);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
+   
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
    text = g_strdup_printf(_("%d sectors"), Closure->prefetchSectors);
@@ -801,7 +801,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       int n_entries = sizeof(prefetch_size)/sizeof(int);
 
       lab = gtk_label_new(_utf("Preload"));
-      gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), lab);
 
       for(index = 0; index < n_entries; index++)
 	if(prefetch_size[index] > Closure->prefetchSectors)
@@ -813,17 +813,17 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       gtk_range_set_value(GTK_RANGE(scale), index > 0 ? index-1 : index);
       g_signal_connect(scale, "format-value", G_CALLBACK(format_cb), (gpointer)PREF_PRELOAD);
       g_signal_connect(scale, "value-changed", G_CALLBACK(prefetch_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(hbox), scale);
 
       if(!i)
       {  wl->prefetchScaleA = scale; 
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else
       {  wl->prefetchScaleB = scale; 
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
@@ -848,18 +848,18 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
       GtkWidget *radio1, *radio2;
 
-      gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-      if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+      if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
       radio1 = gtk_radio_button_new(NULL);
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(io_strategy_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio1, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("read/write"));
       gtk_container_add(GTK_CONTAINER(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(io_strategy_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("memory mapped"));
       gtk_container_add(GTK_CONTAINER(radio2), lab);
 
@@ -871,7 +871,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       if(!i)
       {  wl->ioRadio1A = radio1;
 	 wl->ioRadio2A = radio2;
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else  
       {  wl->ioRadio1B = radio1;
@@ -901,7 +901,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    /*** Number of threads */
 
    frame = gtk_frame_new(_utf("Multithreading"));
-   gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), frame);
 
    text = g_strdup_printf(_("%d threads"), Closure->codecThreads);
    lwoh = GuiCreateLabelWithOnlineHelp(_("Multithreading"), text);
@@ -917,7 +917,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       int n_entries = sizeof(threads_count)/sizeof(int);
 
       lab = gtk_label_new(_utf("Use"));
-      gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), lab);
 
       for(index = 0; index < n_entries; index++)
 	if(threads_count[index] > Closure->codecThreads)
@@ -929,18 +929,18 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       gtk_range_set_value(GTK_RANGE(scale), index > 0 ? index-1 : index);
       g_signal_connect(scale, "format-value", G_CALLBACK(format_cb), (gpointer)PREF_THREADS);
       g_signal_connect(scale, "value-changed", G_CALLBACK(threads_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(hbox), scale);
 
       if(!i)
       {  wl->threadsScaleA = scale; 
-	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-         gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 
+	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+         gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 gtk_container_add(GTK_CONTAINER(frame), hbox);
       }
       else
       {  wl->threadsScaleB = scale; 
-	 gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
@@ -961,10 +961,10 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    /*** Codec type */
 
    frame = gtk_frame_new(_utf("Encoding algorithm"));
-   gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), frame);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
+   
    gtk_container_add(GTK_CONTAINER(frame), vbox);
 
    lwoh = GuiCreateLabelWithOnlineHelp(_("Encoding algorithm"), 
@@ -975,39 +975,39 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
       GtkWidget *radio1, *radio2, *radio3=NULL, *radio4;
 
-      gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-      if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+      if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
       radio1 = gtk_radio_button_new(NULL);
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio1, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("32bit"));
       gtk_container_add(GTK_CONTAINER(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("64bit"));
       gtk_container_add(GTK_CONTAINER(radio2), lab);
 
       if(Closure->useSSE2)
       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
 	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio3);
 	 lab = gtk_label_new(_utf("SSE2"));
 	 gtk_container_add(GTK_CONTAINER(radio3), lab);
       }
       if(Closure->useAltiVec)
       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
 	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio3);
 	 lab = gtk_label_new(_utf("AltiVec"));
 	 gtk_container_add(GTK_CONTAINER(radio3), lab);
       }
 
       radio4 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
       g_signal_connect(G_OBJECT(radio4), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-      gtk_box_pack_start(GTK_BOX(hbox), radio4, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), radio4);
       lab = gtk_label_new(_utf("auto"));
       gtk_container_add(GTK_CONTAINER(radio4), lab);
 
@@ -1024,7 +1024,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio2A = radio2;
 	 wl->eaRadio3A = radio3;
 	 wl->eaRadio4A = radio4;
-	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(vbox), hbox);
       }
       else  
       {  wl->eaRadio1B = radio1;

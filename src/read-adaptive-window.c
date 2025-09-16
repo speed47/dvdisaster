@@ -65,7 +65,7 @@ static void redraw_labels(cairo_t *cr, GtkWidget *widget, int erase_mask)
 
    GdkRGBA fg = {0};
    GtkStyleContext *context = gtk_widget_get_style_context(widget);
-   gtk_style_context_get_color(context, gtk_widget_get_state_flags(widget), &fg);
+   gtk_style_context_get_color(context, &fg);
 
    /* Draw the labels */
 
@@ -350,13 +350,13 @@ void GuiCreateAdaptiveReadWindow(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), Closure->readAdaptiveHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    d_area = Closure->readAdaptiveDrawingArea = gtk_drawing_area_new();
-   gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(parent), d_area);
    g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), NULL);
 
    Closure->readAdaptiveSpiral

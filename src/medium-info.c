@@ -228,7 +228,7 @@ void PrintMediumInfo(void *mi_ptr)
    if (Closure->examineRS02 && Closure->examineRS03)
    {  GuiSetLabelText(mi->exhaustiveSearch, _("yes"));
       /*** Hide exhaustive search button if exhaustive search is already enabled for RS02 / RS03 */
-      gtk_widget_hide(mi->exhaustiveSearchButton);
+      gtk_widget_set_visible(mi->exhaustiveSearchButton, FALSE);
    }
    else
    {  GuiSetLabelText(mi->exhaustiveSearch, _("no"));
@@ -288,7 +288,7 @@ static void es_cb(GtkWidget *widget, gpointer data)
 	int oldRS02 = Closure->examineRS02;
 	int oldRS03 = Closure->examineRS03;
 
-	gtk_widget_hide(mi->exhaustiveSearchButton);
+	gtk_widget_set_visible(mi->exhaustiveSearchButton, FALSE);
 
 	Closure->examineRS02 = TRUE;
 	Closure->examineRS03 = TRUE;
@@ -331,7 +331,7 @@ void GuiCreateMediumInfoWindow()
   dialog = gtk_dialog_new_with_buttons(_utf("windowtitle|Medium info"), 
 				       Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
 				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
-  g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+  g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
 
   Closure->mediumInfoContext = mi = g_malloc0(sizeof(medium_info));
 
@@ -339,37 +339,37 @@ void GuiCreateMediumInfoWindow()
 
   vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox, TRUE, TRUE, 0);
-  gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
+  
 
   lab = gtk_label_new(NULL);
   gtk_label_set_markup(GTK_LABEL(lab), 
 		       _utf("<big>Medium info</big>\n"
 			    "<i>Properties of the currently inserted medium</i>"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-  gtk_box_pack_start(GTK_BOX(vbox), lab, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), lab);
 
   sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-  gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), sep);
 
-  gtk_box_pack_start(GTK_BOX(vbox), gtk_label_new(" "), FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), gtk_label_new(" "));
 
   /*** Drive selection */
 
   frame = gtk_frame_new(_utf("Drive selection"));
-  gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), frame);
 
   hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
+  
   gtk_container_add(GTK_CONTAINER(frame), hbox);
 
   lab = gtk_label_new(_utf("Drive:"));
-  gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(hbox), lab);
 
   lab = gtk_label_new(" ");
-  gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(hbox), lab);
 
   combo_box = gtk_combo_box_text_new();
-  gtk_box_pack_start(GTK_BOX(hbox), combo_box, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(hbox), combo_box);
 
   g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(drive_select_cb), NULL);
 
@@ -389,7 +389,7 @@ void GuiCreateMediumInfoWindow()
   gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
 
   lab = gtk_label_new(_utf(" "));
-  gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(hbox), lab);
 
   button = gtk_button_new_with_label(_utf("Update medium info"));
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(update_cb), mi);
@@ -398,12 +398,12 @@ void GuiCreateMediumInfoWindow()
   /*** Medium info */
 
   frame = gtk_frame_new(_utf("Physical medium info"));
-  gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), frame);
 
   grid = gtk_grid_new();
   gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
   gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
-  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
@@ -473,12 +473,12 @@ void GuiCreateMediumInfoWindow()
   /*** Filesystem info */
 
   frame = gtk_frame_new(_utf("Filesystem info"));
-  gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), frame);
 
   grid = gtk_grid_new();
   gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
   gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
-  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
@@ -511,12 +511,12 @@ void GuiCreateMediumInfoWindow()
   /*** Error correction info */
 
   frame = gtk_frame_new(_utf("Augmented image info"));
-  gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+  gtk_box_append(GTK_BOX(vbox), frame);
 
   grid = gtk_grid_new();
   gtk_grid_set_row_spacing(GTK_GRID(grid), 4);
   gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
-  gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+  
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
@@ -564,10 +564,10 @@ void GuiCreateMediumInfoWindow()
   g_signal_connect(G_OBJECT(dialog), "destroy", G_CALLBACK(mi_destroy_cb), NULL);
   Closure->mediumWindow = dialog;
   Closure->mediumDrive = combo_box;
-  gtk_widget_show_all(dialog);
+  gtk_widget_show(dialog);
 
   /*** Hide it by default, it'll be unhidden by PrintMediumInfo if needed */
-  gtk_widget_hide(mi->exhaustiveSearchButton);
+  gtk_widget_set_visible(mi->exhaustiveSearchButton, FALSE);
 
   PrintMediumInfo(mi);
 }

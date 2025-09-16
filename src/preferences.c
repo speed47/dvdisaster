@@ -281,11 +281,11 @@ void GuiHidePreferences(void)
 
    /* hide preferences and finish */
 
-   gtk_widget_hide(GTK_WIDGET(Closure->prefsWindow));
+   gtk_widget_set_visible(GTK_WIDGET(Closure->prefsWindow), FALSE);
 
    for(i=0; i<pc->helpPages->len; i++)
    {  LabelWithOnlineHelp *lwoh = g_ptr_array_index(pc->helpPages,i);
-      gtk_widget_hide(lwoh->helpWindow);
+      gtk_widget_set_visible(lwoh->helpWindow, FALSE);
    }
 }
 
@@ -371,7 +371,7 @@ static GtkWidget *create_page(GtkWidget *notebook, char *label)
 
    tab_label = gtk_label_new(label);
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-   gtk_container_set_border_width(GTK_CONTAINER(vbox), 12);
+   
    
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox, tab_label);
 
@@ -822,7 +822,7 @@ static GtkWidget* non_linear_scale(GtkWidget **hbox_out, non_linear_info *nli,
    g_signal_connect(scale, "format-value", G_CALLBACK(non_linear_format_cb), nli);
    g_signal_connect(scale, "value-changed", G_CALLBACK(non_linear_cb), nli);
 
-   gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), scale);
 
    text = g_strdup_printf(nli->format, nli->values[index > 0 ? index-1 : index]);
    utf = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
@@ -831,10 +831,10 @@ static GtkWidget* non_linear_scale(GtkWidget **hbox_out, non_linear_info *nli,
 
    if(nli->lwoh)
    {    GuiSetOnlineHelpLinkText(nli->lwoh, text);
-        if (addTooltip) gtk_box_pack_start(GTK_BOX(hbox), nli->lwoh->tooltip, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(hbox), nli->lwoh->linkBox, FALSE, FALSE, 0);
+        if (addTooltip) gtk_box_append(GTK_BOX(hbox), nli->lwoh->tooltip);
+        gtk_box_append(GTK_BOX(hbox), nli->lwoh->linkBox);
    }
-   else gtk_box_pack_start(GTK_BOX(hbox), nli->label, FALSE, FALSE, 0);
+   else gtk_box_append(GTK_BOX(hbox), nli->label);
    g_free(utf);
    g_free(text);
 
@@ -1029,7 +1029,7 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
          if(pc->cacheDefectiveDirB)
             gtk_label_set_text(GTK_LABEL(pc->cacheDefectiveDirB), Closure->dDumpDir);
       }
-      gtk_widget_destroy (dialog);
+      gtk_window_destroy (dialog);
    }
 }
 
@@ -1060,7 +1060,7 @@ static void logfile_select_cb(GtkWidget *widget, gpointer data)
          if(pc->logFilePathB)
             gtk_label_set_text(GTK_LABEL(pc->logFilePathB), Closure->logFile);
       }
-      gtk_widget_destroy (dialog);
+      gtk_window_destroy (dialog);
    }
 }
 
@@ -1076,7 +1076,7 @@ static void logfile_delete_cb(GtkWidget *widget, gpointer data)
 
    if(answer == GTK_RESPONSE_OK)
       LargeUnlink(Closure->logFile);
-   gtk_widget_destroy(dialog);
+   gtk_window_destroy(dialog);
 }
 
 /***
@@ -1157,13 +1157,13 @@ void GuiCreatePreferencesWindow(void)
       pc->helpPages = g_ptr_array_new();
       Closure->prefsContext = pc;
  
-      window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+      window = gtk_window_new();
       Closure->prefsWindow = GTK_WINDOW(window);
       gtk_window_set_title(GTK_WINDOW(window), _utf("Preferences"));
       gtk_window_set_default_size(GTK_WINDOW(window), -1, 150);
       gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
-      gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-      gtk_container_set_border_width(GTK_CONTAINER(window), 12);
+      gtk_window_set_position(GTK_WINDOW(window), 0 /* GTK_WIN_POS_CENTER deprecated */);
+      
 
       /* Connect with the close button from the window manager */
 
@@ -1172,27 +1172,27 @@ void GuiCreatePreferencesWindow(void)
       /* Create the main layout of the window */
 
       outer_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_container_add(GTK_CONTAINER(window), outer_box);
+      gtk_window_set_child(GTK_WINDOW(window), outer_box);
 
       notebook = pc->mainNotebook = gtk_notebook_new();
-      gtk_box_pack_start(GTK_BOX(outer_box), notebook, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(outer_box), notebook);
 
       space = gtk_image_new();
       gtk_box_pack_start(GTK_BOX(outer_box), space, FALSE, FALSE, 4);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-      gtk_box_pack_start(GTK_BOX(outer_box), hbox, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(outer_box), hbox);
 
       button = gtk_button_new();
       GtkWidget *button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-      gtk_container_add(GTK_CONTAINER(button), button_box);
+      gtk_button_set_child(GTK_BUTTON(button), button_box);
 
-      GtkWidget *icon = gtk_image_new_from_icon_name("close", GTK_ICON_SIZE_SMALL_TOOLBAR);
+      GtkWidget *icon = gtk_image_new_from_icon_name("close");
       gtk_box_pack_start(GTK_BOX(button_box), icon, FALSE, FALSE, 2);
       lab = gtk_label_new(_("Close"));
-      gtk_box_pack_start(GTK_BOX(button_box), lab, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(button_box), lab);
 
-      gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox), button);
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(close_cb), NULL);
 
       /*** Image creation page */
@@ -1202,10 +1202,10 @@ void GuiCreatePreferencesWindow(void)
       /** Reading preferences */
       
       frame = gtk_frame_new(_utf("Image creation"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Reading strategy */
@@ -1218,14 +1218,14 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	 GtkWidget *lab, *radio1, *radio2;
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 radio1 = gtk_radio_button_new(NULL);
 	 if(!i) pc->radioLinearA = radio1;
 	 else   pc->radioLinearB = radio1;
 	 g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(strategy_cb), pc);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio1, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio1);
 	 lab = gtk_label_new(_utf("Linear"));
 	 gtk_container_add(GTK_CONTAINER(radio1), lab);
 
@@ -1233,7 +1233,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->radioAdaptiveA = radio2;
 	 else   pc->radioAdaptiveB = radio2;
  	 g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(strategy_cb), pc);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio2, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio2);
 	 lab = gtk_label_new(_utf("Adaptive (for defective media)"));
 	 gtk_container_add(GTK_CONTAINER(radio2), lab);
 
@@ -1241,7 +1241,7 @@ void GuiCreatePreferencesWindow(void)
 	      activate_toggle_button(GTK_TOGGLE_BUTTON(radio2), TRUE);
          else activate_toggle_button(GTK_TOGGLE_BUTTON(radio1), TRUE);
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1271,11 +1271,11 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->rangeToggleA = toggle;
 	 else   pc->rangeToggleB = toggle;
 	 g_signal_connect(G_OBJECT(toggle), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RANGE));
-	 gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), toggle);
 
 	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, 
 			    FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 spin1 = gtk_spin_button_new_with_range(0, 10000000, 1000);
 	 if(!i) pc->rangeSpin1A = spin1;	 
@@ -1283,10 +1283,10 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_entry_set_width_chars(GTK_ENTRY(spin1), 9);
 	 set_widget_sensitive(spin1, FALSE);
 	 g_signal_connect(spin1, "value-changed", G_CALLBACK(read_range_cb), pc);
-	 gtk_box_pack_start(GTK_BOX(hbox), spin1, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), spin1);
 
 	 lab = gtk_label_new(_utf("to sector"));
-	 gtk_box_pack_start(GTK_BOX(hbox), lab, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), lab);
 
 	 spin2 = gtk_spin_button_new_with_range(0, 1, 10000);
 	 if(!i) pc->rangeSpin2A = spin2;	 
@@ -1294,9 +1294,9 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_entry_set_width_chars(GTK_ENTRY(spin2), 9);
 	 set_widget_sensitive(spin2, FALSE);
 	 g_signal_connect(spin2, "value-changed", G_CALLBACK(read_range_cb), pc);
-	 gtk_box_pack_start(GTK_BOX(hbox), spin2, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), spin2);
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(toggle), FALSE);
@@ -1314,10 +1314,10 @@ void GuiCreatePreferencesWindow(void)
       /*** Image recognization */
 
       frame = gtk_frame_new(_utf("Error correction data recognization"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* RS02 */
@@ -1330,16 +1330,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 if(!i) pc->recogRS02A = button;
 	 else   pc->recogRS02B = button;
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->examineRS02);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RECOG_RS02));
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1371,16 +1371,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 if(!i) pc->recogRS03A = button;
 	 else   pc->recogRS03B = button;
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->examineRS03);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RECOG_RS03));
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1405,10 +1405,10 @@ void GuiCreatePreferencesWindow(void)
       /** Image properties */
 
       frame = gtk_frame_new(_utf("Image properties"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Query size from drive */
@@ -1421,16 +1421,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 if(!i) pc->ignoreISOSizeA = button;
 	 else   pc->ignoreISOSizeB = button;
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->ignoreIsoSize);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_SIZEDRIVE));
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1462,16 +1462,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 if(!i) pc->daoButtonA = button;
 	 else   pc->daoButtonB = button;
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->noTruncate);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_DAO));
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1492,10 +1492,10 @@ void GuiCreatePreferencesWindow(void)
       /*** Image format */
 
       frame = gtk_frame_new(_utf("Image format"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* new style missing sector marker */
@@ -1508,16 +1508,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 if(!i) pc->dsmButtonA = button;
 	 else   pc->dsmButtonB = button;
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), !Closure->dsmVersion);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_DSM));
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1552,19 +1552,19 @@ void GuiCreatePreferencesWindow(void)
 
 	    check = gtk_check_button_new();
 	    g_signal_connect(check, "toggled", G_CALLBACK(bytefill_check_cb), pc);
-	    gtk_box_pack_start(GTK_BOX(hbox), check, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-            if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), check);
+	    gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+            if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	    entry = gtk_entry_new();
 	    g_signal_connect(entry, "activate", G_CALLBACK(bytefill_cb), pc);
 	    gtk_entry_set_width_chars(GTK_ENTRY(entry), 5);
-	    gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), entry);
 
 	    if(!i)
 	    {  pc->byteCheckA = check;
 	       pc->byteEntryA = entry;
-	       gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	       gtk_box_append(GTK_BOX(vbox2), hbox);
 	    }
 	    else
 	    {  pc->byteCheckB = check;
@@ -1608,7 +1608,7 @@ void GuiCreatePreferencesWindow(void)
       /** Drive initialisation */
 
       frame = gtk_frame_new(_utf("Drive initialisation"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Drive initialisation"), 
 					  _("Wait"));
@@ -1621,17 +1621,17 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	 GtkWidget *spin;
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
 
 	 spin = gtk_spin_button_new_with_range(0, 30, 1);
 	 gtk_entry_set_width_chars(GTK_ENTRY(spin), 3);
 	 gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), Closure->spinupDelay);
 	 g_signal_connect(spin, "value-changed", G_CALLBACK(spin_cb), (gpointer)SPIN_DELAY);
-	 gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), spin);
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh_clone->normalLabel : lwoh_clone->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh_clone->tooltip, FALSE, FALSE, 0);
-	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh_clone->normalLabel : lwoh_clone->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh_clone->tooltip);
+	 
 
 	 if(!i)
 	 {  pc->spinUpA = spin;
@@ -1651,10 +1651,10 @@ void GuiCreatePreferencesWindow(void)
       /** Drive raw reading parameters */
 
       frame = gtk_frame_new(_utf("Raw reading parameters"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Raw reading mode */
@@ -1668,14 +1668,14 @@ void GuiCreatePreferencesWindow(void)
 	 GtkWidget *lab, *radio1, *radio2, *radio3, *entry;
 	 char value[11];
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 radio1 = gtk_radio_button_new(NULL);
 	 if(!i) pc->radioRawMode20A = radio1;
 	 else   pc->radioRawMode20B = radio1;
 	 g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RAW_20H));
-	 gtk_box_pack_start(GTK_BOX(hbox), radio1, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio1);
 	 lab = gtk_label_new("0x20");
 	 gtk_container_add(GTK_CONTAINER(radio1), lab);
 
@@ -1683,7 +1683,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->radioRawMode21A = radio2;
 	 else   pc->radioRawMode21B = radio2;
 	 g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RAW_21H));
-	 gtk_box_pack_start(GTK_BOX(hbox), radio2, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio2);
 	 lab = gtk_label_new("0x21");
 	 gtk_container_add(GTK_CONTAINER(radio2), lab);
 
@@ -1691,14 +1691,14 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->radioRawModeOtherA = radio3;
 	 else   pc->radioRawModeOtherB = radio3;
  	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RAW_OTHER));
-	 gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), radio3);
 	 lab = gtk_label_new(_utf("other:"));
 	 gtk_container_add(GTK_CONTAINER(radio3), lab);
 
 	 entry = gtk_entry_new();
 	 g_signal_connect(entry, "activate", G_CALLBACK(rawvalue_cb), pc);
 	 gtk_entry_set_width_chars(GTK_ENTRY(entry), 5);
-	 gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), entry);
 	 if(!i) pc->rawModeValueA = entry;
 	 else   pc->rawModeValueB = entry;
 	
@@ -1721,7 +1721,7 @@ void GuiCreatePreferencesWindow(void)
 	       break;
 	 }
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1763,21 +1763,21 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	 GtkWidget *spin;
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 spin = gtk_spin_button_new_with_range(-1, 10, 1);
 	 gtk_entry_set_width_chars(GTK_ENTRY(spin), 3);
 	 gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), Closure->internalAttempts);
 	 g_signal_connect(spin, "value-changed", G_CALLBACK(spin_cb), (gpointer)SPIN_INTERNAL_ATTEMPTS);
-	 gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), spin);
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh_clone->normalLabel : lwoh_clone->linkBox, FALSE, FALSE, 0);
-	 //	 gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh_clone->normalLabel : lwoh_clone->linkBox);
+	 //	 
 
 	 if(!i)
 	 {  pc->internalAttemptsA = spin;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	    //	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	 }
 	 else
@@ -1801,7 +1801,7 @@ void GuiCreatePreferencesWindow(void)
       /* Fatal error handling */
 
       frame = gtk_frame_new(_utf("Fatal error handling"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Fatal error handling"), 
 					  _("Ignore fatal errors"));
@@ -1814,18 +1814,18 @@ void GuiCreatePreferencesWindow(void)
 	 toggle = gtk_check_button_new();
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(toggle), Closure->ignoreFatalSense);
        	 g_signal_connect(G_OBJECT(toggle), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_FATAL_SENSE));
-	 gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), toggle);
 
 	 if(!i)
 	 {  pc->fatalSenseA = toggle;
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	    gtk_container_add(GTK_CONTAINER(frame), hbox);
-	    gtk_container_set_border_width(GTK_CONTAINER(hbox), 12);
+	    
 	 }
 	 else
 	 {  pc->fatalSenseB = toggle;
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }	 
@@ -1842,7 +1842,7 @@ void GuiCreatePreferencesWindow(void)
       /* Eject medium */
 
       frame = gtk_frame_new(_utf("Media ejection"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Eject medium after successful read"), 
 					  _("Eject medium after successful read"));
@@ -1855,18 +1855,18 @@ void GuiCreatePreferencesWindow(void)
 	 toggle = gtk_check_button_new();
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(toggle), Closure->eject);
        	 g_signal_connect(G_OBJECT(toggle), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_EJECT));
-	 gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), toggle);
 
 	 if(!i)
 	 {  pc->ejectA = toggle;
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	    gtk_container_add(GTK_CONTAINER(frame), hbox);
-	    gtk_container_set_border_width(GTK_CONTAINER(hbox), 12);
+	    
 	 }
 	 else
 	 {  pc->ejectB = toggle;
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
 	 }
       }	 
@@ -1887,10 +1887,10 @@ void GuiCreatePreferencesWindow(void)
       /** Reading preferences */
       
       frame = gtk_frame_new(_utf("Sector read errors"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Raw verify */
@@ -1903,9 +1903,9 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
 	 button = gtk_check_button_new();
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-       	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+       	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
  	 if(!i) pc->rawButtonA = button;
 	 else   pc->rawButtonB = button;
@@ -1913,7 +1913,7 @@ void GuiCreatePreferencesWindow(void)
          activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->readRaw);
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_RAW));
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -1961,7 +1961,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->minAttemptsScaleA = scale;
 	 else   pc->minAttemptsScaleB = scale;
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), scale_box);
 	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
@@ -2001,7 +2001,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->maxAttemptsScaleA = scale;
 	 else   pc->maxAttemptsScaleB = scale;
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), scale_box);
 	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
@@ -2056,7 +2056,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i) pc->jumpScaleA = scale;
 	 else   pc->jumpScaleB = scale;
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), scale_box, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), scale_box);
 	 else   GuiAddHelpWidget(lwoh, scale_box);
       }
 
@@ -2090,7 +2090,7 @@ void GuiCreatePreferencesWindow(void)
       /** Media re-reads */
       
       frame = gtk_frame_new(_utf("Media read attempts"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Media read attempts"), 
 					  _("Read the whole medium "));
@@ -2101,20 +2101,20 @@ void GuiCreatePreferencesWindow(void)
 	 GtkWidget *spin;
 	 GtkWidget *label;
 
-      	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+      	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 spin = gtk_spin_button_new_with_range(1, 200, 1);
 	 gtk_entry_set_width_chars(GTK_ENTRY(spin), 3);
 	 gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), 
 				   Closure->readingPasses < 2 ? 1 : Closure->readingPasses);
 	 g_signal_connect(spin, "value-changed", G_CALLBACK(spin_cb), (gpointer)SPIN_READ_MEDIUM);
-	 gtk_box_pack_start(GTK_BOX(hbox), spin, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), spin);
 	 label = gtk_label_new(_utf(" times"));
-	 gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), label);
 
 	 if(!i)
 	 {  pc->readMediumA = spin;
-	    gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
+	    
 	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	 }
 	 else
@@ -2132,10 +2132,10 @@ void GuiCreatePreferencesWindow(void)
       /** Defective sector caching */
       
       frame = gtk_frame_new(_utf("Raw sector caching"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Toggle button */
@@ -2152,9 +2152,9 @@ void GuiCreatePreferencesWindow(void)
 	 GtkWidget *select = gtk_button_new_with_label(_utf("Select"));
 
 	 button = gtk_check_button_new();
-	 gtk_box_pack_start(GTK_BOX(tinybox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-	 if (!i) gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(tinybox), button);
+	 gtk_box_append(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox);
+	 if (!i) gtk_box_append(GTK_BOX(tinybox), lwoh->tooltip);
          gtk_widget_set_hexpand(tinybox, TRUE);
 
          gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 1, 1, 1);
@@ -2163,7 +2163,7 @@ void GuiCreatePreferencesWindow(void)
          gtk_label_set_xalign(GTK_LABEL(lwoh->normalLabel), 0.0);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), label);
          gtk_grid_attach(GTK_GRID(grid), hbox, 1, 2, 1, 1);
 
          gtk_grid_attach(GTK_GRID(grid), select, 2, 1, 1, 2);
@@ -2184,7 +2184,7 @@ void GuiCreatePreferencesWindow(void)
 	 else activate_toggle_button(GTK_TOGGLE_BUTTON(button), FALSE);
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_CACHE_DEFECTIVE));
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), grid, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), grid);
 	 else   GuiAddHelpWidget(lwoh, grid);
       }
 
@@ -2215,18 +2215,18 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *entry = gtk_entry_new();
 
-       	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+       	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 g_signal_connect(entry, "activate", G_CALLBACK(defective_prefix_cb), pc);
 	 gtk_entry_set_width_chars(GTK_ENTRY(entry), 20);
 	 gtk_entry_set_text(GTK_ENTRY(entry), Closure->dDumpPrefix);
-	 gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), entry);
 
  	 if(!i) pc->cacheDefectivePrefixA = entry;
 	 else   pc->cacheDefectivePrefixB = entry;
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), hbox);
 	 else   GuiAddHelpWidget(lwoh, hbox);
       }
 
@@ -2250,8 +2250,8 @@ void GuiCreatePreferencesWindow(void)
 	 GtkWidget *chooser;
 	 int j;
 
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 chooser = gtk_combo_box_text_new();
 
@@ -2270,11 +2270,11 @@ void GuiCreatePreferencesWindow(void)
 	 }
 
 	 gtk_combo_box_set_active(GTK_COMBO_BOX(chooser), method_idx);
-	 gtk_box_pack_start(GTK_BOX(hbox), chooser, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), chooser);
 	 
 	 if(!i)
 	 {  pc->methodChooserA = chooser;
-	    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox), hbox);
 	 }
 	 else
 	 {  pc->methodChooserB = chooser;
@@ -2307,7 +2307,7 @@ void GuiCreatePreferencesWindow(void)
       pc->methodNotebook = gtk_notebook_new();
       gtk_notebook_set_show_tabs(GTK_NOTEBOOK(pc->methodNotebook), FALSE);
       gtk_notebook_set_show_border(GTK_NOTEBOOK(pc->methodNotebook), FALSE);
-      gtk_box_pack_start(GTK_BOX(vbox), pc->methodNotebook, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(vbox), pc->methodNotebook);
 
       for(i=0; i<Closure->methodList->len; i++)
       {  Method *method = g_ptr_array_index(Closure->methodList, i);
@@ -2320,7 +2320,7 @@ void GuiCreatePreferencesWindow(void)
 	 {  GtkWidget *lab;
 
 	    lab = gtk_label_new("This method has no configuration options.");
-	    gtk_box_pack_start(GTK_BOX(vbox2), lab, TRUE, TRUE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), lab);
 	 }
 
 	 gtk_notebook_append_page(GTK_NOTEBOOK(pc->methodNotebook), vbox2, ignore);
@@ -2337,10 +2337,10 @@ void GuiCreatePreferencesWindow(void)
       /* file extension */
 
       frame = gtk_frame_new(_utf("Local files (on hard disk)"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Automatic file suffixes"),
@@ -2351,16 +2351,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->autoSuffix);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_SUFFIX));
 
 	 if(!i)
 	 {  pc->suffixA = button;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	 }
 	 else
 	 {  pc->suffixB = button;
@@ -2376,10 +2376,10 @@ void GuiCreatePreferencesWindow(void)
       /*** Automatic file creation and deletion */
 
       frame = gtk_frame_new(_utf("Automatic file creation and deletion"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* automatic creation */
@@ -2392,15 +2392,15 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-      	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+      	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->readAndCreate);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_READ_CREATE));
 
 	 if(!i)
 	 {  pc->readAndCreateButtonA = button;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	 }
 	 else
 	 {  pc->readAndCreateButtonB = button;
@@ -2424,15 +2424,15 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-      	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+      	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->unlinkImage);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_UNLINK));
 
 	 if(!i)
 	 {  pc->unlinkImageButtonA = button;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	 }
 	 else
 	 {  pc->unlinkImageButtonB = button;
@@ -2448,10 +2448,10 @@ void GuiCreatePreferencesWindow(void)
       /*** Deletion confirmation */
 
       frame = gtk_frame_new(_utf("Confirm file overwriting"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* automatic creation */
@@ -2464,15 +2464,15 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-      	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+      	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if(!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->confirmDeletion);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_CONFIRM_DELETION));
 
 	 if(!i)
 	 {  pc->confirmDeletionA = button;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	 }
 	 else
 	 {  pc->confirmDeletionB = button;
@@ -2496,19 +2496,19 @@ void GuiCreatePreferencesWindow(void)
       grid = gtk_grid_new();
 	  gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
 	  gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
-      gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), grid);
 
       vbox3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
       gtk_widget_set_hexpand(vbox3, TRUE);
       gtk_grid_attach(GTK_GRID(grid), vbox3, 1, 1, 1, 3);
 
       frame = gtk_frame_new(_utf("Sector coloring"));
-      gtk_box_pack_start(GTK_BOX(vbox3), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox3), frame);
 
-      gtk_box_pack_start(GTK_BOX(vbox3), gtk_label_new(NULL), TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(vbox3), gtk_label_new(NULL));
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
  
       /* Green color */
@@ -2521,17 +2521,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->greenSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->greenSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->greenA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->greenB = button;
 	 }
@@ -2551,17 +2551,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->yellowSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->yellowSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->yellowA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->yellowB = button;
 	 }
@@ -2581,17 +2581,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->redSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->redSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->redA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->redB = button;
 	 }
@@ -2611,17 +2611,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->darkSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->darkSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->darkA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->darkB = button;
 	 }
@@ -2641,17 +2641,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->blueSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->blueSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->blueA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->blueB = button;
 	 }
@@ -2672,17 +2672,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->whiteSector);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->whiteSector);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->whiteA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->whiteB = button;
 	 }
@@ -2700,7 +2700,7 @@ void GuiCreatePreferencesWindow(void)
       gtk_grid_attach(GTK_GRID(grid), frame, 2, 1, 1, 1);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Positive text */
@@ -2713,17 +2713,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->greenText);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->greenText);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->greenTextA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->greenTextB = button;
 	 }
@@ -2743,17 +2743,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->redText);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->redText);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->redTextA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->redTextB = button;
 	 }
@@ -2769,7 +2769,7 @@ void GuiCreatePreferencesWindow(void)
       gtk_widget_set_hexpand(frame, TRUE);
       gtk_grid_attach(GTK_GRID(grid), frame, 2, 2, 1, 1);
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Reading speed curve */
@@ -2782,17 +2782,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->curveColor);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->curveColor);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->curveColorA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->curveColorB = button;
 	 }
@@ -2813,17 +2813,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->logColor);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->logColor);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->logColorA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->logColorB = button;
 	 }
@@ -2845,17 +2845,17 @@ void GuiCreatePreferencesWindow(void)
 
          button = gtk_color_button_new_with_rgba(Closure->barColor);
          g_signal_connect(G_OBJECT(button), "color-set", G_CALLBACK(color_set_cb), Closure->barColor);
-         gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+         gtk_box_append(GTK_BOX(hbox), button);
 
 	 if(!i)
-	 {  gtk_box_pack_start(GTK_BOX(hbox), lwoh->linkBox, FALSE, FALSE, 0);
-            gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 {  gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
+            gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
             pc->barColorA = button;
 	 }
 	 else
 	 {  
-	    gtk_box_pack_start(GTK_BOX(hbox), lwoh->normalLabel, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(hbox), lwoh->normalLabel);
 	    GuiAddHelpWidget(lwoh, hbox);
             pc->barColorB = button;
 	 }
@@ -2880,10 +2880,10 @@ void GuiCreatePreferencesWindow(void)
       /** Logging **/
 
       frame = gtk_frame_new(_utf("Logging"));
-      gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), frame);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
-      gtk_container_set_border_width(GTK_CONTAINER(vbox2), 10);
+      
       gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Verbose logging"),
@@ -2894,16 +2894,16 @@ void GuiCreatePreferencesWindow(void)
       {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	 GtkWidget *button = gtk_check_button_new();
 
-	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-         if (!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(hbox), button);
+	 gtk_box_append(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox);
+         if (!i) gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
 
 	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->verbose);
 	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_VERBOSE));
 
 	 if(!i)
 	 {  pc->verboseA = button;
-	    gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	    gtk_box_append(GTK_BOX(vbox2), hbox);
 	 }
 	 else
 	 {  pc->verboseB = button;
@@ -2934,9 +2934,9 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
 
 	 button = gtk_check_button_new();
-	 gtk_box_pack_start(GTK_BOX(tinybox), button, FALSE, FALSE, 0);
-	 gtk_box_pack_start(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
-	 if (!i) gtk_box_pack_start(GTK_BOX(tinybox), lwoh->tooltip, FALSE, FALSE, 0);
+	 gtk_box_append(GTK_BOX(tinybox), button);
+	 gtk_box_append(GTK_BOX(tinybox), i ? lwoh->normalLabel : lwoh->linkBox);
+	 if (!i) gtk_box_append(GTK_BOX(tinybox), lwoh->tooltip);
 
 	 gtk_grid_attach(GTK_GRID(grid), tinybox, 1, 1, 3, 1);
 
@@ -2946,7 +2946,7 @@ void GuiCreatePreferencesWindow(void)
 	 gtk_widget_set_hexpand(label, TRUE);
 
 	 hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	 gtk_box_pack_start(GTK_BOX(hbox), label, TRUE, TRUE, 0);
+	 gtk_box_append(GTK_BOX(hbox), label);
 	 gtk_grid_attach(GTK_GRID(grid), hbox, 1, 2, 1, 1);
 
 	 gtk_grid_attach(GTK_GRID(grid), select, 2, 2, 1, 1);
@@ -2970,7 +2970,7 @@ void GuiCreatePreferencesWindow(void)
 	 else activate_toggle_button(GTK_TOGGLE_BUTTON(button), FALSE);
          g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_LOGFILE));
 
-	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), grid, FALSE, FALSE, 0);
+	 if(!i) gtk_box_append(GTK_BOX(vbox2), grid);
 	 else   GuiAddHelpWidget(lwoh, grid);
       }
 
@@ -2984,6 +2984,6 @@ void GuiCreatePreferencesWindow(void)
 
    /* Show the created / reused window */
 
-   gtk_widget_show_all(GTK_WIDGET(Closure->prefsWindow));
+   gtk_widget_show(GTK_WIDGET(Closure->prefsWindow));
 }
 #endif /* WITH_GUI_YES */

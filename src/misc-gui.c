@@ -349,7 +349,7 @@ static gboolean message_idle_func(gpointer data)
 					       GTK_BUTTONS_CLOSE,
 					       mi->msg, NULL);
 
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
    gtk_widget_show(dialog);
 
    g_free(mi->msg);
@@ -396,7 +396,7 @@ GtkWidget* GuiCreateMessage(char *format, GtkMessageType type, ...)
 				   GTK_BUTTONS_CLOSE,
 				   utf8, NULL);
 
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
    gtk_widget_show(dialog);
    g_free(text);
    g_free(utf8);
@@ -452,7 +452,7 @@ static gboolean modal_idle_func(gpointer data)
    g_cond_signal(mi->cond);
    g_mutex_unlock(mi->mutex);
 
-   gtk_widget_destroy(dialog);
+   gtk_window_destroy(dialog);
 
    return FALSE;
 }
@@ -608,7 +608,7 @@ static void insert_button(GtkDialog *dialog)
 
    check = gtk_check_button_new_with_label(_utf("Do not ask again"));
    gtk_box_set_center_widget(GTK_BOX(hbox), check);
-   gtk_container_set_border_width(GTK_CONTAINER(check), 10);
+   
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
 
    gtk_widget_show(hbox);

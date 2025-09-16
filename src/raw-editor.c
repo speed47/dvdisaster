@@ -317,7 +317,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
          GuiSetLabelText(rec->rightLabel, _("%s loaded, LBA %" PRId64 ", %d samples."),
                          rec->filepath, rec->rb->lba, rec->rb->samplesRead);
       }
-      gtk_widget_destroy (dialog);
+      gtk_window_destroy (dialog);
    }
 }
 
@@ -426,7 +426,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 
                GuiSetLabelText(rec->rightLabel, _("Buffer loaded from %s."), path);
             }
-            gtk_widget_destroy (dialog);
+            gtk_window_destroy (dialog);
          }
          break;
 
@@ -451,7 +451,7 @@ static void buffer_io_cb(GtkWidget *widget, gpointer data)
 
                GuiSetLabelText(rec->rightLabel, _("Buffer saved to %s."), path);
             }
-            gtk_widget_destroy (dialog);
+            gtk_window_destroy (dialog);
          }
          break;
    }
@@ -541,7 +541,7 @@ static void evaluate_vectors(raw_editor_context *rec)
 /* Render the sector */
 
 static void render_sector(cairo_t *cr, raw_editor_context *rec)
-{  GdkWindow *d = gtk_widget_get_window(rec->drawingArea);
+{  GtkWindow *d = gtk_widget_get_window(rec->drawingArea);
    unsigned char *buf = rec->rb->recovered;
    int idx=0;
    int i,j,w,h,x,y;
@@ -552,7 +552,7 @@ static void render_sector(cairo_t *cr, raw_editor_context *rec)
 
    GdkRGBA fg = {0};
    GtkStyleContext *context = gtk_widget_get_style_context(rec->drawingArea);
-   gtk_style_context_get_color(context, gtk_widget_get_state_flags(rec->drawingArea), &fg);
+   gtk_style_context_get_color(context, &fg);
 
    idx = 12;
    for(j=0,y=0; j<P_VECTOR_SIZE; j++, y+=rec->charHeight)
@@ -611,11 +611,11 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
 /* Button press event handler */
 
-static gboolean button_cb(GtkWidget *widget, GdkEventButton *event, gpointer data)
+static gboolean button_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
 {  raw_editor_context *rec = Closure->rawEditorContext;
    RawBuffer *rb = rec->rb;
-   int mouse_x = event->x;
-   int mouse_y = event->y;
+   int mouse_x = 0;  /* event->x deprecated in GTK4 */
+   int mouse_y = 0;  /* event->y deprecated in GTK4 */
 
    switch(rec->onClickAction)
    {  case ON_CLICK_CORRECT_P:
@@ -914,13 +914,13 @@ void GuiCreateRawEditor(void)
    {  GtkWidget *window, *outer_box, *hbox, *vbox, *label, *button;
       GtkWidget *hbox2, *vbox1, *vbox2;
 
-      window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+      window = gtk_window_new();
       rec->window = GTK_WINDOW(window);
       gtk_window_set_title(GTK_WINDOW(window), _utf("Raw sector editor"));
       gtk_window_set_default_size(GTK_WINDOW(window), 400, 550);
       gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
-      gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-      gtk_container_set_border_width(GTK_CONTAINER(window), 12);
+      gtk_window_set_position(GTK_WINDOW(window), 0 /* GTK_WIN_POS_CENTER deprecated */);
+      
 
       /* Connect with the close button from the window manager */
 
@@ -929,10 +929,10 @@ void GuiCreateRawEditor(void)
       /* Create the main layout of the window */
 
       outer_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_container_add(GTK_CONTAINER(window), outer_box);
+      gtk_window_set_child(GTK_WINDOW(window), outer_box);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-      gtk_box_pack_start(GTK_BOX(outer_box), hbox, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(outer_box), hbox);
 
       rec->leftLabel = label = gtk_label_new("Reed-Solomon Sudoku");
       gtk_label_set_xalign(GTK_LABEL(label), 0.0);
@@ -943,7 +943,7 @@ void GuiCreateRawEditor(void)
       gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-      gtk_box_pack_start(GTK_BOX(outer_box), hbox, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(outer_box), hbox);
 
       vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
       gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 5);
@@ -954,44 +954,44 @@ void GuiCreateRawEditor(void)
       gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 10);
 
       hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-      gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), hbox2);
 
       vbox1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_box_pack_start(GTK_BOX(hbox2), vbox1, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox2), vbox1);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_box_pack_start(GTK_BOX(hbox2), vbox2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(hbox2), vbox2);
 
       button = gtk_button_new_with_label(_utf("button|Load"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_BROWSE_LOAD);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       rec->saveButton = button = gtk_button_new_with_label(_utf("button|Save"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_BROWSE_SAVE);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
       gtk_widget_set_sensitive(button, FALSE);
 
       button = gtk_button_new_with_label(_utf("button|Prev. sector"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_BROWSE_PREV);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       button = gtk_button_new_with_label(_utf("button|Next sector"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_BROWSE_NEXT);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
 
       button = gtk_button_new_with_label(_utf("button|Sort by P"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_SORT_BY_P);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       button = gtk_button_new_with_label(_utf("button|Sort by Q"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_SORT_BY_Q);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
 
       /* Actions for editing the recovery buffer */
       
@@ -1000,45 +1000,45 @@ void GuiCreateRawEditor(void)
 
       hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_set_homogeneous(GTK_BOX(hbox2), TRUE);
-      gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), hbox2);
 
       vbox1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
       gtk_box_set_homogeneous(GTK_BOX(vbox1), TRUE);
-      gtk_box_pack_start(GTK_BOX(hbox2), vbox1, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(hbox2), vbox1);
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
       gtk_box_set_homogeneous(GTK_BOX(vbox2), TRUE);
-      gtk_box_pack_start(GTK_BOX(hbox2), vbox2, TRUE, TRUE, 0);
+      gtk_box_append(GTK_BOX(hbox2), vbox2);
 
       button = gtk_button_new_with_label(_utf("button|Load Buf"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(buffer_io_cb), 
 		       (gpointer)ACTION_LOAD_BUFFER);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       button = gtk_button_new_with_label(_utf("button|Save Buf"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(buffer_io_cb), 
 		       (gpointer)ACTION_SAVE_BUFFER);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
 
       button = gtk_button_new_with_label(_utf("button|Tag diffs"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_TAG_DIFFS);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       button = gtk_button_new_with_label(_utf("button|Untag all"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_UNTAG);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
 
       button = gtk_button_new_with_label(_utf("button|Redo"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_REDO);
-      gtk_box_pack_start(GTK_BOX(vbox1), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox1), button);
 
       button = gtk_button_new_with_label(_utf("button|Undo"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_UNDO);
-      gtk_box_pack_start(GTK_BOX(vbox2), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox2), button);
 
       /* Actions for correcting vectors in the recovery buffer */
 
@@ -1048,27 +1048,27 @@ void GuiCreateRawEditor(void)
       button = gtk_radio_button_new_with_label(NULL, _utf("button|P vector"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
 		       (gpointer)ON_CLICK_CORRECT_P);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Q vector"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
 		       (gpointer)ON_CLICK_CORRECT_Q);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Find other P"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
 		       (gpointer)ON_CLICK_FIND_OTHER_P);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Find other Q"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
 		       (gpointer)ON_CLICK_FIND_OTHER_Q);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Tag erasures"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
 		       (gpointer)ON_CLICK_TAG_ERASURES);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
       /* Error correction heuristics */
 
@@ -1078,18 +1078,18 @@ void GuiCreateRawEditor(void)
       button = gtk_button_new_with_label(_utf("button|Smart L-EC"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 
 		       (gpointer)ACTION_SMART_LEC);
-      gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(vbox), button);
 
 
       /* drawing area */
 
       rec->drawingArea = gtk_drawing_area_new();
-      gtk_widget_add_events(rec->drawingArea, GDK_BUTTON_PRESS_MASK);
-      gtk_box_pack_start(GTK_BOX(hbox), rec->drawingArea, TRUE, TRUE, 0);
+      gtk_widget_add_events(rec->drawingArea, 0 /* GDK_BUTTON_PRESS_MASK deprecated */);
+      gtk_box_append(GTK_BOX(hbox), rec->drawingArea);
       g_signal_connect(G_OBJECT(rec->drawingArea), "draw", G_CALLBACK(draw_cb), NULL);
       g_signal_connect(G_OBJECT(rec->drawingArea), "button_press_event", G_CALLBACK(button_cb), NULL);
    }
 
-   gtk_widget_show_all(GTK_WIDGET(rec->window));
+   gtk_widget_show(GTK_WIDGET(rec->window));
 }
 #endif /* WITH_GUI_YES */

@@ -124,7 +124,7 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
 
    GdkRGBA fg = {0};
    GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
-   gtk_style_context_get_color(context, gtk_widget_get_state_flags(spiral->widget), &fg);
+   gtk_style_context_get_color(context, &fg);
    GdkRGBA outline_default = fg;
    outline_default.alpha   = 0.25;
 
@@ -195,7 +195,7 @@ void GuiDrawSpiralLabel(cairo_t *cr, Spiral *spiral, PangoLayout *layout,
 
    GdkRGBA fg = {0};
    GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
-   gtk_style_context_get_color(context, gtk_widget_get_state_flags(spiral->widget), &fg);
+   gtk_style_context_get_color(context, &fg);
    GdkRGBA outline = fg;
    outline.alpha   = 0.25;
 

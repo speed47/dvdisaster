@@ -44,15 +44,15 @@ void ResetRS03EncWindow(Method *method)
    GuiSetProgress(wl->encPBar1, 0, 100);
    GuiSetProgress(wl->encPBar2, 0, 100);
 
-   gtk_widget_hide(wl->encLabel2);
-   gtk_widget_hide(wl->encPBar2);
+   gtk_widget_set_visible(wl->encLabel2, FALSE);
+   gtk_widget_set_visible(wl->encPBar2, FALSE);
 
-   gtk_widget_hide(wl->encLabel3);
-   gtk_widget_hide(wl->encLabel4);
-   gtk_widget_hide(wl->encLabel5);
-   gtk_widget_hide(wl->encThreads);
-   gtk_widget_hide(wl->encPerformance);
-   gtk_widget_hide(wl->encBottleneck);
+   gtk_widget_set_visible(wl->encLabel3, FALSE);
+   gtk_widget_set_visible(wl->encLabel4, FALSE);
+   gtk_widget_set_visible(wl->encLabel5, FALSE);
+   gtk_widget_set_visible(wl->encThreads, FALSE);
+   gtk_widget_set_visible(wl->encPerformance, FALSE);
+   gtk_widget_set_visible(wl->encBottleneck, FALSE);
 
    gtk_label_set_text(GTK_LABEL(wl->encFootline), "");
    gtk_label_set_text(GTK_LABEL(wl->encFootline2), "");
@@ -68,10 +68,10 @@ void CreateRS03EncWindow(Method *method, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    grid = gtk_grid_new();
    gtk_widget_set_margin_start(grid, 20);
@@ -309,33 +309,33 @@ void CreateRS03FixWindow(Method *method, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    d_area = wl->fixDrawingArea = gtk_drawing_area_new();
-   gtk_box_pack_start(GTK_BOX(parent), d_area, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(parent), d_area);
    g_signal_connect(G_OBJECT (d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
    
    notebook = wl->fixNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
    gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-   gtk_box_pack_end(GTK_BOX(parent), notebook, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), notebook);
 
    hbox = wl->fixFootlineBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
    gtk_box_set_homogeneous(GTK_BOX(hbox), TRUE);
 
    wl->fixCorrected = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixCorrected), 0.0);
-   gtk_box_pack_start(GTK_BOX(hbox), wl->fixCorrected, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), wl->fixCorrected);
 
    wl->fixProgress = gtk_label_new(NULL);
-   gtk_box_pack_start(GTK_BOX(hbox), wl->fixProgress, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), wl->fixProgress);
 
    wl->fixUncorrected = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixUncorrected), 1.0);
-   gtk_box_pack_start(GTK_BOX(hbox), wl->fixUncorrected, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), wl->fixUncorrected);
 
    ignore = gtk_label_new("progress_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), hbox, ignore);

@@ -360,37 +360,37 @@ void GuiCreateLinearReadWindow(GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), Closure->readLinearHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-   gtk_box_pack_start(GTK_BOX(parent), hbox, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(parent), hbox);
 
    curve = Closure->readLinearCurveArea = gtk_drawing_area_new();
-   gtk_box_pack_start(GTK_BOX(hbox), curve, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), curve);
    g_signal_connect(G_OBJECT(curve), "draw", G_CALLBACK(draw_curve_cb), NULL);
 
    Closure->readLinearSpiral = GuiCreateSpiral(&transparent, 10, 5, 1000);
    spiral = gtk_drawing_area_new();
    gtk_widget_set_size_request(spiral, Closure->readLinearSpiral->diameter + 20, -1);
-   gtk_box_pack_start(GTK_BOX(hbox), spiral, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(hbox), spiral);
    g_signal_connect(G_OBJECT(spiral), "draw", G_CALLBACK(draw_spiral_cb), NULL);
 
    notebook = Closure->readLinearNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
    gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-   gtk_box_pack_end(GTK_BOX(parent), notebook, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), notebook);
 
    hbox = Closure->readLinearFootlineBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    Closure->readLinearSpeed = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearSpeed), 0.0);
-   gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearSpeed, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(hbox), Closure->readLinearSpeed);
 
    Closure->readLinearErrors = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(Closure->readLinearErrors), 1.0);
-   gtk_box_pack_start(GTK_BOX(hbox), Closure->readLinearErrors, TRUE, TRUE, 0);
+   gtk_box_append(GTK_BOX(hbox), Closure->readLinearErrors);
 
    ignore = gtk_label_new("progress_tab");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), hbox, ignore);

@@ -55,7 +55,7 @@ static void insert_buttons(GtkDialog *dialog)
 
    check = gtk_check_button_new_with_label(_utf("Disable RS02 initialization in the preferences"));
    gtk_box_set_center_widget(GTK_BOX(hbox), check);
-   gtk_container_set_border_width(GTK_CONTAINER(check), 10);
+   
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(no_rs02_cb), NULL);
 
    gtk_widget_show(hbox);

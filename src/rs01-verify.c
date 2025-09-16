@@ -182,10 +182,10 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-   gtk_box_pack_start(GTK_BOX(parent), sep, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(parent), sep);
 
    grid = gtk_grid_new();
    gtk_widget_set_margin_start(grid, 5);
@@ -194,8 +194,8 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    gtk_widget_set_margin_bottom(grid, 5);
    gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
    gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
-   gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
-   gtk_box_pack_start(GTK_BOX(parent), grid, TRUE, TRUE, 0);
+   
+   gtk_box_append(GTK_BOX(parent), grid);
 
    /*** Image info */
 
@@ -221,7 +221,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    gtk_grid_set_row_spacing(GTK_GRID(grid2), 4);
    ignore = gtk_label_new("image info");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid2, ignore);
-   gtk_container_set_border_width(GTK_CONTAINER(grid2), 5);
+   
 
    lab = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
@@ -297,7 +297,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    gtk_grid_set_row_spacing(GTK_GRID(grid2), 4);
    ignore = gtk_label_new("ecc info");
    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid2, ignore);
-   gtk_container_set_border_width(GTK_CONTAINER(grid2), 5);
+   
 
    lab = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);

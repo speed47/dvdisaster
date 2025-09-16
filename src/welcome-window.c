@@ -63,7 +63,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
       GtkWidget *widget;  
 
       widget  = gtk_image_new_from_stock("dvdisaster-create", GTK_ICON_SIZE_LARGE_TOOLBAR);
-      gtk_box_pack_start(GTK_BOX(box), widget, FALSE, FALSE, 0);
+      gtk_box_append(GTK_BOX(box), widget);
 
       GuiAboutText(box, "<span weight=\"bold\" size=\"xx-large\">dvdisaster</span>");
       return;
@@ -96,9 +96,9 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    button = gtk_check_button_new_with_label(_utf("Show this message again"));
    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), Closure->welcomeMessage);
    g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), NULL);
-   gtk_box_pack_start(GTK_BOX(box), button, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), button);
 
-   gtk_widget_show_all(box);
+   gtk_widget_show(box);
 
    Closure->dotFileVersion = Closure->version;
 }
