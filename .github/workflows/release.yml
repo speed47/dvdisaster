@@ -27,7 +27,7 @@ jobs:
         if: matrix.ui == 'gui'
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install gtk+3
+        run: brew install gtk4
       - name: configure
         run: |
           set +x
@@ -116,7 +116,7 @@ jobs:
           install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
       - name: install GUI prereqs
         if: matrix.ui == 'gui'
-        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3 mingw-w64-${{ matrix.arch }}-librsvg
+        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk4 mingw-w64-${{ matrix.arch }}-librsvg
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
@@ -253,17 +253,17 @@ jobs:
           mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/dvdisaster -v /tmp/dist:/dist ubuntu:18.04 sleep 1800
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'apt update && apt install -y ghostscript man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev'
+        run: docker exec uu sh -c 'apt update && apt install -y ghostscript man fuse file make gcc pkg-config libglib2.0-dev libgtk-4-dev glib-networking libgdk-pixbuf2.0-dev'
       - name: configure in docker
         run: docker exec uu sh -c 'cd /dvdisaster && ./configure --prefix=/usr'
       - name: make in docker
         run: docker exec uu sh -c 'make -C /dvdisaster -j$(nproc) && make -C /dvdisaster'
       - name: make install in docker
         run: docker exec uu sh -c 'cd /dvdisaster && touch documentation/user-manual/manual.pdf && make install DESTDIR=/dist'
-      - name: copy gtk3 and gio stuff to dist in docker
+      - name: copy gtk4 and gio stuff to dist in docker
         run: |
           set -euo pipefail
-          docker exec uu sh -c 'install -d /dist/usr/lib/gtk-3.0 && cp -va $(pkg-config --variable=libdir gtk+-3.0)/gtk-3.0/* /dist/usr/lib/gtk-3.0'
+          docker exec uu sh -c 'install -d /dist/usr/lib/gtk-4.0 && cp -va $(pkg-config --variable=libdir gtk4)/gtk-4.0/* /dist/usr/lib/gtk-4.0'
           docker exec uu sh -c 'install -d /dist/usr/lib/gio/modules && cp -va $(dirname $(dpkg -L glib-networking | grep -F /libgiolibproxy.so | head -n1))/* /dist/usr/lib/gio/modules/'
           docker exec uu sh -c 'gio-querymodules /dist/usr/lib/gio/modules'
           docker exec uu sh -c 'install -d /dist/usr/lib/gdk-pixbuf2 && timeout 10 cp -va $(dirname $(find /usr/lib -name "libpixbufloader-*.so" | head -n1))/../* /dist/usr/lib/gdk-pixbuf2/'
