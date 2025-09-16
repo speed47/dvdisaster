@@ -135,10 +135,16 @@ int GuiCurveLogY(Curve *curve, gdouble y) /* not really a log */
  ***/
 
 void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_padding)
-{  GtkAllocation a = {0};
+{  graphene_rect_t bounds;
    int w,h; 
 
-   gtk_widget_get_allocation(curve->widget, &a);
+   if (!gtk_widget_compute_bounds(curve->widget, curve->widget, &bounds)) {
+     /* Fallback if compute_bounds fails */
+     bounds.origin.x = 0;
+     bounds.origin.y = 0;
+     bounds.size.width = 640;
+     bounds.size.height = 480;
+   }
 
    /* Top and bottom margins */
 
@@ -146,13 +152,13 @@ void GuiUpdateCurveGeometry(Curve *curve, char *largest_left_label, int right_pa
    curve->topY = h + 10;
 
    GuiSetText(curve->layout, "0123456789", &w, &h);
-   curve->bottomY = a.height - h - 10;
+   curve->bottomY = bounds.size.height - h - 10;
 
    /* Left and right margins */
 
    GuiSetText(curve->layout, largest_left_label, &w, &h);
    curve->leftX   = 5 + 6 + 3 + w;
-   curve->rightX  = a.width - right_padding;
+   curve->rightX  = bounds.size.width - right_padding;
 
    /* Add space for the lograithmic curve */
 
@@ -181,9 +187,9 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
 
       /* Get foreground and grid colors */
 
-   GdkRGBA fg = {0};
+   GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; /* Default to black */
    GtkStyleContext *context = gtk_widget_get_style_context(curve->widget);
-   gtk_style_context_get_color(context, gtk_widget_get_state_flags(curve->widget), &fg);
+   gtk_style_context_get_color(context, &fg);
    GdkRGBA grid = fg;
    grid.alpha   = 0.25;
 

@@ -265,9 +265,8 @@ int CheckForMissingSectors(unsigned char *buf, guint64 sector,
 #ifdef WITH_GUI_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
-   gtk_dialog_add_buttons(dialog, 
-			  _utf("Stop reporting these errors"), 1,
-			  _utf("Continue reporting"), 0, NULL);
+   gtk_dialog_add_button(dialog, _utf("Stop reporting these errors"), 1);
+   gtk_dialog_add_button(dialog, _utf("Continue reporting"), 0);
 }
 #endif
 

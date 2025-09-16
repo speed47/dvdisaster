@@ -256,14 +256,14 @@ static GtkWidget *create_button(char *label, char *icon, gint scale)
 
    button = gtk_button_new();
    box    = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   image  = gtk_image_new_from_icon_name(icon, GTK_ICON_SIZE_LARGE_TOOLBAR);
+   image  = gtk_image_new_from_icon_name(icon);
    lab    = gtk_label_new(utf_label);
    g_free(utf_label);
 
-   gtk_box_pack_start(GTK_BOX(box), image, FALSE, FALSE, 0);
-   gtk_box_pack_start(GTK_BOX(box), lab, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(box), image);
+   gtk_box_append(GTK_BOX(box), lab);
 
-   gtk_container_add(GTK_CONTAINER(button), box);
+   gtk_button_set_child(GTK_BUTTON(button), box);
    //   gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
 
    return button;
@@ -343,7 +343,7 @@ static GtkWidget* create_action_bar(GtkNotebook *notebook)
 
    wid = create_button(_("button|Stop"), "stop", scale);
    g_signal_connect(G_OBJECT(wid), "clicked", G_CALLBACK(action_cb), (gpointer)ACTION_STOP);
-   gtk_box_pack_end(GTK_BOX(vbox), wid, FALSE, FALSE, 0);
+   gtk_box_append(GTK_BOX(vbox), wid);
    GuiAttachTooltip(wid, _("tooltip|Abort action"),
 		    _("Aborts an ongoing action."));
 
@@ -406,23 +406,26 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     char title[80];
     int sig_okay = TRUE;
 
+    /* Ignore argc/argv parameters as GTK4 gtk_init() doesn't need them */
+    
     /*** Initialize GTK+ */
 
-    gtk_init(argc, argv);
+    gtk_init();
 
     /*** Set path to our icons */
 
-    gtk_icon_theme_add_resource_path(gtk_icon_theme_get_default(), "/dvdisaster/");
+    gtk_icon_theme_add_resource_path(gtk_icon_theme_get_for_display(gdk_display_get_default()), "/dvdisaster/");
 
     /*** Open the main window */
 
     g_snprintf(title, 80, "dvdisaster-%s", Closure->cookedVersion);
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    window = gtk_window_new();
     gtk_window_set_title(GTK_WINDOW(window), title);
     if(sig_okay)
       gtk_window_set_default_size(GTK_WINDOW(window), -1, 550);
-    gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
+    /* gtk_window_set_icon is deprecated in GTK4 - use gtk_window_set_icon_name instead */
+    gtk_window_set_icon_name(GTK_WINDOW(window), "dvdisaster");
     Closure->window = GTK_WINDOW(window);
 
     /* Connect with the close button from the window manager */
@@ -483,28 +486,29 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     Closure->status = gtk_label_new(NULL);
     gtk_label_set_ellipsize(GTK_LABEL(Closure->status), PANGO_ELLIPSIZE_END);
     gtk_label_set_xalign(GTK_LABEL(Closure->status), 0.0);
-     gtk_box_pack_start(GTK_BOX(status_box), GTK_WIDGET(Closure->status), TRUE, TRUE, 5);
+    gtk_box_append(GTK_BOX(status_box), GTK_WIDGET(Closure->status));
 
     button = gtk_button_new();
-    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-    gtk_box_pack_end(GTK_BOX(status_box), button, FALSE, FALSE, 5);
+    /* gtk_button_set_relief is deprecated in GTK4 */
+    gtk_box_append(GTK_BOX(status_box), button);
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(log_cb), NULL);
     GuiAttachTooltip(button, 
 		     _("tooltip|Protocol for current action"), 
 		     _("Displays additional information created during the current or last action."));
 
     box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_container_add(GTK_CONTAINER(button), box);
+    gtk_button_set_child(GTK_BUTTON(button), box);
 
-    icon = gtk_image_new_from_icon_name("log", GTK_ICON_SIZE_SMALL_TOOLBAR);
-    gtk_box_pack_start(GTK_BOX(box), icon, FALSE, FALSE, 2);
+    icon = gtk_image_new_from_icon_name("log");
+    gtk_box_append(GTK_BOX(box), icon);
 
     wid = gtk_label_new(_utf("View log"));
-    gtk_box_pack_start(GTK_BOX(box), wid, FALSE, FALSE, 0);
+    gtk_box_append(GTK_BOX(box), wid);
 
     /* And enter the main loop */
 
-    gtk_widget_show_all(window);
+    gtk_widget_show(window);
+    /* gtk_main is deprecated in GTK4, but keeping it for now - will need to refactor to GtkApplication later */
     gtk_main();
 }
 #endif /* WITH_GUI_YES */
