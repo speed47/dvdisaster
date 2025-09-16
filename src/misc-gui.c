@@ -343,13 +343,23 @@ static gboolean message_idle_func(gpointer data)
 {  message_info *mi = (message_info*)data;
    GtkWidget *dialog;
 
-   dialog = gtk_message_dialog_new_with_markup(mi->window,
-					       GTK_DIALOG_DESTROY_WITH_PARENT,
-					       mi->type,
-					       GTK_BUTTONS_CLOSE,
-					       mi->msg, NULL);
-
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
+   /* Create modern GTK4 message dialog replacement */
+   dialog = gtk_window_new();
+   gtk_window_set_title(GTK_WINDOW(dialog), "Message");
+   if(mi->window)
+     gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mi->window));
+   gtk_window_set_destroy_with_parent(GTK_WINDOW(dialog), TRUE);
+   
+   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+   gtk_window_set_child(GTK_WINDOW(dialog), box);
+   
+   GtkWidget *label = gtk_label_new(NULL);
+   gtk_label_set_markup(GTK_LABEL(label), mi->msg);
+   gtk_box_append(GTK_BOX(box), label);
+   
+   GtkWidget *close_button = gtk_button_new_with_label(_("Close"));
+   g_signal_connect_swapped(close_button, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
+   gtk_box_append(GTK_BOX(box), close_button);
    gtk_widget_set_visible(dialog, TRUE);
 
    g_free(mi->msg);
@@ -390,13 +400,22 @@ GtkWidget* GuiCreateMessage(char *format, GtkMessageType type, ...)
    va_end(argp);
    utf8 = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
 
-   dialog = gtk_message_dialog_new(Closure->window, 
-				   GTK_DIALOG_DESTROY_WITH_PARENT,
-				   type,
-				   GTK_BUTTONS_CLOSE,
-				   utf8, NULL);
-
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
+   /* Create modern GTK4 dialog replacement */
+   dialog = gtk_window_new();
+   gtk_window_set_title(GTK_WINDOW(dialog), "Message");
+   if(Closure->window)
+     gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(Closure->window));
+   gtk_window_set_destroy_with_parent(GTK_WINDOW(dialog), TRUE);
+   
+   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+   gtk_window_set_child(GTK_WINDOW(dialog), box);
+   
+   GtkWidget *label = gtk_label_new(utf8);
+   gtk_box_append(GTK_BOX(box), label);
+   
+   GtkWidget *close_button = gtk_button_new_with_label(_("Close"));
+   g_signal_connect_swapped(close_button, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
+   gtk_box_append(GTK_BOX(box), close_button);
    gtk_widget_set_visible(dialog, TRUE);
    g_free(text);
    g_free(utf8);

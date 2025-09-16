@@ -168,10 +168,11 @@ static GtkWidget* add_menu_button(GtkWidget *parent, char *title, int action)
 {  char *utf_title = g_locale_to_utf8(title, -1, NULL, NULL, NULL);
    GtkWidget *item;
 
-   item = gtk_menu_item_new_with_label(utf_title);
+   /* Menu items are replaced with modern GTK4 approach using buttons */
+   item = gtk_button_new_with_label(utf_title);
    g_free(utf_title);
-   gtk_menu_shell_append(GTK_MENU_SHELL(parent), item);
-   g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(menu_cb), GINT_TO_POINTER(action));
+   gtk_box_append(GTK_BOX(parent), item);
+   g_signal_connect(G_OBJECT(item), "clicked", G_CALLBACK(menu_cb), GINT_TO_POINTER(action));
 
    return item;
 }
@@ -179,8 +180,9 @@ static GtkWidget* add_menu_button(GtkWidget *parent, char *title, int action)
 static void add_menu_separator(GtkWidget *parent)
 {  GtkWidget *sep;
 
-   sep = gtk_separator_menu_item_new();
-   gtk_menu_shell_append(GTK_MENU_SHELL(parent), sep);
+   /* GTK4: Create a separator widget instead of menu item */
+   sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+   gtk_box_append(GTK_BOX(parent), sep);
 }
 
 #if 0
@@ -201,62 +203,66 @@ static void append_sub_menu(GtkWidget *parent, GtkWidget *strip, char *name)
  */
 
 GtkWidget *GuiCreateMenuBar(GtkWidget *parent)
-{  GtkWidget *menu_bar, *menu_anchor, *menu_strip, *item;
+{  GtkWidget *menu_bar, *file_box, *tools_box, *item;
 
-   /* The overall menu bar */
+   /* The overall menu bar - using a horizontal box instead */
 
-   menu_bar = gtk_menu_bar_new();
+   menu_bar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
    //   gtk_widget_set_name(menu_bar, "menu-bar");
 
-   /* The file menu */
+   /* The file menu - using a simple box for GTK4 compatibility */
 
-   menu_strip = gtk_menu_new();
+   file_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-   Closure->fileMenuImage = add_menu_button(menu_strip, _("menu|Select Image"), MENU_FILE_IMAGE);
-   Closure->fileMenuEcc   = add_menu_button(menu_strip, _("menu|Select Parity File"), MENU_FILE_ECC);
-   add_menu_button(menu_strip, _("menu|Quit"), MENU_FILE_QUIT);
+   Closure->fileMenuImage = add_menu_button(file_box, _("menu|Select Image"), MENU_FILE_IMAGE);
+   Closure->fileMenuEcc   = add_menu_button(file_box, _("menu|Select Parity File"), MENU_FILE_ECC);
+   add_menu_button(file_box, _("menu|Quit"), MENU_FILE_QUIT);
 
-   menu_anchor = gtk_menu_item_new_with_label(_utf("menu|File"));
-   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
+   /* Create a simple menu button for file menu */
+   GtkWidget *file_button = gtk_button_new_with_label(_utf("menu|File"));
+   gtk_box_append(GTK_BOX(menu_bar), file_button);
+   /* For simplicity, just pack file menu items directly in menu bar for now */
+   gtk_box_append(GTK_BOX(menu_bar), file_box);
 
    /* The tools menu */
 
-   menu_strip = gtk_menu_new();
-   item = add_menu_button(menu_strip, _("menu|Medium info"), MENU_TOOLS_MEDIUM_INFO);
+   tools_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+   item = add_menu_button(tools_box, _("menu|Medium info"), MENU_TOOLS_MEDIUM_INFO);
    if(!Closure->deviceNodes->len)
      gtk_widget_set_sensitive(item, FALSE);
 
    if(Closure->debugMode && !Closure->screenShotMode)
-      add_menu_button(menu_strip, _("menu|Raw sector editor"), MENU_TOOLS_RAW_EDITOR);
+      add_menu_button(tools_box, _("menu|Raw sector editor"), MENU_TOOLS_RAW_EDITOR);
    
-   Closure->toolMenuAnchor = menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
-   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
+   /* Create tools button */
+   GtkWidget *tools_button = gtk_button_new_with_label(_utf("menu|Tools"));
+   gtk_box_append(GTK_BOX(menu_bar), tools_button);
+   gtk_box_append(GTK_BOX(menu_bar), tools_box);
+   Closure->toolMenuAnchor = tools_button;
 
    /* The help menu */
 
-   menu_strip = gtk_menu_new();
+   GtkWidget *help_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-   add_menu_button(menu_strip, _("menu|About"), MENU_HELP_ABOUT);
-   add_menu_button(menu_strip, _("menu|User manual"), MENU_HELP_MANUAL);
+   add_menu_button(help_box, _("menu|About"), MENU_HELP_ABOUT);
+   add_menu_button(help_box, _("menu|User manual"), MENU_HELP_MANUAL);
 
-   add_menu_separator(menu_strip);
+   add_menu_separator(help_box);
 
-   add_menu_button(menu_strip, _("menu|Credits"), MENU_HELP_CREDITS);
-   add_menu_button(menu_strip, _("menu|Licence (GPL)"), MENU_HELP_GPL);
+   add_menu_button(help_box, _("menu|Credits"), MENU_HELP_CREDITS);
+   add_menu_button(help_box, _("menu|Licence (GPL)"), MENU_HELP_GPL);
 
-   add_menu_separator(menu_strip);
+   add_menu_separator(help_box);
 
-   add_menu_button(menu_strip, _("menu|Change log"), MENU_HELP_CHANGELOG);
+   add_menu_button(help_box, _("menu|Change log"), MENU_HELP_CHANGELOG);
 
    /* Hide the todo list menu in the patchlevel series, as we're not upstream
-    * add_menu_button(menu_strip, _("menu|To do list"), MENU_HELP_TODO);
+    * add_menu_button(help_box, _("menu|To do list"), MENU_HELP_TODO);
     */
 
-   menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Help"));
-   gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
-   gtk_menu_shell_append(GTK_MENU_SHELL(menu_bar), menu_anchor);
+   GtkWidget *help_button = gtk_button_new_with_label(_utf("menu|Help"));
+   gtk_box_append(GTK_BOX(menu_bar), help_button);
+   gtk_box_append(GTK_BOX(menu_bar), help_box);
 
    return menu_bar;
 }
@@ -296,15 +302,15 @@ void GuiAttachTooltip(GtkWidget *widget, char *short_descr, char *long_descr)
  */
 
 static void drive_select_cb(GtkWidget *widget, gpointer data)
-{  int n;
+{  guint n;
    char *dnode;
 
    if(!Closure->deviceNodes->len)  /* No drives available */
      return;
 
-   n = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+   n = gtk_drop_down_get_selected(GTK_DROP_DOWN(widget));
 
-   if(n<0)
+   if(n == GTK_INVALID_LIST_POSITION)
      return;
 
    dnode = g_ptr_array_index(Closure->deviceNodes, n);
@@ -312,7 +318,7 @@ static void drive_select_cb(GtkWidget *widget, gpointer data)
    Closure->device = g_strdup(dnode);
 
    if(Closure->mediumDrive) /* propagate to medium info window */
-     gtk_combo_box_set_active(GTK_COMBO_BOX(Closure->mediumDrive), n);
+     gtk_drop_down_set_selected(GTK_DROP_DOWN(Closure->mediumDrive), n);
 }
 
 /*
@@ -443,24 +449,26 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    icon = gtk_image_new_from_icon_name("cd");
    gtk_event_box_set_child(GTK_EVENT_BOX(ebox), icon);
 
-   Closure->driveCombo = combo_box = gtk_combo_box_text_new();
-
-   g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(drive_select_cb), NULL);
+   /* Create string list for dropdown */
+   GtkStringList *string_list = gtk_string_list_new(NULL);
 
    for(i=0; i<Closure->deviceNames->len; i++)   
    {
-     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box),
-			       g_ptr_array_index(Closure->deviceNames,i));
+     gtk_string_list_append(string_list, g_ptr_array_index(Closure->deviceNames,i));
 
      if(!strcmp(Closure->device, g_ptr_array_index(Closure->deviceNodes,i)))
        dev_idx = i;
    }
 
    if(!Closure->deviceNodes->len)
-   {   gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _utf("No drives found"));
+   {   gtk_string_list_append(string_list, _utf("No drives found"));
    }
 
-   gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
+   Closure->driveCombo = combo_box = gtk_drop_down_new(G_LIST_MODEL(string_list), NULL);
+
+   g_signal_connect(G_OBJECT(combo_box), "notify::selected", G_CALLBACK(drive_select_cb), NULL);
+
+   gtk_drop_down_set_selected(GTK_DROP_DOWN(combo_box), dev_idx);
    gtk_widget_set_size_request(combo_box, 200, -1);
    gtk_box_append(GTK_BOX(box), combo_box);
    GuiAttachTooltip(combo_box, _("tooltip|Drive selection"),
@@ -534,7 +542,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    icon = gtk_image_new_from_icon_name("preferences");
    Closure->prefsButton = prefs = gtk_button_new();
    /* gtk_button_set_relief deprecated in GTK4 */
-   gtk_container_add(GTK_CONTAINER(prefs), icon);
+   gtk_button_set_child(GTK_BUTTON(prefs), icon);
    g_signal_connect(G_OBJECT(prefs), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_PREFERENCES);
    gtk_box_append(GTK_BOX(box), prefs);
    GuiAttachTooltip(prefs,

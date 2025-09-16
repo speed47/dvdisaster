@@ -258,16 +258,16 @@ static void drive_select_cb(GtkWidget *widget, gpointer data)
    if(!Closure->deviceNodes->len)  /* No drives available */
      return;
 
-   n = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+   n = gtk_drop_down_get_selected(GTK_DROP_DOWN(widget));
 
-   if(n<0)
+   if(n == GTK_INVALID_LIST_POSITION)
      return;
 
    dnode = g_ptr_array_index(Closure->deviceNodes, n);
    g_free(Closure->device);
    Closure->device = g_strdup(dnode);
 
-   gtk_combo_box_set_active(GTK_COMBO_BOX(Closure->driveCombo), n);
+   gtk_drop_down_set_selected(GTK_DROP_DOWN(Closure->driveCombo), n);
 }
 
 /*
@@ -328,17 +328,21 @@ void GuiCreateMediumInfoWindow()
 
   /*** Create the dialog */
 
-  dialog = gtk_dialog_new_with_buttons(_utf("windowtitle|Medium info"), 
-				       Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
-				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
-  g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
+  dialog = gtk_window_new();
+  gtk_window_set_title(GTK_WINDOW(dialog), _utf("windowtitle|Medium info"));
+  gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(Closure->window));
+  gtk_window_set_destroy_with_parent(GTK_WINDOW(dialog), TRUE);
 
   Closure->mediumInfoContext = mi = g_malloc0(sizeof(medium_info));
 
   /*** Inner vbox and title */
 
   vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-  gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
+  gtk_window_set_child(GTK_WINDOW(dialog), vbox);
+  
+  /* Add close button */
+  GtkWidget *close_button = gtk_button_new_with_label(_("Close"));
+  g_signal_connect_swapped(close_button, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
   
 
   lab = gtk_label_new(NULL);
@@ -368,25 +372,27 @@ void GuiCreateMediumInfoWindow()
   lab = gtk_label_new(" ");
   gtk_box_append(GTK_BOX(hbox), lab);
 
-  combo_box = gtk_combo_box_text_new();
-  gtk_box_append(GTK_BOX(hbox), combo_box);
-
-  g_signal_connect(G_OBJECT(combo_box), "changed", G_CALLBACK(drive_select_cb), NULL);
-
+  /* Create string list for dropdown */
+  GtkStringList *string_list = gtk_string_list_new(NULL);
+  
   for(i=0; i<Closure->deviceNames->len; i++)   
   {
-    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box),
-			           g_ptr_array_index(Closure->deviceNames,i));
+    gtk_string_list_append(string_list, g_ptr_array_index(Closure->deviceNames,i));
 
     if(!strcmp(Closure->device, g_ptr_array_index(Closure->deviceNodes,i)))
       dev_idx = i;
   }
 
   if(!Closure->deviceNodes->len)
-  {  gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _utf("No drives found"));
+  {  gtk_string_list_append(string_list, _utf("No drives found"));
   }
 
-  gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
+  combo_box = gtk_drop_down_new(G_LIST_MODEL(string_list), NULL);
+  gtk_box_append(GTK_BOX(hbox), combo_box);
+
+  g_signal_connect(G_OBJECT(combo_box), "notify::selected", G_CALLBACK(drive_select_cb), NULL);
+
+  gtk_drop_down_set_selected(GTK_DROP_DOWN(combo_box), dev_idx);
 
   lab = gtk_label_new(_utf(" "));
   gtk_box_append(GTK_BOX(hbox), lab);
@@ -560,6 +566,9 @@ void GuiCreateMediumInfoWindow()
   gtk_grid_attach(GTK_GRID(grid), mi->exhaustiveSearchButton, 3, 3, 1, 2);
 
   /*** Show it */
+
+  /* Add close button at the end */
+  gtk_box_append(GTK_BOX(vbox), close_button);
 
   g_signal_connect(G_OBJECT(dialog), "destroy", G_CALLBACK(mi_destroy_cb), NULL);
   Closure->mediumWindow = dialog;
