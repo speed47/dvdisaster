@@ -452,7 +452,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     gtk_box_append(GTK_BOX(outer_box), sep);
 
     wid = GuiCreateToolBar(outer_box);
-    gtk_box_append(;
+    gtk_box_append(GTK_BOX(outer_box), wid);
 
     /* Middle part */
 
@@ -470,7 +470,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     GuiCreateWelcomePage(GTK_NOTEBOOK(Closure->notebook));
 
     wid = create_action_bar((GTK_NOTEBOOK(Closure->notebook)));
-    gtk_box_append(;
+    gtk_box_append(GTK_BOX(middle_box), wid);
 
     sep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
     gtk_box_append(GTK_BOX(middle_box), sep);
@@ -510,7 +510,9 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     /* And enter the main loop */
 
     gtk_widget_set_visible(window, TRUE);
-    /* gtk_main is deprecated in GTK4, but keeping it for now - will need to refactor to GtkApplication later */
-    gtk_main();
+    /* gtk_main is deprecated in GTK4 - using GMainLoop approach for compatibility */
+    GMainLoop *main_loop = g_main_loop_new(NULL, FALSE);
+    g_main_loop_run(main_loop);
+    g_main_loop_unref(main_loop);
 }
 #endif /* WITH_GUI_YES */

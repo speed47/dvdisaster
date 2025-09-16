@@ -1178,7 +1178,7 @@ void GuiCreatePreferencesWindow(void)
       gtk_box_append(GTK_BOX(outer_box), notebook);
 
       space = gtk_image_new();
-      gtk_box_append(;
+      gtk_box_pack_start(GTK_BOX(outer_box), space, FALSE, FALSE, 4);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_append(GTK_BOX(outer_box), hbox);
@@ -1188,7 +1188,7 @@ void GuiCreatePreferencesWindow(void)
       gtk_button_set_child(GTK_BUTTON(button), button_box);
 
       GtkWidget *icon = gtk_image_new_from_icon_name("close");
-      gtk_box_append(;
+      gtk_box_pack_start(GTK_BOX(button_box), icon, FALSE, FALSE, 2);
       lab = gtk_label_new(_("Close"));
       gtk_box_append(GTK_BOX(button_box), lab);
 
@@ -1206,7 +1206,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Reading strategy */
 
@@ -1318,7 +1318,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* RS02 */
 
@@ -1409,7 +1409,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Query size from drive */
 
@@ -1496,7 +1496,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* new style missing sector marker */
 
@@ -1635,7 +1635,7 @@ void GuiCreatePreferencesWindow(void)
 
 	 if(!i)
 	 {  pc->spinUpA = spin;
-	    gtk_frame_set_child(GTK_FRAME(frame), hbox);
+	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	 }
 	 else
 	 {  pc->spinUpB = spin;
@@ -1655,7 +1655,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Raw reading mode */
 
@@ -1778,7 +1778,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i)
 	 {  pc->internalAttemptsA = spin;
 	    gtk_box_append(GTK_BOX(vbox2), hbox);
-	    //	    gtk_frame_set_child(GTK_FRAME(frame), hbox);
+	    //	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	 }
 	 else
 	 {  pc->internalAttemptsB = spin;
@@ -1820,7 +1820,7 @@ void GuiCreatePreferencesWindow(void)
 	 {  pc->fatalSenseA = toggle;
 	    gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
             gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
-	    gtk_frame_set_child(GTK_FRAME(frame), hbox);
+	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	    
 	 }
 	 else
@@ -1861,7 +1861,7 @@ void GuiCreatePreferencesWindow(void)
 	 {  pc->ejectA = toggle;
 	    gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
             gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
-	    gtk_frame_set_child(GTK_FRAME(frame), hbox);
+	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	    
 	 }
 	 else
@@ -1891,7 +1891,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Raw verify */
 
@@ -2115,7 +2115,7 @@ void GuiCreatePreferencesWindow(void)
 	 if(!i)
 	 {  pc->readMediumA = spin;
 	    
-	    gtk_frame_set_child(GTK_FRAME(frame), hbox);
+	    gtk_container_add(GTK_CONTAINER(frame), hbox);
 	 }
 	 else
 	 {  pc->readMediumB = spin;
@@ -2136,7 +2136,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Toggle button */
 
@@ -2341,7 +2341,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Automatic file suffixes"),
 					  _("Automatically add .iso and .ecc file suffixes"));
@@ -2380,7 +2380,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* automatic creation */
 
@@ -2452,7 +2452,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* automatic creation */
 
@@ -2509,7 +2509,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
  
       /* Green color */
 
@@ -2701,7 +2701,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Positive text */
 
@@ -2770,7 +2770,7 @@ void GuiCreatePreferencesWindow(void)
       gtk_grid_attach(GTK_GRID(grid), frame, 2, 2, 1, 1);
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       /* Reading speed curve */
 
@@ -2884,7 +2884,7 @@ void GuiCreatePreferencesWindow(void)
 
       vbox2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
       
-      gtk_frame_set_child(GTK_FRAME(frame), vbox2);
+      gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
       lwoh = GuiCreateLabelWithOnlineHelp(_("Verbose logging"),
 					  _("Verbose logging"));

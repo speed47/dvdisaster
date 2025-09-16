@@ -1,0 +1,1851 @@
+Compiling: src/misc-gui.c
+Compiling: src/raw-editor.c
+Compiling: src/raw-sector-cache.c
+Compiling: src/read-adaptive-window.c
+src/read-adaptive-window.c: In function ‘redraw_labels’:
+src/read-adaptive-window.c:67:4: warning: ‘gtk_widget_get_style_context’ is deprecated [-Wdeprecated-declarations]
+   67 |    GtkStyleContext *context = gtk_widget_get_style_context(widget);
+      |    ^~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/read-adaptive-window.c:25:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:710:19: note: declared here
+  710 | GtkStyleContext * gtk_widget_get_style_context (GtkWidget *widget);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/read-adaptive-window.c:68:4: warning: ‘gtk_style_context_get_color’ is deprecated [-Wdeprecated-declarations]
+   68 |    gtk_style_context_get_color(context, &fg);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:267:
+/usr/include/gtk-4.0/gtk/deprecated/gtkstylecontext.h:112:6: note: declared here
+  112 | void gtk_style_context_get_color            (GtkStyleContext *context,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/read-adaptive-window.c: In function ‘update_geometry’:
+src/misc-gui.c: In function ‘message_idle_func’:
+src/read-adaptive-window.c:156:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  156 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c:346:4: warning: ‘gtk_message_dialog_new_with_markup’ is deprecated [-Wdeprecated-declarations]
+  346 |    dialog = gtk_message_dialog_new_with_markup(mi->window,
+      |    ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:192,
+                 from src/dvdisaster.h:44,
+                 from src/misc-gui.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:89:12: note: declared here
+   89 | GtkWidget* gtk_message_dialog_new_with_markup   (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘GuiCreateMessage’:
+src/misc-gui.c:393:4: warning: ‘gtk_message_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  393 |    dialog = gtk_message_dialog_new(Closure->window,
+      |    ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:81:12: note: declared here
+   81 | GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘modal_idle_func’:
+src/misc-gui.c:428:4: warning: ‘gtk_message_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  428 |    dialog = gtk_message_dialog_new(Closure->window,
+      |    ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:81:12: note: declared here
+   81 | GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c: In function ‘file_select_cb’:
+src/raw-editor.c:296:7: warning: ‘gtk_file_chooser_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  296 |       dialog = gtk_file_chooser_dialog_new("Raw sector dump selection",
+      |       ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:131,
+                 from src/dvdisaster.h:44,
+                 from src/raw-editor.c:26:
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c:437:15: warning: implicit declaration of function ‘gtk_dialog_run’; did you mean ‘gtk_dialog_new’? [-Wimplicit-function-declaration]
+  437 |    response = gtk_dialog_run(GTK_DIALOG(dialog));
+      |               ^~~~~~~~~~~~~~
+      |               gtk_dialog_new
+src/misc-gui.c:455:23: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  455 |    gtk_window_destroy(dialog);
+      |                       ^~~~~~
+      |                       |
+      |                       GtkWidget * {aka struct _GtkWidget *}
+In file included from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33:
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/read-adaptive-window.c: In function ‘GuiResetAdaptiveReadWindow’:
+src/read-adaptive-window.c:318:7: warning: implicit declaration of function ‘gtk_widget_get_window’; did you mean ‘gtk_widget_get_width’? [-Wimplicit-function-declaration]
+  318 |    if(gtk_widget_get_window(Closure->readAdaptiveDrawingArea))
+      |       ^~~~~~~~~~~~~~~~~~~~~
+      |       gtk_widget_get_width
+src/read-adaptive-window.c:321:7: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  321 |       gtk_widget_get_allocation(Closure->readAdaptiveDrawingArea, &a);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:303:7: warning: implicit declaration of function ‘gtk_file_chooser_set_filename’; did you mean ‘gtk_file_chooser_set_file’? [-Wimplicit-function-declaration]
+  303 |       gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_file_chooser_set_file
+src/misc-gui.c: In function ‘insert_button’:
+src/misc-gui.c:607:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  607 |    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+      |    ^~~~~~~~~~~~~~~~~~
+src/misc-gui.c:607:4: warning: ‘gtk_dialog_get_content_area’ is deprecated [-Wdeprecated-declarations]
+In file included from /usr/include/gtk-4.0/gtk/deprecated/gtkappchooserdialog.h:31,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:43:
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:172:13: note: declared here
+  172 | GtkWidget * gtk_dialog_get_content_area (GtkDialog *dialog);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:305:11: warning: implicit declaration of function ‘gtk_dialog_run’; did you mean ‘gtk_dialog_new’? [-Wimplicit-function-declaration]
+  305 |       if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      |           ^~~~~~~~~~~~~~
+      |           gtk_dialog_new
+src/read-adaptive-window.c: In function ‘GuiCreateAdaptiveReadWindow’:
+src/read-adaptive-window.c:350:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  350 |    gtk_box_pack_start(GTK_BOX(parent), Closure->readAdaptiveHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/misc-gui.c:610:4: warning: implicit declaration of function ‘gtk_box_set_center_widget’; did you mean ‘gtk_center_box_set_center_widget’? [-Wimplicit-function-declaration]
+  610 |    gtk_box_set_center_widget(GTK_BOX(hbox), check);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_center_box_set_center_widget
+src/raw-editor.c:308:26: warning: implicit declaration of function ‘gtk_file_chooser_get_filename’; did you mean ‘gtk_file_chooser_get_files’? [-Wimplicit-function-declaration]
+  308 |          rec->filepath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                          gtk_file_chooser_get_files
+src/raw-editor.c:308:24: warning: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  308 |          rec->filepath = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                        ^
+src/raw-editor.c:320:27: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  320 |       gtk_window_destroy (dialog);
+      |                           ^~~~~~
+      |                           |
+      |                           GtkWidget * {aka struct _GtkWidget *}
+In file included from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33:
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/raw-editor.c: In function ‘buffer_io_cb’:
+src/raw-editor.c:407:13: warning: ‘gtk_file_chooser_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  407 |             dialog = gtk_file_chooser_dialog_new("Load buffer from file",
+      |             ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:417:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  417 |             {  path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                       ^
+src/raw-editor.c:429:33: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  429 |             gtk_window_destroy (dialog);
+      |                                 ^~~~~~
+      |                                 |
+      |                                 GtkWidget * {aka struct _GtkWidget *}
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/raw-editor.c:437:13: warning: ‘gtk_file_chooser_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  437 |             dialog = gtk_file_chooser_dialog_new("Save buffer to file",
+      |             ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:447:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  447 |             {  path = (char*)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                       ^
+src/raw-editor.c:454:33: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  454 |             gtk_window_destroy (dialog);
+      |                                 ^~~~~~
+      |                                 |
+      |                                 GtkWidget * {aka struct _GtkWidget *}
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+Compiling: src/read-adaptive.c
+src/raw-editor.c: In function ‘render_sector’:
+src/raw-editor.c:544:19: warning: implicit declaration of function ‘gtk_widget_get_window’; did you mean ‘gtk_widget_get_width’? [-Wimplicit-function-declaration]
+  544 | {  GtkWindow *d = gtk_widget_get_window(rec->drawingArea);
+      |                   ^~~~~~~~~~~~~~~~~~~~~
+      |                   gtk_widget_get_width
+src/raw-editor.c:544:19: warning: initialization of ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+src/raw-editor.c:554:4: warning: ‘gtk_widget_get_style_context’ is deprecated [-Wdeprecated-declarations]
+  554 |    GtkStyleContext *context = gtk_widget_get_style_context(rec->drawingArea);
+      |    ^~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:710:19: note: declared here
+  710 | GtkStyleContext * gtk_widget_get_style_context (GtkWidget *widget);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:555:4: warning: ‘gtk_style_context_get_color’ is deprecated [-Wdeprecated-declarations]
+  555 |    gtk_style_context_get_color(context, &fg);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:267:
+/usr/include/gtk-4.0/gtk/deprecated/gtkstylecontext.h:112:6: note: declared here
+  112 | void gtk_style_context_get_color            (GtkStyleContext *context,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c: In function ‘GuiCreateRawEditor’:
+src/raw-editor.c:921:7: warning: implicit declaration of function ‘gtk_window_set_icon’; did you mean ‘gtk_window_set_focus’? [-Wimplicit-function-declaration]
+  921 |       gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
+      |       ^~~~~~~~~~~~~~~~~~~
+      |       gtk_window_set_focus
+Compiling: src/read-linear-window.c
+src/raw-editor.c:922:7: warning: implicit declaration of function ‘gtk_window_set_position’; did you mean ‘gtk_paned_set_position’? [-Wimplicit-function-declaration]
+  922 |       gtk_window_set_position(GTK_WINDOW(window), 0 /* GTK_WIN_POS_CENTER deprecated */);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_paned_set_position
+Compiling: src/read-linear.c
+src/raw-editor.c:939:7: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  939 |       gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
+      |       ^~~~~~~~~~~~~~~~~~
+src/raw-editor.c:1048:16: warning: implicit declaration of function ‘gtk_radio_button_new_with_label’; did you mean ‘gtk_link_button_new_with_label’? [-Wimplicit-function-declaration]
+ 1048 |       button = gtk_radio_button_new_with_label(NULL, _utf("button|P vector"));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                gtk_link_button_new_with_label
+src/raw-editor.c:1048:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1048 |       button = gtk_radio_button_new_with_label(NULL, _utf("button|P vector"));
+      |              ^
+src/raw-editor.c:1053:16: warning: implicit declaration of function ‘gtk_radio_button_new_with_label_from_widget’ [-Wimplicit-function-declaration]
+ 1053 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Q vector"));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:1053:60: warning: implicit declaration of function ‘GTK_RADIO_BUTTON’; did you mean ‘GTK_SPIN_BUTTON’? [-Wimplicit-function-declaration]
+ 1053 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Q vector"));
+      |                                                            ^~~~~~~~~~~~~~~~
+      |                                                            GTK_SPIN_BUTTON
+src/raw-editor.c:1053:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1053 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Q vector"));
+      |              ^
+src/raw-editor.c:1058:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1058 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Find other P"));
+      |              ^
+src/raw-editor.c:1063:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1063 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Find other Q"));
+      |              ^
+src/raw-editor.c:1068:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1068 |       button = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(button), _utf("button|Tag erasures"));
+      |              ^
+src/read-adaptive.c: In function ‘insert_buttons’:
+src/read-adaptive.c:1229:3: warning: ‘gtk_dialog_add_buttons’ is deprecated [-Wdeprecated-declarations]
+ 1229 |   gtk_dialog_add_buttons(dialog,
+      |   ^~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/deprecated/gtkappchooserdialog.h:31,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:43,
+                 from src/dvdisaster.h:44,
+                 from src/read-adaptive.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:148:12: note: declared here
+  148 | void       gtk_dialog_add_buttons       (GtkDialog   *dialog,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/raw-editor.c:1087:7: warning: implicit declaration of function ‘gtk_widget_add_events’; did you mean ‘gtk_widget_get_parent’? [-Wimplicit-function-declaration]
+ 1087 |       gtk_widget_add_events(rec->drawingArea, 0 /* GDK_BUTTON_PRESS_MASK deprecated */);
+      |       ^~~~~~~~~~~~~~~~~~~~~
+      |       gtk_widget_get_parent
+src/read-linear-window.c: In function ‘update_geometry’:
+src/read-linear-window.c:247:4: warning: implicit declaration of function ‘gtk_box_set_child_packing’; did you mean ‘gtk_box_set_spacing’? [-Wimplicit-function-declaration]
+  247 |    gtk_box_set_child_packing(GTK_BOX(Closure->readLinearFootlineBox), Closure->readLinearSpeed,
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_box_set_spacing
+src/read-linear-window.c: In function ‘draw_spiral_cb’:
+src/read-linear-window.c:297:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  297 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/read-linear-window.c:26:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/read-linear.c: In function ‘insert_buttons’:
+src/read-linear.c:747:3: warning: ‘gtk_dialog_add_buttons’ is deprecated [-Wdeprecated-declarations]
+  747 |   gtk_dialog_add_buttons(dialog,
+      |   ^~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/deprecated/gtkappchooserdialog.h:31,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:43,
+                 from src/dvdisaster.h:44,
+                 from src/read-linear.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:148:12: note: declared here
+  148 | void       gtk_dialog_add_buttons       (GtkDialog   *dialog,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/read-linear-window.c: In function ‘GuiCreateLinearReadWindow’:
+src/read-linear-window.c:360:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  360 |    gtk_box_pack_start(GTK_BOX(parent), Closure->readLinearHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+Compiling: src/recover-raw.c
+Compiling: src/rs-decoder.c
+Compiling: src/rs-encoder-altivec.c
+Compiling: src/rs-encoder-sse2.c
+Compiling: src/rs-encoder.c
+Compiling: src/rs01-common.c
+Compiling: src/rs01-create.c
+Compiling: src/rs01-fix.c
+Compiling: src/rs01-verify.c
+Compiling: src/rs01-window.c
+src/rs01-verify.c: In function ‘draw_cb’:
+src/rs01-verify.c:147:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  147 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/rs01-verify.c:25:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs01-verify.c: In function ‘CreateRS01VerifyWindow’:
+src/rs01-verify.c:182:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  182 |    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/rs01-verify.c:209:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  209 |    gtk_container_add(GTK_CONTAINER(frame), notebook);
+      |    ^~~~~~~~~~~~~~~~~
+src/rs01-verify.c:209:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  209 |    gtk_container_add(GTK_CONTAINER(frame), notebook);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+Compiling: src/rs02-common.c
+src/rs01-window.c: In function ‘CreateRS01EWindow’:
+src/rs01-window.c:115:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  115 |    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/rs01-window.c: In function ‘update_geometry’:
+src/rs01-window.c:264:4: warning: implicit declaration of function ‘gtk_box_set_child_packing’; did you mean ‘gtk_box_set_spacing’? [-Wimplicit-function-declaration]
+  264 |    gtk_box_set_child_packing(GTK_BOX(wl->fixFootlineBox), wl->fixCorrected,
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_box_set_spacing
+Compiling: src/rs02-create.c
+src/rs01-window.c: In function ‘CreateRS01PrefsPage’:
+src/rs01-window.c:632:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  632 |    gtk_container_add(GTK_CONTAINER(frame), vbox);
+      |    ^~~~~~~~~~~~~~~~~
+src/rs01-window.c:632:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  632 |    gtk_container_add(GTK_CONTAINER(frame), vbox);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+src/rs01-window.c:642:15: warning: implicit declaration of function ‘gtk_radio_button_new’; did you mean ‘gtk_spin_button_new’? [-Wimplicit-function-declaration]
+  642 |       radio = gtk_radio_button_new(NULL);
+      |               ^~~~~~~~~~~~~~~~~~~~
+      |               gtk_spin_button_new
+src/rs01-window.c:642:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  642 |       radio = gtk_radio_button_new(NULL);
+      |             ^
+src/rs01-window.c:672:15: warning: implicit declaration of function ‘gtk_radio_button_new_from_widget’ [-Wimplicit-function-declaration]
+  672 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs01-window.c:672:48: warning: implicit declaration of function ‘GTK_RADIO_BUTTON’; did you mean ‘GTK_SPIN_BUTTON’? [-Wimplicit-function-declaration]
+  672 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |                                                ^~~~~~~~~~~~~~~~
+      |                                                GTK_SPIN_BUTTON
+src/rs01-window.c:672:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  672 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs01-window.c:703:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  703 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs01-window.c:751:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  751 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs01-window.c:767:7: warning: implicit declaration of function ‘gtk_entry_set_width_chars’; did you mean ‘gtk_label_set_width_chars’? [-Wimplicit-function-declaration]
+  767 |       gtk_entry_set_width_chars(GTK_ENTRY(spin), 8);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_label_set_width_chars
+Compiling: src/rs02-fix.c
+Compiling: src/rs02-recognize.c
+src/rs02-recognize.c: In function ‘insert_buttons’:
+src/rs02-recognize.c:49:4: warning: ‘gtk_dialog_add_buttons’ is deprecated [-Wdeprecated-declarations]
+   49 |    gtk_dialog_add_buttons(dialog,
+      |    ^~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/deprecated/gtkappchooserdialog.h:31,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:43,
+                 from src/dvdisaster.h:44,
+                 from src/rs02-recognize.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:148:12: note: declared here
+  148 | void       gtk_dialog_add_buttons       (GtkDialog   *dialog,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/rs02-recognize.c:54:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+   54 |    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+      |    ^~~~~~~~~~~~~~~~~~
+src/rs02-recognize.c:54:4: warning: ‘gtk_dialog_get_content_area’ is deprecated [-Wdeprecated-declarations]
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:172:13: note: declared here
+  172 | GtkWidget * gtk_dialog_get_content_area (GtkDialog *dialog);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-recognize.c:57:4: warning: implicit declaration of function ‘gtk_box_set_center_widget’; did you mean ‘gtk_center_box_set_center_widget’? [-Wimplicit-function-declaration]
+   57 |    gtk_box_set_center_widget(GTK_BOX(hbox), check);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_center_box_set_center_widget
+Compiling: src/rs02-verify.c
+Compiling: src/rs02-window.c
+Compiling: src/rs03-common.c
+src/rs02-verify.c: In function ‘draw_cb’:
+src/rs02-verify.c:140:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  140 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/rs02-verify.c:25:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-verify.c: In function ‘CreateRS02VerifyWindow’:
+src/rs02-verify.c:172:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  172 |    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/rs02-verify.c:204:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  204 |    gtk_container_add(GTK_CONTAINER(frame), grid2);
+      |    ^~~~~~~~~~~~~~~~~
+src/rs02-verify.c:204:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  204 |    gtk_container_add(GTK_CONTAINER(frame), grid2);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+src/rs02-window.c: In function ‘CreateRS02EncWindow’:
+src/rs02-window.c:64:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+   64 |    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/rs02-window.c: In function ‘update_geometry’:
+src/rs02-window.c:204:4: warning: implicit declaration of function ‘gtk_box_set_child_packing’; did you mean ‘gtk_box_set_spacing’? [-Wimplicit-function-declaration]
+  204 |    gtk_box_set_child_packing(GTK_BOX(wl->fixFootlineBox), wl->fixCorrected,
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_box_set_spacing
+In file included from /usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /usr/include/glib-2.0/glib-object.h:24,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcssenumtypes.h:11,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcss.h:33,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:29,
+                 from src/dvdisaster.h:44,
+                 from src/rs02-window.c:27:
+src/rs02-window.c: In function ‘query_cb’:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:519:29: note: in expansion of macro ‘GTK_ENTRY’
+  519 |    {  gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
+      |                             ^~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkentry.h:36,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtktreeview.h:27,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:94:
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:520:29: note: in expansion of macro ‘GTK_ENTRY’
+  520 |       gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:525:29: note: in expansion of macro ‘GTK_ENTRY’
+  525 |       gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:526:29: note: in expansion of macro ‘GTK_ENTRY’
+  526 |       gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:530:29: note: in expansion of macro ‘GTK_ENTRY’
+  530 |    {  gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:531:29: note: in expansion of macro ‘GTK_ENTRY’
+  531 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:536:29: note: in expansion of macro ‘GTK_ENTRY’
+  536 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:537:29: note: in expansion of macro ‘GTK_ENTRY’
+  537 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:541:29: note: in expansion of macro ‘GTK_ENTRY’
+  541 |    {  gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:542:29: note: in expansion of macro ‘GTK_ENTRY’
+  542 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:547:29: note: in expansion of macro ‘GTK_ENTRY’
+  547 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:548:29: note: in expansion of macro ‘GTK_ENTRY’
+  548 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:552:29: note: in expansion of macro ‘GTK_ENTRY’
+  552 |    {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:553:29: note: in expansion of macro ‘GTK_ENTRY’
+  553 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:558:29: note: in expansion of macro ‘GTK_ENTRY’
+  558 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:559:29: note: in expansion of macro ‘GTK_ENTRY’
+  559 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:563:29: note: in expansion of macro ‘GTK_ENTRY’
+  563 |    {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:564:29: note: in expansion of macro ‘GTK_ENTRY’
+  564 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:569:29: note: in expansion of macro ‘GTK_ENTRY’
+  569 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:570:29: note: in expansion of macro ‘GTK_ENTRY’
+  570 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:574:29: note: in expansion of macro ‘GTK_ENTRY’
+  574 |    {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:575:29: note: in expansion of macro ‘GTK_ENTRY’
+  575 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:580:29: note: in expansion of macro ‘GTK_ENTRY’
+  580 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:581:29: note: in expansion of macro ‘GTK_ENTRY’
+  581 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:585:29: note: in expansion of macro ‘GTK_ENTRY’
+  585 |    {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:586:29: note: in expansion of macro ‘GTK_ENTRY’
+  586 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:591:29: note: in expansion of macro ‘GTK_ENTRY’
+  591 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:592:29: note: in expansion of macro ‘GTK_ENTRY’
+  592 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/rs02-window.c: In function ‘entry_tracker_cb’:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:605:29: note: in expansion of macro ‘GTK_ENTRY’
+  605 |       gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:609:29: note: in expansion of macro ‘GTK_ENTRY’
+  609 |       gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:614:29: note: in expansion of macro ‘GTK_ENTRY’
+  614 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:618:29: note: in expansion of macro ‘GTK_ENTRY’
+  618 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:623:29: note: in expansion of macro ‘GTK_ENTRY’
+  623 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:627:29: note: in expansion of macro ‘GTK_ENTRY’
+  627 |       gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:632:29: note: in expansion of macro ‘GTK_ENTRY’
+  632 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:636:29: note: in expansion of macro ‘GTK_ENTRY’
+  636 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:641:29: note: in expansion of macro ‘GTK_ENTRY’
+  641 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:645:29: note: in expansion of macro ‘GTK_ENTRY’
+  645 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:650:29: note: in expansion of macro ‘GTK_ENTRY’
+  650 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:654:29: note: in expansion of macro ‘GTK_ENTRY’
+  654 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:659:29: note: in expansion of macro ‘GTK_ENTRY’
+  659 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:663:29: note: in expansion of macro ‘GTK_ENTRY’
+  663 |       gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:668:29: note: in expansion of macro ‘GTK_ENTRY’
+  668 |       gtk_editable_set_text(GTK_ENTRY(wl->otherEntryB), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:672:29: note: in expansion of macro ‘GTK_ENTRY’
+  672 |       gtk_editable_set_text(GTK_ENTRY(wl->otherEntryA), text);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/rs02-window.c: In function ‘CreateRS02PrefsPage’:
+src/rs02-window.c:751:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  751 |    gtk_container_add(GTK_CONTAINER(frame), vbox);
+      |    ^~~~~~~~~~~~~~~~~
+src/rs02-window.c:751:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  751 |    gtk_container_add(GTK_CONTAINER(frame), vbox);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+Compiling: src/rs03-create.c
+Compiling: src/rs03-fix.c
+src/rs02-window.c:767:15: warning: implicit declaration of function ‘gtk_radio_button_new’; did you mean ‘gtk_spin_button_new’? [-Wimplicit-function-declaration]
+  767 |       radio = gtk_radio_button_new(NULL);
+      |               ^~~~~~~~~~~~~~~~~~~~
+      |               gtk_spin_button_new
+src/rs02-window.c:767:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  767 |       radio = gtk_radio_button_new(NULL);
+      |             ^
+src/rs02-window.c:820:4: warning: implicit declaration of function ‘gtk_entry_set_width_chars’; did you mean ‘gtk_label_set_width_chars’? [-Wimplicit-function-declaration]
+  820 |    gtk_entry_set_width_chars(GTK_ENTRY(wl->cdEntryA), 9);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_label_set_width_chars
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1250:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1250 |    gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1251:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1251 |    gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1253:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1253 |    gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1254:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1254 |    gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1256:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1256 |    gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1257:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1257 |    gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1259:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1259 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1260:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1260 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1262:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1262 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1263:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1263 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1265:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1265 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1266:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1266 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1268:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1268 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1269:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1269 |    gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/rs02-window.c:1280:36: warning: implicit declaration of function ‘gtk_radio_button_new_from_widget’ [-Wimplicit-function-declaration]
+ 1280 |       if(!i) wl->radio2A = radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(wl->radio1A));
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1280:69: warning: implicit declaration of function ‘GTK_RADIO_BUTTON’; did you mean ‘GTK_SPIN_BUTTON’? [-Wimplicit-function-declaration]
+ 1280 |       if(!i) wl->radio2A = radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(wl->radio1A));
+      |                                                                     ^~~~~~~~~~~~~~~~
+      |                                                                     GTK_SPIN_BUTTON
+src/rs02-window.c:1280:34: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1280 |       if(!i) wl->radio2A = radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(wl->radio1A));
+      |                                  ^
+src/rs02-window.c:1281:34: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1281 |       else   wl->radio2B = radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(wl->radio1B));
+      |                                  ^
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1322:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1322 |    gtk_editable_set_text(GTK_ENTRY(wl->otherEntryA), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs02-window.c:1323:26: note: in expansion of macro ‘GTK_ENTRY’
+ 1323 |    gtk_editable_set_text(GTK_ENTRY(wl->otherEntryB), value);
+      |                          ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+Compiling: src/rs03-preferences.c
+Compiling: src/rs03-recognize.c
+Compiling: src/rs03-verify.c
+src/rs03-preferences.c: In function ‘CreateRS03PrefsPage’:
+src/rs03-preferences.c:507:16: warning: implicit declaration of function ‘gtk_radio_button_new’; did you mean ‘gtk_spin_button_new’? [-Wimplicit-function-declaration]
+  507 |       radio1 = gtk_radio_button_new(NULL);
+      |                ^~~~~~~~~~~~~~~~~~~~
+      |                gtk_spin_button_new
+src/rs03-preferences.c:507:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  507 |       radio1 = gtk_radio_button_new(NULL);
+      |              ^
+src/rs03-preferences.c:511:7: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  511 |       gtk_container_add(GTK_CONTAINER(radio1), lab);
+      |       ^~~~~~~~~~~~~~~~~
+src/rs03-preferences.c:511:25: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  511 |       gtk_container_add(GTK_CONTAINER(radio1), lab);
+      |                         ^~~~~~~~~~~~~
+      |                         GTK_CONSTRAINT
+src/rs03-preferences.c:513:16: warning: implicit declaration of function ‘gtk_radio_button_new_from_widget’ [-Wimplicit-function-declaration]
+  513 |       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs03-preferences.c:513:49: warning: implicit declaration of function ‘GTK_RADIO_BUTTON’; did you mean ‘GTK_SPIN_BUTTON’? [-Wimplicit-function-declaration]
+  513 |       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                                                 ^~~~~~~~~~~~~~~~
+      |                                                 GTK_SPIN_BUTTON
+src/rs03-preferences.c:513:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  513 |       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |              ^
+src/rs03-preferences.c:593:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  593 |       radio = gtk_radio_button_new(NULL);
+      |             ^
+src/rs03-preferences.c:624:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  624 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs03-preferences.c:654:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  654 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs03-preferences.c:702:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  702 |       radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(i?wl->radio1B:wl->radio1A));
+      |             ^
+src/rs03-preferences.c:718:7: warning: implicit declaration of function ‘gtk_entry_set_width_chars’; did you mean ‘gtk_label_set_width_chars’? [-Wimplicit-function-declaration]
+  718 |       gtk_entry_set_width_chars(GTK_ENTRY(spin), 8);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_label_set_width_chars
+src/rs03-preferences.c:854:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  854 |       radio1 = gtk_radio_button_new(NULL);
+      |              ^
+src/rs03-preferences.c:860:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  860 |       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |              ^
+src/rs03-preferences.c:981:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  981 |       radio1 = gtk_radio_button_new(NULL);
+      |              ^
+src/rs03-preferences.c:987:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  987 |       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |              ^
+src/rs03-preferences.c:994:17: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  994 |       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      |                 ^
+src/rs03-preferences.c:1001:17: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1001 |       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      |                 ^
+src/rs03-preferences.c:1008:14: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+ 1008 |       radio4 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      |              ^
+src/rs03-verify.c: In function ‘draw_cb’:
+src/rs03-verify.c:150:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+  150 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/rs03-verify.c:25:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/rs03-verify.c: In function ‘CreateRS03VerifyWindow’:
+src/rs03-verify.c:183:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  183 |    gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+Compiling: src/rs03-window.c
+src/rs03-verify.c:216:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  216 |    gtk_container_add(GTK_CONTAINER(frame), grid2);
+      |    ^~~~~~~~~~~~~~~~~
+src/rs03-verify.c:216:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  216 |    gtk_container_add(GTK_CONTAINER(frame), grid2);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+Compiling: src/scsi-darwin.c
+src/rs03-window.c: In function ‘CreateRS03EncWindow’:
+src/rs03-window.c:68:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+   68 |    gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+Compiling: src/scsi-freebsd.c
+src/rs03-window.c: In function ‘update_geometry’:
+src/rs03-window.c:238:4: warning: implicit declaration of function ‘gtk_box_set_child_packing’; did you mean ‘gtk_box_set_spacing’? [-Wimplicit-function-declaration]
+  238 |    gtk_box_set_child_packing(GTK_BOX(wl->fixFootlineBox), wl->fixCorrected,
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_box_set_spacing
+Compiling: src/scsi-layer.c
+Compiling: src/scsi-linux.c
+Compiling: src/scsi-netbsd.c
+Compiling: src/scsi-simulated.c
+Compiling: src/scsi-unknown.c
+Compiling: src/scsi-win32.c
+Compiling: src/show-manual.c
+Compiling: src/smart-lec.c
+Compiling: src/spiral.c
+Compiling: src/udf.c
+Compiling: src/welcome-window.c
+src/spiral.c: In function ‘GuiSetSpiralWidget’:
+src/spiral.c:75:4: warning: ‘gtk_widget_get_allocation’ is deprecated: Use 'gtk_widget_compute_bounds' instead [-Wdeprecated-declarations]
+   75 |    gtk_widget_get_allocation(widget, &a);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkapplication.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtkwindow.h:32,
+                 from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33,
+                 from src/dvdisaster.h:44,
+                 from src/spiral.c:26:
+/usr/include/gtk-4.0/gtk/gtkwidget.h:479:23: note: declared here
+  479 | void                  gtk_widget_get_allocation         (GtkWidget     *widget,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/welcome-window.c: In function ‘GuiCreateWelcomePage’:
+src/welcome-window.c:94:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+   94 |    gtk_box_pack_start(GTK_BOX(box), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 10);
+      |    ^~~~~~~~~~~~~~~~~~
+Linking  : dvdisaster
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/main-window.o: in function `GuiCreateMainWindow':
+main-window.c:(.text+0x7d4): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: main-window.c:(.text+0xd8a): undefined reference to `gtk_box_pack_end'
+/usr/bin/ld: main-window.c:(.text+0xedd): undefined reference to `gtk_main'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/medium-info.o: in function `GuiCreateMediumInfoWindow':
+medium-info.c:(.text+0xba4): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: medium-info.c:(.text+0xc45): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: medium-info.c:(.text+0xc51): undefined reference to `gtk_container_add'
+/usr/bin/ld: medium-info.c:(.text+0xdab): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: medium-info.c:(.text+0xe27): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: medium-info.c:(.text+0xe33): undefined reference to `gtk_container_add'
+/usr/bin/ld: medium-info.c:(.text+0x1283): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: medium-info.c:(.text+0x128f): undefined reference to `gtk_container_add'
+/usr/bin/ld: medium-info.c:(.text+0x1490): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: medium-info.c:(.text+0x149c): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o: in function `add_menu_button':
+menubar.c:(.text+0x2e): undefined reference to `gtk_menu_item_new_with_label'
+/usr/bin/ld: menubar.c:(.text+0x43): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x4f): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o: in function `file_select_cb':
+menubar.c:(.text+0x106): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: menubar.c:(.text+0x110): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: menubar.c:(.text+0x1ab): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: menubar.c:(.text+0x1b5): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: menubar.c:(.text+0x1db): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: menubar.c:(.text+0x246): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o: in function `GuiCreateMenuBar':
+menubar.c:(.text+0x6cb): undefined reference to `gtk_menu_bar_new'
+/usr/bin/ld: menubar.c:(.text+0x6d5): undefined reference to `gtk_menu_new'
+/usr/bin/ld: menubar.c:(.text+0x75d): undefined reference to `gtk_menu_item_new_with_label'
+/usr/bin/ld: menubar.c:(.text+0x76a): undefined reference to `GTK_MENU_ITEM'
+/usr/bin/ld: menubar.c:(.text+0x776): undefined reference to `gtk_menu_item_set_submenu'
+/usr/bin/ld: menubar.c:(.text+0x780): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x78c): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: menubar.c:(.text+0x793): undefined reference to `gtk_menu_new'
+/usr/bin/ld: menubar.c:(.text+0x7f6): undefined reference to `gtk_menu_item_new_with_label'
+/usr/bin/ld: menubar.c:(.text+0x811): undefined reference to `GTK_MENU_ITEM'
+/usr/bin/ld: menubar.c:(.text+0x81d): undefined reference to `gtk_menu_item_set_submenu'
+/usr/bin/ld: menubar.c:(.text+0x827): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x833): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: menubar.c:(.text+0x83a): undefined reference to `gtk_menu_new'
+/usr/bin/ld: menubar.c:(.text+0x87c): undefined reference to `gtk_separator_menu_item_new'
+/usr/bin/ld: menubar.c:(.text+0x889): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x895): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: menubar.c:(.text+0x8d4): undefined reference to `gtk_separator_menu_item_new'
+/usr/bin/ld: menubar.c:(.text+0x8e1): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x8ed): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: menubar.c:(.text+0x91f): undefined reference to `gtk_menu_item_new_with_label'
+/usr/bin/ld: menubar.c:(.text+0x92c): undefined reference to `GTK_MENU_ITEM'
+/usr/bin/ld: menubar.c:(.text+0x938): undefined reference to `gtk_menu_item_set_submenu'
+/usr/bin/ld: menubar.c:(.text+0x942): undefined reference to `GTK_MENU_SHELL'
+/usr/bin/ld: menubar.c:(.text+0x94e): undefined reference to `gtk_menu_shell_append'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o: in function `GuiCreateToolBar':
+menubar.c:(.text+0xbc8): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: menubar.c:(.text+0xbcf): undefined reference to `gtk_event_box_new'
+/usr/bin/ld: menubar.c:(.text+0xc1f): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: menubar.c:(.text+0xc2b): undefined reference to `gtk_container_add'
+/usr/bin/ld: menubar.c:(.text+0xd07): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: menubar.c:(.text+0xd4e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: menubar.c:(.text+0xd6f): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: menubar.c:(.text+0xe3f): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: menubar.c:(.text+0xe60): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o:menubar.c:(.text+0xf8c): more undefined references to `gtk_box_pack_start' follow
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o: in function `GuiCreateToolBar':
+menubar.c:(.text+0x1039): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: menubar.c:(.text+0x104c): undefined reference to `gtk_container_add'
+/usr/bin/ld: menubar.c:(.text+0x10c8): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: menubar.c:(.text+0x10d4): undefined reference to `gtk_container_add'
+/usr/bin/ld: menubar.c:(.text+0x1142): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: menubar.c:(.text+0x114e): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/misc-gui.o: in function `modal_idle_func':
+misc-gui.c:(.text+0x1bd): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/misc-gui.o: in function `insert_button':
+misc-gui.c:(.text+0x241): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: misc-gui.c:(.text+0x265): undefined reference to `gtk_box_set_center_widget'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/preferences.o: in function `logfile_delete_cb':
+preferences.c:(.text+0x638): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/preferences.o: in function `logfile_select_cb':
+preferences.c:(.text+0x703): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: preferences.c:(.text+0x70d): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: preferences.c:(.text+0x749): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/preferences.o: in function `cache_defective_dir_cb':
+preferences.c:(.text+0x1b22): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: preferences.c:(.text+0x1b2c): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: preferences.c:(.text+0x1b6e): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/preferences.o: in function `GuiCreatePreferencesWindow':
+preferences.c:(.text+0x25ef): undefined reference to `gtk_window_set_icon'
+/usr/bin/ld: preferences.c:(.text+0x25fb): undefined reference to `gtk_window_set_position'
+/usr/bin/ld: preferences.c:(.text+0x266e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: preferences.c:(.text+0x26c7): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: preferences.c:(.text+0x278e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x279a): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x280d): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: preferences.c:(.text+0x2862): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x286e): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x2878): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x2881): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x28e5): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x28f3): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x29f1): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: preferences.c:(.text+0x2a2f): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x2ae0): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x2b94): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: preferences.c:(.text+0x2bc6): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x2c48): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x2cf9): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x2d08): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x2f1c): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x2f28): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x312d): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x3139): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x336a): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x33d8): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x33e4): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x3428): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x34e9): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x34f5): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x3568): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: preferences.c:(.text+0x35bb): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x35c7): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x35d1): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x35da): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x362d): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x3639): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x3643): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x364c): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x36b0): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x36bc): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x36f2): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x3879): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x3929): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x3c32): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x3c41): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x433b): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x43b5): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x43c1): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4402): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x44de): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x44ea): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x47ad): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x482c): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x4b8a): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: preferences.c:(.text+0x4bdd): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4be9): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4bf3): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x4bfc): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x4c4f): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4c5b): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4c65): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x4c6e): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x4cd2): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4cde): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4d14): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x4daa): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4db6): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4de5): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4df1): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4e2a): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: preferences.c:(.text+0x4e7f): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4e8b): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x4e95): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: preferences.c:(.text+0x4e9e): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: preferences.c:(.text+0x4f8a): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x4f96): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x50bd): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x50c9): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x52d8): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x52e4): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x54b9): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x54c5): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x5a95): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x5aa1): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x5cbf): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x5ccb): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x6045): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: preferences.c:(.text+0x6058): undefined reference to `gtk_container_add'
+/usr/bin/ld: preferences.c:(.text+0x7415): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: preferences.c:(.text+0x7552): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o: in function `draw_cb':
+raw-editor.c:(.text+0x96e): undefined reference to `gtk_widget_get_window'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o: in function `buffer_io_cb':
+raw-editor.c:(.text+0x10d6): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: raw-editor.c:(.text+0x10e0): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: raw-editor.c:(.text+0x1193): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: raw-editor.c:(.text+0x119d): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: raw-editor.c:(.text+0x11b3): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: raw-editor.c:(.text+0x1233): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o: in function `action_cb':
+raw-editor.c:(.text+0x152a): undefined reference to `gtk_file_chooser_set_filename'
+/usr/bin/ld: raw-editor.c:(.text+0x1534): undefined reference to `gtk_dialog_run'
+/usr/bin/ld: raw-editor.c:(.text+0x1a52): undefined reference to `gtk_file_chooser_get_filename'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o: in function `GuiCreateRawEditor':
+raw-editor.c:(.text+0x1dd3): undefined reference to `gtk_window_set_icon'
+/usr/bin/ld: raw-editor.c:(.text+0x1ddf): undefined reference to `gtk_window_set_position'
+/usr/bin/ld: raw-editor.c:(.text+0x1e67): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: raw-editor.c:(.text+0x1eaf): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: raw-editor.c:(.text+0x1ef1): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: raw-editor.c:(.text+0x1f1c): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: raw-editor.c:(.text+0x211e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o:raw-editor.c:(.text+0x234e): more undefined references to `gtk_box_pack_start' follow
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/raw-editor.o: in function `GuiCreateRawEditor':
+raw-editor.c:(.text+0x2366): undefined reference to `gtk_radio_button_new_with_label'
+/usr/bin/ld: raw-editor.c:(.text+0x23b0): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: raw-editor.c:(.text+0x23be): undefined reference to `gtk_radio_button_new_with_label_from_widget'
+/usr/bin/ld: raw-editor.c:(.text+0x2408): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: raw-editor.c:(.text+0x2416): undefined reference to `gtk_radio_button_new_with_label_from_widget'
+/usr/bin/ld: raw-editor.c:(.text+0x2460): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: raw-editor.c:(.text+0x246e): undefined reference to `gtk_radio_button_new_with_label_from_widget'
+/usr/bin/ld: raw-editor.c:(.text+0x24b8): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: raw-editor.c:(.text+0x24c6): undefined reference to `gtk_radio_button_new_with_label_from_widget'
+/usr/bin/ld: raw-editor.c:(.text+0x251c): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: raw-editor.c:(.text+0x256f): undefined reference to `gtk_widget_add_events'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/read-adaptive-window.o: in function `GuiResetAdaptiveReadWindow':
+read-adaptive-window.c:(.text+0xc61): undefined reference to `gtk_widget_get_window'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/read-adaptive-window.o: in function `GuiCreateAdaptiveReadWindow':
+read-adaptive-window.c:(.text+0xd55): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/read-linear-window.o: in function `draw_curve_cb':
+read-linear-window.c:(.text+0x777): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: read-linear-window.c:(.text+0x7ab): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/read-linear-window.o: in function `GuiCreateLinearReadWindow':
+read-linear-window.c:(.text+0xc60): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs01-verify.o: in function `CreateRS01VerifyWindow':
+rs01-verify.c:(.text+0x5ac): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs01-verify.c:(.text+0x6a3): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-verify.c:(.text+0x6af): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs01-verify.c:(.text+0xa70): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-verify.c:(.text+0xa7c): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs01-verify.c:(.text+0xb1a): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-verify.c:(.text+0xb26): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs01-window.o: in function `draw_cb':
+rs01-window.c:(.text+0x17b): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: rs01-window.c:(.text+0x1a2): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs01-window.o: in function `CreateRS01EWindow':
+rs01-window.c:(.text+0xa0e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs01-window.c:(.text+0xa9f): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs01-window.c:(.text+0xc0e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs01-window.c:(.text+0xc4b): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs01-window.o: in function `CreateRS01FWindow':
+rs01-window.c:(.text+0xe61): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs01-window.o: in function `CreateRS01PrefsPage':
+rs01-window.c:(.text+0x13b2): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-window.c:(.text+0x13c5): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs01-window.c:(.text+0x1416): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs01-window.c:(.text+0x14d0): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x14d9): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x154c): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x1555): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x1604): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x160d): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x16fc): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-window.c:(.text+0x1708): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs01-window.c:(.text+0x1738): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x1741): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x1824): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-window.c:(.text+0x1830): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs01-window.c:(.text+0x18a9): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x18b2): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x1949): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs01-window.c:(.text+0x19cd): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs01-window.c:(.text+0x19d6): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs01-window.c:(.text+0x1a60): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs01-window.c:(.text+0x1e26): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs01-window.c:(.text+0x1e32): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-recognize.o: in function `insert_buttons':
+rs02-recognize.c:(.text+0x67): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs02-recognize.c:(.text+0x8b): undefined reference to `gtk_box_set_center_widget'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-verify.o: in function `CreateRS02VerifyWindow':
+rs02-verify.c:(.text+0x4c5): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs02-verify.c:(.text+0x5ef): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-verify.c:(.text+0x5fb): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-verify.c:(.text+0xa47): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-verify.c:(.text+0xa53): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-verify.c:(.text+0xaf1): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-verify.c:(.text+0xafd): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-window.o: in function `draw_cb':
+rs02-window.c:(.text+0x115): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: rs02-window.c:(.text+0x139): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-window.o: in function `CreateRS02EncWindow':
+rs02-window.c:(.text+0x136e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs02-window.c:(.text+0x13ff): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs02-window.c:(.text+0x156e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-window.o: in function `CreateRS02FixWindow':
+rs02-window.c:(.text+0x173a): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-window.o: in function `CreateRS02PrefsPage':
+rs02-window.c:(.text+0x1c3e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x1c4a): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x1cba): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs02-window.c:(.text+0x1cf7): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs02-window.c:(.text+0x1eb2): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x1f76): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x1f82): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x1ff8): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2092): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x20a0): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x217e): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2242): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x224e): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x22c4): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x235e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x236c): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x244a): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x250e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x251a): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2590): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x262a): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2638): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2716): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x27da): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x27e6): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x285c): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x28f6): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2904): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x29e2): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2aa6): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2ab2): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2b28): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2bc2): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2bd0): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2cae): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2d72): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2d7e): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2df4): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x2e8e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x2e9c): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x2f7a): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x303e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x304a): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x30c0): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x3158): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x3164): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs02-window.c:(.text+0x33b4): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs02-window.c:(.text+0x33bd): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs02-window.c:(.text+0x3423): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x34a0): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs02-window.c:(.text+0x34a9): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs02-window.c:(.text+0x3502): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs02-window.c:(.text+0x384e): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs02-window.c:(.text+0x385a): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs02-window.o: in function `CreateRS02EncWindow':
+rs02-window.c:(.text+0x15b5): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-preferences.o: in function `CreateRS03PrefsPage':
+rs03-preferences.c:(.text+0xffe): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1051): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x105d): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1067): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1070): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x10c0): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x10ce): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x12a0): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs03-preferences.c:(.text+0x135f): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1368): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x13df): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x13e8): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1496): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x149f): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1595): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x15a1): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x15d2): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x15db): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x16ba): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x16c6): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x173f): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1748): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x17df): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs03-preferences.c:(.text+0x185b): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1864): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x18ef): undefined reference to `gtk_entry_set_width_chars'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1cc9): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d1c): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d28): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d32): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d3b): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d8b): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x1d99): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x20d0): undefined reference to `gtk_radio_button_new'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2122): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x212e): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2138): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2141): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2193): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x21a2): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x21cf): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x21d8): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x222d): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x223b): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x25ae): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x25b7): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2605): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2611): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2626): undefined reference to `GTK_RADIO_BUTTON'
+/usr/bin/ld: rs03-preferences.c:(.text+0x262f): undefined reference to `gtk_radio_button_new_from_widget'
+/usr/bin/ld: rs03-preferences.c:(.text+0x267d): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-preferences.c:(.text+0x2689): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-verify.o: in function `CreateRS03VerifyWindow':
+rs03-verify.c:(.text+0x5c8): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs03-verify.c:(.text+0x6f2): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-verify.c:(.text+0x6fe): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-verify.c:(.text+0xb48): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-verify.c:(.text+0xb54): undefined reference to `gtk_container_add'
+/usr/bin/ld: rs03-verify.c:(.text+0xbf2): undefined reference to `GTK_CONTAINER'
+/usr/bin/ld: rs03-verify.c:(.text+0xbfe): undefined reference to `gtk_container_add'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-window.o: in function `draw_cb':
+rs03-window.c:(.text+0x131): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: rs03-window.c:(.text+0x15e): undefined reference to `gtk_box_set_child_packing'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-window.o: in function `CreateRS03EncWindow':
+rs03-window.c:(.text+0x36e): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs03-window.c:(.text+0x3ff): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: rs03-window.c:(.text+0x755): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-window.o: in function `CreateRS03FixWindow':
+rs03-window.c:(.text+0x92a): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/rs03-window.o: in function `CreateRS03EncWindow':
+rs03-window.c:(.text+0x79c): undefined reference to `gtk_box_pack_start'
+/usr/bin/ld: /home/runner/work/dvdisaster/dvdisaster/build/welcome-window.o:welcome-window.c:(.text+0x131): more undefined references to `gtk_box_pack_start' follow
+collect2: error: ld returned 1 exit status
+make: *** [GNUmakefile:191: dvdisaster] Error 1

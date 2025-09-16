@@ -1,0 +1,412 @@
+/usr/bin/gcc -Wall -Wno-format-zero-length -Wno-unused-but-set-variable -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe  -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include  -I/usr/include/gtk-4.0 -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/x86_64-linux-gnu -I/usr/include/webp -I/usr/include/graphene-1.0 -I/usr/lib/x86_64-linux-gnu/graphene-1.0/include -mfpmath=sse -msse -msse2 -pthread  -Wno-format-security -O2 -fomit-frame-pointer   -c -o /home/runner/work/dvdisaster/dvdisaster/build/inlined-icons.o /home/runner/work/dvdisaster/dvdisaster/build/inlined-icons.c
+Compiling: src/build.o
+Compiling: src/main-window.c
+Compiling: src/menubar.c
+Compiling: src/method.c
+Compiling: src/misc-gui.c
+In file included from /usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /usr/include/glib-2.0/glib-object.h:24,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcssenumtypes.h:11,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcss.h:33,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:29,
+                 from src/dvdisaster.h:44,
+                 from src/main-window.c:26:
+src/main-window.c: In function ‘action_cb’:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main-window.c:83:32: note: in expansion of macro ‘GTK_ENTRY’
+   83 |          gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+      |                                ^~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkentry.h:36,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtktreeview.h:27,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:26,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:94:
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/main-window.c:90:32: note: in expansion of macro ‘GTK_ENTRY’
+   90 |          gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+      |                                ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/main-window.c: In function ‘GuiCreateMainWindow’:
+src/main-window.c:455:20: error: expected expression before ‘;’ token
+  455 |     gtk_box_append(;
+      |                    ^
+src/main-window.c:455:5: error: too few arguments to function ‘gtk_box_append’
+  455 |     gtk_box_append(;
+      |     ^~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:57:
+/usr/include/gtk-4.0/gtk/gtkbox.h:96:13: note: declared here
+   96 | void        gtk_box_append             (GtkBox         *box,
+      |             ^~~~~~~~~~~~~~
+src/main-window.c:515:1: error: expected declaration or statement at end of input
+  515 | }
+      | ^
+src/main-window.c:407:29: warning: unused variable ‘button’ [-Wunused-variable]
+  407 |     GtkWidget *box, *icon, *button;
+      |                             ^~~~~~
+src/main-window.c:407:22: warning: unused variable ‘icon’ [-Wunused-variable]
+  407 |     GtkWidget *box, *icon, *button;
+      |                      ^~~~
+src/main-window.c:407:16: warning: unused variable ‘box’ [-Wunused-variable]
+  407 |     GtkWidget *box, *icon, *button;
+      |                ^~~
+src/main-window.c:406:52: warning: unused variable ‘status_box’ [-Wunused-variable]
+  406 | {   GtkWidget *window,*wid,*outer_box,*middle_box,*status_box,*sep;
+      |                                                    ^~~~~~~~~~
+src/main-window.c:406:40: warning: unused variable ‘middle_box’ [-Wunused-variable]
+  406 | {   GtkWidget *window,*wid,*outer_box,*middle_box,*status_box,*sep;
+      |                                        ^~~~~~~~~~
+src/main-window.c: At top level:
+src/main-window.c:401:13: warning: ‘log_cb’ defined but not used [-Wunused-function]
+  401 | static void log_cb(GtkWidget *widget, gpointer data)
+      |             ^~~~~~
+src/main-window.c:274:19: warning: ‘create_action_bar’ defined but not used [-Wunused-function]
+  274 | static GtkWidget* create_action_bar(GtkNotebook *notebook)
+      |                   ^~~~~~~~~~~~~~~~~
+make: *** [GNUmakefile:177: /home/runner/work/dvdisaster/dvdisaster/build/main-window.o] Error 1
+make: *** Waiting for unfinished jobs....
+src/menubar.c: In function ‘add_menu_button’:
+src/menubar.c:171:11: warning: implicit declaration of function ‘gtk_menu_item_new_with_label’; did you mean ‘gtk_button_new_with_label’? [-Wimplicit-function-declaration]
+  171 |    item = gtk_menu_item_new_with_label(utf_title);
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |           gtk_button_new_with_label
+src/menubar.c:171:9: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  171 |    item = gtk_menu_item_new_with_label(utf_title);
+      |         ^
+src/menubar.c:173:4: warning: implicit declaration of function ‘gtk_menu_shell_append’ [-Wimplicit-function-declaration]
+  173 |    gtk_menu_shell_append(GTK_MENU_SHELL(parent), item);
+      |    ^~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:173:26: warning: implicit declaration of function ‘GTK_MENU_SHELL’ [-Wimplicit-function-declaration]
+  173 |    gtk_menu_shell_append(GTK_MENU_SHELL(parent), item);
+      |                          ^~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘message_idle_func’:
+src/misc-gui.c:346:4: warning: ‘gtk_message_dialog_new_with_markup’ is deprecated [-Wdeprecated-declarations]
+  346 |    dialog = gtk_message_dialog_new_with_markup(mi->window,
+      |    ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:192,
+                 from src/dvdisaster.h:44,
+                 from src/misc-gui.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:89:12: note: declared here
+   89 | GtkWidget* gtk_message_dialog_new_with_markup   (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘GuiCreateMessage’:
+src/misc-gui.c:393:4: warning: ‘gtk_message_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  393 |    dialog = gtk_message_dialog_new(Closure->window,
+      |    ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:81:12: note: declared here
+   81 | GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘modal_idle_func’:
+src/misc-gui.c:428:4: warning: ‘gtk_message_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  428 |    dialog = gtk_message_dialog_new(Closure->window,
+      |    ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:81:12: note: declared here
+   81 | GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c: In function ‘add_menu_separator’:
+src/menubar.c:182:10: warning: implicit declaration of function ‘gtk_separator_menu_item_new’; did you mean ‘gtk_separator_get_type’? [-Wimplicit-function-declaration]
+  182 |    sep = gtk_separator_menu_item_new();
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |          gtk_separator_get_type
+src/menubar.c:182:8: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  182 |    sep = gtk_separator_menu_item_new();
+      |        ^
+src/misc-gui.c:437:15: warning: implicit declaration of function ‘gtk_dialog_run’; did you mean ‘gtk_dialog_new’? [-Wimplicit-function-declaration]
+  437 |    response = gtk_dialog_run(GTK_DIALOG(dialog));
+      |               ^~~~~~~~~~~~~~
+      |               gtk_dialog_new
+src/misc-gui.c:455:23: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  455 |    gtk_window_destroy(dialog);
+      |                       ^~~~~~
+      |                       |
+      |                       GtkWidget * {aka struct _GtkWidget *}
+In file included from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33:
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/misc-gui.c: In function ‘insert_button’:
+src/misc-gui.c:607:19: error: expected expression before ‘;’ token
+  607 |    gtk_box_append(;
+      |                   ^
+src/misc-gui.c:607:4: error: too few arguments to function ‘gtk_box_append’
+  607 |    gtk_box_append(;
+      |    ^~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:57:
+/usr/include/gtk-4.0/gtk/gtkbox.h:96:13: note: declared here
+   96 | void        gtk_box_append             (GtkBox         *box,
+      |             ^~~~~~~~~~~~~~
+src/misc-gui.c:615:40: error: expected ‘;’ before ‘}’ token
+  615 |    gtk_widget_set_visible(check, TRUE);
+      |                                        ^
+      |                                        ;
+  616 | }
+      | ~                                       
+src/misc-gui.c:604:15: warning: unused variable ‘check’ [-Wunused-variable]
+  604 | {  GtkWidget *check,*hbox;
+      |               ^~~~~
+src/menubar.c: In function ‘GuiCreateMenuBar’:
+src/menubar.c:208:15: warning: implicit declaration of function ‘gtk_menu_bar_new’; did you mean ‘gtk_level_bar_new’? [-Wimplicit-function-declaration]
+  208 |    menu_bar = gtk_menu_bar_new();
+      |               ^~~~~~~~~~~~~~~~
+      |               gtk_level_bar_new
+src/menubar.c:208:13: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  208 |    menu_bar = gtk_menu_bar_new();
+      |             ^
+src/misc-gui.c: At top level:
+src/misc-gui.c:595:13: warning: ‘dont_ask_again_cb’ defined but not used [-Wunused-function]
+  595 | static void dont_ask_again_cb(GtkWidget *widget, gpointer data)
+      |             ^~~~~~~~~~~~~~~~~
+src/menubar.c:213:17: warning: implicit declaration of function ‘gtk_menu_new’; did you mean ‘g_menu_new’? [-Wimplicit-function-declaration]
+  213 |    menu_strip = gtk_menu_new();
+      |                 ^~~~~~~~~~~~
+      |                 g_menu_new
+src/menubar.c:213:15: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  213 |    menu_strip = gtk_menu_new();
+      |               ^
+src/menubar.c:219:16: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  219 |    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|File"));
+      |                ^
+make: *** [GNUmakefile:176: /home/runner/work/dvdisaster/dvdisaster/build/misc-gui.o] Error 1
+src/menubar.c:220:4: warning: implicit declaration of function ‘gtk_menu_item_set_submenu’; did you mean ‘g_menu_item_set_submenu’? [-Wimplicit-function-declaration]
+  220 |    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    g_menu_item_set_submenu
+src/menubar.c:220:30: warning: implicit declaration of function ‘GTK_MENU_ITEM’; did you mean ‘G_MENU_ITEM’? [-Wimplicit-function-declaration]
+  220 |    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu_anchor), menu_strip);
+      |                              ^~~~~~~~~~~~~
+      |                              G_MENU_ITEM
+src/menubar.c:225:15: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  225 |    menu_strip = gtk_menu_new();
+      |               ^
+src/menubar.c:233:42: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  233 |    Closure->toolMenuAnchor = menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Tools"));
+      |                                          ^
+src/menubar.c:239:15: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  239 |    menu_strip = gtk_menu_new();
+      |               ^
+src/menubar.c:257:16: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  257 |    menu_anchor = gtk_menu_item_new_with_label(_utf("menu|Help"));
+      |                ^
+src/menubar.c: In function ‘drive_select_cb’:
+src/menubar.c:305:4: warning: ‘gtk_combo_box_get_active’ is deprecated: Use 'GtkDropDown' instead [-Wdeprecated-declarations]
+  305 |    n = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+      |    ^
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:94,
+                 from src/dvdisaster.h:44,
+                 from src/menubar.c:26:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:84:15: note: declared here
+   84 | int           gtk_combo_box_get_active       (GtkComboBox     *combo_box);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:315:6: warning: ‘gtk_combo_box_set_active’ is deprecated: Use 'GtkDropDown' instead [-Wdeprecated-declarations]
+  315 |      gtk_combo_box_set_active(GTK_COMBO_BOX(Closure->mediumDrive), n);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:86:15: note: declared here
+   86 | void          gtk_combo_box_set_active       (GtkComboBox     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c: In function ‘file_select_cb’:
+src/menubar.c:331:10: warning: ‘gtk_file_chooser_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  331 |          dialog = gtk_file_chooser_dialog_new("Image file selection",
+      |          ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:131:
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:337:10: warning: implicit declaration of function ‘gtk_file_chooser_set_filename’; did you mean ‘gtk_file_chooser_set_file’? [-Wimplicit-function-declaration]
+  337 |          gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |          gtk_file_chooser_set_file
+src/menubar.c:339:14: warning: implicit declaration of function ‘gtk_dialog_run’; did you mean ‘gtk_dialog_new’? [-Wimplicit-function-declaration]
+  339 |          if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      |              ^~~~~~~~~~~~~~
+      |              gtk_dialog_new
+src/menubar.c:341:34: warning: implicit declaration of function ‘gtk_file_chooser_get_filename’; did you mean ‘gtk_file_chooser_get_files’? [-Wimplicit-function-declaration]
+  341 |             Closure->imageName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                  gtk_file_chooser_get_files
+src/menubar.c:341:32: warning: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  341 |             Closure->imageName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                                ^
+In file included from /usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /usr/include/glib-2.0/glib-object.h:24,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcssenumtypes.h:11,
+                 from /usr/include/gtk-4.0/gtk/css/gtkcss.h:33,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:29:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:344:35: note: in expansion of macro ‘GTK_ENTRY’
+  344 |             gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+      |                                   ^~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtkentry.h:36,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtktreeview.h:27,
+                 from /usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:26:
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/menubar.c:347:30: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  347 |          gtk_window_destroy (dialog);
+      |                              ^~~~~~
+      |                              |
+      |                              GtkWidget * {aka struct _GtkWidget *}
+In file included from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33:
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/menubar.c:353:10: warning: ‘gtk_file_chooser_dialog_new’ is deprecated [-Wdeprecated-declarations]
+  353 |          dialog = gtk_file_chooser_dialog_new("Error correction file selection",
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:363:30: warning: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  363 |             Closure->eccName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                              ^
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:366:35: note: in expansion of macro ‘GTK_ENTRY’
+  366 |             gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+      |                                   ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/menubar.c:369:30: warning: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Wincompatible-pointer-types]
+  369 |          gtk_window_destroy (dialog);
+      |                              ^~~~~~
+      |                              |
+      |                              GtkWidget * {aka struct _GtkWidget *}
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/menubar.c: In function ‘set_path’:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:382:29: note: in expansion of macro ‘GTK_ENTRY’
+  382 |    {  gtk_editable_set_text(GTK_ENTRY(entry), path);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:392:29: note: in expansion of macro ‘GTK_ENTRY’
+  392 |       gtk_editable_set_text(GTK_ENTRY(entry), buf);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/menubar.c: In function ‘suffix_cb’:
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:410:29: note: in expansion of macro ‘GTK_ENTRY’
+  410 |       gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+/usr/include/glib-2.0/gobject/gtype.h:2656:42: warning: passing argument 1 of ‘gtk_editable_set_text’ from incompatible pointer type [-Wincompatible-pointer-types]
+ 2656 | #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) (void *) ip)
+/usr/include/glib-2.0/gobject/gtype.h:528:66: note: in expansion of macro ‘_G_TYPE_CIC’
+  528 | #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
+      |                                                                  ^~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkentry.h:46:42: note: in expansion of macro ‘G_TYPE_CHECK_INSTANCE_CAST’
+   46 | #define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:415:29: note: in expansion of macro ‘GTK_ENTRY’
+  415 |       gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+      |                             ^~~~~~~~~
+/usr/include/gtk-4.0/gtk/gtkeditable.h:84:58: note: expected ‘GtkEditable *’ {aka ‘struct _GtkEditable *’} but argument is of type ‘GtkEntry *’ {aka ‘struct _GtkEntry *’}
+   84 | void     gtk_editable_set_text             (GtkEditable *editable,
+      |                                             ~~~~~~~~~~~~~^~~~~~~~
+src/menubar.c: In function ‘GuiCreateToolBar’:
+src/menubar.c:436:4: warning: implicit declaration of function ‘gtk_box_pack_start’ [-Wimplicit-function-declaration]
+  436 |    gtk_box_pack_start(GTK_BOX(box), space, FALSE, FALSE, 5);
+      |    ^~~~~~~~~~~~~~~~~~
+src/menubar.c:438:11: warning: implicit declaration of function ‘gtk_event_box_new’; did you mean ‘gtk_list_box_new’? [-Wimplicit-function-declaration]
+  438 |    ebox = gtk_event_box_new();
+      |           ^~~~~~~~~~~~~~~~~
+      |           gtk_list_box_new
+src/menubar.c:438:9: warning: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  438 |    ebox = gtk_event_box_new();
+      |         ^
+src/menubar.c:444:4: warning: implicit declaration of function ‘gtk_container_add’ [-Wimplicit-function-declaration]
+  444 |    gtk_container_add(GTK_CONTAINER(ebox), icon);
+      |    ^~~~~~~~~~~~~~~~~
+src/menubar.c:444:22: warning: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Wimplicit-function-declaration]
+  444 |    gtk_container_add(GTK_CONTAINER(ebox), icon);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+src/menubar.c:446:4: warning: ‘gtk_combo_box_text_new’ is deprecated: Use 'GtkDropDown and GtkStringList' instead [-Wdeprecated-declarations]
+  446 |    Closure->driveCombo = combo_box = gtk_combo_box_text_new();
+      |    ^~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:95:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcomboboxtext.h:38:15: note: declared here
+   38 | GtkWidget*    gtk_combo_box_text_new             (void);
+      |               ^~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:452:6: warning: ‘gtk_combo_box_text_append_text’ is deprecated: Use 'GtkDropDown and GtkStringList' instead [-Wdeprecated-declarations]
+  452 |      gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box),
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcomboboxtext.h:42:15: note: declared here
+   42 | void          gtk_combo_box_text_append_text     (GtkComboBoxText     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:460:4: warning: ‘gtk_combo_box_text_append_text’ is deprecated: Use 'GtkDropDown and GtkStringList' instead [-Wdeprecated-declarations]
+  460 |    {   gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), _utf("No drives found"));
+      |    ^
+/usr/include/gtk-4.0/gtk/deprecated/gtkcomboboxtext.h:42:15: note: declared here
+   42 | void          gtk_combo_box_text_append_text     (GtkComboBoxText     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c:463:4: warning: ‘gtk_combo_box_set_active’ is deprecated: Use 'GtkDropDown' instead [-Wdeprecated-declarations]
+  463 |    gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:86:15: note: declared here
+   86 | void          gtk_combo_box_set_active       (GtkComboBox     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~

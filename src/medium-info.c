@@ -360,7 +360,7 @@ void GuiCreateMediumInfoWindow()
 
   hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   
-  gtk_container_add(GTK_CONTAINER(frame), hbox);
+  gtk_frame_set_child(GTK_FRAME(frame), hbox);
 
   lab = gtk_label_new(_utf("Drive:"));
   gtk_box_append(GTK_BOX(hbox), lab);
