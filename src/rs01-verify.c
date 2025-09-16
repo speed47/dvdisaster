@@ -179,7 +179,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    wl->cmpHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->cmpHeadline), 0.0);
    gtk_widget_set_margin_start(wl->cmpHeadline, 5);
-   gtk_box_pack_start(GTK_BOX(parent), wl->cmpHeadline, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(parent), wl->cmpHeadline);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_append(GTK_BOX(parent), sep);
@@ -206,7 +206,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    notebook = wl->cmpImageNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
    gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-   gtk_container_add(GTK_CONTAINER(frame), notebook);
+   gtk_frame_set_child(GTK_FRAME(frame), notebook);
 
    ignore = gtk_label_new("no image");
    lab = gtk_label_new(_utf("No image present."));
@@ -269,7 +269,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    wl->cmpSpiral = GuiCreateSpiral(&transparent, 10, 5, VERIFY_IMAGE_SEGMENTS);
    d_area = wl->cmpDrawingArea = gtk_drawing_area_new();
    gtk_widget_set_size_request(d_area, wl->cmpSpiral->diameter+20, -1);
-   gtk_container_add(GTK_CONTAINER(frame), d_area);
+   gtk_frame_set_child(GTK_FRAME(frame), d_area);
    g_signal_connect(G_OBJECT(d_area), "draw", G_CALLBACK(draw_cb), (gpointer)wl);
 
    /*** Ecc info */
@@ -282,7 +282,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    notebook = wl->cmpEccNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
    gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-   gtk_container_add(GTK_CONTAINER(frame), notebook);
+   gtk_frame_set_child(GTK_FRAME(frame), notebook);
 
    ignore = gtk_label_new("no ecc file");
    lab = wl->cmpEccEmptyMsg = gtk_label_new("");

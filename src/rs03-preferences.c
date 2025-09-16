@@ -508,13 +508,13 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(eccmethod_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("File"));
-      gtk_container_add(GTK_CONTAINER(radio1), lab);
+      gtk_frame_set_child(GTK_FRAME(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(eccmethod_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("Image"));
-      gtk_container_add(GTK_CONTAINER(radio2), lab);
+      gtk_frame_set_child(GTK_FRAME(radio2), lab);
 
       switch(Closure->eccTarget)
       {  case ECC_FILE: activate_toggle_button(GTK_TOGGLE_BUTTON(radio1), TRUE); break;
@@ -672,7 +672,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       gtk_widget_set_sensitive(scale, FALSE);
       g_signal_connect(scale, "format-value", G_CALLBACK(format_cb), (gpointer)PREF_NROOTS);
       g_signal_connect(scale, "value-changed", G_CALLBACK(nroots_cb), (gpointer)wl);
-      gtk_container_add(GTK_CONTAINER(hbox), scale);
+      gtk_frame_set_child(GTK_FRAME(hbox), scale);
 
       if(!i)
       {  wl->redundancyScaleA = scale;
@@ -855,13 +855,13 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(io_strategy_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("read/write"));
-      gtk_container_add(GTK_CONTAINER(radio1), lab);
+      gtk_frame_set_child(GTK_FRAME(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(io_strategy_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("memory mapped"));
-      gtk_container_add(GTK_CONTAINER(radio2), lab);
+      gtk_frame_set_child(GTK_FRAME(radio2), lab);
 
       switch(Closure->encodingIOStrategy)
       {  case IO_STRATEGY_READWRITE: activate_toggle_button(GTK_TOGGLE_BUTTON(radio1), TRUE); break;
@@ -982,34 +982,34 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       g_signal_connect(G_OBJECT(radio1), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio1);
       lab = gtk_label_new(_utf("32bit"));
-      gtk_container_add(GTK_CONTAINER(radio1), lab);
+      gtk_frame_set_child(GTK_FRAME(radio1), lab);
 
       radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
       g_signal_connect(G_OBJECT(radio2), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio2);
       lab = gtk_label_new(_utf("64bit"));
-      gtk_container_add(GTK_CONTAINER(radio2), lab);
+      gtk_frame_set_child(GTK_FRAME(radio2), lab);
 
       if(Closure->useSSE2)
       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
 	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
 	 gtk_box_append(GTK_BOX(hbox), radio3);
 	 lab = gtk_label_new(_utf("SSE2"));
-	 gtk_container_add(GTK_CONTAINER(radio3), lab);
+	 gtk_frame_set_child(GTK_FRAME(radio3), lab);
       }
       if(Closure->useAltiVec)
       {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
 	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
 	 gtk_box_append(GTK_BOX(hbox), radio3);
 	 lab = gtk_label_new(_utf("AltiVec"));
-	 gtk_container_add(GTK_CONTAINER(radio3), lab);
+	 gtk_frame_set_child(GTK_FRAME(radio3), lab);
       }
 
       radio4 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
       g_signal_connect(G_OBJECT(radio4), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
       gtk_box_append(GTK_BOX(hbox), radio4);
       lab = gtk_label_new(_utf("auto"));
-      gtk_container_add(GTK_CONTAINER(radio4), lab);
+      gtk_frame_set_child(GTK_FRAME(radio4), lab);
 
       switch(Closure->encodingAlgorithm)
       {  case ENCODING_ALG_DEFAULT: activate_toggle_button(GTK_TOGGLE_BUTTON(radio4), TRUE); break;

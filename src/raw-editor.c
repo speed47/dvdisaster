@@ -936,22 +936,22 @@ void GuiCreateRawEditor(void)
 
       rec->leftLabel = label = gtk_label_new("Reed-Solomon Sudoku");
       gtk_label_set_xalign(GTK_LABEL(label), 0.0);
-      gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
+      gtk_box_append(GTK_BOX(hbox), label);
 
       rec->rightLabel = label = gtk_label_new(_("Please load a raw sector file!"));
       gtk_label_set_xalign(GTK_LABEL(label), 0.0);
-      gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 5);
+      gtk_box_append(GTK_BOX(hbox), label);
 
       hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_append(GTK_BOX(outer_box), hbox);
 
       vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-      gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 5);
+      gtk_box_append(GTK_BOX(hbox), vbox);
 
       /* Actions for browsing the raw samples */
       
       label = gtk_label_new(_utf("Browsing"));
-      gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 10);
+      gtk_box_append(GTK_BOX(vbox), label);
 
       hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_append(GTK_BOX(vbox), hbox2);
@@ -996,7 +996,7 @@ void GuiCreateRawEditor(void)
       /* Actions for editing the recovery buffer */
       
       label = gtk_label_new(_utf("Editing"));
-      gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 10);
+      gtk_box_append(GTK_BOX(vbox), label);
 
       hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
       gtk_box_set_homogeneous(GTK_BOX(hbox2), TRUE);
@@ -1043,7 +1043,7 @@ void GuiCreateRawEditor(void)
       /* Actions for correcting vectors in the recovery buffer */
 
       label = gtk_label_new(_utf("Correction"));
-      gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 10);
+      gtk_box_append(GTK_BOX(vbox), label);
 
       button = gtk_radio_button_new_with_label(NULL, _utf("button|P vector"));
       g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), 
@@ -1073,7 +1073,7 @@ void GuiCreateRawEditor(void)
       /* Error correction heuristics */
 
       label = gtk_label_new(_utf("Heuristics"));
-      gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 10);
+      gtk_box_append(GTK_BOX(vbox), label);
 
       button = gtk_button_new_with_label(_utf("button|Smart L-EC"));
       g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(action_cb), 

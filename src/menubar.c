@@ -441,7 +441,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    GuiAttachTooltip(ebox, _("tooltip|Drive selection"),
 		    _("Use the nearby drop-down list to select the input drive."));
    icon = gtk_image_new_from_icon_name("cd");
-   gtk_container_add(GTK_CONTAINER(ebox), icon);
+   gtk_event_box_set_child(GTK_EVENT_BOX(ebox), icon);
 
    Closure->driveCombo = combo_box = gtk_combo_box_text_new();
 
@@ -462,12 +462,12 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
 
    gtk_combo_box_set_active(GTK_COMBO_BOX(combo_box), dev_idx);
    gtk_widget_set_size_request(combo_box, 200, -1);
-   gtk_box_pack_start(GTK_BOX(box), combo_box, FALSE, FALSE, 7);
+   gtk_box_append(GTK_BOX(box), combo_box);
    GuiAttachTooltip(combo_box, _("tooltip|Drive selection"),
 		    _("Selects the input drive for reading images."));
 
    space = gtk_label_new(NULL);
-   gtk_box_pack_start(GTK_BOX(box), space, FALSE, FALSE, 1);
+   gtk_box_append(GTK_BOX(box), space);
 
    sep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
    gtk_box_pack_start(GTK_BOX(box), sep, FALSE, FALSE, 3);

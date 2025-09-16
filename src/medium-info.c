@@ -338,7 +338,7 @@ void GuiCreateMediumInfoWindow()
   /*** Inner vbox and title */
 
   vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox, TRUE, TRUE, 0);
+  gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
   
 
   lab = gtk_label_new(NULL);
@@ -393,7 +393,7 @@ void GuiCreateMediumInfoWindow()
 
   button = gtk_button_new_with_label(_utf("Update medium info"));
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(update_cb), mi);
-  gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 10);
+  gtk_box_append(GTK_BOX(hbox), button);
 
   /*** Medium info */
 
@@ -407,7 +407,7 @@ void GuiCreateMediumInfoWindow()
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
-  gtk_container_add(GTK_CONTAINER(frame), grid);
+  gtk_frame_set_child(GTK_FRAME(frame), grid);
 
   lab = gtk_label_new(_utf("Medium type:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
@@ -482,7 +482,7 @@ void GuiCreateMediumInfoWindow()
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
-  gtk_container_add(GTK_CONTAINER(frame), grid);
+  gtk_frame_set_child(GTK_FRAME(frame), grid);
 
   lab = gtk_label_new(_utf("Medium label:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
@@ -520,7 +520,7 @@ void GuiCreateMediumInfoWindow()
   gtk_widget_set_margin_start(grid, 5);
   gtk_widget_set_margin_top(grid, 2);
   gtk_widget_set_margin_bottom(grid, 2);
-  gtk_container_add(GTK_CONTAINER(frame), grid);
+  gtk_frame_set_child(GTK_FRAME(frame), grid);
 
   lab = gtk_label_new(_utf("Error correction data:"));
   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);

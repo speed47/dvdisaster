@@ -61,7 +61,7 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    wl->encHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encHeadline), 0.0);
    gtk_widget_set_margin_start(wl->encHeadline, 5);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(parent), wl->encHeadline);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_append(GTK_BOX(parent), sep);
@@ -76,7 +76,7 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    gtk_widget_set_margin_bottom(grid, 20);
    gtk_grid_set_column_spacing(GTK_GRID(grid), 40);
    gtk_grid_set_row_spacing(GTK_GRID(grid), 40);
-   gtk_box_pack_start(GTK_BOX(parent), grid, FALSE, FALSE, 30);
+   gtk_box_append(GTK_BOX(parent), grid);
 
    wl->encLabel1 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>1. Preparing image:</b>"));
@@ -102,12 +102,12 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    wl->encFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);
    gtk_widget_set_margin_start(wl->encFootline, 20);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encFootline, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(parent), wl->encFootline);
 
    wl->encFootline2 = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline2), 0.0);
    gtk_widget_set_margin_start(wl->encFootline2, 20);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encFootline2, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(parent), wl->encFootline2);
 }
 
 /***
@@ -271,7 +271,7 @@ void CreateRS02FixWindow(Method *method, GtkWidget *parent)
    wl->fixHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixHeadline), 0.0);
    gtk_widget_set_margin_start(wl->fixHeadline, 5);
-   gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(parent), wl->fixHeadline);
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_append(GTK_BOX(parent), sep);
@@ -748,7 +748,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
    
-   gtk_container_add(GTK_CONTAINER(frame), vbox);
+   gtk_frame_set_child(GTK_FRAME(frame), vbox);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    gtk_box_append(GTK_BOX(vbox), hbox);
@@ -827,7 +827,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->cdUndoButtonA = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->cdUndoButtonA), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->cdUndoButtonA), icon);
    g_signal_connect(G_OBJECT(wl->cdUndoButtonA), "clicked", G_CALLBACK(query_cb), wl);
    gtk_grid_attach(GTK_GRID(grid), wl->cdUndoButtonA, 4, 2, 1, 1);
 
@@ -846,7 +846,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->cdUndoButtonB = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->cdUndoButtonB), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->cdUndoButtonB), icon);
    g_signal_connect(G_OBJECT(wl->cdUndoButtonB), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->cdUndoButtonB);
 
@@ -890,7 +890,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->dvdUndoButton1A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton1A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->dvdUndoButton1A), icon);
      g_signal_connect(G_OBJECT(wl->dvdUndoButton1A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->dvdUndoButton1A, 4, 3, 1, 1);
 
@@ -909,7 +909,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->dvdUndoButton1B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton1B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->dvdUndoButton1B), icon);
    g_signal_connect(G_OBJECT(wl->dvdUndoButton1B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->dvdUndoButton1B);
 
@@ -953,7 +953,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->dvdUndoButton2A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton2A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->dvdUndoButton2A), icon);
      g_signal_connect(G_OBJECT(wl->dvdUndoButton2A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->dvdUndoButton2A, 4, 4, 1, 1);
 
@@ -972,7 +972,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->dvdUndoButton2B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->dvdUndoButton2B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->dvdUndoButton2B), icon);
    g_signal_connect(G_OBJECT(wl->dvdUndoButton2B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->dvdUndoButton2B);
 
@@ -1016,7 +1016,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->bdUndoButton1A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->bdUndoButton1A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton1A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton1A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton1A, 4, 5, 1, 1);
 
@@ -1035,7 +1035,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->bdUndoButton1B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->bdUndoButton1B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton1B), icon);
    g_signal_connect(G_OBJECT(wl->bdUndoButton1B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->bdUndoButton1B);
 
@@ -1078,7 +1078,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->bdUndoButton2A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->bdUndoButton2A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton2A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton2A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton2A, 4, 6, 1, 1);
 
@@ -1097,7 +1097,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->bdUndoButton2B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->bdUndoButton2B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton2B), icon);
    g_signal_connect(G_OBJECT(wl->bdUndoButton2B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->bdUndoButton2B);
 
@@ -1140,7 +1140,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->bdUndoButton3A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->bdUndoButton3A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton3A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton3A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton3A, 4, 7, 1, 1);
 
@@ -1159,7 +1159,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->bdUndoButton3B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->bdUndoButton3B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton3B), icon);
    g_signal_connect(G_OBJECT(wl->bdUndoButton3B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->bdUndoButton3B);
 
@@ -1204,7 +1204,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
      icon = gtk_image_new_from_icon_name("edit-undo");
      wl->bdUndoButton4A = gtk_button_new();
-     gtk_container_add(GTK_CONTAINER(wl->bdUndoButton4A), icon);
+     gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton4A), icon);
      g_signal_connect(G_OBJECT(wl->bdUndoButton4A), "clicked", G_CALLBACK(query_cb), wl);
      gtk_grid_attach(GTK_GRID(grid), wl->bdUndoButton4A, 4, 8, 1, 1);
 
@@ -1223,7 +1223,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    icon = gtk_image_new_from_icon_name("edit-undo");
    wl->bdUndoButton4B = gtk_button_new();
-   gtk_container_add(GTK_CONTAINER(wl->bdUndoButton4B), icon);
+   gtk_frame_set_child(GTK_FRAME(wl->bdUndoButton4B), icon);
    g_signal_connect(G_OBJECT(wl->bdUndoButton4B), "clicked", G_CALLBACK(query_cb), wl);
    gtk_box_append(GTK_BOX(hbox), wl->bdUndoButton4B);
 
@@ -1373,7 +1373,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 	 
 	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
 	 gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
-	 gtk_container_add(GTK_CONTAINER(frame), hbox);
+	 gtk_frame_set_child(GTK_FRAME(frame), hbox);
       }
       else
       {  wl->cacheScaleB = scale; 
