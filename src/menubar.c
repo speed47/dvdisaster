@@ -341,7 +341,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
             Closure->imageName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
             if(Closure->autoSuffix)
                Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
-            gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+            gtk_editable_set_text(GTK_EDITABLE(Closure->imageEntry), Closure->imageName);
             gtk_editable_set_position(GTK_EDITABLE(Closure->imageEntry), -1);
          }
          gtk_window_destroy (dialog);
@@ -363,7 +363,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
             Closure->eccName = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
             if(Closure->autoSuffix)
                Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
-            gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+            gtk_editable_set_text(GTK_EDITABLE(Closure->eccEntry), Closure->eccName);
             gtk_editable_set_position(GTK_EDITABLE(Closure->eccEntry), -1);
          }
          gtk_window_destroy (dialog);
@@ -379,7 +379,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 void set_path(GtkWidget *entry, char *path)
 {
   if(path[0] == '/' || path[0] == '\\' || path[1] == ':' || strlen(path) < 1)
-   {  gtk_editable_set_text(GTK_ENTRY(entry), path);
+   {  gtk_editable_set_text(GTK_EDITABLE(entry), path);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
    }
    else
@@ -389,7 +389,7 @@ void set_path(GtkWidget *entry, char *path)
       strcat(buf,"/");
 
       strcat(buf,path);
-      gtk_editable_set_text(GTK_ENTRY(entry), buf);
+      gtk_editable_set_text(GTK_EDITABLE(entry), buf);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
    }
 }
@@ -407,12 +407,12 @@ static void suffix_cb(GtkWidget *widget, gpointer data)
    if(!ecc_file)
    {  Closure->imageName = g_strdup(gtk_editable_get_text(GTK_EDITABLE(Closure->imageEntry)));
       Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
-      gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+      gtk_editable_set_text(GTK_EDITABLE(Closure->imageEntry), Closure->imageName);
    }
    else
    {  Closure->eccName = g_strdup(gtk_editable_get_text(GTK_EDITABLE(Closure->eccEntry)));
       Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
-      gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+      gtk_editable_set_text(GTK_EDITABLE(Closure->eccEntry), Closure->eccName);
    }
 }
 

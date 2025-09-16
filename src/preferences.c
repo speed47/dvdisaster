@@ -213,12 +213,12 @@ void GuiHidePreferences(void)
 
       if(Closure->fillUnreadable != v2)
       {  Closure->fillUnreadable = v2;
- 	 gtk_editable_set_text(GTK_ENTRY(pc->byteEntryA), value2);
+ 	 gtk_editable_set_text(GTK_EDITABLE(pc->byteEntryA), value2);
       }
       else
 	if(Closure->fillUnreadable != v1)
 	{  Closure->fillUnreadable = v1;
-	   gtk_editable_set_text(GTK_ENTRY(pc->byteEntryB), value1);
+	   gtk_editable_set_text(GTK_EDITABLE(pc->byteEntryB), value1);
 	}
 
       if(Closure->fillUnreadable < 0)
@@ -240,12 +240,12 @@ void GuiHidePreferences(void)
 
       if(Closure->rawMode != v2)
       {  Closure->rawMode = v2;
- 	 gtk_editable_set_text(GTK_ENTRY(pc->rawModeValueA), value2);
+ 	 gtk_editable_set_text(GTK_EDITABLE(pc->rawModeValueA), value2);
       }
       else
 	if(Closure->rawMode != v1)
 	{  Closure->rawMode = v1;
-	   gtk_editable_set_text(GTK_ENTRY(pc->rawModeValueB), value1);
+	   gtk_editable_set_text(GTK_EDITABLE(pc->rawModeValueB), value1);
 	}
 
       if(Closure->rawMode < 0)
@@ -263,12 +263,12 @@ void GuiHidePreferences(void)
    if(strcmp(Closure->dDumpPrefix, value1))
    {  g_free(Closure->dDumpPrefix);
       Closure->dDumpPrefix = g_strdup(value1);
-      gtk_editable_set_text(GTK_ENTRY(pc->cacheDefectivePrefixB), value1);
+      gtk_editable_set_text(GTK_EDITABLE(pc->cacheDefectivePrefixB), value1);
    }
    else if(strcmp(Closure->dDumpPrefix, value2))
    {  g_free(Closure->dDumpPrefix);
       Closure->dDumpPrefix = g_strdup(value2);
-      gtk_editable_set_text(GTK_ENTRY(pc->cacheDefectivePrefixA), value2);
+      gtk_editable_set_text(GTK_EDITABLE(pc->cacheDefectivePrefixA), value2);
    }
 
    /* Ask currently selected method to update its settings
@@ -1576,7 +1576,7 @@ void GuiCreatePreferencesWindow(void)
 	    {  char value[11];
 	
 	       g_snprintf(value, 10, "0x%02x", Closure->fillUnreadable);
-	       gtk_editable_set_text(GTK_ENTRY(entry), value);
+	       gtk_editable_set_text(GTK_EDITABLE(entry), value);
 	       activate_toggle_button(GTK_TOGGLE_BUTTON(check), TRUE);
 	    }
 	    else set_widget_sensitive(entry, FALSE);
@@ -1703,7 +1703,7 @@ void GuiCreatePreferencesWindow(void)
 	 else   pc->rawModeValueB = entry;
 	
 	 g_snprintf(value, 10, "0x%02x", Closure->rawMode);
-	 gtk_editable_set_text(GTK_ENTRY(entry), value);
+	 gtk_editable_set_text(GTK_EDITABLE(entry), value);
 
 	 switch(Closure->rawMode)
 	 {  case 0x20:
@@ -2220,7 +2220,7 @@ void GuiCreatePreferencesWindow(void)
 
 	 g_signal_connect(entry, "activate", G_CALLBACK(defective_prefix_cb), pc);
 	 gtk_entry_set_width_chars(GTK_ENTRY(entry), 20);
-	 gtk_editable_set_text(GTK_ENTRY(entry), Closure->dDumpPrefix);
+	 gtk_editable_set_text(GTK_EDITABLE(entry), Closure->dDumpPrefix);
 	 gtk_box_append(GTK_BOX(hbox), entry);
 
  	 if(!i) pc->cacheDefectivePrefixA = entry;
