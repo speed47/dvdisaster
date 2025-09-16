@@ -452,7 +452,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     gtk_box_append(GTK_BOX(outer_box), sep);
 
     wid = GuiCreateToolBar(outer_box);
-    gtk_box_pack_start(GTK_BOX(outer_box), wid, FALSE, FALSE, 3);
+    gtk_box_append(;
 
     /* Middle part */
 
@@ -470,7 +470,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
     GuiCreateWelcomePage(GTK_NOTEBOOK(Closure->notebook));
 
     wid = create_action_bar((GTK_NOTEBOOK(Closure->notebook)));
-    gtk_box_pack_end(GTK_BOX(middle_box), wid, FALSE, FALSE, 3);
+    gtk_box_append(;
 
     sep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
     gtk_box_append(GTK_BOX(middle_box), sep);

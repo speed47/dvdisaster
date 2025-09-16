@@ -491,7 +491,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
    
-   gtk_container_add(GTK_CONTAINER(frame), vbox);
+   gtk_frame_set_child(GTK_FRAME(frame), vbox);
 
    lwoh = GuiCreateLabelWithOnlineHelp(_("Error correction data storage"), 
 				       _("Store ECC data in: "));
@@ -565,7 +565,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    wl->redundancyNotebook = gtk_notebook_new();
    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(wl->redundancyNotebook), FALSE);
    gtk_notebook_set_show_border(GTK_NOTEBOOK(wl->redundancyNotebook), FALSE);
-   gtk_container_add(GTK_CONTAINER(frame), wl->redundancyNotebook);
+   gtk_frame_set_child(GTK_FRAME(frame), wl->redundancyNotebook);
 
    /* dummy page for augmented images */
 
@@ -785,7 +785,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
    
-   gtk_container_add(GTK_CONTAINER(frame), vbox);
+   gtk_frame_set_child(GTK_FRAME(frame), vbox);
 
    text = g_strdup_printf(_("%d sectors"), Closure->prefetchSectors);
    lwoh = GuiCreateLabelWithOnlineHelp(_("Sector preloading"), text);
@@ -936,7 +936,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 
 	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
          gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
-	 gtk_container_add(GTK_CONTAINER(frame), hbox);
+	 gtk_frame_set_child(GTK_FRAME(frame), hbox);
       }
       else
       {  wl->threadsScaleB = scale; 
@@ -965,7 +965,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
    
-   gtk_container_add(GTK_CONTAINER(frame), vbox);
+   gtk_frame_set_child(GTK_FRAME(frame), vbox);
 
    lwoh = GuiCreateLabelWithOnlineHelp(_("Encoding algorithm"), 
 				       _("Use: "));

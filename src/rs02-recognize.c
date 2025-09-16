@@ -51,7 +51,7 @@ static void insert_buttons(GtkDialog *dialog)
 			  _utf("Continue searching"), 0, NULL);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+   gtk_box_append(;
 
    check = gtk_check_button_new_with_label(_utf("Disable RS02 initialization in the preferences"));
    gtk_box_set_center_widget(GTK_BOX(hbox), check);

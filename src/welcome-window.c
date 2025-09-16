@@ -91,7 +91,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
       "\n"
       "Please refer to the <i>Help &gt; Change log</i> menu for all the details."), "https://github.com/speed47/dvdisaster");
 
-   gtk_box_pack_start(GTK_BOX(box), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 10);
+   gtk_box_append(;
 
    button = gtk_check_button_new_with_label(_utf("Show this message again"));
    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), Closure->welcomeMessage);

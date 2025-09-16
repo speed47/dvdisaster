@@ -279,7 +279,7 @@ static void call_idle_func(gboolean (*idle_func)(gpointer), gpointer data)
 
 static gboolean show_idle_func(gpointer data)
 {  
-   gtk_widget_set_visible(GTK_WIDGET(data, TRUE));
+   gtk_widget_set_visible(GTK_WIDGET(data), TRUE);
 
    return FALSE;
 }
@@ -604,7 +604,7 @@ static void insert_button(GtkDialog *dialog)
 {  GtkWidget *check,*hbox;
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+   gtk_box_append(;
 
    check = gtk_check_button_new_with_label(_utf("Do not ask again"));
    gtk_box_set_center_widget(GTK_BOX(hbox), check);

@@ -61,7 +61,7 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    wl->encHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encHeadline), 0.0);
    gtk_widget_set_margin_start(wl->encHeadline, 5);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encHeadline, FALSE, FALSE, 3);
+   gtk_box_append(;
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_append(GTK_BOX(parent), sep);
@@ -76,7 +76,7 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    gtk_widget_set_margin_bottom(grid, 20);
    gtk_grid_set_column_spacing(GTK_GRID(grid), 40);
    gtk_grid_set_row_spacing(GTK_GRID(grid), 40);
-   gtk_box_pack_start(GTK_BOX(parent), grid, FALSE, FALSE, 30);
+   gtk_box_append(;
 
    wl->encLabel1 = wid = gtk_label_new(NULL);
    gtk_label_set_markup(GTK_LABEL(wid),_utf("<b>1. Preparing image:</b>"));
@@ -102,12 +102,12 @@ void CreateRS02EncWindow(Method *method, GtkWidget *parent)
    wl->encFootline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline), 0.0);
    gtk_widget_set_margin_start(wl->encFootline, 20);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encFootline, FALSE, FALSE, 3);
+   gtk_box_append(;
 
    wl->encFootline2 = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->encFootline2), 0.0);
    gtk_widget_set_margin_start(wl->encFootline2, 20);
-   gtk_box_pack_start(GTK_BOX(parent), wl->encFootline2, FALSE, FALSE, 3);
+   gtk_box_append(;
 }
 
 /***
@@ -271,7 +271,7 @@ void CreateRS02FixWindow(Method *method, GtkWidget *parent)
    wl->fixHeadline = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(wl->fixHeadline), 0.0);
    gtk_widget_set_margin_start(wl->fixHeadline, 5);
-   gtk_box_pack_start(GTK_BOX(parent), wl->fixHeadline, FALSE, FALSE, 3);
+   gtk_box_append(;
 
    sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
    gtk_box_append(GTK_BOX(parent), sep);
@@ -748,7 +748,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
    
-   gtk_container_add(GTK_CONTAINER(frame), vbox);
+   gtk_frame_set_child(GTK_FRAME(frame), vbox);
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
    gtk_box_append(GTK_BOX(vbox), hbox);
@@ -1373,7 +1373,7 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 	 
 	 gtk_box_append(GTK_BOX(hbox), lwoh->linkBox);
 	 gtk_box_append(GTK_BOX(hbox), lwoh->tooltip);
-	 gtk_container_add(GTK_CONTAINER(frame), hbox);
+	 gtk_frame_set_child(GTK_FRAME(frame), hbox);
       }
       else
       {  wl->cacheScaleB = scale; 
