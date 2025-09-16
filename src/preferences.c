@@ -54,7 +54,7 @@ static void set_widget_sensitive(GtkWidget *widget, int state)
 
 static void set_entry_text(GtkEntry *entry, char *text)
 {  if(entry)
-      gtk_editable_set_text(entry, text);
+      gtk_editable_set_text(GTK_EDITABLE(entry), text);
 }
 
 /***
@@ -664,6 +664,10 @@ static void read_range_cb(GtkWidget *widget, gpointer data)
 static void update_color_buttons()
 {  prefs_context *pc = (prefs_context*)Closure->prefsContext;
 
+   /* GTK4: gtk_color_chooser_set_rgba is deprecated but still functional */
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+   
    gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redA), Closure->redSector);
    gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->redB), Closure->redSector);
 
@@ -696,6 +700,8 @@ static void update_color_buttons()
 
    gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->curveColorA), Closure->curveColor);
    gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(pc->curveColorB), Closure->curveColor);
+   
+   #pragma GCC diagnostic pop
 }
 
 static void color_set_cb(GtkWidget *widget, gpointer data)
