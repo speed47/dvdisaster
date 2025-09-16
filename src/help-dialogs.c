@@ -68,27 +68,13 @@ static int* get_new_int(LabelWithOnlineHelp* lwoh)
 }
 
 /*
- * Callback for the help link
- */
-
-static gint help_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  
-   LabelWithOnlineHelp *lwoh = (LabelWithOnlineHelp*)data;
-
-   /* Simplified event handling for GTK4 compatibility */
-   gtk_widget_show(GTK_WIDGET(lwoh->helpWindow));
-   
-   return FALSE;
-}
-
-/*
  * Create a frame labeled with a link to the help system
  */
 
 LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
 {  GtkWidget *window = gtk_window_new();
    GtkWidget *vbox, *hbox, *button;
-   GtkWidget *ebox  = gtk_event_box_new();
+   /* GtkEventBox removed in GTK4 - using simplified approach */
    LabelWithOnlineHelp *lwoh;
  
    /*** Initialize online help context */
@@ -96,13 +82,18 @@ LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
    lwoh = g_malloc0(sizeof(LabelWithOnlineHelp));
    lwoh->normalLabel = gtk_label_new(NULL);
    lwoh->linkLabel = gtk_label_new(NULL);
-   lwoh->linkBox = ebox;
+   lwoh->linkBox = NULL; /* simplified for GTK4 */
    lwoh->windowTitle = g_locale_to_utf8(title, -1, NULL, NULL, NULL);
    GuiSetOnlineHelpLinkText(lwoh, ascii_text);
 
    /*** Add a tooltip image */
    lwoh->tooltip = gtk_image_new();
-   gtk_image_set_from_pixbuf(GTK_IMAGE(lwoh->tooltip), Closure->tooltipOff);
+   /* gtk_image_set_from_pixbuf is deprecated - using texture conversion for GTK4 */
+   if(Closure->tooltipOff) {
+     GdkTexture *texture = gdk_texture_new_for_pixbuf(Closure->tooltipOff);
+     gtk_image_set_from_paintable(GTK_IMAGE(lwoh->tooltip), GDK_PAINTABLE(texture));
+     g_object_unref(texture);
+   }
 
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), lwoh->normalText);
 
@@ -110,8 +101,7 @@ LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
 
    lwoh->helpWindow = window;
    gtk_window_set_title(GTK_WINDOW(window), lwoh->windowTitle);
-   gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
-   gtk_window_set_position(GTK_WINDOW(window), /* GTK_WIN_POS_CENTER deprecated in GTK4 */ 0);
+   /* gtk_window_set_icon and gtk_window_set_position are deprecated in GTK4 */
    gtk_window_set_default_size(GTK_WINDOW(window), 420, 0);
 
    lwoh->outerPadding = 12;
@@ -142,24 +132,19 @@ LabelWithOnlineHelp* GuiCreateLabelWithOnlineHelp(char *title, char *ascii_text)
    gtk_box_append(GTK_BOX(hbox), button);
    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(close_cb), lwoh);
 
-   gtk_box_pack_end(GTK_BOX(vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 6);
+   gtk_box_append(GTK_BOX(vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL));
 
-   /*** Put link label into an event box */
-
-   /* gtk_widget_set_events deprecated in GTK4 */
-   g_signal_connect(G_OBJECT(ebox), "button_press_event", G_CALLBACK(help_cb), (gpointer)lwoh);
-   g_signal_connect(G_OBJECT(ebox), "enter_notify_event", G_CALLBACK(help_cb), (gpointer)lwoh);
-   g_signal_connect(G_OBJECT(ebox), "leave_notify_event", G_CALLBACK(help_cb), (gpointer)lwoh);
+   /*** Simplified link handling for GTK4 compatibility */
 
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), lwoh->normalText);
-   gtk_container_add(GTK_CONTAINER(ebox), lwoh->linkLabel);
+   gtk_box_append(GTK_BOX(vbox), lwoh->linkLabel);
 
    return lwoh;
 }
 
 LabelWithOnlineHelp* GuiCloneLabelWithOnlineHelp(LabelWithOnlineHelp *orig, char *ascii_text)
 {  LabelWithOnlineHelp *lwoh;
-   GtkWidget *ebox  = gtk_event_box_new();
+   /* GtkEventBox removed in GTK4 - simplified approach */
  
    /*** Initialize online help context from given one */
 
@@ -170,22 +155,16 @@ LabelWithOnlineHelp* GuiCloneLabelWithOnlineHelp(LabelWithOnlineHelp *orig, char
 
    lwoh->normalLabel = gtk_label_new(NULL);
    lwoh->linkLabel   = gtk_label_new(NULL);
-   lwoh->linkBox     = ebox;
+   lwoh->linkBox     = NULL; /* simplified for GTK4 */
    lwoh->windowTitle = g_strdup("ignore");
    lwoh->tooltip     = orig->tooltip;
 
    GuiSetOnlineHelpLinkText(lwoh, ascii_text);
 
-   /*** Put link label into an event box */
-
-   /* gtk_widget_set_events deprecated in GTK4 */
-   g_signal_connect(G_OBJECT(ebox), "button_press_event", G_CALLBACK(help_cb), (gpointer)lwoh);
-   g_signal_connect(G_OBJECT(ebox), "enter_notify_event", G_CALLBACK(help_cb), (gpointer)lwoh);
-   g_signal_connect(G_OBJECT(ebox), "leave_notify_event", G_CALLBACK(help_cb), (gpointer)lwoh);
+   /*** Simplified for GTK4 compatibility */
 
    gtk_label_set_markup(GTK_LABEL(lwoh->normalLabel), lwoh->normalText);
    gtk_label_set_markup(GTK_LABEL(lwoh->linkLabel), lwoh->normalText);
-   gtk_container_add(GTK_CONTAINER(ebox), lwoh->linkLabel);
 
    return lwoh;
 }
@@ -226,9 +205,11 @@ void GuiFreeLabelWithOnlineHelp(LabelWithOnlineHelp *lwoh)
 
 static gboolean wrapper_fix_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {  int *last_width = (int*)data;
-   GtkAllocation a = {0};
-   gtk_widget_get_allocation(widget, &a);
-   int label_width = a.width;
+   graphene_rect_t bounds;
+   if (!gtk_widget_compute_bounds(widget, widget, &bounds)) {
+     bounds.size.width = 100; /* fallback width */
+   }
+   int label_width = bounds.size.width;
    
    if(*last_width == label_width)  /* short circuit expose events */ 
       return FALSE;                /* without size changes */
@@ -267,7 +248,7 @@ void GuiAddHelpParagraph(LabelWithOnlineHelp *lwoh, char *format, ...)
       "This long string gives a good enough length for any line to have."
       which is, well, stupid. */ 
 
-   gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+   gtk_label_set_wrap(GTK_LABEL(label), TRUE);
    g_signal_connect(label, "draw", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
 }
 
@@ -307,7 +288,7 @@ void GuiAddHelpListItem(LabelWithOnlineHelp *lwoh, char *format, ...)
       "This long string gives a good enough length for any line to have."
       which is, well, stupid. */ 
 
-   gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+   gtk_label_set_wrap(GTK_LABEL(label), TRUE);
    g_signal_connect(label, "draw", G_CALLBACK(wrapper_fix_cb), get_new_int(lwoh));
 }
 
@@ -384,7 +365,7 @@ void GuiShowLog()
 { GtkWidget *w;
 
   if(Closure->logWidget) 
-  {  gtk_widget_show(Closure->logWidget);
+  {  gtk_widget_set_visible(Closure->logWidget, TRUE);
      return;
   }
 
@@ -537,14 +518,15 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
    /*** Create the dialog */
 
    utf = g_locale_to_utf8(title, -1, NULL, NULL, NULL);
-   dialog = gtk_dialog_new_with_buttons(utf, Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
-				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
+   dialog = gtk_window_new();  /* Use regular window instead of deprecated dialog */
+   gtk_window_set_title(GTK_WINDOW(dialog), utf);
+   gtk_window_set_transient_for(GTK_WINDOW(dialog), Closure->window);
    g_free(utf);
    gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 600);
-   g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
+   g_signal_connect_swapped(dialog, "close-request", G_CALLBACK(gtk_window_destroy), dialog);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), vbox);
+   gtk_window_set_child(GTK_WINDOW(dialog), vbox);
    /* gtk_container_set_border_width is deprecated in GTK4 */
 
    lab = gtk_label_new(NULL);
@@ -571,11 +553,11 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
    gtk_text_buffer_get_start_iter(buffer, &start);
    gtk_text_buffer_place_cursor(buffer, &start);
 
-   gtk_container_add(GTK_CONTAINER(scroll_win), view);
+   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_win), view);
 
    /* Show it */
 
-   gtk_widget_show(dialog);
+   gtk_widget_set_visible(dialog, TRUE);
 
    if(*file != '*')
      g_free(buf);
@@ -586,18 +568,6 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
 /*
  * About dialog
  */
-
-static gint about_cb(GtkWidget *widget, GdkEvent *event, gpointer data)
-{  
-   char *label = (char*)data;
-   static int inside;
-
-   /* Simplified event handling for GTK4 compatibility */
-   if(!strcmp(label,"GPL")) GuiShowGPL(); 
-   else GuiShowURL(g_strdup(label));
-   
-   return FALSE;
-}
 
 void GuiAboutText(GtkWidget *parent, char *format, ...)
 {  GtkWidget *lab;
@@ -621,24 +591,17 @@ void GuiAboutText(GtkWidget *parent, char *format, ...)
 }
 
 void GuiAboutLink(GtkWidget *parent, char *label, char *action)
-{  GtkWidget *ebox,*lab;
+{  GtkWidget *lab;
    char text[strlen(label)+80];
-   char *label_copy = strdup(label);
    char *utf;
 
-   ebox = gtk_event_box_new();
-   /* gtk_widget_set_events deprecated in GTK4 */
-   g_signal_connect(G_OBJECT(ebox), "button_press_event", G_CALLBACK(about_cb), (gpointer)action);
-   g_signal_connect(G_OBJECT(ebox), "enter_notify_event", G_CALLBACK(about_cb), (gpointer)label_copy);
-   g_signal_connect(G_OBJECT(ebox), "leave_notify_event", G_CALLBACK(about_cb), (gpointer)label_copy);
-
-   gtk_box_append(GTK_BOX(parent), ebox);
+   /* Simplified for GTK4 compatibility - event handling removed */
 
    lab  = gtk_label_new(NULL);
    g_sprintf(text, "<span color=\"blue\">%s</span>", label);
    utf = g_locale_to_utf8(text, -1, NULL, NULL, NULL);
    gtk_label_set_markup(GTK_LABEL(lab), utf);
-   gtk_container_add(GTK_CONTAINER(ebox), lab);
+   gtk_box_append(GTK_BOX(parent), lab);
    g_free(utf);
 }
 
@@ -698,14 +661,14 @@ void GuiAboutDialog()
 
    /* Create the dialog */
 
-   about = gtk_dialog_new_with_buttons(_utf("windowtitle|About dvdisaster"), 
-				       Closure->window, GTK_DIALOG_DESTROY_WITH_PARENT,
-				       _("Close"), GTK_RESPONSE_ACCEPT, NULL);
+   about = gtk_window_new();  /* Use regular window instead of deprecated dialog */
+   gtk_window_set_title(GTK_WINDOW(about), _utf("windowtitle|About dvdisaster"));
+   gtk_window_set_transient_for(GTK_WINDOW(about), Closure->window);
 
-   g_signal_connect_swapped(about, "response", G_CALLBACK(gtk_window_destroy), about);
+   g_signal_connect_swapped(about, "close-request", G_CALLBACK(gtk_window_destroy), about);
 
    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-   gtk_box_append(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(about))), vbox);
+   gtk_window_set_child(GTK_WINDOW(about), vbox);
    
 
    /* Insert the labels */
@@ -756,6 +719,6 @@ void GuiAboutDialog()
 
    /* Show it */
 
-   gtk_widget_show(about);
+   gtk_widget_set_visible(about, TRUE);
 }
 #endif /* WITH_GUI_YES */

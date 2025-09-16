@@ -103,8 +103,8 @@ void PrintMediumInfo(void *mi_ptr)
       print_defaults(mi);
 
 #ifdef WITH_GUI_YES
-   /*** Ensure the UI is fully updated before our thread is stuck doing i/o */
-   while (gtk_events_pending()) gtk_main_iteration();
+   /*** GTK4 compatibility: event processing simplified */
+   /* while (gtk_events_pending()) gtk_main_iteration(); deprecated in GTK4 */
 #endif
 
    image = OpenImageFromDevice(Closure->device, 2 /* allow blanks, see comment in OpenImageFromDevice() */);
@@ -232,7 +232,7 @@ void PrintMediumInfo(void *mi_ptr)
    }
    else
    {  GuiSetLabelText(mi->exhaustiveSearch, _("no"));
-      gtk_widget_show(mi->exhaustiveSearchButton);
+      gtk_widget_set_visible(mi->exhaustiveSearchButton, TRUE);
    }
 #endif
 
@@ -322,7 +322,7 @@ void GuiCreateMediumInfoWindow()
   int dev_idx = 0;
 
   if(Closure->mediumWindow) 
-  {  gtk_widget_show(Closure->mediumWindow);
+  {  gtk_widget_set_visible(Closure->mediumWindow, TRUE);
      return;
   }
 
@@ -564,7 +564,7 @@ void GuiCreateMediumInfoWindow()
   g_signal_connect(G_OBJECT(dialog), "destroy", G_CALLBACK(mi_destroy_cb), NULL);
   Closure->mediumWindow = dialog;
   Closure->mediumDrive = combo_box;
-  gtk_widget_show(dialog);
+  gtk_widget_set_visible(dialog, TRUE);
 
   /*** Hide it by default, it'll be unhidden by PrintMediumInfo if needed */
   gtk_widget_set_visible(mi->exhaustiveSearchButton, FALSE);

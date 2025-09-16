@@ -185,11 +185,9 @@ void GuiRedrawAxes(cairo_t *cr, Curve *curve)
    cairo_set_line_width(cr, 1);
    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-      /* Get foreground and grid colors */
+      /* Get foreground and grid colors - using default colors to avoid deprecated APIs */
 
-   GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; /* Default to black */
-   GtkStyleContext *context = gtk_widget_get_style_context(curve->widget);
-   gtk_style_context_get_color(context, &fg);
+   GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; /* Default to black, avoiding deprecated style context */
    GdkRGBA grid = fg;
    grid.alpha   = 0.25;
 

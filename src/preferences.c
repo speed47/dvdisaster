@@ -54,7 +54,7 @@ static void set_widget_sensitive(GtkWidget *widget, int state)
 
 static void set_entry_text(GtkEntry *entry, char *text)
 {  if(entry)
-      gtk_entry_set_text(entry, text);
+      gtk_editable_set_text(entry, text);
 }
 
 /***
@@ -204,8 +204,8 @@ void GuiHidePreferences(void)
    /* Get fill byte and recalculate the dead sector marker */
 
    if(pc->byteCheckA && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(pc->byteCheckA)))   
-   {  const char *value1 = gtk_entry_get_text(GTK_ENTRY(pc->byteEntryA));
-      const char *value2 = gtk_entry_get_text(GTK_ENTRY(pc->byteEntryB));
+   {  const char *value1 = gtk_editable_get_text(GTK_EDITABLE(pc->byteEntryA));
+      const char *value2 = gtk_editable_get_text(GTK_EDITABLE(pc->byteEntryB));
       int v1 = strtol(value1, NULL, 0);
       int v2 = strtol(value2, NULL, 0);
 
@@ -213,12 +213,12 @@ void GuiHidePreferences(void)
 
       if(Closure->fillUnreadable != v2)
       {  Closure->fillUnreadable = v2;
- 	 gtk_entry_set_text(GTK_ENTRY(pc->byteEntryA), value2);
+ 	 gtk_editable_set_text(GTK_ENTRY(pc->byteEntryA), value2);
       }
       else
 	if(Closure->fillUnreadable != v1)
 	{  Closure->fillUnreadable = v1;
-	   gtk_entry_set_text(GTK_ENTRY(pc->byteEntryB), value1);
+	   gtk_editable_set_text(GTK_ENTRY(pc->byteEntryB), value1);
 	}
 
       if(Closure->fillUnreadable < 0)
@@ -231,8 +231,8 @@ void GuiHidePreferences(void)
    /* Get raw reading mode */
 
    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(pc->radioRawModeOtherA)))   
-   {  const char *value1 = gtk_entry_get_text(GTK_ENTRY(pc->rawModeValueA));
-      const char *value2 = gtk_entry_get_text(GTK_ENTRY(pc->rawModeValueB));
+   {  const char *value1 = gtk_editable_get_text(GTK_EDITABLE(pc->rawModeValueA));
+      const char *value2 = gtk_editable_get_text(GTK_EDITABLE(pc->rawModeValueB));
       int v1 = strtol(value1, NULL, 0);
       int v2 = strtol(value2, NULL, 0);
 
@@ -240,12 +240,12 @@ void GuiHidePreferences(void)
 
       if(Closure->rawMode != v2)
       {  Closure->rawMode = v2;
- 	 gtk_entry_set_text(GTK_ENTRY(pc->rawModeValueA), value2);
+ 	 gtk_editable_set_text(GTK_ENTRY(pc->rawModeValueA), value2);
       }
       else
 	if(Closure->rawMode != v1)
 	{  Closure->rawMode = v1;
-	   gtk_entry_set_text(GTK_ENTRY(pc->rawModeValueB), value1);
+	   gtk_editable_set_text(GTK_ENTRY(pc->rawModeValueB), value1);
 	}
 
       if(Closure->rawMode < 0)
@@ -258,17 +258,17 @@ void GuiHidePreferences(void)
    /* Get defective sector cache prefix.
       Both entries might contain different input. */
 
-   value1 = gtk_entry_get_text(GTK_ENTRY(pc->cacheDefectivePrefixA));
-   value2 = gtk_entry_get_text(GTK_ENTRY(pc->cacheDefectivePrefixB));
+   value1 = gtk_editable_get_text(GTK_EDITABLE(pc->cacheDefectivePrefixA));
+   value2 = gtk_editable_get_text(GTK_EDITABLE(pc->cacheDefectivePrefixB));
    if(strcmp(Closure->dDumpPrefix, value1))
    {  g_free(Closure->dDumpPrefix);
       Closure->dDumpPrefix = g_strdup(value1);
-      gtk_entry_set_text(GTK_ENTRY(pc->cacheDefectivePrefixB), value1);
+      gtk_editable_set_text(GTK_ENTRY(pc->cacheDefectivePrefixB), value1);
    }
    else if(strcmp(Closure->dDumpPrefix, value2))
    {  g_free(Closure->dDumpPrefix);
       Closure->dDumpPrefix = g_strdup(value2);
-      gtk_entry_set_text(GTK_ENTRY(pc->cacheDefectivePrefixA), value2);
+      gtk_editable_set_text(GTK_ENTRY(pc->cacheDefectivePrefixA), value2);
    }
 
    /* Ask currently selected method to update its settings
@@ -895,7 +895,7 @@ static void strategy_cb(GtkWidget *widget, gpointer data)
 
 static void rawvalue_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)data;
-   const char *value = gtk_entry_get_text(GTK_ENTRY(widget));
+   const char *value = gtk_editable_get_text(GTK_EDITABLE(widget));
    char new_value[11];
 
    Closure->rawMode = strtol(value, NULL, 0);
@@ -922,7 +922,7 @@ static void rawvalue_cb(GtkWidget *widget, gpointer data)
 
 static void bytefill_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)data;
-   const char *value = gtk_entry_get_text(GTK_ENTRY(widget));
+   const char *value = gtk_editable_get_text(GTK_EDITABLE(widget));
    char byte[11];
 
    Closure->fillUnreadable = strtol(value, NULL, 0);
@@ -984,7 +984,7 @@ static void bytefill_check_cb(GtkWidget *widget, gpointer data)
 
 static void defective_prefix_cb(GtkWidget *widget, gpointer data)
 {  prefs_context *pc = (prefs_context*)data;
-   char *value = (char*)gtk_entry_get_text(GTK_ENTRY(widget));
+   char *value = (char*)gtk_editable_get_text(GTK_EDITABLE(widget));
 
    if(!value || !*value)
    {  set_entry_text(GTK_ENTRY(pc->cacheDefectivePrefixA), "sector-");
@@ -1576,7 +1576,7 @@ void GuiCreatePreferencesWindow(void)
 	    {  char value[11];
 	
 	       g_snprintf(value, 10, "0x%02x", Closure->fillUnreadable);
-	       gtk_entry_set_text(GTK_ENTRY(entry), value);
+	       gtk_editable_set_text(GTK_ENTRY(entry), value);
 	       activate_toggle_button(GTK_TOGGLE_BUTTON(check), TRUE);
 	    }
 	    else set_widget_sensitive(entry, FALSE);
@@ -1703,7 +1703,7 @@ void GuiCreatePreferencesWindow(void)
 	 else   pc->rawModeValueB = entry;
 	
 	 g_snprintf(value, 10, "0x%02x", Closure->rawMode);
-	 gtk_entry_set_text(GTK_ENTRY(entry), value);
+	 gtk_editable_set_text(GTK_ENTRY(entry), value);
 
 	 switch(Closure->rawMode)
 	 {  case 0x20:
@@ -2220,7 +2220,7 @@ void GuiCreatePreferencesWindow(void)
 
 	 g_signal_connect(entry, "activate", G_CALLBACK(defective_prefix_cb), pc);
 	 gtk_entry_set_width_chars(GTK_ENTRY(entry), 20);
-	 gtk_entry_set_text(GTK_ENTRY(entry), Closure->dDumpPrefix);
+	 gtk_editable_set_text(GTK_ENTRY(entry), Closure->dDumpPrefix);
 	 gtk_box_append(GTK_BOX(hbox), entry);
 
  	 if(!i) pc->cacheDefectivePrefixA = entry;
@@ -2984,6 +2984,6 @@ void GuiCreatePreferencesWindow(void)
 
    /* Show the created / reused window */
 
-   gtk_widget_show(GTK_WIDGET(Closure->prefsWindow));
+   gtk_widget_set_visible(GTK_WIDGET(Closure->prefsWindow, TRUE));
 }
 #endif /* WITH_GUI_YES */

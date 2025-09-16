@@ -1090,6 +1090,6 @@ void GuiCreateRawEditor(void)
       g_signal_connect(G_OBJECT(rec->drawingArea), "button_press_event", G_CALLBACK(button_cb), NULL);
    }
 
-   gtk_widget_show(GTK_WIDGET(rec->window));
+   gtk_widget_set_visible(GTK_WIDGET(rec->window, TRUE));
 }
 #endif /* WITH_GUI_YES */

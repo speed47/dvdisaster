@@ -58,8 +58,8 @@ static void insert_buttons(GtkDialog *dialog)
    
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(no_rs02_cb), NULL);
 
-   gtk_widget_show(hbox);
-   gtk_widget_show(check);
+   gtk_widget_set_visible(hbox, TRUE);
+   gtk_widget_set_visible(check, TRUE);
 } 
 #endif /* WITH_GUI_YES */
 

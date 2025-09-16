@@ -98,7 +98,7 @@ void GuiCreateWelcomePage(GtkNotebook *notebook)
    g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), NULL);
    gtk_box_append(GTK_BOX(box), button);
 
-   gtk_widget_show(box);
+   gtk_widget_set_visible(box, TRUE);
 
    Closure->dotFileVersion = Closure->version;
 }

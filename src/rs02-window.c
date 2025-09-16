@@ -434,7 +434,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
       }
 
       if(widget == wl->radio2A) /* user specified value */
-      {  const char *value = gtk_entry_get_text(GTK_ENTRY(wl->otherEntryA));
+      {  const char *value = gtk_editable_get_text(GTK_EDITABLE(wl->otherEntryA));
 
 	 gtk_widget_set_sensitive(wl->cdEntryA, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdEntry1A, FALSE);
@@ -464,7 +464,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
       }
 
       if(widget == wl->radio2B) /* user specified value */
-      {  const char *value = gtk_entry_get_text(GTK_ENTRY(wl->otherEntryB));
+      {  const char *value = gtk_editable_get_text(GTK_EDITABLE(wl->otherEntryB));
 
 	 gtk_widget_set_sensitive(wl->cdEntryB, FALSE);
 	 gtk_widget_set_sensitive(wl->dvdEntry1B, FALSE);
@@ -516,80 +516,80 @@ static void query_cb(GtkWidget *widget, gpointer data)
    }
 
    if(widget == wl->cdButtonA || widget == wl->cdButtonB)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->cdEntryA), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->cdEntryB), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
    }
 
    if(widget == wl->cdUndoButtonA || widget == wl->cdUndoButtonB)
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedCDSize);
-      gtk_entry_set_text(GTK_ENTRY(wl->cdEntryA), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->cdEntryB), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
    }
 
    if(widget == wl->dvdButton1A || widget == wl->dvdButton1B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
    }
 
    if(widget == wl->dvdUndoButton1A || widget == wl->dvdUndoButton1B)
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedDVDSize1);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
    }
 
    if(widget == wl->dvdButton2A || widget == wl->dvdButton2B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
    }
 
    if(widget == wl->dvdUndoButton2A || widget == wl->dvdUndoButton2B )
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedDVDSize2);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
    }
 
    if(widget == wl->bdButton1A || widget == wl->bdButton1B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
    }
 
    if(widget == wl->bdUndoButton1A || widget == wl->bdUndoButton1B)
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedBDSize1);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
    }
 
    if(widget == wl->bdButton2A || widget == wl->bdButton2B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
    }
 
    if(widget == wl->bdUndoButton2A || widget == wl->bdUndoButton2B )
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedBDSize2);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
    }
 
    if(widget == wl->bdButton3A || widget == wl->bdButton3B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
    }
 
    if(widget == wl->bdUndoButton3A || widget == wl->bdUndoButton3B )
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedBDSize3);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
    }
 
    if(widget == wl->bdButton4A || widget == wl->bdButton4B)
-   {  gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+   {  gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
    }
 
    if(widget == wl->bdUndoButton4A || widget == wl->bdUndoButton4B )
    {  g_snprintf(value, 40, "%lld", (long long int)Closure->savedBDSize4);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4A), value);
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
    }
 }
 
@@ -601,75 +601,75 @@ static void entry_tracker_cb(GtkWidget *widget, gpointer data)
 {  RS02Widgets *wl = (RS02Widgets*)data;
 
    if(widget == wl->cdEntryA)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->cdEntryA));
-      gtk_entry_set_text(GTK_ENTRY(wl->cdEntryB), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->cdEntryA));
+      gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), text);
    }
    if(widget == wl->cdEntryB)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->cdEntryB));
-      gtk_entry_set_text(GTK_ENTRY(wl->cdEntryA), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->cdEntryB));
+      gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), text);
    }
 
    if(widget == wl->dvdEntry1A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry1A));
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry1A));
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), text);
    }
    if(widget == wl->dvdEntry1B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry1B));
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry1B));
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), text);
    }
 
    if(widget == wl->dvdEntry2A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry2A));
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry2A));
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), text);
    }
    if(widget == wl->dvdEntry2B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry2B));
-      gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry2B));
+      gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), text);
    }
 
    if(widget == wl->bdEntry1A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry1A));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry1A));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), text);
    }
    if(widget == wl->bdEntry1B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry1B));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry1B));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), text);
    }
 
    if(widget == wl->bdEntry2A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry2A));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry2A));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), text);
    }
    if(widget == wl->bdEntry2B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry2B));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry2B));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), text);
    }
 
    if(widget == wl->bdEntry3A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3A));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry3A));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), text);
    }
    if(widget == wl->bdEntry3B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3B));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry3B));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), text);
    }
 
    if(widget == wl->bdEntry4A)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry4A));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4B), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry4A));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), text);
    }
    if(widget == wl->bdEntry4B)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->bdEntry4B));
-      gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4A), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry4B));
+      gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), text);
    }
 
    if(widget == wl->otherEntryA)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->otherEntryA));
-      gtk_entry_set_text(GTK_ENTRY(wl->otherEntryB), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->otherEntryA));
+      gtk_editable_set_text(GTK_ENTRY(wl->otherEntryB), text);
    }
    if(widget == wl->otherEntryB)
-   {  const char *text = gtk_entry_get_text(GTK_ENTRY(wl->otherEntryB));
-      gtk_entry_set_text(GTK_ENTRY(wl->otherEntryA), text);
+   {  const char *text = gtk_editable_get_text(GTK_EDITABLE(wl->otherEntryB));
+      gtk_editable_set_text(GTK_ENTRY(wl->otherEntryA), text);
    }
 }
 
@@ -702,19 +702,19 @@ void ReadRS02Preferences(Method *method)
 {  RS02Widgets *wl = (RS02Widgets*)method->widgetList;
    gint64 value;
 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->cdEntryA)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->cdEntryA)));
    Closure->cdSize = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry1A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry1A)));
    Closure->dvdSize1 = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->dvdEntry2A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->dvdEntry2A)));
    Closure->dvdSize2 = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry1A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry1A)));
    Closure->bdSize1 = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry2A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry2A)));
    Closure->bdSize2 = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry3A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry3A)));
    Closure->bdSize3 = value > 0 ? value : 0; 
-   value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->bdEntry4A)));
+   value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->bdEntry4A)));
    Closure->bdSize4 = value > 0 ? value : 0; 
 
    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio1A)))   
@@ -722,7 +722,7 @@ void ReadRS02Preferences(Method *method)
    }
 
    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio2A)))   
-   {  value = atoll(gtk_entry_get_text(GTK_ENTRY(wl->otherEntryA)));
+   {  value = atoll(gtk_editable_get_text(GTK_EDITABLE(wl->otherEntryA)));
    
       Closure->mediumSize = value > 0 ? value : 0; 
    }
@@ -1247,26 +1247,26 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
    /* Fill in values from the closure */
 
    g_snprintf(value, 40, "%lld", (long long int)Closure->cdSize);
-   gtk_entry_set_text(GTK_ENTRY(wl->cdEntryB), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->cdEntryA), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->cdEntryB), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->cdEntryA), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->dvdSize1);
-   gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry1B), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->dvdSize2);
-   gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->dvdEntry2B), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize1);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry1B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry1B), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize2);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry2B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry2B), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize3);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry3B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry3B), value);
    g_snprintf(value, 40, "%lld", (long long int)Closure->bdSize4);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4A), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->bdEntry4B), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4A), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->bdEntry4B), value);
 
    /* custom value selection */
 
@@ -1319,8 +1319,8 @@ void CreateRS02PrefsPage(Method *method, GtkWidget *parent)
 	"technical reasons."));
 
    g_snprintf(value, 40, "%lld", (long long int)Closure->mediumSize);
-   gtk_entry_set_text(GTK_ENTRY(wl->otherEntryA), value);
-   gtk_entry_set_text(GTK_ENTRY(wl->otherEntryB), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->otherEntryA), value);
+   gtk_editable_set_text(GTK_ENTRY(wl->otherEntryB), value);
 
    /* Initialize radio buttons */
 

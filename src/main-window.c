@@ -77,17 +77,17 @@ static void action_cb(GtkWidget *widget, gpointer data)
       /* Make sure we're using the current file selections */
    
       g_free(Closure->imageName);
-      Closure->imageName = g_strdup(gtk_entry_get_text(GTK_ENTRY(Closure->imageEntry)));
+      Closure->imageName = g_strdup(gtk_editable_get_text(GTK_EDITABLE(Closure->imageEntry)));
       if(Closure->autoSuffix)
       {  Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
-	 gtk_entry_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
+	 gtk_editable_set_text(GTK_ENTRY(Closure->imageEntry), Closure->imageName);
       }
 
       g_free(Closure->eccName);
-      Closure->eccName = g_strdup(gtk_entry_get_text(GTK_ENTRY(Closure->eccEntry)));
+      Closure->eccName = g_strdup(gtk_editable_get_text(GTK_EDITABLE(Closure->eccEntry)));
       if(Closure->autoSuffix)
       {  Closure->eccName = ApplyAutoSuffix(Closure->eccName, "ecc");
-	 gtk_entry_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
+	 gtk_editable_set_text(GTK_ENTRY(Closure->eccEntry), Closure->eccName);
       }
 
       /* The ecc file may not be labeled as an .iso image */
@@ -509,7 +509,7 @@ void GuiCreateMainWindow(int *argc, char ***argv)
 
     /* And enter the main loop */
 
-    gtk_widget_show(window);
+    gtk_widget_set_visible(window, TRUE);
     /* gtk_main is deprecated in GTK4, but keeping it for now - will need to refactor to GtkApplication later */
     gtk_main();
 }

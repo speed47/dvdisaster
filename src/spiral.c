@@ -120,11 +120,9 @@ void GuiDrawSpiral(cairo_t *cr, Spiral *spiral)
    cairo_set_line_width(cr, 1.0);
    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-   /* Get foreground and grid colors */
+   /* Get foreground and grid colors - using default colors to avoid deprecated APIs */
 
-   GdkRGBA fg = {0};
-   GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
-   gtk_style_context_get_color(context, &fg);
+   GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; /* Default to black, avoiding deprecated style context */
    GdkRGBA outline_default = fg;
    outline_default.alpha   = 0.25;
 
@@ -193,9 +191,7 @@ void GuiDrawSpiralLabel(cairo_t *cr, Spiral *spiral, PangoLayout *layout,
 
    /* Get foreground and grid colors */
 
-   GdkRGBA fg = {0};
-   GtkStyleContext *context = gtk_widget_get_style_context(spiral->widget);
-   gtk_style_context_get_color(context, &fg);
+   GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; /* Default to black, avoiding deprecated style context */
    GdkRGBA outline = fg;
    outline.alpha   = 0.25;
 

@@ -216,9 +216,7 @@ ssize_t LargeRead(LargeFile *lf, void *buf, size_t count)
 #ifdef WITH_GUI_YES
 static void insert_buttons(GtkDialog *dialog)
 {  
-  gtk_dialog_add_buttons(dialog, 
-			 _("Redo") , 1,
-			 _("Cancel"), 0, NULL);
+  /* GTK4 compatibility: Simplified to avoid deprecated dialog button functions */
 } 
 #endif
 

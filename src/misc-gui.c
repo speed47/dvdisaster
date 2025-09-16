@@ -279,7 +279,7 @@ static void call_idle_func(gboolean (*idle_func)(gpointer), gpointer data)
 
 static gboolean show_idle_func(gpointer data)
 {  
-   gtk_widget_show(GTK_WIDGET(data));
+   gtk_widget_set_visible(GTK_WIDGET(data, TRUE));
 
    return FALSE;
 }
@@ -350,7 +350,7 @@ static gboolean message_idle_func(gpointer data)
 					       mi->msg, NULL);
 
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
-   gtk_widget_show(dialog);
+   gtk_widget_set_visible(dialog, TRUE);
 
    g_free(mi->msg);
    g_free(mi);
@@ -397,7 +397,7 @@ GtkWidget* GuiCreateMessage(char *format, GtkMessageType type, ...)
 				   utf8, NULL);
 
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_window_destroy), dialog);
-   gtk_widget_show(dialog);
+   gtk_widget_set_visible(dialog, TRUE);
    g_free(text);
    g_free(utf8);
 
@@ -611,8 +611,8 @@ static void insert_button(GtkDialog *dialog)
    
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
 
-   gtk_widget_show(hbox);
-   gtk_widget_show(check);
+   gtk_widget_set_visible(hbox, TRUE);
+   gtk_widget_set_visible(check, TRUE);
 } 
 
 int GuiConfirmImageDeletion(char *file)

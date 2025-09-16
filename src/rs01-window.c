@@ -80,7 +80,7 @@ static gboolean show_button_idle_func(gpointer data)
 {  Method *method = (Method*)data;
    RS01Widgets *wl = (RS01Widgets*)method->widgetList;
 
-   gtk_widget_show(wl->curveButton);
+   gtk_widget_set_visible(wl->curveButton, TRUE);
 
    return FALSE;
 }
