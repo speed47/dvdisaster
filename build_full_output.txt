@@ -1,0 +1,273 @@
+/usr/bin/gcc -Wall -Wno-format-zero-length -Wno-unused-but-set-variable -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -I. -pipe  -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include  -I/usr/include/gtk-4.0 -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/x86_64-linux-gnu -I/usr/include/webp -I/usr/include/graphene-1.0 -I/usr/lib/x86_64-linux-gnu/graphene-1.0/include -mfpmath=sse -msse -msse2 -pthread  -Wno-format-security -Werror -O2 -fomit-frame-pointer   -c -o /home/runner/work/dvdisaster/dvdisaster/build/inlined-icons.o /home/runner/work/dvdisaster/dvdisaster/build/inlined-icons.c
+Compiling: src/build.o
+Compiling: src/menubar.c
+Compiling: src/misc-gui.c
+Compiling: src/preferences.c
+Compiling: src/print-sense.c
+src/preferences.c: In function ‘color_set_cb’:
+src/preferences.c:709:4: error: ‘gtk_color_chooser_get_rgba’ is deprecated [-Werror=deprecated-declarations]
+  709 |    gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(widget), data);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:83,
+                 from src/dvdisaster.h:44,
+                 from src/preferences.c:26:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorchooser.h:66:10: note: declared here
+   66 | void     gtk_color_chooser_get_rgba       (GtkColorChooser *chooser,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c: In function ‘cache_defective_dir_cb’:
+src/preferences.c:1020:7: error: ‘gtk_file_chooser_dialog_new’ is deprecated [-Werror=deprecated-declarations]
+ 1020 |       dialog = gtk_file_chooser_dialog_new("Raw sector caching",
+      |       ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:131:
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/misc-gui.c: In function ‘insert_button’:
+src/misc-gui.c:648:4: error: implicit declaration of function ‘gtk_box_pack_start’ [-Werror=implicit-function-declaration]
+  648 |    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+      |    ^~~~~~~~~~~~~~~~~~
+src/misc-gui.c:648:4: error: ‘gtk_dialog_get_content_area’ is deprecated [-Werror=deprecated-declarations]
+In file included from /usr/include/gtk-4.0/gtk/deprecated/gtkappchooserdialog.h:31,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:43,
+                 from src/dvdisaster.h:44,
+                 from src/misc-gui.c:25:
+/usr/include/gtk-4.0/gtk/deprecated/gtkdialog.h:172:13: note: declared here
+  172 | GtkWidget * gtk_dialog_get_content_area (GtkDialog *dialog);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/menubar.c: In function ‘GuiCreateToolBar’:
+src/menubar.c:489:4: error: implicit declaration of function ‘gtk_box_pack_start’ [-Werror=implicit-function-declaration]
+  489 |    gtk_box_pack_start(GTK_BOX(box), sep, FALSE, FALSE, 3);
+      |    ^~~~~~~~~~~~~~~~~~
+src/preferences.c:1027:7: error: implicit declaration of function ‘gtk_file_chooser_set_filename’; did you mean ‘gtk_file_chooser_set_file’? [-Werror=implicit-function-declaration]
+ 1027 |       gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_file_chooser_set_file
+src/menubar.c:565:4: error: implicit declaration of function ‘gtk_container_add’ [-Werror=implicit-function-declaration]
+  565 |    gtk_container_add(GTK_CONTAINER(help), icon);
+      |    ^~~~~~~~~~~~~~~~~
+src/preferences.c:1029:11: error: implicit declaration of function ‘gtk_dialog_run’; did you mean ‘gtk_dialog_new’? [-Werror=implicit-function-declaration]
+ 1029 |       if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+      |           ^~~~~~~~~~~~~~
+      |           gtk_dialog_new
+src/menubar.c:565:22: error: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Werror=implicit-function-declaration]
+  565 |    gtk_container_add(GTK_CONTAINER(help), icon);
+      |                      ^~~~~~~~~~~~~
+      |                      GTK_CONSTRAINT
+src/misc-gui.c:651:4: error: implicit declaration of function ‘gtk_box_set_center_widget’; did you mean ‘gtk_center_box_set_center_widget’? [-Werror=implicit-function-declaration]
+  651 |    gtk_box_set_center_widget(GTK_BOX(hbox), check);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |    gtk_center_box_set_center_widget
+src/preferences.c:1032:30: error: implicit declaration of function ‘gtk_file_chooser_get_filename’; did you mean ‘gtk_file_chooser_get_files’? [-Werror=implicit-function-declaration]
+ 1032 |          Closure->dDumpDir = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                              gtk_file_chooser_get_files
+src/preferences.c:1032:28: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1032 |          Closure->dDumpDir = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                            ^
+src/preferences.c:1038:27: error: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+ 1038 |       gtk_window_destroy (dialog);
+      |                           ^~~~~~
+      |                           |
+      |                           GtkWidget * {aka struct _GtkWidget *}
+In file included from /usr/include/gtk-4.0/gtk/gtkaboutdialog.h:29,
+                 from /usr/include/gtk-4.0/gtk/gtk.h:33:
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/preferences.c: In function ‘logfile_select_cb’:
+src/preferences.c:1052:4: error: ‘gtk_file_chooser_dialog_new’ is deprecated [-Werror=deprecated-declarations]
+ 1052 |    {  dialog = gtk_file_chooser_dialog_new("Log file",
+      |    ^
+/usr/include/gtk-4.0/gtk/deprecated/gtkfilechooserdialog.h:39:12: note: declared here
+   39 | GtkWidget *gtk_file_chooser_dialog_new              (const char           *title,
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:1062:27: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1062 |          Closure->logFile = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      |                           ^
+src/preferences.c:1069:27: error: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+ 1069 |       gtk_window_destroy (dialog);
+      |                           ^~~~~~
+      |                           |
+      |                           GtkWidget * {aka struct _GtkWidget *}
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/preferences.c: In function ‘logfile_delete_cb’:
+src/preferences.c:1074:1: error: ‘gtk_message_dialog_new’ is deprecated [-Werror=deprecated-declarations]
+ 1074 | {  GtkWidget *dialog = gtk_message_dialog_new(Closure->prefsWindow,
+      | ^
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:192:
+/usr/include/gtk-4.0/gtk/deprecated/gtkmessagedialog.h:81:12: note: declared here
+   81 | GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:1085:23: error: passing argument 1 of ‘gtk_window_destroy’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+ 1085 |    gtk_window_destroy(dialog);
+      |                       ^~~~~~
+      |                       |
+      |                       GtkWidget * {aka struct _GtkWidget *}
+/usr/include/gtk-4.0/gtk/gtkwindow.h:251:59: note: expected ‘GtkWindow *’ {aka ‘struct _GtkWindow *’} but argument is of type ‘GtkWidget *’ {aka ‘struct _GtkWidget *’}
+  251 | void     gtk_window_destroy                (GtkWindow    *window);
+      |                                             ~~~~~~~~~~~~~~^~~~~~
+src/preferences.c: In function ‘method_select_cb’:
+src/preferences.c:1097:4: error: ‘gtk_combo_box_get_active’ is deprecated: Use 'GtkDropDown' instead [-Werror=deprecated-declarations]
+ 1097 |    n = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+      |    ^
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:94:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:84:15: note: declared here
+   84 | int           gtk_combo_box_get_active       (GtkComboBox     *combo_box);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:1116:7: error: ‘gtk_combo_box_set_active’ is deprecated: Use 'GtkDropDown' instead [-Werror=deprecated-declarations]
+ 1116 |       gtk_combo_box_set_active(GTK_COMBO_BOX(other), n);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:86:15: note: declared here
+   86 | void          gtk_combo_box_set_active       (GtkComboBox     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c: In function ‘notebook_idle_func’:
+src/preferences.c:1128:4: error: ‘gtk_combo_box_get_active’ is deprecated: Use 'GtkDropDown' instead [-Werror=deprecated-declarations]
+ 1128 |    n = gtk_combo_box_get_active(GTK_COMBO_BOX(pc->methodChooserA));
+      |    ^
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:84:15: note: declared here
+   84 | int           gtk_combo_box_get_active       (GtkComboBox     *combo_box);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c: In function ‘GuiCreatePreferencesWindow’:
+src/preferences.c:1170:7: error: implicit declaration of function ‘gtk_window_set_icon’; did you mean ‘gtk_window_set_focus’? [-Werror=implicit-function-declaration]
+ 1170 |       gtk_window_set_icon(GTK_WINDOW(window), Closure->windowIcon);
+      |       ^~~~~~~~~~~~~~~~~~~
+      |       gtk_window_set_focus
+cc1: all warnings being treated as errors
+make: *** [GNUmakefile:177: /home/runner/work/dvdisaster/dvdisaster/build/menubar.o] Error 1
+make: *** Waiting for unfinished jobs....
+src/preferences.c:1171:7: error: implicit declaration of function ‘gtk_window_set_position’; did you mean ‘gtk_paned_set_position’? [-Werror=implicit-function-declaration]
+ 1171 |       gtk_window_set_position(GTK_WINDOW(window), 0 /* GTK_WIN_POS_CENTER deprecated */);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+      |       gtk_paned_set_position
+cc1: all warnings being treated as errors
+make: *** [GNUmakefile:176: /home/runner/work/dvdisaster/dvdisaster/build/misc-gui.o] Error 1
+src/preferences.c:1187:7: error: implicit declaration of function ‘gtk_box_pack_start’ [-Werror=implicit-function-declaration]
+ 1187 |       gtk_box_pack_start(GTK_BOX(outer_box), space, FALSE, FALSE, 4);
+      |       ^~~~~~~~~~~~~~~~~~
+src/preferences.c:1215:7: error: implicit declaration of function ‘gtk_container_add’ [-Werror=implicit-function-declaration]
+ 1215 |       gtk_container_add(GTK_CONTAINER(frame), vbox2);
+      |       ^~~~~~~~~~~~~~~~~
+src/preferences.c:1215:25: error: implicit declaration of function ‘GTK_CONTAINER’; did you mean ‘GTK_CONSTRAINT’? [-Werror=implicit-function-declaration]
+ 1215 |       gtk_container_add(GTK_CONTAINER(frame), vbox2);
+      |                         ^~~~~~~~~~~~~
+      |                         GTK_CONSTRAINT
+src/preferences.c:1230:19: error: implicit declaration of function ‘gtk_radio_button_new’; did you mean ‘gtk_spin_button_new’? [-Werror=implicit-function-declaration]
+ 1230 |          radio1 = gtk_radio_button_new(NULL);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+      |                   gtk_spin_button_new
+src/preferences.c:1230:17: error: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1230 |          radio1 = gtk_radio_button_new(NULL);
+      |                 ^
+src/preferences.c:1238:19: error: implicit declaration of function ‘gtk_radio_button_new_from_widget’ [-Werror=implicit-function-declaration]
+ 1238 |          radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:1238:52: error: implicit declaration of function ‘GTK_RADIO_BUTTON’; did you mean ‘GTK_SPIN_BUTTON’? [-Werror=implicit-function-declaration]
+ 1238 |          radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                                                    ^~~~~~~~~~~~~~~~
+      |                                                    GTK_SPIN_BUTTON
+src/preferences.c:1238:17: error: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1238 |          radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                 ^
+src/preferences.c:1289:10: error: implicit declaration of function ‘gtk_entry_set_width_chars’; did you mean ‘gtk_label_set_width_chars’? [-Werror=implicit-function-declaration]
+ 1289 |          gtk_entry_set_width_chars(GTK_ENTRY(spin1), 9);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |          gtk_label_set_width_chars
+src/preferences.c:1680:17: error: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1680 |          radio1 = gtk_radio_button_new(NULL);
+      |                 ^
+src/preferences.c:1688:17: error: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1688 |          radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio1));
+      |                 ^
+src/preferences.c:1696:17: error: assignment to ‘GtkWidget *’ {aka ‘struct _GtkWidget *’} from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+ 1696 |          radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      |                 ^
+src/preferences.c:2262:10: error: ‘gtk_combo_box_text_new’ is deprecated: Use 'GtkDropDown and GtkStringList' instead [-Werror=deprecated-declarations]
+ 2262 |          chooser = gtk_combo_box_text_new();
+      |          ^~~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:95:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcomboboxtext.h:38:15: note: declared here
+   38 | GtkWidget*    gtk_combo_box_text_new             (void);
+      |               ^~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2271:13: error: ‘gtk_combo_box_text_append_text’ is deprecated: Use 'GtkDropDown and GtkStringList' instead [-Werror=deprecated-declarations]
+ 2271 |             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(chooser), utf);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcomboboxtext.h:42:15: note: declared here
+   42 | void          gtk_combo_box_text_append_text     (GtkComboBoxText     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2278:10: error: ‘gtk_combo_box_set_active’ is deprecated: Use 'GtkDropDown' instead [-Werror=deprecated-declarations]
+ 2278 |          gtk_combo_box_set_active(GTK_COMBO_BOX(chooser), method_idx);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcombobox.h:86:15: note: declared here
+   86 | void          gtk_combo_box_set_active       (GtkComboBox     *combo_box,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2528:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2528 |          button = gtk_color_button_new_with_rgba(Closure->greenSector);
+      |          ^~~~~~
+In file included from /usr/include/gtk-4.0/gtk/gtk.h:82:
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2558:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2558 |          button = gtk_color_button_new_with_rgba(Closure->yellowSector);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2588:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2588 |          button = gtk_color_button_new_with_rgba(Closure->redSector);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2618:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2618 |          button = gtk_color_button_new_with_rgba(Closure->darkSector);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2648:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2648 |          button = gtk_color_button_new_with_rgba(Closure->blueSector);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2679:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2679 |          button = gtk_color_button_new_with_rgba(Closure->whiteSector);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2720:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2720 |          button = gtk_color_button_new_with_rgba(Closure->greenText);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2750:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2750 |          button = gtk_color_button_new_with_rgba(Closure->redText);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2789:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2789 |          button = gtk_color_button_new_with_rgba(Closure->curveColor);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2820:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2820 |          button = gtk_color_button_new_with_rgba(Closure->logColor);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/preferences.c:2852:10: error: ‘gtk_color_button_new_with_rgba’ is deprecated [-Werror=deprecated-declarations]
+ 2852 |          button = gtk_color_button_new_with_rgba(Closure->barColor);
+      |          ^~~~~~
+/usr/include/gtk-4.0/gtk/deprecated/gtkcolorbutton.h:53:14: note: declared here
+   53 | GtkWidget *  gtk_color_button_new_with_rgba (const GdkRGBA  *rgba);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make: *** [GNUmakefile:176: /home/runner/work/dvdisaster/dvdisaster/build/preferences.o] Error 1

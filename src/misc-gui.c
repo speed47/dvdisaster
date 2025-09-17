@@ -645,10 +645,11 @@ static void insert_button(GtkDialog *dialog)
 {  GtkWidget *check,*hbox;
 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), hbox, FALSE, FALSE, 0);
+   /* GTK4: Create simple container without deprecated dialog content area */
+   gtk_window_set_child(GTK_WINDOW(dialog), hbox);
 
    check = gtk_check_button_new_with_label(_utf("Do not ask again"));
-   gtk_box_set_center_widget(GTK_BOX(hbox), check);
+   gtk_box_append(GTK_BOX(hbox), check);
    
    g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(dont_ask_again_cb), NULL);
 

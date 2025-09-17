@@ -486,7 +486,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    gtk_box_append(GTK_BOX(box), space);
 
    sep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-   gtk_box_pack_start(GTK_BOX(box), sep, FALSE, FALSE, 3);
+   gtk_box_append(GTK_BOX(box), sep);
 
    /*** Image file selection */
 
@@ -562,7 +562,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    icon = gtk_image_new_from_icon_name("manual");
    Closure->helpButton = help = gtk_button_new();
    /* gtk_button_set_relief deprecated in GTK4 */
-   gtk_container_add(GTK_CONTAINER(help), icon);
+   gtk_button_set_child(GTK_BUTTON(help), icon);
    g_signal_connect(G_OBJECT(help), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_HELP_MANUAL);
    gtk_box_append(GTK_BOX(box), help);
    GuiAttachTooltip(help, _("tooltip|User manual"),
@@ -573,7 +573,7 @@ GtkWidget *GuiCreateToolBar(GtkWidget *parent)
    icon = gtk_image_new_from_icon_name("quit");
    quit = gtk_button_new();
    /* gtk_button_set_relief deprecated in GTK4 */
-   gtk_container_add(GTK_CONTAINER(quit), icon);
+   gtk_button_set_child(GTK_BUTTON(quit), icon);
    g_signal_connect(G_OBJECT(quit), "clicked", G_CALLBACK(menu_cb), (gpointer)MENU_FILE_QUIT);
    gtk_box_append(GTK_BOX(box), quit);
    GuiAttachTooltip(quit, _("tooltip|Quit"), _("Quit dvdisaster"));
