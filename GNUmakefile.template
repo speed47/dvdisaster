@@ -114,6 +114,10 @@ ${BUILDTMP}/%.o : src/%.c
 	@echo "Compiling:" $?
 	@$(CC) $(COPTS) -c $? -o $@
 
+${BUILDTMP}/inlined-icons.c.o : ${BUILDTMP}/inlined-icons.c
+	@echo "Compiling:" $?
+	@$(CC) $(COPTS) -c $? -o $@
+
 ${BUILDTMP}/build.o : src/build.c src/build.h
 	@echo "Compiling:" src/build.o
 	@$(CC) $(COPTS) -c src/build.c -o $@
