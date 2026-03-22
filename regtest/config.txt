@@ -641,3 +641,5 @@ RS03f_read_second_pass_with_crc_error yes
 RS03f_read_multipass_ecc_partial_success yes
 
 # Reading tests (adaptive)
+
+RS03f_adaptive_good yes

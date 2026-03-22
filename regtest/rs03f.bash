@@ -1517,4 +1517,17 @@ fi
 
 REGTEST_SECTION="Reading tests (adaptive)"
 
+# Adaptive reading of a good image with RS03 ecc file.
+# Regression test: RS03 ecc files were misidentified as RS01 by the
+# adaptive reader, causing GetCRCFromRS01_obsolete() to read garbage
+# CRC data from the RS03 file layout. This resulted in bogus CRC errors
+# for every single sector.
+
+if try "adaptive read, good image with RS03 ecc file" adaptive_good; then
+  cp $MASTERISO $SIMISO
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest adaptive_good "--spinup-delay=0 -r --adaptive-read" $TMPISO $MASTERECC
+fi
+
 exit $nbfailed
