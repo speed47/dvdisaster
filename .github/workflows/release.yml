@@ -10,7 +10,7 @@ on:
 
 jobs:
   mac:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     strategy:
       matrix:
         ui: [cli, gui]
@@ -18,7 +18,7 @@ jobs:
           - ui: cli
             clionly: --with-gui=no
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -113,7 +113,7 @@ jobs:
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: configure
         run: ./configure ${{ matrix.clionly }}
       - name: make
@@ -181,7 +181,7 @@ jobs:
   linux64-cli:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites
         run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
       - name: configure
@@ -238,7 +238,7 @@ jobs:
   linux64-appimage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites on host
         run: sudo apt-get update && sudo apt-get install -y fuse
       - name: docker
