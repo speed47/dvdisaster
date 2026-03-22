@@ -30,7 +30,7 @@ cp dvdisaster dvdisaster.app/Contents/MacOS/dvdisaster.bin
 chmod +x dvdisaster.app/Contents/MacOS/dvdisaster.bin
 
 # Use dylibbundler to bundle dynamic libraries into the application bundle
-dylibbundler -od -cd -b -x dvdisaster.app/Contents/MacOS/dvdisaster.bin -d 'dvdisaster.app/Contents/libs/'
+dylibbundler -od -cd -b -x dvdisaster.app/Contents/MacOS/dvdisaster.bin -d 'dvdisaster.app/Contents/libs/' -s "$BREW_PREFIX/lib"
 
 # Copy the Info.plist file to define application metadata
 cp macinst/Info.plist dvdisaster.app/Contents/
@@ -54,7 +54,7 @@ if [ "$GUI" = 1 ]; then
 
   # Fix up dylib dependencies for each loader so they use our bundled libs
   for loader in "$pixbuf_bundle_dir/loaders/"*; do
-    [ -f "$loader" ] && dylibbundler -od -cd -b -x "$loader" -d 'dvdisaster.app/Contents/libs/' || true
+    [ -f "$loader" ] && dylibbundler -od -cd -b -x "$loader" -d 'dvdisaster.app/Contents/libs/' -s "$BREW_PREFIX/lib" || true
   done
 
   # Generate a loaders.cache with a placeholder for the loaders directory path.
