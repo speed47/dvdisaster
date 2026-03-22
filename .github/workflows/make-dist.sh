@@ -90,8 +90,8 @@ else
   cp -va CHANGELOG TODO COPYING CREDITS.* dvdisaster documentation/dvdisaster.*.1 documentation/user-manual/manual.pdf dist/
 fi
 
-echo "!> Building pdf from man"
-man -t documentation/dvdisaster.en.1 | ps2pdf - dist/dvdisaster.pdf
+echo "!> Copying manual to dist"
+cp documentation/manual.pdf dist/dvdisaster.pdf
 
 echo "!> Building dist zip"
 if command -v zip >/dev/null; then
