@@ -10,13 +10,18 @@ on:
 
 jobs:
   mac:
-    runs-on: macos-15-intel
     strategy:
       matrix:
         ui: [cli, gui]
+        arch: [x86_64, arm64]
         include:
           - ui: cli
             clionly: --with-gui=no
+          - arch: x86_64
+            runs-on: macos-13
+          - arch: arm64
+            runs-on: macos-14
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v5
       - name: install prerequisites
@@ -27,7 +32,7 @@ jobs:
         if: matrix.ui == 'gui'
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install gtk+3
+        run: brew install gtk+3 adwaita-icon-theme
       - name: configure
         run: |
           set +x
@@ -49,7 +54,7 @@ jobs:
           ./dvdisaster --version
           ./dvdisaster --version | grep NOGUI
       - name: build dist
-        run: ./.github/workflows/make-mac-app.sh ${{ github.ref }}
+        run: ./.github/workflows/make-mac-app.sh ${{ github.ref }} ${{ matrix.arch }}
         id: dist
       - name: Tag for Continuous Build
         if: github.ref_name == 'master'
