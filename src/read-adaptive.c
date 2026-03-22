@@ -639,17 +639,42 @@ static void open_and_determine_mode(read_closure *rc)
    /* See if we have ecc information available. 
       Prefer the error correction file over augmented images if both are available. */
 
-   /* See if the medium contains RS02 type ecc information */
+   /* Try to open and identify the ecc file using the codec method dispatch.
+      This properly detects RS01, RS03 (file mode), and other ecc file types
+      by delegating to each codec's recognizeEccFile method. */
 
-   rc->ei = open_ecc_file(READABLE_ECC | PRINT_MODE);
-   if(rc->ei)   /* RS01 type ecc */
-   {  rc->readMode = ECC_IN_FILE;
-      rc->eh = rc->ei->eh;
+   OpenEccFileForImage(rc->medium, Closure->eccName, O_RDONLY, IMG_PERMS);
 
-      rc->rs01LayerSectors = (rc->ei->sectors+rc->eh->dataBytes-1)/rc->eh->dataBytes;
+   if(rc->medium->eccFileMethod)
+   {  rc->eh = rc->medium->eccFileHeader;
 
-      PrintLog(_("%s-type ECC found\n"), "RS01");
-      GuiSetAdaptiveReadMinimumPercentage((1000*(rc->eh->dataBytes-rc->eh->eccBytes))/rc->eh->dataBytes);
+      if(!strncmp((char*)rc->eh->method, "RS01", 4))
+      {  /* RS01 ecc file: use ECC_IN_FILE mode with layer tracking */
+	 rc->ei = open_ecc_file(READABLE_ECC | PRINT_MODE);
+	 if(rc->ei)
+	 {  rc->readMode = ECC_IN_FILE;
+	    rc->rs01LayerSectors = (rc->ei->sectors+rc->eh->dataBytes-1)/rc->eh->dataBytes;
+	 }
+
+	 PrintLog(_("%s-type ECC found\n"), "RS01");
+	 GuiSetAdaptiveReadMinimumPercentage((1000*(rc->eh->dataBytes-rc->eh->eccBytes))/rc->eh->dataBytes);
+      }
+      else
+      {  /* RS03 or other ecc file: CRC checking works via getCrcBuf,
+	    but adaptive layer tracking is not available. */
+	 char method_name[5];
+	 strncpy(method_name, (char*)rc->eh->method, 4);
+	 method_name[4] = 0;
+
+	 PrintLog(_("%s-type ECC found\n"), method_name);
+
+	 if(Closure->version < rc->eh->neededVersion)
+	    PrintCLI(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
+		       "*          Proceeding could trigger incorrect behaviour.\n"
+		       "*          Please upgrade dvdisaster.\n\n"),
+		     rc->eh->neededVersion/10000,
+		     (rc->eh->neededVersion%10000)/100);
+      }
    }
    else   /* see if we have RS02 type ecc */
    if(rc->medium->eccHeader && !strncmp((char*)rc->medium->eccHeader->method,"RS02",4))
@@ -941,19 +966,19 @@ void check_image_size(read_closure *rc, gint64 image_file_sectors)
 
 static void load_crc_buf(read_closure *rc)
 {
-   switch(rc->readMode)
-   {  case ECC_IN_FILE:
-	 GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
-	 rc->crcBuf = GetCRCFromRS01_obsolete(rc->ei);
-	 break;
-      case ECC_IN_IMAGE:
-	 GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
-	 rc->crcBuf = GetCRCFromRS02_obsolete(rc->lay, rc->dh, rc->image);
-	 break;
-      default:
-	 rc->crcBuf = NULL;
-	 break;
+   if(rc->medium->eccFileMethod && rc->medium->eccFileMethod->getCrcBuf)
+   {  /* Use the codec method dispatch for ecc files (RS01, RS03, ...).
+	 This replaces the former GetCRCFromRS01_obsolete() and properly
+	 handles all ecc file types including RS03. */
+      GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
+      rc->crcBuf = rc->medium->eccFileMethod->getCrcBuf(rc->medium);
    }
+   else if(rc->readMode == ECC_IN_IMAGE)
+   {  GuiSetAdaptiveReadSubtitle(_utf("Loading CRC data."));
+      rc->crcBuf = GetCRCFromRS02_obsolete(rc->lay, rc->dh, rc->image);
+   }
+   else
+      rc->crcBuf = NULL;
 }
 
 /***
