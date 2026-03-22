@@ -18,9 +18,9 @@ jobs:
           - ui: cli
             clionly: --with-gui=no
           - arch: x86_64
-            runs-on: macos-13
+            runs-on: macos-15-intel
           - arch: arm64
-            runs-on: macos-14
+            runs-on: macos-15
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v5
