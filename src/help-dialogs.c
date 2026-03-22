@@ -520,7 +520,7 @@ GtkWidget* GuiShowTextfile(char *title, char *explanation, char *file,
 	 size = strlen(buf);
       }
       else
-      {  FILE *fptr = portable_fopen(path, "rb");
+      {  FILE *fptr = g_fopen(path, "rb");
 	 size_t bytes_read;
 
 	 if(!fptr)

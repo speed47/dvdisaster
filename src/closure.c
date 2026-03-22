@@ -154,7 +154,7 @@ void GuiReadDotfile()
 {  FILE *dotfile;
    char line[MAX_LINE_LEN];
 
-   dotfile = portable_fopen(Closure->dotFile, "rb");
+   dotfile = g_fopen(Closure->dotFile, "rb");
    if(!dotfile)
       return;
 
@@ -294,7 +294,7 @@ static void update_dotfile()
 
    /*** Otherwise, save our session */
 
-   dotfile = portable_fopen(Closure->dotFile, "wb");
+   dotfile = g_fopen(Closure->dotFile, "wb");
    if(!dotfile)
    {  g_printf("Could not open configuration file %s: %s\n", 
 		Closure->dotFile, strerror(errno));

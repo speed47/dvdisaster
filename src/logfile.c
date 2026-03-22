@@ -67,7 +67,7 @@ void VPrintLogFile(char *format, va_list argp)
       LogTimeStamp();
    }
 
-   file = fopen(Closure->logFile, "a");
+   file = g_fopen(Closure->logFile, "a");
    if(!file)
      return;
 

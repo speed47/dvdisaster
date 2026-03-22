@@ -348,7 +348,7 @@ reopen_image:
 	 else  /* Start over with new file */
 	 {  LargeClose(rc->readerImage);
 	    LargeClose(rc->writerImage);
-	    LargeUnlink(Closure->imageName);
+	    g_unlink(Closure->imageName);
 	    goto reopen_image;
 	 } 
       }

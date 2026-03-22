@@ -40,6 +40,7 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <glib/gstdio.h>
 #ifdef WITH_GUI_YES
   #include <gtk/gtk.h>
 #else
@@ -955,11 +956,7 @@ ssize_t LargeWrite(LargeFile*, void*, size_t);
 int LargeClose(LargeFile*);
 int LargeTruncate(LargeFile*, off_t);
 int LargeStat(char*, guint64*);
-int LargeUnlink(char*);
-
 int DirStat(char*);
-FILE *portable_fopen(char*, char*);
-int portable_mkdir(char*);
 char *ApplyAutoSuffix(char*, char*);
 
 /*** 

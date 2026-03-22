@@ -23,11 +23,11 @@
 /* Replacement of  __u32 with guint32,
    removal of hmac* functions
    and addition of AsciiDigest(), print_sum() and main()
-   by Carsten Gnörlich for the dvdisaster project, 2004-2006. */
+   by Carsten Gnï¿½rlich for the dvdisaster project, 2004-2006. */
 
 /* byteReverse() and MD5Final() changed for clean endian-independent 
    guint32->unsigned char conversion 
-   by Carsten Gnörlich for the dvdisaster project, 2015. */
+   by Carsten Gnï¿½rlich for the dvdisaster project, 2015. */
 
 #if defined(SIMPLE_MD5SUM)    	/* simple-md5sum*/
   #include <string.h>
@@ -330,7 +330,7 @@ static void print_sum(char *path)
    char ascii_digest[33];
    int size = 0;
 
-   file = fopen(path, "rb");
+   file = g_fopen(path, "rb");
    if(!file) return;
 
    MD5Init(&ctxt);

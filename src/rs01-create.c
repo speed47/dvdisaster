@@ -101,7 +101,7 @@ static int calculate_redundancy(char *image_name)
 
 static void unlink_image(GtkWidget *label)
 {
-   if(LargeUnlink(Closure->imageName))
+   if(!g_unlink(Closure->imageName))
    {  PrintLog(_("\nImage file %s deleted.\n"),Closure->imageName);
       GuiSetLabelText(label, _("\nImage file %s deleted.\n"), Closure->imageName);
    }
@@ -246,7 +246,7 @@ void RS01Create(void)
    if(LargeStat(Closure->eccName, &n))
    {  
       if(GuiConfirmEccDeletion(Closure->eccName))
-	 LargeUnlink(Closure->eccName);
+	 g_unlink(Closure->eccName);
       else
       {  GuiSetLabelText(ec->wl->encFootline,
 			 _("<span %s>Aborted to keep existing ecc file.</span>"),
@@ -343,7 +343,7 @@ void RS01Create(void)
       {  LargeClose(image->eccFile); /* Will be deleted anyways; no need to test for errors */
 	 image->eccFile = NULL;
 
-	 LargeUnlink(Closure->eccName);  /* Do not leave a CRC-only .ecc file behind */
+	 g_unlink(Closure->eccName);  /* Do not leave a CRC-only .ecc file behind */
 
 	 if(Closure->stopActions)   
 	 {
@@ -496,7 +496,7 @@ void RS01Create(void)
 	       ec->earlyTermination = FALSE;  /* suppress respective error message */
 	       LargeClose(image->eccFile);
 	       image->eccFile = NULL;
-	       LargeUnlink(Closure->eccName); /* Do not leave partial .ecc file behind */
+	       g_unlink(Closure->eccName); /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
 
@@ -588,7 +588,7 @@ void RS01Create(void)
 	       ec->earlyTermination = FALSE;   /* suppress respective error message */
 	       LargeClose(image->eccFile);
 	       image->eccFile = NULL;
-	       LargeUnlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
+	       g_unlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
 
@@ -715,7 +715,7 @@ void RS01Create(void)
 	       ec->earlyTermination = FALSE;   /* suppress respective error message */
 	       LargeClose(image->eccFile);
 	       image->eccFile = NULL;
-	       LargeUnlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
+	       g_unlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
 	       goto terminate;
 	    }
 

@@ -38,7 +38,7 @@ void DumpSector(RawBuffer *rb, char *path)
 
    filename = g_strdup_printf("%s%lld.h", path, (long long)rb->lba);
 
-   file = portable_fopen(filename, "w");
+   file = g_fopen(filename, "w");
    
    fprintf(file, 
 	   "#define SAMPLES_READ %d\n"

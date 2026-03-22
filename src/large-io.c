@@ -42,7 +42,6 @@
 
 #include <windows.h>
 
-#define large_stat _stati64
 #define large_lseek _lseeki64
 
 /* The original windows ftruncate has off_size (32bit) */
@@ -62,43 +61,22 @@ int large_ftruncate(int fd, gint64 size)
    return 0;
 }
 
-#else
-  #define large_ftruncate ftruncate
-  #define large_stat stat
-  #define large_lseek lseek
+#else /* !SYS_MINGW */
+
+#define large_lseek lseek
+#define large_ftruncate ftruncate
+
 #endif /* SYS_MINGW */
-
-/*
- * convert special chars in file names to correct OS encoding
- */
-
-static gchar* os_path(char *path_in)
-{  gchar *cp_path = g_filename_from_utf8(path_in, -1, NULL, NULL, NULL);
-
-   if(cp_path == NULL)
-   {  errno = EINVAL;
-      return NULL;
-   }
-   
-   REMEMBER(cp_path);
-   return cp_path;
-}
 
 /*
  * Large stat replacement (queries only file size)
  */
 
 int LargeStat(char *path, guint64 *length_return)
-{  struct stat mystat;
-   gchar *cp_path = os_path(path);
+{  GStatBuf mystat;
 
-   if(!cp_path) return FALSE;
-
-   if(large_stat(cp_path, &mystat) == -1)
-   {  g_free(cp_path);
+   if(g_stat(path, &mystat) == -1)
       return FALSE;
-   }
-   g_free(cp_path);
 
    if(!S_ISREG(mystat.st_mode))
       return FALSE;
@@ -112,16 +90,10 @@ int LargeStat(char *path, guint64 *length_return)
  */
 
 int DirStat(char *path)
-{  struct stat mystat;
-   gchar *cp_path = os_path(path);
+{  GStatBuf mystat;
 
-   if(!cp_path) return FALSE;
-
-   if(large_stat(cp_path, &mystat) == -1)
-   {  g_free(cp_path);
+   if(g_stat(path, &mystat) == -1)
       return FALSE;
-   }
-   g_free(cp_path);
 
    if(!S_ISDIR(mystat.st_mode))
      return FALSE;
@@ -135,8 +107,7 @@ int DirStat(char *path)
 
 LargeFile* LargeOpen(char *name, int flags, mode_t mode)
 {  LargeFile *lf = g_malloc0(sizeof(LargeFile));
-   struct stat mystat;
-   gchar *cp_path;
+   GStatBuf mystat;
 
 #ifdef HAVE_O_LARGEFILE
    flags |= O_LARGEFILE;
@@ -145,20 +116,14 @@ LargeFile* LargeOpen(char *name, int flags, mode_t mode)
    flags |= O_BINARY;
 #endif
 
-   cp_path = os_path(name);
-   if(!cp_path) 
-   {  g_free(lf); return FALSE;
-   }
-
    /* Do not try to open directories etc. */
 
-   if(    (large_stat(cp_path, &mystat) == 0)
+   if(    (g_stat(name, &mystat) == 0)
        && !S_ISREG(mystat.st_mode))
-   {  g_free(cp_path), g_free(lf); return NULL;
+   {  g_free(lf); return NULL;
    }
 
-   lf->fileHandle = open(cp_path, flags, mode);
-   g_free(cp_path);
+   lf->fileHandle = g_open(name, flags, mode);
 
    if(lf->fileHandle == -1)
    {  g_free(lf); return NULL;
@@ -316,51 +281,6 @@ int LargeTruncate(LargeFile *lf, off_t length)
 
    return result;
 }
-
-/*
- * Large file unlinking
- */
-
-int LargeUnlink(char *path)
-{  gchar *cp_path;
-   int result;
-
-   cp_path = os_path(path);
-   if(!cp_path) return FALSE;
-
-   result = unlink(cp_path);
-   g_free(cp_path);
-
-   return result == 0;
-}
-
-/***
- *** Wrappers around other IO
- ***/
-
-FILE *portable_fopen(char *path, char *modes)
-{  FILE *file;
-   char *cp_path;
-
-   cp_path = os_path(path);
-   file = fopen(cp_path, modes);
-   g_free(cp_path);
-
-   return file;
-}
-
-#ifdef SYS_MINGW
-int portable_mkdir(char *path)
-{  int status;
-   char *cp_path;
-
-   cp_path = os_path(path);
-   status = mkdir(cp_path);
-   g_free(cp_path);
-
-   return status;
-}
-#endif
 
 /***
  *** Convenience functions

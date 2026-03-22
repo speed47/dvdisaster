@@ -1075,7 +1075,7 @@ static void logfile_delete_cb(GtkWidget *widget, gpointer data)
    answer = gtk_dialog_run(GTK_DIALOG(dialog));
 
    if(answer == GTK_RESPONSE_OK)
-      LargeUnlink(Closure->logFile);
+      g_unlink(Closure->logFile);
    gtk_widget_destroy(dialog);
 }
 

@@ -898,7 +898,7 @@ int check_image_fingerprint(read_closure *rc)
 	}
 	else
 	{  LargeClose(rc->image);
-	   LargeUnlink(Closure->imageName);
+	   g_unlink(Closure->imageName);
 	   return TRUE; /* causes reopen of image in caller */
 	} 
      }

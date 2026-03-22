@@ -241,7 +241,7 @@ static void abort_encoding(ecc_closure *ec, int truncate)
 {  
    if(truncate && ec->lay)
    {  if(Closure->eccTarget == ECC_FILE)
-	 LargeUnlink(Closure->eccName);
+	 g_unlink(Closure->eccName);
       else if(!LargeTruncate(ec->image->file, (gint64)(2048*ec->lay->dataSectors)))
 	Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
 
@@ -278,7 +278,7 @@ static void remove_old_ecc(ecc_closure *ec)
    {  if(LargeStat(Closure->eccName, &ignore))
       {  
 	 if(GuiConfirmEccDeletion(Closure->eccName))
-	    LargeUnlink(Closure->eccName);
+	    g_unlink(Closure->eccName);
 	 else
 	 {  GuiSetLabelText(ec->wl->encFootline,
 			    _("<span %s>Aborted to keep existing ecc file.</span>"),
@@ -679,7 +679,7 @@ static void read_next_chunk(ecc_closure *ec, guint64 chunk)
 	  if(Closure->eccTarget == ECC_FILE)
 	  {  LargeClose(ec->image->eccFile);
 	     ec->image->eccFile = ec->writeHandle = NULL;
-	     LargeUnlink(Closure->eccName);
+	     g_unlink(Closure->eccName);
 	  }
 	  else
 	  {  LargeTruncate(ec->writeHandle, (gint64)(2048*lay->dataSectors));

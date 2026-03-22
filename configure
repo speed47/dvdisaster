@@ -83,7 +83,7 @@ fi
 
 PRINT_MESSAGE "\nLooking for includes and libraries:"
 
-REQUIRE_GLIB2 2 32 0
+REQUIRE_GLIB2 2 36 0
 echo
 
 if test "$cfg_with_gui" == "yes"; then

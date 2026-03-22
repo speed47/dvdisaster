@@ -601,7 +601,7 @@ void RandomImage(char *image_name, char *n_sectors, int mark)
 
    /*** Open the image file */
 
-   LargeUnlink(image_name);
+   g_unlink(image_name);
 
    if(!(image = LargeOpen(image_name, O_RDWR | O_CREAT, IMG_PERMS)))
      Stop(_("Can't open %s:\n%s"),image_name,strerror(errno));
@@ -1356,7 +1356,7 @@ void AppendToTextFile(char* filename, char *format, ...)
 {  va_list argp;
    FILE *file;
 
-   file = fopen(filename, "a");
+   file = g_fopen(filename, "a");
    if(!file)
      Stop("Could not open %s: %s\n", filename, strerror(errno));
 
