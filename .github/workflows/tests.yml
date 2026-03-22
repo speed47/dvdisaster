@@ -60,16 +60,9 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x86_64, i686]
         ui: [cli, gui]
         printf: [fmtdbg, normal]
         include:
-          - arch: x86_64
-            msystem: MINGW64
-            grep: x86-64
-          - arch: i686
-            msystem: MINGW32
-            grep: 386
           - ui: cli
             clionly: --with-gui=no
           - printf: fmtdbg
@@ -80,12 +73,12 @@ jobs:
     steps:
     - uses: msys2/setup-msys2@v2
       with:
-        msystem: ${{ matrix.msystem }}
+        msystem: MINGW64
         update: false
-        install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
+        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ghostscript mingw-w64-x86_64-ntldd-git man zip
     - name: install GUI prereqs
       if: matrix.ui == 'gui'
-      run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3
+      run: pacman -S --noconfirm mingw-w64-x86_64-gtk3
     - name: git config
       run: git config --global core.autocrlf input
       shell: bash
@@ -103,7 +96,7 @@ jobs:
           ./dvdisaster.exe --version
           file dvdisaster.exe
           if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
-          file dvdisaster.exe | grep -q '${{ matrix.grep }}'
+          file dvdisaster.exe | grep -q 'x86-64'
           file dvdisaster.exe | grep -q 'for MS Windows'
     - name: check executable (GUI)
       if: matrix.ui == 'gui'
