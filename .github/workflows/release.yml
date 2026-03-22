@@ -10,24 +10,29 @@ on:
 
 jobs:
   mac:
-    runs-on: macos-13
     strategy:
       matrix:
         ui: [cli, gui]
+        arch: [x86_64, arm64]
         include:
           - ui: cli
             clionly: --with-gui=no
+          - arch: x86_64
+            runs-on: macos-15-intel
+          - arch: arm64
+            runs-on: macos-15
+    runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install ghostscript glib gdk-pixbuf dylibbundler create-dmg
+        run: brew install glib gdk-pixbuf dylibbundler create-dmg
       - name: install prerequisites (GUI)
         if: matrix.ui == 'gui'
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install gtk+3
+        run: brew install gtk+3 adwaita-icon-theme
       - name: configure
         run: |
           set +x
@@ -49,7 +54,7 @@ jobs:
           ./dvdisaster --version
           ./dvdisaster --version | grep NOGUI
       - name: build dist
-        run: ./.github/workflows/make-mac-app.sh ${{ github.ref }}
+        run: ./.github/workflows/make-mac-app.sh ${{ github.ref }} ${{ matrix.arch }}
         id: dist
       - name: Tag for Continuous Build
         if: github.ref_name == 'master'
@@ -94,15 +99,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x86_64, i686]
         ui: [cli, gui]
         include:
-          - arch: x86_64
-            msystem: MINGW64
-            grep: x86-64
-          - arch: i686
-            msystem: MINGW32
-            grep: 386
           - ui: cli
             clionly: --with-gui=no
     defaults:
@@ -111,16 +109,16 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: ${{ matrix.msystem }}
+          msystem: MINGW64
           update: false
-          install: git diffutils make pkg-config mingw-w64-${{ matrix.arch }}-glib2 mingw-w64-${{ matrix.arch }}-gcc mingw-w64-${{ matrix.arch }}-ghostscript mingw-w64-${{ matrix.arch }}-ntldd-git man zip
+          install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ntldd-git man zip
       - name: install GUI prereqs
         if: matrix.ui == 'gui'
-        run: pacman -S --noconfirm mingw-w64-${{ matrix.arch }}-gtk3 mingw-w64-${{ matrix.arch }}-librsvg
+        run: pacman -S --noconfirm mingw-w64-x86_64-gtk3 mingw-w64-x86_64-librsvg
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: configure
         run: ./configure ${{ matrix.clionly }}
       - name: make
@@ -130,7 +128,7 @@ jobs:
           ./dvdisaster.exe --version
           file dvdisaster.exe
           if ./dvdisaster.exe --version | grep dirty; then exit 1; fi
-          file dvdisaster.exe | grep -q '${{ matrix.grep }}'
+          file dvdisaster.exe | grep -q 'x86-64'
           file dvdisaster.exe | grep -q 'for MS Windows'
       - name: check executable (GUI)
         if: matrix.ui == 'gui'
@@ -188,9 +186,9 @@ jobs:
   linux64-cli:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites
-        run: sudo apt update && sudo apt install -y libglib2.0-dev ghostscript man
+        run: sudo apt update && sudo apt install -y libglib2.0-dev man
       - name: configure
         run: ./configure --with-gui=no
       - name: make
@@ -245,7 +243,7 @@ jobs:
   linux64-appimage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install prerequisites on host
         run: sudo apt-get update && sudo apt-get install -y fuse
       - name: docker
@@ -253,7 +251,7 @@ jobs:
           mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/dvdisaster -v /tmp/dist:/dist ubuntu:18.04 sleep 1800
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'apt update && apt install -y ghostscript man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev'
+        run: docker exec uu sh -c 'apt update && apt install -y man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev'
       - name: configure in docker
         run: docker exec uu sh -c 'cd /dvdisaster && ./configure --prefix=/usr'
       - name: make in docker
