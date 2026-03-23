@@ -105,6 +105,7 @@ typedef struct _prefs_context
    GtkWidget *dsmButtonA, *dsmButtonB;
    GtkWidget *recogRS02A, *recogRS02B;
    GtkWidget *recogRS03A, *recogRS03B;
+   GtkWidget *bruteforceRS03A, *bruteforceRS03B;
    GtkWidget *byteEntryA, *byteEntryB;
    GtkWidget *byteCheckA, *byteCheckB;
    GtkWidget *spinUpA, *spinUpB;
@@ -304,8 +305,10 @@ void GuiUpdatePrefsExhaustiveSearch(void)
    if(Closure->prefsContext)
    {  activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS02A), Closure->examineRS02); 
       activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS02B), Closure->examineRS02); 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03A), Closure->examineRS03); 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03B), Closure->examineRS03); 
+      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03A), Closure->examineRS03);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03B), Closure->examineRS03);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->bruteforceRS03A), Closure->bruteforceRS03Search);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(pc->bruteforceRS03B), Closure->bruteforceRS03Search);
    }
 }
 
@@ -338,6 +341,7 @@ enum
    TOGGLE_SUFFIX,
    TOGGLE_RECOG_RS02,
    TOGGLE_RECOG_RS03,
+   TOGGLE_BRUTEFORCE_RS03,
    TOGGLE_SIZEDRIVE,
    TOGGLE_DAO,
    TOGGLE_DSM,
@@ -460,6 +464,12 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	Closure->examineRS03 = state;
 	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03A), state);
 	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->recogRS03B), state);
+	break;
+
+      case TOGGLE_BRUTEFORCE_RS03:
+	Closure->bruteforceRS03Search = state;
+	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->bruteforceRS03A), state);
+	activate_toggle_button(GTK_TOGGLE_BUTTON(pc->bruteforceRS03B), state);
 	break;
 
       case TOGGLE_DSM:
@@ -1400,6 +1410,46 @@ void GuiCreatePreferencesWindow(void)
 	   "with RS03 data. Otherwise you will waste a lot of "
 	   "time searching for the RS03 signatures and increase "
 	   "wear on the drive."
+	   ));
+
+      /* RS03 bruteforce search */
+
+      lwoh = GuiCreateLabelWithOnlineHelp(_("Bruteforce RS03 search (slow!)"),
+					  _("Bruteforce linear scan for RS03 data (slow!)"));
+      GuiRegisterPreferencesHelpWindow(lwoh);
+
+      for(i=0; i<2; i++)
+      {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	 GtkWidget *button = gtk_check_button_new();
+
+	 gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+	 gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
+         if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
+
+	 if(!i) pc->bruteforceRS03A = button;
+	 else   pc->bruteforceRS03B = button;
+
+	 activate_toggle_button(GTK_TOGGLE_BUTTON(button), Closure->bruteforceRS03Search);
+	 g_signal_connect(G_OBJECT(button), "toggled", G_CALLBACK(toggle_cb), GINT_TO_POINTER(TOGGLE_BRUTEFORCE_RS03));
+	 if(!i) gtk_box_pack_start(GTK_BOX(vbox2), hbox, FALSE, FALSE, 0);
+	 else   GuiAddHelpWidget(lwoh, hbox);
+      }
+
+      GuiAddHelpParagraph(lwoh,
+	 _("<b>Bruteforce RS03 search</b>\n\n"
+	   "When this setting is on and the normal RS03 search "
+	   "fails, a bruteforce linear scan of the entire image "
+	   "is performed to locate RS03 CRC blocks.\n\n"
+	   "This is useful when you created an RS03 augmented "
+	   "image using a custom number of sectors with "
+	   "<b>-n</b> and forgot the value you used. The "
+	   "bruteforce scan can recover the layout even if "
+	   "the RS03 header is damaged.\n\n"
+	   "<b>Warning:</b> This scan is very slow as it reads "
+	   "a large portion of the image sector by sector. "
+	   "Only enable this when the normal RS03 search fails "
+	   "and you know the image contains RS03 data created "
+	   "with a custom medium size."
 	   ));
 
       /** Image properties */

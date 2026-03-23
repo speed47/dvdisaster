@@ -6,6 +6,6 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs03i-tmp.iso: 14508 medium sectors.
-28 MiB data, 10 MiB ecc (67 roots; 35.6% redundancy).
+28 MiB data, 10 MiB ecc (67 roots; 35.6% redundancy), 0 MiB padding.
 Image has been augmented with error correction data.
 New image size is 38 MiB (19890 sectors).

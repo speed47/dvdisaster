@@ -12,6 +12,9 @@ TMPECC=$TMPDIR/rs03i-tmp.ecc  # rs03 augmented image wrapped by ecc file
 SIMISO=$TMPDIR/rs03i-sim.iso
 NO_FILE=$TMPDIR/none.file
 
+CUSTOM_ECCSIZE=28000
+CUSTOM_MASTERISO=$ISODIR/rs03i-custom-master.iso
+
 LARGEMASTERISO=$ISODIR/rs03i-large.iso
 LMI_HEADER=235219
 LMI_LAYER_SIZE=1409
@@ -33,6 +36,15 @@ fi
 if ! file_exists $LARGEMASTERISO; then
     $NEWVER --regtest --debug -i$LARGEMASTERISO --random-image 235219 >>$LOGFILE 2>&1
     $NEWVER --regtest --debug --set-version $SETVERSION -i$LARGEMASTERISO -mRS03 -c >>$LOGFILE 2>&1
+    echo -e "$FILE_MSG"
+    FILE_MSG=""
+fi
+
+# Create custom medium size master image (non-standard -n value)
+
+if ! file_exists $CUSTOM_MASTERISO; then
+    $NEWVER --regtest --debug -i$CUSTOM_MASTERISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$CUSTOM_MASTERISO -mRS03 -n$CUSTOM_ECCSIZE -c >>$LOGFILE 2>&1
     echo -e "$FILE_MSG"
     FILE_MSG=""
 fi
@@ -656,6 +668,42 @@ if try "image with crc error in padding area" with_crc_error_in_padding; then
    run_regtest with_crc_error_in_padding "--debug -t -n$ECCSIZE" $TMPISO $NO_FILE
 fi
 
+# Verify image created with custom -n, without specifying -n
+# Works because the ECC header is intact and contains the layout info.
+
+if try "verify custom-n image without specifying -n" verify_custom_n_good; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   run_regtest verify_custom_n_good "-t" $TMPISO $NO_FILE
+fi
+
+# Verify image created with custom -n, with damaged header and without specifying -n.
+# Works because the recognize code tries multiple layout candidates
+# and finds the correct one via backup CRC blocks.
+
+if try "verify custom-n image, bad header, no -n" verify_custom_n_bad_header_no_n; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+
+   run_regtest verify_custom_n_bad_header_no_n "-t" $TMPISO $NO_FILE
+fi
+
+# Verify image created with custom -n, with damaged header but specifying -n.
+# Works because -n gives the recognize code the correct layout,
+# allowing it to find the backup CRC blocks and rediscover the ECC data.
+
+if try "verify custom-n image, bad header, with -n" verify_custom_n_bad_header_with_n; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$CUSTOM_ECCSIZE"
+   run_regtest verify_custom_n_bad_header_with_n "-t" $TMPISO $NO_FILE
+fi
+
 ### Creation tests
 
 REGTEST_SECTION="Creation tests"
@@ -1190,6 +1238,101 @@ if try "image with crc error in padding area" fix_with_crc_error_in_padding; the
 
    extra_args="--debug -n $ECCSIZE"
    run_regtest fix_with_crc_error_in_padding "-f" $TMPISO  $NO_FILE
+fi
+
+# Fix good image created with custom -n, without specifying -n
+# Works because the ECC header is intact and contains the layout info.
+
+if try "fix custom-n good image" fix_custom_n_good; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   run_regtest fix_custom_n_good "-f" $TMPISO $NO_FILE
+fi
+
+# Fix image created with custom -n, with damaged header + missing sectors, with -n.
+# Works because -n gives the recognize code the correct layout.
+
+if try "fix custom-n image, bad header, with -n" fix_custom_n_bad_header_with_n; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header and erase some sectors
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$CUSTOM_ECCSIZE"
+   run_regtest fix_custom_n_bad_header_with_n "-f" $TMPISO $NO_FILE
+fi
+
+# Fix image created with custom -n, with damaged header, without -n.
+# Works because the recognize code tries multiple layout candidates.
+
+if try "fix custom-n image, bad header, no -n" fix_custom_n_bad_header_no_n; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header and erase some sectors
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+
+   run_regtest fix_custom_n_bad_header_no_n "-f" $TMPISO $NO_FILE
+fi
+
+# Fix image created with custom -n, with damaged header, without -n,
+# but with --bruteforce-rs03-search.
+# Works because the bruteforce scan finds the ECC data by linear search.
+
+if try "fix custom-n image, bad header, bruteforce" fix_custom_n_bad_header_bruteforce; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header and erase some sectors
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+
+   run_regtest fix_custom_n_bad_header_bruteforce "--bruteforce-rs03-search -f" $TMPISO $NO_FILE
+fi
+
+# Fix truncated image created with custom -n, with damaged header, with -n.
+# Works because -n gives the correct layout directly.
+
+if try "fix custom-n truncated image, bad header, with -n" fix_custom_n_truncated_with_n; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header, erase some sectors, and truncate
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --truncate=21500 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$CUSTOM_ECCSIZE"
+   run_regtest fix_custom_n_truncated_with_n "-f" $TMPISO $NO_FILE
+fi
+
+# Fix truncated image created with custom -n, with damaged header, without -n.
+# Fails because the image is truncated past the CRC area so the smart
+# algorithm can't find the layout, and bruteforce is not enabled.
+
+if try "fix custom-n truncated image, bad header, no bruteforce" fix_custom_n_truncated_no_bruteforce; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header, erase some sectors, and truncate
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --truncate=21500 >>$LOGFILE 2>&1
+
+   run_regtest fix_custom_n_truncated_no_bruteforce "-f" $TMPISO $NO_FILE
+fi
+
+# Fix truncated image created with custom -n, with damaged header, with bruteforce.
+# Works because the bruteforce linear scan finds the ECC data despite truncation.
+
+if try "fix custom-n truncated image, bad header, bruteforce" fix_custom_n_truncated_bruteforce; then
+   cp $CUSTOM_MASTERISO $TMPISO
+
+   # Damage the ECC header, erase some sectors, and truncate
+   $NEWVER -i$TMPISO --debug --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --truncate=21500 >>$LOGFILE 2>&1
+
+   run_regtest fix_custom_n_truncated_bruteforce "--bruteforce-rs03-search -f" $TMPISO $NO_FILE
 fi
 
 ### Scanning tests

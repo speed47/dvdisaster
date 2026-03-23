@@ -86,6 +86,7 @@ typedef enum
    MODIFIER_EJECT,
    MODIFIER_ENCODING_ALGORITHM,
    MODIFIER_ENCODING_IO_STRATEGY,
+   MODIFIER_BRUTEFORCE_RS03_SEARCH,
    MODIFIER_EXAMINE_RS02,
    MODIFIER_EXAMINE_RS03,
    MODIFIER_FILL_UNREADABLE,
@@ -221,6 +222,7 @@ int main(int argc, char *argv[])
 	{"byteset", 1, 0, MODE_BYTESET },
 	{"copy-sector", 1, 0, MODE_COPY_SECTOR },
 	{"compare-images", 1, 0, MODE_CMP_IMAGES },
+	{"bruteforce-rs03-search", 0, 0, MODIFIER_BRUTEFORCE_RS03_SEARCH },
 	{"cache-size", 1, 0, MODIFIER_CACHE_SIZE },
 	{"cav", 1, 0, MODIFIER_CAV_SPEED },
 	{"cdump", 0, 0, MODIFIER_CDUMP },
@@ -485,6 +487,9 @@ int main(int argc, char *argv[])
 	   Stop(_("--driver is only supported on GNU/Linux"));
 #endif
 	   break;
+         case MODIFIER_BRUTEFORCE_RS03_SEARCH:
+           Closure->bruteforceRS03Search = TRUE;
+           break;
          case MODIFIER_EXAMINE_RS02:
            Closure->examineRS02 = TRUE;
            break;
@@ -985,6 +990,7 @@ int main(int argc, char *argv[])
 #ifdef SYS_LINUX
       PrintCLI(_("  --driver=sg/cdrom          - use sg(default) or alternative cdrom driver (see man page!)\n"));
 #endif
+      PrintCLI(_("  --bruteforce-rs03-search   - enable bruteforce linear scan for RS03 data (slow!)\n"));
       PrintCLI(_("  --eject                    - eject medium after successful read\n"));
       PrintCLI(_("  --encoding-algorithm x     - possible values: 32bit, 64bit, SSE2, AltiVec\n"));
       PrintCLI(_("  --encoding-io-strategy x   - possible values: readwrite, mmap\n"));

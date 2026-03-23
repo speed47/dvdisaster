@@ -231,6 +231,8 @@ static void update_medium_sensitivity(RS03Widgets *wl, int mode)
    set_sensitive(wl->mediumSectorSpinB, manual_sens);
    set_sensitive(wl->mediumSectorLabelA, manual_sens);
    set_sensitive(wl->mediumSectorLabelB, manual_sens);
+   set_sensitive(wl->mediumSectorBytesA, manual_sens);
+   set_sensitive(wl->mediumSectorBytesB, manual_sens);
 }
 
 static void medium_mode_cb(GtkWidget *widget, gpointer data)
@@ -287,6 +289,20 @@ static void medium_combo_cb(GtkWidget *widget, gpointer data)
       gtk_combo_box_set_active(GTK_COMBO_BOX(wl->mediumComboA), idx);
 }
 
+static void update_sector_bytes_label(GtkWidget *label, gint64 sectors)
+{  double bytes = (double)sectors * 2048.0;
+   char buf[64];
+
+   if(bytes >= 1e9)
+      g_snprintf(buf, sizeof(buf), "(%.1f GB)", bytes / 1e9);
+   else if(bytes >= 1e6)
+      g_snprintf(buf, sizeof(buf), "(%.1f MB)", bytes / 1e6);
+   else
+      g_snprintf(buf, sizeof(buf), "(%.0f KB)", bytes / 1e3);
+
+   gtk_label_set_text(GTK_LABEL(label), buf);
+}
+
 static void medium_sectors_cb(GtkWidget *widget, gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
    gint64 value = (gint64)gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
@@ -297,6 +313,9 @@ static void medium_sectors_cb(GtkWidget *widget, gpointer data)
       set_spin_button_value(GTK_SPIN_BUTTON(wl->mediumSectorSpinB), (int)value);
    else
       set_spin_button_value(GTK_SPIN_BUTTON(wl->mediumSectorSpinA), (int)value);
+
+   update_sector_bytes_label(wl->mediumSectorBytesA, value);
+   update_sector_bytes_label(wl->mediumSectorBytesB, value);
 }
 
 /*
@@ -792,11 +811,12 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	    _("Specify the exact number of 2048-byte sectors to use as the "
 	      "target medium capacity. Only use this if you know the precise "
 	      "sector count of your target medium.\n\n"
-	      "WARNING: You MUST remember this value for future repairs! "
+	      "WARNING: You should remember this value for future repairs! "
 	      "Write it down on the disc itself. If the RS03 header on the "
 	      "disc gets damaged, dvdisaster needs the sector count to locate "
-	      "the backup header and ECC root sectors. Without it, recovery "
-	      "will fail in that scenario.\n\n"
+	      "the backup header and ECC root sectors. Without it, the "
+	      "bruteforce RS03 search option (slow!) will be needed to "
+	      "recover the layout.\n\n"
 	      "When using this option with the command line, pass the sector "
 	      "count with -n <number>. You will need to specify the same "
 	      "value again when attempting to repair the image."));
@@ -816,13 +836,26 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 gtk_box_pack_start(GTK_BOX(ahbox), alab, FALSE, FALSE, 0);
 	 gtk_widget_set_sensitive(alab, medium_mode == MEDIUM_MODE_MANUAL);
 
-	 if(!i) { wl->mediumManualA = manual_radio;
-		  wl->mediumSectorSpinA = spin;
-		  wl->mediumSectorLabelA = alab;
-		  gtk_box_pack_start(GTK_BOX(avbox), ahbox, FALSE, FALSE, 0); }
-	 else   { wl->mediumManualB = manual_radio;
-		  wl->mediumSectorSpinB = spin;
-		  wl->mediumSectorLabelB = alab; }
+	 {  GtkWidget *bytes_label = gtk_label_new("");
+	    gint64 initial_sectors;
+	    if(medium_mode == MEDIUM_MODE_MANUAL && Closure->mediumSize > 0)
+	       initial_sectors = Closure->mediumSize;
+	    else
+	       initial_sectors = BD_SL_SIZE;
+	    update_sector_bytes_label(bytes_label, initial_sectors);
+	    gtk_box_pack_start(GTK_BOX(ahbox), bytes_label, FALSE, FALSE, 0);
+	    gtk_widget_set_sensitive(bytes_label, medium_mode == MEDIUM_MODE_MANUAL);
+
+	    if(!i) { wl->mediumManualA = manual_radio;
+		     wl->mediumSectorSpinA = spin;
+		     wl->mediumSectorLabelA = alab;
+		     wl->mediumSectorBytesA = bytes_label;
+		     gtk_box_pack_start(GTK_BOX(avbox), ahbox, FALSE, FALSE, 0); }
+	    else   { wl->mediumManualB = manual_radio;
+		     wl->mediumSectorSpinB = spin;
+		     wl->mediumSectorLabelB = alab;
+		     wl->mediumSectorBytesB = bytes_label; }
+	 }
 
 	 /* Activate the correct radio */
 

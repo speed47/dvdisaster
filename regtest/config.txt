@@ -392,6 +392,9 @@ RS03i_rediscover_170_roots_padding2 yes
 RS03i_with_ecc_file_header yes
 RS03i_with_ecc_file_crc_block yes
 RS03i_with_crc_error_in_padding yes
+RS03i_verify_custom_n_good yes
+RS03i_verify_custom_n_bad_header_no_n yes
+RS03i_verify_custom_n_bad_header_with_n yes
 
 # Creation tests
 
@@ -438,6 +441,13 @@ RS03i_fix_with_missing_iso_header yes
 RS03i_fix_with_ecc_file_header yes
 RS03i_fix_with_ecc_file_crc_block yes
 RS03i_fix_with_crc_error_in_padding yes
+RS03i_fix_custom_n_good yes
+RS03i_fix_custom_n_bad_header_with_n yes
+RS03i_fix_custom_n_bad_header_no_n yes
+RS03i_fix_custom_n_bad_header_bruteforce yes
+RS03i_fix_custom_n_truncated_with_n yes
+RS03i_fix_custom_n_truncated_no_bruteforce yes
+RS03i_fix_custom_n_truncated_bruteforce yes
 
 # Scanning tests
 

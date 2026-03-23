@@ -341,7 +341,7 @@ EccHeader* FindRS03HeaderInImage(Image *image)
    return NULL;
 }
 
-typedef struct 
+typedef struct
 {  AlignedBuffer *layer[256];
    AlignedBuffer *ab;
    RS03Layout *layout[256];
@@ -357,20 +357,292 @@ static void free_recognize_context(recognize_context *rc)
    {  if(rc->layer[i])
          FreeAlignedBuffer(rc->layer[i]);
       if(rc->layout[i])
-	 g_free(rc->layout[i]); 
+	 g_free(rc->layout[i]);
    }
    g_free(rc);
 }
-   
-int RS03RecognizeImage(Image *image)
+
+/*
+ * Search for valid CRC blocks assuming a given layer_size.
+ * Tries all possible ndata values (84-247) for the given layer_size.
+ * Returns TRUE and sets image->eccHeader if a valid CRC block is found.
+ * maxtries: maximum number of sector reads (-1 = unlimited).
+ * trynumber_inout: pointer to the running try counter (shared across calls).
+ */
+
+static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
+					    guint64 layer_size, gint64 maxtries,
+					    gint64 *trynumber_inout)
 {  recognize_context *rc = g_malloc0(sizeof(recognize_context));
-   guint64 image_sectors;
-   guint64 layer_size;
-   gint64 trynumber;
-   gint64 maxtries;
    int untested_layers;
    int layer, layer_sector;
    int i;
+
+   Verbose(".. trying layer size %" PRId64 "\n", (gint64)layer_size);
+   Verbose("Scanning layers for signatures.\n");
+
+   /* Prepare layout for all possible cases (8..170 roots) */
+
+   for(i=84; i<=247; i++)  /* allowed range of ndata */
+   {  RS03Layout *lay;
+      rc->layout[i] = lay = g_malloc0(sizeof(RS03Layout));
+      lay->eh = NULL;
+      lay->dataSectors = (i-1)*layer_size-2;
+      lay->dataPadding = 0;
+      lay->totalSectors = GF_FIELDMAX*layer_size;
+      lay->sectorsPerLayer = layer_size;
+      lay->mediumCapacity = 0;
+      lay->eccHeaderPos = lay->dataSectors;
+      lay->firstCrcPos = (i-1)*layer_size;
+      lay->firstEccPos = i*layer_size;
+      lay->nroots = GF_FIELDMAX-i;
+      lay->ndata = i;
+      lay->inLast = 2048;
+      lay->target = ECC_IMAGE;
+   }
+   untested_layers = 247-84+1;
+
+   rc->ab = CreateAlignedBuffer(2048);
+
+   for(layer_sector = 0; layer_sector < layer_size; layer_sector++)
+   {  CrcBlock *cb = (CrcBlock*)rc->ab->buf;
+
+      Verbose("- layer slice %d\n", layer_sector);
+      for(layer = 84; layer <= 247; layer++)
+      {  if(!rc->layer_checked[layer])
+	 {  gint64 sector;
+	    int crc_state;
+
+	    sector = RS03SectorIndex(rc->layout[layer], layer, layer_sector);
+
+	    /* reading beyond the image won't yield anything */
+	    if(sector >= image_sectors)
+	      goto mark_invalid_layer;
+
+            if (++(*trynumber_inout) > maxtries && maxtries > 0) {
+                Verbose("RS03: max tries reached, stopping search\n");
+                free_recognize_context(rc);
+                return FALSE;
+            }
+
+            Verbose("RS03: %s = %" PRId64 ", reading sector %" PRId64 "\n",
+		    maxtries < 0 ? "try number" : "tries left",
+		    maxtries < 0 ? *trynumber_inout : maxtries - *trynumber_inout,
+		    sector);
+
+	    switch(image->type)
+	    {  case IMAGE_FILE:
+		 RS03ReadSectors(image, rc->layout[layer], rc->ab->buf,
+				 layer, layer_sector, 1, RS03_READ_ALL);
+		 if(CheckForMissingSector(rc->ab->buf, sector, NULL, 0) != SECTOR_PRESENT)
+		    continue;  /* unreadble -> can't decide */
+		 break;
+
+	       case IMAGE_MEDIUM:
+	       {  int n;
+		  n = ImageReadSectors(image, rc->ab->buf, sector, 1);
+		  if(!n)
+		    continue; /* unreadble -> can't decide */
+	       }
+	    }
+
+	    /* CRC header found? */
+
+	    crc_state = valid_crc_block(rc->ab->buf, sector, TRUE);
+	    if(crc_state)
+	    {  int nroots=255-layer-1;
+
+	       if(crc_state == 1) /* corrupted crc header, try this layer again later */
+		 continue;
+	       Verbose("** Success: sector %" PRId64 ", rediscovered format with %d roots\n",
+		       sector, nroots);
+	       image->eccHeader = g_malloc(sizeof(EccHeader));
+	       ReconstructRS03Header(image->eccHeader, cb);
+	       free_recognize_context(rc);
+	       return TRUE;
+	    }
+
+	    /* Sector readable but not a CRC header -> skip this layer */
+
+mark_invalid_layer:
+	    if(!rc->layer_checked[layer])
+	    {  rc->layer_checked[layer] = 1;
+	       untested_layers--;
+	    }
+	    if(untested_layers <= 0)
+	    {  Verbose("** All layers tested -> no RS03 data found\n");
+	       free_recognize_context(rc);
+	       return FALSE;
+	    }
+	 }
+      }
+      Verbose("-> %d untested layers remaining\n", untested_layers);
+   }
+
+   Verbose("-- layer size %" PRId64 " exhausted; %d layers remain untested\n",
+	   (gint64)layer_size, untested_layers);
+   free_recognize_context(rc);
+   return FALSE;
+}
+
+/*
+ * Bruteforce linear scan for valid CRC blocks.
+ * Reads every sector from ~33% of the image onwards, looking for the
+ * CRC block magic signature. When a candidate is found, it cross-validates
+ * by checking that the block's layout parameters are self-consistent and
+ * that a second CRC block exists at a predicted position.
+ * Returns TRUE and sets image->eccHeader if a valid CRC block is found.
+ */
+
+static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
+{  AlignedBuffer *ab = CreateAlignedBuffer(2048);
+   AlignedBuffer *ab2 = CreateAlignedBuffer(2048);
+   guint64 start_sector, sector;
+   int found = FALSE;
+
+   /* CRC layer starts at (ndata-1)*sectorsPerLayer.
+      Since ndata >= 84, the earliest start is at 83/255 ~ 32.5% of the image.
+      Start scanning from 30% to have some margin. */
+
+   start_sector = (image_sectors * 30) / 100;
+   Verbose("RS03 bruteforce scan: scanning sectors %" PRId64 " to %" PRId64 "\n",
+	   (gint64)start_sector, (gint64)image_sectors);
+
+   for(sector = start_sector; sector < image_sectors; sector++)
+   {  int crc_state;
+      CrcBlock *cb;
+
+      if(sector % 100000 == 0)
+	 Verbose("RS03 bruteforce: scanning sector %" PRId64 " (%.1f%%)\n",
+		 (gint64)sector, (100.0 * sector) / image_sectors);
+
+      switch(image->type)
+      {  case IMAGE_FILE:
+	    if(!LargeSeek(image->file, 2048LL * sector))
+	       continue;
+	    if(LargeRead(image->file, ab->buf, 2048) != 2048)
+	       continue;
+	    if(CheckForMissingSector(ab->buf, sector, NULL, 0) != SECTOR_PRESENT)
+	       continue;
+	    break;
+
+	 case IMAGE_MEDIUM:
+	    if(!ImageReadSectors(image, ab->buf, sector, 1))
+	       continue;
+	    break;
+
+	 default:
+	    continue;
+      }
+
+      crc_state = valid_crc_block(ab->buf, sector, TRUE);
+      if(crc_state != 2)
+	 continue;
+
+      /* We found a valid CRC block at this sector.
+	 Extract layout parameters and cross-validate. */
+
+      cb = (CrcBlock*)ab->buf;
+
+      {  guint64 spl, data_sectors, first_crc_pos;
+	 int nroots, ndata;
+	 CrcBlock cb_copy;
+
+	 /* Make a local copy before potential byte-swapping */
+	 memcpy(&cb_copy, cb, sizeof(CrcBlock));
+#ifdef HAVE_BIG_ENDIAN
+	 SwapCrcBlockBytes(&cb_copy);
+#endif
+	 spl = cb_copy.sectorsPerLayer;
+	 nroots = cb_copy.eccBytes;
+	 data_sectors = cb_copy.dataSectors;
+
+	 /* Basic sanity: nroots must be in valid range */
+	 if(nroots < 8 || nroots > 170)
+	 {  Verbose("RS03 bruteforce: sector %" PRId64 " has valid CRC block but invalid nroots=%d, skipping\n",
+		    (gint64)sector, nroots);
+	    continue;
+	 }
+
+	 ndata = GF_FIELDMAX - nroots;
+
+	 /* Sanity: sectorsPerLayer must be positive and reasonable */
+	 if(spl == 0 || spl > image_sectors)
+	 {  Verbose("RS03 bruteforce: sector %" PRId64 " has invalid sectorsPerLayer=%" PRId64 ", skipping\n",
+		    (gint64)sector, (gint64)spl);
+	    continue;
+	 }
+
+	 /* Check that this sector falls within the expected CRC layer */
+	 first_crc_pos = (guint64)(ndata - 1) * spl;
+	 if(sector < first_crc_pos || sector >= first_crc_pos + spl)
+	 {  Verbose("RS03 bruteforce: sector %" PRId64 " not in expected CRC layer [%" PRId64 ", %" PRId64 "), skipping\n",
+		    (gint64)sector, (gint64)first_crc_pos, (gint64)(first_crc_pos + spl));
+	    continue;
+	 }
+
+	 /* Cross-validate: try to read another CRC block at a different position
+	    in the same CRC layer */
+	 {  guint64 check_sector;
+	    int cross_valid = FALSE;
+
+	    /* Pick a sector in the CRC layer that is different from the one we found */
+	    check_sector = first_crc_pos + (sector == first_crc_pos ? 1 : 0);
+	    if(check_sector < image_sectors)
+	    {  int n_ok = 0;
+
+	       switch(image->type)
+	       {  case IMAGE_FILE:
+		     if(LargeSeek(image->file, 2048LL * check_sector))
+			n_ok = (LargeRead(image->file, ab2->buf, 2048) == 2048);
+		     break;
+		  case IMAGE_MEDIUM:
+		     n_ok = ImageReadSectors(image, ab2->buf, check_sector, 1);
+		     break;
+	       }
+
+	       if(n_ok && valid_crc_block(ab2->buf, check_sector, TRUE) == 2)
+	       {  CrcBlock cb2_copy;
+		  memcpy(&cb2_copy, ab2->buf, sizeof(CrcBlock));
+#ifdef HAVE_BIG_ENDIAN
+		  SwapCrcBlockBytes(&cb2_copy);
+#endif
+		  /* Verify that both CRC blocks agree on layout parameters */
+		  if(cb2_copy.sectorsPerLayer == spl
+		     && cb2_copy.eccBytes == nroots
+		     && cb2_copy.dataSectors == data_sectors)
+		     cross_valid = TRUE;
+	       }
+	    }
+
+	    if(!cross_valid)
+	    {  Verbose("RS03 bruteforce: sector %" PRId64 " cross-validation failed, skipping\n",
+		       (gint64)sector);
+	       continue;
+	    }
+	 }
+
+	 /* Cross-validation passed. Reconstruct the header. */
+	 Verbose("** RS03 bruteforce success: sector %" PRId64 ", format with %d roots, "
+		 "sectorsPerLayer=%" PRId64 "\n",
+		 (gint64)sector, nroots, (gint64)spl);
+	 image->eccHeader = g_malloc(sizeof(EccHeader));
+	 ReconstructRS03Header(image->eccHeader, cb);
+	 found = TRUE;
+	 break;
+      }
+   }
+
+   FreeAlignedBuffer(ab);
+   FreeAlignedBuffer(ab2);
+   return found;
+}
+
+int RS03RecognizeImage(Image *image)
+{  guint64 image_sectors;
+   guint64 layer_size;
+   gint64 trynumber;
+   gint64 maxtries;
 
    switch(image->type)
    { case IMAGE_FILE:
@@ -387,7 +659,6 @@ int RS03RecognizeImage(Image *image)
 
      default:
        Verbose("RS03RecognizeImage: unknown type %d\n", image->type);
-       free_recognize_context(rc);
        return FALSE;
        break;
    }
@@ -396,11 +667,9 @@ int RS03RecognizeImage(Image *image)
 
    if (!Closure->debugMode || !Closure->ignoreRS03header)
    { image->eccHeader = FindRS03HeaderInImage(image);
-  
+
      if(image->eccHeader)
-     {  free_recognize_context(rc);
         return TRUE;
-     }
    }
 
    /* This concludes the non-exhaustive search, where we tried to look for
@@ -437,7 +706,9 @@ int RS03RecognizeImage(Image *image)
       Verbose("RS03RecognizeImage: No EH, entering exhaustive search\n");
    }
 
-   /* Determine image size in augmented case. */
+   /* Determine image size in augmented case and try known medium sizes. */
+
+   trynumber = 0;
 
    if(Closure->mediumSize > 170)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
@@ -450,8 +721,8 @@ int RS03RecognizeImage(Image *image)
       const guint64 bd_tl_sz = (Closure->noBdrDefectManagement ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE);
       const guint64 bd_ql_sz = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE);
       if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
-      else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX; 
-      else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX; 
+      else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX;
+      else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX;
       else if(image_sectors < bd_sl_sz)
          layer_size = bd_sl_sz/GF_FIELDMAX;
       else if(image_sectors < bd_dl_sz)
@@ -461,177 +732,44 @@ int RS03RecognizeImage(Image *image)
       else layer_size = bd_ql_sz/GF_FIELDMAX;
    }
 
-   Verbose(".. trying layer size %" PRId64 "\n", layer_size);
+   if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
+      return TRUE;
 
-   /*
-    * Try a quick scan for the CRC sectors in order
-    * to re-discover the layout.
-    */
+   /* Phase 1: If the known medium size didn't work and we're in exhaustive mode,
+      try deriving layer_size directly from the image file size.
+      For a complete RS03 augmented image, totalSectors = 255 * sectorsPerLayer,
+      so sectorsPerLayer = image_sectors / 255. This handles images created with
+      a custom -n value. Try the computed value and ±1 for rounding. */
 
-   Verbose("Scanning layers for signatures.\n");
+   if(maxtries < 0)  /* only in exhaustive mode */
+   {  guint64 derived_layer_size = image_sectors / GF_FIELDMAX;
+      int offset;
 
-   /* Prepare layout for all possible cases (8..170 roots) */
+      Verbose("RS03RecognizeImage: trying image-derived layer sizes\n");
 
-   for(i=84; i<=247; i++)  /* allowed range of ndata */
-   {  RS03Layout *lay;
-      rc->layout[i] = lay = g_malloc0(sizeof(RS03Layout));
-      lay->eh = NULL;
-      lay->dataSectors = (i-1)*layer_size-2;
-      lay->dataPadding = 0;
-      lay->totalSectors = GF_FIELDMAX*layer_size;
-      lay->sectorsPerLayer = layer_size;
-      lay->mediumCapacity = 0;
-      lay->eccHeaderPos = lay->dataSectors;
-      lay->firstCrcPos = (i-1)*layer_size;
-      lay->firstEccPos = i*layer_size;
-      lay->nroots = GF_FIELDMAX-i;
-      lay->ndata = i;
-      lay->inLast = 2048;
-      lay->target = ECC_IMAGE;
-   }
-   untested_layers = 247-84+1;
-   trynumber = 0;
+      for(offset = -1; offset <= 1; offset++)
+      {  guint64 try_size = derived_layer_size + offset;
 
-   rc->ab = CreateAlignedBuffer(2048);
+	 if(try_size == 0 || try_size == layer_size)
+	    continue;  /* skip zero or already-tried size */
 
-   for(layer_sector = 0; layer_sector < layer_size; layer_sector++)
-   {  CrcBlock *cb = (CrcBlock*)rc->ab->buf;
-
-      Verbose("- layer slice %d\n", layer_sector);
-      for(layer = 84; layer <= 247; layer++) 
-      {  if(!rc->layer_checked[layer])
-	 {  gint64 sector;
-	    int crc_state;
-
-	    sector = RS03SectorIndex(rc->layout[layer], layer, layer_sector);
-
-	    /* reading beyond the image won't yield anything */
-	    if(sector >= image_sectors)
-	      goto mark_invalid_layer;
-
-            if (++trynumber > maxtries && maxtries > 0) {
-                Verbose("RS03: max tries reached, stopping search\n");
-                free_recognize_context(rc);
-                return FALSE;
-            }
-
-            Verbose("RS03: %s = %" PRId64 ", reading sector %" PRId64 "\n",
-		    maxtries < 0 ? "try number" : "tries left",
-		    maxtries < 0 ? trynumber : maxtries - trynumber,
-		    sector);
-
-	    switch(image->type)
-	    {  case IMAGE_FILE:
-		 RS03ReadSectors(image, rc->layout[layer], rc->ab->buf,
-				 layer, layer_sector, 1, RS03_READ_ALL);
-		 if(CheckForMissingSector(rc->ab->buf, sector, NULL, 0) != SECTOR_PRESENT)
-		    continue;  /* unreadble -> can't decide */
-		 break;
-
-	       case IMAGE_MEDIUM:
-	       {  int n;	  
-		  n = ImageReadSectors(image, rc->ab->buf, sector, 1);
-		  if(!n)
-		    continue; /* unreadble -> can't decide */
-	       }
-	    }
-		  
-	    /* CRC header found? */
-
-	    crc_state = valid_crc_block(rc->ab->buf, sector, TRUE);
-	    if(crc_state)
-	    {  int nroots=255-layer-1;  
-
-	       if(crc_state == 1) /* corrupted crc header, try this layer again later */
-		 continue;
-	       Verbose("** Success: sector %" PRId64 ", rediscovered format with %d roots\n",
-		       sector, nroots); 
-	       image->eccHeader = g_malloc(sizeof(EccHeader));
-	       ReconstructRS03Header(image->eccHeader, cb);
-	       /* Note: Rewriting the missing ecc header makes no sense here
-		  as we do not have access to the image written in the reading
-	          functions, and the error correction will restore it anyways.
-	          (contrary to the situation with ecc files) */
-	       free_recognize_context(rc);
-	       return TRUE;
-	    }
-
-	    /* Sector readable but not a CRC header -> skip this layer */
-
-mark_invalid_layer:
-	    if(!rc->layer_checked[layer])
-	    {  rc->layer_checked[layer] = 1;
-	       untested_layers--;
-	    }
-	    if(untested_layers <= 0)
-	    {  Verbose("** All layers tested -> no RS03 data found\n");
-	       free_recognize_context(rc);
-	       return FALSE;
-	    }	       
-	 }
-      }
-      Verbose("-> %d untested layers remaining\n", untested_layers);
-   }
-
-   Verbose("-- whole medium/image scanned; %d layers remain untested\n", untested_layers);
-   Verbose("-- giving now up as ecc-based search is not yet implemented\n");
-   free_recognize_context(rc);
-   return FALSE;
-	    
-   /* 
-    * TODO: Assemble all ecc blocks and see whether the error corrction
-    * succeeds for a certain number of roots
-    */
-
-#if 0
-   for(i=0; i<255; i++)
-      rc->layer[i] = CreateAlignedBuffer(2048);
-
-   for(ecc_block=0; ecc_block<layer_size; ecc_block++)
-   {  Verbose("Assembling ecc block %d\n", ecc_block); 
-
-      /* Assemble the ecc block */
-
-      for(i=0; i<255; i++)  
-      {  gint64 sector = rc->bidx[i]++;
-	 int n;
-
-	 if(!LargeSeek(ecc_file, (gint64)(2048*sector)))
-	    Stop(_("Failed seeking to sector %lld in image: %s"),
-		 sector, strerror(errno));
-
-	 n = LargeRead(ecc_file, rc->layer[i], 2048);
-	 if(n != 2048)
-	    Stop(_("Failed reading sector %lld in image: %s"),sector,strerror(errno));
-      }	 
-
-      /* Experimentally apply the RS code */
-
-      for(ndata=255-8; ndata >=85; ndata--)
-      {  CrcBlock *cb = (CrcBlock*)rc->layer[ndata];
-
-	 /* Do the real decode here */
-
-
-	 /* See if we have decoded a CRC block */
-
-	 if(  !memcmp(cb->cookie, "*dvdisaster*", 12)
-	    ||!memcmp(cb->method, "RS03", 4))
-	 {  
-	    nroots = 255-ndata-1;
-	    Verbose(".. Success: rediscovered format with %d roots\n", nroots); 
-
-	    image->eccHeader = g_malloc(sizeof(EccHeader));
-	    ReconstructRS03Header(image->eccHeader, cb);
-	    //FIXME: endianess okay?
-	    free_recognize_context(rc);
+	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
 	    return TRUE;
-	 }
       }
    }
-#endif
 
-   free_recognize_context(rc);
+   /* Phase 2: Bruteforce linear scan for CRC blocks.
+      This scans every sector in the image looking for the CRC block
+      magic signature. Very slow, but handles any custom -n value even
+      when the image is truncated. Only runs when explicitly requested. */
+
+   if(Closure->bruteforceRS03Search && maxtries < 0)
+   {  Verbose("RS03RecognizeImage: entering bruteforce linear scan\n");
+      if(bruteforce_scan_for_crc_blocks(image, image_sectors))
+	 return TRUE;
+   }
+
+   Verbose("RS03RecognizeImage: no RS03 data found\n");
    return FALSE;
 }
 
