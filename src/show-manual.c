@@ -30,12 +30,12 @@
 #include "shellapi.h"
 #endif
 
-#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
+#ifndef SYS_MINGW
 static void send_errormsg(int fd, char *format, ...)
 {  va_list argp;
    char *msg;
    int n;
-   
+
    va_start(argp, format);
    msg = g_strdup_vprintf(format, argp);
    va_end(argp);
@@ -51,6 +51,73 @@ static const char *recv_errormsg(int fd)
       return buf;
    return NULL;
 }
+
+/*
+ * Clean up bundled environment variables before spawning an external process.
+ * Both AppImage (Linux) and .app bundle (macOS) override env vars to point at
+ * bundled libraries/resources.  Before exec-ing a host tool (xdg-open / open),
+ * we restore the original values so the tool uses the host's own libraries.
+ *
+ * The launcher scripts save each original value as VARNAME_ORIGINAL before
+ * overriding VARNAME.  We restore the original if it exists, otherwise we
+ * simply unset VARNAME so the host default applies.
+ */
+static void cleanup_bundled_env(void)
+{
+   /* AppImage-specific variables (Linux / GTK3) */
+   const char *appimage_vars[] = {
+      "GDK_BACKEND",
+      "GIO_EXTRA_MODULES",
+      "GTK_IM_MODULE",
+      "GTK_IM_MODULE_FILE",
+      "GTK_PATH",
+      "LD_LIBRARY_PATH",
+      "NO_AT_BRIDGE",
+      NULL,
+   };
+
+   /* Variables common to both AppImage and macOS .app bundle */
+   const char *common_vars[] = {
+      "GDK_PIXBUF_MODULE_FILE",
+      "GSETTINGS_SCHEMA_DIR",
+      "GTK_MODULES",
+      "XDG_DATA_DIRS",
+      NULL,
+   };
+
+   int is_appimage = g_getenv("DVDISASTER_APPIMAGE") && atoi(g_getenv("DVDISASTER_APPIMAGE"));
+   int is_macos_app = g_getenv("DVDISASTER_MACOS_APP") && atoi(g_getenv("DVDISASTER_MACOS_APP"));
+
+   if (!is_appimage && !is_macos_app)
+      return;
+
+   /* Restore common vars */
+   for (int i = 0; common_vars[i]; i++) {
+      gchar *original_name = g_strdup_printf("%s_ORIGINAL", common_vars[i]);
+      if (g_getenv(original_name))
+         g_setenv(common_vars[i], g_getenv(original_name), 1);
+      else
+         g_unsetenv(common_vars[i]);
+      g_unsetenv(original_name);
+      g_free(original_name);
+   }
+
+   /* Restore AppImage-only vars */
+   if (is_appimage) {
+      for (int i = 0; appimage_vars[i]; i++) {
+         gchar *original_name = g_strdup_printf("%s_ORIGINAL", appimage_vars[i]);
+         if (g_getenv(original_name))
+            g_setenv(appimage_vars[i], g_getenv(original_name), 1);
+         else
+            g_unsetenv(appimage_vars[i]);
+         g_unsetenv(original_name);
+         g_free(original_name);
+      }
+   }
+
+   g_unsetenv("DVDISASTER_APPIMAGE");
+   g_unsetenv("DVDISASTER_MACOS_APP");
+}
 #endif
 
 void GuiShowURL(char *target)
@@ -58,7 +125,7 @@ void GuiShowURL(char *target)
    int hyperlink = 0;
    char *path;
 
-#if !defined(SYS_MINGW) && !defined(SYS_DARWIN)
+#ifndef SYS_MINGW
    pid_t pid;
    const char *msg;
    int err_pipe[2]; /* child may send down err msgs to us here */
@@ -100,13 +167,9 @@ void GuiShowURL(char *target)
    /* Okay, Billy wins big time here ;-) */
 
    ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWNORMAL);
-#elif defined(SYS_DARWIN) 
-    char command[256];
-    snprintf(command, sizeof(command), "open \"%s\"", path);
-    system(command);
 #else
 
-   /* fork xdg-open */
+   /* fork and exec the platform opener (macOS: open, Linux: xdg-open) */
 
    result = pipe(err_pipe);
    if(result == -1)
@@ -128,7 +191,11 @@ void GuiShowURL(char *target)
    if(pid == -1)
    {  close(err_pipe[0]);
       close(err_pipe[1]);
+#ifdef SYS_DARWIN
+      GuiCreateMessage(_("Could not fork to start open"), GTK_MESSAGE_ERROR);
+#else
       GuiCreateMessage(_("Could not fork to start xdg-open"), GTK_MESSAGE_ERROR);
+#endif
       return;
    }
 
@@ -141,47 +208,29 @@ void GuiShowURL(char *target)
       /* close reading end of error pipe */
       close(err_pipe[0]);
 
-      /* cleanup env if we're called from AppImage */
-      if (g_getenv("DVDISASTER_APPIMAGE") && atoi(g_getenv("DVDISASTER_APPIMAGE")))
-      {
-         const char *namelist[] = {
-            "GDK_BACKEND",
-            "GDK_PIXBUF_MODULE_FILE",
-            "GIO_EXTRA_MODULES",
-            "GTK_IM_MODULE",
-            "GTK_IM_MODULE_FILE",
-            "GTK_MODULES",
-            "GTK_PATH",
-            "LD_LIBRARY_PATH",
-            "NO_AT_BRIDGE",
-            NULL,
-         };
-         for (int i = 0; namelist[i]; i++) {
-            gchar *original_name = g_strdup_printf("%s_ORIGINAL", namelist[i]);
-            if (g_getenv(original_name)) {
-              g_setenv(namelist[i], g_getenv(original_name), 1);
-              g_unsetenv(original_name);
-            }
-            else {
-              g_unsetenv(namelist[i]);
-            }
-            g_free(original_name);
-         }
-         g_unsetenv("DVDISASTER_APPIMAGE");
-      }
+      /* cleanup bundled env if we're called from AppImage or macOS .app */
+      cleanup_bundled_env();
 
-      /* prepare args and try to exec xdg-open */
-      
+#ifdef SYS_DARWIN
+      argv[argc++] = "open";
+#else
       argv[argc++] = "xdg-open";
+#endif
       argv[argc++] = path;
       argv[argc++] = NULL;
       execvp(argv[0], argv);
 
       /* if we reach this, telegraph our parent that sth f*cked up */
 
+#ifdef SYS_DARWIN
+      send_errormsg(err_pipe[1],
+		    _("execvp could not execute \"open\":\n%s\n"),
+		    strerror(errno));
+#else
       send_errormsg(err_pipe[1],
 		    _("execvp could not execute \"xdg-open\":\n%s\nIs xdg-open installed correctly?\n"),
 		    strerror(errno));
+#endif
       close(err_pipe[1]);
       _exit(110); /* couldn't execute */
    }

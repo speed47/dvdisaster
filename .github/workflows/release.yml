@@ -8,6 +8,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   mac:
     strategy:
@@ -27,7 +31,7 @@ jobs:
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install glib gdk-pixbuf dylibbundler create-dmg
+        run: brew install gdk-pixbuf dylibbundler create-dmg # glib => already installed
       - name: install prerequisites (GUI)
         if: matrix.ui == 'gui'
         env:
@@ -57,6 +61,20 @@ jobs:
         run: ./.github/workflows/make-mac-app.sh ${{ github.ref }} ${{ matrix.arch }}
         id: dist
         timeout-minutes: 4
+      - name: launch the app
+        run: |
+          set -x
+          hdiutil attach ${{ steps.dist.outputs.archive }}
+          cd /Volumes/dvdisaster*/dvdisaster.app
+          open ./Contents/MacOS/dvdisaster
+      - name: screenshot the desktop
+        run: |
+          screencapture -T 15 -x screenshot.png
+      - name: upload screenshot
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-${{ matrix.arch }}-${{ matrix.ui }}.zip
+          path: screenshot.png
       - name: Tag for Continuous Build
         if: github.ref_name == 'master'
         run: |
