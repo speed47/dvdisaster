@@ -117,6 +117,7 @@ typedef struct
    GtkWidget *mediumComboA, *mediumComboB;     /* Combo box for medium type */
    GtkWidget *mediumSectorSpinA, *mediumSectorSpinB; /* Spin button for manual sectors */
    GtkWidget *mediumSectorLabelA, *mediumSectorLabelB; /* Label next to spin button */
+   GtkWidget *mediumSectorBytesA, *mediumSectorBytesB; /* Byte size label next to spin */
 
    /*** Some state vars used during fixing */
 

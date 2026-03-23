@@ -1322,8 +1322,12 @@ void RS03Create(void)
 
 #ifdef WITH_GUI_YES   
    if(Closure->guiMode)  /* Preliminary fill text for the head line */
-   {  ec->msg = g_strdup_printf(_("Encoding with Method RS03: %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
-				lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
+   {  if(lay->dataPadding > 0)
+	 ec->msg = g_strdup_printf(_("Encoding with Method RS03: %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy), %" PRId64 " MiB padding."),
+				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy, lay->dataPadding/512);
+      else
+	 ec->msg = g_strdup_printf(_("Encoding with Method RS03: %" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
+				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
 
       if(lay->target == ECC_IMAGE)
       {  GuiSetLabelText(wl->encHeadline,
@@ -1342,14 +1346,21 @@ void RS03Create(void)
      DescribeRSEncoder(&alg, &iostrat);
  
      if(Closure->eccTarget == ECC_IMAGE)
-	 ec->msg = g_strdup_printf(_("Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
-				     "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
-				   Closure->codecThreads, alg, iostrat, 
-				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
+     {  if(lay->dataPadding > 0)
+	   ec->msg = g_strdup_printf(_("Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
+				       "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy), %" PRId64 " MiB padding."),
+				     Closure->codecThreads, alg, iostrat,
+				     lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy, lay->dataPadding/512);
+	else
+	   ec->msg = g_strdup_printf(_("Augmenting image with Method RS03 [%d threads, %s, %s I/O]:\n"
+				       "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
+				     Closure->codecThreads, alg, iostrat,
+				     lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
+     }
       else
 	 ec->msg = g_strdup_printf(_("Creating the error correction file with Method RS03 [%d threads, %s, %s I/O]:\n"
 				     "%" PRId64 " MiB data, %" PRId64 " MiB ecc (%d roots; %4.1f%% redundancy)."),
-				   Closure->codecThreads, alg, iostrat, 
+				   Closure->codecThreads, alg, iostrat,
 				   lay->dataSectors/512, ecc_sectors/512, lay->nroots, lay->redundancy);
 
       PrintLog("%s\n",ec->msg);

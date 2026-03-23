@@ -230,6 +230,7 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "encoding-io-strategy")) { Closure->encodingIOStrategy = atoi(value); continue; }
       if(!strcmp(symbol, "examine-rs02"))    { Closure->examineRS02  = atoi(value); continue; }
       if(!strcmp(symbol, "examine-rs03"))    { Closure->examineRS03  = atoi(value); continue; }
+      if(!strcmp(symbol, "bruteforce-rs03-search")) { Closure->bruteforceRS03Search = atoi(value); continue; }
       if(!strcmp(symbol, "fill-unreadable")) { Closure->fillUnreadable = atoi(value); continue; }
       if(!strcmp(symbol, "ignore-fatal-sense")) { Closure->ignoreFatalSense  = atoi(value); continue; }
       if(!strcmp(symbol, "ignore-iso-size")) { Closure->ignoreIsoSize  = atoi(value); continue; }
@@ -334,6 +335,7 @@ static void update_dotfile()
    g_fprintf(dotfile, "encoding-io-strategy:%d\n", Closure->encodingIOStrategy);
    g_fprintf(dotfile, "examine-rs02:      %d\n", Closure->examineRS02);
    g_fprintf(dotfile, "examine-rs03:      %d\n", Closure->examineRS03);
+   g_fprintf(dotfile, "bruteforce-rs03-search:%d\n", Closure->bruteforceRS03Search);
    g_fprintf(dotfile, "fill-unreadable:   %d\n", Closure->fillUnreadable);
    g_fprintf(dotfile, "ignore-fatal-sense: %d\n", Closure->ignoreFatalSense);
    g_fprintf(dotfile, "ignore-iso-size:   %d\n", Closure->ignoreIsoSize);
@@ -561,6 +563,7 @@ void InitClosure()
    Closure->useSCSIDriver = DRIVER_SG;
    Closure->dsmVersion = 1;
    Closure->noBdrDefectManagement = FALSE;
+   Closure->bruteforceRS03Search = FALSE;
    Closure->ignoreRS03header = FALSE;
 
    /* default sizes for typical CD and DVD media */

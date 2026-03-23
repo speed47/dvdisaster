@@ -4529,8 +4529,4575 @@ RS03: try number = 1571, reading sector 236710
 - layer slice 1408
 RS03: try number = 1572, reading sector 236711
 -> 1 untested layers remaining
--- whole medium/image scanned; 1 layers remain untested
--- giving now up as ecc-based search is not yet implemented
+-- layer size 1409 exhausted; 1 layers remain untested
+RS03RecognizeImage: trying image-derived layer sizes
+.. trying layer size 1408
+Scanning layers for signatures.
+- layer slice 0
+RS03: try number = 1573, reading sector 118272
+RS03: try number = 1574, reading sector 119680
+RS03: try number = 1575, reading sector 121088
+RS03: try number = 1576, reading sector 122496
+RS03: try number = 1577, reading sector 123904
+RS03: try number = 1578, reading sector 125312
+RS03: try number = 1579, reading sector 126720
+RS03: try number = 1580, reading sector 128128
+RS03: try number = 1581, reading sector 129536
+RS03: try number = 1582, reading sector 130944
+RS03: try number = 1583, reading sector 132352
+RS03: try number = 1584, reading sector 133760
+RS03: try number = 1585, reading sector 135168
+RS03: try number = 1586, reading sector 136576
+RS03: try number = 1587, reading sector 137984
+RS03: try number = 1588, reading sector 139392
+RS03: try number = 1589, reading sector 140800
+RS03: try number = 1590, reading sector 142208
+RS03: try number = 1591, reading sector 143616
+RS03: try number = 1592, reading sector 145024
+RS03: try number = 1593, reading sector 146432
+RS03: try number = 1594, reading sector 147840
+RS03: try number = 1595, reading sector 149248
+RS03: try number = 1596, reading sector 150656
+RS03: try number = 1597, reading sector 152064
+RS03: try number = 1598, reading sector 153472
+RS03: try number = 1599, reading sector 154880
+RS03: try number = 1600, reading sector 156288
+RS03: try number = 1601, reading sector 157696
+RS03: try number = 1602, reading sector 159104
+RS03: try number = 1603, reading sector 160512
+RS03: try number = 1604, reading sector 161920
+RS03: try number = 1605, reading sector 163328
+RS03: try number = 1606, reading sector 164736
+RS03: try number = 1607, reading sector 166144
+RS03: try number = 1608, reading sector 167552
+RS03: try number = 1609, reading sector 168960
+RS03: try number = 1610, reading sector 170368
+RS03: try number = 1611, reading sector 171776
+RS03: try number = 1612, reading sector 173184
+RS03: try number = 1613, reading sector 174592
+RS03: try number = 1614, reading sector 176000
+RS03: try number = 1615, reading sector 177408
+RS03: try number = 1616, reading sector 178816
+RS03: try number = 1617, reading sector 180224
+RS03: try number = 1618, reading sector 181632
+RS03: try number = 1619, reading sector 183040
+RS03: try number = 1620, reading sector 184448
+RS03: try number = 1621, reading sector 185856
+RS03: try number = 1622, reading sector 187264
+RS03: try number = 1623, reading sector 188672
+RS03: try number = 1624, reading sector 190080
+RS03: try number = 1625, reading sector 191488
+RS03: try number = 1626, reading sector 192896
+RS03: try number = 1627, reading sector 194304
+RS03: try number = 1628, reading sector 195712
+RS03: try number = 1629, reading sector 197120
+RS03: try number = 1630, reading sector 198528
+RS03: try number = 1631, reading sector 199936
+RS03: try number = 1632, reading sector 201344
+RS03: try number = 1633, reading sector 202752
+RS03: try number = 1634, reading sector 204160
+RS03: try number = 1635, reading sector 205568
+RS03: try number = 1636, reading sector 206976
+RS03: try number = 1637, reading sector 208384
+RS03: try number = 1638, reading sector 209792
+RS03: try number = 1639, reading sector 211200
+RS03: try number = 1640, reading sector 212608
+RS03: try number = 1641, reading sector 214016
+RS03: try number = 1642, reading sector 215424
+RS03: try number = 1643, reading sector 216832
+RS03: try number = 1644, reading sector 218240
+RS03: try number = 1645, reading sector 219648
+RS03: try number = 1646, reading sector 221056
+RS03: try number = 1647, reading sector 222464
+RS03: try number = 1648, reading sector 223872
+RS03: try number = 1649, reading sector 225280
+RS03: try number = 1650, reading sector 226688
+RS03: try number = 1651, reading sector 228096
+RS03: try number = 1652, reading sector 229504
+RS03: try number = 1653, reading sector 230912
+RS03: try number = 1654, reading sector 232320
+RS03: try number = 1655, reading sector 233728
+RS03: try number = 1656, reading sector 235136
+RS03: try number = 1657, reading sector 236544
+RS03: try number = 1658, reading sector 237952
+RS03: try number = 1659, reading sector 239360
+RS03: try number = 1660, reading sector 240768
+RS03: try number = 1661, reading sector 242176
+RS03: try number = 1662, reading sector 243584
+RS03: try number = 1663, reading sector 244992
+RS03: try number = 1664, reading sector 246400
+RS03: try number = 1665, reading sector 247808
+RS03: try number = 1666, reading sector 249216
+RS03: try number = 1667, reading sector 250624
+RS03: try number = 1668, reading sector 252032
+RS03: try number = 1669, reading sector 253440
+RS03: try number = 1670, reading sector 254848
+RS03: try number = 1671, reading sector 256256
+RS03: try number = 1672, reading sector 257664
+RS03: try number = 1673, reading sector 259072
+RS03: try number = 1674, reading sector 260480
+RS03: try number = 1675, reading sector 261888
+RS03: try number = 1676, reading sector 263296
+RS03: try number = 1677, reading sector 264704
+RS03: try number = 1678, reading sector 266112
+RS03: try number = 1679, reading sector 267520
+RS03: try number = 1680, reading sector 268928
+RS03: try number = 1681, reading sector 270336
+RS03: try number = 1682, reading sector 271744
+RS03: try number = 1683, reading sector 273152
+RS03: try number = 1684, reading sector 274560
+RS03: try number = 1685, reading sector 275968
+RS03: try number = 1686, reading sector 277376
+RS03: try number = 1687, reading sector 278784
+RS03: try number = 1688, reading sector 280192
+RS03: try number = 1689, reading sector 281600
+RS03: try number = 1690, reading sector 283008
+RS03: try number = 1691, reading sector 284416
+RS03: try number = 1692, reading sector 285824
+RS03: try number = 1693, reading sector 287232
+RS03: try number = 1694, reading sector 288640
+RS03: try number = 1695, reading sector 290048
+RS03: try number = 1696, reading sector 291456
+RS03: try number = 1697, reading sector 292864
+RS03: try number = 1698, reading sector 294272
+RS03: try number = 1699, reading sector 295680
+RS03: try number = 1700, reading sector 297088
+RS03: try number = 1701, reading sector 298496
+RS03: try number = 1702, reading sector 299904
+RS03: try number = 1703, reading sector 301312
+RS03: try number = 1704, reading sector 302720
+RS03: try number = 1705, reading sector 304128
+RS03: try number = 1706, reading sector 305536
+RS03: try number = 1707, reading sector 306944
+RS03: try number = 1708, reading sector 308352
+RS03: try number = 1709, reading sector 309760
+RS03: try number = 1710, reading sector 311168
+RS03: try number = 1711, reading sector 312576
+RS03: try number = 1712, reading sector 313984
+RS03: try number = 1713, reading sector 315392
+RS03: try number = 1714, reading sector 316800
+RS03: try number = 1715, reading sector 318208
+RS03: try number = 1716, reading sector 319616
+RS03: try number = 1717, reading sector 321024
+RS03: try number = 1718, reading sector 322432
+RS03: try number = 1719, reading sector 323840
+RS03: try number = 1720, reading sector 325248
+RS03: try number = 1721, reading sector 326656
+RS03: try number = 1722, reading sector 328064
+RS03: try number = 1723, reading sector 329472
+RS03: try number = 1724, reading sector 330880
+RS03: try number = 1725, reading sector 332288
+RS03: try number = 1726, reading sector 333696
+RS03: try number = 1727, reading sector 335104
+RS03: try number = 1728, reading sector 336512
+RS03: try number = 1729, reading sector 337920
+RS03: try number = 1730, reading sector 339328
+RS03: try number = 1731, reading sector 340736
+RS03: try number = 1732, reading sector 342144
+RS03: try number = 1733, reading sector 343552
+RS03: try number = 1734, reading sector 344960
+RS03: try number = 1735, reading sector 346368
+RS03: try number = 1736, reading sector 347776
+-> 1 untested layers remaining
+- layer slice 1
+RS03: try number = 1737, reading sector 236545
+-> 1 untested layers remaining
+- layer slice 2
+RS03: try number = 1738, reading sector 236546
+-> 1 untested layers remaining
+- layer slice 3
+RS03: try number = 1739, reading sector 236547
+-> 1 untested layers remaining
+- layer slice 4
+RS03: try number = 1740, reading sector 236548
+-> 1 untested layers remaining
+- layer slice 5
+RS03: try number = 1741, reading sector 236549
+-> 1 untested layers remaining
+- layer slice 6
+RS03: try number = 1742, reading sector 236550
+-> 1 untested layers remaining
+- layer slice 7
+RS03: try number = 1743, reading sector 236551
+-> 1 untested layers remaining
+- layer slice 8
+RS03: try number = 1744, reading sector 236552
+-> 1 untested layers remaining
+- layer slice 9
+RS03: try number = 1745, reading sector 236553
+-> 1 untested layers remaining
+- layer slice 10
+RS03: try number = 1746, reading sector 236554
+-> 1 untested layers remaining
+- layer slice 11
+RS03: try number = 1747, reading sector 236555
+-> 1 untested layers remaining
+- layer slice 12
+RS03: try number = 1748, reading sector 236556
+-> 1 untested layers remaining
+- layer slice 13
+RS03: try number = 1749, reading sector 236557
+-> 1 untested layers remaining
+- layer slice 14
+RS03: try number = 1750, reading sector 236558
+-> 1 untested layers remaining
+- layer slice 15
+RS03: try number = 1751, reading sector 236559
+-> 1 untested layers remaining
+- layer slice 16
+RS03: try number = 1752, reading sector 236560
+-> 1 untested layers remaining
+- layer slice 17
+RS03: try number = 1753, reading sector 236561
+-> 1 untested layers remaining
+- layer slice 18
+RS03: try number = 1754, reading sector 236562
+-> 1 untested layers remaining
+- layer slice 19
+RS03: try number = 1755, reading sector 236563
+-> 1 untested layers remaining
+- layer slice 20
+RS03: try number = 1756, reading sector 236564
+-> 1 untested layers remaining
+- layer slice 21
+RS03: try number = 1757, reading sector 236565
+-> 1 untested layers remaining
+- layer slice 22
+RS03: try number = 1758, reading sector 236566
+-> 1 untested layers remaining
+- layer slice 23
+RS03: try number = 1759, reading sector 236567
+-> 1 untested layers remaining
+- layer slice 24
+RS03: try number = 1760, reading sector 236568
+-> 1 untested layers remaining
+- layer slice 25
+RS03: try number = 1761, reading sector 236569
+-> 1 untested layers remaining
+- layer slice 26
+RS03: try number = 1762, reading sector 236570
+-> 1 untested layers remaining
+- layer slice 27
+RS03: try number = 1763, reading sector 236571
+-> 1 untested layers remaining
+- layer slice 28
+RS03: try number = 1764, reading sector 236572
+-> 1 untested layers remaining
+- layer slice 29
+RS03: try number = 1765, reading sector 236573
+-> 1 untested layers remaining
+- layer slice 30
+RS03: try number = 1766, reading sector 236574
+-> 1 untested layers remaining
+- layer slice 31
+RS03: try number = 1767, reading sector 236575
+-> 1 untested layers remaining
+- layer slice 32
+RS03: try number = 1768, reading sector 236576
+-> 1 untested layers remaining
+- layer slice 33
+RS03: try number = 1769, reading sector 236577
+-> 1 untested layers remaining
+- layer slice 34
+RS03: try number = 1770, reading sector 236578
+-> 1 untested layers remaining
+- layer slice 35
+RS03: try number = 1771, reading sector 236579
+-> 1 untested layers remaining
+- layer slice 36
+RS03: try number = 1772, reading sector 236580
+-> 1 untested layers remaining
+- layer slice 37
+RS03: try number = 1773, reading sector 236581
+-> 1 untested layers remaining
+- layer slice 38
+RS03: try number = 1774, reading sector 236582
+-> 1 untested layers remaining
+- layer slice 39
+RS03: try number = 1775, reading sector 236583
+-> 1 untested layers remaining
+- layer slice 40
+RS03: try number = 1776, reading sector 236584
+-> 1 untested layers remaining
+- layer slice 41
+RS03: try number = 1777, reading sector 236585
+-> 1 untested layers remaining
+- layer slice 42
+RS03: try number = 1778, reading sector 236586
+-> 1 untested layers remaining
+- layer slice 43
+RS03: try number = 1779, reading sector 236587
+-> 1 untested layers remaining
+- layer slice 44
+RS03: try number = 1780, reading sector 236588
+-> 1 untested layers remaining
+- layer slice 45
+RS03: try number = 1781, reading sector 236589
+-> 1 untested layers remaining
+- layer slice 46
+RS03: try number = 1782, reading sector 236590
+-> 1 untested layers remaining
+- layer slice 47
+RS03: try number = 1783, reading sector 236591
+-> 1 untested layers remaining
+- layer slice 48
+RS03: try number = 1784, reading sector 236592
+-> 1 untested layers remaining
+- layer slice 49
+RS03: try number = 1785, reading sector 236593
+-> 1 untested layers remaining
+- layer slice 50
+RS03: try number = 1786, reading sector 236594
+-> 1 untested layers remaining
+- layer slice 51
+RS03: try number = 1787, reading sector 236595
+-> 1 untested layers remaining
+- layer slice 52
+RS03: try number = 1788, reading sector 236596
+-> 1 untested layers remaining
+- layer slice 53
+RS03: try number = 1789, reading sector 236597
+-> 1 untested layers remaining
+- layer slice 54
+RS03: try number = 1790, reading sector 236598
+-> 1 untested layers remaining
+- layer slice 55
+RS03: try number = 1791, reading sector 236599
+-> 1 untested layers remaining
+- layer slice 56
+RS03: try number = 1792, reading sector 236600
+-> 1 untested layers remaining
+- layer slice 57
+RS03: try number = 1793, reading sector 236601
+-> 1 untested layers remaining
+- layer slice 58
+RS03: try number = 1794, reading sector 236602
+-> 1 untested layers remaining
+- layer slice 59
+RS03: try number = 1795, reading sector 236603
+-> 1 untested layers remaining
+- layer slice 60
+RS03: try number = 1796, reading sector 236604
+-> 1 untested layers remaining
+- layer slice 61
+RS03: try number = 1797, reading sector 236605
+-> 1 untested layers remaining
+- layer slice 62
+RS03: try number = 1798, reading sector 236606
+-> 1 untested layers remaining
+- layer slice 63
+RS03: try number = 1799, reading sector 236607
+-> 1 untested layers remaining
+- layer slice 64
+RS03: try number = 1800, reading sector 236608
+-> 1 untested layers remaining
+- layer slice 65
+RS03: try number = 1801, reading sector 236609
+-> 1 untested layers remaining
+- layer slice 66
+RS03: try number = 1802, reading sector 236610
+-> 1 untested layers remaining
+- layer slice 67
+RS03: try number = 1803, reading sector 236611
+-> 1 untested layers remaining
+- layer slice 68
+RS03: try number = 1804, reading sector 236612
+-> 1 untested layers remaining
+- layer slice 69
+RS03: try number = 1805, reading sector 236613
+-> 1 untested layers remaining
+- layer slice 70
+RS03: try number = 1806, reading sector 236614
+-> 1 untested layers remaining
+- layer slice 71
+RS03: try number = 1807, reading sector 236615
+-> 1 untested layers remaining
+- layer slice 72
+RS03: try number = 1808, reading sector 236616
+-> 1 untested layers remaining
+- layer slice 73
+RS03: try number = 1809, reading sector 236617
+-> 1 untested layers remaining
+- layer slice 74
+RS03: try number = 1810, reading sector 236618
+-> 1 untested layers remaining
+- layer slice 75
+RS03: try number = 1811, reading sector 236619
+-> 1 untested layers remaining
+- layer slice 76
+RS03: try number = 1812, reading sector 236620
+-> 1 untested layers remaining
+- layer slice 77
+RS03: try number = 1813, reading sector 236621
+-> 1 untested layers remaining
+- layer slice 78
+RS03: try number = 1814, reading sector 236622
+-> 1 untested layers remaining
+- layer slice 79
+RS03: try number = 1815, reading sector 236623
+-> 1 untested layers remaining
+- layer slice 80
+RS03: try number = 1816, reading sector 236624
+-> 1 untested layers remaining
+- layer slice 81
+RS03: try number = 1817, reading sector 236625
+-> 1 untested layers remaining
+- layer slice 82
+RS03: try number = 1818, reading sector 236626
+-> 1 untested layers remaining
+- layer slice 83
+RS03: try number = 1819, reading sector 236627
+-> 1 untested layers remaining
+- layer slice 84
+RS03: try number = 1820, reading sector 236628
+-> 1 untested layers remaining
+- layer slice 85
+RS03: try number = 1821, reading sector 236629
+-> 1 untested layers remaining
+- layer slice 86
+RS03: try number = 1822, reading sector 236630
+-> 1 untested layers remaining
+- layer slice 87
+RS03: try number = 1823, reading sector 236631
+-> 1 untested layers remaining
+- layer slice 88
+RS03: try number = 1824, reading sector 236632
+-> 1 untested layers remaining
+- layer slice 89
+RS03: try number = 1825, reading sector 236633
+-> 1 untested layers remaining
+- layer slice 90
+RS03: try number = 1826, reading sector 236634
+-> 1 untested layers remaining
+- layer slice 91
+RS03: try number = 1827, reading sector 236635
+-> 1 untested layers remaining
+- layer slice 92
+RS03: try number = 1828, reading sector 236636
+-> 1 untested layers remaining
+- layer slice 93
+RS03: try number = 1829, reading sector 236637
+-> 1 untested layers remaining
+- layer slice 94
+RS03: try number = 1830, reading sector 236638
+-> 1 untested layers remaining
+- layer slice 95
+RS03: try number = 1831, reading sector 236639
+-> 1 untested layers remaining
+- layer slice 96
+RS03: try number = 1832, reading sector 236640
+-> 1 untested layers remaining
+- layer slice 97
+RS03: try number = 1833, reading sector 236641
+-> 1 untested layers remaining
+- layer slice 98
+RS03: try number = 1834, reading sector 236642
+-> 1 untested layers remaining
+- layer slice 99
+RS03: try number = 1835, reading sector 236643
+-> 1 untested layers remaining
+- layer slice 100
+RS03: try number = 1836, reading sector 236644
+-> 1 untested layers remaining
+- layer slice 101
+RS03: try number = 1837, reading sector 236645
+-> 1 untested layers remaining
+- layer slice 102
+RS03: try number = 1838, reading sector 236646
+-> 1 untested layers remaining
+- layer slice 103
+RS03: try number = 1839, reading sector 236647
+-> 1 untested layers remaining
+- layer slice 104
+RS03: try number = 1840, reading sector 236648
+-> 1 untested layers remaining
+- layer slice 105
+RS03: try number = 1841, reading sector 236649
+-> 1 untested layers remaining
+- layer slice 106
+RS03: try number = 1842, reading sector 236650
+-> 1 untested layers remaining
+- layer slice 107
+RS03: try number = 1843, reading sector 236651
+-> 1 untested layers remaining
+- layer slice 108
+RS03: try number = 1844, reading sector 236652
+-> 1 untested layers remaining
+- layer slice 109
+RS03: try number = 1845, reading sector 236653
+-> 1 untested layers remaining
+- layer slice 110
+RS03: try number = 1846, reading sector 236654
+-> 1 untested layers remaining
+- layer slice 111
+RS03: try number = 1847, reading sector 236655
+-> 1 untested layers remaining
+- layer slice 112
+RS03: try number = 1848, reading sector 236656
+-> 1 untested layers remaining
+- layer slice 113
+RS03: try number = 1849, reading sector 236657
+-> 1 untested layers remaining
+- layer slice 114
+RS03: try number = 1850, reading sector 236658
+-> 1 untested layers remaining
+- layer slice 115
+RS03: try number = 1851, reading sector 236659
+-> 1 untested layers remaining
+- layer slice 116
+RS03: try number = 1852, reading sector 236660
+-> 1 untested layers remaining
+- layer slice 117
+RS03: try number = 1853, reading sector 236661
+-> 1 untested layers remaining
+- layer slice 118
+RS03: try number = 1854, reading sector 236662
+-> 1 untested layers remaining
+- layer slice 119
+RS03: try number = 1855, reading sector 236663
+-> 1 untested layers remaining
+- layer slice 120
+RS03: try number = 1856, reading sector 236664
+-> 1 untested layers remaining
+- layer slice 121
+RS03: try number = 1857, reading sector 236665
+-> 1 untested layers remaining
+- layer slice 122
+RS03: try number = 1858, reading sector 236666
+-> 1 untested layers remaining
+- layer slice 123
+RS03: try number = 1859, reading sector 236667
+-> 1 untested layers remaining
+- layer slice 124
+RS03: try number = 1860, reading sector 236668
+-> 1 untested layers remaining
+- layer slice 125
+RS03: try number = 1861, reading sector 236669
+-> 1 untested layers remaining
+- layer slice 126
+RS03: try number = 1862, reading sector 236670
+-> 1 untested layers remaining
+- layer slice 127
+RS03: try number = 1863, reading sector 236671
+-> 1 untested layers remaining
+- layer slice 128
+RS03: try number = 1864, reading sector 236672
+-> 1 untested layers remaining
+- layer slice 129
+RS03: try number = 1865, reading sector 236673
+-> 1 untested layers remaining
+- layer slice 130
+RS03: try number = 1866, reading sector 236674
+-> 1 untested layers remaining
+- layer slice 131
+RS03: try number = 1867, reading sector 236675
+-> 1 untested layers remaining
+- layer slice 132
+RS03: try number = 1868, reading sector 236676
+-> 1 untested layers remaining
+- layer slice 133
+RS03: try number = 1869, reading sector 236677
+-> 1 untested layers remaining
+- layer slice 134
+RS03: try number = 1870, reading sector 236678
+-> 1 untested layers remaining
+- layer slice 135
+RS03: try number = 1871, reading sector 236679
+-> 1 untested layers remaining
+- layer slice 136
+RS03: try number = 1872, reading sector 236680
+-> 1 untested layers remaining
+- layer slice 137
+RS03: try number = 1873, reading sector 236681
+-> 1 untested layers remaining
+- layer slice 138
+RS03: try number = 1874, reading sector 236682
+-> 1 untested layers remaining
+- layer slice 139
+RS03: try number = 1875, reading sector 236683
+-> 1 untested layers remaining
+- layer slice 140
+RS03: try number = 1876, reading sector 236684
+-> 1 untested layers remaining
+- layer slice 141
+RS03: try number = 1877, reading sector 236685
+-> 1 untested layers remaining
+- layer slice 142
+RS03: try number = 1878, reading sector 236686
+-> 1 untested layers remaining
+- layer slice 143
+RS03: try number = 1879, reading sector 236687
+-> 1 untested layers remaining
+- layer slice 144
+RS03: try number = 1880, reading sector 236688
+-> 1 untested layers remaining
+- layer slice 145
+RS03: try number = 1881, reading sector 236689
+-> 1 untested layers remaining
+- layer slice 146
+RS03: try number = 1882, reading sector 236690
+-> 1 untested layers remaining
+- layer slice 147
+RS03: try number = 1883, reading sector 236691
+-> 1 untested layers remaining
+- layer slice 148
+RS03: try number = 1884, reading sector 236692
+-> 1 untested layers remaining
+- layer slice 149
+RS03: try number = 1885, reading sector 236693
+-> 1 untested layers remaining
+- layer slice 150
+RS03: try number = 1886, reading sector 236694
+-> 1 untested layers remaining
+- layer slice 151
+RS03: try number = 1887, reading sector 236695
+-> 1 untested layers remaining
+- layer slice 152
+RS03: try number = 1888, reading sector 236696
+-> 1 untested layers remaining
+- layer slice 153
+RS03: try number = 1889, reading sector 236697
+-> 1 untested layers remaining
+- layer slice 154
+RS03: try number = 1890, reading sector 236698
+-> 1 untested layers remaining
+- layer slice 155
+RS03: try number = 1891, reading sector 236699
+-> 1 untested layers remaining
+- layer slice 156
+RS03: try number = 1892, reading sector 236700
+-> 1 untested layers remaining
+- layer slice 157
+RS03: try number = 1893, reading sector 236701
+-> 1 untested layers remaining
+- layer slice 158
+RS03: try number = 1894, reading sector 236702
+-> 1 untested layers remaining
+- layer slice 159
+RS03: try number = 1895, reading sector 236703
+-> 1 untested layers remaining
+- layer slice 160
+RS03: try number = 1896, reading sector 236704
+-> 1 untested layers remaining
+- layer slice 161
+RS03: try number = 1897, reading sector 236705
+-> 1 untested layers remaining
+- layer slice 162
+RS03: try number = 1898, reading sector 236706
+-> 1 untested layers remaining
+- layer slice 163
+RS03: try number = 1899, reading sector 236707
+-> 1 untested layers remaining
+- layer slice 164
+RS03: try number = 1900, reading sector 236708
+-> 1 untested layers remaining
+- layer slice 165
+RS03: try number = 1901, reading sector 236709
+-> 1 untested layers remaining
+- layer slice 166
+RS03: try number = 1902, reading sector 236710
+-> 1 untested layers remaining
+- layer slice 167
+RS03: try number = 1903, reading sector 236711
+-> 1 untested layers remaining
+- layer slice 168
+RS03: try number = 1904, reading sector 236712
+** All layers tested -> no RS03 data found
+.. trying layer size 1410
+Scanning layers for signatures.
+- layer slice 0
+RS03: try number = 1905, reading sector 118440
+RS03: try number = 1906, reading sector 119850
+RS03: try number = 1907, reading sector 121260
+RS03: try number = 1908, reading sector 122670
+RS03: try number = 1909, reading sector 124080
+RS03: try number = 1910, reading sector 125490
+RS03: try number = 1911, reading sector 126900
+RS03: try number = 1912, reading sector 128310
+RS03: try number = 1913, reading sector 129720
+RS03: try number = 1914, reading sector 131130
+RS03: try number = 1915, reading sector 132540
+RS03: try number = 1916, reading sector 133950
+RS03: try number = 1917, reading sector 135360
+RS03: try number = 1918, reading sector 136770
+RS03: try number = 1919, reading sector 138180
+RS03: try number = 1920, reading sector 139590
+RS03: try number = 1921, reading sector 141000
+RS03: try number = 1922, reading sector 142410
+RS03: try number = 1923, reading sector 143820
+RS03: try number = 1924, reading sector 145230
+RS03: try number = 1925, reading sector 146640
+RS03: try number = 1926, reading sector 148050
+RS03: try number = 1927, reading sector 149460
+RS03: try number = 1928, reading sector 150870
+RS03: try number = 1929, reading sector 152280
+RS03: try number = 1930, reading sector 153690
+RS03: try number = 1931, reading sector 155100
+RS03: try number = 1932, reading sector 156510
+RS03: try number = 1933, reading sector 157920
+RS03: try number = 1934, reading sector 159330
+RS03: try number = 1935, reading sector 160740
+RS03: try number = 1936, reading sector 162150
+RS03: try number = 1937, reading sector 163560
+RS03: try number = 1938, reading sector 164970
+RS03: try number = 1939, reading sector 166380
+RS03: try number = 1940, reading sector 167790
+RS03: try number = 1941, reading sector 169200
+RS03: try number = 1942, reading sector 170610
+RS03: try number = 1943, reading sector 172020
+RS03: try number = 1944, reading sector 173430
+RS03: try number = 1945, reading sector 174840
+RS03: try number = 1946, reading sector 176250
+RS03: try number = 1947, reading sector 177660
+RS03: try number = 1948, reading sector 179070
+RS03: try number = 1949, reading sector 180480
+RS03: try number = 1950, reading sector 181890
+RS03: try number = 1951, reading sector 183300
+RS03: try number = 1952, reading sector 184710
+RS03: try number = 1953, reading sector 186120
+RS03: try number = 1954, reading sector 187530
+RS03: try number = 1955, reading sector 188940
+RS03: try number = 1956, reading sector 190350
+RS03: try number = 1957, reading sector 191760
+RS03: try number = 1958, reading sector 193170
+RS03: try number = 1959, reading sector 194580
+RS03: try number = 1960, reading sector 195990
+RS03: try number = 1961, reading sector 197400
+RS03: try number = 1962, reading sector 198810
+RS03: try number = 1963, reading sector 200220
+RS03: try number = 1964, reading sector 201630
+RS03: try number = 1965, reading sector 203040
+RS03: try number = 1966, reading sector 204450
+RS03: try number = 1967, reading sector 205860
+RS03: try number = 1968, reading sector 207270
+RS03: try number = 1969, reading sector 208680
+RS03: try number = 1970, reading sector 210090
+RS03: try number = 1971, reading sector 211500
+RS03: try number = 1972, reading sector 212910
+RS03: try number = 1973, reading sector 214320
+RS03: try number = 1974, reading sector 215730
+RS03: try number = 1975, reading sector 217140
+RS03: try number = 1976, reading sector 218550
+RS03: try number = 1977, reading sector 219960
+RS03: try number = 1978, reading sector 221370
+RS03: try number = 1979, reading sector 222780
+RS03: try number = 1980, reading sector 224190
+RS03: try number = 1981, reading sector 225600
+RS03: try number = 1982, reading sector 227010
+RS03: try number = 1983, reading sector 228420
+RS03: try number = 1984, reading sector 229830
+RS03: try number = 1985, reading sector 231240
+RS03: try number = 1986, reading sector 232650
+RS03: try number = 1987, reading sector 234060
+RS03: try number = 1988, reading sector 235470
+RS03: try number = 1989, reading sector 236880
+RS03: try number = 1990, reading sector 238290
+RS03: try number = 1991, reading sector 239700
+RS03: try number = 1992, reading sector 241110
+RS03: try number = 1993, reading sector 242520
+RS03: try number = 1994, reading sector 243930
+RS03: try number = 1995, reading sector 245340
+RS03: try number = 1996, reading sector 246750
+RS03: try number = 1997, reading sector 248160
+RS03: try number = 1998, reading sector 249570
+RS03: try number = 1999, reading sector 250980
+RS03: try number = 2000, reading sector 252390
+RS03: try number = 2001, reading sector 253800
+RS03: try number = 2002, reading sector 255210
+RS03: try number = 2003, reading sector 256620
+RS03: try number = 2004, reading sector 258030
+RS03: try number = 2005, reading sector 259440
+RS03: try number = 2006, reading sector 260850
+RS03: try number = 2007, reading sector 262260
+RS03: try number = 2008, reading sector 263670
+RS03: try number = 2009, reading sector 265080
+RS03: try number = 2010, reading sector 266490
+RS03: try number = 2011, reading sector 267900
+RS03: try number = 2012, reading sector 269310
+RS03: try number = 2013, reading sector 270720
+RS03: try number = 2014, reading sector 272130
+RS03: try number = 2015, reading sector 273540
+RS03: try number = 2016, reading sector 274950
+RS03: try number = 2017, reading sector 276360
+RS03: try number = 2018, reading sector 277770
+RS03: try number = 2019, reading sector 279180
+RS03: try number = 2020, reading sector 280590
+RS03: try number = 2021, reading sector 282000
+RS03: try number = 2022, reading sector 283410
+RS03: try number = 2023, reading sector 284820
+RS03: try number = 2024, reading sector 286230
+RS03: try number = 2025, reading sector 287640
+RS03: try number = 2026, reading sector 289050
+RS03: try number = 2027, reading sector 290460
+RS03: try number = 2028, reading sector 291870
+RS03: try number = 2029, reading sector 293280
+RS03: try number = 2030, reading sector 294690
+RS03: try number = 2031, reading sector 296100
+RS03: try number = 2032, reading sector 297510
+RS03: try number = 2033, reading sector 298920
+RS03: try number = 2034, reading sector 300330
+RS03: try number = 2035, reading sector 301740
+RS03: try number = 2036, reading sector 303150
+RS03: try number = 2037, reading sector 304560
+RS03: try number = 2038, reading sector 305970
+RS03: try number = 2039, reading sector 307380
+RS03: try number = 2040, reading sector 308790
+RS03: try number = 2041, reading sector 310200
+RS03: try number = 2042, reading sector 311610
+RS03: try number = 2043, reading sector 313020
+RS03: try number = 2044, reading sector 314430
+RS03: try number = 2045, reading sector 315840
+RS03: try number = 2046, reading sector 317250
+RS03: try number = 2047, reading sector 318660
+RS03: try number = 2048, reading sector 320070
+RS03: try number = 2049, reading sector 321480
+RS03: try number = 2050, reading sector 322890
+RS03: try number = 2051, reading sector 324300
+RS03: try number = 2052, reading sector 325710
+RS03: try number = 2053, reading sector 327120
+RS03: try number = 2054, reading sector 328530
+RS03: try number = 2055, reading sector 329940
+RS03: try number = 2056, reading sector 331350
+RS03: try number = 2057, reading sector 332760
+RS03: try number = 2058, reading sector 334170
+RS03: try number = 2059, reading sector 335580
+RS03: try number = 2060, reading sector 336990
+RS03: try number = 2061, reading sector 338400
+RS03: try number = 2062, reading sector 339810
+RS03: try number = 2063, reading sector 341220
+RS03: try number = 2064, reading sector 342630
+RS03: try number = 2065, reading sector 344040
+RS03: try number = 2066, reading sector 345450
+RS03: try number = 2067, reading sector 346860
+RS03: try number = 2068, reading sector 348270
+-> 1 untested layers remaining
+- layer slice 1
+RS03: try number = 2069, reading sector 235471
+-> 1 untested layers remaining
+- layer slice 2
+RS03: try number = 2070, reading sector 235472
+-> 1 untested layers remaining
+- layer slice 3
+RS03: try number = 2071, reading sector 235473
+-> 1 untested layers remaining
+- layer slice 4
+RS03: try number = 2072, reading sector 235474
+-> 1 untested layers remaining
+- layer slice 5
+RS03: try number = 2073, reading sector 235475
+-> 1 untested layers remaining
+- layer slice 6
+RS03: try number = 2074, reading sector 235476
+-> 1 untested layers remaining
+- layer slice 7
+RS03: try number = 2075, reading sector 235477
+-> 1 untested layers remaining
+- layer slice 8
+RS03: try number = 2076, reading sector 235478
+-> 1 untested layers remaining
+- layer slice 9
+RS03: try number = 2077, reading sector 235479
+-> 1 untested layers remaining
+- layer slice 10
+RS03: try number = 2078, reading sector 235480
+-> 1 untested layers remaining
+- layer slice 11
+RS03: try number = 2079, reading sector 235481
+-> 1 untested layers remaining
+- layer slice 12
+RS03: try number = 2080, reading sector 235482
+-> 1 untested layers remaining
+- layer slice 13
+RS03: try number = 2081, reading sector 235483
+-> 1 untested layers remaining
+- layer slice 14
+RS03: try number = 2082, reading sector 235484
+-> 1 untested layers remaining
+- layer slice 15
+RS03: try number = 2083, reading sector 235485
+-> 1 untested layers remaining
+- layer slice 16
+RS03: try number = 2084, reading sector 235486
+-> 1 untested layers remaining
+- layer slice 17
+RS03: try number = 2085, reading sector 235487
+-> 1 untested layers remaining
+- layer slice 18
+RS03: try number = 2086, reading sector 235488
+-> 1 untested layers remaining
+- layer slice 19
+RS03: try number = 2087, reading sector 235489
+-> 1 untested layers remaining
+- layer slice 20
+RS03: try number = 2088, reading sector 235490
+-> 1 untested layers remaining
+- layer slice 21
+RS03: try number = 2089, reading sector 235491
+-> 1 untested layers remaining
+- layer slice 22
+RS03: try number = 2090, reading sector 235492
+-> 1 untested layers remaining
+- layer slice 23
+RS03: try number = 2091, reading sector 235493
+-> 1 untested layers remaining
+- layer slice 24
+RS03: try number = 2092, reading sector 235494
+-> 1 untested layers remaining
+- layer slice 25
+RS03: try number = 2093, reading sector 235495
+-> 1 untested layers remaining
+- layer slice 26
+RS03: try number = 2094, reading sector 235496
+-> 1 untested layers remaining
+- layer slice 27
+RS03: try number = 2095, reading sector 235497
+-> 1 untested layers remaining
+- layer slice 28
+RS03: try number = 2096, reading sector 235498
+-> 1 untested layers remaining
+- layer slice 29
+RS03: try number = 2097, reading sector 235499
+-> 1 untested layers remaining
+- layer slice 30
+RS03: try number = 2098, reading sector 235500
+-> 1 untested layers remaining
+- layer slice 31
+RS03: try number = 2099, reading sector 235501
+-> 1 untested layers remaining
+- layer slice 32
+RS03: try number = 2100, reading sector 235502
+-> 1 untested layers remaining
+- layer slice 33
+RS03: try number = 2101, reading sector 235503
+-> 1 untested layers remaining
+- layer slice 34
+RS03: try number = 2102, reading sector 235504
+-> 1 untested layers remaining
+- layer slice 35
+RS03: try number = 2103, reading sector 235505
+-> 1 untested layers remaining
+- layer slice 36
+RS03: try number = 2104, reading sector 235506
+-> 1 untested layers remaining
+- layer slice 37
+RS03: try number = 2105, reading sector 235507
+-> 1 untested layers remaining
+- layer slice 38
+RS03: try number = 2106, reading sector 235508
+-> 1 untested layers remaining
+- layer slice 39
+RS03: try number = 2107, reading sector 235509
+-> 1 untested layers remaining
+- layer slice 40
+RS03: try number = 2108, reading sector 235510
+-> 1 untested layers remaining
+- layer slice 41
+RS03: try number = 2109, reading sector 235511
+-> 1 untested layers remaining
+- layer slice 42
+RS03: try number = 2110, reading sector 235512
+-> 1 untested layers remaining
+- layer slice 43
+RS03: try number = 2111, reading sector 235513
+-> 1 untested layers remaining
+- layer slice 44
+RS03: try number = 2112, reading sector 235514
+-> 1 untested layers remaining
+- layer slice 45
+RS03: try number = 2113, reading sector 235515
+-> 1 untested layers remaining
+- layer slice 46
+RS03: try number = 2114, reading sector 235516
+-> 1 untested layers remaining
+- layer slice 47
+RS03: try number = 2115, reading sector 235517
+-> 1 untested layers remaining
+- layer slice 48
+RS03: try number = 2116, reading sector 235518
+-> 1 untested layers remaining
+- layer slice 49
+RS03: try number = 2117, reading sector 235519
+-> 1 untested layers remaining
+- layer slice 50
+RS03: try number = 2118, reading sector 235520
+-> 1 untested layers remaining
+- layer slice 51
+RS03: try number = 2119, reading sector 235521
+-> 1 untested layers remaining
+- layer slice 52
+RS03: try number = 2120, reading sector 235522
+-> 1 untested layers remaining
+- layer slice 53
+RS03: try number = 2121, reading sector 235523
+-> 1 untested layers remaining
+- layer slice 54
+RS03: try number = 2122, reading sector 235524
+-> 1 untested layers remaining
+- layer slice 55
+RS03: try number = 2123, reading sector 235525
+-> 1 untested layers remaining
+- layer slice 56
+RS03: try number = 2124, reading sector 235526
+-> 1 untested layers remaining
+- layer slice 57
+RS03: try number = 2125, reading sector 235527
+-> 1 untested layers remaining
+- layer slice 58
+RS03: try number = 2126, reading sector 235528
+-> 1 untested layers remaining
+- layer slice 59
+RS03: try number = 2127, reading sector 235529
+-> 1 untested layers remaining
+- layer slice 60
+RS03: try number = 2128, reading sector 235530
+-> 1 untested layers remaining
+- layer slice 61
+RS03: try number = 2129, reading sector 235531
+-> 1 untested layers remaining
+- layer slice 62
+RS03: try number = 2130, reading sector 235532
+-> 1 untested layers remaining
+- layer slice 63
+RS03: try number = 2131, reading sector 235533
+-> 1 untested layers remaining
+- layer slice 64
+RS03: try number = 2132, reading sector 235534
+-> 1 untested layers remaining
+- layer slice 65
+RS03: try number = 2133, reading sector 235535
+-> 1 untested layers remaining
+- layer slice 66
+RS03: try number = 2134, reading sector 235536
+-> 1 untested layers remaining
+- layer slice 67
+RS03: try number = 2135, reading sector 235537
+-> 1 untested layers remaining
+- layer slice 68
+RS03: try number = 2136, reading sector 235538
+-> 1 untested layers remaining
+- layer slice 69
+RS03: try number = 2137, reading sector 235539
+-> 1 untested layers remaining
+- layer slice 70
+RS03: try number = 2138, reading sector 235540
+-> 1 untested layers remaining
+- layer slice 71
+RS03: try number = 2139, reading sector 235541
+-> 1 untested layers remaining
+- layer slice 72
+RS03: try number = 2140, reading sector 235542
+-> 1 untested layers remaining
+- layer slice 73
+RS03: try number = 2141, reading sector 235543
+-> 1 untested layers remaining
+- layer slice 74
+RS03: try number = 2142, reading sector 235544
+-> 1 untested layers remaining
+- layer slice 75
+RS03: try number = 2143, reading sector 235545
+-> 1 untested layers remaining
+- layer slice 76
+RS03: try number = 2144, reading sector 235546
+-> 1 untested layers remaining
+- layer slice 77
+RS03: try number = 2145, reading sector 235547
+-> 1 untested layers remaining
+- layer slice 78
+RS03: try number = 2146, reading sector 235548
+-> 1 untested layers remaining
+- layer slice 79
+RS03: try number = 2147, reading sector 235549
+-> 1 untested layers remaining
+- layer slice 80
+RS03: try number = 2148, reading sector 235550
+-> 1 untested layers remaining
+- layer slice 81
+RS03: try number = 2149, reading sector 235551
+-> 1 untested layers remaining
+- layer slice 82
+RS03: try number = 2150, reading sector 235552
+-> 1 untested layers remaining
+- layer slice 83
+RS03: try number = 2151, reading sector 235553
+-> 1 untested layers remaining
+- layer slice 84
+RS03: try number = 2152, reading sector 235554
+-> 1 untested layers remaining
+- layer slice 85
+RS03: try number = 2153, reading sector 235555
+-> 1 untested layers remaining
+- layer slice 86
+RS03: try number = 2154, reading sector 235556
+-> 1 untested layers remaining
+- layer slice 87
+RS03: try number = 2155, reading sector 235557
+-> 1 untested layers remaining
+- layer slice 88
+RS03: try number = 2156, reading sector 235558
+-> 1 untested layers remaining
+- layer slice 89
+RS03: try number = 2157, reading sector 235559
+-> 1 untested layers remaining
+- layer slice 90
+RS03: try number = 2158, reading sector 235560
+-> 1 untested layers remaining
+- layer slice 91
+RS03: try number = 2159, reading sector 235561
+-> 1 untested layers remaining
+- layer slice 92
+RS03: try number = 2160, reading sector 235562
+-> 1 untested layers remaining
+- layer slice 93
+RS03: try number = 2161, reading sector 235563
+-> 1 untested layers remaining
+- layer slice 94
+RS03: try number = 2162, reading sector 235564
+-> 1 untested layers remaining
+- layer slice 95
+RS03: try number = 2163, reading sector 235565
+-> 1 untested layers remaining
+- layer slice 96
+RS03: try number = 2164, reading sector 235566
+-> 1 untested layers remaining
+- layer slice 97
+RS03: try number = 2165, reading sector 235567
+-> 1 untested layers remaining
+- layer slice 98
+RS03: try number = 2166, reading sector 235568
+-> 1 untested layers remaining
+- layer slice 99
+RS03: try number = 2167, reading sector 235569
+-> 1 untested layers remaining
+- layer slice 100
+RS03: try number = 2168, reading sector 235570
+-> 1 untested layers remaining
+- layer slice 101
+RS03: try number = 2169, reading sector 235571
+-> 1 untested layers remaining
+- layer slice 102
+RS03: try number = 2170, reading sector 235572
+-> 1 untested layers remaining
+- layer slice 103
+RS03: try number = 2171, reading sector 235573
+-> 1 untested layers remaining
+- layer slice 104
+RS03: try number = 2172, reading sector 235574
+-> 1 untested layers remaining
+- layer slice 105
+RS03: try number = 2173, reading sector 235575
+-> 1 untested layers remaining
+- layer slice 106
+RS03: try number = 2174, reading sector 235576
+-> 1 untested layers remaining
+- layer slice 107
+RS03: try number = 2175, reading sector 235577
+-> 1 untested layers remaining
+- layer slice 108
+RS03: try number = 2176, reading sector 235578
+-> 1 untested layers remaining
+- layer slice 109
+RS03: try number = 2177, reading sector 235579
+-> 1 untested layers remaining
+- layer slice 110
+RS03: try number = 2178, reading sector 235580
+-> 1 untested layers remaining
+- layer slice 111
+RS03: try number = 2179, reading sector 235581
+-> 1 untested layers remaining
+- layer slice 112
+RS03: try number = 2180, reading sector 235582
+-> 1 untested layers remaining
+- layer slice 113
+RS03: try number = 2181, reading sector 235583
+-> 1 untested layers remaining
+- layer slice 114
+RS03: try number = 2182, reading sector 235584
+-> 1 untested layers remaining
+- layer slice 115
+RS03: try number = 2183, reading sector 235585
+-> 1 untested layers remaining
+- layer slice 116
+RS03: try number = 2184, reading sector 235586
+-> 1 untested layers remaining
+- layer slice 117
+RS03: try number = 2185, reading sector 235587
+-> 1 untested layers remaining
+- layer slice 118
+RS03: try number = 2186, reading sector 235588
+-> 1 untested layers remaining
+- layer slice 119
+RS03: try number = 2187, reading sector 235589
+-> 1 untested layers remaining
+- layer slice 120
+RS03: try number = 2188, reading sector 235590
+-> 1 untested layers remaining
+- layer slice 121
+RS03: try number = 2189, reading sector 235591
+-> 1 untested layers remaining
+- layer slice 122
+RS03: try number = 2190, reading sector 235592
+-> 1 untested layers remaining
+- layer slice 123
+RS03: try number = 2191, reading sector 235593
+-> 1 untested layers remaining
+- layer slice 124
+RS03: try number = 2192, reading sector 235594
+-> 1 untested layers remaining
+- layer slice 125
+RS03: try number = 2193, reading sector 235595
+-> 1 untested layers remaining
+- layer slice 126
+RS03: try number = 2194, reading sector 235596
+-> 1 untested layers remaining
+- layer slice 127
+RS03: try number = 2195, reading sector 235597
+-> 1 untested layers remaining
+- layer slice 128
+RS03: try number = 2196, reading sector 235598
+-> 1 untested layers remaining
+- layer slice 129
+RS03: try number = 2197, reading sector 235599
+-> 1 untested layers remaining
+- layer slice 130
+RS03: try number = 2198, reading sector 235600
+-> 1 untested layers remaining
+- layer slice 131
+RS03: try number = 2199, reading sector 235601
+-> 1 untested layers remaining
+- layer slice 132
+RS03: try number = 2200, reading sector 235602
+-> 1 untested layers remaining
+- layer slice 133
+RS03: try number = 2201, reading sector 235603
+-> 1 untested layers remaining
+- layer slice 134
+RS03: try number = 2202, reading sector 235604
+-> 1 untested layers remaining
+- layer slice 135
+RS03: try number = 2203, reading sector 235605
+-> 1 untested layers remaining
+- layer slice 136
+RS03: try number = 2204, reading sector 235606
+-> 1 untested layers remaining
+- layer slice 137
+RS03: try number = 2205, reading sector 235607
+-> 1 untested layers remaining
+- layer slice 138
+RS03: try number = 2206, reading sector 235608
+-> 1 untested layers remaining
+- layer slice 139
+RS03: try number = 2207, reading sector 235609
+-> 1 untested layers remaining
+- layer slice 140
+RS03: try number = 2208, reading sector 235610
+-> 1 untested layers remaining
+- layer slice 141
+RS03: try number = 2209, reading sector 235611
+-> 1 untested layers remaining
+- layer slice 142
+RS03: try number = 2210, reading sector 235612
+-> 1 untested layers remaining
+- layer slice 143
+RS03: try number = 2211, reading sector 235613
+-> 1 untested layers remaining
+- layer slice 144
+RS03: try number = 2212, reading sector 235614
+-> 1 untested layers remaining
+- layer slice 145
+RS03: try number = 2213, reading sector 235615
+-> 1 untested layers remaining
+- layer slice 146
+RS03: try number = 2214, reading sector 235616
+-> 1 untested layers remaining
+- layer slice 147
+RS03: try number = 2215, reading sector 235617
+-> 1 untested layers remaining
+- layer slice 148
+RS03: try number = 2216, reading sector 235618
+-> 1 untested layers remaining
+- layer slice 149
+RS03: try number = 2217, reading sector 235619
+-> 1 untested layers remaining
+- layer slice 150
+RS03: try number = 2218, reading sector 235620
+-> 1 untested layers remaining
+- layer slice 151
+RS03: try number = 2219, reading sector 235621
+-> 1 untested layers remaining
+- layer slice 152
+RS03: try number = 2220, reading sector 235622
+-> 1 untested layers remaining
+- layer slice 153
+RS03: try number = 2221, reading sector 235623
+-> 1 untested layers remaining
+- layer slice 154
+RS03: try number = 2222, reading sector 235624
+-> 1 untested layers remaining
+- layer slice 155
+RS03: try number = 2223, reading sector 235625
+-> 1 untested layers remaining
+- layer slice 156
+RS03: try number = 2224, reading sector 235626
+-> 1 untested layers remaining
+- layer slice 157
+RS03: try number = 2225, reading sector 235627
+-> 1 untested layers remaining
+- layer slice 158
+RS03: try number = 2226, reading sector 235628
+-> 1 untested layers remaining
+- layer slice 159
+RS03: try number = 2227, reading sector 235629
+-> 1 untested layers remaining
+- layer slice 160
+RS03: try number = 2228, reading sector 235630
+-> 1 untested layers remaining
+- layer slice 161
+RS03: try number = 2229, reading sector 235631
+-> 1 untested layers remaining
+- layer slice 162
+RS03: try number = 2230, reading sector 235632
+-> 1 untested layers remaining
+- layer slice 163
+RS03: try number = 2231, reading sector 235633
+-> 1 untested layers remaining
+- layer slice 164
+RS03: try number = 2232, reading sector 235634
+-> 1 untested layers remaining
+- layer slice 165
+RS03: try number = 2233, reading sector 235635
+-> 1 untested layers remaining
+- layer slice 166
+RS03: try number = 2234, reading sector 235636
+-> 1 untested layers remaining
+- layer slice 167
+RS03: try number = 2235, reading sector 235637
+-> 1 untested layers remaining
+- layer slice 168
+RS03: try number = 2236, reading sector 235638
+-> 1 untested layers remaining
+- layer slice 169
+RS03: try number = 2237, reading sector 235639
+-> 1 untested layers remaining
+- layer slice 170
+RS03: try number = 2238, reading sector 235640
+-> 1 untested layers remaining
+- layer slice 171
+RS03: try number = 2239, reading sector 235641
+-> 1 untested layers remaining
+- layer slice 172
+RS03: try number = 2240, reading sector 235642
+-> 1 untested layers remaining
+- layer slice 173
+RS03: try number = 2241, reading sector 235643
+-> 1 untested layers remaining
+- layer slice 174
+RS03: try number = 2242, reading sector 235644
+-> 1 untested layers remaining
+- layer slice 175
+RS03: try number = 2243, reading sector 235645
+-> 1 untested layers remaining
+- layer slice 176
+RS03: try number = 2244, reading sector 235646
+-> 1 untested layers remaining
+- layer slice 177
+RS03: try number = 2245, reading sector 235647
+-> 1 untested layers remaining
+- layer slice 178
+RS03: try number = 2246, reading sector 235648
+-> 1 untested layers remaining
+- layer slice 179
+RS03: try number = 2247, reading sector 235649
+-> 1 untested layers remaining
+- layer slice 180
+RS03: try number = 2248, reading sector 235650
+-> 1 untested layers remaining
+- layer slice 181
+RS03: try number = 2249, reading sector 235651
+-> 1 untested layers remaining
+- layer slice 182
+RS03: try number = 2250, reading sector 235652
+-> 1 untested layers remaining
+- layer slice 183
+RS03: try number = 2251, reading sector 235653
+-> 1 untested layers remaining
+- layer slice 184
+RS03: try number = 2252, reading sector 235654
+-> 1 untested layers remaining
+- layer slice 185
+RS03: try number = 2253, reading sector 235655
+-> 1 untested layers remaining
+- layer slice 186
+RS03: try number = 2254, reading sector 235656
+-> 1 untested layers remaining
+- layer slice 187
+RS03: try number = 2255, reading sector 235657
+-> 1 untested layers remaining
+- layer slice 188
+RS03: try number = 2256, reading sector 235658
+-> 1 untested layers remaining
+- layer slice 189
+RS03: try number = 2257, reading sector 235659
+-> 1 untested layers remaining
+- layer slice 190
+RS03: try number = 2258, reading sector 235660
+-> 1 untested layers remaining
+- layer slice 191
+RS03: try number = 2259, reading sector 235661
+-> 1 untested layers remaining
+- layer slice 192
+RS03: try number = 2260, reading sector 235662
+-> 1 untested layers remaining
+- layer slice 193
+RS03: try number = 2261, reading sector 235663
+-> 1 untested layers remaining
+- layer slice 194
+RS03: try number = 2262, reading sector 235664
+-> 1 untested layers remaining
+- layer slice 195
+RS03: try number = 2263, reading sector 235665
+-> 1 untested layers remaining
+- layer slice 196
+RS03: try number = 2264, reading sector 235666
+-> 1 untested layers remaining
+- layer slice 197
+RS03: try number = 2265, reading sector 235667
+-> 1 untested layers remaining
+- layer slice 198
+RS03: try number = 2266, reading sector 235668
+-> 1 untested layers remaining
+- layer slice 199
+RS03: try number = 2267, reading sector 235669
+-> 1 untested layers remaining
+- layer slice 200
+RS03: try number = 2268, reading sector 235670
+-> 1 untested layers remaining
+- layer slice 201
+RS03: try number = 2269, reading sector 235671
+-> 1 untested layers remaining
+- layer slice 202
+RS03: try number = 2270, reading sector 235672
+-> 1 untested layers remaining
+- layer slice 203
+RS03: try number = 2271, reading sector 235673
+-> 1 untested layers remaining
+- layer slice 204
+RS03: try number = 2272, reading sector 235674
+-> 1 untested layers remaining
+- layer slice 205
+RS03: try number = 2273, reading sector 235675
+-> 1 untested layers remaining
+- layer slice 206
+RS03: try number = 2274, reading sector 235676
+-> 1 untested layers remaining
+- layer slice 207
+RS03: try number = 2275, reading sector 235677
+-> 1 untested layers remaining
+- layer slice 208
+RS03: try number = 2276, reading sector 235678
+-> 1 untested layers remaining
+- layer slice 209
+RS03: try number = 2277, reading sector 235679
+-> 1 untested layers remaining
+- layer slice 210
+RS03: try number = 2278, reading sector 235680
+-> 1 untested layers remaining
+- layer slice 211
+RS03: try number = 2279, reading sector 235681
+-> 1 untested layers remaining
+- layer slice 212
+RS03: try number = 2280, reading sector 235682
+-> 1 untested layers remaining
+- layer slice 213
+RS03: try number = 2281, reading sector 235683
+-> 1 untested layers remaining
+- layer slice 214
+RS03: try number = 2282, reading sector 235684
+-> 1 untested layers remaining
+- layer slice 215
+RS03: try number = 2283, reading sector 235685
+-> 1 untested layers remaining
+- layer slice 216
+RS03: try number = 2284, reading sector 235686
+-> 1 untested layers remaining
+- layer slice 217
+RS03: try number = 2285, reading sector 235687
+-> 1 untested layers remaining
+- layer slice 218
+RS03: try number = 2286, reading sector 235688
+-> 1 untested layers remaining
+- layer slice 219
+RS03: try number = 2287, reading sector 235689
+-> 1 untested layers remaining
+- layer slice 220
+RS03: try number = 2288, reading sector 235690
+-> 1 untested layers remaining
+- layer slice 221
+RS03: try number = 2289, reading sector 235691
+-> 1 untested layers remaining
+- layer slice 222
+RS03: try number = 2290, reading sector 235692
+-> 1 untested layers remaining
+- layer slice 223
+RS03: try number = 2291, reading sector 235693
+-> 1 untested layers remaining
+- layer slice 224
+RS03: try number = 2292, reading sector 235694
+-> 1 untested layers remaining
+- layer slice 225
+RS03: try number = 2293, reading sector 235695
+-> 1 untested layers remaining
+- layer slice 226
+RS03: try number = 2294, reading sector 235696
+-> 1 untested layers remaining
+- layer slice 227
+RS03: try number = 2295, reading sector 235697
+-> 1 untested layers remaining
+- layer slice 228
+RS03: try number = 2296, reading sector 235698
+-> 1 untested layers remaining
+- layer slice 229
+RS03: try number = 2297, reading sector 235699
+-> 1 untested layers remaining
+- layer slice 230
+RS03: try number = 2298, reading sector 235700
+-> 1 untested layers remaining
+- layer slice 231
+RS03: try number = 2299, reading sector 235701
+-> 1 untested layers remaining
+- layer slice 232
+RS03: try number = 2300, reading sector 235702
+-> 1 untested layers remaining
+- layer slice 233
+RS03: try number = 2301, reading sector 235703
+-> 1 untested layers remaining
+- layer slice 234
+RS03: try number = 2302, reading sector 235704
+-> 1 untested layers remaining
+- layer slice 235
+RS03: try number = 2303, reading sector 235705
+-> 1 untested layers remaining
+- layer slice 236
+RS03: try number = 2304, reading sector 235706
+-> 1 untested layers remaining
+- layer slice 237
+RS03: try number = 2305, reading sector 235707
+-> 1 untested layers remaining
+- layer slice 238
+RS03: try number = 2306, reading sector 235708
+-> 1 untested layers remaining
+- layer slice 239
+RS03: try number = 2307, reading sector 235709
+-> 1 untested layers remaining
+- layer slice 240
+RS03: try number = 2308, reading sector 235710
+-> 1 untested layers remaining
+- layer slice 241
+RS03: try number = 2309, reading sector 235711
+-> 1 untested layers remaining
+- layer slice 242
+RS03: try number = 2310, reading sector 235712
+-> 1 untested layers remaining
+- layer slice 243
+RS03: try number = 2311, reading sector 235713
+-> 1 untested layers remaining
+- layer slice 244
+RS03: try number = 2312, reading sector 235714
+-> 1 untested layers remaining
+- layer slice 245
+RS03: try number = 2313, reading sector 235715
+-> 1 untested layers remaining
+- layer slice 246
+RS03: try number = 2314, reading sector 235716
+-> 1 untested layers remaining
+- layer slice 247
+RS03: try number = 2315, reading sector 235717
+-> 1 untested layers remaining
+- layer slice 248
+RS03: try number = 2316, reading sector 235718
+-> 1 untested layers remaining
+- layer slice 249
+RS03: try number = 2317, reading sector 235719
+-> 1 untested layers remaining
+- layer slice 250
+RS03: try number = 2318, reading sector 235720
+-> 1 untested layers remaining
+- layer slice 251
+RS03: try number = 2319, reading sector 235721
+-> 1 untested layers remaining
+- layer slice 252
+RS03: try number = 2320, reading sector 235722
+-> 1 untested layers remaining
+- layer slice 253
+RS03: try number = 2321, reading sector 235723
+-> 1 untested layers remaining
+- layer slice 254
+RS03: try number = 2322, reading sector 235724
+-> 1 untested layers remaining
+- layer slice 255
+RS03: try number = 2323, reading sector 235725
+-> 1 untested layers remaining
+- layer slice 256
+RS03: try number = 2324, reading sector 235726
+-> 1 untested layers remaining
+- layer slice 257
+RS03: try number = 2325, reading sector 235727
+-> 1 untested layers remaining
+- layer slice 258
+RS03: try number = 2326, reading sector 235728
+-> 1 untested layers remaining
+- layer slice 259
+RS03: try number = 2327, reading sector 235729
+-> 1 untested layers remaining
+- layer slice 260
+RS03: try number = 2328, reading sector 235730
+-> 1 untested layers remaining
+- layer slice 261
+RS03: try number = 2329, reading sector 235731
+-> 1 untested layers remaining
+- layer slice 262
+RS03: try number = 2330, reading sector 235732
+-> 1 untested layers remaining
+- layer slice 263
+RS03: try number = 2331, reading sector 235733
+-> 1 untested layers remaining
+- layer slice 264
+RS03: try number = 2332, reading sector 235734
+-> 1 untested layers remaining
+- layer slice 265
+RS03: try number = 2333, reading sector 235735
+-> 1 untested layers remaining
+- layer slice 266
+RS03: try number = 2334, reading sector 235736
+-> 1 untested layers remaining
+- layer slice 267
+RS03: try number = 2335, reading sector 235737
+-> 1 untested layers remaining
+- layer slice 268
+RS03: try number = 2336, reading sector 235738
+-> 1 untested layers remaining
+- layer slice 269
+RS03: try number = 2337, reading sector 235739
+-> 1 untested layers remaining
+- layer slice 270
+RS03: try number = 2338, reading sector 235740
+-> 1 untested layers remaining
+- layer slice 271
+RS03: try number = 2339, reading sector 235741
+-> 1 untested layers remaining
+- layer slice 272
+RS03: try number = 2340, reading sector 235742
+-> 1 untested layers remaining
+- layer slice 273
+RS03: try number = 2341, reading sector 235743
+-> 1 untested layers remaining
+- layer slice 274
+RS03: try number = 2342, reading sector 235744
+-> 1 untested layers remaining
+- layer slice 275
+RS03: try number = 2343, reading sector 235745
+-> 1 untested layers remaining
+- layer slice 276
+RS03: try number = 2344, reading sector 235746
+-> 1 untested layers remaining
+- layer slice 277
+RS03: try number = 2345, reading sector 235747
+-> 1 untested layers remaining
+- layer slice 278
+RS03: try number = 2346, reading sector 235748
+-> 1 untested layers remaining
+- layer slice 279
+RS03: try number = 2347, reading sector 235749
+-> 1 untested layers remaining
+- layer slice 280
+RS03: try number = 2348, reading sector 235750
+-> 1 untested layers remaining
+- layer slice 281
+RS03: try number = 2349, reading sector 235751
+-> 1 untested layers remaining
+- layer slice 282
+RS03: try number = 2350, reading sector 235752
+-> 1 untested layers remaining
+- layer slice 283
+RS03: try number = 2351, reading sector 235753
+-> 1 untested layers remaining
+- layer slice 284
+RS03: try number = 2352, reading sector 235754
+-> 1 untested layers remaining
+- layer slice 285
+RS03: try number = 2353, reading sector 235755
+-> 1 untested layers remaining
+- layer slice 286
+RS03: try number = 2354, reading sector 235756
+-> 1 untested layers remaining
+- layer slice 287
+RS03: try number = 2355, reading sector 235757
+-> 1 untested layers remaining
+- layer slice 288
+RS03: try number = 2356, reading sector 235758
+-> 1 untested layers remaining
+- layer slice 289
+RS03: try number = 2357, reading sector 235759
+-> 1 untested layers remaining
+- layer slice 290
+RS03: try number = 2358, reading sector 235760
+-> 1 untested layers remaining
+- layer slice 291
+RS03: try number = 2359, reading sector 235761
+-> 1 untested layers remaining
+- layer slice 292
+RS03: try number = 2360, reading sector 235762
+-> 1 untested layers remaining
+- layer slice 293
+RS03: try number = 2361, reading sector 235763
+-> 1 untested layers remaining
+- layer slice 294
+RS03: try number = 2362, reading sector 235764
+-> 1 untested layers remaining
+- layer slice 295
+RS03: try number = 2363, reading sector 235765
+-> 1 untested layers remaining
+- layer slice 296
+RS03: try number = 2364, reading sector 235766
+-> 1 untested layers remaining
+- layer slice 297
+RS03: try number = 2365, reading sector 235767
+-> 1 untested layers remaining
+- layer slice 298
+RS03: try number = 2366, reading sector 235768
+-> 1 untested layers remaining
+- layer slice 299
+RS03: try number = 2367, reading sector 235769
+-> 1 untested layers remaining
+- layer slice 300
+RS03: try number = 2368, reading sector 235770
+-> 1 untested layers remaining
+- layer slice 301
+RS03: try number = 2369, reading sector 235771
+-> 1 untested layers remaining
+- layer slice 302
+RS03: try number = 2370, reading sector 235772
+-> 1 untested layers remaining
+- layer slice 303
+RS03: try number = 2371, reading sector 235773
+-> 1 untested layers remaining
+- layer slice 304
+RS03: try number = 2372, reading sector 235774
+-> 1 untested layers remaining
+- layer slice 305
+RS03: try number = 2373, reading sector 235775
+-> 1 untested layers remaining
+- layer slice 306
+RS03: try number = 2374, reading sector 235776
+-> 1 untested layers remaining
+- layer slice 307
+RS03: try number = 2375, reading sector 235777
+-> 1 untested layers remaining
+- layer slice 308
+RS03: try number = 2376, reading sector 235778
+-> 1 untested layers remaining
+- layer slice 309
+RS03: try number = 2377, reading sector 235779
+-> 1 untested layers remaining
+- layer slice 310
+RS03: try number = 2378, reading sector 235780
+-> 1 untested layers remaining
+- layer slice 311
+RS03: try number = 2379, reading sector 235781
+-> 1 untested layers remaining
+- layer slice 312
+RS03: try number = 2380, reading sector 235782
+-> 1 untested layers remaining
+- layer slice 313
+RS03: try number = 2381, reading sector 235783
+-> 1 untested layers remaining
+- layer slice 314
+RS03: try number = 2382, reading sector 235784
+-> 1 untested layers remaining
+- layer slice 315
+RS03: try number = 2383, reading sector 235785
+-> 1 untested layers remaining
+- layer slice 316
+RS03: try number = 2384, reading sector 235786
+-> 1 untested layers remaining
+- layer slice 317
+RS03: try number = 2385, reading sector 235787
+-> 1 untested layers remaining
+- layer slice 318
+RS03: try number = 2386, reading sector 235788
+-> 1 untested layers remaining
+- layer slice 319
+RS03: try number = 2387, reading sector 235789
+-> 1 untested layers remaining
+- layer slice 320
+RS03: try number = 2388, reading sector 235790
+-> 1 untested layers remaining
+- layer slice 321
+RS03: try number = 2389, reading sector 235791
+-> 1 untested layers remaining
+- layer slice 322
+RS03: try number = 2390, reading sector 235792
+-> 1 untested layers remaining
+- layer slice 323
+RS03: try number = 2391, reading sector 235793
+-> 1 untested layers remaining
+- layer slice 324
+RS03: try number = 2392, reading sector 235794
+-> 1 untested layers remaining
+- layer slice 325
+RS03: try number = 2393, reading sector 235795
+-> 1 untested layers remaining
+- layer slice 326
+RS03: try number = 2394, reading sector 235796
+-> 1 untested layers remaining
+- layer slice 327
+RS03: try number = 2395, reading sector 235797
+-> 1 untested layers remaining
+- layer slice 328
+RS03: try number = 2396, reading sector 235798
+-> 1 untested layers remaining
+- layer slice 329
+RS03: try number = 2397, reading sector 235799
+-> 1 untested layers remaining
+- layer slice 330
+RS03: try number = 2398, reading sector 235800
+-> 1 untested layers remaining
+- layer slice 331
+RS03: try number = 2399, reading sector 235801
+-> 1 untested layers remaining
+- layer slice 332
+RS03: try number = 2400, reading sector 235802
+-> 1 untested layers remaining
+- layer slice 333
+RS03: try number = 2401, reading sector 235803
+-> 1 untested layers remaining
+- layer slice 334
+RS03: try number = 2402, reading sector 235804
+-> 1 untested layers remaining
+- layer slice 335
+RS03: try number = 2403, reading sector 235805
+-> 1 untested layers remaining
+- layer slice 336
+RS03: try number = 2404, reading sector 235806
+-> 1 untested layers remaining
+- layer slice 337
+RS03: try number = 2405, reading sector 235807
+-> 1 untested layers remaining
+- layer slice 338
+RS03: try number = 2406, reading sector 235808
+-> 1 untested layers remaining
+- layer slice 339
+RS03: try number = 2407, reading sector 235809
+-> 1 untested layers remaining
+- layer slice 340
+RS03: try number = 2408, reading sector 235810
+-> 1 untested layers remaining
+- layer slice 341
+RS03: try number = 2409, reading sector 235811
+-> 1 untested layers remaining
+- layer slice 342
+RS03: try number = 2410, reading sector 235812
+-> 1 untested layers remaining
+- layer slice 343
+RS03: try number = 2411, reading sector 235813
+-> 1 untested layers remaining
+- layer slice 344
+RS03: try number = 2412, reading sector 235814
+-> 1 untested layers remaining
+- layer slice 345
+RS03: try number = 2413, reading sector 235815
+-> 1 untested layers remaining
+- layer slice 346
+RS03: try number = 2414, reading sector 235816
+-> 1 untested layers remaining
+- layer slice 347
+RS03: try number = 2415, reading sector 235817
+-> 1 untested layers remaining
+- layer slice 348
+RS03: try number = 2416, reading sector 235818
+-> 1 untested layers remaining
+- layer slice 349
+RS03: try number = 2417, reading sector 235819
+-> 1 untested layers remaining
+- layer slice 350
+RS03: try number = 2418, reading sector 235820
+-> 1 untested layers remaining
+- layer slice 351
+RS03: try number = 2419, reading sector 235821
+-> 1 untested layers remaining
+- layer slice 352
+RS03: try number = 2420, reading sector 235822
+-> 1 untested layers remaining
+- layer slice 353
+RS03: try number = 2421, reading sector 235823
+-> 1 untested layers remaining
+- layer slice 354
+RS03: try number = 2422, reading sector 235824
+-> 1 untested layers remaining
+- layer slice 355
+RS03: try number = 2423, reading sector 235825
+-> 1 untested layers remaining
+- layer slice 356
+RS03: try number = 2424, reading sector 235826
+-> 1 untested layers remaining
+- layer slice 357
+RS03: try number = 2425, reading sector 235827
+-> 1 untested layers remaining
+- layer slice 358
+RS03: try number = 2426, reading sector 235828
+-> 1 untested layers remaining
+- layer slice 359
+RS03: try number = 2427, reading sector 235829
+-> 1 untested layers remaining
+- layer slice 360
+RS03: try number = 2428, reading sector 235830
+-> 1 untested layers remaining
+- layer slice 361
+RS03: try number = 2429, reading sector 235831
+-> 1 untested layers remaining
+- layer slice 362
+RS03: try number = 2430, reading sector 235832
+-> 1 untested layers remaining
+- layer slice 363
+RS03: try number = 2431, reading sector 235833
+-> 1 untested layers remaining
+- layer slice 364
+RS03: try number = 2432, reading sector 235834
+-> 1 untested layers remaining
+- layer slice 365
+RS03: try number = 2433, reading sector 235835
+-> 1 untested layers remaining
+- layer slice 366
+RS03: try number = 2434, reading sector 235836
+-> 1 untested layers remaining
+- layer slice 367
+RS03: try number = 2435, reading sector 235837
+-> 1 untested layers remaining
+- layer slice 368
+RS03: try number = 2436, reading sector 235838
+-> 1 untested layers remaining
+- layer slice 369
+RS03: try number = 2437, reading sector 235839
+-> 1 untested layers remaining
+- layer slice 370
+RS03: try number = 2438, reading sector 235840
+-> 1 untested layers remaining
+- layer slice 371
+RS03: try number = 2439, reading sector 235841
+-> 1 untested layers remaining
+- layer slice 372
+RS03: try number = 2440, reading sector 235842
+-> 1 untested layers remaining
+- layer slice 373
+RS03: try number = 2441, reading sector 235843
+-> 1 untested layers remaining
+- layer slice 374
+RS03: try number = 2442, reading sector 235844
+-> 1 untested layers remaining
+- layer slice 375
+RS03: try number = 2443, reading sector 235845
+-> 1 untested layers remaining
+- layer slice 376
+RS03: try number = 2444, reading sector 235846
+-> 1 untested layers remaining
+- layer slice 377
+RS03: try number = 2445, reading sector 235847
+-> 1 untested layers remaining
+- layer slice 378
+RS03: try number = 2446, reading sector 235848
+-> 1 untested layers remaining
+- layer slice 379
+RS03: try number = 2447, reading sector 235849
+-> 1 untested layers remaining
+- layer slice 380
+RS03: try number = 2448, reading sector 235850
+-> 1 untested layers remaining
+- layer slice 381
+RS03: try number = 2449, reading sector 235851
+-> 1 untested layers remaining
+- layer slice 382
+RS03: try number = 2450, reading sector 235852
+-> 1 untested layers remaining
+- layer slice 383
+RS03: try number = 2451, reading sector 235853
+-> 1 untested layers remaining
+- layer slice 384
+RS03: try number = 2452, reading sector 235854
+-> 1 untested layers remaining
+- layer slice 385
+RS03: try number = 2453, reading sector 235855
+-> 1 untested layers remaining
+- layer slice 386
+RS03: try number = 2454, reading sector 235856
+-> 1 untested layers remaining
+- layer slice 387
+RS03: try number = 2455, reading sector 235857
+-> 1 untested layers remaining
+- layer slice 388
+RS03: try number = 2456, reading sector 235858
+-> 1 untested layers remaining
+- layer slice 389
+RS03: try number = 2457, reading sector 235859
+-> 1 untested layers remaining
+- layer slice 390
+RS03: try number = 2458, reading sector 235860
+-> 1 untested layers remaining
+- layer slice 391
+RS03: try number = 2459, reading sector 235861
+-> 1 untested layers remaining
+- layer slice 392
+RS03: try number = 2460, reading sector 235862
+-> 1 untested layers remaining
+- layer slice 393
+RS03: try number = 2461, reading sector 235863
+-> 1 untested layers remaining
+- layer slice 394
+RS03: try number = 2462, reading sector 235864
+-> 1 untested layers remaining
+- layer slice 395
+RS03: try number = 2463, reading sector 235865
+-> 1 untested layers remaining
+- layer slice 396
+RS03: try number = 2464, reading sector 235866
+-> 1 untested layers remaining
+- layer slice 397
+RS03: try number = 2465, reading sector 235867
+-> 1 untested layers remaining
+- layer slice 398
+RS03: try number = 2466, reading sector 235868
+-> 1 untested layers remaining
+- layer slice 399
+RS03: try number = 2467, reading sector 235869
+-> 1 untested layers remaining
+- layer slice 400
+RS03: try number = 2468, reading sector 235870
+-> 1 untested layers remaining
+- layer slice 401
+RS03: try number = 2469, reading sector 235871
+-> 1 untested layers remaining
+- layer slice 402
+RS03: try number = 2470, reading sector 235872
+-> 1 untested layers remaining
+- layer slice 403
+RS03: try number = 2471, reading sector 235873
+-> 1 untested layers remaining
+- layer slice 404
+RS03: try number = 2472, reading sector 235874
+-> 1 untested layers remaining
+- layer slice 405
+RS03: try number = 2473, reading sector 235875
+-> 1 untested layers remaining
+- layer slice 406
+RS03: try number = 2474, reading sector 235876
+-> 1 untested layers remaining
+- layer slice 407
+RS03: try number = 2475, reading sector 235877
+-> 1 untested layers remaining
+- layer slice 408
+RS03: try number = 2476, reading sector 235878
+-> 1 untested layers remaining
+- layer slice 409
+RS03: try number = 2477, reading sector 235879
+-> 1 untested layers remaining
+- layer slice 410
+RS03: try number = 2478, reading sector 235880
+-> 1 untested layers remaining
+- layer slice 411
+RS03: try number = 2479, reading sector 235881
+-> 1 untested layers remaining
+- layer slice 412
+RS03: try number = 2480, reading sector 235882
+-> 1 untested layers remaining
+- layer slice 413
+RS03: try number = 2481, reading sector 235883
+-> 1 untested layers remaining
+- layer slice 414
+RS03: try number = 2482, reading sector 235884
+-> 1 untested layers remaining
+- layer slice 415
+RS03: try number = 2483, reading sector 235885
+-> 1 untested layers remaining
+- layer slice 416
+RS03: try number = 2484, reading sector 235886
+-> 1 untested layers remaining
+- layer slice 417
+RS03: try number = 2485, reading sector 235887
+-> 1 untested layers remaining
+- layer slice 418
+RS03: try number = 2486, reading sector 235888
+-> 1 untested layers remaining
+- layer slice 419
+RS03: try number = 2487, reading sector 235889
+-> 1 untested layers remaining
+- layer slice 420
+RS03: try number = 2488, reading sector 235890
+-> 1 untested layers remaining
+- layer slice 421
+RS03: try number = 2489, reading sector 235891
+-> 1 untested layers remaining
+- layer slice 422
+RS03: try number = 2490, reading sector 235892
+-> 1 untested layers remaining
+- layer slice 423
+RS03: try number = 2491, reading sector 235893
+-> 1 untested layers remaining
+- layer slice 424
+RS03: try number = 2492, reading sector 235894
+-> 1 untested layers remaining
+- layer slice 425
+RS03: try number = 2493, reading sector 235895
+-> 1 untested layers remaining
+- layer slice 426
+RS03: try number = 2494, reading sector 235896
+-> 1 untested layers remaining
+- layer slice 427
+RS03: try number = 2495, reading sector 235897
+-> 1 untested layers remaining
+- layer slice 428
+RS03: try number = 2496, reading sector 235898
+-> 1 untested layers remaining
+- layer slice 429
+RS03: try number = 2497, reading sector 235899
+-> 1 untested layers remaining
+- layer slice 430
+RS03: try number = 2498, reading sector 235900
+-> 1 untested layers remaining
+- layer slice 431
+RS03: try number = 2499, reading sector 235901
+-> 1 untested layers remaining
+- layer slice 432
+RS03: try number = 2500, reading sector 235902
+-> 1 untested layers remaining
+- layer slice 433
+RS03: try number = 2501, reading sector 235903
+-> 1 untested layers remaining
+- layer slice 434
+RS03: try number = 2502, reading sector 235904
+-> 1 untested layers remaining
+- layer slice 435
+RS03: try number = 2503, reading sector 235905
+-> 1 untested layers remaining
+- layer slice 436
+RS03: try number = 2504, reading sector 235906
+-> 1 untested layers remaining
+- layer slice 437
+RS03: try number = 2505, reading sector 235907
+-> 1 untested layers remaining
+- layer slice 438
+RS03: try number = 2506, reading sector 235908
+-> 1 untested layers remaining
+- layer slice 439
+RS03: try number = 2507, reading sector 235909
+-> 1 untested layers remaining
+- layer slice 440
+RS03: try number = 2508, reading sector 235910
+-> 1 untested layers remaining
+- layer slice 441
+RS03: try number = 2509, reading sector 235911
+-> 1 untested layers remaining
+- layer slice 442
+RS03: try number = 2510, reading sector 235912
+-> 1 untested layers remaining
+- layer slice 443
+RS03: try number = 2511, reading sector 235913
+-> 1 untested layers remaining
+- layer slice 444
+RS03: try number = 2512, reading sector 235914
+-> 1 untested layers remaining
+- layer slice 445
+RS03: try number = 2513, reading sector 235915
+-> 1 untested layers remaining
+- layer slice 446
+RS03: try number = 2514, reading sector 235916
+-> 1 untested layers remaining
+- layer slice 447
+RS03: try number = 2515, reading sector 235917
+-> 1 untested layers remaining
+- layer slice 448
+RS03: try number = 2516, reading sector 235918
+-> 1 untested layers remaining
+- layer slice 449
+RS03: try number = 2517, reading sector 235919
+-> 1 untested layers remaining
+- layer slice 450
+RS03: try number = 2518, reading sector 235920
+-> 1 untested layers remaining
+- layer slice 451
+RS03: try number = 2519, reading sector 235921
+-> 1 untested layers remaining
+- layer slice 452
+RS03: try number = 2520, reading sector 235922
+-> 1 untested layers remaining
+- layer slice 453
+RS03: try number = 2521, reading sector 235923
+-> 1 untested layers remaining
+- layer slice 454
+RS03: try number = 2522, reading sector 235924
+-> 1 untested layers remaining
+- layer slice 455
+RS03: try number = 2523, reading sector 235925
+-> 1 untested layers remaining
+- layer slice 456
+RS03: try number = 2524, reading sector 235926
+-> 1 untested layers remaining
+- layer slice 457
+RS03: try number = 2525, reading sector 235927
+-> 1 untested layers remaining
+- layer slice 458
+RS03: try number = 2526, reading sector 235928
+-> 1 untested layers remaining
+- layer slice 459
+RS03: try number = 2527, reading sector 235929
+-> 1 untested layers remaining
+- layer slice 460
+RS03: try number = 2528, reading sector 235930
+-> 1 untested layers remaining
+- layer slice 461
+RS03: try number = 2529, reading sector 235931
+-> 1 untested layers remaining
+- layer slice 462
+RS03: try number = 2530, reading sector 235932
+-> 1 untested layers remaining
+- layer slice 463
+RS03: try number = 2531, reading sector 235933
+-> 1 untested layers remaining
+- layer slice 464
+RS03: try number = 2532, reading sector 235934
+-> 1 untested layers remaining
+- layer slice 465
+RS03: try number = 2533, reading sector 235935
+-> 1 untested layers remaining
+- layer slice 466
+RS03: try number = 2534, reading sector 235936
+-> 1 untested layers remaining
+- layer slice 467
+RS03: try number = 2535, reading sector 235937
+-> 1 untested layers remaining
+- layer slice 468
+RS03: try number = 2536, reading sector 235938
+-> 1 untested layers remaining
+- layer slice 469
+RS03: try number = 2537, reading sector 235939
+-> 1 untested layers remaining
+- layer slice 470
+RS03: try number = 2538, reading sector 235940
+-> 1 untested layers remaining
+- layer slice 471
+RS03: try number = 2539, reading sector 235941
+-> 1 untested layers remaining
+- layer slice 472
+RS03: try number = 2540, reading sector 235942
+-> 1 untested layers remaining
+- layer slice 473
+RS03: try number = 2541, reading sector 235943
+-> 1 untested layers remaining
+- layer slice 474
+RS03: try number = 2542, reading sector 235944
+-> 1 untested layers remaining
+- layer slice 475
+RS03: try number = 2543, reading sector 235945
+-> 1 untested layers remaining
+- layer slice 476
+RS03: try number = 2544, reading sector 235946
+-> 1 untested layers remaining
+- layer slice 477
+RS03: try number = 2545, reading sector 235947
+-> 1 untested layers remaining
+- layer slice 478
+RS03: try number = 2546, reading sector 235948
+-> 1 untested layers remaining
+- layer slice 479
+RS03: try number = 2547, reading sector 235949
+-> 1 untested layers remaining
+- layer slice 480
+RS03: try number = 2548, reading sector 235950
+-> 1 untested layers remaining
+- layer slice 481
+RS03: try number = 2549, reading sector 235951
+-> 1 untested layers remaining
+- layer slice 482
+RS03: try number = 2550, reading sector 235952
+-> 1 untested layers remaining
+- layer slice 483
+RS03: try number = 2551, reading sector 235953
+-> 1 untested layers remaining
+- layer slice 484
+RS03: try number = 2552, reading sector 235954
+-> 1 untested layers remaining
+- layer slice 485
+RS03: try number = 2553, reading sector 235955
+-> 1 untested layers remaining
+- layer slice 486
+RS03: try number = 2554, reading sector 235956
+-> 1 untested layers remaining
+- layer slice 487
+RS03: try number = 2555, reading sector 235957
+-> 1 untested layers remaining
+- layer slice 488
+RS03: try number = 2556, reading sector 235958
+-> 1 untested layers remaining
+- layer slice 489
+RS03: try number = 2557, reading sector 235959
+-> 1 untested layers remaining
+- layer slice 490
+RS03: try number = 2558, reading sector 235960
+-> 1 untested layers remaining
+- layer slice 491
+RS03: try number = 2559, reading sector 235961
+-> 1 untested layers remaining
+- layer slice 492
+RS03: try number = 2560, reading sector 235962
+-> 1 untested layers remaining
+- layer slice 493
+RS03: try number = 2561, reading sector 235963
+-> 1 untested layers remaining
+- layer slice 494
+RS03: try number = 2562, reading sector 235964
+-> 1 untested layers remaining
+- layer slice 495
+RS03: try number = 2563, reading sector 235965
+-> 1 untested layers remaining
+- layer slice 496
+RS03: try number = 2564, reading sector 235966
+-> 1 untested layers remaining
+- layer slice 497
+RS03: try number = 2565, reading sector 235967
+-> 1 untested layers remaining
+- layer slice 498
+RS03: try number = 2566, reading sector 235968
+-> 1 untested layers remaining
+- layer slice 499
+RS03: try number = 2567, reading sector 235969
+-> 1 untested layers remaining
+- layer slice 500
+RS03: try number = 2568, reading sector 235970
+-> 1 untested layers remaining
+- layer slice 501
+RS03: try number = 2569, reading sector 235971
+-> 1 untested layers remaining
+- layer slice 502
+RS03: try number = 2570, reading sector 235972
+-> 1 untested layers remaining
+- layer slice 503
+RS03: try number = 2571, reading sector 235973
+-> 1 untested layers remaining
+- layer slice 504
+RS03: try number = 2572, reading sector 235974
+-> 1 untested layers remaining
+- layer slice 505
+RS03: try number = 2573, reading sector 235975
+-> 1 untested layers remaining
+- layer slice 506
+RS03: try number = 2574, reading sector 235976
+-> 1 untested layers remaining
+- layer slice 507
+RS03: try number = 2575, reading sector 235977
+-> 1 untested layers remaining
+- layer slice 508
+RS03: try number = 2576, reading sector 235978
+-> 1 untested layers remaining
+- layer slice 509
+RS03: try number = 2577, reading sector 235979
+-> 1 untested layers remaining
+- layer slice 510
+RS03: try number = 2578, reading sector 235980
+-> 1 untested layers remaining
+- layer slice 511
+RS03: try number = 2579, reading sector 235981
+-> 1 untested layers remaining
+- layer slice 512
+RS03: try number = 2580, reading sector 235982
+-> 1 untested layers remaining
+- layer slice 513
+RS03: try number = 2581, reading sector 235983
+-> 1 untested layers remaining
+- layer slice 514
+RS03: try number = 2582, reading sector 235984
+-> 1 untested layers remaining
+- layer slice 515
+RS03: try number = 2583, reading sector 235985
+-> 1 untested layers remaining
+- layer slice 516
+RS03: try number = 2584, reading sector 235986
+-> 1 untested layers remaining
+- layer slice 517
+RS03: try number = 2585, reading sector 235987
+-> 1 untested layers remaining
+- layer slice 518
+RS03: try number = 2586, reading sector 235988
+-> 1 untested layers remaining
+- layer slice 519
+RS03: try number = 2587, reading sector 235989
+-> 1 untested layers remaining
+- layer slice 520
+RS03: try number = 2588, reading sector 235990
+-> 1 untested layers remaining
+- layer slice 521
+RS03: try number = 2589, reading sector 235991
+-> 1 untested layers remaining
+- layer slice 522
+RS03: try number = 2590, reading sector 235992
+-> 1 untested layers remaining
+- layer slice 523
+RS03: try number = 2591, reading sector 235993
+-> 1 untested layers remaining
+- layer slice 524
+RS03: try number = 2592, reading sector 235994
+-> 1 untested layers remaining
+- layer slice 525
+RS03: try number = 2593, reading sector 235995
+-> 1 untested layers remaining
+- layer slice 526
+RS03: try number = 2594, reading sector 235996
+-> 1 untested layers remaining
+- layer slice 527
+RS03: try number = 2595, reading sector 235997
+-> 1 untested layers remaining
+- layer slice 528
+RS03: try number = 2596, reading sector 235998
+-> 1 untested layers remaining
+- layer slice 529
+RS03: try number = 2597, reading sector 235999
+-> 1 untested layers remaining
+- layer slice 530
+RS03: try number = 2598, reading sector 236000
+-> 1 untested layers remaining
+- layer slice 531
+RS03: try number = 2599, reading sector 236001
+-> 1 untested layers remaining
+- layer slice 532
+RS03: try number = 2600, reading sector 236002
+-> 1 untested layers remaining
+- layer slice 533
+RS03: try number = 2601, reading sector 236003
+-> 1 untested layers remaining
+- layer slice 534
+RS03: try number = 2602, reading sector 236004
+-> 1 untested layers remaining
+- layer slice 535
+RS03: try number = 2603, reading sector 236005
+-> 1 untested layers remaining
+- layer slice 536
+RS03: try number = 2604, reading sector 236006
+-> 1 untested layers remaining
+- layer slice 537
+RS03: try number = 2605, reading sector 236007
+-> 1 untested layers remaining
+- layer slice 538
+RS03: try number = 2606, reading sector 236008
+-> 1 untested layers remaining
+- layer slice 539
+RS03: try number = 2607, reading sector 236009
+-> 1 untested layers remaining
+- layer slice 540
+RS03: try number = 2608, reading sector 236010
+-> 1 untested layers remaining
+- layer slice 541
+RS03: try number = 2609, reading sector 236011
+-> 1 untested layers remaining
+- layer slice 542
+RS03: try number = 2610, reading sector 236012
+-> 1 untested layers remaining
+- layer slice 543
+RS03: try number = 2611, reading sector 236013
+-> 1 untested layers remaining
+- layer slice 544
+RS03: try number = 2612, reading sector 236014
+-> 1 untested layers remaining
+- layer slice 545
+RS03: try number = 2613, reading sector 236015
+-> 1 untested layers remaining
+- layer slice 546
+RS03: try number = 2614, reading sector 236016
+-> 1 untested layers remaining
+- layer slice 547
+RS03: try number = 2615, reading sector 236017
+-> 1 untested layers remaining
+- layer slice 548
+RS03: try number = 2616, reading sector 236018
+-> 1 untested layers remaining
+- layer slice 549
+RS03: try number = 2617, reading sector 236019
+-> 1 untested layers remaining
+- layer slice 550
+RS03: try number = 2618, reading sector 236020
+-> 1 untested layers remaining
+- layer slice 551
+RS03: try number = 2619, reading sector 236021
+-> 1 untested layers remaining
+- layer slice 552
+RS03: try number = 2620, reading sector 236022
+-> 1 untested layers remaining
+- layer slice 553
+RS03: try number = 2621, reading sector 236023
+-> 1 untested layers remaining
+- layer slice 554
+RS03: try number = 2622, reading sector 236024
+-> 1 untested layers remaining
+- layer slice 555
+RS03: try number = 2623, reading sector 236025
+-> 1 untested layers remaining
+- layer slice 556
+RS03: try number = 2624, reading sector 236026
+-> 1 untested layers remaining
+- layer slice 557
+RS03: try number = 2625, reading sector 236027
+-> 1 untested layers remaining
+- layer slice 558
+RS03: try number = 2626, reading sector 236028
+-> 1 untested layers remaining
+- layer slice 559
+RS03: try number = 2627, reading sector 236029
+-> 1 untested layers remaining
+- layer slice 560
+RS03: try number = 2628, reading sector 236030
+-> 1 untested layers remaining
+- layer slice 561
+RS03: try number = 2629, reading sector 236031
+-> 1 untested layers remaining
+- layer slice 562
+RS03: try number = 2630, reading sector 236032
+-> 1 untested layers remaining
+- layer slice 563
+RS03: try number = 2631, reading sector 236033
+-> 1 untested layers remaining
+- layer slice 564
+RS03: try number = 2632, reading sector 236034
+-> 1 untested layers remaining
+- layer slice 565
+RS03: try number = 2633, reading sector 236035
+-> 1 untested layers remaining
+- layer slice 566
+RS03: try number = 2634, reading sector 236036
+-> 1 untested layers remaining
+- layer slice 567
+RS03: try number = 2635, reading sector 236037
+-> 1 untested layers remaining
+- layer slice 568
+RS03: try number = 2636, reading sector 236038
+-> 1 untested layers remaining
+- layer slice 569
+RS03: try number = 2637, reading sector 236039
+-> 1 untested layers remaining
+- layer slice 570
+RS03: try number = 2638, reading sector 236040
+-> 1 untested layers remaining
+- layer slice 571
+RS03: try number = 2639, reading sector 236041
+-> 1 untested layers remaining
+- layer slice 572
+RS03: try number = 2640, reading sector 236042
+-> 1 untested layers remaining
+- layer slice 573
+RS03: try number = 2641, reading sector 236043
+-> 1 untested layers remaining
+- layer slice 574
+RS03: try number = 2642, reading sector 236044
+-> 1 untested layers remaining
+- layer slice 575
+RS03: try number = 2643, reading sector 236045
+-> 1 untested layers remaining
+- layer slice 576
+RS03: try number = 2644, reading sector 236046
+-> 1 untested layers remaining
+- layer slice 577
+RS03: try number = 2645, reading sector 236047
+-> 1 untested layers remaining
+- layer slice 578
+RS03: try number = 2646, reading sector 236048
+-> 1 untested layers remaining
+- layer slice 579
+RS03: try number = 2647, reading sector 236049
+-> 1 untested layers remaining
+- layer slice 580
+RS03: try number = 2648, reading sector 236050
+-> 1 untested layers remaining
+- layer slice 581
+RS03: try number = 2649, reading sector 236051
+-> 1 untested layers remaining
+- layer slice 582
+RS03: try number = 2650, reading sector 236052
+-> 1 untested layers remaining
+- layer slice 583
+RS03: try number = 2651, reading sector 236053
+-> 1 untested layers remaining
+- layer slice 584
+RS03: try number = 2652, reading sector 236054
+-> 1 untested layers remaining
+- layer slice 585
+RS03: try number = 2653, reading sector 236055
+-> 1 untested layers remaining
+- layer slice 586
+RS03: try number = 2654, reading sector 236056
+-> 1 untested layers remaining
+- layer slice 587
+RS03: try number = 2655, reading sector 236057
+-> 1 untested layers remaining
+- layer slice 588
+RS03: try number = 2656, reading sector 236058
+-> 1 untested layers remaining
+- layer slice 589
+RS03: try number = 2657, reading sector 236059
+-> 1 untested layers remaining
+- layer slice 590
+RS03: try number = 2658, reading sector 236060
+-> 1 untested layers remaining
+- layer slice 591
+RS03: try number = 2659, reading sector 236061
+-> 1 untested layers remaining
+- layer slice 592
+RS03: try number = 2660, reading sector 236062
+-> 1 untested layers remaining
+- layer slice 593
+RS03: try number = 2661, reading sector 236063
+-> 1 untested layers remaining
+- layer slice 594
+RS03: try number = 2662, reading sector 236064
+-> 1 untested layers remaining
+- layer slice 595
+RS03: try number = 2663, reading sector 236065
+-> 1 untested layers remaining
+- layer slice 596
+RS03: try number = 2664, reading sector 236066
+-> 1 untested layers remaining
+- layer slice 597
+RS03: try number = 2665, reading sector 236067
+-> 1 untested layers remaining
+- layer slice 598
+RS03: try number = 2666, reading sector 236068
+-> 1 untested layers remaining
+- layer slice 599
+RS03: try number = 2667, reading sector 236069
+-> 1 untested layers remaining
+- layer slice 600
+RS03: try number = 2668, reading sector 236070
+-> 1 untested layers remaining
+- layer slice 601
+RS03: try number = 2669, reading sector 236071
+-> 1 untested layers remaining
+- layer slice 602
+RS03: try number = 2670, reading sector 236072
+-> 1 untested layers remaining
+- layer slice 603
+RS03: try number = 2671, reading sector 236073
+-> 1 untested layers remaining
+- layer slice 604
+RS03: try number = 2672, reading sector 236074
+-> 1 untested layers remaining
+- layer slice 605
+RS03: try number = 2673, reading sector 236075
+-> 1 untested layers remaining
+- layer slice 606
+RS03: try number = 2674, reading sector 236076
+-> 1 untested layers remaining
+- layer slice 607
+RS03: try number = 2675, reading sector 236077
+-> 1 untested layers remaining
+- layer slice 608
+RS03: try number = 2676, reading sector 236078
+-> 1 untested layers remaining
+- layer slice 609
+RS03: try number = 2677, reading sector 236079
+-> 1 untested layers remaining
+- layer slice 610
+RS03: try number = 2678, reading sector 236080
+-> 1 untested layers remaining
+- layer slice 611
+RS03: try number = 2679, reading sector 236081
+-> 1 untested layers remaining
+- layer slice 612
+RS03: try number = 2680, reading sector 236082
+-> 1 untested layers remaining
+- layer slice 613
+RS03: try number = 2681, reading sector 236083
+-> 1 untested layers remaining
+- layer slice 614
+RS03: try number = 2682, reading sector 236084
+-> 1 untested layers remaining
+- layer slice 615
+RS03: try number = 2683, reading sector 236085
+-> 1 untested layers remaining
+- layer slice 616
+RS03: try number = 2684, reading sector 236086
+-> 1 untested layers remaining
+- layer slice 617
+RS03: try number = 2685, reading sector 236087
+-> 1 untested layers remaining
+- layer slice 618
+RS03: try number = 2686, reading sector 236088
+-> 1 untested layers remaining
+- layer slice 619
+RS03: try number = 2687, reading sector 236089
+-> 1 untested layers remaining
+- layer slice 620
+RS03: try number = 2688, reading sector 236090
+-> 1 untested layers remaining
+- layer slice 621
+RS03: try number = 2689, reading sector 236091
+-> 1 untested layers remaining
+- layer slice 622
+RS03: try number = 2690, reading sector 236092
+-> 1 untested layers remaining
+- layer slice 623
+RS03: try number = 2691, reading sector 236093
+-> 1 untested layers remaining
+- layer slice 624
+RS03: try number = 2692, reading sector 236094
+-> 1 untested layers remaining
+- layer slice 625
+RS03: try number = 2693, reading sector 236095
+-> 1 untested layers remaining
+- layer slice 626
+RS03: try number = 2694, reading sector 236096
+-> 1 untested layers remaining
+- layer slice 627
+RS03: try number = 2695, reading sector 236097
+-> 1 untested layers remaining
+- layer slice 628
+RS03: try number = 2696, reading sector 236098
+-> 1 untested layers remaining
+- layer slice 629
+RS03: try number = 2697, reading sector 236099
+-> 1 untested layers remaining
+- layer slice 630
+RS03: try number = 2698, reading sector 236100
+-> 1 untested layers remaining
+- layer slice 631
+RS03: try number = 2699, reading sector 236101
+-> 1 untested layers remaining
+- layer slice 632
+RS03: try number = 2700, reading sector 236102
+-> 1 untested layers remaining
+- layer slice 633
+RS03: try number = 2701, reading sector 236103
+-> 1 untested layers remaining
+- layer slice 634
+RS03: try number = 2702, reading sector 236104
+-> 1 untested layers remaining
+- layer slice 635
+RS03: try number = 2703, reading sector 236105
+-> 1 untested layers remaining
+- layer slice 636
+RS03: try number = 2704, reading sector 236106
+-> 1 untested layers remaining
+- layer slice 637
+RS03: try number = 2705, reading sector 236107
+-> 1 untested layers remaining
+- layer slice 638
+RS03: try number = 2706, reading sector 236108
+-> 1 untested layers remaining
+- layer slice 639
+RS03: try number = 2707, reading sector 236109
+-> 1 untested layers remaining
+- layer slice 640
+RS03: try number = 2708, reading sector 236110
+-> 1 untested layers remaining
+- layer slice 641
+RS03: try number = 2709, reading sector 236111
+-> 1 untested layers remaining
+- layer slice 642
+RS03: try number = 2710, reading sector 236112
+-> 1 untested layers remaining
+- layer slice 643
+RS03: try number = 2711, reading sector 236113
+-> 1 untested layers remaining
+- layer slice 644
+RS03: try number = 2712, reading sector 236114
+-> 1 untested layers remaining
+- layer slice 645
+RS03: try number = 2713, reading sector 236115
+-> 1 untested layers remaining
+- layer slice 646
+RS03: try number = 2714, reading sector 236116
+-> 1 untested layers remaining
+- layer slice 647
+RS03: try number = 2715, reading sector 236117
+-> 1 untested layers remaining
+- layer slice 648
+RS03: try number = 2716, reading sector 236118
+-> 1 untested layers remaining
+- layer slice 649
+RS03: try number = 2717, reading sector 236119
+-> 1 untested layers remaining
+- layer slice 650
+RS03: try number = 2718, reading sector 236120
+-> 1 untested layers remaining
+- layer slice 651
+RS03: try number = 2719, reading sector 236121
+-> 1 untested layers remaining
+- layer slice 652
+RS03: try number = 2720, reading sector 236122
+-> 1 untested layers remaining
+- layer slice 653
+RS03: try number = 2721, reading sector 236123
+-> 1 untested layers remaining
+- layer slice 654
+RS03: try number = 2722, reading sector 236124
+-> 1 untested layers remaining
+- layer slice 655
+RS03: try number = 2723, reading sector 236125
+-> 1 untested layers remaining
+- layer slice 656
+RS03: try number = 2724, reading sector 236126
+-> 1 untested layers remaining
+- layer slice 657
+RS03: try number = 2725, reading sector 236127
+-> 1 untested layers remaining
+- layer slice 658
+RS03: try number = 2726, reading sector 236128
+-> 1 untested layers remaining
+- layer slice 659
+RS03: try number = 2727, reading sector 236129
+-> 1 untested layers remaining
+- layer slice 660
+RS03: try number = 2728, reading sector 236130
+-> 1 untested layers remaining
+- layer slice 661
+RS03: try number = 2729, reading sector 236131
+-> 1 untested layers remaining
+- layer slice 662
+RS03: try number = 2730, reading sector 236132
+-> 1 untested layers remaining
+- layer slice 663
+RS03: try number = 2731, reading sector 236133
+-> 1 untested layers remaining
+- layer slice 664
+RS03: try number = 2732, reading sector 236134
+-> 1 untested layers remaining
+- layer slice 665
+RS03: try number = 2733, reading sector 236135
+-> 1 untested layers remaining
+- layer slice 666
+RS03: try number = 2734, reading sector 236136
+-> 1 untested layers remaining
+- layer slice 667
+RS03: try number = 2735, reading sector 236137
+-> 1 untested layers remaining
+- layer slice 668
+RS03: try number = 2736, reading sector 236138
+-> 1 untested layers remaining
+- layer slice 669
+RS03: try number = 2737, reading sector 236139
+-> 1 untested layers remaining
+- layer slice 670
+RS03: try number = 2738, reading sector 236140
+-> 1 untested layers remaining
+- layer slice 671
+RS03: try number = 2739, reading sector 236141
+-> 1 untested layers remaining
+- layer slice 672
+RS03: try number = 2740, reading sector 236142
+-> 1 untested layers remaining
+- layer slice 673
+RS03: try number = 2741, reading sector 236143
+-> 1 untested layers remaining
+- layer slice 674
+RS03: try number = 2742, reading sector 236144
+-> 1 untested layers remaining
+- layer slice 675
+RS03: try number = 2743, reading sector 236145
+-> 1 untested layers remaining
+- layer slice 676
+RS03: try number = 2744, reading sector 236146
+-> 1 untested layers remaining
+- layer slice 677
+RS03: try number = 2745, reading sector 236147
+-> 1 untested layers remaining
+- layer slice 678
+RS03: try number = 2746, reading sector 236148
+-> 1 untested layers remaining
+- layer slice 679
+RS03: try number = 2747, reading sector 236149
+-> 1 untested layers remaining
+- layer slice 680
+RS03: try number = 2748, reading sector 236150
+-> 1 untested layers remaining
+- layer slice 681
+RS03: try number = 2749, reading sector 236151
+-> 1 untested layers remaining
+- layer slice 682
+RS03: try number = 2750, reading sector 236152
+-> 1 untested layers remaining
+- layer slice 683
+RS03: try number = 2751, reading sector 236153
+-> 1 untested layers remaining
+- layer slice 684
+RS03: try number = 2752, reading sector 236154
+-> 1 untested layers remaining
+- layer slice 685
+RS03: try number = 2753, reading sector 236155
+-> 1 untested layers remaining
+- layer slice 686
+RS03: try number = 2754, reading sector 236156
+-> 1 untested layers remaining
+- layer slice 687
+RS03: try number = 2755, reading sector 236157
+-> 1 untested layers remaining
+- layer slice 688
+RS03: try number = 2756, reading sector 236158
+-> 1 untested layers remaining
+- layer slice 689
+RS03: try number = 2757, reading sector 236159
+-> 1 untested layers remaining
+- layer slice 690
+RS03: try number = 2758, reading sector 236160
+-> 1 untested layers remaining
+- layer slice 691
+RS03: try number = 2759, reading sector 236161
+-> 1 untested layers remaining
+- layer slice 692
+RS03: try number = 2760, reading sector 236162
+-> 1 untested layers remaining
+- layer slice 693
+RS03: try number = 2761, reading sector 236163
+-> 1 untested layers remaining
+- layer slice 694
+RS03: try number = 2762, reading sector 236164
+-> 1 untested layers remaining
+- layer slice 695
+RS03: try number = 2763, reading sector 236165
+-> 1 untested layers remaining
+- layer slice 696
+RS03: try number = 2764, reading sector 236166
+-> 1 untested layers remaining
+- layer slice 697
+RS03: try number = 2765, reading sector 236167
+-> 1 untested layers remaining
+- layer slice 698
+RS03: try number = 2766, reading sector 236168
+-> 1 untested layers remaining
+- layer slice 699
+RS03: try number = 2767, reading sector 236169
+-> 1 untested layers remaining
+- layer slice 700
+RS03: try number = 2768, reading sector 236170
+-> 1 untested layers remaining
+- layer slice 701
+RS03: try number = 2769, reading sector 236171
+-> 1 untested layers remaining
+- layer slice 702
+RS03: try number = 2770, reading sector 236172
+-> 1 untested layers remaining
+- layer slice 703
+RS03: try number = 2771, reading sector 236173
+-> 1 untested layers remaining
+- layer slice 704
+RS03: try number = 2772, reading sector 236174
+-> 1 untested layers remaining
+- layer slice 705
+RS03: try number = 2773, reading sector 236175
+-> 1 untested layers remaining
+- layer slice 706
+RS03: try number = 2774, reading sector 236176
+-> 1 untested layers remaining
+- layer slice 707
+RS03: try number = 2775, reading sector 236177
+-> 1 untested layers remaining
+- layer slice 708
+RS03: try number = 2776, reading sector 236178
+-> 1 untested layers remaining
+- layer slice 709
+RS03: try number = 2777, reading sector 236179
+-> 1 untested layers remaining
+- layer slice 710
+RS03: try number = 2778, reading sector 236180
+-> 1 untested layers remaining
+- layer slice 711
+RS03: try number = 2779, reading sector 236181
+-> 1 untested layers remaining
+- layer slice 712
+RS03: try number = 2780, reading sector 236182
+-> 1 untested layers remaining
+- layer slice 713
+RS03: try number = 2781, reading sector 236183
+-> 1 untested layers remaining
+- layer slice 714
+RS03: try number = 2782, reading sector 236184
+-> 1 untested layers remaining
+- layer slice 715
+RS03: try number = 2783, reading sector 236185
+-> 1 untested layers remaining
+- layer slice 716
+RS03: try number = 2784, reading sector 236186
+-> 1 untested layers remaining
+- layer slice 717
+RS03: try number = 2785, reading sector 236187
+-> 1 untested layers remaining
+- layer slice 718
+RS03: try number = 2786, reading sector 236188
+-> 1 untested layers remaining
+- layer slice 719
+RS03: try number = 2787, reading sector 236189
+-> 1 untested layers remaining
+- layer slice 720
+RS03: try number = 2788, reading sector 236190
+-> 1 untested layers remaining
+- layer slice 721
+RS03: try number = 2789, reading sector 236191
+-> 1 untested layers remaining
+- layer slice 722
+RS03: try number = 2790, reading sector 236192
+-> 1 untested layers remaining
+- layer slice 723
+RS03: try number = 2791, reading sector 236193
+-> 1 untested layers remaining
+- layer slice 724
+RS03: try number = 2792, reading sector 236194
+-> 1 untested layers remaining
+- layer slice 725
+RS03: try number = 2793, reading sector 236195
+-> 1 untested layers remaining
+- layer slice 726
+RS03: try number = 2794, reading sector 236196
+-> 1 untested layers remaining
+- layer slice 727
+RS03: try number = 2795, reading sector 236197
+-> 1 untested layers remaining
+- layer slice 728
+RS03: try number = 2796, reading sector 236198
+-> 1 untested layers remaining
+- layer slice 729
+RS03: try number = 2797, reading sector 236199
+-> 1 untested layers remaining
+- layer slice 730
+RS03: try number = 2798, reading sector 236200
+-> 1 untested layers remaining
+- layer slice 731
+RS03: try number = 2799, reading sector 236201
+-> 1 untested layers remaining
+- layer slice 732
+RS03: try number = 2800, reading sector 236202
+-> 1 untested layers remaining
+- layer slice 733
+RS03: try number = 2801, reading sector 236203
+-> 1 untested layers remaining
+- layer slice 734
+RS03: try number = 2802, reading sector 236204
+-> 1 untested layers remaining
+- layer slice 735
+RS03: try number = 2803, reading sector 236205
+-> 1 untested layers remaining
+- layer slice 736
+RS03: try number = 2804, reading sector 236206
+-> 1 untested layers remaining
+- layer slice 737
+RS03: try number = 2805, reading sector 236207
+-> 1 untested layers remaining
+- layer slice 738
+RS03: try number = 2806, reading sector 236208
+-> 1 untested layers remaining
+- layer slice 739
+RS03: try number = 2807, reading sector 236209
+-> 1 untested layers remaining
+- layer slice 740
+RS03: try number = 2808, reading sector 236210
+-> 1 untested layers remaining
+- layer slice 741
+RS03: try number = 2809, reading sector 236211
+-> 1 untested layers remaining
+- layer slice 742
+RS03: try number = 2810, reading sector 236212
+-> 1 untested layers remaining
+- layer slice 743
+RS03: try number = 2811, reading sector 236213
+-> 1 untested layers remaining
+- layer slice 744
+RS03: try number = 2812, reading sector 236214
+-> 1 untested layers remaining
+- layer slice 745
+RS03: try number = 2813, reading sector 236215
+-> 1 untested layers remaining
+- layer slice 746
+RS03: try number = 2814, reading sector 236216
+-> 1 untested layers remaining
+- layer slice 747
+RS03: try number = 2815, reading sector 236217
+-> 1 untested layers remaining
+- layer slice 748
+RS03: try number = 2816, reading sector 236218
+-> 1 untested layers remaining
+- layer slice 749
+RS03: try number = 2817, reading sector 236219
+-> 1 untested layers remaining
+- layer slice 750
+RS03: try number = 2818, reading sector 236220
+-> 1 untested layers remaining
+- layer slice 751
+RS03: try number = 2819, reading sector 236221
+-> 1 untested layers remaining
+- layer slice 752
+RS03: try number = 2820, reading sector 236222
+-> 1 untested layers remaining
+- layer slice 753
+RS03: try number = 2821, reading sector 236223
+-> 1 untested layers remaining
+- layer slice 754
+RS03: try number = 2822, reading sector 236224
+-> 1 untested layers remaining
+- layer slice 755
+RS03: try number = 2823, reading sector 236225
+-> 1 untested layers remaining
+- layer slice 756
+RS03: try number = 2824, reading sector 236226
+-> 1 untested layers remaining
+- layer slice 757
+RS03: try number = 2825, reading sector 236227
+-> 1 untested layers remaining
+- layer slice 758
+RS03: try number = 2826, reading sector 236228
+-> 1 untested layers remaining
+- layer slice 759
+RS03: try number = 2827, reading sector 236229
+-> 1 untested layers remaining
+- layer slice 760
+RS03: try number = 2828, reading sector 236230
+-> 1 untested layers remaining
+- layer slice 761
+RS03: try number = 2829, reading sector 236231
+-> 1 untested layers remaining
+- layer slice 762
+RS03: try number = 2830, reading sector 236232
+-> 1 untested layers remaining
+- layer slice 763
+RS03: try number = 2831, reading sector 236233
+-> 1 untested layers remaining
+- layer slice 764
+RS03: try number = 2832, reading sector 236234
+-> 1 untested layers remaining
+- layer slice 765
+RS03: try number = 2833, reading sector 236235
+-> 1 untested layers remaining
+- layer slice 766
+RS03: try number = 2834, reading sector 236236
+-> 1 untested layers remaining
+- layer slice 767
+RS03: try number = 2835, reading sector 236237
+-> 1 untested layers remaining
+- layer slice 768
+RS03: try number = 2836, reading sector 236238
+-> 1 untested layers remaining
+- layer slice 769
+RS03: try number = 2837, reading sector 236239
+-> 1 untested layers remaining
+- layer slice 770
+RS03: try number = 2838, reading sector 236240
+-> 1 untested layers remaining
+- layer slice 771
+RS03: try number = 2839, reading sector 236241
+-> 1 untested layers remaining
+- layer slice 772
+RS03: try number = 2840, reading sector 236242
+-> 1 untested layers remaining
+- layer slice 773
+RS03: try number = 2841, reading sector 236243
+-> 1 untested layers remaining
+- layer slice 774
+RS03: try number = 2842, reading sector 236244
+-> 1 untested layers remaining
+- layer slice 775
+RS03: try number = 2843, reading sector 236245
+-> 1 untested layers remaining
+- layer slice 776
+RS03: try number = 2844, reading sector 236246
+-> 1 untested layers remaining
+- layer slice 777
+RS03: try number = 2845, reading sector 236247
+-> 1 untested layers remaining
+- layer slice 778
+RS03: try number = 2846, reading sector 236248
+-> 1 untested layers remaining
+- layer slice 779
+RS03: try number = 2847, reading sector 236249
+-> 1 untested layers remaining
+- layer slice 780
+RS03: try number = 2848, reading sector 236250
+-> 1 untested layers remaining
+- layer slice 781
+RS03: try number = 2849, reading sector 236251
+-> 1 untested layers remaining
+- layer slice 782
+RS03: try number = 2850, reading sector 236252
+-> 1 untested layers remaining
+- layer slice 783
+RS03: try number = 2851, reading sector 236253
+-> 1 untested layers remaining
+- layer slice 784
+RS03: try number = 2852, reading sector 236254
+-> 1 untested layers remaining
+- layer slice 785
+RS03: try number = 2853, reading sector 236255
+-> 1 untested layers remaining
+- layer slice 786
+RS03: try number = 2854, reading sector 236256
+-> 1 untested layers remaining
+- layer slice 787
+RS03: try number = 2855, reading sector 236257
+-> 1 untested layers remaining
+- layer slice 788
+RS03: try number = 2856, reading sector 236258
+-> 1 untested layers remaining
+- layer slice 789
+RS03: try number = 2857, reading sector 236259
+-> 1 untested layers remaining
+- layer slice 790
+RS03: try number = 2858, reading sector 236260
+-> 1 untested layers remaining
+- layer slice 791
+RS03: try number = 2859, reading sector 236261
+-> 1 untested layers remaining
+- layer slice 792
+RS03: try number = 2860, reading sector 236262
+-> 1 untested layers remaining
+- layer slice 793
+RS03: try number = 2861, reading sector 236263
+-> 1 untested layers remaining
+- layer slice 794
+RS03: try number = 2862, reading sector 236264
+-> 1 untested layers remaining
+- layer slice 795
+RS03: try number = 2863, reading sector 236265
+-> 1 untested layers remaining
+- layer slice 796
+RS03: try number = 2864, reading sector 236266
+-> 1 untested layers remaining
+- layer slice 797
+RS03: try number = 2865, reading sector 236267
+-> 1 untested layers remaining
+- layer slice 798
+RS03: try number = 2866, reading sector 236268
+-> 1 untested layers remaining
+- layer slice 799
+RS03: try number = 2867, reading sector 236269
+-> 1 untested layers remaining
+- layer slice 800
+RS03: try number = 2868, reading sector 236270
+-> 1 untested layers remaining
+- layer slice 801
+RS03: try number = 2869, reading sector 236271
+-> 1 untested layers remaining
+- layer slice 802
+RS03: try number = 2870, reading sector 236272
+-> 1 untested layers remaining
+- layer slice 803
+RS03: try number = 2871, reading sector 236273
+-> 1 untested layers remaining
+- layer slice 804
+RS03: try number = 2872, reading sector 236274
+-> 1 untested layers remaining
+- layer slice 805
+RS03: try number = 2873, reading sector 236275
+-> 1 untested layers remaining
+- layer slice 806
+RS03: try number = 2874, reading sector 236276
+-> 1 untested layers remaining
+- layer slice 807
+RS03: try number = 2875, reading sector 236277
+-> 1 untested layers remaining
+- layer slice 808
+RS03: try number = 2876, reading sector 236278
+-> 1 untested layers remaining
+- layer slice 809
+RS03: try number = 2877, reading sector 236279
+-> 1 untested layers remaining
+- layer slice 810
+RS03: try number = 2878, reading sector 236280
+-> 1 untested layers remaining
+- layer slice 811
+RS03: try number = 2879, reading sector 236281
+-> 1 untested layers remaining
+- layer slice 812
+RS03: try number = 2880, reading sector 236282
+-> 1 untested layers remaining
+- layer slice 813
+RS03: try number = 2881, reading sector 236283
+-> 1 untested layers remaining
+- layer slice 814
+RS03: try number = 2882, reading sector 236284
+-> 1 untested layers remaining
+- layer slice 815
+RS03: try number = 2883, reading sector 236285
+-> 1 untested layers remaining
+- layer slice 816
+RS03: try number = 2884, reading sector 236286
+-> 1 untested layers remaining
+- layer slice 817
+RS03: try number = 2885, reading sector 236287
+-> 1 untested layers remaining
+- layer slice 818
+RS03: try number = 2886, reading sector 236288
+-> 1 untested layers remaining
+- layer slice 819
+RS03: try number = 2887, reading sector 236289
+-> 1 untested layers remaining
+- layer slice 820
+RS03: try number = 2888, reading sector 236290
+-> 1 untested layers remaining
+- layer slice 821
+RS03: try number = 2889, reading sector 236291
+-> 1 untested layers remaining
+- layer slice 822
+RS03: try number = 2890, reading sector 236292
+-> 1 untested layers remaining
+- layer slice 823
+RS03: try number = 2891, reading sector 236293
+-> 1 untested layers remaining
+- layer slice 824
+RS03: try number = 2892, reading sector 236294
+-> 1 untested layers remaining
+- layer slice 825
+RS03: try number = 2893, reading sector 236295
+-> 1 untested layers remaining
+- layer slice 826
+RS03: try number = 2894, reading sector 236296
+-> 1 untested layers remaining
+- layer slice 827
+RS03: try number = 2895, reading sector 236297
+-> 1 untested layers remaining
+- layer slice 828
+RS03: try number = 2896, reading sector 236298
+-> 1 untested layers remaining
+- layer slice 829
+RS03: try number = 2897, reading sector 236299
+-> 1 untested layers remaining
+- layer slice 830
+RS03: try number = 2898, reading sector 236300
+-> 1 untested layers remaining
+- layer slice 831
+RS03: try number = 2899, reading sector 236301
+-> 1 untested layers remaining
+- layer slice 832
+RS03: try number = 2900, reading sector 236302
+-> 1 untested layers remaining
+- layer slice 833
+RS03: try number = 2901, reading sector 236303
+-> 1 untested layers remaining
+- layer slice 834
+RS03: try number = 2902, reading sector 236304
+-> 1 untested layers remaining
+- layer slice 835
+RS03: try number = 2903, reading sector 236305
+-> 1 untested layers remaining
+- layer slice 836
+RS03: try number = 2904, reading sector 236306
+-> 1 untested layers remaining
+- layer slice 837
+RS03: try number = 2905, reading sector 236307
+-> 1 untested layers remaining
+- layer slice 838
+RS03: try number = 2906, reading sector 236308
+-> 1 untested layers remaining
+- layer slice 839
+RS03: try number = 2907, reading sector 236309
+-> 1 untested layers remaining
+- layer slice 840
+RS03: try number = 2908, reading sector 236310
+-> 1 untested layers remaining
+- layer slice 841
+RS03: try number = 2909, reading sector 236311
+-> 1 untested layers remaining
+- layer slice 842
+RS03: try number = 2910, reading sector 236312
+-> 1 untested layers remaining
+- layer slice 843
+RS03: try number = 2911, reading sector 236313
+-> 1 untested layers remaining
+- layer slice 844
+RS03: try number = 2912, reading sector 236314
+-> 1 untested layers remaining
+- layer slice 845
+RS03: try number = 2913, reading sector 236315
+-> 1 untested layers remaining
+- layer slice 846
+RS03: try number = 2914, reading sector 236316
+-> 1 untested layers remaining
+- layer slice 847
+RS03: try number = 2915, reading sector 236317
+-> 1 untested layers remaining
+- layer slice 848
+RS03: try number = 2916, reading sector 236318
+-> 1 untested layers remaining
+- layer slice 849
+RS03: try number = 2917, reading sector 236319
+-> 1 untested layers remaining
+- layer slice 850
+RS03: try number = 2918, reading sector 236320
+-> 1 untested layers remaining
+- layer slice 851
+RS03: try number = 2919, reading sector 236321
+-> 1 untested layers remaining
+- layer slice 852
+RS03: try number = 2920, reading sector 236322
+-> 1 untested layers remaining
+- layer slice 853
+RS03: try number = 2921, reading sector 236323
+-> 1 untested layers remaining
+- layer slice 854
+RS03: try number = 2922, reading sector 236324
+-> 1 untested layers remaining
+- layer slice 855
+RS03: try number = 2923, reading sector 236325
+-> 1 untested layers remaining
+- layer slice 856
+RS03: try number = 2924, reading sector 236326
+-> 1 untested layers remaining
+- layer slice 857
+RS03: try number = 2925, reading sector 236327
+-> 1 untested layers remaining
+- layer slice 858
+RS03: try number = 2926, reading sector 236328
+-> 1 untested layers remaining
+- layer slice 859
+RS03: try number = 2927, reading sector 236329
+-> 1 untested layers remaining
+- layer slice 860
+RS03: try number = 2928, reading sector 236330
+-> 1 untested layers remaining
+- layer slice 861
+RS03: try number = 2929, reading sector 236331
+-> 1 untested layers remaining
+- layer slice 862
+RS03: try number = 2930, reading sector 236332
+-> 1 untested layers remaining
+- layer slice 863
+RS03: try number = 2931, reading sector 236333
+-> 1 untested layers remaining
+- layer slice 864
+RS03: try number = 2932, reading sector 236334
+-> 1 untested layers remaining
+- layer slice 865
+RS03: try number = 2933, reading sector 236335
+-> 1 untested layers remaining
+- layer slice 866
+RS03: try number = 2934, reading sector 236336
+-> 1 untested layers remaining
+- layer slice 867
+RS03: try number = 2935, reading sector 236337
+-> 1 untested layers remaining
+- layer slice 868
+RS03: try number = 2936, reading sector 236338
+-> 1 untested layers remaining
+- layer slice 869
+RS03: try number = 2937, reading sector 236339
+-> 1 untested layers remaining
+- layer slice 870
+RS03: try number = 2938, reading sector 236340
+-> 1 untested layers remaining
+- layer slice 871
+RS03: try number = 2939, reading sector 236341
+-> 1 untested layers remaining
+- layer slice 872
+RS03: try number = 2940, reading sector 236342
+-> 1 untested layers remaining
+- layer slice 873
+RS03: try number = 2941, reading sector 236343
+-> 1 untested layers remaining
+- layer slice 874
+RS03: try number = 2942, reading sector 236344
+-> 1 untested layers remaining
+- layer slice 875
+RS03: try number = 2943, reading sector 236345
+-> 1 untested layers remaining
+- layer slice 876
+RS03: try number = 2944, reading sector 236346
+-> 1 untested layers remaining
+- layer slice 877
+RS03: try number = 2945, reading sector 236347
+-> 1 untested layers remaining
+- layer slice 878
+RS03: try number = 2946, reading sector 236348
+-> 1 untested layers remaining
+- layer slice 879
+RS03: try number = 2947, reading sector 236349
+-> 1 untested layers remaining
+- layer slice 880
+RS03: try number = 2948, reading sector 236350
+-> 1 untested layers remaining
+- layer slice 881
+RS03: try number = 2949, reading sector 236351
+-> 1 untested layers remaining
+- layer slice 882
+RS03: try number = 2950, reading sector 236352
+-> 1 untested layers remaining
+- layer slice 883
+RS03: try number = 2951, reading sector 236353
+-> 1 untested layers remaining
+- layer slice 884
+RS03: try number = 2952, reading sector 236354
+-> 1 untested layers remaining
+- layer slice 885
+RS03: try number = 2953, reading sector 236355
+-> 1 untested layers remaining
+- layer slice 886
+RS03: try number = 2954, reading sector 236356
+-> 1 untested layers remaining
+- layer slice 887
+RS03: try number = 2955, reading sector 236357
+-> 1 untested layers remaining
+- layer slice 888
+RS03: try number = 2956, reading sector 236358
+-> 1 untested layers remaining
+- layer slice 889
+RS03: try number = 2957, reading sector 236359
+-> 1 untested layers remaining
+- layer slice 890
+RS03: try number = 2958, reading sector 236360
+-> 1 untested layers remaining
+- layer slice 891
+RS03: try number = 2959, reading sector 236361
+-> 1 untested layers remaining
+- layer slice 892
+RS03: try number = 2960, reading sector 236362
+-> 1 untested layers remaining
+- layer slice 893
+RS03: try number = 2961, reading sector 236363
+-> 1 untested layers remaining
+- layer slice 894
+RS03: try number = 2962, reading sector 236364
+-> 1 untested layers remaining
+- layer slice 895
+RS03: try number = 2963, reading sector 236365
+-> 1 untested layers remaining
+- layer slice 896
+RS03: try number = 2964, reading sector 236366
+-> 1 untested layers remaining
+- layer slice 897
+RS03: try number = 2965, reading sector 236367
+-> 1 untested layers remaining
+- layer slice 898
+RS03: try number = 2966, reading sector 236368
+-> 1 untested layers remaining
+- layer slice 899
+RS03: try number = 2967, reading sector 236369
+-> 1 untested layers remaining
+- layer slice 900
+RS03: try number = 2968, reading sector 236370
+-> 1 untested layers remaining
+- layer slice 901
+RS03: try number = 2969, reading sector 236371
+-> 1 untested layers remaining
+- layer slice 902
+RS03: try number = 2970, reading sector 236372
+-> 1 untested layers remaining
+- layer slice 903
+RS03: try number = 2971, reading sector 236373
+-> 1 untested layers remaining
+- layer slice 904
+RS03: try number = 2972, reading sector 236374
+-> 1 untested layers remaining
+- layer slice 905
+RS03: try number = 2973, reading sector 236375
+-> 1 untested layers remaining
+- layer slice 906
+RS03: try number = 2974, reading sector 236376
+-> 1 untested layers remaining
+- layer slice 907
+RS03: try number = 2975, reading sector 236377
+-> 1 untested layers remaining
+- layer slice 908
+RS03: try number = 2976, reading sector 236378
+-> 1 untested layers remaining
+- layer slice 909
+RS03: try number = 2977, reading sector 236379
+-> 1 untested layers remaining
+- layer slice 910
+RS03: try number = 2978, reading sector 236380
+-> 1 untested layers remaining
+- layer slice 911
+RS03: try number = 2979, reading sector 236381
+-> 1 untested layers remaining
+- layer slice 912
+RS03: try number = 2980, reading sector 236382
+-> 1 untested layers remaining
+- layer slice 913
+RS03: try number = 2981, reading sector 236383
+-> 1 untested layers remaining
+- layer slice 914
+RS03: try number = 2982, reading sector 236384
+-> 1 untested layers remaining
+- layer slice 915
+RS03: try number = 2983, reading sector 236385
+-> 1 untested layers remaining
+- layer slice 916
+RS03: try number = 2984, reading sector 236386
+-> 1 untested layers remaining
+- layer slice 917
+RS03: try number = 2985, reading sector 236387
+-> 1 untested layers remaining
+- layer slice 918
+RS03: try number = 2986, reading sector 236388
+-> 1 untested layers remaining
+- layer slice 919
+RS03: try number = 2987, reading sector 236389
+-> 1 untested layers remaining
+- layer slice 920
+RS03: try number = 2988, reading sector 236390
+-> 1 untested layers remaining
+- layer slice 921
+RS03: try number = 2989, reading sector 236391
+-> 1 untested layers remaining
+- layer slice 922
+RS03: try number = 2990, reading sector 236392
+-> 1 untested layers remaining
+- layer slice 923
+RS03: try number = 2991, reading sector 236393
+-> 1 untested layers remaining
+- layer slice 924
+RS03: try number = 2992, reading sector 236394
+-> 1 untested layers remaining
+- layer slice 925
+RS03: try number = 2993, reading sector 236395
+-> 1 untested layers remaining
+- layer slice 926
+RS03: try number = 2994, reading sector 236396
+-> 1 untested layers remaining
+- layer slice 927
+RS03: try number = 2995, reading sector 236397
+-> 1 untested layers remaining
+- layer slice 928
+RS03: try number = 2996, reading sector 236398
+-> 1 untested layers remaining
+- layer slice 929
+RS03: try number = 2997, reading sector 236399
+-> 1 untested layers remaining
+- layer slice 930
+RS03: try number = 2998, reading sector 236400
+-> 1 untested layers remaining
+- layer slice 931
+RS03: try number = 2999, reading sector 236401
+-> 1 untested layers remaining
+- layer slice 932
+RS03: try number = 3000, reading sector 236402
+-> 1 untested layers remaining
+- layer slice 933
+RS03: try number = 3001, reading sector 236403
+-> 1 untested layers remaining
+- layer slice 934
+RS03: try number = 3002, reading sector 236404
+-> 1 untested layers remaining
+- layer slice 935
+RS03: try number = 3003, reading sector 236405
+-> 1 untested layers remaining
+- layer slice 936
+RS03: try number = 3004, reading sector 236406
+-> 1 untested layers remaining
+- layer slice 937
+RS03: try number = 3005, reading sector 236407
+-> 1 untested layers remaining
+- layer slice 938
+RS03: try number = 3006, reading sector 236408
+-> 1 untested layers remaining
+- layer slice 939
+RS03: try number = 3007, reading sector 236409
+-> 1 untested layers remaining
+- layer slice 940
+RS03: try number = 3008, reading sector 236410
+-> 1 untested layers remaining
+- layer slice 941
+RS03: try number = 3009, reading sector 236411
+-> 1 untested layers remaining
+- layer slice 942
+RS03: try number = 3010, reading sector 236412
+-> 1 untested layers remaining
+- layer slice 943
+RS03: try number = 3011, reading sector 236413
+-> 1 untested layers remaining
+- layer slice 944
+RS03: try number = 3012, reading sector 236414
+-> 1 untested layers remaining
+- layer slice 945
+RS03: try number = 3013, reading sector 236415
+-> 1 untested layers remaining
+- layer slice 946
+RS03: try number = 3014, reading sector 236416
+-> 1 untested layers remaining
+- layer slice 947
+RS03: try number = 3015, reading sector 236417
+-> 1 untested layers remaining
+- layer slice 948
+RS03: try number = 3016, reading sector 236418
+-> 1 untested layers remaining
+- layer slice 949
+RS03: try number = 3017, reading sector 236419
+-> 1 untested layers remaining
+- layer slice 950
+RS03: try number = 3018, reading sector 236420
+-> 1 untested layers remaining
+- layer slice 951
+RS03: try number = 3019, reading sector 236421
+-> 1 untested layers remaining
+- layer slice 952
+RS03: try number = 3020, reading sector 236422
+-> 1 untested layers remaining
+- layer slice 953
+RS03: try number = 3021, reading sector 236423
+-> 1 untested layers remaining
+- layer slice 954
+RS03: try number = 3022, reading sector 236424
+-> 1 untested layers remaining
+- layer slice 955
+RS03: try number = 3023, reading sector 236425
+-> 1 untested layers remaining
+- layer slice 956
+RS03: try number = 3024, reading sector 236426
+-> 1 untested layers remaining
+- layer slice 957
+RS03: try number = 3025, reading sector 236427
+-> 1 untested layers remaining
+- layer slice 958
+RS03: try number = 3026, reading sector 236428
+-> 1 untested layers remaining
+- layer slice 959
+RS03: try number = 3027, reading sector 236429
+-> 1 untested layers remaining
+- layer slice 960
+RS03: try number = 3028, reading sector 236430
+-> 1 untested layers remaining
+- layer slice 961
+RS03: try number = 3029, reading sector 236431
+-> 1 untested layers remaining
+- layer slice 962
+RS03: try number = 3030, reading sector 236432
+-> 1 untested layers remaining
+- layer slice 963
+RS03: try number = 3031, reading sector 236433
+-> 1 untested layers remaining
+- layer slice 964
+RS03: try number = 3032, reading sector 236434
+-> 1 untested layers remaining
+- layer slice 965
+RS03: try number = 3033, reading sector 236435
+-> 1 untested layers remaining
+- layer slice 966
+RS03: try number = 3034, reading sector 236436
+-> 1 untested layers remaining
+- layer slice 967
+RS03: try number = 3035, reading sector 236437
+-> 1 untested layers remaining
+- layer slice 968
+RS03: try number = 3036, reading sector 236438
+-> 1 untested layers remaining
+- layer slice 969
+RS03: try number = 3037, reading sector 236439
+-> 1 untested layers remaining
+- layer slice 970
+RS03: try number = 3038, reading sector 236440
+-> 1 untested layers remaining
+- layer slice 971
+RS03: try number = 3039, reading sector 236441
+-> 1 untested layers remaining
+- layer slice 972
+RS03: try number = 3040, reading sector 236442
+-> 1 untested layers remaining
+- layer slice 973
+RS03: try number = 3041, reading sector 236443
+-> 1 untested layers remaining
+- layer slice 974
+RS03: try number = 3042, reading sector 236444
+-> 1 untested layers remaining
+- layer slice 975
+RS03: try number = 3043, reading sector 236445
+-> 1 untested layers remaining
+- layer slice 976
+RS03: try number = 3044, reading sector 236446
+-> 1 untested layers remaining
+- layer slice 977
+RS03: try number = 3045, reading sector 236447
+-> 1 untested layers remaining
+- layer slice 978
+RS03: try number = 3046, reading sector 236448
+-> 1 untested layers remaining
+- layer slice 979
+RS03: try number = 3047, reading sector 236449
+-> 1 untested layers remaining
+- layer slice 980
+RS03: try number = 3048, reading sector 236450
+-> 1 untested layers remaining
+- layer slice 981
+RS03: try number = 3049, reading sector 236451
+-> 1 untested layers remaining
+- layer slice 982
+RS03: try number = 3050, reading sector 236452
+-> 1 untested layers remaining
+- layer slice 983
+RS03: try number = 3051, reading sector 236453
+-> 1 untested layers remaining
+- layer slice 984
+RS03: try number = 3052, reading sector 236454
+-> 1 untested layers remaining
+- layer slice 985
+RS03: try number = 3053, reading sector 236455
+-> 1 untested layers remaining
+- layer slice 986
+RS03: try number = 3054, reading sector 236456
+-> 1 untested layers remaining
+- layer slice 987
+RS03: try number = 3055, reading sector 236457
+-> 1 untested layers remaining
+- layer slice 988
+RS03: try number = 3056, reading sector 236458
+-> 1 untested layers remaining
+- layer slice 989
+RS03: try number = 3057, reading sector 236459
+-> 1 untested layers remaining
+- layer slice 990
+RS03: try number = 3058, reading sector 236460
+-> 1 untested layers remaining
+- layer slice 991
+RS03: try number = 3059, reading sector 236461
+-> 1 untested layers remaining
+- layer slice 992
+RS03: try number = 3060, reading sector 236462
+-> 1 untested layers remaining
+- layer slice 993
+RS03: try number = 3061, reading sector 236463
+-> 1 untested layers remaining
+- layer slice 994
+RS03: try number = 3062, reading sector 236464
+-> 1 untested layers remaining
+- layer slice 995
+RS03: try number = 3063, reading sector 236465
+-> 1 untested layers remaining
+- layer slice 996
+RS03: try number = 3064, reading sector 236466
+-> 1 untested layers remaining
+- layer slice 997
+RS03: try number = 3065, reading sector 236467
+-> 1 untested layers remaining
+- layer slice 998
+RS03: try number = 3066, reading sector 236468
+-> 1 untested layers remaining
+- layer slice 999
+RS03: try number = 3067, reading sector 236469
+-> 1 untested layers remaining
+- layer slice 1000
+RS03: try number = 3068, reading sector 236470
+-> 1 untested layers remaining
+- layer slice 1001
+RS03: try number = 3069, reading sector 236471
+-> 1 untested layers remaining
+- layer slice 1002
+RS03: try number = 3070, reading sector 236472
+-> 1 untested layers remaining
+- layer slice 1003
+RS03: try number = 3071, reading sector 236473
+-> 1 untested layers remaining
+- layer slice 1004
+RS03: try number = 3072, reading sector 236474
+-> 1 untested layers remaining
+- layer slice 1005
+RS03: try number = 3073, reading sector 236475
+-> 1 untested layers remaining
+- layer slice 1006
+RS03: try number = 3074, reading sector 236476
+-> 1 untested layers remaining
+- layer slice 1007
+RS03: try number = 3075, reading sector 236477
+-> 1 untested layers remaining
+- layer slice 1008
+RS03: try number = 3076, reading sector 236478
+-> 1 untested layers remaining
+- layer slice 1009
+RS03: try number = 3077, reading sector 236479
+-> 1 untested layers remaining
+- layer slice 1010
+RS03: try number = 3078, reading sector 236480
+-> 1 untested layers remaining
+- layer slice 1011
+RS03: try number = 3079, reading sector 236481
+-> 1 untested layers remaining
+- layer slice 1012
+RS03: try number = 3080, reading sector 236482
+-> 1 untested layers remaining
+- layer slice 1013
+RS03: try number = 3081, reading sector 236483
+-> 1 untested layers remaining
+- layer slice 1014
+RS03: try number = 3082, reading sector 236484
+-> 1 untested layers remaining
+- layer slice 1015
+RS03: try number = 3083, reading sector 236485
+-> 1 untested layers remaining
+- layer slice 1016
+RS03: try number = 3084, reading sector 236486
+-> 1 untested layers remaining
+- layer slice 1017
+RS03: try number = 3085, reading sector 236487
+-> 1 untested layers remaining
+- layer slice 1018
+RS03: try number = 3086, reading sector 236488
+-> 1 untested layers remaining
+- layer slice 1019
+RS03: try number = 3087, reading sector 236489
+-> 1 untested layers remaining
+- layer slice 1020
+RS03: try number = 3088, reading sector 236490
+-> 1 untested layers remaining
+- layer slice 1021
+RS03: try number = 3089, reading sector 236491
+-> 1 untested layers remaining
+- layer slice 1022
+RS03: try number = 3090, reading sector 236492
+-> 1 untested layers remaining
+- layer slice 1023
+RS03: try number = 3091, reading sector 236493
+-> 1 untested layers remaining
+- layer slice 1024
+RS03: try number = 3092, reading sector 236494
+-> 1 untested layers remaining
+- layer slice 1025
+RS03: try number = 3093, reading sector 236495
+-> 1 untested layers remaining
+- layer slice 1026
+RS03: try number = 3094, reading sector 236496
+-> 1 untested layers remaining
+- layer slice 1027
+RS03: try number = 3095, reading sector 236497
+-> 1 untested layers remaining
+- layer slice 1028
+RS03: try number = 3096, reading sector 236498
+-> 1 untested layers remaining
+- layer slice 1029
+RS03: try number = 3097, reading sector 236499
+-> 1 untested layers remaining
+- layer slice 1030
+RS03: try number = 3098, reading sector 236500
+-> 1 untested layers remaining
+- layer slice 1031
+RS03: try number = 3099, reading sector 236501
+-> 1 untested layers remaining
+- layer slice 1032
+RS03: try number = 3100, reading sector 236502
+-> 1 untested layers remaining
+- layer slice 1033
+RS03: try number = 3101, reading sector 236503
+-> 1 untested layers remaining
+- layer slice 1034
+RS03: try number = 3102, reading sector 236504
+-> 1 untested layers remaining
+- layer slice 1035
+RS03: try number = 3103, reading sector 236505
+-> 1 untested layers remaining
+- layer slice 1036
+RS03: try number = 3104, reading sector 236506
+-> 1 untested layers remaining
+- layer slice 1037
+RS03: try number = 3105, reading sector 236507
+-> 1 untested layers remaining
+- layer slice 1038
+RS03: try number = 3106, reading sector 236508
+-> 1 untested layers remaining
+- layer slice 1039
+RS03: try number = 3107, reading sector 236509
+-> 1 untested layers remaining
+- layer slice 1040
+RS03: try number = 3108, reading sector 236510
+-> 1 untested layers remaining
+- layer slice 1041
+RS03: try number = 3109, reading sector 236511
+-> 1 untested layers remaining
+- layer slice 1042
+RS03: try number = 3110, reading sector 236512
+-> 1 untested layers remaining
+- layer slice 1043
+RS03: try number = 3111, reading sector 236513
+-> 1 untested layers remaining
+- layer slice 1044
+RS03: try number = 3112, reading sector 236514
+-> 1 untested layers remaining
+- layer slice 1045
+RS03: try number = 3113, reading sector 236515
+-> 1 untested layers remaining
+- layer slice 1046
+RS03: try number = 3114, reading sector 236516
+-> 1 untested layers remaining
+- layer slice 1047
+RS03: try number = 3115, reading sector 236517
+-> 1 untested layers remaining
+- layer slice 1048
+RS03: try number = 3116, reading sector 236518
+-> 1 untested layers remaining
+- layer slice 1049
+RS03: try number = 3117, reading sector 236519
+-> 1 untested layers remaining
+- layer slice 1050
+RS03: try number = 3118, reading sector 236520
+-> 1 untested layers remaining
+- layer slice 1051
+RS03: try number = 3119, reading sector 236521
+-> 1 untested layers remaining
+- layer slice 1052
+RS03: try number = 3120, reading sector 236522
+-> 1 untested layers remaining
+- layer slice 1053
+RS03: try number = 3121, reading sector 236523
+-> 1 untested layers remaining
+- layer slice 1054
+RS03: try number = 3122, reading sector 236524
+-> 1 untested layers remaining
+- layer slice 1055
+RS03: try number = 3123, reading sector 236525
+-> 1 untested layers remaining
+- layer slice 1056
+RS03: try number = 3124, reading sector 236526
+-> 1 untested layers remaining
+- layer slice 1057
+RS03: try number = 3125, reading sector 236527
+-> 1 untested layers remaining
+- layer slice 1058
+RS03: try number = 3126, reading sector 236528
+-> 1 untested layers remaining
+- layer slice 1059
+RS03: try number = 3127, reading sector 236529
+-> 1 untested layers remaining
+- layer slice 1060
+RS03: try number = 3128, reading sector 236530
+-> 1 untested layers remaining
+- layer slice 1061
+RS03: try number = 3129, reading sector 236531
+-> 1 untested layers remaining
+- layer slice 1062
+RS03: try number = 3130, reading sector 236532
+-> 1 untested layers remaining
+- layer slice 1063
+RS03: try number = 3131, reading sector 236533
+-> 1 untested layers remaining
+- layer slice 1064
+RS03: try number = 3132, reading sector 236534
+-> 1 untested layers remaining
+- layer slice 1065
+RS03: try number = 3133, reading sector 236535
+-> 1 untested layers remaining
+- layer slice 1066
+RS03: try number = 3134, reading sector 236536
+-> 1 untested layers remaining
+- layer slice 1067
+RS03: try number = 3135, reading sector 236537
+-> 1 untested layers remaining
+- layer slice 1068
+RS03: try number = 3136, reading sector 236538
+-> 1 untested layers remaining
+- layer slice 1069
+RS03: try number = 3137, reading sector 236539
+-> 1 untested layers remaining
+- layer slice 1070
+RS03: try number = 3138, reading sector 236540
+-> 1 untested layers remaining
+- layer slice 1071
+RS03: try number = 3139, reading sector 236541
+-> 1 untested layers remaining
+- layer slice 1072
+RS03: try number = 3140, reading sector 236542
+-> 1 untested layers remaining
+- layer slice 1073
+RS03: try number = 3141, reading sector 236543
+-> 1 untested layers remaining
+- layer slice 1074
+RS03: try number = 3142, reading sector 236544
+-> 1 untested layers remaining
+- layer slice 1075
+RS03: try number = 3143, reading sector 236545
+-> 1 untested layers remaining
+- layer slice 1076
+RS03: try number = 3144, reading sector 236546
+-> 1 untested layers remaining
+- layer slice 1077
+RS03: try number = 3145, reading sector 236547
+-> 1 untested layers remaining
+- layer slice 1078
+RS03: try number = 3146, reading sector 236548
+-> 1 untested layers remaining
+- layer slice 1079
+RS03: try number = 3147, reading sector 236549
+-> 1 untested layers remaining
+- layer slice 1080
+RS03: try number = 3148, reading sector 236550
+-> 1 untested layers remaining
+- layer slice 1081
+RS03: try number = 3149, reading sector 236551
+-> 1 untested layers remaining
+- layer slice 1082
+RS03: try number = 3150, reading sector 236552
+-> 1 untested layers remaining
+- layer slice 1083
+RS03: try number = 3151, reading sector 236553
+-> 1 untested layers remaining
+- layer slice 1084
+RS03: try number = 3152, reading sector 236554
+-> 1 untested layers remaining
+- layer slice 1085
+RS03: try number = 3153, reading sector 236555
+-> 1 untested layers remaining
+- layer slice 1086
+RS03: try number = 3154, reading sector 236556
+-> 1 untested layers remaining
+- layer slice 1087
+RS03: try number = 3155, reading sector 236557
+-> 1 untested layers remaining
+- layer slice 1088
+RS03: try number = 3156, reading sector 236558
+-> 1 untested layers remaining
+- layer slice 1089
+RS03: try number = 3157, reading sector 236559
+-> 1 untested layers remaining
+- layer slice 1090
+RS03: try number = 3158, reading sector 236560
+-> 1 untested layers remaining
+- layer slice 1091
+RS03: try number = 3159, reading sector 236561
+-> 1 untested layers remaining
+- layer slice 1092
+RS03: try number = 3160, reading sector 236562
+-> 1 untested layers remaining
+- layer slice 1093
+RS03: try number = 3161, reading sector 236563
+-> 1 untested layers remaining
+- layer slice 1094
+RS03: try number = 3162, reading sector 236564
+-> 1 untested layers remaining
+- layer slice 1095
+RS03: try number = 3163, reading sector 236565
+-> 1 untested layers remaining
+- layer slice 1096
+RS03: try number = 3164, reading sector 236566
+-> 1 untested layers remaining
+- layer slice 1097
+RS03: try number = 3165, reading sector 236567
+-> 1 untested layers remaining
+- layer slice 1098
+RS03: try number = 3166, reading sector 236568
+-> 1 untested layers remaining
+- layer slice 1099
+RS03: try number = 3167, reading sector 236569
+-> 1 untested layers remaining
+- layer slice 1100
+RS03: try number = 3168, reading sector 236570
+-> 1 untested layers remaining
+- layer slice 1101
+RS03: try number = 3169, reading sector 236571
+-> 1 untested layers remaining
+- layer slice 1102
+RS03: try number = 3170, reading sector 236572
+-> 1 untested layers remaining
+- layer slice 1103
+RS03: try number = 3171, reading sector 236573
+-> 1 untested layers remaining
+- layer slice 1104
+RS03: try number = 3172, reading sector 236574
+-> 1 untested layers remaining
+- layer slice 1105
+RS03: try number = 3173, reading sector 236575
+-> 1 untested layers remaining
+- layer slice 1106
+RS03: try number = 3174, reading sector 236576
+-> 1 untested layers remaining
+- layer slice 1107
+RS03: try number = 3175, reading sector 236577
+-> 1 untested layers remaining
+- layer slice 1108
+RS03: try number = 3176, reading sector 236578
+-> 1 untested layers remaining
+- layer slice 1109
+RS03: try number = 3177, reading sector 236579
+-> 1 untested layers remaining
+- layer slice 1110
+RS03: try number = 3178, reading sector 236580
+-> 1 untested layers remaining
+- layer slice 1111
+RS03: try number = 3179, reading sector 236581
+-> 1 untested layers remaining
+- layer slice 1112
+RS03: try number = 3180, reading sector 236582
+-> 1 untested layers remaining
+- layer slice 1113
+RS03: try number = 3181, reading sector 236583
+-> 1 untested layers remaining
+- layer slice 1114
+RS03: try number = 3182, reading sector 236584
+-> 1 untested layers remaining
+- layer slice 1115
+RS03: try number = 3183, reading sector 236585
+-> 1 untested layers remaining
+- layer slice 1116
+RS03: try number = 3184, reading sector 236586
+-> 1 untested layers remaining
+- layer slice 1117
+RS03: try number = 3185, reading sector 236587
+-> 1 untested layers remaining
+- layer slice 1118
+RS03: try number = 3186, reading sector 236588
+-> 1 untested layers remaining
+- layer slice 1119
+RS03: try number = 3187, reading sector 236589
+-> 1 untested layers remaining
+- layer slice 1120
+RS03: try number = 3188, reading sector 236590
+-> 1 untested layers remaining
+- layer slice 1121
+RS03: try number = 3189, reading sector 236591
+-> 1 untested layers remaining
+- layer slice 1122
+RS03: try number = 3190, reading sector 236592
+-> 1 untested layers remaining
+- layer slice 1123
+RS03: try number = 3191, reading sector 236593
+-> 1 untested layers remaining
+- layer slice 1124
+RS03: try number = 3192, reading sector 236594
+-> 1 untested layers remaining
+- layer slice 1125
+RS03: try number = 3193, reading sector 236595
+-> 1 untested layers remaining
+- layer slice 1126
+RS03: try number = 3194, reading sector 236596
+-> 1 untested layers remaining
+- layer slice 1127
+RS03: try number = 3195, reading sector 236597
+-> 1 untested layers remaining
+- layer slice 1128
+RS03: try number = 3196, reading sector 236598
+-> 1 untested layers remaining
+- layer slice 1129
+RS03: try number = 3197, reading sector 236599
+-> 1 untested layers remaining
+- layer slice 1130
+RS03: try number = 3198, reading sector 236600
+-> 1 untested layers remaining
+- layer slice 1131
+RS03: try number = 3199, reading sector 236601
+-> 1 untested layers remaining
+- layer slice 1132
+RS03: try number = 3200, reading sector 236602
+-> 1 untested layers remaining
+- layer slice 1133
+RS03: try number = 3201, reading sector 236603
+-> 1 untested layers remaining
+- layer slice 1134
+RS03: try number = 3202, reading sector 236604
+-> 1 untested layers remaining
+- layer slice 1135
+RS03: try number = 3203, reading sector 236605
+-> 1 untested layers remaining
+- layer slice 1136
+RS03: try number = 3204, reading sector 236606
+-> 1 untested layers remaining
+- layer slice 1137
+RS03: try number = 3205, reading sector 236607
+-> 1 untested layers remaining
+- layer slice 1138
+RS03: try number = 3206, reading sector 236608
+-> 1 untested layers remaining
+- layer slice 1139
+RS03: try number = 3207, reading sector 236609
+-> 1 untested layers remaining
+- layer slice 1140
+RS03: try number = 3208, reading sector 236610
+-> 1 untested layers remaining
+- layer slice 1141
+RS03: try number = 3209, reading sector 236611
+-> 1 untested layers remaining
+- layer slice 1142
+RS03: try number = 3210, reading sector 236612
+-> 1 untested layers remaining
+- layer slice 1143
+RS03: try number = 3211, reading sector 236613
+-> 1 untested layers remaining
+- layer slice 1144
+RS03: try number = 3212, reading sector 236614
+-> 1 untested layers remaining
+- layer slice 1145
+RS03: try number = 3213, reading sector 236615
+-> 1 untested layers remaining
+- layer slice 1146
+RS03: try number = 3214, reading sector 236616
+-> 1 untested layers remaining
+- layer slice 1147
+RS03: try number = 3215, reading sector 236617
+-> 1 untested layers remaining
+- layer slice 1148
+RS03: try number = 3216, reading sector 236618
+-> 1 untested layers remaining
+- layer slice 1149
+RS03: try number = 3217, reading sector 236619
+-> 1 untested layers remaining
+- layer slice 1150
+RS03: try number = 3218, reading sector 236620
+-> 1 untested layers remaining
+- layer slice 1151
+RS03: try number = 3219, reading sector 236621
+-> 1 untested layers remaining
+- layer slice 1152
+RS03: try number = 3220, reading sector 236622
+-> 1 untested layers remaining
+- layer slice 1153
+RS03: try number = 3221, reading sector 236623
+-> 1 untested layers remaining
+- layer slice 1154
+RS03: try number = 3222, reading sector 236624
+-> 1 untested layers remaining
+- layer slice 1155
+RS03: try number = 3223, reading sector 236625
+-> 1 untested layers remaining
+- layer slice 1156
+RS03: try number = 3224, reading sector 236626
+-> 1 untested layers remaining
+- layer slice 1157
+RS03: try number = 3225, reading sector 236627
+-> 1 untested layers remaining
+- layer slice 1158
+RS03: try number = 3226, reading sector 236628
+-> 1 untested layers remaining
+- layer slice 1159
+RS03: try number = 3227, reading sector 236629
+-> 1 untested layers remaining
+- layer slice 1160
+RS03: try number = 3228, reading sector 236630
+-> 1 untested layers remaining
+- layer slice 1161
+RS03: try number = 3229, reading sector 236631
+-> 1 untested layers remaining
+- layer slice 1162
+RS03: try number = 3230, reading sector 236632
+-> 1 untested layers remaining
+- layer slice 1163
+RS03: try number = 3231, reading sector 236633
+-> 1 untested layers remaining
+- layer slice 1164
+RS03: try number = 3232, reading sector 236634
+-> 1 untested layers remaining
+- layer slice 1165
+RS03: try number = 3233, reading sector 236635
+-> 1 untested layers remaining
+- layer slice 1166
+RS03: try number = 3234, reading sector 236636
+-> 1 untested layers remaining
+- layer slice 1167
+RS03: try number = 3235, reading sector 236637
+-> 1 untested layers remaining
+- layer slice 1168
+RS03: try number = 3236, reading sector 236638
+-> 1 untested layers remaining
+- layer slice 1169
+RS03: try number = 3237, reading sector 236639
+-> 1 untested layers remaining
+- layer slice 1170
+RS03: try number = 3238, reading sector 236640
+-> 1 untested layers remaining
+- layer slice 1171
+RS03: try number = 3239, reading sector 236641
+-> 1 untested layers remaining
+- layer slice 1172
+RS03: try number = 3240, reading sector 236642
+-> 1 untested layers remaining
+- layer slice 1173
+RS03: try number = 3241, reading sector 236643
+-> 1 untested layers remaining
+- layer slice 1174
+RS03: try number = 3242, reading sector 236644
+-> 1 untested layers remaining
+- layer slice 1175
+RS03: try number = 3243, reading sector 236645
+-> 1 untested layers remaining
+- layer slice 1176
+RS03: try number = 3244, reading sector 236646
+-> 1 untested layers remaining
+- layer slice 1177
+RS03: try number = 3245, reading sector 236647
+-> 1 untested layers remaining
+- layer slice 1178
+RS03: try number = 3246, reading sector 236648
+-> 1 untested layers remaining
+- layer slice 1179
+RS03: try number = 3247, reading sector 236649
+-> 1 untested layers remaining
+- layer slice 1180
+RS03: try number = 3248, reading sector 236650
+-> 1 untested layers remaining
+- layer slice 1181
+RS03: try number = 3249, reading sector 236651
+-> 1 untested layers remaining
+- layer slice 1182
+RS03: try number = 3250, reading sector 236652
+-> 1 untested layers remaining
+- layer slice 1183
+RS03: try number = 3251, reading sector 236653
+-> 1 untested layers remaining
+- layer slice 1184
+RS03: try number = 3252, reading sector 236654
+-> 1 untested layers remaining
+- layer slice 1185
+RS03: try number = 3253, reading sector 236655
+-> 1 untested layers remaining
+- layer slice 1186
+RS03: try number = 3254, reading sector 236656
+-> 1 untested layers remaining
+- layer slice 1187
+RS03: try number = 3255, reading sector 236657
+-> 1 untested layers remaining
+- layer slice 1188
+RS03: try number = 3256, reading sector 236658
+-> 1 untested layers remaining
+- layer slice 1189
+RS03: try number = 3257, reading sector 236659
+-> 1 untested layers remaining
+- layer slice 1190
+RS03: try number = 3258, reading sector 236660
+-> 1 untested layers remaining
+- layer slice 1191
+RS03: try number = 3259, reading sector 236661
+-> 1 untested layers remaining
+- layer slice 1192
+RS03: try number = 3260, reading sector 236662
+-> 1 untested layers remaining
+- layer slice 1193
+RS03: try number = 3261, reading sector 236663
+-> 1 untested layers remaining
+- layer slice 1194
+RS03: try number = 3262, reading sector 236664
+-> 1 untested layers remaining
+- layer slice 1195
+RS03: try number = 3263, reading sector 236665
+-> 1 untested layers remaining
+- layer slice 1196
+RS03: try number = 3264, reading sector 236666
+-> 1 untested layers remaining
+- layer slice 1197
+RS03: try number = 3265, reading sector 236667
+-> 1 untested layers remaining
+- layer slice 1198
+RS03: try number = 3266, reading sector 236668
+-> 1 untested layers remaining
+- layer slice 1199
+RS03: try number = 3267, reading sector 236669
+-> 1 untested layers remaining
+- layer slice 1200
+RS03: try number = 3268, reading sector 236670
+-> 1 untested layers remaining
+- layer slice 1201
+RS03: try number = 3269, reading sector 236671
+-> 1 untested layers remaining
+- layer slice 1202
+RS03: try number = 3270, reading sector 236672
+-> 1 untested layers remaining
+- layer slice 1203
+RS03: try number = 3271, reading sector 236673
+-> 1 untested layers remaining
+- layer slice 1204
+RS03: try number = 3272, reading sector 236674
+-> 1 untested layers remaining
+- layer slice 1205
+RS03: try number = 3273, reading sector 236675
+-> 1 untested layers remaining
+- layer slice 1206
+RS03: try number = 3274, reading sector 236676
+-> 1 untested layers remaining
+- layer slice 1207
+RS03: try number = 3275, reading sector 236677
+-> 1 untested layers remaining
+- layer slice 1208
+RS03: try number = 3276, reading sector 236678
+-> 1 untested layers remaining
+- layer slice 1209
+RS03: try number = 3277, reading sector 236679
+-> 1 untested layers remaining
+- layer slice 1210
+RS03: try number = 3278, reading sector 236680
+-> 1 untested layers remaining
+- layer slice 1211
+RS03: try number = 3279, reading sector 236681
+-> 1 untested layers remaining
+- layer slice 1212
+RS03: try number = 3280, reading sector 236682
+-> 1 untested layers remaining
+- layer slice 1213
+RS03: try number = 3281, reading sector 236683
+-> 1 untested layers remaining
+- layer slice 1214
+RS03: try number = 3282, reading sector 236684
+-> 1 untested layers remaining
+- layer slice 1215
+RS03: try number = 3283, reading sector 236685
+-> 1 untested layers remaining
+- layer slice 1216
+RS03: try number = 3284, reading sector 236686
+-> 1 untested layers remaining
+- layer slice 1217
+RS03: try number = 3285, reading sector 236687
+-> 1 untested layers remaining
+- layer slice 1218
+RS03: try number = 3286, reading sector 236688
+-> 1 untested layers remaining
+- layer slice 1219
+RS03: try number = 3287, reading sector 236689
+-> 1 untested layers remaining
+- layer slice 1220
+RS03: try number = 3288, reading sector 236690
+-> 1 untested layers remaining
+- layer slice 1221
+RS03: try number = 3289, reading sector 236691
+-> 1 untested layers remaining
+- layer slice 1222
+RS03: try number = 3290, reading sector 236692
+-> 1 untested layers remaining
+- layer slice 1223
+RS03: try number = 3291, reading sector 236693
+-> 1 untested layers remaining
+- layer slice 1224
+RS03: try number = 3292, reading sector 236694
+-> 1 untested layers remaining
+- layer slice 1225
+RS03: try number = 3293, reading sector 236695
+-> 1 untested layers remaining
+- layer slice 1226
+RS03: try number = 3294, reading sector 236696
+-> 1 untested layers remaining
+- layer slice 1227
+RS03: try number = 3295, reading sector 236697
+-> 1 untested layers remaining
+- layer slice 1228
+RS03: try number = 3296, reading sector 236698
+-> 1 untested layers remaining
+- layer slice 1229
+RS03: try number = 3297, reading sector 236699
+-> 1 untested layers remaining
+- layer slice 1230
+RS03: try number = 3298, reading sector 236700
+-> 1 untested layers remaining
+- layer slice 1231
+RS03: try number = 3299, reading sector 236701
+-> 1 untested layers remaining
+- layer slice 1232
+RS03: try number = 3300, reading sector 236702
+-> 1 untested layers remaining
+- layer slice 1233
+RS03: try number = 3301, reading sector 236703
+-> 1 untested layers remaining
+- layer slice 1234
+RS03: try number = 3302, reading sector 236704
+-> 1 untested layers remaining
+- layer slice 1235
+RS03: try number = 3303, reading sector 236705
+-> 1 untested layers remaining
+- layer slice 1236
+RS03: try number = 3304, reading sector 236706
+-> 1 untested layers remaining
+- layer slice 1237
+RS03: try number = 3305, reading sector 236707
+-> 1 untested layers remaining
+- layer slice 1238
+RS03: try number = 3306, reading sector 236708
+-> 1 untested layers remaining
+- layer slice 1239
+RS03: try number = 3307, reading sector 236709
+-> 1 untested layers remaining
+- layer slice 1240
+RS03: try number = 3308, reading sector 236710
+-> 1 untested layers remaining
+- layer slice 1241
+RS03: try number = 3309, reading sector 236711
+-> 1 untested layers remaining
+- layer slice 1242
+RS03: try number = 3310, reading sector 236712
+** All layers tested -> no RS03 data found
+RS03RecognizeImage: no RS03 data found
 ...no augmented image detected.
 GetImageFingerprint(16): read & cached
 
