@@ -439,7 +439,7 @@ int RS03RecognizeImage(Image *image)
 
    /* Determine image size in augmented case. */
 
-   if(Closure->debugMode && Closure->mediumSize > 170)
+   if(Closure->mediumSize > 170)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
       Verbose("Warning: image size set to %" PRId64 " for debugging!\n", Closure->mediumSize);
    }

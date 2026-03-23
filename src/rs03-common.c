@@ -522,9 +522,14 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
       }
       else
       {  dataSectors = image->sectorSize;
-	 if(Closure->debugMode && Closure->mediumSize)
+	 if(Closure->mediumSize)
 	 {   if(dataSectors >= Closure->mediumSize)
-	       Stop(_("Medium size smaller than image size (%" PRId64 " < %" PRId64 ")"), Closure->mediumSize, dataSectors);
+	       Stop(_("Medium size smaller than image size (%" PRId64 " &lt; %" PRId64 ")"), Closure->mediumSize, dataSectors);
+	     if(Closure->mediumSize < GF_FIELDMAX)
+	       Stop(_("Medium size too small (%" PRId64 " sectors, minimum is %d)"), Closure->mediumSize, GF_FIELDMAX);
+	     if(get_roots(dataSectors, Closure->mediumSize) < 8)
+	       Stop(_("Not enough space for error correction data on the specified medium "
+		      "(%" PRId64 " sectors). Increase the medium size or use a smaller image."), Closure->mediumSize);
 	     lay->mediumCapacity = Closure->mediumSize;
          }
 	 else
