@@ -71,25 +71,33 @@ static void eccmethod_cb(GtkWidget *widget, gpointer data)
    if(widget == wl->eccFileA || widget == wl->eccFileB)
    {  Closure->eccTarget = ECC_FILE;
 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccFileA), TRUE); 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccFileB), TRUE); 
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccFileA), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccFileB), TRUE);
 
       set_sensitive(wl->radio1A, TRUE);
       set_sensitive(wl->radio1B, TRUE);
 
       gtk_notebook_set_current_page(GTK_NOTEBOOK(wl->redundancyNotebook), 1);
+
+      if(wl->redundancyFrame)
+	 gtk_frame_set_label(GTK_FRAME(wl->redundancyFrame),
+			     _utf("Redundancy for new error correction files"));
    }
 
    if(widget == wl->eccImageA || widget == wl->eccImageB)
    {  Closure->eccTarget = ECC_IMAGE;
 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccImageA), TRUE); 
-      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccImageB), TRUE); 
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccImageA), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eccImageB), TRUE);
 
       set_sensitive(wl->radio1A, FALSE);
       set_sensitive(wl->radio1B, FALSE);
 
       gtk_notebook_set_current_page(GTK_NOTEBOOK(wl->redundancyNotebook), 0);
+
+      if(wl->redundancyFrame)
+	 gtk_frame_set_label(GTK_FRAME(wl->redundancyFrame),
+			     _utf("Target medium for augmented image"));
    }
 }
 
@@ -163,6 +171,132 @@ static void io_strategy_cb(GtkWidget *widget, gpointer data)
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->ioRadio2A), TRUE); 
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->ioRadio2B), TRUE); 
    }
+}
+
+/*
+ * Medium size selection for augmented images
+ */
+
+typedef struct {
+   const char *label;
+   gint64 size;
+} MediumSizeEntry;
+
+static MediumSizeEntry medium_sizes[] = {
+   { "CD",              CDR_SIZE },
+   { "DVD",             DVD_SL_SIZE },
+   { "DVD9 (dual layer)", DVD_DL_SIZE },
+   { "BD (25 GB)",      BD_SL_SIZE },
+   { "BD DL (50 GB)",   BD_DL_SIZE },
+   { "BDXL (100 GB)",   BDXL_TL_SIZE },
+   { "BDXL (128 GB)",   BDXL_QL_SIZE },
+   { "BD no DM (25 GB)",    BD_SL_SIZE_NODM },
+   { "BD DL no DM (50 GB)", BD_DL_SIZE_NODM },
+   { "BDXL no DM (100 GB)", BDXL_TL_SIZE_NODM },
+   { "BDXL no DM (128 GB)", BDXL_QL_SIZE_NODM },
+};
+
+static int n_medium_sizes = sizeof(medium_sizes)/sizeof(MediumSizeEntry);
+
+static int find_medium_combo_index(gint64 size)
+{  int i;
+   for(i = 0; i < n_medium_sizes; i++)
+      if(medium_sizes[i].size == size)
+         return i;
+   return -1;
+}
+
+enum {
+   MEDIUM_MODE_AUTO = 0,
+   MEDIUM_MODE_FORCE = 1,
+   MEDIUM_MODE_MANUAL = 2
+};
+
+/* Determine which mode is currently active based on Closure->mediumSize */
+static int get_medium_mode(void)
+{  if(Closure->mediumSize == 0)
+      return MEDIUM_MODE_AUTO;
+   if(find_medium_combo_index(Closure->mediumSize) >= 0)
+      return MEDIUM_MODE_FORCE;
+   return MEDIUM_MODE_MANUAL;
+}
+
+static void update_medium_sensitivity(RS03Widgets *wl, int mode)
+{  gboolean force_sens = (mode == MEDIUM_MODE_FORCE);
+   gboolean manual_sens = (mode == MEDIUM_MODE_MANUAL);
+
+   set_sensitive(wl->mediumComboA, force_sens);
+   set_sensitive(wl->mediumComboB, force_sens);
+   set_sensitive(wl->mediumSectorSpinA, manual_sens);
+   set_sensitive(wl->mediumSectorSpinB, manual_sens);
+   set_sensitive(wl->mediumSectorLabelA, manual_sens);
+   set_sensitive(wl->mediumSectorLabelB, manual_sens);
+}
+
+static void medium_mode_cb(GtkWidget *widget, gpointer data)
+{  RS03Widgets *wl = (RS03Widgets*)data;
+   int state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+
+   if(!state)
+      return;
+
+   if(widget == wl->mediumAutoA || widget == wl->mediumAutoB)
+   {  Closure->mediumSize = 0;
+
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumAutoA), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumAutoB), TRUE);
+
+      update_medium_sensitivity(wl, MEDIUM_MODE_AUTO);
+   }
+
+   if(widget == wl->mediumForceA || widget == wl->mediumForceB)
+   {  int idx;
+
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumForceA), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumForceB), TRUE);
+
+      idx = gtk_combo_box_get_active(GTK_COMBO_BOX(wl->mediumComboA));
+      if(idx >= 0 && idx < n_medium_sizes)
+         Closure->mediumSize = medium_sizes[idx].size;
+
+      update_medium_sensitivity(wl, MEDIUM_MODE_FORCE);
+   }
+
+   if(widget == wl->mediumManualA || widget == wl->mediumManualB)
+   {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumManualA), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->mediumManualB), TRUE);
+
+      Closure->mediumSize = (gint64)gtk_spin_button_get_value(GTK_SPIN_BUTTON(wl->mediumSectorSpinA));
+
+      update_medium_sensitivity(wl, MEDIUM_MODE_MANUAL);
+   }
+}
+
+static void medium_combo_cb(GtkWidget *widget, gpointer data)
+{  RS03Widgets *wl = (RS03Widgets*)data;
+   int idx = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+
+   if(idx < 0 || idx >= n_medium_sizes)
+      return;
+
+   Closure->mediumSize = medium_sizes[idx].size;
+
+   if(widget == wl->mediumComboA)
+      gtk_combo_box_set_active(GTK_COMBO_BOX(wl->mediumComboB), idx);
+   else
+      gtk_combo_box_set_active(GTK_COMBO_BOX(wl->mediumComboA), idx);
+}
+
+static void medium_sectors_cb(GtkWidget *widget, gpointer data)
+{  RS03Widgets *wl = (RS03Widgets*)data;
+   gint64 value = (gint64)gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
+
+   Closure->mediumSize = value;
+
+   if(widget == wl->mediumSectorSpinA)
+      set_spin_button_value(GTK_SPIN_BUTTON(wl->mediumSectorSpinB), (int)value);
+   else
+      set_spin_button_value(GTK_SPIN_BUTTON(wl->mediumSectorSpinA), (int)value);
 }
 
 /*
@@ -557,7 +691,10 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
       /*** Redundancy selection */
 
-   frame = gtk_frame_new(_utf("Redundancy for new error correction files"));
+   frame = gtk_frame_new(Closure->eccTarget == ECC_IMAGE
+			? _utf("Target medium for augmented image")
+			: _utf("Redundancy for new error correction files"));
+   wl->redundancyFrame = frame;
    gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, FALSE, 0);
 
    /* Notebook for disabling redundancy selection for embedded images */
@@ -567,11 +704,149 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
    gtk_notebook_set_show_border(GTK_NOTEBOOK(wl->redundancyNotebook), FALSE);
    gtk_container_add(GTK_CONTAINER(frame), wl->redundancyNotebook);
 
-   /* dummy page for augmented images */
+   /* Page for augmented image medium size selection */
 
-   lab = gtk_label_new(_utf("no settings for augmented images"));
-   gtk_notebook_append_page(GTK_NOTEBOOK(wl->redundancyNotebook), lab, 
-			    gtk_label_new(""));
+   {  GtkWidget *avbox, *ahbox, *alab;
+      int medium_mode = get_medium_mode();
+      int combo_idx;
+
+      avbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+      gtk_container_set_border_width(GTK_CONTAINER(avbox), 10);
+      gtk_notebook_append_page(GTK_NOTEBOOK(wl->redundancyNotebook), avbox,
+			       gtk_label_new(""));
+
+      for(i=0; i<2; i++)
+      {  GtkWidget *auto_radio, *force_radio, *manual_radio;
+         GtkWidget *combo, *spin;
+
+	 /* Autodetect radio */
+
+	 auto_radio = gtk_radio_button_new(NULL);
+	 g_signal_connect(G_OBJECT(auto_radio), "toggled",
+			  G_CALLBACK(medium_mode_cb), (gpointer)wl);
+	 ahbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+	 gtk_box_pack_start(GTK_BOX(ahbox), auto_radio, FALSE, FALSE, 0);
+	 alab = gtk_label_new(_utf("Autodetect (recommended)"));
+	 gtk_container_add(GTK_CONTAINER(auto_radio), alab);
+
+	 gtk_widget_set_tooltip_text(auto_radio,
+	    _("Automatically selects the smallest medium type that can fit "
+	      "the image with at least minimal error correction. This is the "
+	      "safe default."));
+
+	 if(!i) { wl->mediumAutoA = auto_radio;
+		  gtk_box_pack_start(GTK_BOX(avbox), ahbox, FALSE, FALSE, 0); }
+	 else   { wl->mediumAutoB = auto_radio; }
+
+	 /* Force medium type radio + combo */
+
+	 force_radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(auto_radio));
+	 g_signal_connect(G_OBJECT(force_radio), "toggled",
+			  G_CALLBACK(medium_mode_cb), (gpointer)wl);
+	 ahbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+	 gtk_box_pack_start(GTK_BOX(ahbox), force_radio, FALSE, FALSE, 0);
+	 alab = gtk_label_new(_utf("Force medium type:"));
+	 gtk_container_add(GTK_CONTAINER(force_radio), alab);
+
+	 gtk_widget_set_tooltip_text(force_radio,
+	    _("Select this to target a specific medium type. Use this when "
+	      "you know you will burn to a larger disc than what autodetect "
+	      "would choose. For example, select \"BD (25 GB)\" to maximize "
+	      "redundancy when burning a small image to a Blu-ray disc.\n\n"
+	      "The \"no DM\" variants are for Blu-ray discs burned with "
+	      "defect management disabled. This trades the drive's built-in "
+	      "bad sector remapping for slightly more usable space on the disc. "
+	      "Only use these if you explicitly disabled defect management in "
+	      "your burning software. If unsure, use the regular (non-DM) sizes."));
+
+	 combo = gtk_combo_box_text_new();
+	 {  int j;
+	    for(j = 0; j < n_medium_sizes; j++)
+	       gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo),
+					      medium_sizes[j].label);
+	 }
+	 combo_idx = find_medium_combo_index(Closure->mediumSize);
+	 gtk_combo_box_set_active(GTK_COMBO_BOX(combo), combo_idx >= 0 ? combo_idx : 3);
+	 gtk_widget_set_sensitive(combo, medium_mode == MEDIUM_MODE_FORCE);
+	 g_signal_connect(G_OBJECT(combo), "changed",
+			  G_CALLBACK(medium_combo_cb), (gpointer)wl);
+	 gtk_box_pack_start(GTK_BOX(ahbox), combo, FALSE, FALSE, 0);
+
+	 if(!i) { wl->mediumForceA = force_radio;
+		  wl->mediumComboA = combo;
+		  gtk_box_pack_start(GTK_BOX(avbox), ahbox, FALSE, FALSE, 0); }
+	 else   { wl->mediumForceB = force_radio;
+		  wl->mediumComboB = combo; }
+
+	 /* Manual sector count radio + spin */
+
+	 manual_radio = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(auto_radio));
+	 g_signal_connect(G_OBJECT(manual_radio), "toggled",
+			  G_CALLBACK(medium_mode_cb), (gpointer)wl);
+	 ahbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+	 gtk_box_pack_start(GTK_BOX(ahbox), manual_radio, FALSE, FALSE, 0);
+	 alab = gtk_label_new(_utf("Manual sector count (read tooltip!):"));
+	 gtk_container_add(GTK_CONTAINER(manual_radio), alab);
+
+	 gtk_widget_set_tooltip_text(manual_radio,
+	    _("Specify the exact number of 2048-byte sectors to use as the "
+	      "target medium capacity. Only use this if you know the precise "
+	      "sector count of your target medium.\n\n"
+	      "WARNING: You MUST remember this value for future repairs! "
+	      "Write it down on the disc itself. If the RS03 header on the "
+	      "disc gets damaged, dvdisaster needs the sector count to locate "
+	      "the backup header and ECC root sectors. Without it, recovery "
+	      "will fail in that scenario.\n\n"
+	      "When using this option with the command line, pass the sector "
+	      "count with -n <number>. You will need to specify the same "
+	      "value again when attempting to repair the image."));
+
+	 spin = gtk_spin_button_new_with_range(1, 70000000, 1000);
+	 gtk_entry_set_width_chars(GTK_ENTRY(spin), 10);
+	 if(medium_mode == MEDIUM_MODE_MANUAL && Closure->mediumSize > 0)
+	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), (gdouble)Closure->mediumSize);
+	 else
+	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin), (gdouble)BD_SL_SIZE);
+	 gtk_widget_set_sensitive(spin, medium_mode == MEDIUM_MODE_MANUAL);
+	 g_signal_connect(G_OBJECT(spin), "value-changed",
+			  G_CALLBACK(medium_sectors_cb), (gpointer)wl);
+	 gtk_box_pack_start(GTK_BOX(ahbox), spin, FALSE, FALSE, 0);
+
+	 alab = gtk_label_new(_utf("sectors"));
+	 gtk_box_pack_start(GTK_BOX(ahbox), alab, FALSE, FALSE, 0);
+	 gtk_widget_set_sensitive(alab, medium_mode == MEDIUM_MODE_MANUAL);
+
+	 if(!i) { wl->mediumManualA = manual_radio;
+		  wl->mediumSectorSpinA = spin;
+		  wl->mediumSectorLabelA = alab;
+		  gtk_box_pack_start(GTK_BOX(avbox), ahbox, FALSE, FALSE, 0); }
+	 else   { wl->mediumManualB = manual_radio;
+		  wl->mediumSectorSpinB = spin;
+		  wl->mediumSectorLabelB = alab; }
+
+	 /* Activate the correct radio */
+
+	 switch(medium_mode)
+	 {  case MEDIUM_MODE_AUTO:
+	       activate_toggle_button(GTK_TOGGLE_BUTTON(auto_radio), TRUE); break;
+	    case MEDIUM_MODE_FORCE:
+	       activate_toggle_button(GTK_TOGGLE_BUTTON(force_radio), TRUE); break;
+	    case MEDIUM_MODE_MANUAL:
+	       activate_toggle_button(GTK_TOGGLE_BUTTON(manual_radio), TRUE); break;
+	 }
+      }
+
+      /* Explanatory note */
+
+      alab = gtk_label_new(NULL);
+      gtk_label_set_markup(GTK_LABEL(alab),
+	 _utf("<i>For augmented images, the redundancy is determined by how much space\n"
+	      "is available on the target medium, beyond what the image data occupies.\n"
+              "Larger target means more protection (up to 200% redundancy).</i>"));
+      gtk_label_set_line_wrap(GTK_LABEL(alab), TRUE);
+      gtk_label_set_xalign(GTK_LABEL(alab), 0.0);
+      gtk_box_pack_start(GTK_BOX(avbox), alab, FALSE, FALSE, 5);
+   }
 
    g_idle_add(notebook_idle_func, wl); /* defer notebook page activation */
 

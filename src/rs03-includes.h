@@ -97,6 +97,7 @@ typedef struct
    GtkWidget *radio1B,*radio2B,*radio3B,*radio4B;
    GtkWidget *radio4LabelA, *radio4LabelB;
    GtkWidget *redundancyNotebook;
+   GtkWidget *redundancyFrame;
    GtkWidget *redundancyScaleA, *redundancyScaleB;
    GtkWidget *redundancySpinA, *redundancySpinB;
    GtkWidget *prefetchScaleA, *prefetchScaleB;
@@ -107,6 +108,15 @@ typedef struct
    GtkWidget *ioRadio1B,*ioRadio2B;
    LabelWithOnlineHelp *prefetchLwoh;
    LabelWithOnlineHelp *threadsLwoh;
+
+   /*** Widgets for augmented image medium size selection */
+
+   GtkWidget *mediumAutoA, *mediumAutoB;       /* Autodetect radio buttons */
+   GtkWidget *mediumForceA, *mediumForceB;     /* Force medium type radio buttons */
+   GtkWidget *mediumManualA, *mediumManualB;   /* Manual sector count radio buttons */
+   GtkWidget *mediumComboA, *mediumComboB;     /* Combo box for medium type */
+   GtkWidget *mediumSectorSpinA, *mediumSectorSpinB; /* Spin button for manual sectors */
+   GtkWidget *mediumSectorLabelA, *mediumSectorLabelB; /* Label next to spin button */
 
    /*** Some state vars used during fixing */
 
