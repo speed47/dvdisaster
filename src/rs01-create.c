@@ -66,6 +66,9 @@ static int calculate_redundancy(char *image_name)
 		 nr = (int)round((GF_FIELDMAX*p) / (100.0+p));
 	         break;
 
+      case 'r' : nr = atoi(Closure->redundancy);
+	         break;
+
       case 'm' : if(!LargeStat(image_name, &filesize))
   	         {  nr = 32;   /* If the image file is not present, simply return 32. */
 		    break;     /* Later stages will fail anyways, but can report the error */
@@ -83,9 +86,11 @@ static int calculate_redundancy(char *image_name)
 	         break;
 
       default:
-	if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) nr = 32; 
+	if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) nr = 32;
 	else if(!strcmp(Closure->redundancy, "high")) nr = 64;
-	else nr = atoi(Closure->redundancy);
+	else Stop(_("Invalid redundancy specification '%s'.\n"
+		    "Valid formats: normal, high, <number>%%, <number>r, <number>m"),
+		  Closure->redundancy);
 	break;
    }
 

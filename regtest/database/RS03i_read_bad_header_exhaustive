@@ -155,7 +155,7 @@ try_sector: no cookie, skipping current modulo
 RS03RecognizeImage: medium sim-cd
 FindRS03HeaderInImage: medium sim-cd
 RS03RecognizeImage: No EH, entering exhaustive search
-Warning: image size set to 25000 for debugging!
+Image size set to 25000 (layer size 98)
 .. trying layer size 98
 Scanning layers for signatures.
 - layer slice 0

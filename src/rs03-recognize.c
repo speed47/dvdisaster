@@ -710,9 +710,10 @@ int RS03RecognizeImage(Image *image)
 
    trynumber = 0;
 
-   if(Closure->mediumSize > 170)
+   if(Closure->mediumSize >= GF_FIELDMAX)
    {  layer_size = Closure->mediumSize/GF_FIELDMAX;
-      Verbose("Warning: image size set to %" PRId64 " for debugging!\n", Closure->mediumSize);
+      Verbose("Image size set to %" PRId64 " (layer size %" PRId64 ")\n",
+	      Closure->mediumSize, layer_size);
    }
    else
    {

@@ -452,7 +452,7 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	 }
 
 	 switch(last)
-	 {  case '%': 
+	 {  case '%':
 	    {  double p = atof(Closure->redundancy);
 
 	       if(p<3.2 || p>200.0)
@@ -460,15 +460,19 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	       n_roots = (int)round((GF_FIELDMAX*p) / (100.0+p));
 	       break;
 	    }
-	    case 'm': 
+	    case 'r':
+	       n_roots = atoi(Closure->redundancy);
+	       break;
+
+	    case 'm':
 	    {  gint64 ecc_size;
 
 	       ecc_size = strtoll(Closure->redundancy, NULL, 10);
-	       if(   ecc_size < ecc_file_size(lay->dataSectors, 8) 
+	       if(   ecc_size < ecc_file_size(lay->dataSectors, 8)
 		  || ecc_size > ecc_file_size(lay->dataSectors, 170))
 		  Stop(_("Ecc file size %" PRId64 "m out of useful range [%" PRId64 " .. %" PRId64 "]"),
-		       ecc_size, 
-		       ecc_file_size(lay->dataSectors, 8), 
+		       ecc_size,
+		       ecc_file_size(lay->dataSectors, 8),
 		       ecc_file_size(lay->dataSectors, 170));
 
 	       for(n_roots=170; n_roots>8; n_roots--)
@@ -478,9 +482,11 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	    }
 
 	    default:
-	       if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) n_roots = 32; 
+	       if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) n_roots = 32;
 	       else if(!strcmp(Closure->redundancy, "high")) n_roots = 64;
-	       else n_roots = atoi(Closure->redundancy);
+	       else Stop(_("Invalid redundancy specification '%s'.\n"
+			   "Valid formats: normal, high, <number>%%, <number>r, <number>m"),
+			 Closure->redundancy);
 	       break;
 	 }
       }

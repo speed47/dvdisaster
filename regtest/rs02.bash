@@ -374,7 +374,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "with RS03 error correction file" with_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     run_regtest with_rs03_file "-v -t" $MASTERISO $TMPECC
 fi
@@ -387,7 +387,7 @@ if try "with non-matching RS03 error correction file" with_wrong_rs03_file; then
     $NEWVER --debug -i$TMPISO --byteset 16,240,1 >>$LOGFILE 2>&1
 
     # Create ecc file for "wrong" image
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     # Now test against original image
     run_regtest with_wrong_rs03_file "-v -t" $MASTERISO $TMPECC
@@ -724,7 +724,7 @@ fi
 
 if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then
    $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
-   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 9 -mRS03 -o file >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 9r -mRS03 -o file >>$LOGFILE 2>&1
 
    replace_config method-name RS02
    replace_config medium-size 35000
@@ -988,7 +988,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "RS02 image with RS03 error correction file" fix_with_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $TMPISO
     $NEWVER --debug -i$TMPISO --byteset 34930,0,1 >>$LOGFILE 2>&1
@@ -1344,7 +1344,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "scanning RS02 image with RS03 ecc file" scan_with_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 34930,0,1 >>$LOGFILE 2>&1
@@ -1356,7 +1356,7 @@ fi
 # Augmented image and non-matching RS03 error correction file
 
 if try "scanning RS02 image with non-matching RS03 ecc file" scan_with_wrong_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
@@ -1774,7 +1774,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "reading RS02 image with RS03 ecc file" read_with_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 34930,0,1 >>$LOGFILE 2>&1
@@ -1786,7 +1786,7 @@ fi
 # Augmented image and non-matching RS03 error correction file
 
 if try "reading RS02 image with non-matching RS03 ecc file" read_with_wrong_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
@@ -2176,7 +2176,7 @@ fi
 # Augmented image is protected by an outer RS03 error correction file
 
 if try "reading RS02 image with RS03 ecc file" read_with_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO
     $NEWVER --debug -i$SIMISO --byteset 34930,0,1 >>$LOGFILE 2>&1
@@ -2187,7 +2187,7 @@ fi
 # Augmented image and non-matching RS03 error correction file
 
 if try "reading RS02 image with non-matching RS03 ecc file" read_with_wrong_rs03_file; then
-    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20 -o file >>$LOGFILE 2>&1
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$MASTERISO -e$TMPECC -mRS03 -c -n 20r -o file >>$LOGFILE 2>&1
     $NEWVER --debug -i$TMPECC --byteset 0,24,1 >>$LOGFILE 2>&1
 
     cp $MASTERISO $SIMISO

@@ -3,7 +3,7 @@
 . common.bash
 
 ISOSIZE=21000
-REDUNDANCY=20
+REDUNDANCY=20r
 
 MASTERISO=$ISODIR/rs03f-master.iso
 MASTERECC=$ISODIR/rs03f-master.ecc
@@ -639,7 +639,7 @@ fi
 if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_rs01; then
   cp $MASTERISO $SIMISO
 
-  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8r >>$LOGFILE 2>&1
 
   IGNORE_LOG_LINE="^Avg performance|^Creating the error correction file with Method RS03"
   replace_config method-name RS03
@@ -694,7 +694,7 @@ fi
 if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then
   cp $MASTERISO $SIMISO
 
-  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -mRS03 -o file -c -n 9 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -mRS03 -o file -c -n 9r >>$LOGFILE 2>&1
 
   IGNORE_LOG_LINE="^Avg performance|^Creating the error correction file with Method RS03"
   replace_config method-name RS03
