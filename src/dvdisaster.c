@@ -362,10 +362,13 @@ int main(int argc, char *argv[])
 			   Closure->mediumSize = BDXL_TL_SIZE_NODM;
 		      else if(!strcmp(optarg, "BDXL4NODM") || !strcmp(optarg, "bdxl4nodm"))
 			   Closure->mediumSize = BDXL_QL_SIZE_NODM;
-		      else 
+		      else
 		      {  int len = strlen(optarg);
 			 if(strchr("0123456789", optarg[len-1]))
-			    Closure->mediumSize = (gint64)atoll(optarg);
+			 {  gint64 val = (gint64)atoll(optarg);
+			    if(val >= GF_FIELDMAX)
+			       Closure->mediumSize = val;
+			 }
 		      }
 		      break;
 		   }
@@ -978,8 +981,12 @@ int main(int argc, char *argv[])
       PrintCLI(_("  -a, --assume x             - assume image is augmented with given codec (RS02 or RS03)\n"));
       PrintCLI(_("  -j, --jump n               - jump n sectors forward after a read error (default: 16)\n"));
       PrintCLI(_("  -m, --method x             - list/select error correction methods (default: RS01)\n"));
-      PrintCLI(_("  -n, --redundancy n%%        - error correction data redundancy\n"
-		 "                               allowed values depend on codec (see manual)\n"));
+      PrintCLI(_("  -n, --redundancy x         - error correction data redundancy\n"
+		 "                               e.g. 20%%, 32r (roots), 200m (MiB), normal, high\n"
+		 "                               for RS02/RS03 augmented images, also accepts a medium size:\n"
+		 "                               CD, DVD, DVD9, BD, BD2, BDXL3, BDXL4,\n"
+		 "                               BDNODM, BD2NODM, BDXL3NODM, BDXL4NODM,\n"
+		 "                               or a raw sector count\n"));
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
@@ -1035,9 +1042,6 @@ int main(int argc, char *argv[])
 	PrintCLI(_("  --random-seed n          - random seed for built-in random number generator\n"));
 	PrintCLI(_("  --raw-sector n           - shows hexdump of the given raw sector from medium in drive\n"));
 	PrintCLI(_("  --read-sector n          - shows hexdump of the given sector from medium in drive\n"));
-	PrintCLI(_("  --redundancy n           - for RS03, specify the target augmented image size manually,\n"
-		   "                             note that you'll also need to specify it to verify or repair\n"
-		   "                             the image, so ensure you write this value down!\n"));
 	PrintCLI(_("  --screen-shot            - useful for generating screen shots\n"));
 	PrintCLI(_("  --send-cdb arg           - executes given cdb at drive; kills system if used wrong\n"));
 	PrintCLI(_("  --set-version            - set program version for debugging purposes (dangerous!)\n"));

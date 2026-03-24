@@ -380,7 +380,7 @@ fi
 if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_rs01; then
   cp $MASTERISO $SIMISO
 
-  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8r >>$LOGFILE 2>&1
 
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
@@ -421,7 +421,7 @@ fi
 if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then
   cp $MASTERISO $SIMISO
 
-  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8 -mRS03 -o file >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8r -mRS03 -o file >>$LOGFILE 2>&1
 
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
@@ -451,7 +451,7 @@ if false && try "read image with wrong ecc (RS01) and create new ecc" ecc_recrea
   cp $MASTERISO $SIMISO
 
   $NEWVER --debug -i$TMPISO --random-image $((ISOSIZE-777)) --random-seed 1337 >>$LOGFILE 2>&1
-  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c -n 8 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c -n 8r >>$LOGFILE 2>&1
 
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
