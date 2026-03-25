@@ -12,6 +12,7 @@ TMPECC=$TMPDIR/rs01-tmp.ecc
 SIMISO=$TMPDIR/rs01-sim.iso
 
 CODEC_PREFIX=RS01
+init_regtest_cleanup
 
 # Create master image and ecc file
 
@@ -33,9 +34,7 @@ ISO_PLUS56=$ISODIR/rs01-plus56_bytes.iso
 ECC_PLUS56=$ISODIR/rs01-plus56_bytes.ecc
 if ! file_exists $ISO_PLUS56; then
     cp $MASTERISO $ISO_PLUS56
-    dd if=/dev/zero of=/tmp/padding count=1 bs=56 >>$LOGFILE 2>&1
-    cat /tmp/padding >>$ISO_PLUS56
-    rm -f /tmp/padding
+    dd if=/dev/zero bs=56 count=1 >>$ISO_PLUS56 2>>$LOGFILE
     echo -e "$FILE_MSG"
     FILE_MSG=""
 fi
@@ -51,33 +50,33 @@ fi
 REGTEST_SECTION="Verify tests"
 
 # Test good files
-if try "good image" good; then
+if try "good image" good; then (
 
    run_regtest good "-t" $MASTERISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test good files
-if try "good image, quick test" good_quick; then
+if try "good image, quick test" good_quick; then (
   run_regtest good_quick "-tq" $MASTERISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test with neither image nor ecc file
-if try "missing files" no_files; then
+if try "missing files" no_files; then (
    run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Test with missing image, ecc file
-if try "missing image" no_image; then
+if try "missing image" no_image; then (
    run_regtest no_image "-t" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test with good image, no ecc file
-if try "missing ecc" no_ecc; then
+if try "missing ecc" no_ecc; then (
    run_regtest no_ecc "-t" $MASTERISO $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Test with missing sectors, no ecc file
-if try "defective image, no ecc" defective_image_no_ecc; then
+if try "defective image, no ecc" defective_image_no_ecc; then (
    cp $MASTERISO $TMPISO
    $NEWVER -i$TMPISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --erase 11230 >>$LOGFILE 2>&1
@@ -85,93 +84,93 @@ if try "defective image, no ecc" defective_image_no_ecc; then
    $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
   run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
-if try "image with 56 extra bytes" plus56_bytes; then
+if try "image with 56 extra bytes" plus56_bytes; then (
   run_regtest plus56_bytes "-t" $ISO_PLUS56 $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Test with good image not multiple of 2048, no ecc file
-if try "image with 56 extra bytes, no ecc" image_plus56_bytes; then
+if try "image with 56 extra bytes, no ecc" image_plus56_bytes; then (
   run_regtest image_plus56_bytes "-t" $ISO_PLUS56 $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Test with no image, ecc for image not multiple of 2048 
-if try "only ecc for image with 56 extra bytes" ecc_plus56_bytes; then
+if try "only ecc for image with 56 extra bytes" ecc_plus56_bytes; then (
   run_regtest ecc_plus56_bytes "-t" $ISODIR/no.iso $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Test with normal image, ecc for image not multiple of 2048 
-if try "normal image, ecc file plus 56 bytes" normal_image_ecc_plus56b; then
+if try "normal image, ecc file plus 56 bytes" normal_image_ecc_plus56b; then (
   run_regtest normal_image_ecc_plus56b "-t" $MASTERISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Test with image not multiple of 2048, normal ecc file
-if try "image not multiple of 2048, normal ecc file" image_plus56b_normal_ecc; then
+if try "image not multiple of 2048, normal ecc file" image_plus56b_normal_ecc; then (
   run_regtest image_plus56b_normal_ecc "-t" $ISO_PLUS56 $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test with image a few bytes shorter than ecc
-if try "image a few bytes shorter then ecc" image_few_bytes_shorter; then
+if try "image a few bytes shorter then ecc" image_few_bytes_shorter; then (
 
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=55 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=55 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest image_few_bytes_shorter "-t" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Test with image a few bytes longer than ecc
-if try "image a few bytes longer then ecc" image_few_bytes_longer; then
+if try "image a few bytes longer then ecc" image_few_bytes_longer; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=57 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=57 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest image_few_bytes_longer "-t" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Image is a few bytes shorter (original multiple of 2048)
-if try "image a few bytes truncated" truncated_by_bytes; then
+if try "image a few bytes truncated" truncated_by_bytes; then (
   dd if=$MASTERISO of=$TMPISO count=1 bs=$((2048*ISOSIZE-7)) >>$LOGFILE 2>&1
 
   run_regtest truncated_by_bytes "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image is truncated by 5 sectors
-if try "truncated image" truncated; then
+if try "truncated image" truncated; then (
   cp $MASTERISO $TMPISO
   NEWSIZE=$((ISOSIZE-5))
   $NEWVER -i$TMPISO --debug --truncate=$NEWSIZE >>$LOGFILE 2>&1
 
   run_regtest truncated "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image contains 1 extra sector
-if try "image with one extra sector" plus1; then
+if try "image with one extra sector" plus1; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest plus1 "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image contains 17 extra sectors
-if try "image with 17 extra sectors" plus17; then
+if try "image with 17 extra sectors" plus17; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=17 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=17 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest plus17 "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image contains 2 rows of missing sectors, a single one
 # and a CRC error
-if try "image with missing sectors and crc errors" defective_with_ecc; then
+if try "image with missing sectors and crc errors" defective_with_ecc; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --erase 11230 >>$LOGFILE 2>&1
@@ -179,10 +178,10 @@ if try "image with missing sectors and crc errors" defective_with_ecc; then
   $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
   run_regtest defective_with_ecc "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image contains just missing blocks
-if try "image with missing sectors" missing_sectors_with_ecc; then
+if try "image with missing sectors" missing_sectors_with_ecc; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
@@ -190,53 +189,53 @@ if try "image with missing sectors" missing_sectors_with_ecc; then
   $NEWVER -i$TMPISO --debug --erase 12450-12457 >>$LOGFILE 2>&1
   
   run_regtest missing_sectors_with_ecc "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Image contains just CRC errors
-if try "image with crc errors" crc_errors_with_ecc; then
+if try "image with crc errors" crc_errors_with_ecc; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
   run_regtest crc_errors_with_ecc "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # CRC error in fingerprint sector
-if try "crc in fingerprint sector" crc_in_fingerprint; then
+if try "crc in fingerprint sector" crc_in_fingerprint; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 16,201,55 >>$LOGFILE 2>&1
 
   run_regtest crc_in_fingerprint "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # fingerprint sector unreadable
-if try "missing fingerprint sector" missing_fingerprint; then
+if try "missing fingerprint sector" missing_fingerprint; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 16 >>$LOGFILE 2>&1
 
   run_regtest missing_fingerprint "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Ecc header is missing
-if try "Ecc header is missing" missing_ecc_header; then
+if try "Ecc header is missing" missing_ecc_header; then (
   cp $MASTERECC $TMPECC
   $NEWVER --debug -i $TMPECC --erase 0 >>$LOGFILE 2>&1
 
   run_regtest missing_ecc_header "-t" $MASTERISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Ecc header has checksum error
 
-if try "checksum error in Ecc header" ecc_header_crc_error; then
+if try "checksum error in Ecc header" ecc_header_crc_error; then (
   cp $MASTERECC $TMPECC
   $NEWVER --debug -i $TMPECC --byteset 0,22,107 >>$LOGFILE 2>&1
 
   run_regtest ecc_header_crc_error "-t" $MASTERISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Test image containing several uncorrectable dead sector markers
 # (sector displacement)
 
-if try "image with uncorrectable dead sector markers" uncorrectable_dsm_in_image; then
+if try "image with uncorrectable dead sector markers" uncorrectable_dsm_in_image; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --erase 3030 >>$LOGFILE 2>&1
@@ -247,11 +246,11 @@ if try "image with uncorrectable dead sector markers" uncorrectable_dsm_in_image
   $NEWVER --debug -i$TMPISO --byteset 4411,353,53 >>$LOGFILE 2>&1 // displaced from sector 4511
 
   run_regtest uncorrectable_dsm_in_image  "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test image containing several uncorrectable dead sector markers, verbose output
 
-if try "image with uncorrectable dead sector markers, verbose output" uncorrectable_dsm_in_image_verbose; then
+if try "image with uncorrectable dead sector markers, verbose output" uncorrectable_dsm_in_image_verbose; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --erase 3030 >>$LOGFILE 2>&1
@@ -262,12 +261,12 @@ if try "image with uncorrectable dead sector markers, verbose output" uncorrecta
   $NEWVER --debug -i$TMPISO --byteset 4411,353,53 >>$LOGFILE 2>&1 // displaced from sector 4511
 
   run_regtest uncorrectable_dsm_in_image_verbose  "-t -v" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Testimage containing several uncorrectable dead sector markers
 # (non matching fingerprint)
 
-if try "image with uncorrectable dead sector markers (2)" uncorrectable_dsm_in_image2; then
+if try "image with uncorrectable dead sector markers (2)" uncorrectable_dsm_in_image2; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --erase 3030 >>$LOGFILE 2>&1
@@ -284,12 +283,12 @@ if try "image with uncorrectable dead sector markers (2)" uncorrectable_dsm_in_i
   $NEWVER --debug -i$TMPISO --byteset 4411,557,50 >>$LOGFILE 2>&1 // changed label
 
   run_regtest uncorrectable_dsm_in_image2 "-t" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Test image containing several uncorrectable dead sector markers, verbose
 # (non matching fingerprint)
 
-if try "image with uncorrectable dead sector markers (2), verbose output" uncorrectable_dsm_in_image2_verbose; then
+if try "image with uncorrectable dead sector markers (2), verbose output" uncorrectable_dsm_in_image2_verbose; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --erase 3030 >>$LOGFILE 2>&1
@@ -306,78 +305,78 @@ if try "image with uncorrectable dead sector markers (2), verbose output" uncorr
   $NEWVER --debug -i$TMPISO --byteset 4411,557,50 >>$LOGFILE 2>&1 // changed label
 
   run_regtest uncorrectable_dsm_in_image2_verbose "-t -v" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 ### Creation tests
 
 REGTEST_SECTION="Creation tests"
 
 # Create ecc file
-if try "ecc file creation" ecc_create; then
+if try "ecc file creation" ecc_create; then (
 
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_create "-c $REDUNDANCY" $MASTERISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Create with missing image
-if try "ecc creating with missing image" ecc_missing_image; then
+if try "ecc creating with missing image" ecc_missing_image; then (
   NO_FILE=$ISODIR/none.iso
 
   run_regtest ecc_missing_image "-c $REDUNDANCY" $NO_FILE $TMPECC
-fi
+) & limit_jobs; fi
 
 # Create with no read permission on image
-if try "ecc creating with no read permission" ecc_no_read_perm; then
+if try "ecc creating with no read permission" ecc_no_read_perm; then (
   cp $MASTERISO $TMPISO
   chmod 000 $TMPISO
 
   run_regtest ecc_no_read_perm "-c $REDUNDANCY" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Create with no write permission on ecc file
 # Should not do any harm at all: Ecc file will
 # be recreated with write permissions
-if try "ecc creating with no write permission" ecc_no_write_perm; then
+if try "ecc creating with no write permission" ecc_no_write_perm; then (
   touch $TMPECC
   chmod 400 $TMPECC
 
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_no_write_perm "-c $REDUNDANCY" $MASTERISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Create with image size not being a multiple of 2048
 
-if try "ecc file creation with image not multiple of 2048" ecc_create_plus56; then
+if try "ecc file creation with image not multiple of 2048" ecc_create_plus56; then (
 
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_create_plus56 "-c $REDUNDANCY" $ISO_PLUS56 $TMPECC
-fi
+) & limit_jobs; fi
 
 # Create test image with unreadable sectors 
-if try "ecc creating with unreadable sectors" ecc_missing_sectors; then
+if try "ecc creating with unreadable sectors" ecc_missing_sectors; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --erase 11230 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --erase 12450-12457 >>$LOGFILE 2>&1
 
   run_regtest ecc_missing_sectors "-c $REDUNDANCY" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image and create ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
 
-if try "read image and create ecc in one call" ecc_create_after_read; then
+if try "read image and create ecc in one call" ecc_create_after_read; then (
   cp $MASTERISO $SIMISO
 
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_create_after_read "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
 
-if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_rs01; then
+if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_rs01; then (
   cp $MASTERISO $SIMISO
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8r >>$LOGFILE 2>&1
@@ -385,13 +384,13 @@ if try "read image with ecc (RS01) and create new ecc" ecc_recreate_after_read_r
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs01 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
 # Note: RS02 information will not be removed from the image. This ist intentional behaviour.
 
-if try "read image with ecc (RS02) and create additional ecc file" ecc_recreate_after_read_rs02; then
+if try "read image with ecc (RS02) and create additional ecc file" ecc_recreate_after_read_rs02; then (
   cp $MASTERISO $SIMISO
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -c -mRS02 -n$((ISOSIZE+6000)) >>$LOGFILE 2>&1
@@ -399,13 +398,13 @@ if try "read image with ecc (RS02) and create additional ecc file" ecc_recreate_
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs02 "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
 # Note: RS03 information will not be removed from the image. This is intentional behaviour.
 
-if try "read image with ecc (RS03i) and create additional ecc file" ecc_recreate_after_read_rs03i; then
+if try "read image with ecc (RS03i) and create additional ecc file" ecc_recreate_after_read_rs03i; then (
   cp $MASTERISO $SIMISO
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -c -mRS03 -n$((ISOSIZE+6000)) >>$LOGFILE 2>&1
@@ -413,12 +412,12 @@ if try "read image with ecc (RS03i) and create additional ecc file" ecc_recreate
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03i "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is handed over correctly.
 
-if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then
+if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_rs03f; then (
   cp $MASTERISO $SIMISO
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -c -n 8r -mRS03 -o file >>$LOGFILE 2>&1
@@ -426,12 +425,12 @@ if try "read image with ecc (RS03f) and create new ecc" ecc_recreate_after_read_
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_recreate_after_read_rs03f "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Complete image in a reading pass, then create an ecc file for it.
 # Cached checksums must be discarded before creating the ecc.
 
-if try "create ecc after completing partial image" ecc_create_after_partial_read; then
+if try "create ecc after completing partial image" ecc_create_after_partial_read; then (
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
 
@@ -440,7 +439,7 @@ if try "create ecc after completing partial image" ecc_create_after_partial_read
   replace_config read-and-create 1
   extra_args="--debug --set-version $SETVERSION --sim-cd=$SIMISO  --fixed-speed-values"
   run_regtest ecc_create_after_partial_read "-r -c $REDUNDANCY --spinup-delay=0 -v" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with wrong ecc file and create new (other) ecc in the same program call.
 # Tests whether CRC and ECC information is taken from the read process,
@@ -464,54 +463,54 @@ REGTEST_SECTION="Repair tests"
 
 # Fix good image
 
-if try "fixing good image" fix_good; then
+if try "fixing good image" fix_good; then (
 
   cp $MASTERISO $TMPISO
   run_regtest fix_good "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image without read permission
 
-if try "fixing image without read permission" fix_no_read_perm; then
+if try "fixing image without read permission" fix_no_read_perm; then (
 
   cp $MASTERISO $TMPISO
   chmod 000 $TMPISO
 
   run_regtest fix_no_read_perm "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image without read permission for ecc
 
-if try "fixing image without read permission for ecc" fix_no_read_perm_ecc; then
+if try "fixing image without read permission for ecc" fix_no_read_perm_ecc; then (
 
   cp $MASTERISO $TMPISO
   cp $MASTERECC $TMPECC
   chmod 000 $TMPECC
 
   run_regtest fix_no_read_perm_ecc "-f" $TMPISO $TMPECC
-fi
+) & limit_jobs; fi
 
 # Fix good image not multiple of 2048
 
-if try "fixing good image not multiple of 2048" fix_good_plus56; then
+if try "fixing good image not multiple of 2048" fix_good_plus56; then (
   cp $ISO_PLUS56 $TMPISO
   
   run_regtest fix_plus56_bytes "-f" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix image without write permission
 
-if try "fixing image without write permission" fix_no_write_perm; then
+if try "fixing image without write permission" fix_no_write_perm; then (
 
   cp $MASTERISO $TMPISO
   chmod 400 $TMPISO
 
   run_regtest fix_no_write_perm "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image with missing sectors
 
-if try "fixing image with missing sectors" fix_missing_sectors; then
+if try "fixing image with missing sectors" fix_missing_sectors; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 0 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --erase 190 >>$LOGFILE 2>&1
@@ -523,11 +522,11 @@ if try "fixing image with missing sectors" fix_missing_sectors; then
 
   run_regtest fix_missing_sectors "-f" $TMPISO $MASTERECC
 
-fi
+) & limit_jobs; fi
 
 # Fix image with CRC errors
 
-if try "fixing image with crc errors" fix_crc_errors; then
+if try "fixing image with crc errors" fix_crc_errors; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 0,1,1 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --byteset 190,200,143 >>$LOGFILE 2>&1
@@ -536,118 +535,118 @@ if try "fixing image with crc errors" fix_crc_errors; then
   $NEWVER -i$TMPISO --debug --byteset $((ISOSIZE-1)),500,91 >>$LOGFILE 2>&1
 
   run_regtest fix_crc_errors "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image with additional sectors (TAO case)
 
-if try "fixing image with one additional sector" fix_additional_sector; then
+if try "fixing image with one additional sector" fix_additional_sector; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest fix_additional_sector "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image with additional sectors (general case)
 
-if try "fixing image with 17 additional sectors" fix_plus17; then
+if try "fixing image with 17 additional sectors" fix_plus17; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=17 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=17 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest fix_plus17 "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image with additional sectors (general case), with --truncate
 
-if try "fixing image with 17 additional sectors with --truncate" fix_plus17_truncate; then
+if try "fixing image with 17 additional sectors with --truncate" fix_plus17_truncate; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=17 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=17 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest fix_plus17_truncate "-f --truncate" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix image+56bytes 
 
-if try "fixing image with CRC error in 56 additional bytes" fix_plus56; then
+if try "fixing image with CRC error in 56 additional bytes" fix_plus56; then (
   cp $ISO_PLUS56 $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 21000,28,90 >>$LOGFILE 2>&1
   run_regtest fix_plus56 "-f" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix image+56bytes+more bytes
 
-if try "fixing image with CRC error in 56 additional bytes + few bytes more" fix_plus56_plus17; then
+if try "fixing image with CRC error in 56 additional bytes + few bytes more" fix_plus56_plus17; then (
   cp $ISO_PLUS56 $TMPISO
   echo "0123456789abcdef" >>$TMPISO
   $NEWVER -i$TMPISO --debug --byteset 21000,55,90 >>$LOGFILE 2>&1
 
   run_regtest fix_plus56_plus17 "-f --truncate" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix image+56bytes+1 sector 
 
-if try "fixing image with CRC error in 56 additional bytes + one sector more" fix_plus56_plus1s; then
+if try "fixing image with CRC error in 56 additional bytes + one sector more" fix_plus56_plus1s; then (
   cp $ISO_PLUS56 $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=2048 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=2048 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
   $NEWVER -i$TMPISO --debug --byteset 21000,55,90 >>$LOGFILE 2>&1
 
   run_regtest fix_plus56_plus1s "-f --truncate" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix image+56bytes+2 sectors 
 
-if try "fixing image with CRC error in 56 additional bytes + two sectors more" fix_plus56_plus2s; then
+if try "fixing image with CRC error in 56 additional bytes + two sectors more" fix_plus56_plus2s; then (
   cp $ISO_PLUS56 $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=4096 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=4096 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
   $NEWVER -i$TMPISO --debug --byteset 21000,55,90 >>$LOGFILE 2>&1
 
   run_regtest fix_plus56_plus2s "-f --truncate" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix image+56bytes+more sectors 
 
-if try "fixing image with CRC error in 56 additional bytes + more sectors" fix_plus56_plus17500; then
+if try "fixing image with CRC error in 56 additional bytes + more sectors" fix_plus56_plus17500; then (
   cp $ISO_PLUS56 $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=17500 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=17500 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
   $NEWVER -i$TMPISO --debug --byteset 21000,55,90 >>$LOGFILE 2>&1
 
   run_regtest fix_plus56_plus17500 "-f --truncate" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix truncated image
 
-if try "fixing truncated image" fix_truncated; then
+if try "fixing truncated image" fix_truncated; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --truncate=20731 >>$LOGFILE 2>&1
   run_regtest fix_truncated "-f" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Fix truncated image not a multiple of 2048
 
-if try "fixing truncated image not a multiple of 2048" fix_plus56_truncated; then
+if try "fixing truncated image not a multiple of 2048" fix_plus56_truncated; then (
   cp $ISO_PLUS56 $TMPISO
   $NEWVER -i$TMPISO --debug --truncate=20972 >>$LOGFILE 2>&1
   run_regtest fix_plus56_truncated "-f" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 # Fix truncated image not a multiple of 2048 and a few bytes shorter
 
-if try "fixing image not a multiple of 2048 missing a few bytes" fix_plus56_little_truncated; then
+if try "fixing image not a multiple of 2048 missing a few bytes" fix_plus56_little_truncated; then (
   cp $MASTERISO $TMPISO
-  dd if=/dev/zero of=/tmp/padding count=1 bs=50 >>$LOGFILE 2>&1
-  cat /tmp/padding >>$TMPISO
-  rm -f /tmp/padding
+  dd if=/dev/zero of=$TEST_TMPDIR/padding count=1 bs=50 >>$LOGFILE 2>&1
+  cat $TEST_TMPDIR/padding >>$TMPISO
+  rm -f $TEST_TMPDIR/padding
 
   run_regtest fix_plus56_little_truncated "-f" $TMPISO $ECC_PLUS56
-fi
+) & limit_jobs; fi
 
 ### Scanning tests
 
@@ -655,37 +654,36 @@ REGTEST_SECTION="Scanning tests"
 
 # Scan image without error correction data available
 
-if try "scanning image, no ecc data" scan_no_ecc; then
+if try "scanning image, no ecc data" scan_no_ecc; then (
 
   extra_args="--debug -d sim-cd --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan image from non-existant device
 # not applicable to GUI mode since drives are discovered differently there
 
-if try "scanning image, device not existant" scan_no_device; then
+if try "scanning image, device not existant" scan_no_device; then (
 
   extra_args="--debug -d $NON_EXISTENT_DEVICE --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_no_device "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan image from device with insufficient permissions
 # not applicable to GUI mode since drives are discovered differently there
 
-if try "scanning image, device access denied" scan_no_device_access; then
+if try "scanning image, device access denied" scan_no_device_access; then (
 
-  touch $TMPDIR/sdz
-  chmod 000 $TMPDIR/sdz
-    
-  run_regtest scan_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -s" $ISODIR/no.iso  $ISODIR/no.ecc
-  rm -f $TMPDIR/sdz
-fi
+  touch $TEST_TMPDIR/sdz
+  chmod 000 $TEST_TMPDIR/sdz
+
+  run_regtest scan_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TEST_TMPDIR/sdz -s" $ISODIR/no.iso  $ISODIR/no.ecc
+) & limit_jobs; fi
 
 # Scan image from defective media without error correction data available
 # Will report more missing sectors than the original due to the 16 sector skip default
 
-if try "scanning image, defective media, no ecc data" scan_defective_no_ecc; then
+if try "scanning image, defective media, no ecc data" scan_defective_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 100-200 >>$LOGFILE 2>&1
@@ -694,12 +692,12 @@ if try "scanning image, defective media, no ecc data" scan_defective_no_ecc; the
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_defective_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan image from above test again, this time with a 1 sector skip size
 # Will report an exact error count of the (damaged) original
 
-if try "scanning image, defective media, no ecc data, reading w/ 1 sec step" scan_defective_no_ecc_again; then
+if try "scanning image, defective media, no ecc data, reading w/ 1 sec step" scan_defective_no_ecc_again; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 100-200 >>$LOGFILE 2>&1
@@ -709,12 +707,12 @@ if try "scanning image, defective media, no ecc data, reading w/ 1 sec step" sca
   replace_config jump 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_defective_no_ecc_again "--spinup-delay=0 -j 1 -s" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan image from defective media without error correction data available
 # using a large sector skip of 256
 
-if try "scanning image, defective media, large sector skip" scan_defective_large_skip; then
+if try "scanning image, defective media, large sector skip" scan_defective_large_skip; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 1600-1615 >>$LOGFILE 2>&1
@@ -723,64 +721,64 @@ if try "scanning image, defective media, large sector skip" scan_defective_large
   replace_config jump 256
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_defective_large_skip "--spinup-delay=0 -s -j 256" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan a new image, but only for a partial range.
 # range 10000-15000 must be entered manually in the GUI;
 # there is no way for pre-configuring it
 
-if try "scanning new image with given range, no ecc data" scan_new_with_range_no_ecc; then
+if try "scanning new image with given range, no ecc data" scan_new_with_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_new_with_range_no_ecc "--spinup-delay=0 -s10000-15000" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan a new image, but only for an invalid range.
 # Makes no sense in GUI mode (invalid value can not be entered)
 
-if try "scanning new image with invalid range, no ecc data" scan_new_with_invalid_range_no_ecc; then
+if try "scanning new image with invalid range, no ecc data" scan_new_with_invalid_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   run_regtest scan_new_with_invalid_range_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -s10000-55000" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 
-if try "scanning image, ecc data" scan_with_ecc; then
+if try "scanning image, ecc data" scan_with_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with non existing error correction file given
 # Please note that this fact will be silently ignored; e.g. the image
 # will be scanned as if no ecc file was given at all.
 
-if try "scanning image, ecc file does not exist" scan_with_non_existing_ecc; then
+if try "scanning image, ecc file does not exist" scan_with_non_existing_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_with_non_existing_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no_ecc
-fi
+) & limit_jobs; fi
 
 # Scan image with non accessible error correction file given
 # Please note that this fact will be silently ignored; e.g. the image
 # will be scanned as if no ecc file was given at all.
 
-if try "scanning image, no permission to access ecc file" scan_with_no_permission_for_ecc; then
+if try "scanning image, no permission to access ecc file" scan_with_no_permission_for_ecc; then (
   cp $MASTERECC $TMPECC
   chmod 000 $TMPECC
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest scan_with_no_permission_for_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # and CRC errors
 
-if try "scanning image, crc errors, ecc data" scan_crc_errors_with_ecc; then
+if try "scanning image, crc errors, ecc data" scan_crc_errors_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --byteset 0,100,255 >>$LOGFILE 2>&1
@@ -790,12 +788,12 @@ if try "scanning image, crc errors, ecc data" scan_crc_errors_with_ecc; then
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_crc_errors_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # which is a few sectors shorter than expected.
 
-if try "scanning image, less sectors than expected, ecc data" scan_shorter_with_ecc; then
+if try "scanning image, less sectors than expected, ecc data" scan_shorter_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --truncate=$((ISOSIZE-44)) >>$LOGFILE 2>&1
@@ -803,12 +801,12 @@ if try "scanning image, less sectors than expected, ecc data" scan_shorter_with_
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_shorter_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # which is a few sectors longer than expected.
 
-if try "scanning image, more sectors than expected, ecc data" scan_longer_with_ecc; then
+if try "scanning image, more sectors than expected, ecc data" scan_longer_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   for i in $(seq 22); do cat fixed-random-sequence >>$SIMISO; done
@@ -816,12 +814,12 @@ if try "scanning image, more sectors than expected, ecc data" scan_longer_with_e
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # simulating the multisession case with two additional defective sectors trailing the medium
 
-if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then
+if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   cat fixed-random-sequence >>$SIMISO
@@ -830,12 +828,12 @@ if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # with two defective sectors at the end and the --dao option
 
-if try "scanning image, tao tail case and --dao, ecc data" scan_no_tao_tail_with_ecc; then
+if try "scanning image, tao tail case and --dao, ecc data" scan_no_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20998-20999 >>$LOGFILE 2>&1
@@ -843,26 +841,26 @@ if try "scanning image, tao tail case and --dao, ecc data" scan_no_tao_tail_with
   replace_config dao 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_no_tao_tail_with_ecc "--dao --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan image with error correction data available
 # and more than two defective sectors at the end
 
-if try "scanning image, more than 2 sectors missing at end, ecc data" scan_more_missing_at_end_with_ecc; then
+if try "scanning image, more than 2 sectors missing at end, ecc data" scan_more_missing_at_end_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20954-20999 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_more_missing_at_end_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Scan an augmented image for which an ecc file is also available.
 # In that case, the ecc file gets precedence over the embedded ecc.
 # To make sure the RS01 data is used we introduce a CRC error in the RS02
 # ecc area - this can only be detected by the "outer" RS01 CRC.
 
-if try "scanning image with RS02 data and a RS01 ecc file" scan_with_double_ecc; then
+if try "scanning image with RS02 data and a RS01 ecc file" scan_with_double_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS02 -n$((ISOSIZE+5000)) -c >>$LOGFILE 2>&1
@@ -871,12 +869,12 @@ if try "scanning image with RS02 data and a RS01 ecc file" scan_with_double_ecc;
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_with_double_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Scan an image for which ecc information is available,
 # but requiring a newer dvdisaster version.
 
-if try "scanning image ecc file requiring a newer dvdisaster version" scan_with_incompatible_ecc; then
+if try "scanning image ecc file requiring a newer dvdisaster version" scan_with_incompatible_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
@@ -888,13 +886,13 @@ if try "scanning image ecc file requiring a newer dvdisaster version" scan_with_
   IGNORE_LOG_LINE='^\*          $'
   run_regtest scan_with_incompatible_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $TMPECC
   unset IGNORE_LOG_LINE
-fi
+) & limit_jobs; fi
 
 # Scan an image with a simulated hardware failure and 
 # --ignore-fatal-sense not set.
 # second failure is helpful for testing "ignore once" in the GUI.
 
-if try "scanning image with simulated hardware failure" scan_with_hardware_failure; then
+if try "scanning image with simulated hardware failure" scan_with_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
@@ -902,12 +900,12 @@ if try "scanning image with simulated hardware failure" scan_with_hardware_failu
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_with_hardware_failure "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan an image with a simulated hardware failure and 
 # --ignore-fatal-sense being set.
 
-if try "scanning image, ignoring simulated hardware failure" scan_with_ignored_hardware_failure; then
+if try "scanning image, ignoring simulated hardware failure" scan_with_ignored_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
@@ -915,11 +913,11 @@ if try "scanning image, ignoring simulated hardware failure" scan_with_ignored_h
   replace_config ignore-fatal-sense 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_with_ignored_hardware_failure "--spinup-delay=0 -s --ignore-fatal-sense" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Scan medium containing dead sector markers
 
-if try "scanning medium containing dead sector markers" scan_medium_with_dsm; then
+if try "scanning medium containing dead sector markers" scan_medium_with_dsm; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "4999:pass as dead sector marker" >>$LOGFILE 2>&1
@@ -927,7 +925,7 @@ if try "scanning medium containing dead sector markers" scan_medium_with_dsm; th
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest scan_medium_with_dsm "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 ### Reading tests (linear)
 
@@ -935,46 +933,45 @@ REGTEST_SECTION="Reading tests (linear)"
 
 # Read image without error correction data available
 
-if try "reading image, no ecc data" read_no_ecc; then
+if try "reading image, no ecc data" read_no_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_no_ecc "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read into existing and complete image file
 
-if try "reading good image in good file" read_no_ecc_good_file; then
+if try "reading good image in good file" read_no_ecc_good_file; then (
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_no_ecc_good_file "--spinup-delay=0 -r" $TMPISO $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from non-existant device
 # Makes no sense in GUI mode.
 
-if try "reading image, device not existant" read_no_device; then
+if try "reading image, device not existant" read_no_device; then (
 
   run_regtest read_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $NON_EXISTENT_DEVICE -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from device with insufficient permissions
 # not applicable to GUI mode since drives are discovered differently there
 
-if try "reading image, device access denied" read_no_device_access; then
+if try "reading image, device access denied" read_no_device_access; then (
 
-  touch $TMPDIR/sdz
-  chmod 000 $TMPDIR/sdz
-    
-  run_regtest read_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -r" $TMPISO  $ISODIR/no.ecc
-  rm -f $TMPDIR/sdz
-fi
+  touch $TEST_TMPDIR/sdz
+  chmod 000 $TEST_TMPDIR/sdz
+
+  run_regtest read_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TEST_TMPDIR/sdz -r" $TMPISO  $ISODIR/no.ecc
+) & limit_jobs; fi
 
 # Read image from defective media without error correction data available
 # Will have more missing sectors than the original due to the 16 sector skip default
 
-if try "reading image, defective media, no ecc data" read_defective_no_ecc; then
+if try "reading image, defective media, no ecc data" read_defective_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 100-200 >>$LOGFILE 2>&1
@@ -983,12 +980,12 @@ if try "reading image, defective media, no ecc data" read_defective_no_ecc; then
   
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_defective_no_ecc "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from above test again, this time with a 1 sector skip size
 # Will provide an exact copy of the (damaged) original
 
-if try "reading image, defective media, no ecc data, completing w/ 1 sec step" read_defective_no_ecc_again; then
+if try "reading image, defective media, no ecc data, completing w/ 1 sec step" read_defective_no_ecc_again; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 100-200 >>$LOGFILE 2>&1
@@ -1003,12 +1000,12 @@ if try "reading image, defective media, no ecc data, completing w/ 1 sec step" r
   replace_config jump 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_defective_no_ecc_again "--spinup-delay=0 -j 1 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from defective media without error correction data available
 # using a large sector skip of 256
 
-if try "reading image, defective media, large sector skip" read_defective_large_skip; then
+if try "reading image, defective media, large sector skip" read_defective_large_skip; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 1600-1615 >>$LOGFILE 2>&1
@@ -1017,22 +1014,22 @@ if try "reading image, defective media, large sector skip" read_defective_large_
   replace_config jump 256
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_defective_large_skip "--spinup-delay=0 -r -j 256" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a truncated image
 
-if try "completing truncated image with no ecc data available" read_truncated_no_ecc; then
+if try "completing truncated image with no ecc data available" read_truncated_no_ecc; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --truncate=$((ISOSIZE-560)) >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_truncated_no_ecc "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a truncated image from simulated defective media
 
-if try "completing truncated image, defective media, no ecc data" read_truncated_no_ecc_again; then
+if try "completing truncated image, defective media, no ecc data" read_truncated_no_ecc_again; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20800-20875 >>$LOGFILE 2>&1
@@ -1043,11 +1040,11 @@ if try "completing truncated image, defective media, no ecc data" read_truncated
   replace_config jump 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_truncated_no_ecc_again "--spinup-delay=0 -j 1 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a truncated image from simulated defective media w/ multiple passes
 
-if try "completing truncated image, defective media, multipass, no ecc data" read_multipass_no_ecc_again; then
+if try "completing truncated image, defective media, multipass, no ecc data" read_multipass_no_ecc_again; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20800-20875 >>$LOGFILE 2>&1
@@ -1061,13 +1058,13 @@ if try "completing truncated image, defective media, multipass, no ecc data" rea
   replace_config read-medium 3
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_multipass_no_ecc_again "--read-medium=3 --spinup-delay=0 -j 1 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a partially read image, but continue with gap between the last
 # read and the next sector.
 # range 15000-end must be entered manually in the GUI.
 
-if try "completing truncated image with reading gap, no ecc data" read_with_gap_no_ecc; then
+if try "completing truncated image with reading gap, no ecc data" read_with_gap_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1075,33 +1072,33 @@ if try "completing truncated image with reading gap, no ecc data" read_with_gap_
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_gap_no_ecc "--spinup-delay=0 -r15000-end" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read a new image, but only for a partial range.
 # range 10000-15000 must be entered manually in the GUI.
 
-if try "reading new image with given range, no ecc data" read_new_with_range_no_ecc; then
+if try "reading new image with given range, no ecc data" read_new_with_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_new_with_range_no_ecc "--spinup-delay=0 -r10000-15000" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read a new image, but only for an invalid range.
 # not possible in GUI mode
 
-if try "reading new image with invalid range, no ecc data" read_new_with_invalid_range_no_ecc; then
+if try "reading new image with invalid range, no ecc data" read_new_with_invalid_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   run_regtest read_new_with_invalid_range_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r10000-55000" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read a new image, containing two missing sectors
 # but not at the end, so no tao tail case
 
-if try "reading new image with two missing sectors, no ecc data" read_two_missing_secs_no_ecc; then
+if try "reading new image with two missing sectors, no ecc data" read_two_missing_secs_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 8020 >>$LOGFILE 2>&1
@@ -1110,52 +1107,52 @@ if try "reading new image with two missing sectors, no ecc data" read_two_missin
   replace_config jump 0
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_two_missing_secs_no_ecc "--spinup-delay=0 -r -j 1" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 
-if try "reading image, ecc data" read_with_ecc; then
+if try "reading image, ecc data" read_with_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read with ecc into existing and complete image file
 
-if try "reading image, ecc data, good file" read_with_ecc_good_file; then
+if try "reading image, ecc data, good file" read_with_ecc_good_file; then (
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_ecc_good_file "--spinup-delay=0 -r" $TMPISO $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with non existing error correction file given
 # Please note that this fact will be silently ignored; e.g. the image
 # will be read as if no ecc file was given at all.
 
-if try "reading image, ecc file does not exist" read_with_non_existing_ecc; then
+if try "reading image, ecc file does not exist" read_with_non_existing_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_with_non_existing_ecc "--spinup-delay=0 -r" $TMPISO  $ISODIR/no_ecc
-fi
+) & limit_jobs; fi
 
 # Read image with non accessible error correction file given
 # Please note that this fact will be silently ignored; e.g. the image
 # will be read as if no ecc file was given at all.
 
-if try "reading image, no permission to access ecc file" read_with_no_permission_for_ecc; then
+if try "reading image, no permission to access ecc file" read_with_no_permission_for_ecc; then (
   cp $MASTERECC $TMPECC
   chmod 000 $TMPECC
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_with_no_permission_for_ecc "--spinup-delay=0 -r" $TMPISO  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # and CRC errors
 
-if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then
+if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --byteset 0,100,255 >>$LOGFILE 2>&1
@@ -1165,12 +1162,12 @@ if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # which is a few sectors shorter than expected.
 
-if try "reading image, less sectors than expected, ecc data" read_shorter_with_ecc; then
+if try "reading image, less sectors than expected, ecc data" read_shorter_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --truncate=$((ISOSIZE-44)) >>$LOGFILE 2>&1
@@ -1178,12 +1175,12 @@ if try "reading image, less sectors than expected, ecc data" read_shorter_with_e
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_shorter_with_ecc "--ignore-iso-size --spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # from a medium which is a few sectors longer than expected.
 
-if try "reading image, more sectors than expected, ecc data" read_longer_with_ecc; then
+if try "reading image, more sectors than expected, ecc data" read_longer_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   for i in $(seq 22); do cat fixed-random-sequence >>$SIMISO; done
@@ -1191,12 +1188,12 @@ if try "reading image, more sectors than expected, ecc data" read_longer_with_ec
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # simulating the multisession case with two additional defective sectors trailing the medium
 
-if try "reading image, tao tail case, ecc data" read_tao_tail_with_ecc; then
+if try "reading image, tao tail case, ecc data" read_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   cat fixed-random-sequence >>$SIMISO
@@ -1205,12 +1202,12 @@ if try "reading image, tao tail case, ecc data" read_tao_tail_with_ecc; then
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # with two defective sectors at the end and the --dao option
 
-if try "reading image, tao tail case and --dao, ecc data" read_no_tao_tail_with_ecc; then
+if try "reading image, tao tail case and --dao, ecc data" read_no_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20998-20999 >>$LOGFILE 2>&1
@@ -1218,25 +1215,25 @@ if try "reading image, tao tail case and --dao, ecc data" read_no_tao_tail_with_
   replace_config dao 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_no_tao_tail_with_ecc "--dao --spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # and more than two defective sectors at the end
 
-if try "reading image, more than 2 sectors missing at end, ecc data" read_more_missing_at_end_with_ecc; then
+if try "reading image, more than 2 sectors missing at end, ecc data" read_more_missing_at_end_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20954-20999 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_more_missing_at_end_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Re-read image with error correction data available
 # and wrong fingerprint in existing image
 # Expected error: "Image file does not match the optical disc."
 
-if try "re-reading image, wrong fingerprint, ecc data" read_wrong_fp_with_ecc; then
+if try "re-reading image, wrong fingerprint, ecc data" read_wrong_fp_with_ecc; then (
 
   cp $MASTERISO $SIMISO
 
@@ -1246,14 +1243,14 @@ if try "re-reading image, wrong fingerprint, ecc data" read_wrong_fp_with_ecc; t
   replace_config confirm-deletion 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_wrong_fp_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read an augmented image for which an ecc file is also available.
 # In that case, the ecc file gets precedence over the embedded ecc.
 # To make sure the RS01 data is used we introduce a CRC error in the RS02
 # ecc area - this can only be detected by the "outer" RS01 CRC.
 
-if try "reading image with RS02 data and a RS01 ecc file" read_with_double_ecc; then
+if try "reading image with RS02 data and a RS01 ecc file" read_with_double_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS02 -n$((ISOSIZE+5000)) -c >>$LOGFILE 2>&1
@@ -1262,14 +1259,14 @@ if try "reading image with RS02 data and a RS01 ecc file" read_with_double_ecc; 
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_double_ecc "--spinup-delay=0 -r" $TMPISO  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read an image for which ecc information is available,
 # but requiring a newer dvdisaster version.
 # CLI mode prints a warning and continues;
 # please click "OK" in GUI mode.
 
-if try "reading image ecc file requiring a newer dvdisaster version" read_with_incompatible_ecc; then
+if try "reading image ecc file requiring a newer dvdisaster version" read_with_incompatible_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
@@ -1281,13 +1278,13 @@ if try "reading image ecc file requiring a newer dvdisaster version" read_with_i
   IGNORE_LOG_LINE='^\*          $'
   run_regtest read_with_incompatible_ecc "--spinup-delay=0 -r" $TMPISO  $TMPECC
   unset IGNORE_LOG_LINE
-fi
+) & limit_jobs; fi
 
 # Read an image with a simulated hardware failure and 
 # --ignore-fatal-sense not set.
 # Answer "Abort" in the GUI.
 
-if try "reading image with simulated hardware failure" read_with_hardware_failure; then
+if try "reading image with simulated hardware failure" read_with_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
@@ -1295,12 +1292,12 @@ if try "reading image with simulated hardware failure" read_with_hardware_failur
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_hardware_failure "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read an image with a simulated hardware failure and 
 # --ignore-fatal-sense being set.
 
-if try "reading image, ignoring simulated hardware failure" read_with_ignored_hardware_failure; then
+if try "reading image, ignoring simulated hardware failure" read_with_ignored_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
@@ -1309,11 +1306,11 @@ if try "reading image, ignoring simulated hardware failure" read_with_ignored_ha
   replace_config ignore-fatal-sense 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_with_ignored_hardware_failure "--spinup-delay=0 -r --ignore-fatal-sense" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read medium in several passes; no ecc; some sectors become readable in the third pass.
 
-if try "reading medium in 3 passes; 3rd pass recovers some" read_multipass_partial_success; then
+if try "reading medium in 3 passes; 3rd pass recovers some" read_multipass_partial_success; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 15800-16199 >>$LOGFILE 2>&1
@@ -1322,12 +1319,12 @@ if try "reading medium in 3 passes; 3rd pass recovers some" read_multipass_parti
   replace_config read-medium 3
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_multipass_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read medium in several passes; some sectors become readable in the third pass.
 # One sector keeps is CRC error over all passes.
 
-if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipass_ecc_partial_success; then
+if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipass_ecc_partial_success; then (
 
   # Prepare an ecc file matching the algorithm for simulating the defects
   cp $MASTERISO $TMPISO
@@ -1344,13 +1341,13 @@ if try "reading medium w/ ecc in 3 passes; 3rd pass recovers some" read_multipas
   replace_config read-medium 3
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_multipass_ecc_partial_success "--read-medium=3 --spinup-delay=0 -r" $TMPISO  $TMPECC SORTED
-fi
+) & limit_jobs; fi
 
 # Do a second successful read attempt at an incomplete image;
 # see whether correct results are reported when ecc data is present
 # since CRC caching is a bit complicated in this case.
 
-if try "re-reading medium with ecc, successfull" read_second_pass_with_ecc_success; then
+if try "re-reading medium with ecc, successfull" read_second_pass_with_ecc_success; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1358,13 +1355,13 @@ if try "re-reading medium with ecc, successfull" read_second_pass_with_ecc_succe
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_second_pass_with_ecc_success "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Do a second read attempt at an incomplete image;
 # see whether CRC errors are still discovered since CRC caching is a bit
 # complicated in this case.
 
-if try "re-reading medium with CRC error" read_second_pass_with_crc_error; then
+if try "re-reading medium with CRC error" read_second_pass_with_crc_error; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --byteset 15830,8,3 >>$LOGFILE 2>&1
@@ -1373,11 +1370,11 @@ if try "re-reading medium with CRC error" read_second_pass_with_crc_error; then
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_second_pass_with_crc_error "--spinup-delay=0 -r" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read medium containing several dead sector markers
 
-if try "reading medium containing dead sector markers" read_medium_with_dsm; then
+if try "reading medium containing dead sector markers" read_medium_with_dsm; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "4999:pass as dead sector marker" >>$LOGFILE 2>&1
@@ -1386,7 +1383,7 @@ if try "reading medium containing dead sector markers" read_medium_with_dsm; the
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read medium containing several dead sector markers, verbose output
 # not applicable in GUI mode
@@ -1397,7 +1394,7 @@ fi
 # When using the resulting image during a verify or create operation,
 # the unreadable sectors will be treated correctly.
 
-if try "reading medium containing dead sector markers, verbose output" read_medium_with_dsm_verbose; then
+if try "reading medium containing dead sector markers, verbose output" read_medium_with_dsm_verbose; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "4999:pass as dead sector marker" >>$LOGFILE 2>&1
@@ -1406,7 +1403,7 @@ if try "reading medium containing dead sector markers, verbose output" read_medi
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm_verbose "--spinup-delay=0 -r -v" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete medium for image containing several uncorrectable dead sector markers
 # (sector displacement)
@@ -1415,7 +1412,7 @@ fi
 # These errors are not reported during reading (as they did not appear in the
 # read medium). Verifying the defective image file will uncover them, though.
 
-if try "completing image with uncorrectable dead sector markers" read_medium_with_dsm_in_image; then
+if try "completing image with uncorrectable dead sector markers" read_medium_with_dsm_in_image; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1428,13 +1425,13 @@ if try "completing image with uncorrectable dead sector markers" read_medium_wit
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm_in_image "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete medium for image containing several uncorrectable dead sector markers, verbose output
 # not applicable in GUI mode
 # See comments for test case above.
 
-if try "completing image with uncorrectable dead sector markers, verbose output" read_medium_with_dsm_in_image_verbose; then
+if try "completing image with uncorrectable dead sector markers, verbose output" read_medium_with_dsm_in_image_verbose; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1447,13 +1444,13 @@ if try "completing image with uncorrectable dead sector markers, verbose output"
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm_in_image_verbose "--spinup-delay=0 -r -v" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete medium for image containing several uncorrectable dead sector markers
 # (non matching fingerprint)
 # See comments for test cases above.
 
-if try "completing image with uncorrectable dead sector markers (2)" read_medium_with_dsm_in_image2; then
+if try "completing image with uncorrectable dead sector markers (2)" read_medium_with_dsm_in_image2; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1472,13 +1469,13 @@ if try "completing image with uncorrectable dead sector markers (2)" read_medium
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm_in_image2 "--spinup-delay=0 -r " $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete medium for image containing several uncorrectable dead sector markers, verbose
 # (non matching fingerprint)
 # See comments for test case above.
 
-if try "completing image with uncorrectable dead sector markers (2), verbose output" read_medium_with_dsm_in_image2_verbose; then
+if try "completing image with uncorrectable dead sector markers (2), verbose output" read_medium_with_dsm_in_image2_verbose; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
@@ -1497,7 +1494,7 @@ if try "completing image with uncorrectable dead sector markers (2), verbose out
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_medium_with_dsm_in_image2_verbose "--spinup-delay=0 -r -v" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Mechanismus um C2-Errors zu testen?
 
@@ -1507,35 +1504,34 @@ REGTEST_SECTION="Reading tests (adaptive)"
 
 # Read good image with error correction data available
 
-if try "reading good image" adaptive_good; then
+if try "reading good image" adaptive_good; then (
 
   run_regtest adaptive_good "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image without error correction data available
 
-if try "reading image, no ecc data" adaptive_no_ecc; then
+if try "reading image, no ecc data" adaptive_no_ecc; then (
 
   run_regtest adaptive_no_ecc "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from non-existant device
 
-if try "reading image, device not existant" adaptive_no_device; then
+if try "reading image, device not existant" adaptive_no_device; then (
 
   run_regtest adaptive_no_device "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $NON_EXISTENT_DEVICE -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from device with insufficient permissions
 
-if try "reading image, device access denied" adaptive_no_device_access; then
+if try "reading image, device access denied" adaptive_no_device_access; then (
 
-  touch $TMPDIR/sdz
-  chmod 000 $TMPDIR/sdz
-    
-  run_regtest adaptive_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TMPDIR/sdz -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-  rm -f $TMPDIR/sdz
-fi
+  touch $TEST_TMPDIR/sdz
+  chmod 000 $TEST_TMPDIR/sdz
+
+  run_regtest adaptive_no_device_access "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -d $TEST_TMPDIR/sdz -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
+) & limit_jobs; fi
 
 # Read image from defective media without error correction data available
 # Will have more missing sectors than the original due to the divide and conquer 
@@ -1558,7 +1554,7 @@ fi
 # Having said that, the results from the following run have been manually
 # checked to match what the programmer intended ;-)
 
-if try "reading image, defective media, no ecc data" adaptive_defective_no_ecc; then
+if try "reading image, defective media, no ecc data" adaptive_defective_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 100-200 >>$LOGFILE 2>&1
@@ -1566,34 +1562,34 @@ if try "reading image, defective media, no ecc data" adaptive_defective_no_ecc; 
   $NEWVER --debug -i$SIMISO --erase 2410 >>$LOGFILE 2>&1
   
   run_regtest adaptive_defective_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read -v" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image from defective media without error correction data available
 # using a large sector skip of 256
 
-if try "reading image, defective media, large sector skip" adaptive_defective_large_skip; then
+if try "reading image, defective media, large sector skip" adaptive_defective_large_skip; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 1600-1615 >>$LOGFILE 2>&1
   $NEWVER --debug -i$SIMISO --erase 6400-10000 >>$LOGFILE 2>&1
   
   run_regtest adaptive_defective_large_skip "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r -j 256 --adaptive-read -v" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a truncated image
 
-if try "completing truncated image with no ecc data available" adaptive_truncated_no_ecc; then
+if try "completing truncated image with no ecc data available" adaptive_truncated_no_ecc; then (
 
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --truncate=$((ISOSIZE-560)) >>$LOGFILE 2>&1
 
   run_regtest adaptive_truncated_no_ecc "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a truncated image from simulated defective media
 # Leaves 100 unread sectors.
 
-if try "completing truncated image, defective media, no ecc data" adaptive_truncated_no_ecc_again; then
+if try "completing truncated image, defective media, no ecc data" adaptive_truncated_no_ecc_again; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20800-20875 >>$LOGFILE 2>&1
@@ -1602,77 +1598,77 @@ if try "completing truncated image, defective media, no ecc data" adaptive_trunc
   $NEWVER --debug -i$TMPISO --truncate=$((ISOSIZE-560)) >>$LOGFILE 2>&1
 
   run_regtest adaptive_truncated_no_ecc_again "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r -v --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a partially read image, but continue with gap between the last
 # read and the next sector.
 # (not a recommended setup for adaptive reading, but technically allowed)
 
-if try "completing truncated image with reading gap, no ecc data" adaptive_with_gap_no_ecc; then
+if try "completing truncated image with reading gap, no ecc data" adaptive_with_gap_no_ecc; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --truncate=10000 >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_gap_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r15000-end --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a partially read image, but continue with gap between the last
 # read and the next sector.
 # (not a recommended setup for adaptive reading, but technically allowed)
 # specified area ends before actual medium size
 
-if try "completing truncated image with reading gap, no ecc data(2)" adaptive_with_gap_no_ecc2; then
+if try "completing truncated image with reading gap, no ecc data(2)" adaptive_with_gap_no_ecc2; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --truncate=10000 >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_gap_no_ecc2 "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r15000-19999 --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Complete a partially read image, but continue with gap between the last
 # read and the next sector.
 # (not a recommended setup for adaptive reading, but technically allowed)
 # specified area overlaps already read part
 
-if try "completing truncated image with reading gap, no ecc data(3)" adaptive_with_gap_no_ecc3; then
+if try "completing truncated image with reading gap, no ecc data(3)" adaptive_with_gap_no_ecc3; then (
 
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
   $NEWVER --debug -i$TMPISO --truncate=10000 >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_gap_no_ecc3 "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r9000-15000 --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read a new image, but only for a partial range.
 
-if try "reading new image with given range, no ecc data" adaptive_new_with_range_no_ecc; then
+if try "reading new image with given range, no ecc data" adaptive_new_with_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   run_regtest adaptive_new_with_range_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r10000-15000 --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read a new image, but only for an invalid range.
 
-if try "reading new image with invalid range, no ecc data" adaptive_new_with_invalid_range_no_ecc; then
+if try "reading new image with invalid range, no ecc data" adaptive_new_with_invalid_range_no_ecc; then (
 
   cp $MASTERISO $SIMISO
 
   run_regtest adaptive_new_with_invalid_range_no_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r10000-55000 --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
 # Read image with non accessible error correction file given
 # Please note that this fact will be silently ignored; e.g. the image
 # will be read as if no ecc file was given at all.
 
-if try "reading image, no permission to access ecc file" adaptive_with_no_permission_for_ecc; then
+if try "reading image, no permission to access ecc file" adaptive_with_no_permission_for_ecc; then (
   cp $MASTERECC $TMPECC
   chmod 000 $TMPECC
 
   run_regtest adaptive_with_no_permission_for_ecc "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # and CRC errors
@@ -1680,7 +1676,7 @@ fi
 # but mark them as erasure as expected. The resulting image
 # is successfully corrected with 32 erasures/block.
 
-if try "reading image, crc errors, ecc data" adaptive_crc_errors_with_ecc; then
+if try "reading image, crc errors, ecc data" adaptive_crc_errors_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --byteset 0,100,255 >>$LOGFILE 2>&1
@@ -1689,29 +1685,29 @@ if try "reading image, crc errors, ecc data" adaptive_crc_errors_with_ecc; then
   $NEWVER --debug -i$SIMISO --byteset 20999,55,123 >>$LOGFILE 2>&1
     
   run_regtest adaptive_crc_errors_with_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available.
 # The image is a few sectors shorter than expected.
 
-if try "reading image, less sectors than expected, ecc data" adaptive_shorter_with_ecc; then
+if try "reading image, less sectors than expected, ecc data" adaptive_shorter_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --truncate=$((ISOSIZE-44)) >>$LOGFILE 2>&1
     
   run_regtest adaptive_shorter_with_ecc "--debug --ignore-iso-size --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # from a medium which is a few sectors longer than expected.
 
-if try "reading image, more sectors than expected, ecc data" adaptive_longer_with_ecc; then
+if try "reading image, more sectors than expected, ecc data" adaptive_longer_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   for i in $(seq 22); do cat fixed-random-sequence >>$SIMISO; done
     
   run_regtest adaptive_longer_with_ecc "--debug --ignore-iso-size --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # simulating the multisession case with two additional defective sectors trailing the medium
@@ -1719,30 +1715,30 @@ fi
 # reading case as the right behaviour is simply caused by using the respective
 # values from the ecc data.
 
-if try "reading image, tao tail case, ecc data" adaptive_tao_tail_with_ecc; then
+if try "reading image, tao tail case, ecc data" adaptive_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   cat fixed-random-sequence >>$SIMISO
   $NEWVER --debug -i$SIMISO --erase 21000-21001 >>$LOGFILE 2>&1
     
   run_regtest adaptive_tao_tail_with_ecc "--debug --ignore-iso-size --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read image with error correction data available
 # with two defective sectors at the end and the --dao option
 
-if try "reading image, tao tail case and --dao, ecc data" adaptive_no_tao_tail_with_ecc; then
+if try "reading image, tao tail case and --dao, ecc data" adaptive_no_tao_tail_with_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 20998-20999 >>$LOGFILE 2>&1
     
   run_regtest adaptive_no_tao_tail_with_ecc "--debug --dao --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Re-read image with error correction data available
 # and wrong fingerprint in existing image
 
-if try "re-reading image, wrong fingerprint, ecc data" adaptive_wrong_fp_with_ecc; then
+if try "re-reading image, wrong fingerprint, ecc data" adaptive_wrong_fp_with_ecc; then (
 
   cp $MASTERISO $SIMISO
 
@@ -1750,24 +1746,24 @@ if try "re-reading image, wrong fingerprint, ecc data" adaptive_wrong_fp_with_ec
   $NEWVER --debug -i$TMPISO --byteset 16,100,200 >>$LOGFILE 2>&1
     
   run_regtest adapive_wrong_fp_with_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC
-fi
+) & limit_jobs; fi
 
 # Read an augmented image for which an ecc file is also available.
 # In that case, the ecc file gets precedence over the embedded ecc.
 
-if try "reading image with RS02 data and a RS01 ecc file" adaptive_with_double_ecc; then
+if try "reading image with RS02 data and a RS01 ecc file" adaptive_with_double_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS02 -n$((ISOSIZE+5000)) -c >>$LOGFILE 2>&1
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_double_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read an image for which ecc information is available,
 # but requiring a newer dvdisaster version.
 
-if try "reading image w/ ecc file requiring a newer dvdisaster version" adaptive_with_incompatible_ecc; then
+if try "reading image w/ ecc file requiring a newer dvdisaster version" adaptive_with_incompatible_ecc; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e $TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
@@ -1776,38 +1772,39 @@ if try "reading image w/ ecc file requiring a newer dvdisaster version" adaptive
   $NEWVER --debug -i$TMPECC --byteset 0,90,15 >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_incompatible_ecc "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $TMPECC
-fi
+) & limit_jobs; fi
 
 # Read an image with a simulated hardware failure and 
 # --ignore-fatal-sense not set.
 
-if try "reading image with simulated hardware failure" adaptive_with_hardware_failure; then
+if try "reading image with simulated hardware failure" adaptive_with_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_hardware_failure "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.iso
-fi
+) & limit_jobs; fi
 
 # Read an image with a simulated hardware failure and 
 # --ignore-fatal-sense being set.
 
-if try "reading image, ignoring simulated hardware failure" adaptive_with_ignored_hardware_failure; then
+if try "reading image, ignoring simulated hardware failure" adaptive_with_ignored_hardware_failure; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "5000:hardware failure" >>$LOGFILE 2>&1
 
   run_regtest adaptive_with_ignored_hardware_failure "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read --ignore-fatal-sense" $TMPISO  $ISODIR/no.iso
-fi
+) & limit_jobs; fi
 
 # Read medium containing several dead sector markers
 
-if try "reading medium containing dead sector markers" adaptive_medium_with_dsm; then
+if try "reading medium containing dead sector markers" adaptive_medium_with_dsm; then (
 
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase "4999:pass as dead sector marker" >>$LOGFILE 2>&1
 
   run_regtest adaptive_medium_with_dsm "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
-fi
+) & limit_jobs; fi
 
+collect_results
 exit $nbfailed
