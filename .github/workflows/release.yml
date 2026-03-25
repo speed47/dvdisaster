@@ -31,7 +31,7 @@ jobs:
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
-        run: brew install gdk-pixbuf dylibbundler create-dmg # glib => already installed
+        run: brew install flock gdk-pixbuf dylibbundler create-dmg # glib => already installed
       - name: install prerequisites (GUI)
         if: matrix.ui == 'gui'
         env:
@@ -44,7 +44,7 @@ jobs:
       - name: make
         run: |
           cat Makefile.config
-          make -j$(sysctl -n hw.ncpu || 2)
+          make -j$(sysctl -n hw.ncpu || echo 2)
       - name: check executability
         run: ./dvdisaster --version
       - name: check executable (GUI)

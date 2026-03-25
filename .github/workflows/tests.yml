@@ -8,20 +8,29 @@ concurrency:
 
 jobs:
   mac:
-    runs-on: macos-latest
     strategy:
       matrix:
         ui: [cli, gui]
+        arch: [x86_64, arm64]
         printf: [fmtdbg, normal]
         include:
           - ui: cli
             clionly: --with-gui=no
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
+          - arch: x86_64
+            runs-on: macos-15-intel
+          - arch: arm64
+            runs-on: macos-15
+    runs-on: ${{ matrix.runs-on }}
     steps:
     - uses: actions/checkout@v5
       with:
         persist-credentials: false
+    - name: install prerequisites
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: brew install flock gdk-pixbuf dylibbundler create-dmg # glib => already installed
     - name: install prerequisites (GUI)
       if: matrix.ui == 'gui'
       env:
@@ -34,9 +43,7 @@ jobs:
     - name: make
       run: |
         cat Makefile.config
-        echo xxxxxxxxxxxxxxxxxxxxxxx
-        grep -i icon GNUmakefile
-        make -j$(sysctl -n hw.ncpu || 2)
+        make -j$(sysctl -n hw.ncpu || echo 2)
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)
@@ -50,12 +57,16 @@ jobs:
           ./dvdisaster --version
           ./dvdisaster --version | grep NOGUI
     - name: prepare dist
-      run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+      run: ./.github/workflows/make-mac-app.sh ${{ github.ref }} ${{ matrix.arch }}
     - name: regression tests
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+        MAX_JOBS: 4
+      run: |
+        mkdir -p /var/tmp/regtest
+        echo "Number of available processors: $(sysctl -n hw.ncpu || echo U)"
+        ./regtest/runtests.sh
   win:
     runs-on: windows-latest
     strategy:
@@ -114,7 +125,11 @@ jobs:
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+        MAX_JOBS: 4
+      run: |
+        mkdir -p /var/tmp/regtest
+        echo "Number of available processors: $(nproc || echo U)"
+        ./regtest/runtests.sh
 
   linux:
     runs-on: ubuntu-latest
@@ -164,4 +179,8 @@ jobs:
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
-      run: mkdir /var/tmp/regtest && ./regtest/runtests.sh
+        MAX_JOBS: 4
+      run: |
+        mkdir -p /var/tmp/regtest
+        echo "Number of available processors: $(nproc || echo U)"
+        ./regtest/runtests.sh
