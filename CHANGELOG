@@ -20,6 +20,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with dvdisaster. If not, see <http://www.gnu.org/licenses/>.
 
+0.79.10.patchlevel-6 06-04-2026 *UNOFFICIAL*
+- feat: add --bruteforce-rs03-search: new option to recover RS03-augmented images when the custom -n (redundancy) size used during creation has been forgotten. The default search algorithm has also been improved: it now tests the medium size matching the image being worked on, even if it doesn't match a well-known standard medium size.
+- feat: macOS: native ARM64 build
+- gui: RS03 medium size override: users can now override medium size detection for RS03 directly in the GUI preferences (previously only available via the -n CLI option, and only with --debug). The GUI preferences page also now displays the resulting augmented image size in bytes and the amount of padding used when a custom sector count is specified.
+- enh: --redundancy / -n: unified roots syntax for all codecs: A suffix of 'r' is now the standard way to specify a number of roots for all codecs. The previous hidden behaviour of interpreting a small raw number as a root count for RS03 has been removed. Small raw numbers (number of sectors) are now explicitly rejected to avoid ambiguity.
+- fix: Windows: filename handling under non-UTF8 systems
+- fix: regression in adaptive scanning when using an RS03 error correction file
+- fix: various reported issues under macOS have been fixed (icon fix, locale directory path bug, ...)
+
 0.79.10.patchlevel-5 11-05-2025 *UNOFFICIAL*
 - fix: GUI fileopen dialog crash
 
