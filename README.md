@@ -99,6 +99,15 @@ bugs and added a few tiny features.
 
 See the [INSTALL](INSTALL) file. The [workflow file](.github/workflows/release.yml) that is used to automatically build binaries for each release can also help.
 
+# :test_tube: Testing
+
+The test suite uses Python/pytest with a declarative DSL for golden-file comparison tests. See the [test suite documentation](tests/README.md) for details on the framework, test coverage, and how to add new tests.
+
+```bash
+pip install pytest
+python3 -m pytest tests/ -v
+```
+
 # :camera: Screenshots
 
 ### Reading a damaged CD under Windows:

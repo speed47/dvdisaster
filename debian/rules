@@ -27,7 +27,7 @@ ICON_SIZES := $(patsubst contrib/dvdisaster%.png,%,$(ICONS))
 override_dh_update_autotools_config:
 	dh_update_autotools_config
 	test -f $(BACKUP_TAR_FILE) || \
-		tar cpf $(BACKUP_TAR_FILE) $(MUTABLE_FILES)
+		tar cpf $(BACKUP_TAR_FILE) $(MUTABLE_FILES) 2>/dev/null || true
 
 override_dh_clean:
 	dh_clean

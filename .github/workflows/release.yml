@@ -269,8 +269,17 @@ jobs:
         run: |
           mkdir -p /tmp/dist
           docker run --device /dev/fuse --privileged --name uu -d -v $PWD:/dvdisaster -v /tmp/dist:/dist ubuntu:18.04 sleep 1800
+      # The default ubuntu:18.04 sources.list points at archive.ubuntu.com /
+      # security.ubuntu.com whose public Canonical IPs (91.189.91.x /
+      # 91.189.92.x) are unreachable from inside docker on GitHub Actions
+      # runners (apt times out, then fails with "no installation candidate").
+      # Rewrite to azure.archive.ubuntu.com — Microsoft's intra-Azure Ubuntu
+      # mirror that GHA runners (Azure-hosted) can reach reliably. It serves
+      # all bionic pockets (main, updates, backports, security). We
+      # deliberately keep the AppImage build pinned to bionic to preserve
+      # the glibc 2.27 compatibility floor for downstream users.
       - name: install prerequisites in docker
-        run: docker exec uu sh -c 'apt update && apt install -y man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev'
+        run: docker exec uu sh -c "sed -i -e 's|http://archive.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g' -e 's|http://security.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list && apt update && apt install -y man fuse file make gcc pkg-config libglib2.0-dev libgtk-3-dev glib-networking libgdk-pixbuf2.0-dev"
       - name: configure in docker
         run: docker exec uu sh -c 'cd /dvdisaster && ./configure --prefix=/usr'
       - name: make in docker

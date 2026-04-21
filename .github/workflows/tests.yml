@@ -1,6 +1,15 @@
 name: non-regression tests
 
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  schedule:
+    - cron: '0 3 * * 1'   # every Monday 3am UTC
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -23,6 +32,7 @@ jobs:
           - arch: arm64
             runs-on: macos-15
     runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 240
     steps:
     - uses: actions/checkout@v5
       with:
@@ -58,7 +68,14 @@ jobs:
           ./dvdisaster --version | grep NOGUI
     - name: prepare dist
       run: ./.github/workflows/make-mac-app.sh ${{ github.ref }} ${{ matrix.arch }}
-    - name: regression tests
+    - name: cache master images
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      uses: actions/cache@v4
+      with:
+        path: /var/tmp/regtest
+        key: regtest-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('tests/test_*.py', 'tests/framework.py') }}
+        restore-keys: regtest-${{ runner.os }}-${{ matrix.arch }}-
+    - name: regression tests (bash, legacy)
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
@@ -67,8 +84,14 @@ jobs:
         mkdir -p /var/tmp/regtest
         echo "Number of available processors: $(sysctl -n hw.ncpu || echo U)"
         ./regtest/runtests.sh
+    - name: pytest integration tests
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      run: |
+        python3 -m pip install --break-system-packages pytest pytest-xdist filelock
+        python3 -m pytest tests/ -v -n auto
   win:
     runs-on: windows-latest
+    timeout-minutes: 240
     strategy:
       matrix:
         ui: [cli, gui]
@@ -86,7 +109,7 @@ jobs:
       with:
         msystem: MINGW64
         update: false
-        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ntldd-git man zip
+        install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ntldd-git mingw-w64-x86_64-python mingw-w64-x86_64-python-pytest mingw-w64-x86_64-python-pytest-xdist mingw-w64-x86_64-python-filelock man zip
     - name: install GUI prereqs
       if: matrix.ui == 'gui'
       run: pacman -S --noconfirm mingw-w64-x86_64-gtk3 mingw-w64-x86_64-librsvg
@@ -121,7 +144,14 @@ jobs:
           ./dvdisaster.exe --version | grep NOGUI
     - name: try to prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-    - name: run regression tests
+    - name: cache master images
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      uses: actions/cache@v4
+      with:
+        path: C:\msys64\var\tmp\regtest
+        key: regtest-${{ runner.os }}-${{ hashFiles('tests/test_*.py', 'tests/framework.py') }}
+        restore-keys: regtest-${{ runner.os }}-
+    - name: run regression tests (bash, legacy)
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
@@ -130,9 +160,14 @@ jobs:
         mkdir -p /var/tmp/regtest
         echo "Number of available processors: $(nproc || echo U)"
         ./regtest/runtests.sh
+    - name: pytest integration tests
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      run: |
+        python3 -m pytest tests/ -v -n auto
 
   linux:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     strategy:
       matrix:
         ui: [cli, gui]
@@ -175,7 +210,14 @@ jobs:
           ./dvdisaster --version | grep NOGUI
     - name: prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
-    - name: regression tests
+    - name: cache master images
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      uses: actions/cache@v4
+      with:
+        path: /var/tmp/regtest
+        key: regtest-${{ runner.os }}-${{ hashFiles('tests/test_*.py', 'tests/framework.py') }}
+        restore-keys: regtest-${{ runner.os }}-
+    - name: regression tests (bash, legacy)
       if: matrix.printf == 'normal'
       env:
         REGTEST_NO_UTF8: 1
@@ -184,3 +226,8 @@ jobs:
         mkdir -p /var/tmp/regtest
         echo "Number of available processors: $(nproc || echo U)"
         ./regtest/runtests.sh
+    - name: pytest integration tests
+      if: matrix.printf == 'normal' && matrix.ui == 'cli'
+      run: |
+        pip install pytest pytest-xdist filelock
+        python3 -m pytest tests/ -v -n auto ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')) && '--run-slow' || '' }}
