@@ -46,7 +46,7 @@ $i.po: messages.pot
 
 $i/LC_MESSAGES/dvdisaster.mo: $i.po
 	@echo "Updating $i.mo"
-	@msgfmt -c -o $i/LC_MESSAGES/dvdisaster.mo $i.po
+	@msgfmt -c --use-fuzzy -o $i/LC_MESSAGES/dvdisaster.mo $i.po
 
 
 EOF

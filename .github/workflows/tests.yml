@@ -184,3 +184,8 @@ jobs:
         mkdir -p /var/tmp/regtest
         echo "Number of available processors: $(nproc || echo U)"
         ./regtest/runtests.sh
+    - name: pytest integration tests
+      if: matrix.printf == 'normal'
+      run: |
+        pip install pytest
+        python3 -m pytest tests/ -v
