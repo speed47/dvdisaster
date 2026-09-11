@@ -328,8 +328,8 @@ EccHeader* FindRS03HeaderInImage(Image *image)
 	 }
       }
 
-      hdr_pos = ii->volumeSize - 150;
-      if(ImageReadSectors(image, buf, hdr_pos, 2) == 2)
+      hdr_pos = (gint64)ii->volumeSize - 150;
+      if(hdr_pos >= 0 && ImageReadSectors(image, buf, hdr_pos, 2) == 2)
 	{  eh = valid_header(buf, hdr_pos, TRUE);
 	 if(eh) 
 	 { Verbose("FindRS03HeaderInImage(): Header found at pos -150\n"); 

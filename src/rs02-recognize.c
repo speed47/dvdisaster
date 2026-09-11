@@ -202,7 +202,8 @@ int RS02Recognize(Image *image)
       /* Strange stuff. Sometimes the iso size is increased by 150
 	 sectors by the burning software. */
 
-      if(try_sector(image, iso_size-150, &image->eccHeader, ab->buf) == HEADER_FOUND)
+      if(iso_size >= 150
+	 && try_sector(image, iso_size-150, &image->eccHeader, ab->buf) == HEADER_FOUND)
       {  Verbose("Root sector search at -150 successful\n");
 	 FreeAlignedBuffer(ab);
 	 return TRUE;
