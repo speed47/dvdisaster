@@ -129,6 +129,13 @@ static int try_sector(Image *image, gint64 pos, EccHeader **ehptr, unsigned char
 #endif
    eh->selfCRC = recorded_crc;
 
+   if(   eh->eccBytes < 1 || eh->eccBytes >= GF_FIELDMAX
+      || eh->dataBytes != GF_FIELDMAX - eh->eccBytes)
+   {  Verbose("try_sector: implausible header values, skipping header\n");
+      g_free(eh);
+      return TRY_NEXT_HEADER;
+   }
+
    Verbose("try_sector: CRC okay\n");
 
    /* Compare medium fingerprint with that recorded in Ecc header.
