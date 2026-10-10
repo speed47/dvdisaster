@@ -1468,7 +1468,7 @@ void InitSimulatedCD(void);
  *** rs-decoder.c
  ***/
 
-int TestErrorSyndromes(ReedSolomonTables*, unsigned char*);
+void CalcSyndromes(ReedSolomonTables*, unsigned char**, int, guint8*);
 
 /***
  *** rs-encoder.c and friends

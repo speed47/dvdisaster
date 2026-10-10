@@ -41,6 +41,7 @@ typedef struct
    int earlyTermination;
    char *msg;
    unsigned char *imgBlock[255];
+   guint8 synBlock[GF_FIELDMAX*2048];
 } fix_closure;
 
 static void fix_cleanup(gpointer data)
@@ -478,6 +479,8 @@ void RS02Fix(Image *image)
 
      /* Build ecc block and attempt to correct it */
 
+     CalcSyndromes(fc->rt, fc->imgBlock, cache_offset, fc->synBlock);
+
      for(bi=0; bi<2048; bi++)  /* Run through each ecc block byte */
      {  int offset = cache_offset+bi;
         int r, deg_lambda, el, deg_omega;
@@ -491,14 +494,7 @@ void RS02Fix(Image *image)
 	/* Form the syndromes; i.e., evaluate data(x) at roots of g(x) */
 
 	for(i=0; i<nroots; i++)
-	  syn[i] = fc->imgBlock[0][offset];
-
-	for(j=1; j<GF_FIELDMAX; j++)
-	{  int data = fc->imgBlock[j][offset];
-
-	   for(i=0;i<nroots;i++)
-	      syn[i] = data ^ fc->rt->synLut[(i<<8) + syn[i]];
-	}
+	  syn[i] = fc->synBlock[2048*i+bi];
 
 	/* Convert syndromes to index form, check for nonzero condition */
 
