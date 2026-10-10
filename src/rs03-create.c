@@ -1122,7 +1122,7 @@ static gpointer encoder_thread(ecc_closure *ec)
 	}
 	else
 #endif /* WITH_GUI_YES */
-	  PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
+	  PrintProgressETA(ec->avgTimer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
       }
       else g_mutex_unlock(ec->lock);
 

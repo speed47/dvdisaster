@@ -39,6 +39,7 @@ typedef struct
    Image *image;
    int earlyTermination;
    char *msg;
+   GTimer *timer;
    unsigned char *imgBlock[255];
 } fix_closure;
 
@@ -59,6 +60,7 @@ static void fix_cleanup(gpointer data)
    /** Clean up */
 
    if(fc->msg) g_free(fc->msg);
+   if(fc->timer) g_timer_destroy(fc->timer);
    if(fc->image) CloseImage(fc->image);
 
    for(i=0; i<255; i++)
@@ -378,6 +380,7 @@ void RS03Fix(Image *image)
    /*** Test ecc blocks and attempt error correction */
 
    last_percent = -1;
+   fc->timer = g_timer_new();
 
    for(s=0; s<lay->sectorsPerLayer; s++)
    { int bi;
@@ -892,7 +895,7 @@ skip:
 	}
         else
 #endif
-	  PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+	  PrintProgressETA(fc->timer, percent, _("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 
