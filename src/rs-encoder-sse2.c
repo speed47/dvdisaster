@@ -97,6 +97,59 @@ void encode_next_layer_sse2(ReedSolomonTables *rt, unsigned char *data, unsigned
       parity += nroots_aligned;
    }
 }
+
+/* AVX2 version, selected at runtime; the rest of the binary stays SSE2 */
+
+#ifdef __GNUC__
+#include <immintrin.h>
+
+int ProbeAVX2(void)
+{  return __builtin_cpu_supports("avx2");
+}
+
+__attribute__((target("avx2")))
+void encode_next_layer_avx2(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
+{  gint32 *gf_index_of  = rt->gfTables->indexOf;
+   gint32 *enc_alpha_to = rt->gfTables->encAlphaTo;
+   gint32 *rs_gpoly     = rt->gpoly;
+   int nroots           = rt->nroots;
+   int nroots_aligned   = (nroots+15)&~15;
+   int offset           = nroots-shift-1;
+   int i,j;
+
+   for(i=0; i<layer_size; i++)
+   {  int feedback = gf_index_of[data[i] ^ parity[shift]];
+
+      if(feedback != GF_ALPHA0) /* non-zero feedback term */
+      {	 guint8 *e_lut = rt->bLut[feedback]+offset;
+
+	 for(j=0; j+32<=nroots_aligned; j+=32)
+	   _mm256_storeu_si256((__m256i*)(parity+j),
+			       _mm256_xor_si256(_mm256_loadu_si256((__m256i*)(parity+j)),
+						_mm256_loadu_si256((__m256i*)(e_lut+j))));
+	 if(j<nroots_aligned)
+	   _mm_storeu_si128((__m128i*)(parity+j),
+			    _mm_xor_si128(_mm_loadu_si128((__m128i*)(parity+j)),
+					  _mm_loadu_si128((__m128i*)(e_lut+j))));
+
+	 parity[shift] = enc_alpha_to[feedback + rs_gpoly[0]];
+      }
+      else  /* zero feedback term */
+	parity[shift] = 0;
+
+      parity += nroots_aligned;
+   }
+}
+#else
+int ProbeAVX2(void)
+{  return 0;
+}
+
+void encode_next_layer_avx2(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
+{  encode_next_layer_sse2(rt, data, parity, layer_size, shift);
+}
+#endif
+
 #else /* don't have SSE2 */
 /* Stub functions to keep the linker happy.
  * Should never be executed.
@@ -106,9 +159,18 @@ int ProbeSSE2()
 {  return 0;
 }
 
+int ProbeAVX2()
+{  return 0;
+}
+
 void encode_next_layer_sse2(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
 {
    Stop("Mega borkage - EncodeNextLayerSSE2() stub called.\n");
+}
+
+void encode_next_layer_avx2(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
+{
+   Stop("Mega borkage - EncodeNextLayerAVX2() stub called.\n");
 }
 #endif /* HAVE_SSE2 */
 

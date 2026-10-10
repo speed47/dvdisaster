@@ -208,6 +208,7 @@ int main(int argc, char *argv[])
         as some may be CPU-related. */
 
    Closure->useSSE2 = ProbeSSE2();
+   Closure->useAVX2 = ProbeAVX2();
    Closure->useAltiVec = ProbeAltiVec();
    Closure->clSize = ProbeCacheLineSize();
 

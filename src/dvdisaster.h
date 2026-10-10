@@ -304,6 +304,7 @@ typedef struct _GlobalClosure
    int pauseEject;      /* Eject medium during pause */
    int ignoreFatalSense;/* Continue reading after potential fatal sense errors */
    int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
+   int useAVX2;         /* TRUE means to use AVX2 version of the codec. */
    int useAltiVec;      /* TRUE means to use AltiVec version of the codec. */
    int clSize;          /* Bytesize of cache line */
    int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
@@ -1486,6 +1487,7 @@ typedef enum
 void EncodeNextLayer(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void DescribeRSEncoder(char**, char**);
 int ProbeSSE2(void);
+int ProbeAVX2(void);
 int ProbeAltiVec(void);
 
 /***
