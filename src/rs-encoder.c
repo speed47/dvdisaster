@@ -226,6 +226,7 @@ static void encode_next_layer_64bit(ReedSolomonTables *rt, unsigned char *data, 
 
 void encode_next_layer_sse2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void encode_next_layer_altivec(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
+void encode_next_layer_avx2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 
 void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
 {   
@@ -243,7 +244,9 @@ void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *
 	  encode_next_layer_altivec(rt, data, parity, layer_size, shift);
 	  break;
        case ENCODING_ALG_DEFAULT:
-	 if(Closure->useSSE2)
+	 if(Closure->useAVX2)
+	   encode_next_layer_avx2(rt, data, parity, layer_size, shift);
+	 else if(Closure->useSSE2)
 	   encode_next_layer_sse2(rt, data, parity, layer_size, shift);
 	 else if(Closure->useAltiVec)
 	   encode_next_layer_altivec(rt, data, parity, layer_size, shift);
@@ -273,7 +276,9 @@ void DescribeRSEncoder(char **algorithm, char **iostrategy)
         *algorithm="AltiVec";
 	break;
      case ENCODING_ALG_DEFAULT:
-        if(Closure->useSSE2)
+        if(Closure->useAVX2)
+	  *algorithm="AVX2";
+        else if(Closure->useSSE2)
 	  *algorithm="SSE2";
 	else if(Closure->useAltiVec)
 	  *algorithm="AltiVec";
