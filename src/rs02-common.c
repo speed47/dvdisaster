@@ -504,7 +504,7 @@ RS02Layout *CalcRS02Layout(Image *image)
       first_repeat *= lay->headerModulo;
 
       interleaved  = lay->rsSectors + lay->protectedSectors - first_repeat;
-      lay->headers = interleaved / (lay->headerModulo-2) + 1;
+      lay->headers = interleaved < 0 ? 0 : interleaved / (lay->headerModulo-2) + 1;
 
       lay->eccSectors         = 2 + lay->crcSectors + lay->rsSectors + 2*lay->headers;
       lay->sectorsPerLayer    = (lay->protectedSectors + lay->ndata - 1) / lay->ndata;
@@ -609,7 +609,7 @@ static void calc_headers(RS02Layout *lay)
    first_repeat *= lay->headerModulo;
 
    interleaved  = lay->rsSectors + lay->protectedSectors - first_repeat;
-   lay->headers = interleaved / (lay->headerModulo-2) + 1;
+   lay->headers = interleaved < 0 ? 0 : interleaved / (lay->headerModulo-2) + 1;
 
    lay->eccSectors = 2 + lay->crcSectors + lay->rsSectors + 2*lay->headers;
 }
