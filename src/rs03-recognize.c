@@ -31,8 +31,32 @@
  * Aux. functions
  */
 
+/* The CRC only protects against bit rot; reject header values
+   which would make the layout calculation go haywire. */
+
+static int plausible_header(EccHeader *eh, int ecc_file)
+{  gint64 sectors = uchar_to_gint64(eh->sectors);
+   gint64 spl = eh->sectorsPerLayer;
+
+   if(   !!(eh->methodFlags[0] & MFLAG_ECC_FILE) != ecc_file
+      || sectors < 0 || sectors > G_MAXINT
+      || eh->inLast < 1 || eh->inLast > 2048)
+     return FALSE;
+
+   if(ecc_file)
+   {  if(eh->eccBytes < 8 || eh->eccBytes > 170)
+	return FALSE;
+      spl = (sectors + GF_FIELDMAX - eh->eccBytes - 2)/(GF_FIELDMAX - eh->eccBytes - 1);
+   }
+   else if(spl > 0 && spl < G_MAXINT && sectors + 2 > (GF_FIELDMAX-9)*spl)
+     return FALSE;  /* would result in less than 8 roots */
+
+   return spl > 0 && spl <= G_MAXINT/GF_FIELDMAX;  /* bitmaps are int-indexed */
+}
+
 static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expected)
 {  CrcBlock *cb = alloca(2048);
+   EccHeader eh;
    guint32 recorded_crc, real_crc;
 
    memcpy(cb, buf, 2048);
@@ -66,7 +90,13 @@ static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expecte
    {  Verbose(".. Crc block from ecc file in image - IGNORED\n");
       return 1;
    }
-    
+
+   ReconstructRS03Header(&eh, cb);
+   if(!plausible_header(&eh, !image_expected))
+   {  Verbose(".. implausible CRC block %lld\n", (unsigned long long)sector);
+      return 1;
+   }
+
    return 2;
 }
 
@@ -120,8 +150,11 @@ int RS03RecognizeFile(LargeFile *ecc_file, EccHeader **eh)
       }
       else
       {  if(!strncmp((char*)(*eh)->method, "RS03", 4))
-	 {  Verbose("RS03RecognizeFile(): ecc header found\n");
-	    return ECCFILE_PRESENT;
+	 {  if(plausible_header(*eh, TRUE))
+	    {  Verbose("RS03RecognizeFile(): ecc header found\n");
+	       return ECCFILE_PRESENT;
+	    }
+	    Verbose("RS03RecognizeFile(): implausible ecc header\n");
 	 }
 	 else
 	 {  Verbose("RS03RecognizeFile(): wrong codec\n");
@@ -275,6 +308,11 @@ static EccHeader* valid_header(unsigned char *buf, gint64 hdr_pos, int image_exp
    SwapEccHeaderBytes(eh);
 #endif
    eh->selfCRC = recorded_crc;
+
+   if(!plausible_header(eh, FALSE))
+   {  g_free(eh);
+      return NULL;
+   }
 
 #if 0  //FIXME
    status = read_fingerprint(file, fingerprint, eh->fpSector);
