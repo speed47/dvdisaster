@@ -125,8 +125,33 @@ static guint32 crctable[256] =
  * to be endian-aware.
  */ 
 
+/* Slicing-by-8: tables derived from crctable, built once on first use */
+
+static guint32 crcslice[8][256];
+
 guint32 Crc32(unsigned char *data, int len)
-{  guint32 crc = ~0;
+{  static gsize tables_ready = 0;
+   guint32 crc = ~0;
+
+   if(g_once_init_enter(&tables_ready))
+   {  int i,k;
+      for(i=0; i<256; i++)
+      {  crcslice[0][i] = crctable[i];
+         for(k=1; k<8; k++)
+            crcslice[k][i] = (crcslice[k-1][i] >> 8) ^ crctable[crcslice[k-1][i] & 0xFF];
+      }
+      g_once_init_leave(&tables_ready, 1);
+   }
+
+   for(; len >= 8; data += 8, len -= 8)
+   {  guint32 a = crc ^ (data[0] | data[1]<<8 | data[2]<<16 | (guint32)data[3]<<24);
+      guint32 b = data[4] | data[5]<<8 | data[6]<<16 | (guint32)data[7]<<24;
+
+      crc =  crcslice[7][a & 0xFF] ^ crcslice[6][(a>>8) & 0xFF]
+           ^ crcslice[5][(a>>16) & 0xFF] ^ crcslice[4][a>>24]
+           ^ crcslice[3][b & 0xFF] ^ crcslice[2][(b>>8) & 0xFF]
+           ^ crcslice[1][(b>>16) & 0xFF] ^ crcslice[0][b>>24];
+   }
 
    while(len--)
       crc = crctable[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
