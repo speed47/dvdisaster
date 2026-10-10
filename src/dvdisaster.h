@@ -547,9 +547,9 @@ typedef struct _Bitmap
 } Bitmap;
 
 Bitmap* CreateBitmap0(int);
-#define GetBit(bm,bit) (bm->bitmap[(bit)>>5] & (1<<((bit)&31))) 
-#define SetBit(bm,bit) bm->bitmap[(bit)>>5] |= (1<<((bit)&31)) 
-#define ClearBit(bm,bit) bm->bitmap[(bit)>>5] &= ~(1<<((bit)&31)) 
+#define GetBit(bm,bit) (bm->bitmap[(bit)>>5] & (1U<<((bit)&31))) 
+#define SetBit(bm,bit) bm->bitmap[(bit)>>5] |= (1U<<((bit)&31)) 
+#define ClearBit(bm,bit) bm->bitmap[(bit)>>5] &= ~(1U<<((bit)&31)) 
 gint32 CountBits(Bitmap*);
 void FreeBitmap(Bitmap*);
 
