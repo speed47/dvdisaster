@@ -184,3 +184,30 @@ jobs:
         mkdir -p /var/tmp/regtest
         echo "Number of available processors: $(nproc || echo U)"
         ./regtest/runtests.sh
+
+  linux-sanitizers:
+    runs-on: ubuntu-latest
+    env:
+      ASAN_OPTIONS: detect_leaks=0
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        persist-credentials: false
+    - name: install prerequisites
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev man jq
+    - name: configure
+      env:
+        CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
+        LDFLAGS: -fsanitize=address,undefined
+      run: ./configure --with-gui=no
+    - name: make
+      run: make -j$(nproc)
+    - name: regression tests
+      env:
+        REGTEST_NO_UTF8: 1
+        MAX_JOBS: 4
+      run: |
+        mkdir -p /var/tmp/regtest
+        ./regtest/runtests.sh
