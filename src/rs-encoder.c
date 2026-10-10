@@ -248,7 +248,7 @@ void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *
 	 else if(Closure->useAltiVec)
 	   encode_next_layer_altivec(rt, data, parity, layer_size, shift);
 	 else
-	   encode_next_layer_portable(rt, data, parity, layer_size, shift);
+	   encode_next_layer_64bit(rt, data, parity, layer_size, shift);
 	 break;
     }
 }
