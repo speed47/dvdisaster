@@ -98,6 +98,7 @@ typedef enum
    MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
+   MODIFIER_PAUSE_AFTER_ERRORS,
    MODIFIER_PERMISSIVE_MEDIUM_TYPE,
    MODIFIER_PREFETCH_SECTORS,
    MODIFIER_RANDOM_SEED,
@@ -259,6 +260,7 @@ int main(int argc, char *argv[])
 	{"no-bdr-defect-management", 0, 0, MODIFIER_NO_BDR_DEFECT_MANAGEMENT },
 	{"no-progress", 0, 0, MODIFIER_NO_PROGRESS },
 	{"old-ds-marker", 0, 0, MODIFIER_OLD_DS_MARKER },
+	{"pause-after-errors", 1, 0, MODIFIER_PAUSE_AFTER_ERRORS },
 	{"permissive-medium-type", 0, 0, MODIFIER_PERMISSIVE_MEDIUM_TYPE },
 	{"prefetch-sectors", 1, 0, MODIFIER_PREFETCH_SECTORS },
         {"prefix", 1, 0, 'p'},
@@ -550,6 +552,9 @@ int main(int argc, char *argv[])
 	    break;
 	 case MODIFIER_OLD_DS_MARKER:
 	    Closure->dsmVersion = 0;
+	    break;
+	 case MODIFIER_PAUSE_AFTER_ERRORS:
+	    sscanf(optarg, "%d:%d", &Closure->pauseAfterErrors, &Closure->pauseDuration);
 	    break;
 	 case MODIFIER_PERMISSIVE_MEDIUM_TYPE:
 	    Closure->permissiveMediumType = TRUE;
@@ -1009,6 +1014,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));
       PrintCLI(_("  --old-ds-marker            - mark missing sectors compatible with dvdisaster <= 0.70\n"));
+      PrintCLI(_("  --pause-after-errors n[:s] - pause s seconds (default: 60) after every n read errors\n"));
       PrintCLI(_("  --prefetch-sectors n       - prefetch n sectors for RS03 encoding (uses ~nMiB)\n"));
       PrintCLI(_("  --raw-mode n               - mode for raw reading CD media (20 or 21)\n"));
       PrintCLI(_("  --read-attempts n-m        - attempts n up to m reads of a defective sector\n"));

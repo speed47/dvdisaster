@@ -245,6 +245,8 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = atoi(value); continue; }
       if(!strcmp(symbol, "old-missing-sector-marker"))  { Closure->dsmVersion  = !atoi(value); continue; }
+      if(!strcmp(symbol, "pause-after-errors")) { Closure->pauseAfterErrors = atoi(value); continue; }
+      if(!strcmp(symbol, "pause-duration"))  { Closure->pauseDuration = atoi(value); continue; }
       if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = atoi(value); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
@@ -348,6 +350,8 @@ static void update_dotfile()
    g_fprintf(dotfile, "max-read-attempts: %d\n", Closure->maxReadAttempts);
    g_fprintf(dotfile, "min-read-attempts: %d\n", Closure->minReadAttempts);
    g_fprintf(dotfile, "old-missing-sector-marker: %d\n", !Closure->dsmVersion);
+   g_fprintf(dotfile, "pause-after-errors: %d\n", Closure->pauseAfterErrors);
+   g_fprintf(dotfile, "pause-duration:    %d\n", Closure->pauseDuration);
    g_fprintf(dotfile, "prefetch-sectors:  %d\n", Closure->prefetchSectors);
    g_fprintf(dotfile, "raw-mode:          %d\n", Closure->rawMode);
    g_fprintf(dotfile, "read-and-create:   %d\n", Closure->readAndCreate);
@@ -558,6 +562,7 @@ void InitClosure()
    Closure->internalAttempts = -1;
    Closure->sectorSkip  = 16;
    Closure->spinupDelay = 5;
+   Closure->pauseDuration = 60;
    Closure->fillUnreadable = -1;
    Closure->welcomeMessage = 1;
    Closure->useSCSIDriver = DRIVER_SG;

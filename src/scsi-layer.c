@@ -2484,7 +2484,8 @@ static int read_raw_cd_sector(DeviceHandle *dh, unsigned char *outbuf, int lba, 
  */
 
 int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
-{  int retry,status = -1;
+{  static int errors_since_pause = 0;
+   int retry,status = -1;
    int recommended_attempts = Closure->minReadAttempts;
 
    /* See if we are in a simulated defective area */ 
@@ -2574,6 +2575,19 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
 	 if(dh->canReadDefective && retry >= recommended_attempts)
 	    RememberSense(3, 255, 7);  /* Recovery failed */
+
+	 /* Give overheating drives some time to cool down */
+
+	 if(Closure->pauseAfterErrors > 0 && ++errors_since_pause >= Closure->pauseAfterErrors)
+	 {  int i;
+
+	    PrintCLIorLabel(Closure->status,
+			    _("Pausing %d seconds to let the drive cool down...\n"),
+			    Closure->pauseDuration);
+	    for(i=0; i<10*Closure->pauseDuration && !Closure->stopActions; i++)
+	       g_usleep(G_USEC_PER_SEC/10);
+	    errors_since_pause = 0;
+	 }
       }
       else /* good return status */
       {  if(recommended_attempts > 1 && retry > 1)
