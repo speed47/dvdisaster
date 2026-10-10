@@ -195,7 +195,6 @@ GetImageFingerprint(16): cached
 * Warning: Image "rs03i-tmp.iso" already contains error correction information.
 *          Truncating image to data part (21000 sectors).
 Image size is now: 21000 medium sectors.
-CalcRS03Layout(): removed cached layout from other codec
 Calculated layout for RS03 image:
 data sectors      = 21000
 data padding      = 68

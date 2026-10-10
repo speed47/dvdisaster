@@ -322,6 +322,8 @@ static void remove_old_ecc(ecc_closure *ec)
 
       g_free(ec->image->eccHeader);  /* get rid of old header! */
       ec->image->eccHeader = NULL;
+      g_free(ec->image->cachedLayout);  /* refers to the old header */
+      ec->image->cachedLayout = NULL;
 
       if(!LargeTruncate(ec->image->file, data_bytes))
 	Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
