@@ -57,7 +57,8 @@ int RS01Recognize(LargeFile *ecc_file, EccHeader **eh)
 #endif
       /* The RS01 header has no CRC; reject values which would crash us later */
       if(   (*eh)->eccBytes < 1 || (*eh)->eccBytes >= GF_FIELDMAX
-	 || (*eh)->dataBytes != GF_FIELDMAX - (*eh)->eccBytes)
+	 || (*eh)->dataBytes != GF_FIELDMAX - (*eh)->eccBytes
+	 || (*eh)->inLast < 0 || (*eh)->inLast > 2048)
       {  g_free(*eh);
 	 *eh = NULL;
 	 return ECCFILE_DEFECTIVE_HEADER;
