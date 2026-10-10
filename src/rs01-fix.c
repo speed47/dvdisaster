@@ -62,6 +62,7 @@ typedef struct
    Image *image;
    int earlyTermination;
    char *msg;
+   GTimer *timer;
    unsigned char *imgBlock[256];
    guint32 *crcBuf[256];
    unsigned char parity[2048*GF_FIELDMAX]; /* parity bytes of the current 2048 ecc blocks */
@@ -87,6 +88,7 @@ static void fix_cleanup(gpointer data)
 
    if(fc->image) CloseImage(fc->image);
    if(fc->msg) g_free(fc->msg);
+   if(fc->timer) g_timer_destroy(fc->timer);
 
    for(i=0; i<256; i++)
    {  if(fc->imgBlock[i])
@@ -368,6 +370,7 @@ void RS01Fix(Image *image)
 
    corrected = uncorrected = 0;
    worst_ecc = damaged_ecc = damaged_sec = local_plot_max = 0;
+   fc->timer = g_timer_new();
 
    for(si=0; si<s; si++)
    { 
@@ -764,7 +767,7 @@ skip:
 	}
         else
 #endif	  
-	      PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+	      PrintProgressETA(fc->timer, percent, _("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 
