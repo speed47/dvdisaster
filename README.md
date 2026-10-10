@@ -21,7 +21,7 @@ This version is built on top of the latest upstream version, with the following 
 - A new CLI-only version, not depending on gtk (`./configure --with-gui=no && make clean && make -j4`)
 - GUI codebase ported from gtk2 to gtk3 to ensure future-proofness
 - Windows and macOS builds are supported again, those were dropped upstream a few versions back
-- Non-regression tests on each code change, along with prebuilt binaries for Linux64, Windows32/64 and macOS, for both CLI and GUI versions
+- Non-regression tests on each code change (also run under AddressSanitizer/UBSan), along with prebuilt binaries for Linux64, Windows32/64 and macOS, for both CLI and GUI versions
 - Fixed a bunch of other (minor) quirks, a few (minor) bugs, added a couple other (minor) features
 
 Please refer to the [CHANGELOG](CHANGELOG) for all the details.
