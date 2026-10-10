@@ -114,7 +114,7 @@ void SRandom(gint32 seed)
 gint32 Random(void)
 {  gint32 val,result;
 
-   val = *fptr += *rptr;
+   val = *fptr = (guint32)*fptr + (guint32)*rptr;  /* avoid signed overflow */
 
    /* Chucking least random bit.  */
    result = (val >> 1) & 0x7fffffff;
