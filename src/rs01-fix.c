@@ -508,9 +508,7 @@ void RS01Fix(Image *image)
 	   {  int data = j>=ndata ? parity[j-ndata] : fc->imgBlock[j][offset];
 
 	      for(i=0;i<nroots;i++)
-              {  if(s[i] == 0) s[i] = data;
-	         else s[i] = data ^ gf_alpha_to[mod_fieldmax(gf_index_of[s[i]] + (RS_FIRST_ROOT+i)*RS_PRIM_ELEM)];
-	      }
+                s[i] = data ^ rt->synLut[(i<<8) + s[i]];
 	   }
 
 	   /* Convert syndromes to index form, check for nonzero condition */

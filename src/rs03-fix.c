@@ -553,9 +553,7 @@ void RS03Fix(Image *image)
 	{  int data = fc->imgBlock[j][offset];
 
 	   for(i=0;i<nroots;i++)
-	   {  if(syn[i] == 0) syn[i] = data;
-	      else syn[i] = data ^ gf_alpha_to[mod_fieldmax(gf_index_of[syn[i]] + (RS_FIRST_ROOT+i)*RS_PRIM_ELEM)];
-	   }
+	      syn[i] = data ^ fc->rt->synLut[(i<<8) + syn[i]];
 	}
 
 	/* Convert syndromes to index form, check for nonzero condition */
