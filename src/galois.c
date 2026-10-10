@@ -183,7 +183,7 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
    lut = rt->synLut = g_malloc(rt->nroots * GF_FIELDSIZE * sizeof(int));
    for(i=0; i<rt->nroots; i++)
      for(j=0; j<GF_FIELDSIZE; j++)
-       *lut++ = gt->alphaTo[mod_fieldmax(gt->indexOf[j] + (rt->fcr+i)*rt->primElem)];
+       *lut++ = j ? gt->alphaTo[mod_fieldmax(gt->indexOf[j] + (rt->fcr+i)*rt->primElem)] : 0;
 
    return rt;
 }
