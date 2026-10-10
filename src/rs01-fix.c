@@ -64,6 +64,7 @@ typedef struct
    char *msg;
    unsigned char *imgBlock[256];
    guint32 *crcBuf[256];
+   unsigned char parity[2048*GF_FIELDMAX]; /* parity bytes of the current 2048 ecc blocks */
 } fix_closure;
 
 static void fix_cleanup(gpointer data)
@@ -113,7 +114,6 @@ void RS01Fix(Image *image)
    ReedSolomonTables *rt;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
    EccHeader *eh = NULL;
-   unsigned char parity[256];
    int erasure_count,erasure_list[256],erasure_map[256];
    gint64 block_idx[256];
    gint64 s,si;
@@ -480,6 +480,15 @@ void RS01Fix(Image *image)
      else  /* try to correct them */
      {  int bi;
 
+        /* Read the parity bytes for all 2048 ecc blocks at once */
+
+	if(!LargeSeek(image->eccFile, (gint64)(sizeof(EccHeader) + image->expectedSectors*sizeof(guint32) + nroots*parity_block)))
+	  Stop(_("Failed seeking in ecc area: %s"), strerror(errno));
+
+	n = LargeRead(image->eccFile, fc->parity, 2048*nroots);
+	if(n != 2048*nroots)
+	  Stop(_("Can't read ecc file:\n%s"),strerror(errno));
+
         for(bi=0; bi<2048; bi++)
         {  int offset = cache_offset+bi;
 	   int r, deg_lambda, el, deg_omega;
@@ -489,14 +498,8 @@ void RS01Fix(Image *image)
 	   int root[nroots], reg[nroots+1], loc[nroots];
 	   int syn_error, count;
 
-	   /* Read the parity bytes */
+	   unsigned char *parity = fc->parity + bi*nroots;
 
-	   if(!LargeSeek(image->eccFile, (gint64)(sizeof(EccHeader) + image->expectedSectors*sizeof(guint32) + nroots*parity_block)))
-	     Stop(_("Failed seeking in ecc area: %s"), strerror(errno));
-
-	   n = LargeRead(image->eccFile, parity, nroots);
-	   if(n != nroots)
-	     Stop(_("Can't read ecc file:\n%s"),strerror(errno));
 	   parity_block++;
 
 	   /* Form the syndromes; i.e., evaluate data(x) at roots of g(x) */
