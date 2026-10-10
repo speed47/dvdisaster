@@ -287,7 +287,7 @@ static int get_configuration(DeviceHandle *dh)
       return ret;
    }
 
-   data_length = ab->buf[0]<<24 | ab->buf[1] | ab->buf[2] | ab->buf[3];
+   data_length = ab->buf[0]<<24 | ab->buf[1]<<16 | ab->buf[2]<<8 | ab->buf[3];
    dh->profile = ab->buf[6]<<8 | ab->buf[7];
    FreeAlignedBuffer(ab);
 
@@ -1007,6 +1007,7 @@ static int query_bd(DeviceHandle *dh, int probe_only)
    length = buf[0]<<8 | buf[1];
    length += 2;
    length_align(&length);
+   if(length > 8192) length = 8192;  /* don't overflow our buffer */
    Verbose("#BD: disc structure query succeeded, length %d bytes\n", length);
 
    /* Do the real query */
@@ -1126,6 +1127,7 @@ static int query_type(DeviceHandle *dh, int probe_only)
    if(SendPacket(dh, cmd, 10, buf, MIN_TRANSFER_LEN, sense, DATA_READ) == 0)
    {  length = buf[0]<<8 | buf[1];
       length_align(&length);
+      if(length > 4096) length = 4096;  /* don't overflow our buffer */
 
       Verbose("# size returned is %d\n", length);
 
@@ -1318,6 +1320,7 @@ int QueryBlankCapacity(DeviceHandle *dh)
 	    length = buf[0]<<8 | buf[1];
 	    length += 2;    /* MMC3: "Disc information length excludes itself" */
 	    length_align(&length);
+	    if(length > 4096) length = 4096;  /* don't overflow our buffer */
 	    Verbose("#DVD: size returned is %d\n", length);
 
 	    memset(cmd, 0, MAX_CDB_SIZE);
