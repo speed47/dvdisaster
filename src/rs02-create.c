@@ -450,6 +450,7 @@ static void create_reed_solomon(ecc_closure *ec)
 {  RS02Layout *lay = ec->lay;
    Image *image = ec->image;
    int nroots = lay->nroots;
+   int nroots_aligned = (nroots+15)&~15;  /* parity stride used by EncodeNextLayer() */
    int ndata  = lay->ndata;
    gint64 b_idx, block_idx[256]; 
    guint64 n_parity_blocks,n_layer_sectors;
@@ -459,9 +460,6 @@ static void create_reed_solomon(ecc_closure *ec)
    int layer,i,j,k;
    unsigned char *par_ptr;
    int out_of_memory = 0;
-static gint32 *gf_index_of;    /* These need to be static globals */
-static gint32 *rs_gpoly;       /* for optimization reasons. */
-static gint32 *enc_alpha_to;
 
    /*** Show the second progress bar */
 
@@ -477,19 +475,16 @@ static gint32 *enc_alpha_to;
    ec->gt = CreateGaloisTables(RS_GENERATOR_POLY);
    ec->rt = CreateReedSolomonTables(ec->gt, RS_FIRST_ROOT, RS_PRIM_ELEM, nroots);
 
-   gf_index_of  = ec->gt->indexOf;
-   enc_alpha_to = ec->gt->encAlphaTo;
-   rs_gpoly     = ec->rt->gpoly;
 
    /*** Allocate buffers for the parity calculation and image data caching. 
 
         The algorithm builds the parity file consecutively in chunks of n_parity_blocks.
         We use all the amount of memory allowed by cacheMiB for caching the parity blocks. */
 
-   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots;  /* 1 MiB = 2^20 */
+   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots_aligned;  /* 1 MiB = 2^20 */
    n_parity_blocks >>= 1;                              /* two buffer sets for scrambling */
    n_parity_blocks &= ~0x7ff;                          /* round down to multiple of 2048 */
-   n_parity_bytes  = (guint64)nroots * n_parity_blocks;
+   n_parity_bytes  = (guint64)nroots_aligned * n_parity_blocks;
 
    /* Each chunk of parity blocks is built iteratively by processing the data in layers
       (first all bytes at pos 0, then pos 1, until ndata layers have been processed).
@@ -571,7 +566,6 @@ static gint32 *enc_alpha_to;
 
       for(layer=0; layer<ndata; layer++)
       {  int offset = 0;
-         unsigned char *par_idx = ec->parity;
 
 	 if(Closure->stopActions) /* User hit the Stop button */
 	   abort_encoding(ec, TRUE);
@@ -586,372 +580,7 @@ static gint32 *enc_alpha_to;
 
 	 /* Now process the data bytes of the current layer. */
 
-	 for(si=0; si<actual_layer_bytes; si++)
-	 {  register int feedback;
-
-	    feedback = gf_index_of[ec->data[si] ^ par_idx[sp]];
-
-	    if(feedback != GF_ALPHA0) /* non-zero feedback term */
-	    {  register int spk = sp+1;
-	       register int *gpoly = rs_gpoly + nroots;
-
-	       switch(nroots-spk)  /* unrolled loop part1 */
-	       {  
-	          case 170: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 169: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 168: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 167: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 166: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 165: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 164: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 163: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 162: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 161: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 160: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 159: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 158: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 157: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 156: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 155: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 154: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 153: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 152: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 151: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 150: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 149: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 148: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 147: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 146: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 145: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 144: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 143: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 142: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 141: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 140: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 139: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 138: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 137: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 136: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 135: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 134: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 133: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 132: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 131: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 130: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 129: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 128: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 127: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 126: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 125: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 124: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 123: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 122: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 121: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 120: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 119: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 118: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 117: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 116: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 115: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 114: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 113: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 112: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 111: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 110: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 109: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 108: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 107: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 106: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 105: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 104: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 103: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 102: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 101: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 100: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 99: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 98: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 97: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 96: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 95: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 94: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 93: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 92: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 91: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 90: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 89: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 88: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 87: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 86: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 85: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 84: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 83: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 82: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 81: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 80: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 79: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 78: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 77: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 76: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 75: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 74: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 73: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 72: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 71: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 70: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 69: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 68: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 67: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 66: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 65: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 64: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 63: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 62: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 61: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 60: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 59: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 58: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 57: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 56: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 55: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 54: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 53: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 52: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 51: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 50: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 49: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 48: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 47: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 46: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 45: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 44: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 43: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 42: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 41: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 40: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 39: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 38: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 37: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 36: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 35: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 34: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 33: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 32: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 31: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 30: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 29: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 28: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 27: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 26: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 25: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 24: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 23: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 22: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 21: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 20: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 19: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 18: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 17: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 16: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 15: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 14: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 13: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 12: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 11: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 10: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  9: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  8: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  7: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  6: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  5: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  4: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  3: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  2: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  1: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	       }
-
-	       spk = 0;
-		  
-	       switch(sp)  /* unrolled loop part2 */
-	       {
-	          case 170: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 169: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 168: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 167: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 166: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 165: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 164: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 163: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 162: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 161: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 160: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 159: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 158: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 157: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 156: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 155: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 154: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 153: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 152: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 151: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 150: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 149: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 148: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 147: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 146: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 145: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 144: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 143: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 142: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 141: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 140: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 139: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 138: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 137: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 136: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 135: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 134: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 133: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 132: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 131: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 130: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 129: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 128: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 127: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 126: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 125: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 124: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 123: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 122: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 121: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 120: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 119: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	          case 118: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 117: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 116: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 115: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 114: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 113: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 112: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 111: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-                  case 110: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 109: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 108: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 107: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 106: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 105: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 104: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 103: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 102: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 101: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  case 100: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 99: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 98: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 97: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 96: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 95: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 94: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 93: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 92: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 91: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 90: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 89: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 88: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 87: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 86: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 85: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 84: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 83: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 82: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 81: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 80: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 79: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 78: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 77: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 76: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 75: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 74: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 73: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 72: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 71: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 70: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 69: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 68: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 67: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 66: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 65: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 64: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 63: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 62: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 61: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 60: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 59: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 58: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 57: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 56: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 55: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 54: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 53: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 52: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 51: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 50: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 49: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 48: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 47: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 46: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 45: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 44: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 43: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 42: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 41: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 40: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 39: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 38: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 37: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 36: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 35: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 34: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 33: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 32: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 31: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 30: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 29: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 28: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 27: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 26: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 25: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 24: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 23: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 22: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 21: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 20: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 19: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 18: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 17: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 16: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 15: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 14: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 13: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 12: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 11: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case 10: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  9: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  8: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  7: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  6: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  5: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  4: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  3: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  2: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		   case  1: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-	       }
-
-	       par_idx[sp] = enc_alpha_to[feedback + rs_gpoly[0]];
-	    }
-	    else                   /* zero feedback term */
-	      par_idx[sp] = 0;
-
-	    par_idx += nroots;
-	 }
+	 EncodeNextLayer(ec->rt, ec->data, ec->parity, actual_layer_bytes, sp);
 
 	 if(++sp>=nroots) sp=0;   /* shift */
 
@@ -976,7 +605,8 @@ static gint32 *enc_alpha_to;
 
 	 for(j=0; j<2048; j++, idx++)
 	 {  for(k=0; k<nroots; k++)
-	      ec->slice[k][idx] = *par_ptr++;
+	      ec->slice[k][idx] = par_ptr[k];
+	    par_ptr += nroots_aligned;
 	 }
       }
 
