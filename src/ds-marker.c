@@ -172,7 +172,7 @@ char *GetSimulationHint(unsigned char *buf)
 int CheckForMissingSector(unsigned char *buf, guint64 sector, 
 			  unsigned char *fingerprint, guint64 fingerprint_sector)
 {  static char pattern[2048];
-   static char last_pattern = 0;
+   static int last_pattern = -1;
    guint64 recorded_number;
    char *sim_hint;
    
@@ -180,7 +180,9 @@ int CheckForMissingSector(unsigned char *buf, guint64 sector,
 
    if(Closure->fillUnreadable >= 0)
    {  if(Closure->fillUnreadable != last_pattern)  /* cache the pattern */
-	 memset(pattern, Closure->fillUnreadable, 2048);
+      {  memset(pattern, Closure->fillUnreadable, 2048);
+	 last_pattern = Closure->fillUnreadable;
+      }
 
       if(memcmp(buf, pattern, 2048)) 
 	   return SECTOR_PRESENT;
