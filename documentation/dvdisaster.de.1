@@ -51,6 +51,8 @@ oder Kratzer
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
+.RB [\| \-\-pause-after-errors
+.IR n[:s] \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
@@ -399,6 +401,10 @@ da diese keine fehlenden Sektoren in den Abbildern erkennen w\[:u]rden.
 Bearbeiten Sie ein Abbild nicht mit wechselnden Einstellungen f\[:u]r
 diese Option.
 .RE
+.TP
+.B \-\-pause-after-errors n[:s]
+legt nach jeweils n Lesefehlern eine Lesepause von s Sekunden ein (Standard: 60),
+damit sich Laufwerke, die bei defekten Datentr\[:a]gern \[:u]berhitzen, abk\[:u]hlen k\[:o]nnen.
 .TP
 .B \-\-prefetch-sectors n
 n Sektoren f\[:u]r die RS03-(De)kodierung im Voraus laden (Standard: 32)
