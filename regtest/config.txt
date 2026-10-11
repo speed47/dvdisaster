@@ -399,6 +399,7 @@ RS03i_verify_custom_n_bad_header_with_n yes
 # Creation tests
 
 RS03i_ecc_create yes
+RS03i_ecc_create_small_partial yes
 RS03i_ecc_missing_image yes
 RS03i_ecc_no_read_perm yes
 RS03i_ecc_no_write_perm yes

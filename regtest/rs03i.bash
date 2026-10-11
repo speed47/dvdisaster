@@ -711,6 +711,18 @@ REGTEST_SECTION="Creation tests"
 
 # Create ecc file
 
+# Small image with an incomplete last sector
+# (failed with "Failed reading sector 400 in image")
+
+if try "augmented image creation, small image with incomplete last sector" ecc_create_small_partial; then (
+  $NEWVER --debug -i$TMPISO --random-image 400 >>$LOGFILE 2>&1
+  dd if="$RNDSEQ" count=1 bs=56 >>$TMPISO 2>/dev/null
+
+  IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
+  extra_args="--debug --set-version $SETVERSION"
+  run_regtest ecc_create_small_partial "-mRS03 -c" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 if try "augmented image creation" ecc_create; then (
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
 
