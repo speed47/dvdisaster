@@ -818,6 +818,7 @@ void ReadMediumLinear(gpointer data)
 
    // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    OpenEccFileForImage(rc->image, Closure->eccName, O_RDONLY, IMG_PERMS);
+   HintOverwritableMedium(rc->image);
 
    /*** If ecc information is available in both the image and the
 	ecc file, the ecc file gets precedence. */
