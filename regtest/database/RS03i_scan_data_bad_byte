@@ -14,4 +14,4 @@ Reading CRC information from ecc data (RS03) ... done.
 * CRC error, sector: 1235
 
 1 CRC errors.
-Exit status: 1
+Exit status: 2

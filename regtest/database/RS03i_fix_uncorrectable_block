@@ -1,0 +1,14 @@
+75943a72ba4d416a556bf43e90c425fc
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 24990 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+* Ecc block 20:  50 unrepairable sectors: 1000 1098 1196 1294 1392 1490 1588 1686 1784 1882 1980 2078 2176 2274 2372 2470 2568 2666 2764 2862 2960 3058 3156 3254 3352 3450 3548 3646 3744 3842 3940 4038 4136 4234 4332 4430 4528 4626 4724 4822 4920 5018 5116 5214 5312 5410 5508 5606 5704 5802 
+Unrepaired sectors: 50
+Erasure counts per ecc block:  avg =  50.0; worst = 50.
+Exit status: 3

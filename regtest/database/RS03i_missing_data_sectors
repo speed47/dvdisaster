@@ -26,3 +26,4 @@ Data integrity:
 * Ecc block test   : 0 good, 98 bad; 200704 bad sub blocks
 - erasure counts   :  avg =  8.8; worst = 10 per ecc block.
 - prognosis        : 24990 of 24990 sectors recoverable (100.0%)
+Exit status: 2

@@ -52,7 +52,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 if try "good image" good; then (
 
-   run_regtest good "-t" $MASTERISO $MASTERECC
+   run_regtest good "-t" $MASTERISO $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Test good files
@@ -62,7 +62,7 @@ if try "good image, quick test" good_quick; then (
 
 # Test with neither image nor ecc file
 if try "missing files" no_files; then (
-   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc
+   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Test with missing image, ecc file
@@ -83,7 +83,7 @@ if try "defective image, no ecc" defective_image_no_ecc; then (
    $NEWVER -i$TMPISO --debug --erase 12450-12457 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
-  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc
+  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
