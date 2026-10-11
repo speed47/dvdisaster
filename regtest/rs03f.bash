@@ -311,6 +311,48 @@ if try "checksum error in ecc header" ecc_header_crc_error; then (
   run_regtest ecc_header_crc_error "-t -v" $MASTERISO $TMPECC
 ) & limit_jobs; fi
 
+# Ecc header without the ecc file flag, but valid CRC (crashed)
+
+if try "ecc header without ecc file flag" ecc_header_no_file_flag; then (
+
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,16,0 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,96,37 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i $TMPECC --byteset 0,97,53 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,98,19 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,99,56 >>$LOGFILE 2>&1
+
+run_regtest ecc_header_no_file_flag "-t" $MASTERISO $TMPECC
+) & limit_jobs; fi
+
+# Ecc header with a huge sector count, but valid CRC (crashed)
+
+if try "ecc header with huge sector count" ecc_header_huge_sectors; then (
+
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,73,1 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,96,108 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i $TMPECC --byteset 0,97,52 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,98,200 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,99,152 >>$LOGFILE 2>&1
+
+run_regtest ecc_header_huge_sectors "-t" $MASTERISO $TMPECC
+) & limit_jobs; fi
+
+# Ecc header with an invalid inLast, but valid CRC (crashed)
+
+if try "ecc header with invalid inLast" ecc_header_invalid_inlast; then (
+
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,118,1 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,96,189 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i $TMPECC --byteset 0,97,72 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,98,105 >>$LOGFILE 2>&1
+  $NEWVER --debug -i $TMPECC --byteset 0,99,246 >>$LOGFILE 2>&1
+
+run_regtest ecc_header_invalid_inlast "-t" $MASTERISO $TMPECC
+) & limit_jobs; fi
+
 # Truncated error correction file
 
 if try "truncated ecc file" ecc_file_truncated; then (
