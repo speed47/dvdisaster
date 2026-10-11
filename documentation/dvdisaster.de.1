@@ -52,6 +52,8 @@ oder Kratzer
 .IR n \|]
 .RB [\| \-\-json
 .IR file \|]
+.RB [\| \-\-mapfile
+.IR f \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -421,6 +423,12 @@ erfordern \-\-detailed-exit-status; sonst lautet das Ergebnis "ok" oder "error".
 Nicht zutreffende Eintr\[:a]ge
 werden weggelassen.
 .RE
+.TP
+.B \-\-mapfile f
+schreibt eine zu GNU ddrescue kompatible Map-Datei des Abbilds in die Datei f.
+Vorhandene Sektoren werden als fertig (+), fehlende Sektoren (Markierungen f\[:u]r
+defekte Sektoren) als defekt (\-) eingetragen. Die Datei kann mit ddrescueview
+angezeigt oder zum Weiterlesen mit ddrescue verwendet werden.
 .TP
 .B \-\-medium-info
 Gibt Informationen \[:u]ber den Datentr\[:a]ger im ausgew\[:a]hlten Laufwerk aus.

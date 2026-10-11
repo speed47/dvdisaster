@@ -51,6 +51,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .IR n \|]
 .RB [\| \-\-json
 .IR file \|]
+.RB [\| \-\-mapfile
+.IR f \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -442,6 +444,12 @@ where available, and the exit code with its meaning ("ok", "error",
 otherwise the verdict is "ok" or "error". Keys which do not apply to a run
 are left out.
 .RE
+.TP
+.B \-\-mapfile f
+write a GNU ddrescue compatible mapfile of the image to file f. Present sectors
+are marked as finished (+), missing sectors (dead sector markers) as bad sectors (\-).
+The mapfile can be viewed with ddrescueview or used to continue with ddrescue.
+With -r or -s it is written after reading.
 .TP
 .B \-\-medium-info
 Prints information about the currently inserted medium.
