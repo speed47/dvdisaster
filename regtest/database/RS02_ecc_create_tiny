@@ -1,0 +1,14 @@
+09c4932564c7bdcfa60dbf168d12cd58
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs02-tmp.iso: 300 medium sectors.
+Augmenting image with Method RS02:
+ 0 MiB data, 0 MiB ecc (8 roots;  3.2% redundancy).
+* Warning: Using redundancies below 20% may not give
+*          the expected data loss protection.
+Image has been augmented with error correction data.
+New image size is 0 MiB (319 sectors).
