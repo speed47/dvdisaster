@@ -65,6 +65,22 @@ if try "missing files" no_files; then (
    run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
+# JSON report of a good image and ecc file
+
+if try "good image, json report" good_json; then (
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   run_regtest good_json "-t --json -" $MASTERISO $MASTERECC
+) & limit_jobs; fi
+
+# JSON report and quiet mode when the image is missing;
+# the error goes to stderr, followed by the report.
+
+if try "missing files, quiet json report" no_files_quiet_json; then (
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   run_regtest no_files_quiet_json "-f -q --json -" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODE
+) & limit_jobs; fi
+
+# Test with missing image, ecc file
 # A retained ECC file can be verified without keeping the original image.
 # This must succeed for RS01 as it does for RS03f.
 if try "missing image" no_image; then (

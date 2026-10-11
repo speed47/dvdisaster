@@ -1,0 +1,17 @@
+ignore
+ignore
+*
+Image file no.iso not present or permission denied.
+
+
+{
+  "program": "dvdisaster",
+  "actions": ["fix"],
+  "error": "Image file no.iso not present or permission denied.",
+  "exit_code": 1,
+  "verdict": "error",
+  "image": {
+    "path": "no.iso"
+  }
+}
+Exit status: 1
