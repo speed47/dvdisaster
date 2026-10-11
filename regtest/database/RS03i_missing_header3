@@ -561,5 +561,6 @@ CalcRS03Layout(): returning cached layout (augmented)
   ... ecc section    : 69 sectors missing
 * Ecc block test   : 1403 good, 6 bad; 9268 bad sub blocks
 - erasure counts   :  avg =  30.3; worst = 87 per ecc block.
+- ecc margin       : worst block uses 87 of 87 roots (100%)
 - prognosis        : 359295 of 359295 sectors recoverable (100.0%)
 FreeCrcBuf - buffer cleared
