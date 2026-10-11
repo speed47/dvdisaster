@@ -155,6 +155,45 @@ if try "image with defective headers" missing_headers; then (
   run_regtest missing_headers "-t" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Master header has dataBytes set to zero, but a valid CRC (crashed with SIGFPE)
+
+if try "header with zero dataBytes" header_zero_databytes; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER -i$TMPISO --debug --byteset 30000,76,0 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,96,178 >>$LOGFILE 2>&1 # recomputed header CRC
+   $NEWVER -i$TMPISO --debug --byteset 30000,97,48 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,98,201 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,99,190 >>$LOGFILE 2>&1
+
+  run_regtest header_zero_databytes "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Master header has an invalid inLast, but a valid CRC (crashed in RS02Verify)
+
+if try "header with invalid inLast" header_invalid_inlast; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER -i$TMPISO --debug --byteset 30000,118,1 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,96,226 >>$LOGFILE 2>&1 # recomputed header CRC
+   $NEWVER -i$TMPISO --debug --byteset 30000,97,77 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,98,73 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,99,80 >>$LOGFILE 2>&1
+
+  run_regtest header_invalid_inlast "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Master header has a huge sector count, but a valid CRC (aborted in read_crc)
+
+if try "header with huge sector count" header_huge_sectors; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER -i$TMPISO --debug --byteset 30000,75,112 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,96,142 >>$LOGFILE 2>&1 # recomputed header CRC
+   $NEWVER -i$TMPISO --debug --byteset 30000,97,73 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,98,50 >>$LOGFILE 2>&1
+   $NEWVER -i$TMPISO --debug --byteset 30000,99,239 >>$LOGFILE 2>&1
+
+  run_regtest header_huge_sectors "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Image contains 2 rows of missing sectors and a single one
 # in the data portion
 

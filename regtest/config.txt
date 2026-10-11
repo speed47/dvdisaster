@@ -188,6 +188,9 @@ RS02_plus17 yes
 RS02_bad_header yes
 RS02_bad_headers yes
 RS02_missing_headers yes
+RS02_header_zero_databytes yes
+RS02_header_invalid_inlast yes
+RS02_header_huge_sectors yes
 RS02_missing_data_sectors yes
 RS02_missing_crc_sectors yes
 RS02_missing_ecc_sectors yes
