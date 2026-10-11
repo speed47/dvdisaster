@@ -1142,6 +1142,14 @@ if try "reading medium with copy protected sectors" read_copy_protected; then (
   run_regtest read_copy_protected "--spinup-delay=0 --read-attempts=3 -r" $TMPISO $ISODIR/no.ecc
 ) & limit_jobs; fi
 
+# Reading stops before the first sector when the abort file exists
+
+if try "reading with existing abort file" read_abort_file; then (
+  touch $TMPISO.abort
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_abort_file "--spinup-delay=0 --abort-file=$TMPISO.abort -r" $TMPISO $ISODIR/no.ecc
+) & limit_jobs; fi
+
 # Read into existing and complete image file
 
 if try "reading good image in good file" read_no_ecc_good_file; then (
