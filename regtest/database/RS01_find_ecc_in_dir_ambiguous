@@ -1,0 +1,13 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+*
+* dvdisaster - can not continue:
+*
+Both eccdir/master.ecc and eccdir/plus56.ecc match the image; please select one with -e.
+
+
