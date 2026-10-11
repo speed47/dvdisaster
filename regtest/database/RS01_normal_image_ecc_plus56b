@@ -17,4 +17,6 @@ rs01-plus56_bytes.ecc: created by dvdisaster-0.80
 - fingerprint match: good
 - ecc blocks       : 194560 (good)
 - ecc md5sum       : 7d9fc305cb58bcfb371a1cc8f79b89c9 (good)
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- ecc margin       : worst block uses 1 of 32 roots (3%)
 
