@@ -197,7 +197,8 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 
 /*
  * Scan the image for missing blocks.
- * If the ecc file is present, also compare the CRC sums.
+ * If the ecc file is present, also compare the CRC sums
+ * (and mark good sectors in map, if given).
  * If CREATE_CRC is requested, calculate the CRC sums.
  *
  * Actually this should be usable for all RS01 type ecc files.
@@ -207,7 +208,7 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 
 #define CRCBUFSIZE (1024*256)
 
-void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode)
+void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode, Bitmap *map)
 {  unsigned char buf[2048];
    guint32 *crcbuf = NULL;
    int unrecoverable_sectors = 0;
@@ -353,6 +354,8 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	    {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
 	       image->crcErrors++;
 	    }
+	    else if(map && !current_missing)  /* remember good sectors for the ecc margin */
+	       SetBit(map, s);
 	 }
       }
 

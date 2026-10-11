@@ -342,7 +342,7 @@ void RS01Create(void)
       FreeCrcBuf(Closure->crcBuf);  /* just a defensive measure */
       Closure->crcBuf = NULL;
      
-      RS01ScanImage(self, image, &md5Ctxt, CREATE_CRC);
+      RS01ScanImage(self, image, &md5Ctxt, CREATE_CRC, NULL);
 
       if(image->sectorsMissing)
       {  LargeClose(image->eccFile); /* Will be deleted anyways; no need to test for errors */

@@ -51,6 +51,8 @@ void ResetRS03VerifyWindow(Method *self)
    GuiSetLabelText(wl->cmpImageErasure, "");
    GuiSetLabelText(wl->cmpImagePrognosis, "");
    GuiSetLabelText(wl->cmpImageErasureCnt, "");
+   GuiSetLabelText(wl->cmpImageMargin, "");
+   GuiSetLabelText(wl->cmpImageMarginMsg, "");
    GuiSetLabelText(wl->cmpImagePrognosisMsg, "");
    GuiSetLabelText(wl->cmpImageResult, "");
    GuiSwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
@@ -377,18 +379,26 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    gtk_grid_attach(GTK_GRID(grid2), lab, 2, 7, 1, 1);
    y1++; y2++;
 
-   lab = wl->cmpImagePrognosis = gtk_label_new(NULL);
+   lab = wl->cmpImageMargin = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_grid_attach(GTK_GRID(grid2), lab, 1, 8, 1, 1);
-   lab = wl->cmpImagePrognosisMsg = gtk_label_new(NULL);
+   lab = wl->cmpImageMarginMsg = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_grid_attach(GTK_GRID(grid2), lab, 2, 8, 1, 1);
+   y1++; y2++;
+
+   lab = wl->cmpImagePrognosis = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 9, 1, 1);
+   lab = wl->cmpImagePrognosisMsg = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 2, 9, 1, 1);
    y1++; y2++;
 
    lab = wl->cmpImageResult = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
-   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 9, 2, 1);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 10, 2, 1);
 }
 
 #endif /* WITH_GUI_YES */
@@ -483,16 +493,25 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
+      PrintLog(_("- ecc margin       : worst block uses %d of %d roots (%d%%)\n"),
+	       worst_ecc, lay->nroots, (100*worst_ecc)/lay->nroots);
+
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
       GuiSetLabelText(vc->wl->cmpImageErasure, _("Erasure counts:"));
+      GuiSetLabelText(vc->wl->cmpImageMargin, _("Ecc margin:"));
       GuiSetLabelText(vc->wl->cmpImagePrognosis, _("Prognosis:"));
 
       GuiSetLabelText(vc->wl->cmpImageErasureCnt,
 		      _("<span %s>avg =  %.1f; worst = %d per ecc block.</span>"),
 		      worst_ecc <= lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
 		      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
+
+      GuiSetLabelText(vc->wl->cmpImageMarginMsg,
+		      _("<span %s>worst block uses %d of %d roots (%d%%)</span>"),
+		      worst_ecc <= lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
+		      worst_ecc, lay->nroots, (100*worst_ecc)/lay->nroots);
 
       GuiSetLabelText(vc->wl->cmpImagePrognosisMsg,
 		      _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
