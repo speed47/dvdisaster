@@ -1,0 +1,13 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-master.iso: present, contains 21000 medium sectors.
+- good image       : all sectors present
+- image md5sum     : 9503f278d4550a9507a317664481adf8
+
+rs01-tmp.ecc: invalid
+
