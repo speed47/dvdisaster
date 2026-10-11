@@ -30,3 +30,4 @@ Sector 2400, try 1: Medium Error; Unrecovered read error.
 Sector 2400: Medium Error; Unrecovered read error. Skipping 15 sectors.
 
 144 unreadable sectors.
+Exit status: 1

@@ -13,3 +13,4 @@ Scanning medium for read errors.
 Reading CRC information from ecc data (RS01) ... done.
 
 All sectors successfully read. Checksums match.
+Exit status: 0

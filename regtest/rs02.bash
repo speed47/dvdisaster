@@ -1001,7 +1001,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Scan image which is shorter than expected
@@ -1147,7 +1147,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains bad byte in the CRC section
