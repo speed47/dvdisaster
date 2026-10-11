@@ -536,6 +536,16 @@ find_dotfile:
 GlobalClosure *Closure;
 int exitCode = EXIT_SUCCESS;
 
+/* Combine the results of several actions:
+   an error is kept, otherwise the most severe result wins. */
+
+void SetExitCode(int code)
+{  if(exitCode == EXIT_FAILURE)
+      return;
+   if(code == EXIT_FAILURE || code > exitCode)
+      exitCode = code;
+}
+
 void InitClosure()
 {  gint64 parts[3], version_number;
    const char *v = VERSION;
