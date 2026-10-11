@@ -225,7 +225,9 @@ void PrintMediumInfo(void *mi_ptr)
    }
 
 #ifdef WITH_GUI_YES
-   if (Closure->examineRS02 && Closure->examineRS03)
+   if (!mi->exhaustiveSearchButton)  /* CLI mode */
+      ;
+   else if (Closure->examineRS02 && Closure->examineRS03)
    {  GuiSetLabelText(mi->exhaustiveSearch, _("yes"));
       /*** Hide exhaustive search button if exhaustive search is already enabled for RS02 / RS03 */
       gtk_widget_hide(mi->exhaustiveSearchButton);
