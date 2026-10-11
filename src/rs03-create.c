@@ -1299,6 +1299,8 @@ void RS03Create(void)
    /*** If the image already contains error correction information, remove it. */
 
    remove_old_ecc(ec);
+   if(Closure->eccTarget == ECC_IMAGE)
+     WarnAboutImagePadding(image);
 
    /*** Need to open ecc file too */ 
 
