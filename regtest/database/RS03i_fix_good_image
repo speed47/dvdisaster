@@ -9,3 +9,4 @@ Opening rs03i-tmp.iso: 24990 medium sectors.
 
 Fix mode(RS03i): Repairable sectors will be fixed in the image.
 Good! All sectors are already present.
+Exit status: 0

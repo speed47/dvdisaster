@@ -1803,7 +1803,16 @@ REGTEST_SECTION="Reading tests (adaptive)"
 if try "reading good image" adaptive_good; then (
   cp $MASTERISO $SIMISO
 
-  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE
+  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Read a defective range which does not provide enough data for a full recovery
+
+if try "reading image with insufficient data" adaptive_insufficient; then (
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000-19000 >>$LOGFILE 2>&1
+
+  run_regtest adaptive_insufficient "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r500-1500 --adaptive-read" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Read into existing and complete image file

@@ -19,3 +19,4 @@ Data integrity:
 - good image/file  : all sectors present
 - data md5sum      : 9503f278d4550a9507a317664481adf8
 - Ecc block test   : pass
+Exit status: 0

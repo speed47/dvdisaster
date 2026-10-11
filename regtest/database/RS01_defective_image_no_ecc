@@ -13,3 +13,4 @@ rs01-tmp.iso: present, contains 21000 medium sectors.
 
 no.ecc: not present
 
+Exit status: 3
