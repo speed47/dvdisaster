@@ -269,8 +269,9 @@ for parity data, you can skip the defect management formatting before burning,
 at the expense of potential coasters. Specify this option to tell dvdisaster
 to produce bigger images that will only fit on BD-R media burnt without defect
 management. Some burning softwares call it "formatting" the BD-R before burning.
-Note that should you need to repair such an augmented image, you'll then need to
-specify this option on the command-line too.
+Should the ecc header of such an augmented image be damaged, dvdisaster will
+search for the error correction data using both BD-R layouts, so this option
+does not need to be specified again for verifying or repairing the image.
 .RE
 
 .TP
