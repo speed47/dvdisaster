@@ -346,6 +346,13 @@ if try "header modulo glitch, old style, truncated img, missing ref secs" modulo
    run_regtest modulo_glitch4 "-v -t" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Empty image (recognition stopped with "max_sectors uninitialized")
+
+if try "empty image" empty_image; then (
+   : >$TMPISO
+   run_regtest empty_image "-a RS02 -t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Augmented image is protected by an outer RS01 error correction file
 
 if try "with RS01 error correction file" with_rs01_file; then (
