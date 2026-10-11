@@ -707,8 +707,11 @@ static gpointer worker_thread(read_closure *rc)
 		   ClearProgress();
 		   PrintCLI(_("* CRC error, sector: %lld\n"), (long long int)s+i);
 		   Closure->crcErrors++;
-		   if(rc->readMap)  /* trigger re-read FIXME*/
-		     ClearBit(rc->readMap, sector);
+		   if(rc->readMap)  /* trigger re-read */
+		   {  g_mutex_lock(rc->mutex);  /* reader sets bits in the same words */
+		      ClearBit(rc->readMap, sector);
+		      g_mutex_unlock(rc->mutex);
+		   }
 		   break;
 
 	         case CRC_UNKNOWN:  /* CRC data missing or detected as defective */
@@ -1044,7 +1047,10 @@ reread:
 		     || CheckAgainstCrcBuffer(Closure->crcBuf, rc->readPos+i, sector_buf) != CRC_BAD)
 		  {  ok++;  /* CRC unavailable or good */
 		     if(rc->readMap)
-		       SetBit(rc->readMap, rc->readPos+i);
+		     {  g_mutex_lock(rc->mutex);
+		        SetBit(rc->readMap, rc->readPos+i);
+			g_mutex_unlock(rc->mutex);
+		     }
 		  }
 	       }
 	    }
@@ -1159,13 +1165,13 @@ reread:
 	    is invoked; else we get a nice race condition setting/
 	    unsetting the bit on CRC errors */
 
+	 g_mutex_lock(rc->mutex);
 	 if(rc->readMap)  
 	    for(sidx=rc->readPos, i=0; i<nsectors; sidx++,i++)
 	       SetBit(rc->readMap, sidx);
 
 	 /* Kick off the worker thread */
 
-	 g_mutex_lock(rc->mutex);
 	 rc->bufferedSector[rc->readPtr] = rc->readPos;
 	 rc->nSectors[rc->readPtr] = nsectors;
 	 rc->bufState[rc->readPtr] = BUF_FULL;
@@ -1296,6 +1302,15 @@ step_counter:
 
       show_progress(rc);
    }
+
+   /*** Wait until the worker has processed all buffers of this pass,
+        so that its results (CRC errors, re-read marks) are complete. */
+
+   g_mutex_lock(rc->mutex);
+   for(i=0; i<READ_BUFFERS; i++)
+      while(rc->bufState[i] != BUF_EMPTY && !rc->workerError)
+	 g_cond_wait(rc->canRead, rc->mutex);
+   g_mutex_unlock(rc->mutex);
 
    /*** If multiple reading passes are allowed, see if we need another pass.
         Note: Checksum errors do not trigger another pass as only sectors
