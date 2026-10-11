@@ -1143,6 +1143,9 @@ int main(int argc, char *argv[])
 	   if(image)
 	     ReportEccHeader(image->eccFileMethod ? image->eccFileHeader : image->eccHeader);
 	   method->verify(image);
+
+	   if(!Closure->quickVerify)
+	      CheckXorrisoTags(Closure->imageName);
 	}
 	break;
 
