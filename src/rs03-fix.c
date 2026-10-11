@@ -916,20 +916,20 @@ skip:
 			      _("Image sectors could not be fully restored "
 				"(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
 			      corrected, Closure->redMarkup, uncorrected);
-      exitCode = 2;
    }
    else
    {  if(!corrected)
       {    t=_("Good! All sectors are already present.");
            PrintLog("%s\n", t);
-	   exitCode = 0;
       }
       else 
       {    t=_("Good! All sectors are repaired.");
 	   PrintLog("%s\n", t);
-	   exitCode = 1;
       }
    }
+   if(uncorrected > 0)    SetExitCode(EXIT_CODE_DATA_LOSS);
+   else if(corrected > 0) SetExitCode(EXIT_CODE_DEFECTS);
+
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);

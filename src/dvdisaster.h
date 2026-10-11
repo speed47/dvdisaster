@@ -436,6 +436,12 @@ typedef struct _GlobalClosure
 extern GlobalClosure *Closure;  /* these should be the only global variables! */
 extern int exitCode;            /* value to use on exit() */
 
+/* Exit codes in addition to EXIT_SUCCESS (0) and EXIT_FAILURE (1);
+   see EXIT STATUS in the man page */
+
+#define EXIT_CODE_DEFECTS   2       /* defects found, no data loss detected */
+#define EXIT_CODE_DATA_LOSS 3       /* defects which can not be fully repaired */
+
 #ifdef WITH_GUI_YES
    extern GdkRGBA transparent;
 #endif  /* WITH_GUI_YES */
@@ -572,6 +578,7 @@ int ProbeCacheLineSize();
 void InitClosure(void);
 void LocalizedFileDefaults(void);
 void FreeClosure(void);
+void SetExitCode(int);
 void WriteSignature(void);
 int  VerifySignature(void);
 

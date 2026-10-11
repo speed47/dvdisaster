@@ -966,6 +966,7 @@ int main(int argc, char *argv[])
 	     "  dvdisaster -t, --test   # Test integrity of the .iso and .ecc files.\n"
 	     "  dvdisaster -z, --strip  # Strip ECC data from an augmented .iso.\n"
 	     "  dvdisaster -u, --unlink # Delete .iso files (when other actions complete)\n\n"));
+      PrintCLI(_("Exit codes: 0 ok, 1 error, 2 defects found, 3 not fully repairable (see man page).\n\n"));
 
       PrintCLI(_("Drive and file specification:\n"
 	     "  -d, --device device         - read from given device   (default: %s)\n"

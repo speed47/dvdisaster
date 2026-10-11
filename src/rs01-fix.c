@@ -794,6 +794,9 @@ skip:
 	   PrintLog("%s\n", t);
       }
    }
+   if(uncorrected > 0)    SetExitCode(EXIT_CODE_DATA_LOSS);
+   else if(corrected > 0) SetExitCode(EXIT_CODE_DEFECTS);
+
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sec/(double)damaged_ecc,worst_ecc);

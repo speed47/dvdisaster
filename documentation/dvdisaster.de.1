@@ -442,6 +442,41 @@ gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
 gibt die Versionsnummer und einige Konfigurationseigenschaften aus
 .PP
 
+.SH EXIT-STATUS
+.TP
+.B 0
+Erfolg; es wurden keine Fehler gefunden (bzw. es musste nichts repariert werden).
+.TP
+.B 1
+Fehler; die Aktion konnte nicht ausgef\[:u]hrt werden, z.B. wegen
+ung\[:u]ltiger Optionen, fehlender oder unbrauchbarer Dateien, Laufwerks-
+oder Ein-/Ausgabefehlern.
+Wird auch nach Ausgabe des Hilfetextes zur\[:u]ckgegeben.
+.TP
+.B 2
+Es wurden Fehler gefunden, aber kein Datenverlust festgestellt: der
+Datentr\[:a]ger bzw. das Abbild enth\[:a]lt unlesbare Sektoren oder
+Pr\[:u]fsummenfehler, oder die Fehlerkorrektur-Daten sind besch\[:a]digt
+(\-s, \-r, \-t).
+Bei \-f wurden alle defekten Sektoren repariert.
+Bei \-t mit RS02/RS03-Daten ist eine vollst\[:a]ndige Wiederherstellung m\[:o]glich.
+Bei \-\-adaptive-read wurde das Lesen beendet, weil die fehlenden Sektoren
+mit \-f wiederhergestellt werden k\[:o]nnen.
+.TP
+.B 3
+Datenverlust; die Fehler k\[:o]nnen mit den vorhandenen
+Fehlerkorrektur-Daten nicht vollst\[:a]ndig repariert werden: \-f hat
+unreparierte Sektoren hinterlassen, \-t sagt voraus da\[ss] keine
+vollst\[:a]ndige Wiederherstellung m\[:o]glich ist (oder hat f\[:u]r ein
+defektes Abbild keine Fehlerkorrektur-Daten gefunden), oder
+\-\-adaptive-read konnte nicht gen\[:u]gend Daten f\[:u]r eine
+vollst\[:a]ndige Wiederherstellung lesen.
+.PP
+\-s und \-r (ohne \-\-adaptive-read) sowie \-t mit RS01 sch\[:a]tzen nicht
+ab, ob Fehler reparierbar sind, und liefern bei jedem Fehler 2.
+Werden mehrere Aktionen kombiniert (z.B. \-r \-f), hat 1 Vorrang,
+ansonsten wird der h\[:o]chste Wert zur\[:u]ckgegeben.
+
 .SH SIEHE AUCH
 .B Dokumentation
 DVDISASTER ist in seinem eigenen Handbuch dokumentiert, welches in
