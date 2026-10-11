@@ -768,6 +768,7 @@ void FreeClosure()
    cond_free(Closure->eccName);
    cond_free(Closure->mapFile);
    MapfileFree();
+   cond_free(Closure->abortFile);
    cond_free(Closure->redundancy);
 
    CallMethodDestructors();
