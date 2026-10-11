@@ -271,6 +271,8 @@ typedef struct _GlobalClosure
    int speedWarning;    /* Print warning if speed changes by more than given percentage */
    int fillUnreadable;  /* Byte value for filling unreadable sectors or -1 */
    int spinupDelay;     /* Seconds to wait for drive to spin up */
+   int timeLimit;       /* stop actions after this many seconds (0 = no limit) */
+   char *abortFile;     /* stop actions when this file appears */
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
    int noProgress;      /* do not print the percentage progress indicator */

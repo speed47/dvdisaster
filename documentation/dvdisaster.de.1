@@ -28,6 +28,8 @@ oder Kratzer
 .RB [\| -v \|]
 .RB [\| -x
 .IR n \|]
+.RB [\| \-\-abort-file
+.IR f \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
@@ -66,6 +68,8 @@ oder Kratzer
 .RB [\| \-\-speed-warning
 .IR n \|]
 .RB [\| \-\-spinup\-delay
+.IR n \|]
+.RB [\| \-\-time-limit
 .IR n \|]
 .RB [\| \-\-version \|]
 
@@ -268,6 +272,10 @@ sind 2 bzw. 4 Kontrollf\[:a]den f\[:u]r 2- bzw. 4-Kern-Prozessoren. Lassen Sie
 auf gr\[:o]\[ss]eren Systemen einen Kontrollfaden f\[:u]r Verwaltungszwecke frei,
 d.h. benutzen Sie 7 Kontrollf\[:a]den auf einem 8-Kern-System.
 .TP
+.B \-\-abort-file f
+bricht die laufende Aktion ab (wie der Stop-Knopf der graphischen Oberfl\[:a]che),
+sobald die Datei f existiert. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
+.TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
 .TP
@@ -423,6 +431,10 @@ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 .TP
 .B \-\-spinup-delay n
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
+.TP
+.B \-\-time-limit n
+bricht die laufende Aktion nach n Sekunden ab (wie der Stop-Knopf der
+graphischen Oberfl\[:a]che). Bereits gelesene Daten bleiben im Abbild erhalten.
 .TP
 .B \-\-version
 gibt die Versionsnummer und einige Konfigurationseigenschaften aus

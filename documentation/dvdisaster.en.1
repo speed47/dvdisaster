@@ -27,6 +27,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| -v \|]
 .RB [\| -x
 .IR n \|]
+.RB [\| \-\-abort-file
+.IR f \|]
 .RB [\| \-\-adaptive-read \|]
 .RB [\| \-\-auto-suffix \|]
 .RB [\| \-\-cache-size
@@ -66,6 +68,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-speed-warning
 .IR n \|]
 .RB [\| \-\-spinup\-delay
+.IR n \|]
+.RB [\| \-\-time-limit
 .IR n \|]
 .RB [\| \-\-version \|]
 
@@ -289,6 +293,10 @@ processors respectively.
 On larger machines save one core for housekeeping; e.g. use 7 threads
 on an eight core machine.
 .TP
+.B \-\-abort-file f
+stop the current action (like the Stop button in the graphical user interface)
+as soon as the file f exists. Useful for unattended runs.
+.TP
 .B \-\-adaptive-read
 use optimized strategy for reading damaged media.
 .TP
@@ -433,6 +441,10 @@ print warning if speed changes by more than n percent.
 .TP
 .B \-\-spinup-delay n
 wait n seconds for drive to spin up.
+.TP
+.B \-\-time-limit n
+stop the current action (like the Stop button in the graphical user interface)
+after n seconds. What has been read so far is kept in the image.
 .TP
 .B \-\-version
 print version number and some configuration information.
