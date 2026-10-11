@@ -1615,4 +1615,10 @@ void GuiCreateWelcomePage(GtkNotebook*);
 
 void StripECCFromImageFile(void);
 
+/***
+ *** xorriso-md5.c
+ ***/
+
+void CheckXorrisoTags(char*);
+
 #endif	/* DVDISASTER_H */
