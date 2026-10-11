@@ -1,0 +1,34 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Creating new rs01-tmp.iso image.
+Sector 992, try 1: Illegal Request; Read of scrambled sector without authentication.
+
+* The drive refuses to read copy protected or encrypted sectors
+* without the authentication done by player software, which dvdisaster
+* does not perform. Such media (e.g. video DVD or Blu-ray discs) can not
+* be read or protected with dvdisaster.
+
+Sector 992: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1008, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1008: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1024, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1024: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1040, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1040: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1056, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1056: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1072, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1072: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+Sector 1088, try 1: Illegal Request; Read of scrambled sector without authentication.
+Sector 1088: Illegal Request; Read of scrambled sector without authentication. Skipping 15 sectors.
+
+112 unreadable sectors.

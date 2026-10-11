@@ -2573,6 +2573,20 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 			    _("Sector %" PRId64 ", try %d: %s\n"),
 			    s, retry, GetLastSenseString(FALSE));
 
+	 /* Copy protected or encrypted sectors can not be read without the
+	    authentication done by player software, so re-reading is pointless. */
+
+	 if(last_asc == 0x6F)
+	 {  if(!dh->copyProtectionExplained)
+	    {  PrintLog(_("\n* The drive refuses to read copy protected or encrypted sectors\n"
+			  "* without the authentication done by player software, which dvdisaster\n"
+			  "* does not perform. Such media (e.g. video DVD or Blu-ray discs) can not\n"
+			  "* be read or protected with dvdisaster.\n\n"));
+	       dh->copyProtectionExplained = TRUE;
+	    }
+	    return status;
+	 }
+
 	 /* Last attempt; create failure notice */
 
 	 if(dh->canReadDefective && retry >= recommended_attempts)

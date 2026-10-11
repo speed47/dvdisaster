@@ -162,6 +162,8 @@ typedef struct _DeviceHandle
     */
 
    int canReadDefective;      /* TRUE if drive claims to raw read uncorrectable sectors */
+
+   int copyProtectionExplained; /* explained copy protected sectors once */
    int canC2Scan;             /* TRUE if drive supports C2 error scanning */
    int c2[MAX_CLUSTER_SIZE];  /* C2 errors per sector */
    unsigned char previousReadMode;/* read mode prior to switching to raw reads */

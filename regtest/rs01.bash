@@ -971,6 +971,16 @@ if try "reading image, no ecc data" read_no_ecc; then (
   run_regtest read_no_ecc "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc
 ) & limit_jobs; fi
 
+# Copy protected sectors are not re-read, and explained once
+
+if try "reading medium with copy protected sectors" read_copy_protected; then (
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase "1000-1099:scrambled sector" >>$LOGFILE 2>&1
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_copy_protected "--spinup-delay=0 --read-attempts=3 -r" $TMPISO $ISODIR/no.ecc
+) & limit_jobs; fi
+
 # Read into existing and complete image file
 
 if try "reading good image in good file" read_no_ecc_good_file; then (
