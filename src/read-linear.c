@@ -1440,6 +1440,13 @@ step_counter:
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
    PrintLog("\n%s\n",t);
+
+   ReportDevice(rc->image->dh);
+   ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
+   ReportNumber(rc->scanMode ? "scan" : "read", "readable", rc->readOK);
+   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors);
+   ReportNumber(rc->scanMode ? "scan" : "read", "crc_errors", Closure->crcErrors);
+
    if(Closure->guiMode)
    {  if(rc->scanMode)
       {  GuiSwitchAndSetFootline(Closure->readLinearNotebook,
