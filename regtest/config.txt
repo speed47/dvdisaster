@@ -198,6 +198,7 @@ RS02_modulo_glitch yes
 RS02_modulo_glitch2 yes
 RS02_modulo_glitch3 yes
 RS02_modulo_glitch4 yes
+RS02_tiny_old_header yes
 RS02_with_rs01_file yes
 RS02_with_wrong_rs01_file yes
 RS02_with_rs03_file yes
@@ -210,6 +211,7 @@ RS02_uncorrectable_dsm_in_image3 yes
 
 # Creation tests
 RS02_ecc_create yes
+RS02_ecc_create_tiny yes
 RS02_ecc_missing_image yes
 RS02_ecc_no_read_perm yes
 RS02_ecc_no_write_perm yes

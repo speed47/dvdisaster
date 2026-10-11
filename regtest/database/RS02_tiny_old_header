@@ -1,0 +1,18 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs02-tmp.iso: present, contains 255 medium sectors.
+- good image       : all sectors present
+- data md5sum      : 5f070b524b13b06d4c8bc88a7889f633
+
+Error correction data: created by dvdisaster-0.80
+- method           : RS02, 43 roots, 20.3% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 255 / 209 (good)
+- data md5sum      : 5f070b524b13b06d4c8bc88a7889f633 (good)
+- crc md5sum       : e34a1df81d2702f94eac2f0c38adb913 (good)
+* ecc md5sum       : 58a753a86e7eafe08af524e552e30f12 (BAD)

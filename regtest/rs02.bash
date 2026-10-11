@@ -346,6 +346,22 @@ if try "header modulo glitch, old style, truncated img, missing ref secs" modulo
    run_regtest modulo_glitch4 "-v -t" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Tiny image with a pre-0.79.5 style header (no size info) which was
+# truncated so that the header modulo must be guessed (verify hung)
+
+if try "tiny image, old style hdr, truncated img" tiny_old_header; then (
+   $NEWVER --debug -i$TMPISO --random-image 209 >>$LOGFILE 2>&1
+   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS02 -n 43r -c >>$LOGFILE 2>&1
+   $NEWVER --debug -i $TMPISO --byteset 209,128,0 >>$LOGFILE 2>&1 # size info
+   $NEWVER --debug -i $TMPISO --byteset 209,96,241 >>$LOGFILE 2>&1 # recomputed header CRC
+   $NEWVER --debug -i $TMPISO --byteset 209,97,187 >>$LOGFILE 2>&1
+   $NEWVER --debug -i $TMPISO --byteset 209,98,218 >>$LOGFILE 2>&1
+   $NEWVER --debug -i $TMPISO --byteset 209,99,28 >>$LOGFILE 2>&1
+   $NEWVER --debug -i $TMPISO --truncate=255 >>$LOGFILE 2>&1
+
+   run_regtest tiny_old_header "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Augmented image is protected by an outer RS01 error correction file
 
 if try "with RS01 error correction file" with_rs01_file; then (
@@ -500,6 +516,18 @@ if try "augmented image creation" ecc_create; then (
   replace_config medium-size 35000
   extra_args="--debug --set-version $SETVERSION"
   run_regtest ecc_create "-mRS02 -n$ECCSIZE -c" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Create tiny image with few roots
+# (unfixed versions grew the image without bound, hence the ulimit)
+
+if try "augmented image creation, tiny image" ecc_create_tiny; then (
+  ulimit -f 4096 2>/dev/null
+  $NEWVER --debug -i$TMPISO --random-image 300 >>$LOGFILE 2>&1
+
+  replace_config method-name RS02
+  extra_args="--debug --set-version $SETVERSION"
+  run_regtest ecc_create_tiny "-mRS02 -n 8r -c" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
 # Create with missing image
