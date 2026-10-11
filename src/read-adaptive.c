@@ -647,6 +647,7 @@ static void open_and_determine_mode(read_closure *rc)
 
    // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    OpenEccFileForImage(rc->medium, Closure->eccName, O_RDONLY, IMG_PERMS);
+   HintOverwritableMedium(rc->medium);
 
    if(rc->medium->eccFileMethod)
    {  rc->eh = rc->medium->eccFileHeader;
