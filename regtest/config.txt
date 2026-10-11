@@ -31,6 +31,7 @@ RS01_crc_in_fingerprint yes
 RS01_missing_fingerprint yes
 RS01_missing_ecc_header yes
 RS01_ecc_header_crc_error yes
+RS01_ecc_header_zero_databytes yes
 RS01_uncorrectable_dsm_in_image yes
 RS01_uncorrectable_dsm_in_image_verbose yes
 RS01_uncorrectable_dsm_in_image2 yes
@@ -57,6 +58,8 @@ RS01_ecc_recreate_after_read_wrong_rs01 yes
 RS01_fix_good yes
 RS01_fix_no_read_perm yes
 RS01_fix_no_read_perm_ecc yes
+RS01_fix_negative_eccbytes yes
+RS01_fix_invalid_inlast yes
 RS01_fix_good_plus56 yes
 RS01_fix_no_write_perm yes
 RS01_fix_missing_sectors yes

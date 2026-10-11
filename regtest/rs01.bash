@@ -232,6 +232,15 @@ if try "checksum error in Ecc header" ecc_header_crc_error; then (
   run_regtest ecc_header_crc_error "-t" $MASTERISO $TMPECC
 ) & limit_jobs; fi
 
+# Ecc header has dataBytes set to zero (crashed with SIGFPE)
+
+if try "Ecc header with zero dataBytes" ecc_header_zero_databytes; then (
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,76,0 >>$LOGFILE 2>&1
+
+  run_regtest ecc_header_zero_databytes "-t" $MASTERISO $TMPECC
+) & limit_jobs; fi
+
 # Test image containing several uncorrectable dead sector markers
 # (sector displacement)
 
@@ -488,6 +497,29 @@ if try "fixing image without read permission for ecc" fix_no_read_perm_ecc; then
   chmod 000 $TMPECC
 
   run_regtest fix_no_read_perm_ecc "-f" $TMPISO $TMPECC
+) & limit_jobs; fi
+
+# Fix image with negative eccBytes in the ecc header (crashed)
+
+if try "fixing image, negative eccBytes in ecc header" fix_negative_eccbytes; then (
+
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,83,255 >>$LOGFILE 2>&1
+
+  run_regtest fix_negative_eccbytes "-f" $TMPISO $TMPECC
+) & limit_jobs; fi
+
+# Fix image with invalid inLast in the ecc header
+# (overflowed a heap buffer and padded the image with garbage)
+
+if try "fixing image, invalid inLast in ecc header" fix_invalid_inlast; then (
+
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i $TMPECC --byteset 0,118,1 >>$LOGFILE 2>&1
+
+  run_regtest fix_invalid_inlast "-f" $TMPISO $TMPECC
 ) & limit_jobs; fi
 
 # Fix good image not multiple of 2048
