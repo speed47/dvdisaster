@@ -2816,6 +2816,34 @@ Image* OpenImageFromDevice(char *device, int query_only)
    return image;
 }
 
+/*
+ * Overwritable media (DVD-RAM, DVD-RW in restricted overwrite mode,
+ * DVD+RW and BD-RE) report their formatted capacity instead of the size
+ * of the image written onto them, and burning software may write them
+ * in packet mode. Explain why no augmented ecc data may have been found.
+ * Call after OpenEccFileForImage().
+ */
+
+void HintOverwritableMedium(Image *image)
+{  DeviceHandle *dh = image->dh;
+
+   if(image->eccMethod || image->eccFileMethod)
+     return;
+
+   switch(dh->profile)
+   {  case 0x12: case 0x13: case 0x1a: case 0x2a: case 0x43:
+	LogWarning(_("No error correction data found on this %s medium.\n"
+		     "Overwritable media report their formatted size (here %" PRId64 " sectors)\n"
+		     "instead of the size of the written image, and some burning programs\n"
+		     "write them in packet mode. If this medium was written from an image\n"
+		     "augmented with RS02/RS03 data, search for the ecc data with -a RS02\n"
+		     "or -a RS03 (preferences: \"Exhaustive RS02 header search\" or\n"
+		     "\"Recover RS03 signatures\") or write the image without packet writing.\n"),
+		   dh->profileDescr, dh->readCapacity+1);
+	break;
+   }
+}
+
 /***
  *** Debugging function for sending a cdb to the drive
  ***/

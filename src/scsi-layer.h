@@ -279,6 +279,7 @@ enum
 int QueryBlankCapacity(DeviceHandle*);
 gint64 CurrentMediumSize(int);
 void CloseDevice(DeviceHandle*);
+void HintOverwritableMedium(Image*);
 
 int InquireDevice(DeviceHandle*, int); 
 void SetRawMode(DeviceHandle*, int);
