@@ -53,7 +53,7 @@ char* DefaultDevice()
 
    /* Now probe the physical drives. */
 
-   for(drive_letter='C'; drive_letter<='Z'; drive_letter++)
+   for(drive_letter='A'; drive_letter<='Z'; drive_letter++)
    {  UINT drive_type;
 
       g_sprintf(device_path, "%c:\\", drive_letter);
@@ -161,11 +161,11 @@ DeviceHandle* open_spti_device(char *device)
    char device_path[16];
 
    if(   strlen(device) != 2
-      || toupper(*device) < 'C'
+      || toupper(*device) < 'A'
       || toupper(*device) > 'Z'
       || device[1] != ':')
    {
-      Stop(_("\nIllegal device name \"%s\" (use devices \"C:\" ... \"Z:\")"),device);
+      Stop(_("\nIllegal device name \"%s\" (use devices \"A:\" ... \"Z:\")"),device);
       return NULL;
    }
       
