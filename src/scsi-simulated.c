@@ -279,6 +279,15 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 			     continue;
 			  }
 
+			  /* simulated copy protected sector */
+
+			  if(!strcmp(sim_hint, "scrambled sector"))
+			  {  g_free(sim_hint);
+			     memset(out_buf, 0, alloc_len*2048);
+			     write_sense(sense, 5, 0x6F, 0x03); /* read of scrambled sector without authentication */
+			     return -1;
+			  }
+
 			  /* sector becomes readable in pass 3 */
 			  
 			  if(!strcmp(sim_hint, "readable in pass 3"))
