@@ -38,6 +38,7 @@ void ResetRS01VerifyWindow(Method *self)
    GuiSetLabelText(wl->cmpChkSumErrors, "-");
    GuiSetLabelText(wl->cmpMissingSectors, "0");
    GuiSetLabelText(wl->cmpImageMd5Sum, "-");
+   GuiSetLabelText(wl->cmpImageMargin, "-");
    GuiSetLabelText(wl->cmpImageResult, "");
    GuiSwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
 
@@ -255,10 +256,18 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_grid_attach(GTK_GRID(grid2), lab, 2, 4, 1, 1);
 
+   lab = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   GuiSetLabelText(lab, _("Ecc margin:"));
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 5, 1, 1);
+   lab = wl->cmpImageMargin = gtk_label_new("-");
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 2, 5, 1, 1);
+
    lab = wl->cmpImageResult = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
-   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 5, 2, 1);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 6, 2, 1);
 
    /*** Image spiral */
 
@@ -376,6 +385,8 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
 
 typedef struct
 {  Image *image;
+   RS01Widgets *wl;
+   Bitmap *map;
 } verify_closure;
 
 static void cleanup(gpointer data)
@@ -384,10 +395,51 @@ static void cleanup(gpointer data)
    UnregisterCleanup();
 
    if(vc->image) CloseImage(vc->image);
+   if(vc->map) FreeBitmap(vc->map);
    g_free(vc);
 
    GuiAllowActions(TRUE);
    GuiExitWorkerThread();
+}
+
+/***
+ *** Load on the error correction (erasures per ecc block)
+ ***/
+
+static void ecc_margin(verify_closure *vc, int nroots)
+{  Image *image = vc->image;
+   gint64 ndata = 255-nroots;
+   gint64 sectors_per_layer = (image->expectedSectors+ndata-1)/ndata;
+   gint64 eccblock,s;
+   gint64 damaged_sectors = 0, damaged_eccsecs = 0;
+   int i,worst_ecc = 0;
+
+   /* ecc block n consists of the sectors n, n+sectors_per_layer, ... */
+
+   for(eccblock=0; eccblock<sectors_per_layer; eccblock++)
+   {  int count = 0;
+
+      for(i=0, s=eccblock; i<ndata && s<image->expectedSectors; i++, s+=sectors_per_layer)
+	if(!GetBit(vc->map, s))
+	  count++;
+
+      damaged_sectors += count;
+      if(count>0)         damaged_eccsecs++;
+      if(count>worst_ecc) worst_ecc = count;
+   }
+
+   if(!damaged_sectors)
+     return;
+
+   PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
+	    (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
+   PrintLog(_("- ecc margin       : worst block uses %d of %d roots (%d%%)\n"),
+	    worst_ecc, nroots, (100*worst_ecc)/nroots);
+
+   GuiSetLabelText(vc->wl->cmpImageMargin,
+		   _("<span %s>worst block uses %d of %d roots (%d%%)</span>"),
+		   worst_ecc <= nroots ? Closure->greenMarkup : Closure->redMarkup,
+		   worst_ecc, nroots, (100*worst_ecc)/nroots);
 }
 
 /***
@@ -426,6 +478,7 @@ void RS01Verify(Image *image)
 		   _("- Checking image file -"));
 
    vc->image = image;
+   vc->wl = (RS01Widgets*)self->widgetList;
    if(image && image->eccFile)  
    {    GuiSetLabelText(wl->cmpChkSumErrors, "0");
    }
@@ -455,7 +508,10 @@ void RS01Verify(Image *image)
    }
 
    if(!Closure->quickVerify)
-      RS01ScanImage(self, image, NULL, PRINT_MODE);
+   {  if(image->eccFile)
+	 vc->map = CreateBitmap0(image->expectedSectors);
+      RS01ScanImage(self, image, NULL, PRINT_MODE, vc->map);
+   }
 
    if(Closure->stopActions)   
    {   if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
@@ -851,6 +907,9 @@ process_ecc:
    {  PrintLog(_("- ecc md5sum       : %s (good)\n"),edigest);
       GuiSetLabelText(wl->cmpEccMd5Sum, "%s", edigest);
    }
+
+   if(vc->map)
+      ecc_margin(vc, eh->eccBytes);
 
 skip_ecc:
    PrintLog("\n");
