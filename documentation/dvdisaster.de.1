@@ -48,6 +48,8 @@ oder Kratzer
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-mapfile
+.IR f \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -366,6 +368,12 @@ und die Anzahl der Leseversuche \[:u]ber den Parameter \-\-read-attempts zu steu
 Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 um
 die Standardeinstellungen des Laufwerks zu verwenden.
 .RE
+.TP
+.B \-\-mapfile f
+schreibt eine zu GNU ddrescue kompatible Map-Datei des Abbilds in die Datei f.
+Vorhandene Sektoren werden als fertig (+), fehlende Sektoren (Markierungen f\[:u]r
+defekte Sektoren) als defekt (\-) eingetragen. Die Datei kann mit ddrescueview
+angezeigt oder zum Weiterlesen mit ddrescue verwendet werden.
 .TP
 .B \-\-medium-info
 Gibt Informationen \[:u]ber den Datentr\[:a]ger im ausgew\[:a]hlten Laufwerk aus.
