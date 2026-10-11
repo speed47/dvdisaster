@@ -714,6 +714,7 @@ void FreeClosure()
    cond_free(Closure->homeDir);
    cond_free(Closure->dotFile);
    cond_free(Closure->logFile);
+   cond_free(Closure->jsonFile);
    cond_free(Closure->binDir);
    cond_free(Closure->docDir);
    cond_free(Closure->errorTitle);

@@ -523,6 +523,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
    }
 
    recoverable = expected - missing + correctable;
+   ReportNumber("verify", "recoverable_sectors", recoverable);
+   ReportNumber("verify", "worst_ecc_block_erasures", worst_ecc);
 
    if(damaged_sectors > 0)
    {  int percentage  = (1000*recoverable) / expected;
@@ -883,6 +885,11 @@ void RS02Verify(Image *image)
    MD5Final(ecc_sum, &meta_md5); 
 	    
    /* Do a resume of our findings */ 
+
+   ReportNumber("verify", "missing_sectors", total_missing);
+   ReportNumber("verify", "crc_errors", data_crc_errors + hdr_crc_errors);
+   if(!data_missing)
+      ReportString("verify", "data_md5", data_digest);
 
    if(!total_missing && !hdr_missing && !hdr_crc_errors && !data_crc_errors)
       PrintLog(_("- good image       : all sectors present\n"

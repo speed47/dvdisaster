@@ -274,6 +274,8 @@ typedef struct _GlobalClosure
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
    int noProgress;      /* do not print the percentage progress indicator */
+   int quiet;           /* do not print anything except errors in CLI mode */
+   char *jsonFile;      /* write a machine readable report to this file */
    int dsmVersion;      /* 1 means new style dead sector marker */
    int unlinkImage;     /* delete image after ecc file creation */
    int confirmDeletion; /* do not ask whether files should be deleted */
@@ -1358,6 +1360,18 @@ void GuiResetAdaptiveReadWindow();
 
 void GuiCreateAdaptiveReadWindow(GtkWidget*);
 
+
+/***
+ *** report.c
+ ***/
+
+void ReportString(char*, char*, char*);
+void ReportNumber(char*, char*, gint64);
+void ReportMd5(char*, char*, unsigned char*);
+void ReportAction(char*);
+void ReportDevice(struct _DeviceHandle*);
+void ReportEccHeader(EccHeader*);
+void WriteReport(char*);
 
 /***
  *** recover-raw.c

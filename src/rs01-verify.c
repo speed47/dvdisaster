@@ -491,6 +491,13 @@ void RS01Verify(Image *image)
    if(image->sectorsMissing || image->crcErrors || excess_sectors)
       SetExitCode(image->eccFile ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
 
+   if(!Closure->quickVerify)
+   {  ReportNumber("verify", "missing_sectors", image->sectorsMissing);
+      ReportNumber("verify", "crc_errors", image->crcErrors);
+      if(!image->sectorsMissing)
+	 ReportMd5("verify", "image_md5", image->mediumSum);
+   }
+
    if(image->crcErrors)
    {  GuiSetLabelText(wl->cmpChkSumErrors, 
 		      "<span %s>%" PRId64 "</span>",

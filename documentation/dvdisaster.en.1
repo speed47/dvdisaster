@@ -24,6 +24,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .IR n% \|]
 .RB [\| -m
 .IR n \|]
+.RB [\| -q \|]
 .RB [\| -v \|]
 .RB [\| -x
 .IR n \|]
@@ -47,6 +48,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-json
+.IR file \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -292,6 +295,10 @@ lists/selects error correction methods (default: RS01).
 Possible values are RS01 and RS02.
 .RE
 .TP
+.B \-q, \-\-quiet
+print nothing except error messages and warnings, which go to stderr.
+Useful together with \-\-json and the exit status (see EXIT STATUS).
+.TP
 .B \-v, \-\-verbose n%
 more diagnostic messages
 .TP
@@ -389,6 +396,17 @@ The drive firmware usually retries unreadable sectors a few times before
 giving up and returning a read error. It is more efficient to set this to 0 or 1
 and manage read attempts through the \-\-read-attempts parameter. Most drives ignore
 this setting anyways. Use \-1 to leave the drive at its default setting.
+.RE
+.TP
+.B \-\-json file
+writes a summary of the run as a JSON object to \fIfile\fP when dvdisaster exits;
+use \- for stdout.
+.RS
+The report contains the program version, the actions, drive and medium
+information, the image and ecc file, the sector counts of scanning/reading,
+verifying and fixing, the error correction method and redundancy, md5 sums
+where available, and the exit code with its meaning ("ok", "error",
+"defects", "data_loss"). Keys which do not apply to a run are left out.
 .RE
 .TP
 .B \-\-medium-info

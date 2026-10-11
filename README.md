@@ -19,6 +19,7 @@ This version is built on top of the latest upstream version, with the following 
 - Re-enabled adaptive reading for RS01 and RS02, and optionally for RS03 on user request (more on that below)
 - Ability to strip an augmented image from its additional ECC-data
 - A new CLI-only version, not depending on gtk (`./configure --with-gui=no && make clean && make -j4`)
+- Scripting support: documented exit codes, a machine-readable JSON report (`--json`) and a quiet mode (`-q`)
 - GUI codebase ported from gtk2 to gtk3 to ensure future-proofness
 - Windows and macOS builds are supported again, those were dropped upstream a few versions back
 - Non-regression tests on each code change, along with prebuilt binaries for Linux64, Windows32/64 and macOS, for both CLI and GUI versions

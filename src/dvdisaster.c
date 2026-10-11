@@ -95,6 +95,7 @@ typedef enum
    MODIFIER_IGNORE_ISO_SIZE,
    MODIFIER_IGNORE_RS03_HEADER,
    MODIFIER_INTERNAL_REREADS,
+   MODIFIER_JSON,
    MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
@@ -251,6 +252,7 @@ int main(int argc, char *argv[])
 	{"ignore-rs03-header", 0, 0, MODIFIER_IGNORE_RS03_HEADER },
 	{"internal-rereads", 1, 0, MODIFIER_INTERNAL_REREADS },
         {"image", 1, 0, 'i'},
+	{"json", 1, 0, MODIFIER_JSON },
 	{"jump", 1, 0, 'j'},
 	{"marked-image", 1, 0, MODE_MARKED_IMAGE },
 	{"medium-info", 0, 0, MODE_MEDIUM_INFO },
@@ -265,6 +267,7 @@ int main(int argc, char *argv[])
 	{"random-errors", 1, 0, MODE_RANDOM_ERR },
 	{"random-image", 1, 0, MODE_RANDOM_IMAGE },
 	{"random-seed", 1, 0, MODIFIER_RANDOM_SEED },
+	{"quiet", 0, 0, 'q'},
 	{"raw-mode", 1, 0, MODIFIER_RAW_MODE },
 	{"raw-sector", 1, 0, MODE_RAW_SECTOR},
 	{"read", 2, 0,'r'},
@@ -297,7 +300,7 @@ int main(int argc, char *argv[])
       };
 
       c = getopt_long(argc, argv, 
-		      "a:cd:e:fhi:j:lm::n:o:p:r::s::t::uvx:z",
+		      "a:cd:e:fhi:j:lm::n:o:p:qr::s::t::uvx:z",
 		      long_options, &option_index);
 
       if(c == -1) break;
@@ -387,6 +390,7 @@ int main(int argc, char *argv[])
 		      g_sprintf(Closure->imageName,"%s.iso",optarg);
 		   }
 	           break;
+         case 'q': Closure->quiet = TRUE; break;
          case 'r': mode = MODE_SEQUENCE; sequence |= 1<<MODE_READ; 
 	           if(optarg) read_range = g_strdup(optarg);
 		   break;
@@ -544,6 +548,10 @@ int main(int argc, char *argv[])
 	   break;
 	 case MODIFIER_NO_BDR_DEFECT_MANAGEMENT:
 	    Closure->noBdrDefectManagement = TRUE;
+	    break;
+	 case MODIFIER_JSON:
+	    g_free(Closure->jsonFile);
+	    Closure->jsonFile = g_strdup(optarg);
 	    break;
 	 case MODIFIER_NO_PROGRESS:
 	    Closure->noProgress = 1;
@@ -799,11 +807,17 @@ int main(int argc, char *argv[])
 
    switch(mode)
    {  case MODE_SEQUENCE:
+	if(sequence & ~(1<<MODE_SCAN))  /* scanning does not use the image */
+	   ReportString("image", "path", Closure->imageName);
+
 	if(sequence & 1<<MODE_SCAN)
-	  ReadMediumLinear((gpointer)1);
+	{  ReportAction("scan");
+	   ReadMediumLinear((gpointer)1);
+	}
 
 	if(sequence & 1<<MODE_READ)
-	{  if(sequence & 1<<MODE_CREATE) 
+	{  ReportAction("read");
+	   if(sequence & 1<<MODE_CREATE) 
 	      Closure->readAndCreate = TRUE;
 	   if(Closure->adaptiveRead) 
 	        ReadMediumAdaptive((gpointer)0);
@@ -812,6 +826,9 @@ int main(int argc, char *argv[])
 
 	if(sequence & 1<<MODE_CREATE)
 	{  Method *method = FindMethod(Closure->methodName); 
+
+	   ReportAction("create");
+	   ReportString("ecc", "codec", Closure->methodName);
 
 	   if(!method) Stop(_("\nMethod %s not available.\n"
 			      "Use -m without parameters for a method list.\n"), 
@@ -824,6 +841,7 @@ int main(int argc, char *argv[])
 	{  Method *method = NULL;
 	   Image *image;
 
+	   ReportAction("fix");
 	   PrintLog(_("\nOpening %s"), Closure->imageName);
 	   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
 	   if(!image)
@@ -844,6 +862,7 @@ int main(int argc, char *argv[])
 	   else if(image && image->eccMethod) method = image->eccMethod;
 	   else Stop("Internal error: No suitable method for repairing image.");
 
+	   ReportEccHeader(image->eccFileMethod ? image->eccFileHeader : image->eccHeader);
 	   method->fix(image);
 	}
 
@@ -851,6 +870,7 @@ int main(int argc, char *argv[])
 	{  Method *method;
 	   Image *image;
 
+	   ReportAction("verify");
 	   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
 
@@ -860,7 +880,9 @@ int main(int argc, char *argv[])
 	   else if(image && image->eccMethod) method = image->eccMethod;
 	   else if(!(method = FindMethod("RS01")))
 	           Stop(_("RS01 method not available for comparing files."));
-	     
+
+	   if(image)
+	     ReportEccHeader(image->eccFileMethod ? image->eccFileHeader : image->eccHeader);
 	   method->verify(image);
 	}
 	break;
@@ -988,6 +1010,7 @@ int main(int argc, char *argv[])
 		 "                               CD, DVD, DVD9, BD, BD2, BDXL3, BDXL4,\n"
 		 "                               BDNODM, BD2NODM, BDXL3NODM, BDXL4NODM,\n"
 		 "                               or a raw sector count\n"));
+      PrintCLI(_("  -q, --quiet                - print only errors and warnings (to stderr)\n"));
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
@@ -1006,6 +1029,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-fatal-sense       - continue reading after potentially fatal error conditon\n"));
       PrintCLI(_("  --ignore-iso-size          - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
+      PrintCLI(_("  --json f                   - write a JSON report of the results to file f (- for stdout)\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));
@@ -1094,6 +1118,18 @@ int main(int argc, char *argv[])
    }
 #endif
    
+   if(mode == MODE_SEQUENCE)
+   {  guint64 size;
+
+      if((sequence & ~(1<<MODE_SCAN)) && LargeStat(Closure->imageName, &size))
+	ReportNumber("image", "size", size);
+      if(LargeStat(Closure->eccName, &size))
+      {  ReportString("ecc_file", "path", Closure->eccName);
+	 ReportNumber("ecc_file", "size", size);
+      }
+   }
+   WriteReport(NULL);
+
    FreeClosure();
    exit(exitCode);
 }

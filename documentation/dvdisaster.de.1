@@ -25,6 +25,7 @@ oder Kratzer
 .IR n% \|]
 .RB [\| -m
 .IR n \|]
+.RB [\| -q \|]
 .RB [\| -v \|]
 .RB [\| -x
 .IR n \|]
@@ -48,6 +49,8 @@ oder Kratzer
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-json
+.IR file \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -273,6 +276,10 @@ Fehlerkorrektur-Methoden anzeigen/ausw\[:a]hlen (Standard: RS01).
 M\[:o]gliche Werte sind RS01 und RS02.
 .RE
 .TP
+.B \-q, \-\-quiet
+gibt nur Fehlermeldungen und Warnungen aus, und zwar auf stderr.
+N\[:u]tzlich zusammen mit \-\-json und dem Exit-Status (siehe EXIT-STATUS).
+.TP
 .B \-v, \-\-verbose n%
 mehr erl\[:a]uternde Ausgaben
 .TP
@@ -379,6 +386,18 @@ zu lesen. Es ist typischerweise g\[:u]nstiger diesen Wert auf 0 oder 1 zu setzen
 und die Anzahl der Leseversuche \[:u]ber den Parameter \-\-read-attempts zu steuern.
 Viele Laufwerke ignorieren diese Einstellung ohnehin. Benutzen Sie den Wert \-1 um
 die Standardeinstellungen des Laufwerks zu verwenden.
+.RE
+.TP
+.B \-\-json Datei
+schreibt beim Beenden eine Zusammenfassung des Laufs als JSON-Objekt in
+\fIDatei\fP; \- steht f\[:u]r stdout.
+.RS
+Der Bericht enth\[:a]lt die Programmversion, die Aktionen, Angaben zu Laufwerk
+und Datentr\[:a]ger, Abbild und Fehlerkorrektur-Datei, die Sektorz\[:a]hler von
+Lesen/\[:U]berpr\[:u]fen, Testen und Reparieren, Fehlerkorrektur-Methode und
+Redundanz, md5-Summen soweit vorhanden, sowie den Exit-Status mit seiner
+Bedeutung ("ok", "error", "defects", "data_loss"). Nicht zutreffende Eintr\[:a]ge
+werden weggelassen.
 .RE
 .TP
 .B \-\-medium-info
