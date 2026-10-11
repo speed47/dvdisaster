@@ -1337,6 +1337,19 @@ if try "fix custom-n truncated image, bad header, bruteforce" fix_custom_n_trunc
    run_regtest fix_custom_n_truncated_bruteforce "--bruteforce-rs03-search -f" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Fix image read back from an overwritable medium (e.g. BD-RE) which reports
+# its formatted size, so the augmented image is followed by unused sectors;
+# the ecc header is missing. Works by trying the smaller standard medium sizes.
+# With 75225 trailing sectors the image-derived layer sizes miss the CRC layer.
+
+if try "fix image followed by unused medium sectors, missing header" fix_trailing_medium_space; then (
+   cp $LARGEMASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   run_regtest fix_trailing_medium_space "-f --truncate" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 ### Scanning tests
 
 REGTEST_SECTION="Scanning tests"
