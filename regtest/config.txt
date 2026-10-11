@@ -388,6 +388,10 @@ RS03i_missing_header3 yes
 RS03i_missing_header4 yes
 RS03i_missing_header5 yes
 RS03i_missing_header6 yes
+RS03i_header_zero_layer_size yes
+RS03i_header_huge_sectors yes
+RS03i_header_invalid_inlast yes
+RS03i_crc_block_zero_layer_size yes
 RS03i_missing_header_truncated yes
 RS03i_missing_header_no_crcsec yes
 RS03i_random_image yes
@@ -556,6 +560,9 @@ RS03f_missing_ecc_header yes
 RS03f_missing_ecc_header_and_crc yes
 RS03f_missing_ecc_header_and_defective_crc yes
 RS03f_ecc_header_crc_error yes
+RS03f_ecc_header_no_file_flag yes
+RS03f_ecc_header_huge_sectors yes
+RS03f_ecc_header_invalid_inlast yes
 RS03f_ecc_file_truncated yes
 RS03f_ecc_file_plus_garbage yes
 RS03f_ecc_file_cookieless_crc yes

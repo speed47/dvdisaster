@@ -422,6 +422,64 @@ if try "image with missing ecc header / both sectors missing" missing_header6; t
   run_regtest missing_header6 "-t -v" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Ecc header with zero sectorsPerLayer, but valid CRC (crashed with SIGFPE)
+
+if try "ecc header with zero layer size" header_zero_layer_size; then (
+
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --byteset 21000,120,0 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,96,186 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i$TMPISO --byteset 21000,97,5 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,98,245 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,99,55 >>$LOGFILE 2>&1
+
+  run_regtest header_zero_layer_size "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Ecc header with a huge sector count, but valid CRC (garbage results)
+
+if try "ecc header with huge sector count" header_huge_sectors; then (
+
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --byteset 21000,73,1 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,96,199 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i$TMPISO --byteset 21000,97,42 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,98,82 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,99,189 >>$LOGFILE 2>&1
+
+  run_regtest header_huge_sectors "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Ecc header with an invalid inLast, but valid CRC (crashed)
+
+if try "ecc header with invalid inLast" header_invalid_inlast; then (
+
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --byteset 21000,118,1 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,96,22 >>$LOGFILE 2>&1 # recomputed header CRC
+  $NEWVER --debug -i$TMPISO --byteset 21000,97,86 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,98,243 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21000,99,211 >>$LOGFILE 2>&1
+
+  run_regtest header_invalid_inlast "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Missing ecc header and a CRC block with zero sectorsPerLayer,
+# but valid CRC (crashed with SIGFPE)
+
+if try "missing ecc header, CRC block with zero layer size" crc_block_zero_layer_size; then (
+
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --erase 21000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21146,1112,0 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21146,1120,221 >>$LOGFILE 2>&1 # recomputed CRC block CRC
+  $NEWVER --debug -i$TMPISO --byteset 21146,1121,191 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21146,1122,114 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 21146,1123,40 >>$LOGFILE 2>&1
+
+  run_regtest crc_block_zero_layer_size "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Normal sized image with missing ecc header; with exhaustive search.
 # In the first slice, the CRC sector and some other sectors are unreadable.
 
