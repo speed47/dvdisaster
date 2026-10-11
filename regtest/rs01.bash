@@ -199,6 +199,15 @@ if try "image with crc errors" crc_errors_with_ecc; then (
   run_regtest crc_errors_with_ecc "-t" $TMPISO $MASTERECC
 ) & limit_jobs; fi
 
+# More erasures per ecc block than roots: ecc margin exceeded
+if try "image with ecc margin exceeded" ecc_margin_exceeded; then (
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --erase 1000-4199 >>$LOGFILE 2>&1
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest ecc_margin_exceeded "-t" $TMPISO $MASTERECC
+) & limit_jobs; fi
+
 # CRC error in fingerprint sector
 if try "crc in fingerprint sector" crc_in_fingerprint; then (
   cp $MASTERISO $TMPISO

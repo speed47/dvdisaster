@@ -27,6 +27,7 @@ RS01_plus17 yes
 RS01_defective_with_ecc yes
 RS01_missing_sectors_with_ecc yes
 RS01_crc_errors_with_ecc yes
+RS01_ecc_margin_exceeded yes
 RS01_crc_in_fingerprint yes
 RS01_missing_fingerprint yes
 RS01_missing_ecc_header yes
