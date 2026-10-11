@@ -45,6 +45,30 @@ if ! file_exists $ECC_PLUS56; then
     FILE_MSG=""
 fi
 
+# Image with xorriso style MD5 checksum tags ("xorriso -md5 on"). Written by
+# script so that the test does not depend on xorriso and its version;
+# tag format see doc/checksums.txt in libisofs.
+
+function write_xorriso_tag()
+{  local iso=$1 id=$2 pos=$3 start=$4 next=$5
+   local md5=$(dd if=$iso bs=2048 skip=$start count=$((pos-start)) 2>/dev/null | $MD5SUM | cut -d\  -f 1)
+   local text="$id pos=$pos range_start=$start range_size=$((pos-start))${next:+ next=$next} md5=$md5"
+   local self=$(printf "%s" "$text" | $MD5SUM | cut -d\  -f 1)
+
+   { printf "%s self=%s\n" "$text" "$self"; head -c 2048 /dev/zero; } | head -c 2048 \
+     | dd of=$iso bs=2048 seek=$pos conv=notrunc 2>/dev/null
+}
+
+XORRISOISO=$ISODIR/rs01-xorriso-md5.iso
+if ! file_exists $XORRISOISO; then
+    cp $MASTERISO $XORRISOISO
+    write_xorriso_tag $XORRISOISO libisofs_sb_checksum_tag_v1 20 0 40
+    write_xorriso_tag $XORRISOISO libisofs_tree_checksum_tag_v1 40 0 20000
+    write_xorriso_tag $XORRISOISO libisofs_checksum_tag_v1 20000 0
+    echo -e "$FILE_MSG"
+    FILE_MSG=""
+fi
+
 ### Verification tests
 
 REGTEST_SECTION="Verify tests"
@@ -84,6 +108,19 @@ if try "defective image, no ecc" defective_image_no_ecc; then (
    $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
   run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc
+) & limit_jobs; fi
+
+# Test image with good xorriso MD5 checksum tags, no ecc file
+if try "xorriso md5 tags, good" xorriso_md5_good; then (
+  run_regtest xorriso_md5_good "-t" $XORRISOISO $ISODIR/no.ecc
+) & limit_jobs; fi
+
+# Test image with xorriso MD5 checksum tags and altered payload
+if try "xorriso md5 tags, altered data" xorriso_md5_altered; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_altered "-t" $TMPISO $ISODIR/no.ecc
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
