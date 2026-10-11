@@ -1,0 +1,98 @@
+75943a72ba4d416a556bf43e90c425fc
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs03i-tmp.iso present.
+
+Error correction properties:
+- type             : Augmented image
+- method           : RS03, 39 roots, 18.1% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+
+Data integrity:
+- medium sectors   : 24990 total / 21000 data
+* missing sector   : 1000 
+* missing sector   : 1098 
+* missing sector   : 1196 
+* missing sector   : 1294 
+* missing sector   : 1392 
+* missing sector   : 1490 
+* missing sector   : 1588 
+* missing sector   : 1686 
+* missing sector   : 1784 
+* missing sector   : 1882 
+* missing sector   : 1980 
+* missing sector   : 2078 
+* missing sector   : 2176 
+* missing sector   : 2274 
+* missing sector   : 2372 
+* missing sector   : 2470 
+* missing sector   : 2568 
+* missing sector   : 2666 
+* missing sector   : 2764 
+* missing sector   : 2862 
+* missing sector   : 2960 
+* missing sector   : 3058 
+* missing sector   : 3156 
+* missing sector   : 3254 
+* missing sector   : 3352 
+* missing sector   : 3450 
+* missing sector   : 3548 
+* missing sector   : 3646 
+* missing sector   : 3744 
+* missing sector   : 3842 
+* missing sector   : 3940 
+* missing sector   : 4038 
+* missing sector   : 4136 
+* missing sector   : 4234 
+* missing sector   : 4332 
+* missing sector   : 4430 
+* missing sector   : 4528 
+* missing sector   : 4626 
+* missing sector   : 4724 
+* missing sector   : 4822 
+* missing sector   : 4920 
+* missing sector   : 5018 
+* missing sector   : 5116 
+* missing sector   : 5214 
+* missing sector   : 5312 
+* missing sector   : 5410 
+* missing sector   : 5508 
+* missing sector   : 5606 
+* missing sector   : 5704 
+* missing sector   : 5802 
+* BAD image/file   : 50 sectors missing
+  ... data section   : 50 sectors missing; 0 CRC errors
+  ... crc section    : 0 sectors missing
+  ... ecc section    : 0 sectors missing
+* Ecc block test   : 97 good, 1 bad; 2048 bad sub blocks
+- erasure counts   :  avg =  50.0; worst = 50 per ecc block.
+- prognosis        : 24940 of 24990 sectors recoverable (99.7%)
+{
+  "program": "dvdisaster",
+  "actions": ["verify"],
+  "exit_code": 3,
+  "verdict": "data_loss",
+  "image": {
+    "path": "rs03i-tmp.iso",
+    "size": 51179520
+  },
+  "ecc": {
+    "codec": "RS03",
+    "data_bytes": 216,
+    "ecc_bytes": 39,
+    "redundancy": 18.1,
+    "medium_sectors": 21000
+  },
+  "verify": {
+    "missing_sectors": 50,
+    "crc_errors": 0,
+    "recoverable_sectors": 24940,
+    "worst_ecc_block_erasures": 50
+  }
+}

@@ -1,0 +1,62 @@
+95b221fd894f6adb6f6e8d3b89583fb6
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 24990 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+    1 repaired sectors: 500d 
+    1 repaired sectors: 501d 
+    1 repaired sectors: 502d 
+    1 repaired sectors: 503d 
+    1 repaired sectors: 504d 
+    1 repaired sectors: 505d 
+    1 repaired sectors: 506d 
+    1 repaired sectors: 507d 
+    1 repaired sectors: 508d 
+    1 repaired sectors: 509d 
+    2 repaired sectors: 510d 1000d 
+    1 repaired sectors: 511d 
+    1 repaired sectors: 512d 
+    1 repaired sectors: 513d 
+    1 repaired sectors: 514d 
+    1 repaired sectors: 515d 
+    1 repaired sectors: 516d 
+    1 repaired sectors: 517d 
+    1 repaired sectors: 518d 
+    1 repaired sectors: 519d 
+    1 repaired sectors: 520d 
+    1 repaired sectors: 521d 
+    1 repaired sectors: 522d 
+    1 repaired sectors: 523d 
+    1 repaired sectors: 524d 
+CRC error in sector 2000
+-> CRC-predicted error in sector 2000 at byte    0 (value 6f 'o', expected 7c '|')
+    1 repaired sectors: 2000c 
+Repaired sectors: 27 (27 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.0; worst = 2.
+{
+  "program": "dvdisaster",
+  "actions": ["fix"],
+  "exit_code": 2,
+  "verdict": "defects",
+  "image": {
+    "path": "rs03i-tmp.iso",
+    "size": 51179520
+  },
+  "ecc": {
+    "codec": "RS03",
+    "data_bytes": 216,
+    "ecc_bytes": 39,
+    "redundancy": 18.1,
+    "medium_sectors": 21000
+  },
+  "fix": {
+    "repaired": 27,
+    "unrepaired": 0
+  }
+}

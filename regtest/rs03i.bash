@@ -187,6 +187,18 @@ if try "uncorrectable ecc block" uncorrectable_block; then (
    run_regtest uncorrectable_block "-t" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
+# Same, with JSON report
+
+if try "uncorrectable ecc block, json report" uncorrectable_block_json; then (
+   cp $MASTERISO $TMPISO
+   for i in $(seq 0 49); do
+      $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+   done
+
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   run_regtest uncorrectable_block_json "-t --json -" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Image contains several missing ecc sectors
 
 if try "several missing ecc sectors" missing_ecc_sectors; then (
@@ -1079,6 +1091,18 @@ if try "trying to fix correctable image" fix_correctable; then (
   run_regtest fix_correctable "-f" $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
+# Same, with JSON report
+
+if try "trying to fix correctable image, json report" fix_correctable_json; then (
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 2000,0,111 >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest fix_correctable_json "-f --json -" $TMPISO  $NO_FILE
+) & limit_jobs; fi
+
 # Fix image with one uncorrectable ecc block
 
 if try "trying to fix image with uncorrectable ecc block" fix_uncorrectable_block; then (
@@ -1481,6 +1505,20 @@ if try "scanning image with missing data sectors" scan_missing_data_sectors; the
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
    run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Same in quiet mode with JSON report on stdout.
+# Note that run_regtest drops the first three lines ("{", program, version).
+
+if try "scanning image with missing data sectors, quiet json report" scan_missing_data_sectors_quiet_json; then (
+   cp $MASTERISO $SIMISO
+   $NEWVER -i$SIMISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
+   $NEWVER -i$SIMISO --debug --erase 21230 >>$LOGFILE 2>&1
+   $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
+
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest scan_missing_data_sectors_quiet_json "--spinup-delay=0 -s -q --json -" $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains 1 row of missing sectors and a single one
