@@ -649,7 +649,7 @@ int RS03RecognizeImage(Image *image)
        Verbose("RS03RecognizeImage: file %s\n", image->file->path);
        if(image->eccFile)
 	 Stop("Internal error: RS03RecognizeImage() called with ecc file\n");
-       image_sectors = image->sectorSize;
+       image_sectors = image->file->size / 2048;  /* RS03 data never ends in a partial sector */
        break;
 
      case IMAGE_MEDIUM:
