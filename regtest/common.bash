@@ -398,7 +398,24 @@ function run_regtest()
          # remote tmp path of github actions
          sed -i -re "s=[-A-Za-z0-9_~]+/AppData/Local/Temp/==g" $NEWLOG
 
-         if ! diff <(tail -n +3 $REFLOG | $filter) <(cat $NEWLOG | $filter) >${DIFFLOG}; then
+         # Use ordinary files to avoid passing process-substitution descriptors
+         # to diff. Keep comparison errors distinct
+         # from actual differences (diff status 1).
+         local expected_log="${TMPLOG}.expected"
+         local actual_log="${TMPLOG}.actual"
+         local diff_status
+
+         if : > "$DIFFLOG" \
+            && (set -o pipefail; tail -n +3 "$REFLOG" | "$filter" > "$expected_log") 2>> "$DIFFLOG" \
+            && "$filter" "$NEWLOG" > "$actual_log" 2>> "$DIFFLOG"; then
+            diff "$expected_log" "$actual_log" >> "$DIFFLOG" 2>&1
+            diff_status=$?
+         else
+            diff_status=2
+         fi
+         rm -f "$expected_log" "$actual_log"
+
+         if [ "$diff_status" -eq 1 ]; then
             output="BAD; diffs found (<expected; >created):"
             pass="false"
 
@@ -413,8 +430,11 @@ function run_regtest()
                   > "$INTERACTIVE_DIR/${CODEC_PREFIX}_${testsymbol}.interactive"
                pass="interactive"
             fi
-         else
+         elif [ "$diff_status" -eq 0 ]; then
             pass="true"
+         else
+            output="ERROR; log comparison failed (status $diff_status):"
+            pass="false"
          fi
       fi
    else  # gui mode
