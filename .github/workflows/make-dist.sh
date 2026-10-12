@@ -83,6 +83,10 @@ if [ "$os" != "linux64" ]; then
   do
     cp -va "$file" dist/
   done
+  # console launcher for command line use of the GUI build
+  if [ "$GUI" = 1 ]; then
+    cp -va dvdisaster.com dist/
+  fi
 # /WINDOWS
 else
 # Linux

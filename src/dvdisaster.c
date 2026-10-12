@@ -24,6 +24,10 @@
 
 #include "dvdisaster.h"
 
+#if defined(SYS_MINGW) && defined(WITH_GUI_YES)
+#include <windows.h>
+#endif
+
 
 /*
  * Those are now declared as extern in dvdisaster.h,
@@ -133,6 +137,21 @@ int main(int argc, char *argv[])
    int devices_queried = FALSE;
 #endif
    
+#if defined(SYS_MINGW) && defined(WITH_GUI_YES)
+   /* We're a GUI subsystem program, so Windows doesn't hand us console
+      std handles. When used from a console (e.g. through dvdisaster.com),
+      write to it unless output has been redirected. */
+   if(argc > 1)
+   {  int out = GetFileType(GetStdHandle(STD_OUTPUT_HANDLE)) == FILE_TYPE_UNKNOWN;
+      int err = GetFileType(GetStdHandle(STD_ERROR_HANDLE)) == FILE_TYPE_UNKNOWN;
+
+      if((out || err) && AttachConsole(ATTACH_PARENT_PROCESS))
+      {  if(out) freopen("CONOUT$", "w", stdout);
+	 if(err) freopen("CONOUT$", "w", stderr);
+      }
+   }
+#endif
+
 #ifdef WITH_MEMDEBUG_YES
     atexit(check_memleaks);
 #endif
