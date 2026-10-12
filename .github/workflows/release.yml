@@ -163,6 +163,7 @@ jobs:
         run: |
           cd dist
           dvdisaster.exe --version
+          dvdisaster --version
       - name: Tag for Continuous Build
         if: github.ref_name == 'master'
         run: |

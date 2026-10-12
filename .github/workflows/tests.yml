@@ -121,6 +121,33 @@ jobs:
           ./dvdisaster.exe --version | grep NOGUI
     - name: try to prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+    - name: check console launcher from PowerShell (GUI)
+      if: matrix.ui == 'gui'
+      shell: pwsh
+      working-directory: dist
+      timeout-minutes: 5
+      run: |
+          $v = ./dvdisaster.com --version
+          if ($LASTEXITCODE -ne 0 -or "$v" -notmatch 'dvdisaster') { throw "--version: rc=$LASTEXITCODE out=$v" }
+          ./dvdisaster.com --no-such-option | Out-Null
+          if ($LASTEXITCODE -ne 1) { throw "bad option: rc=$LASTEXITCODE" }
+          # same from a real console window, read back from its screen buffer
+          Set-Content probe.ps1 @'
+          try {
+            $v = ./dvdisaster.com --version; $c = $LASTEXITCODE
+            ./dvdisaster.com --version
+            $r = $Host.UI.RawUI
+            $b = $r.GetBufferContents((New-Object Management.Automation.Host.Rectangle 0, 0, ($r.BufferSize.Width - 1), $r.CursorPosition.Y))
+            "$c $v " + (-join $b.Character) | Set-Content probe.txt
+          } catch { "error: $_" | Set-Content probe.txt }
+          '@
+          Start-Process powershell -Wait -WorkingDirectory $PWD -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'probe.ps1'
+          $t = Get-Content -Raw probe.txt
+          Remove-Item probe.ps1, probe.txt
+          $t = $t -replace '\s+', ' '
+          if ($t -notmatch '^0 .*dvdisaster.*dvdisaster') { throw "console: $t" }
+          Write-Host "console: $t"
+          exit 0
     - name: run regression tests
       if: matrix.printf == 'normal'
       env:

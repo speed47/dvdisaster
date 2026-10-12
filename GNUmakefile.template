@@ -133,6 +133,10 @@ dvdisaster: $(OFILES)
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
 	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null ; \
 	     $(CC) $(LOPTS) $(OFILES) $(LIBS) ${BUILDTMP}/winres.o -o dvdisaster ; \
+	     if echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
+	     then echo "Linking  : dvdisaster.com"; \
+	          $(CC) $(CFLAGS) contrib/win-console-launcher.c -o dvdisaster.com ; \
+	     fi ; \
 	else $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
 	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
@@ -338,7 +342,7 @@ distclean: clean
 
 clean:
 	@echo "Removing rebuildable files"
-	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
+	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster dvdisaster.com .dvdisaster core core.* *.core
 	@rm -f "$(BUILDTMP)"/inlined-icons.c src/help-dialogs.h
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
