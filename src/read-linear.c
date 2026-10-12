@@ -1006,12 +1006,15 @@ reread:
       {  int i,ok = 0;
 	 int num_compare = nsectors;
 
-	 /* Get image state from bitmap created at earlier reading pass */
+	 /* Get image state from bitmap created at earlier reading pass.
+	    The worker may clear other bits in the same words during this pass. */
 
 	 if(rc->pass && rc->readMap)
-	 {  for(i=0; i<num_compare; i++)
+	 {  g_mutex_lock(rc->mutex);
+	    for(i=0; i<num_compare; i++)
 	       if(GetBit(rc->readMap, rc->readPos+i))
 		  ok++;
+	    g_mutex_unlock(rc->mutex);
 	 }
 	 
 	 /* else query dead sectors from image */
