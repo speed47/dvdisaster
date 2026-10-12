@@ -95,6 +95,7 @@ typedef enum
    MODIFIER_IGNORE_ISO_SIZE,
    MODIFIER_IGNORE_RS03_HEADER,
    MODIFIER_INTERNAL_REREADS,
+   MODIFIER_MEDIUM_SIZE,
    MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
@@ -254,6 +255,7 @@ int main(int argc, char *argv[])
 	{"jump", 1, 0, 'j'},
 	{"marked-image", 1, 0, MODE_MARKED_IMAGE },
 	{"medium-info", 0, 0, MODE_MEDIUM_INFO },
+	{"medium-size", 1, 0, MODIFIER_MEDIUM_SIZE },
 	{"merge-images", 1, 0, MODE_MERGE_IMAGES },
 	{"method", 2, 0, 'm' },
 	{"no-bdr-defect-management", 0, 0, MODIFIER_NO_BDR_DEFECT_MANAGEMENT },
@@ -542,6 +544,42 @@ int main(int argc, char *argv[])
 	    }
 	 }
 	   break;
+	 case MODIFIER_MEDIUM_SIZE:
+	    if(optarg)
+	    {  if(!strcasecmp(optarg, "CD"))
+		  Closure->mediumSize = CDR_SIZE;
+	       else if(!strcasecmp(optarg, "DVD"))
+		  Closure->mediumSize = DVD_SL_SIZE;
+	       else if(!strcasecmp(optarg, "DVD9"))
+		  Closure->mediumSize = DVD_DL_SIZE;
+	       else if(!strcasecmp(optarg, "BD"))
+		  Closure->mediumSize = BD_SL_SIZE;
+	       else if(!strcasecmp(optarg, "BD2"))
+		  Closure->mediumSize = BD_DL_SIZE;
+	       else if(!strcasecmp(optarg, "BDXL3"))
+		  Closure->mediumSize = BDXL_TL_SIZE;
+	       else if(!strcasecmp(optarg, "BDXL4"))
+		  Closure->mediumSize = BDXL_QL_SIZE;
+	       else if(!strcasecmp(optarg, "BDNODM"))
+		  Closure->mediumSize = BD_SL_SIZE_NODM;
+	       else if(!strcasecmp(optarg, "BD2NODM"))
+		  Closure->mediumSize = BD_DL_SIZE_NODM;
+	       else if(!strcasecmp(optarg, "BDXL3NODM"))
+		  Closure->mediumSize = BDXL_TL_SIZE_NODM;
+	       else if(!strcasecmp(optarg, "BDXL4NODM"))
+		  Closure->mediumSize = BDXL_QL_SIZE_NODM;
+	       else
+	       {  gint64 val = (gint64)atoll(optarg);
+		  if(val >= GF_FIELDMAX)
+		     Closure->mediumSize = val;
+		  else
+		     Stop(_("Invalid medium size '%s'.\n"
+			    "Valid values: CD, DVD, DVD9, BD, BD2, BDXL3, BDXL4,\n"
+			    "BDNODM, BD2NODM, BDXL3NODM, BDXL4NODM, or a sector count >= %d"),
+			  optarg, GF_FIELDMAX);
+	       }
+	    }
+	    break;
 	 case MODIFIER_NO_BDR_DEFECT_MANAGEMENT:
 	    Closure->noBdrDefectManagement = TRUE;
 	    break;
@@ -1006,6 +1044,10 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-iso-size          - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
+      PrintCLI(_("  --medium-size x            - set target medium size for RS03 augmented images\n"
+		 "                               CD, DVD, DVD9, BD, BD2, BDXL3, BDXL4,\n"
+		 "                               BDNODM, BD2NODM, BDXL3NODM, BDXL4NODM,\n"
+		 "                               or a raw sector count\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));
       PrintCLI(_("  --old-ds-marker            - mark missing sectors compatible with dvdisaster <= 0.70\n"));

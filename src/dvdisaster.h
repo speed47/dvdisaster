@@ -633,10 +633,10 @@ enum
 
 /* Modes for AddSectorToCrcBuffer */
 
-#define CRCBUF_UPDATE_CRC 1<<0
-#define CRCBUF_UPDATE_MD5 1<<1
-#define CRCBUF_UPDATE_ALL 3
-#define CRCBUF_UPDATE_CRC_AFTER_DATA 1<<2
+#define CRCBUF_UPDATE_CRC (1<<0)
+#define CRCBUF_UPDATE_MD5 (1<<1)
+#define CRCBUF_UPDATE_ALL (CRCBUF_UPDATE_CRC | CRCBUF_UPDATE_MD5)
+#define CRCBUF_UPDATE_CRC_AFTER_DATA (1<<2)
 
 /* Modes for CtcBufValid */
 

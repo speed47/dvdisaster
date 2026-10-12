@@ -376,6 +376,21 @@ gint64 RS03SectorIndex(RS03Layout *lay, gint64 layer, gint64 n)
  *** Calculation of the image layout
  ***/
 
+static const char* medium_name(gint64 capacity)
+{  if(capacity == CDR_SIZE)          return "CD";
+   if(capacity == DVD_SL_SIZE)       return "DVD";
+   if(capacity == DVD_DL_SIZE)       return "DVD9";
+   if(capacity == BD_SL_SIZE)        return "BD";
+   if(capacity == BD_DL_SIZE)        return "BD2";
+   if(capacity == BDXL_TL_SIZE)      return "BDXL3";
+   if(capacity == BDXL_QL_SIZE)      return "BDXL4";
+   if(capacity == BD_SL_SIZE_NODM)   return "BDNODM";
+   if(capacity == BD_DL_SIZE_NODM)   return "BD2NODM";
+   if(capacity == BDXL_TL_SIZE_NODM) return "BDXL3NODM";
+   if(capacity == BDXL_QL_SIZE_NODM) return "BDXL4NODM";
+   return NULL;
+}
+
 static int get_roots(gint64 data_sectors, gint64 medium_capacity)
 {  gint64 sectors_per_layer = medium_capacity/GF_FIELDMAX;
    int ndata = (data_sectors + 2 +sectors_per_layer - 1) / sectors_per_layer;
@@ -484,6 +499,9 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	    default:
 	       if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) n_roots = 32;
 	       else if(!strcmp(Closure->redundancy, "high")) n_roots = 64;
+	       /* Medium size aliases (e.g. -n BD) set Closure->mediumSize but
+		  are not valid redundancy specs — use default redundancy */
+	       else if(Closure->mediumSize) n_roots = 32;
 	       else Stop(_("Invalid redundancy specification '%s'.\n"
 			   "Valid formats: normal, high, <number>%%, <number>r, <number>m"),
 			 Closure->redundancy);
@@ -569,6 +587,19 @@ RS03Layout *CalcRS03Layout(Image *image, int target)
 	           lay->mediumCapacity = BDXL_QL_SIZE_NODM;
 	    else
 	           lay->mediumCapacity = BDXL_QL_SIZE;
+
+	    /* Inform user about auto-detected medium and how to override */
+	    {  const char *name = medium_name(lay->mediumCapacity);
+	       if(name)
+		  Verbose("Auto-selected medium: %s (%" PRId64 " sectors).\n"
+			  "  Use --medium-size to override "
+			  "(e.g., --medium-size BD for Blu-ray 25GB).\n",
+			  name, lay->mediumCapacity);
+	       else
+		  Verbose("Auto-selected medium: %" PRId64 " sectors.\n"
+			  "  Use --medium-size to override.\n",
+			  lay->mediumCapacity);
+	    }
 	 }
       }
 
