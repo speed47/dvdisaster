@@ -88,6 +88,34 @@ void ExamineECC(Image *image)
 } 
 
 /***
+ *** Warn if the image extends beyond its ISO file system.
+ ***
+ * Mastering software like xorriso appends 300 KiB of padding by default.
+ * The padding gets protected along with the data, wastes space on the medium
+ * and moves the ecc header away from where it is quickly found behind the
+ * ISO file system.
+ */
+
+void WarnAboutImagePadding(Image *image)
+{
+   /* Images whose size is not a multiple of 2048 are not from a mastering
+      program; leave them alone. */
+
+   if(image->isoInfo && image->inLast == 2048
+      && image->sectorSize > image->isoInfo->volumeSize)
+     ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, NULL,
+		  _("The image is %" PRId64 " sectors larger than its ISO file system (%d sectors).\n"
+		    "This is usually padding added by the mastering software\n"
+		    "(e.g. xorriso appends 300 KiB unless \"-padding 0\" is given).\n"
+		    "The padding uses up space which is lost for error correction data,\n"
+		    "and the error correction data may not be found when reading the\n"
+		    "medium without an exhaustive search. Consider creating the image\n"
+		    "without padding.\n"),
+		  image->sectorSize - image->isoInfo->volumeSize,
+		  image->isoInfo->volumeSize);
+}
+
+/***
  *** Open a ECC file for an existing image
  ***/
 

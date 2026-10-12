@@ -1058,6 +1058,7 @@ void RS02Create(void)
    /*** If the image already contains error correction information, remove it. */
 
    remove_old_ecc(ec);
+   WarnAboutImagePadding(image);
 
    /*** Calculate a suitable redundancy .*/
 

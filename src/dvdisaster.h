@@ -941,6 +941,7 @@ Image* OpenEccFileForImage(Image*, char*, int, mode_t);
 int ReportImageEccInconsistencies(Image*);
 int GetImageFingerprint(Image*, guint8*, guint64);
 void ExamineECC(Image*);
+void WarnAboutImagePadding(Image*);
 int ImageReadSectors(Image*, void*, guint64, int);
 int TruncateImage(Image*, guint64);
 void CloseImage(Image*);

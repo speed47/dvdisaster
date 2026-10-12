@@ -721,6 +721,20 @@ if try "augmented image creation" ecc_create; then (
    run_regtest ecc_create "-mRS03 -n$ECCSIZE -c" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Create from an image with trailing padding behind the ISO file system
+# (like xorriso's default 300 KiB); a warning is expected.
+
+if try "augmented image creation from padded image" ecc_create_padded; then (
+   $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=150 >>$TMPISO 2>>$LOGFILE
+
+   IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
+   replace_config method-name RS03
+   replace_config ecc-target 1
+   extra_args="--debug --set-version $SETVERSION"
+   run_regtest ecc_create_padded "-mRS03 -n$ECCSIZE -c" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Create with missing image
 
 if try "creating augmented image with missing image" ecc_missing_image; then (
