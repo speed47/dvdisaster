@@ -410,6 +410,7 @@ typedef struct
    Bitmap *map;
    unsigned char crcSum[16];
    unsigned char *eccBlock[256];
+   guint8 synBlock[GF_FIELDMAX*2048];
    GaloisTables *gt;
    ReedSolomonTables *rt;
 } verify_closure;
@@ -553,7 +554,6 @@ static int check_syndromes(verify_closure *vc)
 
    for(ecc_block=0; ecc_block<lay->sectorsPerLayer; ecc_block++)
    {  gint64 num_sectors = 0; 
-      unsigned char data[GF_FIELDMAX];
 
       /* Check for user interruption */
 
@@ -590,13 +590,13 @@ static int check_syndromes(verify_closure *vc)
 
       bad_counted = FALSE;
 
-      for(i=0; i<2048; i++) 
-      {  int result;
+      CalcSyndromes(vc->rt, vc->eccBlock, 2048*cache_idx, vc->synBlock);
 
-	 for(j=0; j<GF_FIELDMAX; j++)
-	   data[j] = vc->eccBlock[j][2048*cache_idx+i];
+      for(i=0; i<2048; i++)
+      {  int result = 0;
 
-	 result = TestErrorSyndromes(vc->rt, data);
+	 for(j=0; j<lay->nroots; j++)
+	   result |= vc->synBlock[2048*j+i];
 
 	 if(result)
 	 {  ecc_bad_sub++;

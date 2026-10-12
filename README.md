@@ -74,7 +74,7 @@ This attempts to summarize the differences, pros and cons of each codec:
 | Robustness :one:                     | :star:                         | :star::star::star:             | :star::star::star::star::star: | :star::star::star::star::star: |
 | Space efficiency                     | :star::star:                   | :star::star::star::star::star: | :star::star::star::star:       | :star::star::star::star:       |
 | Computational generation speed :two: | :star::star:                   | :star::star:                   | :star::star::star::star::star: | :star::star::star::star::star: |
-| Computational repair speed :two:     | :star::star::star:             | :star::star::star:             | :star::star::star:             | :star::star::star:             |
+| Computational repair speed :two:     | :star::star::star::star:       | :star::star::star::star:       | :star::star::star::star:       | :star::star::star::star:       |
 | Damaged media recovery speed :three: | :star:                         | :star::star::star:             | :star:                         | :star:                         |
 | Supports customizing redundancy size | :heavy_check_mark:             | :heavy_check_mark:             | :heavy_check_mark:             | :x: :four:                     |
 

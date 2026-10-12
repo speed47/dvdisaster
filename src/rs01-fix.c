@@ -64,6 +64,8 @@ typedef struct
    char *msg;
    unsigned char *imgBlock[256];
    guint32 *crcBuf[256];
+   unsigned char parity[2048*GF_FIELDMAX]; /* parity bytes of the current 2048 ecc blocks */
+   guint8 synBlock[GF_FIELDMAX*2048];
 } fix_closure;
 
 static void fix_cleanup(gpointer data)
@@ -113,7 +115,6 @@ void RS01Fix(Image *image)
    ReedSolomonTables *rt;
    fix_closure *fc = g_malloc0(sizeof(fix_closure)); 
    EccHeader *eh = NULL;
-   unsigned char parity[256];
    int erasure_count,erasure_list[256],erasure_map[256];
    gint64 block_idx[256];
    gint64 s,si;
@@ -350,9 +351,10 @@ void RS01Fix(Image *image)
    cache_size = 2*Closure->cacheMiB;  /* ndata medium sectors are approx. 0.5MiB */
 
    for(i=0; i<ndata; i++)
-   {  fc->imgBlock[i] = g_malloc(cache_size*2048);
       fc->crcBuf[i]   = g_malloc(sizeof(int) * cache_size);
-   }
+
+   for(i=0; i<GF_FIELDMAX; i++)  /* layers >= ndata receive the parity bytes */
+      fc->imgBlock[i] = g_malloc(cache_size*2048);
 
    /*** Setup the block counters for mapping medium sectors to
 	ecc blocks */
@@ -480,6 +482,23 @@ void RS01Fix(Image *image)
      else  /* try to correct them */
      {  int bi;
 
+        /* Read the parity bytes for all 2048 ecc blocks at once */
+
+	if(!LargeSeek(image->eccFile, (gint64)(sizeof(EccHeader) + image->expectedSectors*sizeof(guint32) + nroots*parity_block)))
+	  Stop(_("Failed seeking in ecc area: %s"), strerror(errno));
+
+	n = LargeRead(image->eccFile, fc->parity, 2048*nroots);
+	if(n != 2048*nroots)
+	  Stop(_("Can't read ecc file:\n%s"),strerror(errno));
+
+	/* Transpose parity into layers and calculate the syndromes */
+
+	for(bi=0; bi<2048; bi++)
+	  for(i=0; i<nroots; i++)
+	    fc->imgBlock[ndata+i][cache_offset+bi] = fc->parity[bi*nroots+i];
+
+	CalcSyndromes(rt, fc->imgBlock, cache_offset, fc->synBlock);
+
         for(bi=0; bi<2048; bi++)
         {  int offset = cache_offset+bi;
 	   int r, deg_lambda, el, deg_omega;
@@ -489,29 +508,12 @@ void RS01Fix(Image *image)
 	   int root[nroots], reg[nroots+1], loc[nroots];
 	   int syn_error, count;
 
-	   /* Read the parity bytes */
-
-	   if(!LargeSeek(image->eccFile, (gint64)(sizeof(EccHeader) + image->expectedSectors*sizeof(guint32) + nroots*parity_block)))
-	     Stop(_("Failed seeking in ecc area: %s"), strerror(errno));
-
-	   n = LargeRead(image->eccFile, parity, nroots);
-	   if(n != nroots)
-	     Stop(_("Can't read ecc file:\n%s"),strerror(errno));
 	   parity_block++;
 
 	   /* Form the syndromes; i.e., evaluate data(x) at roots of g(x) */
 
 	   for(i=0; i<nroots; i++)
-	     s[i] = fc->imgBlock[0][offset];
-
-	   for(j=1; j<GF_FIELDMAX; j++)
-	   {  int data = j>=ndata ? parity[j-ndata] : fc->imgBlock[j][offset];
-
-	      for(i=0;i<nroots;i++)
-              {  if(s[i] == 0) s[i] = data;
-	         else s[i] = data ^ gf_alpha_to[mod_fieldmax(gf_index_of[s[i]] + (RS_FIRST_ROOT+i)*RS_PRIM_ELEM)];
-	      }
-	   }
+	     s[i] = fc->synBlock[2048*i+bi];
 
 	   /* Convert syndromes to index form, check for nonzero condition */
 
