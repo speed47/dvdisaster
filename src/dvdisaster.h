@@ -1555,6 +1555,6 @@ void StripECCFromImageFile(void);
  *** xorriso-md5.c
  ***/
 
-void CheckXorrisoTags(char*);
+char* CheckXorrisoTags(char*);
 
 #endif	/* DVDISASTER_H */

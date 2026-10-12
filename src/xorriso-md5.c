@@ -125,18 +125,33 @@ static int md5_sectors(Image *image, struct MD5Context *ctx, gint64 *lba, gint64
    return TRUE;
 }
 
-static void print_tag(XorrisoTag *tag, gint64 start, char *result)
+/* Print to the log and collect the text for the GUI */
+
+static void tag_log(GString *out, char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+
+   PrintLog("%s", msg);
+   g_string_append(out, msg);
+   g_free(msg);
+}
+
+static void print_tag(GString *out, XorrisoTag *tag, gint64 start, char *result)
 {  static char *names[] = { NULL, "relocated sb tag", "superblock tag",
 			    "tree tag", "session tag" };
 
-   PrintLog("- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
+   tag_log(out, "- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
 	    names[tag->type], result, tag->pos, start, tag->pos-1);
 }
 
 /* Verify the tag chain of the session starting at sector start.
    Returns the sector of the final tag, or -1 if the chain is broken. */
 
-static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigned char *buf, int *bad)
+static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigned char *buf, int *bad, GString *out)
 {  struct MD5Context ctx;
    gint64 lba = start;
 
@@ -149,7 +164,7 @@ static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigne
       gint64 next;
 
       if(!md5_sectors(image, &ctx, &lba, tag->pos, buf))
-      {  print_tag(tag, start, _("unreadable sectors"));
+      {  print_tag(out, tag, start, _("unreadable sectors"));
 	 (*bad)++;
 	 return -1;
       }
@@ -159,14 +174,14 @@ static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigne
       AsciiDigest(ascii, digest);
 
       if(!tag->selfOk || tag->rangeStart != start || tag->rangeSize != tag->pos - start)
-      {  print_tag(tag, start, _("damaged tag"));
+      {  print_tag(out, tag, start, _("damaged tag"));
 	 (*bad)++;
       }
       else if(strcmp(ascii, tag->md5))
-      {  print_tag(tag, start, _("MD5 MISMATCH"));
+      {  print_tag(out, tag, start, _("MD5 MISMATCH"));
 	 (*bad)++;
       }
-      else print_tag(tag, start, _("good"));
+      else print_tag(out, tag, start, _("good"));
 
       if(tag->type == RLSB_TAG || tag->type == SESSION_TAG)
 	 return tag->pos;
@@ -178,7 +193,7 @@ static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigne
 	 || ImageReadSectors(image, buf, next, 1) != 1
 	 || parse_tag(buf, tag) <= SB_TAG
 	 || tag->pos != next)
-      {  PrintLog(_("- %-17s: missing (expected at sector %" PRId64 ")\n"), "next tag", next);
+      {  tag_log(out, _("- %-17s: missing (expected at sector %" PRId64 ")\n"), "next tag", next);
 	 (*bad)++;
 	 return -1;
       }
@@ -186,10 +201,13 @@ static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigne
 }
 
 /* Look for xorriso checksum tags in the image file and verify them.
-   Prints nothing if the image has no such tags. */
+   Prints nothing and returns NULL if the image has no such tags,
+   otherwise returns the printed text (to be freed by the caller). */
 
-void CheckXorrisoTags(char *image_name)
+char* CheckXorrisoTags(char *image_name)
 {  Image *image = g_malloc0(sizeof(Image));
+   GString *out;
+   char *result = NULL;
    unsigned char *buf;
    gint64 start = 0;
    int found = 0, bad = 0;
@@ -200,11 +218,12 @@ void CheckXorrisoTags(char *image_name)
    image->file = LargeOpen(image_name, O_RDONLY, IMG_PERMS);
    if(!image->file)
    {  g_free(image);
-      return;
+      return NULL;
    }
    CalcSectors(image->file->size, &image->sectorSize, &image->inLast);
 
    buf = g_malloc(CHUNK*2048);
+   out = g_string_new(NULL);
 
    while(start+32 <= (gint64)image->sectorSize)
    {  XorrisoTag tag;
@@ -222,18 +241,24 @@ void CheckXorrisoTags(char *image_name)
 	 break;
 
       if(!found++)
-	 PrintLog(_("\nxorriso MD5 checksum tags:\n"));
+	 tag_log(out, _("\nxorriso MD5 checksum tags:\n"));
 
-      end = check_session(image, start, &tag, buf, &bad);
+      end = check_session(image, start, &tag, buf, &bad, out);
       if(end < 0)
 	 break;
       start = (end/32+1)*32;
    }
 
    if(found && !bad)
-      PrintLog(_("- all xorriso checksums are good.\n"));
+      tag_log(out, _("- all xorriso checksums are good.\n"));
+
+   if(found)
+      result = g_strdup(g_strstrip(out->str));
+   g_string_free(out, TRUE);
 
    g_free(buf);
    LargeClose(image->file);
    g_free(image);
+
+   return result;
 }
