@@ -1553,6 +1553,22 @@ if try "reading image with missing master header, exhaustive" read_bad_master_ex
   run_regtest read_bad_master_exhaustive "--spinup-delay=0 -r -v -a RS02" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Read an image with the ecc data behind 150 zero sectors of padding,
+# as xorriso appends them by default. The quick search must find the
+# master header behind the padding. Sector 32768 is erased so that the
+# quick search can not fall back to a header copy.
+
+if try "reading image with ecc behind 150 sectors padding" read_padded; then (
+
+  $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+  dd if=/dev/zero bs=2048 count=150 >>$SIMISO 2>/dev/null
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS02 -n$ECCSIZE -c >>$LOGFILE 2>&1
+  $NEWVER -i$SIMISO --debug --erase 32768 >>$LOGFILE 2>&1
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_padded "--spinup-delay=0 -r" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Read an image containing one header with an invalid cookie.
 # Does not produce a warning message while reading
 # Change to better behaviour?

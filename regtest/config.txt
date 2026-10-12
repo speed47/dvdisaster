@@ -300,6 +300,7 @@ RS02_read_no_tao_tail yes
 RS02_read_incompatible_ecc yes
 RS02_read_bad_master yes
 RS02_read_bad_master_exhaustive yes
+RS02_read_padded yes
 RS02_read_bad_header yes
 RS02_read_bad_headers yes
 RS02_read_missing_data_sectors yes
@@ -521,6 +522,7 @@ RS03i_read_with_wrong_rs01_file yes
 RS03i_read_with_rs03_file yes
 RS03i_read_with_wrong_rs03_file yes
 RS03i_read_crc_section_with_uncorrectable_dsm yes
+RS03i_read_padded yes
 RS03i_read_with_missing_header yes
 RS03i_read_with_missing_header_exhaustive yes
 RS03i_read_with_missing_iso_header_exhaustive yes

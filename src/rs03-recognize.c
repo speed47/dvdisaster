@@ -374,6 +374,16 @@ EccHeader* FindRS03HeaderInImage(Image *image)
 	   return eh;
 	 }
       }
+
+      /* xorriso appends 150 sectors of padding by default */
+      hdr_pos = (gint64)ii->volumeSize + 150;
+      if(ImageReadSectors(image, buf, hdr_pos, 2) == 2)
+	{  eh = valid_header(buf, hdr_pos, TRUE);
+	 if(eh) 
+	 { Verbose("FindRS03HeaderInImage(): Header found at pos +150\n"); 
+	   return eh;
+	 }
+      }
    }
       
    return NULL;

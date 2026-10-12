@@ -217,6 +217,15 @@ int RS02Recognize(Image *image)
 	 FreeAlignedBuffer(ab);
 	 return TRUE;
       }
+
+      /* xorriso appends 150 sectors of padding after the ISO image by default,
+	 so the ecc data starts after the padding. */
+
+      if(try_sector(image, iso_size+150, &image->eccHeader, ab->buf) == HEADER_FOUND)
+      {  Verbose("Root sector search at +150 successful\n");
+	 FreeAlignedBuffer(ab);
+	 return TRUE;
+      }
    }
 
    /* This concludes the non-exhaustive search, where we tried to look for
