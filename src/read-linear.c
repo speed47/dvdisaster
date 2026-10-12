@@ -760,7 +760,7 @@ void ReadMediumLinear(gpointer data)
    int nsectors; 
    char *t = NULL;
    int status,n;
-   int tao_tail;
+   int tao_tail, run_out;
    int i;
 
    /*** This value might be temporarily changed later. */
@@ -1417,10 +1417,15 @@ step_counter:
 
    PrintLog("\n%s\n",t);
 
+   /* The two unreadable run-out sectors at the end of a TAO CD don't count as defects */
+
+   run_out = rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors
+             && !Closure->noTruncate ? tao_tail : 0;
+
    ReportDevice(rc->image->dh);
    ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
    ReportNumber(rc->scanMode ? "scan" : "read", "readable", rc->readOK);
-   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors);
+   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors - run_out);
    ReportNumber(rc->scanMode ? "scan" : "read", "crc_errors", Closure->crcErrors);
 
    if(Closure->guiMode)
@@ -1440,7 +1445,7 @@ step_counter:
    if(!Closure->fixedSpeedValues)
      PrintTimeToLog(rc->readTimer, "for reading/scanning.\n");
 
-   if(rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors && !Closure->noTruncate)
+   if(run_out)
    {  int answer;
    
       if(Closure->guiMode)

@@ -92,6 +92,7 @@ RS01_scan_crc_errors_with_ecc yes
 RS01_scan_shorter_with_ecc yes
 RS01_scan_longer_with_ecc yes
 RS01_scan_tao_tail_with_ecc yes
+RS01_scan_tao_tail_json yes
 RS01_scan_no_tao_tail_with_ecc yes
 RS01_scan_more_missing_at_end_with_ecc yes
 RS01_scan_with_double_ecc yes

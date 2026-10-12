@@ -845,6 +845,20 @@ if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then (
   run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
+# Same, with a json report: the run-out sectors are not counted as unreadable
+
+if try "scanning image, tao tail case, json report" scan_tao_tail_json; then (
+
+  cp $MASTERISO $SIMISO
+  cat fixed-random-sequence >>$SIMISO
+  $NEWVER --debug -i$SIMISO --erase 21000-21001 >>$LOGFILE 2>&1
+
+  replace_config ignore-iso-size 1
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest scan_tao_tail_json "--ignore-iso-size --spinup-delay=0 -s --json -" $ISODIR/no.iso  $MASTERECC EXITCODE
+) & limit_jobs; fi
+
 # Scan image with error correction data available
 # with two defective sectors at the end and the --dao option
 

@@ -1,0 +1,56 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21002 sectors, created 16-07-2006.
+
+Scanning medium for read errors.
+Reading CRC information from ecc data (RS01) ... done.
+Sector 21000, try 1: Medium Error; Unrecovered read error.
+Sector 21000: Medium Error; Unrecovered read error.
+Sector 21001, try 1: Medium Error; Unrecovered read error.
+Sector 21001: Medium Error; Unrecovered read error.
+
+2 unreadable sectors.
+* Warning: 2 sectors missing at the end of the disc.
+*          This is okay if the CD was written in TAO (track at once) mode.
+*          See the manual for details.
+*          Use the --dao option to disable this message.
+{
+  "program": "dvdisaster",
+  "actions": ["scan"],
+  "device": "sim-cd",
+  "exit_code": 0,
+  "verdict": "ok",
+  "drive": {
+    "info": "Simulated CD drive 1.00"
+  },
+  "medium": {
+    "type": "CD-R mode 1",
+    "manufacturer": "-",
+    "sectors": 21002
+  },
+  "ecc": {
+    "codec": "RS01",
+    "data_bytes": 223,
+    "ecc_bytes": 32,
+    "redundancy": 14.3,
+    "medium_sectors": 21000,
+    "medium_md5": "9503f278d4550a9507a317664481adf8"
+  },
+  "scan": {
+    "readable": 21000,
+    "unreadable": 0,
+    "crc_errors": 0
+  },
+  "ecc_file": {
+    "path": "rs01-master.ecc",
+    "size": 6314016
+  }
+}
+Exit status: 0
