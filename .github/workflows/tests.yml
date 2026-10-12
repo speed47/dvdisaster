@@ -199,7 +199,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev man jq
     - name: configure
       env:
-        CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
+        FORCE_CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
         LDFLAGS: -fsanitize=address,undefined
       run: ./configure --with-gui=no
     - name: make
@@ -209,5 +209,17 @@ jobs:
         REGTEST_NO_UTF8: 1
         MAX_JOBS: 4
       run: |
-        mkdir -p /var/tmp/regtest
-        ./regtest/runtests.sh
+        # Sanitizer reports go to files, so that those of commands which only
+        # prepare test data (their output isn't compared) are seen too
+        logs="$RUNNER_TEMP/sanitizer-logs"
+        mkdir -p "$logs" /var/tmp/regtest
+        export ASAN_OPTIONS="detect_leaks=0:log_path=$logs/asan"
+        export UBSAN_OPTIONS="print_stacktrace=1:log_path=$logs/ubsan"
+        status=0
+        ./regtest/runtests.sh || status=$?
+        if compgen -G "$logs/*" >/dev/null; then
+          cat "$logs"/*
+          echo "::error::sanitizer reports found"
+          exit 1
+        fi
+        exit $status
