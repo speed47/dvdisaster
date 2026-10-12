@@ -230,7 +230,7 @@ void WriteReport(char *error_msg)
 
    if(!strcmp(Closure->jsonFile, "-"))
       file = stdout;
-   else file = fopen(Closure->jsonFile, "w");
+   else file = g_fopen(Closure->jsonFile, "wb");
 
    if(!file)
    {  g_fprintf(stderr, _("Could not open %s: %s"), Closure->jsonFile, strerror(errno));
