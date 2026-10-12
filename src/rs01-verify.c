@@ -40,6 +40,7 @@ void ResetRS01VerifyWindow(Method *self)
    GuiSetLabelText(wl->cmpImageMd5Sum, "-");
    GuiSetLabelText(wl->cmpImageMargin, "-");
    GuiSetLabelText(wl->cmpImageResult, "");
+   GuiSetLabelText(wl->cmpXorrisoTags, "");
    GuiSwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
 
    GuiSetLabelText(wl->cmpEccEmptyMsg, "");
@@ -267,6 +268,10 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
    lab = wl->cmpImageResult = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 6, 2, 1);
+
+   lab = wl->cmpXorrisoTags = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_grid_attach(GTK_GRID(grid2), lab, 1, 6, 2, 1);
 
    /*** Image spiral */
@@ -987,5 +992,12 @@ skip_ecc:
    /*** Close and clean up */
 
 terminate:
+   if(Closure->guiMode && !Closure->quickVerify)
+   {  char *tags = CheckXorrisoTags(Closure->imageName);
+
+      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
+      g_free(tags);
+   }
+
    cleanup(vc);
 }

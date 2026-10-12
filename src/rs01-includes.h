@@ -61,6 +61,7 @@ typedef struct
    GtkWidget *cmpImageMd5Sum;
    GtkWidget *cmpImageMargin;
    GtkWidget *cmpImageResult;
+   GtkWidget *cmpXorrisoTags;
 
    GtkWidget *cmpEccNotebook;
    GtkWidget *cmpEccEmptyMsg;
