@@ -113,7 +113,7 @@ static char *find_ecc_file(Image *image, char *dir)
 
    while((name = g_dir_read_name(gdir)))
      if(strlen(name) >= 4 && !g_ascii_strcasecmp(name+strlen(name)-4, ".ecc"))
-       g_ptr_array_add(names, g_build_filename(dir, name, NULL));
+       g_ptr_array_add(names, g_build_path("/", dir, name, NULL));
    g_dir_close(gdir);
 
    /* sorted for reproducible results */
