@@ -131,8 +131,12 @@ ${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 dvdisaster: $(OFILES)
 	@echo "Linking  : dvdisaster"
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
-	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null ; \
-	     $(CC) $(LOPTS) $(OFILES) $(LIBS) ${BUILDTMP}/winres.o -o dvdisaster ; \
+	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null || exit $$?; \
+	     $(CC) $(LOPTS) $(OFILES) $(LIBS) ${BUILDTMP}/winres.o -o dvdisaster || exit $$?; \
+	     if echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
+	     then echo "Linking  : dvdisaster.com"; \
+	          $(CC) $(CFLAGS) contrib/win-console-launcher.c -o dvdisaster.com ; \
+	     fi ; \
 	else $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
 	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
@@ -280,6 +284,9 @@ install: dvdisaster manual
 	@echo "Installing package..."
 	install -d "$(BUILDROOT)$(BINDIR)"
 	install dvdisaster "$(BUILDROOT)$(BINDIR)"
+	@if test "$(CFG_SYS_OPTIONS)" = -DSYS_MINGW && echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
+	then install dvdisaster.com "$(BUILDROOT)$(BINDIR)"; \
+	fi
 	install -d "$(BUILDROOT)$(DOCSUBDIR)"
 	install -m 644 CHANGELOG "$(BUILDROOT)$(DOCSUBDIR)"
 	install -m 644 COPYING "$(BUILDROOT)$(DOCSUBDIR)"
@@ -307,6 +314,9 @@ install: dvdisaster manual
 	@echo "# Usage: sh dvdisaster-uninstall.sh" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@echo >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@echo "rm -f $(BINDIR)/dvdisaster $(BINDIR)/dvdisaster-uninstall.sh" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
+	@if test "$(CFG_SYS_OPTIONS)" = -DSYS_MINGW && echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
+	then echo 'rm -f "$(BINDIR)/dvdisaster.com"' >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"; \
+	fi
 	@echo "rm -f \"$(DOCSUBDIR)/CHANGELOG\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@echo "rm -f \"$(DOCSUBDIR)/COPYING\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
 	@echo "rm -f \"$(DOCSUBDIR)/CREDITS.de\"" >> "$(BUILDROOT)$(BINDIR)/dvdisaster-uninstall.sh"
@@ -326,6 +336,9 @@ install: dvdisaster manual
 uninstall:
 	@echo "Uninstalling package..."
 	rm -f "$(BINDIR)/dvdisaster" "$(BINDIR)/dvdisaster-uninstall.sh"
+	@if test "$(CFG_SYS_OPTIONS)" = -DSYS_MINGW && echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
+	then rm -f "$(BINDIR)/dvdisaster.com"; \
+	fi
 	rm -f "$(DOCSUBDIR)/CHANGELOG"
 	rm -f "$(DOCSUBDIR)/COPYING"
 	rm -f "$(DOCSUBDIR)/CREDITS.de"
@@ -354,7 +367,7 @@ distclean: clean
 
 clean:
 	@echo "Removing rebuildable files"
-	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
+	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster dvdisaster.com .dvdisaster core core.* *.core
 	@rm -f "$(BUILDTMP)"/inlined-icons.c src/help-dialogs.h
 	@rm -f "$(BUILDTMP)"/test-syndromes "$(BUILDTMP)"/test-syndromes.exe
 	@find . -name \*\~ -print | xargs rm -f;
