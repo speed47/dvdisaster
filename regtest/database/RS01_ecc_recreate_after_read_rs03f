@@ -84,6 +84,8 @@ try_sector: trying sector 21000
 try_sector: read error, trying next header
 try_sector: trying sector 20850
 try_sector: no cookie, skipping current modulo
+try_sector: trying sector 21150
+try_sector: read error, trying next header
 RS02Recognize: quick RS02 search, attempting up to 3 sector reads max
 Medium rewriteable: FALSE
 FindHeaderInMedium: Trying modulo 4611686018427387904
@@ -239,6 +241,8 @@ try_sector: trying sector 21000
 try_sector: read error, trying next header
 try_sector: trying sector 20850
 try_sector: no cookie, skipping current modulo
+try_sector: trying sector 21150
+try_sector: read error, trying next header
 RS02Recognize: No EH, entering exhaustive search
 FindHeaderInMedium: Trying modulo 4611686018427387904
 FindHeaderInMedium: Trying modulo 2305843009213693952

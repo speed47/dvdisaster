@@ -2150,6 +2150,20 @@ if try "crc section with uncorrectable dead sector markers" read_crc_section_wit
   run_regtest read_crc_section_with_uncorrectable_dsm  "--spinup-delay=0 -r " $TMPISO  $NO_FILE
 ) & limit_jobs; fi
 
+# Read an image with the ecc data behind 150 zero sectors of padding,
+# as xorriso appends them by default. The quick search must find the
+# header behind the padding.
+
+if try "reading image with ecc behind 150 sectors padding" read_padded; then (
+
+  $NEWVER --debug -i$SIMISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+  dd if=/dev/zero bs=2048 count=150 >>$SIMISO 2>/dev/null
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_padded "--spinup-delay=0 -r" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Normal sized image with missing ecc header; without exhaustive search.
 # In the first slice, the CRC sector and some other sectors are unreadable.
 
