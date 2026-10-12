@@ -205,6 +205,12 @@ if test "$cfg_with_efence" == "yes"; then
   fi
 fi
 
+# $FORCE_CFLAGS go last so that they override the defaults above (e.g. -O2)
+
+if test -n "$FORCE_CFLAGS"; then
+  CFG_CFLAGS="$CFG_CFLAGS $FORCE_CFLAGS"
+fi
+
 # -------------- end of manual configuration --------------------
 
 # Do not proceed further if in --help mode
