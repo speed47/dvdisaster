@@ -377,7 +377,7 @@ void WriteMapfile(char *image_name, char *map_name)
    if(!image)
      Stop(_("Can't open %s:\n%s"), image_name, strerror(errno));
 
-   map = g_fopen(map_name, "w");
+   map = g_fopen(map_name, "wb");
    if(!map)
    {  LargeClose(image);
       Stop(_("Can't open %s:\n%s"), map_name, strerror(errno));
