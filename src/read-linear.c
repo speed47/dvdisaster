@@ -1384,6 +1384,7 @@ step_counter:
       if(corrupted_sectors > 0 && !Closure->readErrors)
 	{  t = g_strdup_printf(_("All sectors are readable, but %d contain defective content."),
 			       corrupted_sectors);
+	   SetExitCode(EXIT_CODE_DEFECTS);
       }
       else
       /* Image was fully readable and had no CRC errors (if CRC was available at all!).
@@ -1401,10 +1402,13 @@ step_counter:
 	 {  t = g_strdup(_("All sectors successfully read, but wrong ecc md5sum."));
 	 }
 
-	 if(!t) 
+	 if(t) SetExitCode(EXIT_CODE_DEFECTS);
+	 else
 	 {  if(rc->eccMethod) /* we had CRC sums to compare against */
 	    {  if(rc->crcIncomplete)
-		    t = g_strdup(_("All sectors successfully read, but incomplete or damaged checksums."));
+	       {  t = g_strdup(_("All sectors successfully read, but incomplete or damaged checksums."));
+		  SetExitCode(EXIT_CODE_DEFECTS);
+	       }
 	       else t = g_strdup(_("All sectors successfully read. Checksums match."));
 	    }
 	    else t = g_strdup(_("All sectors successfully read."));
@@ -1423,6 +1427,11 @@ step_counter:
 				  Closure->crcErrors, Closure->readErrors);
       }
    }
+
+   /* Unreadable sectors set the exit code further below (TAO tail case) */
+
+   if(Closure->crcErrors)
+      SetExitCode(EXIT_CODE_DEFECTS);
 
    PrintLog("\n%s\n",t);
    if(Closure->guiMode)
@@ -1475,7 +1484,7 @@ step_counter:
         if(!LargeTruncate(rc->writerImage, (gint64)(2048*(rc->image->dh->sectors-tao_tail))))
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
    }
-   else if(Closure->readErrors) exitCode = EXIT_FAILURE;
+   else if(Closure->readErrors) SetExitCode(EXIT_CODE_DEFECTS);
 
    /*** Eject medium */
 

@@ -482,6 +482,16 @@ find_dotfile:
 GlobalClosure *Closure;
 int exitCode = EXIT_SUCCESS;
 
+/* Combine the results of several actions:
+   an error is kept, otherwise the most severe result wins. */
+
+void SetExitCode(int code)
+{  if(exitCode == EXIT_FAILURE)
+      return;
+   if(code == EXIT_FAILURE || code > exitCode)
+      exitCode = code;
+}
+
 void InitClosure()
 {  int v1=0,v2=0,v3=0,dots=0;
    char *v,version[strlen(VERSION)+1];

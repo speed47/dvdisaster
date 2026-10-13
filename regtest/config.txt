@@ -320,6 +320,7 @@ RS02_read_multipass_ecc_partial_success yes
 # Reading tests (adaptive)
 
 RS02_adaptive_good yes
+RS02_adaptive_insufficient yes
 RS02_adaptive_good_file yes
 RS02_adaptive_good_verbose yes
 RS02_adaptive_shorter yes
@@ -364,6 +365,7 @@ RS03i_bad_crc_cookie yes
 RS03i_bad_crc_checksum yes
 RS03i_missing_crc_sectors yes
 RS03i_missing_data_sectors yes
+RS03i_uncorrectable_block yes
 RS03i_missing_ecc_sectors yes
 RS03i_data_bad_byte yes
 RS03i_ecc_bad_byte yes
@@ -436,6 +438,7 @@ RS03i_fix_trailing_tao yes
 RS03i_fix_trailing_garbage yes
 RS03i_fix_trailing_garbage2 yes
 RS03i_fix_correctable yes
+RS03i_fix_uncorrectable_block yes
 RS03i_fix_border_cases_erasures yes
 RS03i_fix_border_cases_crc_errors yes
 RS03i_fix_layer_multiple yes

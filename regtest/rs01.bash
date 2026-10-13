@@ -52,7 +52,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 if try "good image" good; then (
 
-   run_regtest good "-t" $MASTERISO $MASTERECC
+   run_regtest good "-t" $MASTERISO $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Test good files
@@ -62,7 +62,7 @@ if try "good image, quick test" good_quick; then (
 
 # Test with neither image nor ecc file
 if try "missing files" no_files; then (
-   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc
+   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Test with missing image, ecc file
@@ -83,7 +83,7 @@ if try "defective image, no ecc" defective_image_no_ecc; then (
    $NEWVER -i$TMPISO --debug --erase 12450-12457 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
-  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc
+  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
@@ -689,7 +689,7 @@ REGTEST_SECTION="Scanning tests"
 if try "scanning image, no ecc data" scan_no_ecc; then (
 
   extra_args="--debug -d sim-cd --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest scan_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso $ISODIR/no.ecc
+  run_regtest scan_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Scan image from non-existant device
@@ -723,7 +723,7 @@ if try "scanning image, defective media, no ecc data" scan_defective_no_ecc; the
   $NEWVER --debug -i$SIMISO --erase 2410 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_defective_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc
+  run_regtest scan_defective_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODE
 ) & limit_jobs; fi
 
 # Scan image from above test again, this time with a 1 sector skip size
@@ -782,7 +782,7 @@ if try "scanning new image with invalid range, no ecc data" scan_new_with_invali
 if try "scanning image, ecc data" scan_with_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest scan_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
+  run_regtest scan_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Scan image with non existing error correction file given
@@ -819,7 +819,7 @@ if try "scanning image, crc errors, ecc data" scan_crc_errors_with_ecc; then (
   $NEWVER --debug -i$SIMISO --byteset 20999,55,123 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_crc_errors_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
+  run_regtest scan_crc_errors_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -845,7 +845,7 @@ if try "scanning image, more sectors than expected, ecc data" scan_longer_with_e
     
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
+  run_regtest scan_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -859,7 +859,7 @@ if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then (
     
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC
+  run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -1193,7 +1193,7 @@ if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then (
   $NEWVER --debug -i$SIMISO --byteset 20999,55,123 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
+  run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODE
 ) & limit_jobs; fi
 
 # Read image with error correction data available

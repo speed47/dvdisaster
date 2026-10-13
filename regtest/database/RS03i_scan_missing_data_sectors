@@ -25,3 +25,4 @@ Sector 22448, try 1: Medium Error; Unrecovered read error.
 Sector 22448: Medium Error; Unrecovered read error. Skipping 15 sectors.
 
 96 unreadable sectors.
+Exit status: 2

@@ -81,6 +81,12 @@ recover unreadable sectors if the disc becomes damaged at a later time.
 \fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-s\fP
 Scans the medium in drive \fI/dev/hdc\fP for errors.
 .TP
+\fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-e\fP \fIcorr.ecc\fP \fB-s\fP
+Verifies the medium in drive \fI/dev/hdc\fP against the error correction file
+\fIcorr.ecc\fP without creating an image: all sectors must be readable and
+match their CRC sums from \fIcorr.ecc\fP. Omit \fB-e\fP for augmented media.
+The exit status is 0 only if no defects were found.
+.TP
 \fBdvdisaster\fP \fB-d\fP \fI/dev/hdc\fP \fB-i\fP \fImedium.iso\fP \fB-r\fP
 Reads an image from drive \fI/dev/hdc\fP into the file \fImedium.iso\fP.
 .TP
@@ -133,7 +139,13 @@ Create .ecc information for the medium image.
 Try to fix medium image using .ecc information.
 .TP
 .B \-s, \-\-scan
-Scan the medium for read errors.
+Scan the medium for read errors. If error correction data is available
+(an ecc file given with \-e, or an augmented medium), the sectors are also
+compared against its CRC sums. No image is written.
+The last line summarizes the result. The exit status is 0 if all sectors
+were readable and matched their CRC sums, and non-zero otherwise.
+Whether a defective medium can still be repaired is shown by \-t after
+reading an image with \-r.
 .TP
 .B \-t, \-\-test, \-tq, \-\-test=q
 Test integrity of the .iso and .ecc files. When the
@@ -437,6 +449,37 @@ wait n seconds for drive to spin up.
 .B \-\-version
 print version number and some configuration information.
 .PP
+
+.SH EXIT STATUS
+.TP
+.B 0
+Success; no defects were found (or none had to be repaired).
+.TP
+.B 1
+Error; the action could not be carried out, e.g. because of invalid
+options, missing or unusable files, drive or I/O errors.
+This is also returned after printing the help text.
+.TP
+.B 2
+Defects were found, but no data loss was detected: the medium or image
+has unreadable sectors or checksum errors, or the error correction data
+is damaged (\-s, \-r, \-t).
+With \-f, all defective sectors have been repaired.
+With \-t on RS02/RS03 data, a full recovery is possible.
+With \-\-adaptive-read, reading stopped because the missing sectors can
+be recovered with \-f.
+.TP
+.B 3
+Data loss; the defects can not be fully repaired with the available
+error correction data: \-f left unrepaired sectors, \-t predicts that
+full recovery is not possible (or found no error correction data for a
+defective image), or \-\-adaptive-read could not read enough data for a
+full recovery.
+.PP
+\-s and \-r (without \-\-adaptive-read) and \-t with RS01 do not estimate
+whether defects can be repaired and return 2 for any defects.
+When several actions are combined (e.g. \-r \-f), 1 takes precedence,
+otherwise the highest value is returned.
 
 .SH SEE ALSO
 .B Documentation

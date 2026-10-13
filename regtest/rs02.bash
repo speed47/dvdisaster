@@ -1040,7 +1040,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Scan image which is shorter than expected
@@ -1186,7 +1186,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains bad byte in the CRC section
@@ -1842,7 +1842,16 @@ REGTEST_SECTION="Reading tests (adaptive)"
 if try "reading good image" adaptive_good; then (
   cp $MASTERISO $SIMISO
 
-  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE
+  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Read a defective range which does not provide enough data for a full recovery
+
+if try "reading image with insufficient data" adaptive_insufficient; then (
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000-19000 >>$LOGFILE 2>&1
+
+  run_regtest adaptive_insufficient "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r500-1500 --adaptive-read" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Read into existing and complete image file

@@ -46,4 +46,6 @@ line 11   : run_regtest symbol args iso_image ecc_file
 	    command line.
 	    In CLI mode, args is prepended with extra_args and appended with switches
 	    for the iso_image and the ecc_file and then passed with the program
-	    call in the command line. 
+	    call in the command line. 	    An optional fifth argument may contain the words SORTED (sort the log
+	    before comparing it) and EXITCODE (append the program's exit status
+	    to the log; CLI mode only).

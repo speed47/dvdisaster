@@ -365,6 +365,10 @@ function run_regtest()
 
       echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE
       LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +4  >>$NEWLOG
+      local exit_status=${PIPESTATUS[0]}
+      if echo "$options" | grep -qw EXITCODE; then
+         echo "Exit status: $exit_status" >>$NEWLOG
+      fi
 
       if ! test -r $REFLOG; then
           pass="false"
