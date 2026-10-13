@@ -287,11 +287,11 @@ static int get_configuration(DeviceHandle *dh)
       return ret;
    }
 
-   data_length = ab->buf[0]<<24 | ab->buf[1]<<16 | ab->buf[2]<<8 | ab->buf[3];
+   data_length = (guint32)ab->buf[0]<<24 | ab->buf[1]<<16 | ab->buf[2]<<8 | ab->buf[3];
    dh->profile = ab->buf[6]<<8 | ab->buf[7];
    FreeAlignedBuffer(ab);
 
-   Verbose("# %d data len, %x current\n", data_length, dh->profile);
+   Verbose("# %u data len, %x current\n", data_length, dh->profile);
 
    switch(dh->profile)
    {  /* Note: subType handling is different for CD for historical reasons */
