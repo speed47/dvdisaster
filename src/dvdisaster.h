@@ -274,6 +274,8 @@ typedef struct _GlobalClosure
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
    int noProgress;      /* do not print the percentage progress indicator */
+   int quiet;           /* do not print anything except errors in CLI mode */
+   char *jsonFile;      /* write a machine readable report to this file */
    int dsmVersion;      /* 1 means new style dead sector marker */
    int unlinkImage;     /* delete image after ecc file creation */
    int confirmDeletion; /* do not ask whether files should be deleted */
@@ -436,6 +438,12 @@ typedef struct _GlobalClosure
 extern GlobalClosure *Closure;  /* these should be the only global variables! */
 extern int exitCode;            /* value to use on exit() */
 
+/* Exit codes in addition to EXIT_SUCCESS (0) and EXIT_FAILURE (1);
+   see EXIT STATUS in the man page */
+
+#define EXIT_CODE_DEFECTS   2       /* defects found, no data loss detected */
+#define EXIT_CODE_DATA_LOSS 3       /* defects which can not be fully repaired */
+
 #ifdef WITH_GUI_YES
    extern GdkRGBA transparent;
 #endif  /* WITH_GUI_YES */
@@ -572,6 +580,7 @@ int ProbeCacheLineSize();
 void InitClosure(void);
 void LocalizedFileDefaults(void);
 void FreeClosure(void);
+void SetExitCode(int);
 void WriteSignature(void);
 int  VerifySignature(void);
 
@@ -1351,6 +1360,18 @@ void GuiResetAdaptiveReadWindow();
 
 void GuiCreateAdaptiveReadWindow(GtkWidget*);
 
+
+/***
+ *** report.c
+ ***/
+
+void ReportString(char*, char*, char*);
+void ReportNumber(char*, char*, gint64);
+void ReportMd5(char*, char*, unsigned char*);
+void ReportAction(char*);
+void ReportDevice(struct _DeviceHandle*);
+void ReportEccHeader(EccHeader*);
+void WriteReport(char*);
 
 /***
  *** recover-raw.c

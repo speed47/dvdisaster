@@ -763,7 +763,7 @@ void ReadMediumLinear(gpointer data)
    int nsectors; 
    char *t = NULL;
    int status,n;
-   int tao_tail;
+   int tao_tail, run_out;
    int i;
 
    /*** This value might be temporarily changed later. */
@@ -1384,6 +1384,7 @@ step_counter:
       if(corrupted_sectors > 0 && !Closure->readErrors)
 	{  t = g_strdup_printf(_("All sectors are readable, but %d contain defective content."),
 			       corrupted_sectors);
+	   SetExitCode(EXIT_CODE_DEFECTS);
       }
       else
       /* Image was fully readable and had no CRC errors (if CRC was available at all!).
@@ -1401,10 +1402,13 @@ step_counter:
 	 {  t = g_strdup(_("All sectors successfully read, but wrong ecc md5sum."));
 	 }
 
-	 if(!t) 
+	 if(t) SetExitCode(EXIT_CODE_DEFECTS);
+	 else
 	 {  if(rc->eccMethod) /* we had CRC sums to compare against */
 	    {  if(rc->crcIncomplete)
-		    t = g_strdup(_("All sectors successfully read, but incomplete or damaged checksums."));
+	       {  t = g_strdup(_("All sectors successfully read, but incomplete or damaged checksums."));
+		  SetExitCode(EXIT_CODE_DEFECTS);
+	       }
 	       else t = g_strdup(_("All sectors successfully read. Checksums match."));
 	    }
 	    else t = g_strdup(_("All sectors successfully read."));
@@ -1424,7 +1428,24 @@ step_counter:
       }
    }
 
+   /* Unreadable sectors set the exit code further below (TAO tail case) */
+
+   if(Closure->crcErrors)
+      SetExitCode(EXIT_CODE_DEFECTS);
+
    PrintLog("\n%s\n",t);
+
+   /* The two unreadable run-out sectors at the end of a TAO CD don't count as defects */
+
+   run_out = rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors
+             && !Closure->noTruncate ? tao_tail : 0;
+
+   ReportDevice(rc->image->dh);
+   ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
+   ReportNumber(rc->scanMode ? "scan" : "read", "readable", rc->readOK);
+   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors - run_out);
+   ReportNumber(rc->scanMode ? "scan" : "read", "crc_errors", Closure->crcErrors);
+
    if(Closure->guiMode)
    {  if(rc->scanMode)
       {  GuiSwitchAndSetFootline(Closure->readLinearNotebook,
@@ -1442,7 +1463,7 @@ step_counter:
    if(!Closure->fixedSpeedValues)
      PrintTimeToLog(rc->readTimer, "for reading/scanning.\n");
 
-   if(rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors && !Closure->noTruncate)
+   if(run_out)
    {  int answer;
    
       if(Closure->guiMode)
@@ -1475,7 +1496,7 @@ step_counter:
         if(!LargeTruncate(rc->writerImage, (gint64)(2048*(rc->image->dh->sectors-tao_tail))))
 	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
    }
-   else if(Closure->readErrors) exitCode = EXIT_FAILURE;
+   else if(Closure->readErrors) SetExitCode(EXIT_CODE_DEFECTS);
 
    /*** Eject medium */
 

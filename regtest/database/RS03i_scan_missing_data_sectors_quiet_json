@@ -1,0 +1,28 @@
+ignore
+ignore
+  "actions": ["scan"],
+  "device": "sim-cd",
+  "exit_code": 2,
+  "verdict": "defects",
+  "drive": {
+    "info": "Simulated CD drive 1.00"
+  },
+  "medium": {
+    "type": "CD-R mode 1",
+    "manufacturer": "-",
+    "sectors": 24990
+  },
+  "ecc": {
+    "codec": "RS03",
+    "data_bytes": 216,
+    "ecc_bytes": 39,
+    "redundancy": 18.1,
+    "medium_sectors": 21000
+  },
+  "scan": {
+    "readable": 24894,
+    "unreadable": 96,
+    "crc_errors": 0
+  }
+}
+Exit status: 2

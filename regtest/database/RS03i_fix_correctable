@@ -39,3 +39,4 @@ CRC error in sector 2000
 Repaired sectors: 27 (27 data, 0 ecc)
 Good! All sectors are repaired.
 Erasure counts per ecc block:  avg =  1.0; worst = 2.
+Exit status: 2

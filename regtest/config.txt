@@ -10,6 +10,8 @@ INTERACTIVE_DIFF yes
 RS01_good yes
 RS01_good_quick yes
 RS01_no_files yes
+RS01_good_json yes
+RS01_no_files_quiet_json yes
 RS01_no_image yes
 RS01_no_ecc yes
 RS01_defective_image_no_ecc yes
@@ -93,6 +95,7 @@ RS01_scan_crc_errors_with_ecc yes
 RS01_scan_shorter_with_ecc yes
 RS01_scan_longer_with_ecc yes
 RS01_scan_tao_tail_with_ecc yes
+RS01_scan_tao_tail_json yes
 RS01_scan_no_tao_tail_with_ecc yes
 RS01_scan_more_missing_at_end_with_ecc yes
 RS01_scan_with_double_ecc yes
@@ -320,6 +323,7 @@ RS02_read_multipass_ecc_partial_success yes
 # Reading tests (adaptive)
 
 RS02_adaptive_good yes
+RS02_adaptive_insufficient yes
 RS02_adaptive_good_file yes
 RS02_adaptive_good_verbose yes
 RS02_adaptive_shorter yes
@@ -364,6 +368,8 @@ RS03i_bad_crc_cookie yes
 RS03i_bad_crc_checksum yes
 RS03i_missing_crc_sectors yes
 RS03i_missing_data_sectors yes
+RS03i_uncorrectable_block yes
+RS03i_uncorrectable_block_json yes
 RS03i_missing_ecc_sectors yes
 RS03i_data_bad_byte yes
 RS03i_ecc_bad_byte yes
@@ -436,6 +442,8 @@ RS03i_fix_trailing_tao yes
 RS03i_fix_trailing_garbage yes
 RS03i_fix_trailing_garbage2 yes
 RS03i_fix_correctable yes
+RS03i_fix_uncorrectable_block yes
+RS03i_fix_correctable_json yes
 RS03i_fix_border_cases_erasures yes
 RS03i_fix_border_cases_crc_errors yes
 RS03i_fix_layer_multiple yes
@@ -466,6 +474,7 @@ RS03i_scan_no_tao_tail yes
 RS03i_scan_incompatible_ecc yes
 RS03i_scan_bad_header yes
 RS03i_scan_missing_data_sectors yes
+RS03i_scan_missing_data_sectors_quiet_json yes
 RS03i_scan_missing_crc_sectors yes
 RS03i_scan_missing_ecc_sectors yes
 RS03i_scan_data_bad_byte yes

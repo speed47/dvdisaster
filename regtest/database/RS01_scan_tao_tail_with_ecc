@@ -21,3 +21,4 @@ Sector 21001: Medium Error; Unrecovered read error.
 *          This is okay if the CD was written in TAO (track at once) mode.
 *          See the manual for details.
 *          Use the --dao option to disable this message.
+Exit status: 0

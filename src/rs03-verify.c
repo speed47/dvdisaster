@@ -26,14 +26,6 @@
 
 #include "rs03-includes.h"
 
-#define EXIT_CODE_SIZE_MISMATCH 1
-#define EXIT_CODE_VERSION_MISMATCH 2
-
-#define EXIT_CODE_UNEXPECTED_EOF 10
-#define EXIT_CODE_MISSING_SECTOR 11
-#define EXIT_CODE_CHECKSUM_ERROR 12
-#define EXIT_CODE_SYNDROME_ERROR 13
-
 #ifdef WITH_GUI_YES
 
 /***
@@ -476,6 +468,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
    /* now see what is correctable */
    
    recoverable = expected - missing + correctable;
+   ReportNumber("verify", "recoverable_sectors", recoverable);
+   ReportNumber("verify", "worst_ecc_block_erasures", worst_ecc);
 
    if(damaged_sectors > 0)
    {  int percentage  = (1000*recoverable) / expected;
@@ -485,6 +479,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
+      SetExitCode(worst_ecc <= lay->nroots && recoverable >= expected
+		  ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
 
       GuiSetLabelText(vc->wl->cmpImageErasure, _("Erasure counts:"));
       GuiSetLabelText(vc->wl->cmpImagePrognosis, _("Prognosis:"));
@@ -647,7 +643,7 @@ static int check_syndromes(verify_closure *vc)
       PrintLog(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
 	       ecc_good, ecc_bad, ecc_bad_sub);
 
-      exitCode = EXIT_CODE_SYNDROME_ERROR;
+      SetExitCode(EXIT_CODE_DEFECTS);
    }
    return ecc_bad;
 }
@@ -763,7 +759,7 @@ void RS03Verify(Image *image)
 
 	 PrintLog(_("* Warning          : %s\n"), msg);
 	 g_free(msg);
-	 exitCode = EXIT_CODE_SIZE_MISMATCH;
+	 SetExitCode(EXIT_CODE_DEFECTS);
       }
    }
    
@@ -848,7 +844,7 @@ void RS03Verify(Image *image)
       if(!ecc_advice) 
 	ecc_advice = g_strdup_printf(_("<span %s>Please upgrade your version of dvdisaster!</span>"), Closure->redMarkup);
 
-      exitCode = EXIT_CODE_VERSION_MISMATCH;
+      SetExitCode(EXIT_FAILURE);
    }
 
    g_free(version);
@@ -876,6 +872,7 @@ void RS03Verify(Image *image)
 	 { 
 	   if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	   {  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
+	      SetExitCode(EXIT_CODE_DEFECTS);
 
 	      GuiSetLabelText(wl->cmpEccFingerprint, 
 			      _("<span %s>mismatch</span>"), Closure->redMarkup);
@@ -990,6 +987,7 @@ void RS03Verify(Image *image)
       else
 	PrintLog(_("* medium sectors   : %s (%s expected)\n"),
 		 image_size, expected_size);
+      SetExitCode(EXIT_CODE_DEFECTS);
       g_free(image_size);
       g_free(expected_size);
    }
@@ -1102,7 +1100,7 @@ void RS03Verify(Image *image)
 	    else ecc_missing++;
 	 }
 	 defective = TRUE;
-	 exitCode = EXIT_CODE_MISSING_SECTOR;
+	 SetExitCode(EXIT_CODE_DEFECTS);
       }
 
       /* Report dead sectors. Combine subsequent missing sectors into one report. */
@@ -1144,7 +1142,7 @@ void RS03Verify(Image *image)
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
-	    exitCode = EXIT_CODE_CHECKSUM_ERROR;
+	    SetExitCode(EXIT_CODE_DEFECTS);
 	 }
       }
       crc_idx++;
@@ -1251,6 +1249,11 @@ void RS03Verify(Image *image)
    AsciiDigest(data_digest, medium_sum);
 
    /* Do a resume of our findings */ 
+
+   ReportNumber("verify", "missing_sectors", total_missing);
+   ReportNumber("verify", "crc_errors", data_crc_errors);
+   if(!data_missing)
+      ReportString("verify", "data_md5", data_digest);
 
    if(!total_missing && !data_crc_errors && !csc->signatureErrors)
       PrintLog(_("- good image/file  : all sectors present\n"

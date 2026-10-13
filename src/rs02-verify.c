@@ -523,6 +523,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
    }
 
    recoverable = expected - missing + correctable;
+   ReportNumber("verify", "recoverable_sectors", recoverable);
+   ReportNumber("verify", "worst_ecc_block_erasures", worst_ecc);
 
    if(damaged_sectors > 0)
    {  int percentage  = (1000*recoverable) / expected;
@@ -532,6 +534,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
+      SetExitCode(worst_ecc <= vc->lay->nroots && recoverable >= expected
+		  ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
 
       if(Closure->guiMode)
       {  GuiSetLabelText(vc->wl->cmpEcc1Name, "");
@@ -882,11 +886,18 @@ void RS02Verify(Image *image)
 	    
    /* Do a resume of our findings */ 
 
+   ReportNumber("verify", "missing_sectors", total_missing);
+   ReportNumber("verify", "crc_errors", data_crc_errors + hdr_crc_errors);
+   if(!data_missing)
+      ReportString("verify", "data_md5", data_digest);
+
    if(!total_missing && !hdr_missing && !hdr_crc_errors && !data_crc_errors)
       PrintLog(_("- good image       : all sectors present\n"
 		 "- data md5sum      : %s\n"),data_digest);
    else
    {  gint64 total_crc_errors = data_crc_errors + hdr_crc_errors;
+
+      SetExitCode(EXIT_CODE_DEFECTS);
 
       if(!total_missing && !total_crc_errors)
          PrintLog(_("* suspicious image : contains damaged ecc headers\n"));
@@ -1001,7 +1012,7 @@ continue_with_ecc:
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
-
+     SetExitCode(EXIT_FAILURE);
 
      if(Closure->guiMode)
      {  GuiSetLabelText(wl->cmpEccRequires, 
@@ -1032,7 +1043,10 @@ continue_with_ecc:
    {  if(image->sectorSize > expected_sectors && image->sectorSize - expected_sectors <= 2)   
            PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"),
 		    expected_sectors);
-      else PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
+      else
+      {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
+	 SetExitCode(EXIT_CODE_DEFECTS);
+      }
 
       if(Closure->guiMode)
       {  GuiSetLabelText(wl->cmpEccMediumSectors, 
@@ -1053,7 +1067,10 @@ continue_with_ecc:
    {  int n = !memcmp(eh->mediumSum, medium_sum, 16);
 
       if(n) PrintLog(_("- data md5sum      : %s (good)\n"),hdr_digest);
-      else  PrintLog(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
+      else
+      {  PrintLog(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
+	 SetExitCode(EXIT_CODE_DEFECTS);
+      }
 
       if(n)
       {  GuiSetLabelText(wl->cmpEcc1Msg, "%s", hdr_digest);
@@ -1113,6 +1130,9 @@ continue_with_ecc:
 
 
    /*** Print final results */
+
+   if(ecc_md5_failure)
+      SetExitCode(EXIT_CODE_DEFECTS);
 
    try_it = prognosis(cc, total_missing + data_crc_errors - hdr_correctable, expected_sectors);
 

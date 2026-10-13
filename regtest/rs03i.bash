@@ -78,7 +78,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 
 if try "good image" good; then (
-  run_regtest good "-t" $MASTERISO $NO_FILE
+  run_regtest good "-t" $MASTERISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Test good files, quick test
@@ -173,7 +173,30 @@ if try "several missing data sectors" missing_data_sectors; then (
    $NEWVER -i$TMPISO --debug --erase 13420-14109 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --erase 17812 >>$LOGFILE 2>&1
 
-   run_regtest missing_data_sectors "-t" $TMPISO $NO_FILE
+   run_regtest missing_data_sectors "-t" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# One ecc block has more missing sectors than it can correct
+
+if try "uncorrectable ecc block" uncorrectable_block; then (
+   cp $MASTERISO $TMPISO
+   for i in $(seq 0 49); do
+      $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+   done
+
+   run_regtest uncorrectable_block "-t" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Same, with JSON report
+
+if try "uncorrectable ecc block, json report" uncorrectable_block_json; then (
+   cp $MASTERISO $TMPISO
+   for i in $(seq 0 49); do
+      $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+   done
+
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   run_regtest uncorrectable_block_json "-t --json -" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
 # Image contains several missing ecc sectors
@@ -1008,7 +1031,7 @@ if try "trying fix with no write permission" fix_no_write_perm; then (
 if try "trying fix with good image" fix_good_image; then (
   cp $MASTERISO $TMPISO
 
-  run_regtest fix_good_image "-f" $TMPISO $NO_FILE
+  run_regtest fix_good_image "-f" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Fix a truncated image
@@ -1065,7 +1088,30 @@ if try "trying to fix correctable image" fix_correctable; then (
   $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --byteset 2000,0,111 >>$LOGFILE 2>&1
 
-  run_regtest fix_correctable "-f" $TMPISO  $NO_FILE
+  run_regtest fix_correctable "-f" $TMPISO  $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Same, with JSON report
+
+if try "trying to fix correctable image, json report" fix_correctable_json; then (
+  cp $MASTERISO $TMPISO
+  $NEWVER --debug -i$TMPISO --erase 500-524 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPISO --byteset 2000,0,111 >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest fix_correctable_json "-f --json -" $TMPISO  $NO_FILE
+) & limit_jobs; fi
+
+# Fix image with one uncorrectable ecc block
+
+if try "trying to fix image with uncorrectable ecc block" fix_uncorrectable_block; then (
+  cp $MASTERISO $TMPISO
+  for i in $(seq 0 49); do
+     $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+  done
+
+  run_regtest fix_uncorrectable_block "-f" $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Fix image with missing sectors in several border locations
@@ -1347,7 +1393,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Scan complete / optimal image, verbose output
@@ -1458,7 +1504,21 @@ if try "scanning image with missing data sectors" scan_missing_data_sectors; the
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO  $NO_FILE
+   run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Same in quiet mode with JSON report on stdout.
+# Note that run_regtest drops the first three lines ("{", program, version).
+
+if try "scanning image with missing data sectors, quiet json report" scan_missing_data_sectors_quiet_json; then (
+   cp $MASTERISO $SIMISO
+   $NEWVER -i$SIMISO --debug --erase 1000-1049 >>$LOGFILE 2>&1
+   $NEWVER -i$SIMISO --debug --erase 21230 >>$LOGFILE 2>&1
+   $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
+
+   IGNORE_LOG_LINE='^  "(version|time)": '
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest scan_missing_data_sectors_quiet_json "--spinup-delay=0 -s -q --json -" $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains 1 row of missing sectors and a single one
@@ -1492,7 +1552,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains bad byte in the crc section
@@ -1502,7 +1562,7 @@ if try "scanning image with bad crc byte" scan_crc_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 21077,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_crc_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE
+   run_regtest scan_crc_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains bad byte in the ecc section
@@ -2001,7 +2061,7 @@ if try "reading image with missing data sectors" read_missing_data_sectors; then
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest read_missing_data_sectors "--spinup-delay=0 -r " $TMPISO  $NO_FILE
+   run_regtest read_missing_data_sectors "--spinup-delay=0 -r " $TMPISO  $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Image contains 1 row of missing sectors and a single one
