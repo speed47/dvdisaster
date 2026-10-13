@@ -196,9 +196,11 @@ jobs:
     - name: install prerequisites
       env:
         DEBIAN_FRONTEND: noninteractive
-      run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev man jq
+      run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev man jq clang
     - name: configure
       env:
+        # gcc ignores log_path for UBSan when combined with ASan (gcc bug 94328)
+        CC: clang
         FORCE_CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
         LDFLAGS: -fsanitize=address,undefined
       run: ./configure --with-gui=no
