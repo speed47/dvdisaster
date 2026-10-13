@@ -261,8 +261,10 @@ int RS02Recognize(Image *image)
 	 max_sectors = MAX(image->dh->readCapacity, image->dh->userAreaSize);
 	 break;
    }
-   if(max_sectors == 0)
-      Stop("max_sectors uninitialized");
+   if(max_sectors == 0)  /* empty image or medium: nothing to find */
+   {  FreeAlignedBuffer(ab);
+      return FALSE;
+   }
 
    try_next_header = CreateBitmap0(max_sectors);
    try_next_modulo = CreateBitmap0(max_sectors);

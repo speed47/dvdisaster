@@ -204,6 +204,7 @@ RS02_modulo_glitch yes
 RS02_modulo_glitch2 yes
 RS02_modulo_glitch3 yes
 RS02_modulo_glitch4 yes
+RS02_empty_image yes
 RS02_with_rs01_file yes
 RS02_with_wrong_rs01_file yes
 RS02_with_rs03_file yes
