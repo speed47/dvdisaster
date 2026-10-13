@@ -187,6 +187,11 @@ jobs:
 
   linux-sanitizers:
     runs-on: ubuntu-latest
+    # one job per codec: the sanitized build is slow
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [rs01, rs02, rs03f, rs03i]
     env:
       ASAN_OPTIONS: detect_leaks=0
     steps:
@@ -218,7 +223,7 @@ jobs:
         export ASAN_OPTIONS="detect_leaks=0:log_path=$logs/asan"
         export UBSAN_OPTIONS="print_stacktrace=1:log_path=$logs/ubsan"
         status=0
-        ./regtest/runtests.sh || status=$?
+        ./regtest/runtests.sh ${{ matrix.suite }}.bash || status=$?
         if compgen -G "$logs/*" >/dev/null; then
           cat "$logs"/*
           echo "::error::sanitizer reports found"

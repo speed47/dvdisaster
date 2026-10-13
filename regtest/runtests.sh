@@ -12,10 +12,12 @@ mkdir -p "$INTERACTIVE_DIR"
 
 export REGTEST_RUNNER=1
 
-# Run all codec test scripts in parallel
+# Run the given codec test scripts (default: all) in parallel
+suites=("$@")
+[ ${#suites[@]} -eq 0 ] && suites=(rs*.bash)
 pids=()
 scripts=()
-for i in rs*.bash; do
+for i in "${suites[@]}"; do
    ( DVDISASTER_SCSI_SIMULATED_NODELAY=1 ./$i ) &
    pids+=($!)
    scripts+=($i)
