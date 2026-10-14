@@ -151,6 +151,10 @@ reading an image with \-r.
 Test integrity of the .iso and .ecc files. When the
 "q" option is given, only information is output
 which can be gathered without fully scanning the files.
+If the image contains MD5 checksum tags as written by
+.B xorriso \-md5 on
+(superblock, directory tree and session tags), the full test also
+checks the image sectors against them. This works without ecc data.
 .TP
 .B \-u, \-\-unlink
 Delete .iso files (when other actions complete).

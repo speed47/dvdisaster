@@ -863,6 +863,9 @@ int main(int argc, char *argv[])
 	           Stop(_("RS01 method not available for comparing files."));
 	     
 	   method->verify(image);
+
+	   if(!Closure->quickVerify)
+	      g_free(CheckXorrisoTags(Closure->imageName));
 	}
 	break;
 
