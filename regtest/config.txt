@@ -104,6 +104,7 @@ RS01_scan_medium_with_dsm yes
 # Reading tests (linear)
 
 RS01_read_no_ecc yes
+RS01_read_abort_file yes
 RS01_read_no_ecc_good_file yes
 RS01_read_no_device yes
 RS01_read_no_device_access yes
