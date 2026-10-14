@@ -353,3 +353,71 @@ void CloseImage(Image *image)
 
   g_free(image);
 }
+
+/*
+ * Write a GNU ddrescue compatible mapfile describing which sectors
+ * of the image are present (+) or missing (-).
+ */
+
+static void write_map_run(FILE *map, guint64 pos, guint64 size, int present)
+{  fprintf(map, "0x%08" PRIx64 "  0x%08" PRIx64 "  %c\n", pos, size, present ? '+' : '-');
+}
+
+void WriteMapfile(char *image_name, char *map_name)
+{  LargeFile *image;
+   FILE *map;
+   unsigned char *buf;
+   guint64 size, sectors, s, run_start = 0;
+   int run_present = -1;
+
+   if(!LargeStat(image_name, &size))
+     Stop(_("Image file %s not present."), image_name);
+
+   image = LargeOpen(image_name, O_RDONLY, IMG_PERMS);
+   if(!image)
+     Stop(_("Can't open %s:\n%s"), image_name, strerror(errno));
+
+   map = g_fopen(map_name, "wb");
+   if(!map)
+   {  LargeClose(image);
+      Stop(_("Can't open %s:\n%s"), map_name, strerror(errno));
+   }
+
+   fprintf(map, "# Mapfile. Created by dvdisaster\n"
+	        "# current_pos  current_status  current_pass\n"
+	        "0x00000000     +               1\n"
+	        "#      pos        size  status\n");
+
+   buf = g_malloc(64*2048);
+   sectors = (size+2047)/2048;
+
+   for(s=0; s<sectors; s+=64)
+   {  int i, n = MIN(64, sectors-s);
+      int bytes = LargeRead(image, buf, n*2048);
+
+      if(bytes < 0) bytes = 0;
+      if(bytes < n*2048)   /* incomplete last sector */
+	 memset(buf+bytes, 0, n*2048-bytes);
+
+      for(i=0; i<n; i++)
+      {  int present = CheckForMissingSector(buf+2048*i, s+i, NULL, 0) == SECTOR_PRESENT;
+
+	 if(present != run_present)
+	 {  if(run_present >= 0)
+	       write_map_run(map, run_start*2048, (s+i-run_start)*2048, run_present);
+	    run_present = present;
+	    run_start = s+i;
+	 }
+      }
+   }
+
+   if(run_present >= 0)
+      write_map_run(map, run_start*2048, size-run_start*2048, run_present);
+
+   g_free(buf);
+   fclose(map);
+   LargeClose(image);
+
+   PrintLog(_("Mapfile written to %s.\n"), map_name);
+}
+

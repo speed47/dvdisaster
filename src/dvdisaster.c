@@ -95,6 +95,7 @@ typedef enum
    MODIFIER_IGNORE_ISO_SIZE,
    MODIFIER_IGNORE_RS03_HEADER,
    MODIFIER_INTERNAL_REREADS,
+   MODIFIER_MAPFILE,
    MODIFIER_NO_BDR_DEFECT_MANAGEMENT,
    MODIFIER_NO_PROGRESS,
    MODIFIER_OLD_DS_MARKER,
@@ -253,6 +254,7 @@ int main(int argc, char *argv[])
 	{"internal-rereads", 1, 0, MODIFIER_INTERNAL_REREADS },
         {"image", 1, 0, 'i'},
 	{"jump", 1, 0, 'j'},
+	{"mapfile", 1, 0, MODIFIER_MAPFILE },
 	{"marked-image", 1, 0, MODE_MARKED_IMAGE },
 	{"medium-info", 0, 0, MODE_MEDIUM_INFO },
 	{"merge-images", 1, 0, MODE_MERGE_IMAGES },
@@ -543,6 +545,12 @@ int main(int argc, char *argv[])
 	    }
 	 }
 	   break;
+	 case MODIFIER_MAPFILE:
+	    g_free(Closure->mapFile);
+	    Closure->mapFile = g_strdup(optarg);
+	    if(mode == MODE_NONE)
+	       mode = MODE_SEQUENCE;
+	    break;
 	 case MODIFIER_NO_BDR_DEFECT_MANAGEMENT:
 	    Closure->noBdrDefectManagement = TRUE;
 	    break;
@@ -946,6 +954,11 @@ int main(int argc, char *argv[])
 	break;
    }
 
+   /*** Write a ddrescue mapfile of the image if requested */
+
+   if(Closure->mapFile && mode == MODE_SEQUENCE)
+      WriteMapfile(Closure->imageName, Closure->mapFile);
+
    if(debug_arg) g_free(debug_arg);
 
    /*** If no mode was selected, print the help screen. */
@@ -1006,6 +1019,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-fatal-sense       - continue reading after potentially fatal error conditon\n"));
       PrintCLI(_("  --ignore-iso-size          - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
+      PrintCLI(_("  --mapfile f                - write a GNU ddrescue mapfile of the image to file f\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));

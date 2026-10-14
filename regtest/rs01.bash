@@ -60,6 +60,14 @@ if try "good image, quick test" good_quick; then (
   run_regtest good_quick "-tq" $MASTERISO $MASTERECC
 ) & limit_jobs; fi
 
+# Export a ddrescue mapfile of an image with missing sectors
+if try "exporting a ddrescue mapfile" mapfile_export; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase 1000-1099 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 20999 >>$LOGFILE 2>&1
+   run_regtest mapfile_export "--mapfile $TMPECC" $TMPISO $TMPECC
+) & limit_jobs; fi
+
 # Test with neither image nor ecc file
 if try "missing files" no_files; then (
    run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc
