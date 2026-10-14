@@ -1,0 +1,11 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 400 medium sectors and 56 bytes.
+0 MiB data, 467 MiB ecc (170 roots; 200.0% redundancy), 230 MiB padding.
+Image has been augmented with error correction data.
+New image size is 701 MiB (359295 sectors).
