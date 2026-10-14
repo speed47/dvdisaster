@@ -300,7 +300,8 @@ typedef struct _GlobalClosure
    int eject;           /* eject medium on success */
    int readingPasses;   /* try to read medium n times */
    int pauseAfter;      /* pause after given amount of minutes */
-   int pauseDuration;   /* duration of pause in minutes */
+   int pauseAfterErrors;/* pause after given amount of read errors */
+   int pauseDuration;   /* duration of pause in seconds */
    int pauseEject;      /* Eject medium during pause */
    int ignoreFatalSense;/* Continue reading after potential fatal sense errors */
    int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
