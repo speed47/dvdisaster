@@ -88,12 +88,95 @@ void ExamineECC(Image *image)
 } 
 
 /***
+ *** Search a directory for the .ecc file matching the image
+ ***
+ * Only *.ecc files directly inside the directory are examined.
+ * A file matches if its header fingerprint equals the image fingerprint.
+ * Returns the newly allocated path of the single match;
+ * stops if there is no match or more than one.
+ */
+
+static gint compare_names(gconstpointer a, gconstpointer b)
+{  return strcmp(*(char**)a, *(char**)b);
+}
+
+static char *find_ecc_file(Image *image, char *dir)
+{  GError *err = NULL;
+   GDir *gdir = g_dir_open(dir, 0, &err);
+   GPtrArray *names = g_ptr_array_new_with_free_func(g_free);
+   const char *name;
+   char *found = NULL;
+   int n;
+
+   if(!gdir)
+     Stop(_("Can't open %s:\n%s"), dir, err->message);
+
+   while((name = g_dir_read_name(gdir)))
+     if(strlen(name) >= 4 && !g_ascii_strcasecmp(name+strlen(name)-4, ".ecc"))
+       g_ptr_array_add(names, g_build_path("/", dir, name, NULL));
+   g_dir_close(gdir);
+
+   /* sorted for reproducible results */
+
+   g_ptr_array_sort(names, (GCompareFunc)compare_names);
+
+   for(n=0; n<names->len; n++)
+   {  char *path = g_ptr_array_index(names, n);
+      LargeFile *file = LargeOpen(path, O_RDONLY, IMG_PERMS);
+      int i, match = FALSE;
+
+      if(!file)
+	continue;
+
+      for(i=0; i<Closure->methodList->len; i++)
+      {  Method *method = g_ptr_array_index(Closure->methodList, i);
+	 EccHeader *eh;
+	 guint8 fp[16];
+
+	 if(   method->recognizeEccFile
+	    && method->recognizeEccFile(file, &eh) == ECCFILE_PRESENT)
+	 {  match =    GetImageFingerprint(image, fp, eh->fpSector)
+	            && !memcmp(fp, eh->mediumFP, 16);
+	    g_free(eh);
+	    break;
+	 }
+      }
+      LargeClose(file);
+
+      Verbose("find_ecc_file(): %s %s\n", path, match ? "matches" : "does not match");
+      if(!match)
+	continue;
+      if(found)
+	Stop(_("Both %s and %s match the image; please select one with -e.\n"), found, path);
+      found = g_strdup(path);
+   }
+   g_ptr_array_free(names, TRUE);
+
+   if(!found)
+     Stop(_("No ecc file in %s matches the image.\n"), dir);
+
+   PrintLog(_("Using ecc file %s\n"), found);
+   return found;
+}
+
+/***
  *** Open a ECC file for an existing image
  ***/
 
 Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
 {  int new_image = 0;
    int i;
+
+   /* A directory was given: pick the matching ecc file from it.
+      All callers pass Closure->eccName, which is updated so that
+      later messages and reopens refer to the selected file. */
+
+   if(image && filename && g_file_test(filename, G_FILE_TEST_IS_DIR))
+   {  char *found = find_ecc_file(image, filename);
+
+      g_free(Closure->eccName);
+      filename = Closure->eccName = found;
+   }
 
    if(!image)
    {  new_image = 1;
