@@ -797,6 +797,28 @@ int RS03RecognizeImage(Image *image)
       }
    }
 
+   /* Overwritable media (BD-RE, DVD+RW, ...) report their formatted capacity,
+      which may be larger than the image written onto them; an image read back
+      from them has the same size. Try the layouts of the standard medium sizes
+      which are smaller than the reported size. */
+
+   if(maxtries < 0 && (image->type == IMAGE_FILE || image->dh->rewriteable))
+   {  static const guint64 sizes[] = { BDXL_QL_SIZE_NODM, BDXL_QL_SIZE, BDXL_TL_SIZE_NODM, BDXL_TL_SIZE,
+					BD_DL_SIZE_NODM, BD_DL_SIZE, BD_SL_SIZE_NODM, BD_SL_SIZE,
+					DVD_DL_SIZE, DVD_SL_SIZE, CDR_SIZE };
+      int i;
+
+      for(i=0; i<sizeof(sizes)/sizeof(guint64); i++)
+      {  guint64 try_size = sizes[i]/GF_FIELDMAX;
+
+	 if(GF_FIELDMAX*try_size >= image_sectors || try_size == layer_size)
+	    continue;
+
+	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
+	    return TRUE;
+      }
+   }
+
    /* Phase 2: Bruteforce linear scan for CRC blocks.
       This scans every sector in the image looking for the CRC block
       magic signature. Very slow, but handles any custom -n value even
