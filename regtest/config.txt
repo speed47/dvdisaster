@@ -461,6 +461,7 @@ RS03i_fix_custom_n_bad_header_bruteforce yes
 RS03i_fix_custom_n_truncated_with_n yes
 RS03i_fix_custom_n_truncated_no_bruteforce yes
 RS03i_fix_custom_n_truncated_bruteforce yes
+RS03i_fix_trailing_medium_space yes
 
 # Scanning tests
 

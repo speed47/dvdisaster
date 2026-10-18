@@ -1,0 +1,15 @@
+6aea833e6f558fcd498a4561b35b7788
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 434520 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+Image has been truncated by 75225 sectors.
+    1 repaired sectors: 235219d 
+Repaired sectors: 1 (1 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.0; worst = 1.

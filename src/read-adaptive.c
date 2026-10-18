@@ -644,6 +644,7 @@ static void open_and_determine_mode(read_closure *rc)
       by delegating to each codec's recognizeEccFile method. */
 
    OpenEccFileForImage(rc->medium, Closure->eccName, O_RDONLY, IMG_PERMS);
+   HintOverwritableMedium(rc->medium);
 
    if(rc->medium->eccFileMethod)
    {  rc->eh = rc->medium->eccFileHeader;
