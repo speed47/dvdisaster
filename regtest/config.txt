@@ -27,6 +27,9 @@ RS01_plus17 yes
 RS01_defective_with_ecc yes
 RS01_missing_sectors_with_ecc yes
 RS01_crc_errors_with_ecc yes
+RS01_find_ecc_in_dir yes
+RS01_find_ecc_in_dir_no_match yes
+RS01_find_ecc_in_dir_ambiguous yes
 RS01_crc_in_fingerprint yes
 RS01_missing_fingerprint yes
 RS01_missing_ecc_header yes
@@ -118,6 +121,7 @@ RS01_read_new_with_range_no_ecc yes
 RS01_read_new_with_invalid_range_no_ecc yes
 RS01_read_two_missing_secs_no_ecc yes
 RS01_read_with_ecc yes
+RS01_read_find_ecc_in_dir yes
 RS01_read_with_ecc_good_file yes
 RS01_read_with_non_existing_ecc yes
 RS01_read_with_no_permission_for_ecc yes
@@ -601,6 +605,7 @@ RS03f_ecc_recreate_after_read_rs03f yes
 
 RS03f_fix_good yes
 RS03f_fix_missing_data_sectors yes
+RS03f_fix_find_ecc_in_dir yes
 RS03f_fix_missing_crc_sectors yes
 RS03f_fix_missing_ecc_sectors yes
 RS03f_fix_border_cases_erasures yes

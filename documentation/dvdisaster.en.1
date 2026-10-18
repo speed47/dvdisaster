@@ -169,6 +169,8 @@ name of image file (default: medium.iso).
 .TP
 .B \-e, \-\-ecc eccfile
 name of parity file (default: medium.ecc).
+When reading, fixing or verifying, \fIeccfile\fP may also be a directory;
+the .ecc file in it whose fingerprint matches the medium or image is used.
 .TP
 .B \-o, \-\-ecc-target file|image
 Specifies whether RS03 should create error correction files

@@ -199,6 +199,42 @@ if try "image with crc errors" crc_errors_with_ecc; then (
   run_regtest crc_errors_with_ecc "-t" $TMPISO $MASTERECC
 ) & limit_jobs; fi
 
+# Ecc file given as a directory: the file matching the image
+# fingerprint is picked, a decoy for another image is ignored
+
+if try "ecc file found in directory" find_ecc_in_dir; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 16,1,0 >>$LOGFILE 2>&1
+  $NEWVER -i$TMPISO -e$TEST_TMPDIR/eccdir/decoy.ecc -c $REDUNDANCY >>$LOGFILE 2>&1
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest find_ecc_in_dir "-t" $TMPISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
+# Ecc file given as a directory, but no file in it matches the image
+
+if try "no matching ecc file in directory" find_ecc_in_dir_no_match; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 16,1,0 >>$LOGFILE 2>&1
+
+  run_regtest find_ecc_in_dir_no_match "-t" $TMPISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
+# Ecc file given as a directory, but two files in it match the image
+
+if try "two matching ecc files in directory" find_ecc_in_dir_ambiguous; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  ln -sf $ECC_PLUS56 $TEST_TMPDIR/eccdir/plus56.ecc
+
+  run_regtest find_ecc_in_dir_ambiguous "-t" $MASTERISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
 # CRC error in fingerprint sector
 if try "crc in fingerprint sector" crc_in_fingerprint; then (
   cp $MASTERISO $TMPISO
@@ -1147,6 +1183,17 @@ if try "reading image, ecc data" read_with_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
   run_regtest read_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC
+) & limit_jobs; fi
+
+# Read image with the ecc file picked from a directory
+
+if try "reading image, ecc file found in directory" read_find_ecc_in_dir; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  ln -sf $ECC_PLUS56 $TEST_TMPDIR/eccdir/plus56.ecc.old
+
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_find_ecc_in_dir "--spinup-delay=0 -r" $TMPISO $TEST_TMPDIR/eccdir
 ) & limit_jobs; fi
 
 # Read with ecc into existing and complete image file

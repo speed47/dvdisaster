@@ -1,0 +1,22 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+Using ecc file eccdir/master.ecc
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+* CRC error, sector: 13444
+* suspicious image : all sectors present, but 1 CRC errors
+- image md5sum     : c4e48cafee37f8ffe280b215fc93534c
+
+eccdir/master.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.55 (good)
+- medium sectors   : 21000 (good)
+* image md5sum     : 9503f278d4550a9507a317664481adf8 (BAD)
+- fingerprint match: good
+- ecc blocks       : 194560 (good)
+- ecc md5sum       : 2c9545f3ec387a9ce8b50e152cf39c17 (good)
+
