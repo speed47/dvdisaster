@@ -47,6 +47,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-ignore-iso-size \|]
 .RB [\| \-\-internal-rereads
 .IR n \|]
+.RB [\| \-\-mapfile
+.IR f \|]
 .RB [\| \-\-medium-info \|]
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
@@ -390,6 +392,12 @@ giving up and returning a read error. It is more efficient to set this to 0 or 1
 and manage read attempts through the \-\-read-attempts parameter. Most drives ignore
 this setting anyways. Use \-1 to leave the drive at its default setting.
 .RE
+.TP
+.B \-\-mapfile f
+write a GNU ddrescue compatible mapfile of the image to file f. Present sectors
+are marked as finished (+), missing sectors (dead sector markers) as bad sectors (\-).
+The mapfile can be viewed with ddrescueview or used to continue with ddrescue.
+With -r or -s it is written after reading.
 .TP
 .B \-\-medium-info
 Prints information about the currently inserted medium.
