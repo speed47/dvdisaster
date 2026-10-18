@@ -160,6 +160,11 @@ Ob ein besch\[:a]digter Datentr\[:a]ger noch wiederhergestellt werden kann, zeig
 Pr\[:u]ft die Struktur der .iso und .ecc \- Dateien.
 Bei Angabe der "q"-Option werden nur die Informationen ausgegeben,
 die ohne vollst\[:a]ndiges Lesen der Dateien ermittelt werden k\[:o]nnen.
+Enth\[:a]lt das Abbild MD5-Pr\[:u]fsummen, wie sie
+.B xorriso \-md5 on
+schreibt (Superblock-, Verzeichnisbaum- und Sitzungs-Pr\[:u]fsummen),
+so pr\[:u]ft der vollst\[:a]ndige Test die Sektoren des Abbilds auch damit.
+Dies funktioniert auch ohne Fehlerkorrektur-Daten.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
