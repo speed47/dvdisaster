@@ -19,4 +19,6 @@ rs01-master.ecc: created by dvdisaster-0.80
 - fingerprint match: good
 - ecc blocks       : 194560 (good)
 - ecc md5sum       : 2c9545f3ec387a9ce8b50e152cf39c17 (good)
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- ecc margin       : worst block uses 1 of 32 roots (3%)
 
