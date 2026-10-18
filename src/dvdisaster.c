@@ -73,7 +73,8 @@ typedef enum
 
    /* don't use the ascii range 32-127 so that we
       avoid collision with the single-char options */
-   MODIFIER_ADAPTIVE_READ = 128,
+   MODIFIER_ABORT_FILE = 128,
+   MODIFIER_ADAPTIVE_READ,
    MODIFIER_AUTO_SUFFIX,
    MODIFIER_CACHE_SIZE, 
    MODIFIER_CLV_SPEED,    /* unused */ 
@@ -113,12 +114,57 @@ typedef enum
    MODIFIER_SIMULATE_DEFECTS,
    MODIFIER_SPEED_WARNING, 
    MODIFIER_SPINUP_DELAY, 
+   MODIFIER_TIME_LIMIT,
    MODIFIER_TRUNCATE,
    MODIFIER_VERSION,
 } run_mode;
 
+/*
+ * Stop the current action (like the GUI Stop button) when
+ * the time limit is reached or the abort file appears.
+ */
+
+static volatile int watchdog_done = FALSE;
+
+static int stop_requested(GTimer *timer)
+{  if(Closure->abortFile && g_file_test(Closure->abortFile, G_FILE_TEST_EXISTS))
+   {  PrintLog(_("\nAbort file found, stopping.\n"));
+      return TRUE;
+   }
+
+   if(Closure->timeLimit > 0 && g_timer_elapsed(timer, NULL) >= Closure->timeLimit)
+   {  PrintLog(_("\nTime limit of %d seconds reached, stopping.\n"), Closure->timeLimit);
+      return TRUE;
+   }
+
+   return FALSE;
+}
+
+static gpointer watchdog_thread(gpointer data)
+{  GTimer *timer = (GTimer*)data;
+
+   while(!watchdog_done && !Closure->stopActions)
+   {  if(stop_requested(timer))
+	 Closure->stopActions = STOP_CURRENT_ACTION;
+      else g_usleep(G_USEC_PER_SEC/10);
+   }
+
+   g_timer_destroy(timer);
+   return NULL;
+}
+
+static GThread* start_watchdog(void)
+{  GTimer *timer = g_timer_new();
+
+   if(stop_requested(timer))  /* before starting, so that nothing is done at all */
+      Closure->stopActions = STOP_CURRENT_ACTION;
+
+   return g_thread_new("stop_watchdog", watchdog_thread, timer);
+}
+
 int main(int argc, char *argv[])
-{  int mode = MODE_NONE; 
+{  GThread *watchdog = NULL;
+   int mode = MODE_NONE; 
    int sequence = MODE_NONE;
    char *debug_arg = NULL;
    char *read_range = NULL;
@@ -217,7 +263,8 @@ int main(int argc, char *argv[])
    for(;;)
    {  int option_index,c;
       static struct option long_options[] =
-      { {"adaptive-read", 0, 0, MODIFIER_ADAPTIVE_READ},
+      { {"abort-file", 1, 0, MODIFIER_ABORT_FILE},
+	{"adaptive-read", 0, 0, MODIFIER_ADAPTIVE_READ},
 	{"auto-suffix", 0, 0,  MODIFIER_AUTO_SUFFIX},
 	{"assume", 1, 0, 'a'},
 	{"byteset", 1, 0, MODE_BYTESET },
@@ -289,6 +336,7 @@ int main(int argc, char *argv[])
 	{"strip", 0, 0, 'z'},
 	{"test", 2, 0, 't'},
         {"threads", 1, 0, 'x'},
+	{"time-limit", 1, 0, MODIFIER_TIME_LIMIT},
 	{"truncate", 2, 0, MODIFIER_TRUNCATE},
 	{"unlink", 0, 0, 'u'},
        	{"verbose", 0, 0, 'v'},
@@ -411,6 +459,10 @@ int main(int argc, char *argv[])
 
          case  0 : break; /* flag argument */
 
+         case MODIFIER_ABORT_FILE:
+	   g_free(Closure->abortFile);
+	   Closure->abortFile = g_strdup(optarg);
+	   break;
          case MODIFIER_ADAPTIVE_READ:
 	   Closure->adaptiveRead = TRUE;
 	   break;
@@ -634,6 +686,9 @@ int main(int argc, char *argv[])
          case MODIFIER_SPINUP_DELAY:
 	   if(optarg) Closure->spinupDelay = atoi(optarg);
 	   break;
+         case MODIFIER_TIME_LIMIT:
+	   Closure->timeLimit = atoi(optarg);
+	   break;
          case MODIFIER_SPEED_WARNING:
 	   if(optarg) Closure->speedWarning = atoi(optarg);
 	   else Closure->speedWarning=10;
@@ -797,6 +852,9 @@ int main(int argc, char *argv[])
    /*** Dispatch action depending on mode.
         The major modes can be executed in sequence, 
 	but not all combinations may be really useful. */
+
+   if(mode != MODE_NONE && (Closure->timeLimit > 0 || Closure->abortFile))
+      watchdog = start_watchdog();
 
    switch(mode)
    {  case MODE_SEQUENCE:
@@ -990,6 +1048,7 @@ int main(int argc, char *argv[])
 		 "                               or a raw sector count\n"));
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
+      PrintCLI(_("  --abort-file f             - stop the current action when file f appears\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
       PrintCLI(_("  --auto-suffix              - automatically add .iso and .ecc file suffixes\n"));
       PrintCLI(_("  --cache-size n             - image cache size in MiB during -c mode (default: 32MiB)\n"));
@@ -1019,6 +1078,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --resource-file p          - get resource file from given path\n"));
       PrintCLI(_("  --speed-warning n          - print warning if speed changes by more than n percent\n"));
       PrintCLI(_("  --spinup-delay n           - wait n seconds for drive to spin up\n"));
+      PrintCLI(_("  --time-limit n             - stop the current action after n seconds\n"));
       PrintCLI(_("  --version                  - print version and some configuration info\n"));
       PrintCLI(_("  --debug                    - allow advanced dangerous options (use with --help for a list)\n"));
 
@@ -1094,6 +1154,11 @@ int main(int argc, char *argv[])
    }
 #endif
    
+   if(watchdog)
+   {  watchdog_done = TRUE;
+      g_thread_join(watchdog);
+   }
+
    FreeClosure();
    exit(exitCode);
 }
