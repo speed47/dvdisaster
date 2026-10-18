@@ -40,6 +40,7 @@ typedef struct
    ReedSolomonTables *rt;
    int earlyTermination;
    char *msg;
+   GTimer *timer;
    unsigned char *imgBlock[255];
 } fix_closure;
 
@@ -61,6 +62,7 @@ static void fix_cleanup(gpointer data)
 
    if(fc->image) CloseImage(fc->image);
    if(fc->msg) g_free(fc->msg);
+   if(fc->timer) g_timer_destroy(fc->timer);
 
    for(i=0; i<255; i++)
    {  if(fc->imgBlock[i])
@@ -325,6 +327,7 @@ void RS02Fix(Image *image)
    /*** Test ecc blocks and attempt error correction */
 
    last_percent = -1;
+   fc->timer = g_timer_new();
 
    for(s=0; s<lay->sectorsPerLayer; s++)
    { gint64 si = (s + lay->firstCrcLayerIndex) % lay->sectorsPerLayer;
@@ -792,7 +795,7 @@ skip:
 	   RS02UpdateFixResults(wl, corrected, uncorrected);
 #endif
 	}
-        else PrintProgress(_("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
+        else PrintProgressETA(fc->timer, percent, _("Ecc progress: %3d.%1d%%"),percent/10,percent%10);
         last_percent = percent;
      }
 

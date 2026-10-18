@@ -1175,6 +1175,7 @@ void PrintLogWithAsterisks(char*, ...) PRINTF_FORMAT(1);
 void Verbose(char*, ...) PRINTF_FORMAT(1);
 void PrintTimeToLog(GTimer*, char*, ...) PRINTF_FORMAT(2);
 void PrintProgress(char*, ...) PRINTF_FORMAT(1);
+void PrintProgressETA(GTimer*, int, char*, ...) PRINTF_FORMAT(3);
 void ClearProgress(void);
 void PrintCLIorLabel(GtkWidget*, char*, ...) PRINTF_FORMAT(2);
 int GetLongestTranslation(char*, ...);
