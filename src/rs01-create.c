@@ -183,7 +183,6 @@ static void ecc_cleanup(gpointer data)
  * Create the parity file.
  */
 
-enum { NORMAL, HIGH, GENERIC };
 
 void RS01Create(void)
 {  Method *self = FindMethod("RS01");
@@ -202,12 +201,9 @@ void RS01Create(void)
    guint64 n_parity_bytes,n_layer_bytes;
    guint64 chunk;
    int layer;
-   int loop_type = GENERIC;
    gint32 nroots;         /* These are copied to increase performance. */
    gint32 ndata;
-   gint32 *gf_index_of;
-   gint32 *enc_alpha_to;
-   gint32 *rs_gpoly;
+   gint32 nroots_aligned;
 
    /*** Register the cleanup procedure for GUI mode */
 
@@ -221,19 +217,13 @@ void RS01Create(void)
    /* Calculate number of roots (= max. number of erasures)
       and number of data bytes from redundancy setting */
 
-   if(!Closure->redundancy || !strcmp(Closure->redundancy, "normal")) 
-	                                          loop_type = NORMAL;
-   else if(!strcmp(Closure->redundancy, "high"))  loop_type = HIGH;
-
    i  = calculate_redundancy(Closure->imageName);
    gt = ec->gt = CreateGaloisTables(RS_GENERATOR_POLY);
    rt = ec->rt = CreateReedSolomonTables(gt, RS_FIRST_ROOT, RS_PRIM_ELEM, i);
 
    nroots       = rt->nroots;
    ndata        = rt->ndata;
-   rs_gpoly     = rt->gpoly;
-   enc_alpha_to = gt->encAlphaTo;
-   gf_index_of  = gt->indexOf;
+   nroots_aligned = (nroots+15)&~15;  /* parity stride used by EncodeNextLayer() */
 
    /*** Announce what we are going to do */
 
@@ -423,9 +413,9 @@ void RS01Create(void)
         The algorithm builds the parity file consecutively in chunks of n_parity_blocks.
         We use all the amount of memory allowed by cacheMiB for caching the parity blocks. */
 
-   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots;
+   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots_aligned;
    n_parity_blocks &= ~0x7ff;                   /* round down to multiple of 2048 */
-   n_parity_bytes  = (guint64)nroots * n_parity_blocks;
+   n_parity_bytes  = (guint64)nroots_aligned * n_parity_blocks;
 
    /* Each chunk of parity blocks is built iteratively by processing the data in layers
       (first all bytes at pos 0, then pos 1, until ndata layers have been processed).
@@ -484,13 +474,10 @@ void RS01Create(void)
       /* Work each of the ndata data layers 
 	 into the parity data of the current chunk. */
 
-      switch(loop_type)
-      { case NORMAL:  /* Inner loop unrolled for nroots = 32. */
-	{int sp=1;    /* sp==1 makes sure sp==0 after ndata bytes [since (223+1) mod 32 = 0]*/
-  
+      {  int sp = rt->shiftInit;  /* => (ndata + sp) mod nroots = 0 */
+
          for(layer=0; layer<ndata; layer++)
 	 {  int offset = 0;
-            unsigned char *par_idx = ec->parity;
 
 	    if(Closure->stopActions) /* User hit the Stop button */
 	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
@@ -515,471 +502,7 @@ void RS01Create(void)
 
 	    /* Now process the data bytes of the current layer. */
 
-	    for(si=0; si<actual_layer_bytes; si++)
-	    {  register int feedback;
-
-	       feedback = gf_index_of[ec->data[si] ^ par_idx[sp]];
-
-	       if(feedback != GF_ALPHA0) /* non-zero feedback term */
-	       {  register int spk = sp;
-
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 249];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  59];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  66];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   4];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  43];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 126];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 251];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  97];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  30];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   3];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 213];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  50];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  66];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 170];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   5];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  24];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   5];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 170];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  66];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  50];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 213];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   3];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  30];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  97];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 251];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 126];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  43];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +   4];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  66];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback +  59];
-                  par_idx[((++spk)&31)] ^= enc_alpha_to[feedback + 249];
-
-		  par_idx[sp] = enc_alpha_to[feedback];  /* feedback + 0 */
-	       }
-	       else                   /* zero feedback term */
-		 par_idx[sp] = 0;
-
-	       par_idx += nroots;
-	    }
-
-	    sp = (sp+1) & 31;         /* shift */
-
-	    /* Report progress */
-
-	    progress++;
-	    percent = (1000*progress)/max_percent;
-	    if(last_percent != percent) 
-	    {  GuiSetProgress(wl->encPBar2, percent, 1000);
-	       PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
-	       last_percent = percent;
-	    }
-	 }
-	}
-	break;
-
-        case HIGH: /* Inner loop is unrolled for nroots = 64. */
-	{int sp=1; /* sp==1 makes sure sp==0 after ndata bytes [since (191+1) mod 64 = 0] */
-         for(layer=0; layer<ndata; layer++)
-	 {  int offset = 0;
-	    unsigned char *par_idx = ec->parity;
-
-	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	       {  GuiSetLabelText(wl->encFootline, 
-				  _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
-				  Closure->redMarkup);
-	       }
-	       ec->earlyTermination = FALSE;   /* suppress respective error message */
-	       LargeClose(image->eccFile);
-	       image->eccFile = NULL;
-	       g_unlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
-	       goto terminate;
-	    }
-
-	    /* Read the next data sectors of this layer. */
-
-	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
-	       block_idx[layer]++;
-	       offset += 2048;
-	    }
-
-	    /* Now process the data bytes of the current layer. */
-
-	    for(si=0; si<actual_layer_bytes; si++)
-	    {  register int feedback;
-
-	       feedback = gf_index_of[ec->data[si] ^ par_idx[sp]];
-
-	       if(feedback != GF_ALPHA0) /* non-zero feedback term */
-	       {  register int spk = sp;
-
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  98];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 247];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 160];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  15];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  96];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  27];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  87];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 175];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  64];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 170];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  53];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  39];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 236];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  39];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  58];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  82];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  44];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  89];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  97];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 182];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  80];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 120];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  40];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 104];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  73];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  73];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  12];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 152];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 205];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  96];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  50];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  21];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 147];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  35];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 241];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  30];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 242];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 145];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 242];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 115];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 148];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  70];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 127];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  71];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  83];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 172];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 224];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 104];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 177];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +   0];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  39];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 194];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  50];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +   9];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +   0];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 208];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 217];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 254];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 165];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 181];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback + 168];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  97];
-                  par_idx[((++spk)&63)] ^= enc_alpha_to[feedback +  45];
-
-                  par_idx[sp] = enc_alpha_to[feedback +  44];
-	       }
-	       else                   /* zero feedback term */
-		 par_idx[sp] = 0;
-
-	       par_idx += nroots;
-	    }
-
-	    sp = (sp+1) & 63;         /* shift */
-
-	    /* Report progress */
-
-	    progress++;
-	    percent = (1000*progress)/max_percent;
-	    if(last_percent != percent) 
-	    {  GuiSetProgress(wl->encPBar2, percent, 1000);
-	       PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
-	       last_percent = percent;
-	    }
-	 }
-	}
-	break;
-
-        default:   /* general case for nroots other than 32 or 64 */
-	{int sp = nroots - ndata % nroots; /* => (ndata + sp) mod nroots = 0 so that parity */
-	                                   /* is aligned at sp=0 after ndata iterations */
-      	 if(sp==nroots) sp=0;
-
-	 for(layer=0; layer<ndata; layer++)
-	 {  int offset = 0;
-            unsigned char *par_idx = ec->parity;
-
-	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	       {  GuiSetLabelText(wl->encFootline, 
-				  _("<span %s>Aborted by user request!</span>"),
-				  Closure->redMarkup);
-	       }
-	       ec->earlyTermination = FALSE;   /* suppress respective error message */
-	       LargeClose(image->eccFile);
-	       image->eccFile = NULL;
-	       g_unlink(Closure->eccName);  /* Do not leave partial .ecc file behind */
-	       goto terminate;
-	    }
-
-            /* Read the next data sectors of this layer. */
-
-   	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
-	       block_idx[layer]++;
-	       offset += 2048;
-	    }
-
-	    /* Now process the data bytes of the current layer. */
-
-	    for(si=0; si<actual_layer_bytes; si++)
-	    {  register int feedback;
-
-	       feedback = gf_index_of[ec->data[si] ^ par_idx[sp]];
-
-	       if(feedback != GF_ALPHA0) /* non-zero feedback term */
-	       {  register int spk = sp+1;
-		  register int *gpoly = rs_gpoly + nroots;
-
-		  switch(nroots-spk)
-		  {  
-		    case 110: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 109: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 108: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 107: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 106: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 105: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 104: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 103: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 102: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 101: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 100: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 99: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 98: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 97: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 96: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 95: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 94: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 93: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 92: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 91: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 90: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 89: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 88: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 87: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 86: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 85: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 84: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 83: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 82: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 81: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 80: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 79: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 78: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 77: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 76: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 75: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 74: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 73: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 72: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 71: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 70: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 69: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 68: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 67: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 66: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 65: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 64: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 63: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 62: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 61: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 60: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 59: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 58: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 57: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 56: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 55: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 54: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 53: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 52: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 51: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 50: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 49: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 48: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 47: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 46: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 45: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 44: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 43: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 42: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 41: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 40: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 39: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 38: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 37: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 36: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 35: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 34: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 33: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 32: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 31: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 30: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 29: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 28: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 27: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 26: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 25: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 24: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 23: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 22: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 21: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 20: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 19: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 18: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 17: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 16: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 15: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 14: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 13: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 12: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 11: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 10: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  9: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  8: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  7: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  6: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  5: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  4: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  3: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  2: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  1: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  }
-
-		  spk = 0;
-		  
-		  switch(sp)
-		  {
-                    case 110: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 109: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 108: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 107: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 106: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 105: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 104: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 103: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 102: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 101: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		    case 100: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 99: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 98: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 97: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 96: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 95: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 94: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 93: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 92: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 91: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 90: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 89: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 88: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 87: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 86: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 85: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 84: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 83: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 82: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 81: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 80: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 79: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 78: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 77: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 76: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 75: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 74: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 73: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 72: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 71: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 70: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 69: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 68: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 67: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 66: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 65: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 64: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 63: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 62: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 61: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 60: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 59: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 58: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 57: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 56: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 55: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 54: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 53: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 52: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 51: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 50: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 49: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 48: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 47: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 46: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 45: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 44: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 43: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 42: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 41: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 40: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 39: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 38: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 37: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 36: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 35: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 34: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 33: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 32: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 31: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 30: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 29: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 28: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 27: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 26: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 25: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 24: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 23: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 22: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 21: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 20: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 19: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 18: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 17: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 16: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 15: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 14: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 13: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 12: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 11: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case 10: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  9: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  8: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  7: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  6: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  5: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  4: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  3: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  2: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		     case  1: par_idx[spk++] ^= enc_alpha_to[feedback + *--gpoly];
-		  }
-
-		  par_idx[sp] = enc_alpha_to[feedback + rs_gpoly[0]];
-	       }
-	       else                   /* zero feedback term */
-		 par_idx[sp] = 0;
-
-	       par_idx += nroots;
-	    }
+	    EncodeNextLayer(rt, ec->data, ec->parity, actual_layer_bytes, sp);
 
 	    if(++sp>=nroots) sp=0;   /* shift */
 
@@ -994,8 +517,12 @@ void RS01Create(void)
 	    }
 	 }
 	}
-	break;
-      }
+
+      /* EncodeNextLayer() uses a stride of nroots_aligned bytes; compact to nroots */
+
+      if(nroots != nroots_aligned)
+	 for(si=1; si<actual_layer_bytes; si++)
+	    memmove(ec->parity+si*nroots, ec->parity+si*nroots_aligned, nroots);
 
       /* Write the nroots bytes of parity information */
 

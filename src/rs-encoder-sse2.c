@@ -81,10 +81,10 @@ void encode_next_layer_sse2(ReedSolomonTables *rt, unsigned char *data, unsigned
 
 	 for(j=nroots_full; j; j--)
 	 {  
-	    par = _mm_load_si128((__m128i*)par_idx);
+	    par = _mm_loadu_si128((__m128i*)par_idx);
 	    lut = _mm_loadu_si128((__m128i*)e_lut);    
 	    out = _mm_xor_si128(par, lut);
-	    _mm_store_si128((__m128i*)par_idx, out);
+	    _mm_storeu_si128((__m128i*)par_idx, out);
 	    par_idx += 16;
 	    e_lut += 16;
 	 }
