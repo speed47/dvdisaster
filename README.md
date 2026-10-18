@@ -18,6 +18,7 @@ This version is built on top of the latest upstream version, with the following 
 - Added an option to use more space for ECC on BD-R when using RS03 (`--no-bdr-defect-management`)
 - Re-enabled adaptive reading for RS01 and RS02, and optionally for RS03 on user request (more on that below)
 - Ability to strip an augmented image from its additional ECC-data
+- Optional pause after a given number of read errors, to let drives that overheat on damaged media cool down (`--pause-after-errors`)
 - A new CLI-only version, not depending on gtk (`./configure --with-gui=no && make clean && make -j4`)
 - GUI codebase ported from gtk2 to gtk3 to ensure future-proofness
 - Windows and macOS builds are supported again, those were dropped upstream a few versions back
