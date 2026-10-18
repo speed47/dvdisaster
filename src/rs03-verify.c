@@ -53,6 +53,7 @@ void ResetRS03VerifyWindow(Method *self)
    GuiSetLabelText(wl->cmpImageErasureCnt, "");
    GuiSetLabelText(wl->cmpImagePrognosisMsg, "");
    GuiSetLabelText(wl->cmpImageResult, "");
+   GuiSetLabelText(wl->cmpXorrisoTags, "");
    GuiSwitchAndSetFootline(wl->cmpImageNotebook, 1, NULL, NULL);
 
    GuiSetLabelText(wl->cmpEccCreatedBy, "dvdisaster");
@@ -389,6 +390,10 @@ void CreateRS03VerifyWindow(Method *self, GtkWidget *parent)
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
    gtk_grid_attach(GTK_GRID(grid2), lab, 1, 9, 2, 1);
+
+   lab = wl->cmpXorrisoTags = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 10, 2, 1);
 }
 
 #endif /* WITH_GUI_YES */
@@ -1360,5 +1365,12 @@ void RS03Verify(Image *image)
    /*** Close and clean up */
 
 terminate:
+   if(Closure->guiMode && !Closure->quickVerify)
+   {  char *tags = CheckXorrisoTags(Closure->imageName);
+
+      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
+      g_free(tags);
+   }
+
    cleanup((gpointer)vc);
 }
