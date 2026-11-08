@@ -2,6 +2,9 @@ name: non-regression tests
 
 on: [pull_request]
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -24,7 +27,7 @@ jobs:
             runs-on: macos-15
     runs-on: ${{ matrix.runs-on }}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7.0.1
       with:
         persist-credentials: false
     - name: install prerequisites
@@ -82,7 +85,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-    - uses: msys2/setup-msys2@v2
+    - uses: msys2/setup-msys2@v2.33.0
       with:
         msystem: MINGW64
         update: false
@@ -93,7 +96,7 @@ jobs:
     - name: git config
       run: git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7.0.1
       with:
         persist-credentials: false
     - name: configure
@@ -143,7 +146,7 @@ jobs:
           - printf: fmtdbg
             debugprintf: --with-debug-printf-format
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7.0.1
       with:
         persist-credentials: false
     - name: install prerequisites
@@ -195,7 +198,7 @@ jobs:
     env:
       ASAN_OPTIONS: detect_leaks=0
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7.0.1
       with:
         persist-credentials: false
     - name: install prerequisites

@@ -1,0 +1,25 @@
+name: Workflow dependencies
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  actions-lock:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install actions-lock
+        run: gh extension install github/gh-actions-lock --pin v0.4.1
+      - name: Verify workflow dependencies
+        run: gh actions-lock --verify
+

@@ -14,15 +14,17 @@ on:
           - dryrun
           - apply
 
-permissions:
-  issues: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   stale:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write # Required to replace the action's saved state cache.
+      issues: write
+      pull-requests: write
     steps:
-      - uses: actions/stale@v10
+      - uses: actions/stale@v11.0.0
         with:
           any-of-labels: 'needs-more-info,answered'
           labels-to-remove-when-unstale: 'needs-more-info,answered'
