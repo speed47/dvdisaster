@@ -274,8 +274,19 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
       if(!strcmp(symbol, "read-medium"))     { Closure->readingPasses = atoi(value); continue; }
       if(!strcmp(symbol, "read-raw"))        { Closure->readRaw = atoi(value); continue; }
-      if(!strcmp(symbol, "redundancy"))      { if(Closure->redundancy) g_free(Closure->redundancy);
-                                               Closure->redundancy  = g_strdup(value); continue; }
+      if(!strcmp(symbol, "redundancy"))
+      {  char *end;
+         gint64 roots = g_ascii_strtoll(value, &end, 10);
+
+         while(g_ascii_isspace(*end)) end++;
+         if(Closure->redundancy) g_free(Closure->redundancy);
+         /* Older GUIs saved root counts without the now required 'r' suffix. */
+         if(end != value && !*end && roots >= 8 && roots <= 170)
+            Closure->redundancy = g_strdup_printf("%dr", (int)roots);
+         else
+            Closure->redundancy = g_strdup(value);
+         continue;
+      }
       if(!strcmp(symbol, "spinup-delay"))    { Closure->spinupDelay = atoi(value); continue; }
       if(!strcmp(symbol, "unlink"))          { Closure->unlinkImage = atoi(value); continue; }
       if(!strcmp(symbol, "verbose"))         { Closure->verbose = atoi(value); continue; }
