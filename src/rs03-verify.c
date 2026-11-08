@@ -513,7 +513,8 @@ static int check_syndromes(verify_closure *vc)
 {  RS03Layout *lay = vc->lay;
    Image *image = vc->image;
    gint64 li,ecc_block;
-   gint64 cache_idx = Closure->prefetchSectors;
+   int prefetch = Closure->prefetchSectors;
+   gint64 cache_idx = prefetch;
    gint64 ecc_good, ecc_bad, ecc_bad_sub;
    int percent,last_percent = -1;
    int bad_counted;
@@ -523,11 +524,14 @@ static int check_syndromes(verify_closure *vc)
 		   _("Checking the image and error correction files."),
 		   _("- Checking ecc blocks (deep verify) -"));
 
+   if(prefetch < 32 || prefetch > MAX_PREFETCH_CACHE_SIZE)
+      Stop(_("Sector prefetch must be in range 32...%d"), MAX_PREFETCH_CACHE_SIZE);
+
    /* Allocate buffers and initialize layer sector addresses */
 
    for(i=0, li=0; i<GF_FIELDMAX; i++,li+=lay->sectorsPerLayer)
    {  
-      vc->eccBlock[i] = g_try_malloc(2048*Closure->prefetchSectors);
+      vc->eccBlock[i] = g_try_malloc((gsize)2048 * prefetch);
       if(!vc->eccBlock[i])  /* out of memory */
       {  int j;
 
@@ -568,10 +572,10 @@ static int check_syndromes(verify_closure *vc)
 
       /* Reload cache? */
       
-      if(cache_idx == Closure->prefetchSectors)
+      if(cache_idx == prefetch)
       {  
 	 cache_idx = 0;
-	 num_sectors = Closure->prefetchSectors;
+	 num_sectors = prefetch;
 	 if(ecc_block+num_sectors >= lay->sectorsPerLayer)
 	    num_sectors = lay->sectorsPerLayer - ecc_block;
 

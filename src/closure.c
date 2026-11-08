@@ -150,6 +150,17 @@ static void get_color(GdkRGBA *color, char *value)
 
 #define MAX_LINE_LEN 512
 
+/* Ignore malformed or out-of-range allocation settings, keeping the default. */
+static int bounded_setting(const char *value, int minimum, int maximum, int fallback)
+{  char *end;
+   gint64 number = g_ascii_strtoll(value, &end, 10);
+
+   if(end == value) return fallback;
+   while(g_ascii_isspace(*end)) end++;
+   if(*end || number < minimum || number > maximum) return fallback;
+   return (int)number;
+}
+
 void GuiReadDotfile()
 {  FILE *dotfile;
    char line[MAX_LINE_LEN];
@@ -242,10 +253,10 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "medium-size"))     { Closure->mediumSize  = atoll(value); continue; }
       if(!strcmp(symbol, "method-name"))     { if(Closure->methodName) g_free(Closure->methodName);
 	                                       Closure->methodName = g_strdup(value); continue; }
-      if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = atoi(value); continue; }
-      if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = atoi(value); continue; }
+      if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = bounded_setting(value, 1, MAX_RAW_SAMPLES, Closure->maxReadAttempts); continue; }
+      if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = bounded_setting(value, 1, MAX_RAW_SAMPLES, Closure->minReadAttempts); continue; }
       if(!strcmp(symbol, "old-missing-sector-marker"))  { Closure->dsmVersion  = !atoi(value); continue; }
-      if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = atoi(value); continue; }
+      if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = bounded_setting(value, 32, MAX_PREFETCH_CACHE_SIZE, Closure->prefetchSectors); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
       if(!strcmp(symbol, "read-medium"))     { Closure->readingPasses = atoi(value); continue; }

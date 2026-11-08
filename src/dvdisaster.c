@@ -117,6 +117,15 @@ typedef enum
    MODIFIER_VERSION,
 } run_mode;
 
+static int bounded_option(const char *value, int minimum, int maximum, const char *option)
+{  char *end;
+   gint64 number = g_ascii_strtoll(value, &end, 10);
+
+   if(end == value || *end || number < minimum || number > maximum)
+      Stop(_("%s must be in range %d...%d"), option, minimum, maximum);
+   return (int)number;
+}
+
 int main(int argc, char *argv[])
 {  int mode = MODE_NONE; 
    int sequence = MODE_NONE;
@@ -557,12 +566,9 @@ int main(int argc, char *argv[])
 	    debug_mode_required = TRUE;
 	    break;
          case MODIFIER_PREFETCH_SECTORS:
- 	    Closure->prefetchSectors = atoi(optarg);
-	    if(   Closure->prefetchSectors < 32
-	       || Closure->prefetchSectors > MAX_PREFETCH_CACHE_SIZE)
-	      Stop(_("--prefetch-sectors must be in range 32...%d"),
-		    MAX_PREFETCH_CACHE_SIZE);
-	    break;
+            Closure->prefetchSectors = bounded_option(optarg, 32, MAX_PREFETCH_CACHE_SIZE,
+                                                     "--prefetch-sectors");
+            break;
          case MODIFIER_RANDOM_SEED:
 	   if(optarg) Closure->randomSeed = atoi(optarg);
 	   debug_mode_required = TRUE;
@@ -579,12 +585,13 @@ int main(int argc, char *argv[])
 	      cpos = strchr(copy,'-');
 
 	      if(!cpos)
-	      {  Closure->minReadAttempts = Closure->maxReadAttempts = atoi(optarg); 
+	      {  Closure->minReadAttempts = Closure->maxReadAttempts =
+                   bounded_option(optarg, 1, MAX_RAW_SAMPLES, "--read-attempts");
 	      }
 	      else
 	      {  *cpos = 0;
-		 Closure->minReadAttempts = atoi(copy);
-		 Closure->maxReadAttempts = atoi(cpos+1);
+		 Closure->minReadAttempts = bounded_option(copy, 1, MAX_RAW_SAMPLES, "--read-attempts");
+		 Closure->maxReadAttempts = bounded_option(cpos+1, 1, MAX_RAW_SAMPLES, "--read-attempts");
 	      }
 	      
 	      if(Closure->minReadAttempts < 1)

@@ -199,6 +199,7 @@ typedef void PangoLayout;
 #define MAX_CODEC_THREADS 1024           /* not including IO and GUI */
 #define MAX_OLD_CACHE_SIZE  8096         /* old cache for RS01/RS02  */
 #define MAX_PREFETCH_CACHE_SIZE (512*1024)   /* up to 0.5TB RS03  */
+#define MAX_RAW_SAMPLES 10000                /* per-sector raw recovery samples */
 
 /* Choices for I/O strategy */
 

@@ -55,11 +55,14 @@ static int plausible_header(EccHeader *eh, int ecc_file)
 }
 
 static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expected)
-{  CrcBlock *cb = alloca(2048);
+{  /* The CRC covers the full sector, including padding after the header. */
+   union { CrcBlock header; unsigned char bytes[2048]; } storage;
+   CrcBlock *cb = &storage.header;
    EccHeader eh;
    guint32 recorded_crc, real_crc;
 
-   memcpy(cb, buf, 2048);
+   G_STATIC_ASSERT(sizeof(CrcBlock) <= sizeof(storage.bytes));
+   memcpy(storage.bytes, buf, sizeof(storage.bytes));
 
    /* See if the magic cookie is there */
 
@@ -76,7 +79,7 @@ static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expecte
 #else
    cb->selfCRC = 0x4c5047;
 #endif
-   real_crc = Crc32((unsigned char*)cb, 2048);
+   real_crc = Crc32(storage.bytes, sizeof(storage.bytes));
 
    if(real_crc != recorded_crc)
    {  Verbose(".. invalid CRC block %lld\n", (unsigned long long)sector);

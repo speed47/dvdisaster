@@ -1189,8 +1189,17 @@ static void create_reed_solomon(ecc_closure *ec)
 	For practical reasons we require that the layer size is a multiple of the
 	medium sector size of 2048 bytes. */
 
-   ec->chunkBytes  = 2048*Closure->prefetchSectors;
-   ec->chunkSize   = Closure->prefetchSectors;
+   {  int prefetch = Closure->prefetchSectors;
+
+      if(prefetch < 32 || prefetch > MAX_PREFETCH_CACHE_SIZE)
+         Stop(_("Sector prefetch must be in range 32...%d"), MAX_PREFETCH_CACHE_SIZE);
+      /* Every layer/parity allocation must also fit the host address space. */
+      if((guint64)prefetch > (G_MAXSIZE-16)/(2048ULL*256))
+         Stop(_("Sector prefetch is too large for this platform."));
+
+      ec->chunkBytes = 2048ULL * prefetch;
+      ec->chunkSize = prefetch;
+   }
 
 #ifdef SYS_MINGW
    {
