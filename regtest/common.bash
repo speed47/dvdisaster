@@ -17,15 +17,13 @@ if ! test -d $ISODIR; then
 fi
 
 # directory for temporary files; e.g. to keep them away from SSDs
-TMPDIR=/dev/shm
-if ! test -d $TMPDIR; then
+# Honor disk-backed temporary storage selected by CI or the caller.
+TMPDIR=${TMPDIR:-/dev/shm}
+if ! test -d "$TMPDIR"; then
     TMPDIR=/var/tmp
 fi
 
-LOGDIR="/dev/shm"
-if ! test -d $LOGDIR; then
-    LOGDIR=/tmp
-fi
+LOGDIR="$TMPDIR"
 
 # These are defaults; try() overrides them per-test for isolation
 LOGFILE="$LOGDIR/log.txt"

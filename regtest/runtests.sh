@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 cd "$(dirname "$0")"
 
-TMPDIR=/dev/shm
-if ! test -d $TMPDIR; then
+# Honor disk-backed temporary storage selected by CI or the caller.
+TMPDIR=${TMPDIR:-/dev/shm}
+if ! test -d "$TMPDIR"; then
     TMPDIR=/var/tmp
 fi
 LOGDIR="$TMPDIR"
