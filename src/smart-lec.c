@@ -680,7 +680,7 @@ static void many_p_correct_one_q(sh_context *shc)
 
 	 /* binary decrement on selection[] */
 
-	 while(selection[index] != 1 && index < n_p)
+	 while(index < n_p && selection[index] != 1)
 	 {  index++;
 	    selection[index-1] = 1;
 	 }
@@ -811,10 +811,11 @@ static void many_q_correct_one_p(sh_context *shc)
 
 	 /* binary decrement on selection[] */
 
-	 while(selection[index] != 1 && index < n_q)
+	 while(index < n_q && selection[index] != 1)
 	 {  selection[index] = 1;
 	    index++;
 	 }
+	 if(index >= n_q) break;
 	 selection[index]=0;
       }
    }
@@ -1412,7 +1413,7 @@ static void swap_p_for_new_improvement(sh_context *shc)
 
 	    /* binary decrement on selection[] */
 decrement:
-	    while(selection[index] != 1 && index < n_q)
+	    while(index < n_q && selection[index] != 1)
 	    {  index++;
 	       selection[index-1] = 1;
 	    }
