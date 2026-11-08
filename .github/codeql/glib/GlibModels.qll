@@ -3,6 +3,31 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.SideEffect
 
+/**
+ * Encoding conversion changes bytes but preserves taint from the input string.
+ * The input is read-only; counts and the error pointer are output parameters.
+ */
+class GlibLocaleToUtf8 extends TaintFunction, SideEffectFunction {
+  GlibLocaleToUtf8() { this.hasGlobalName("g_locale_to_utf8") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameterDeref(0) and output.isReturnValueDeref()
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = 0 and buffer = true
+    or
+    i = 4 and buffer = false
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = [2, 3, 4] and buffer = false and mustWrite = false
+  }
+}
+
 /** Duplicating a string preserves its contents and does not modify its input. */
 class GlibStrdup extends DataFlowFunction, SideEffectFunction {
   GlibStrdup() { this.hasGlobalName("g_strdup") }
