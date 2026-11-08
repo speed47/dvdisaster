@@ -171,6 +171,10 @@ jobs:
           dvdisaster.exe --version
       - name: Tag for Continuous Build
         if: github.ref_name == 'master'
+        shell: pwsh
+        timeout-minutes: 2
+        env:
+          GIT_TERMINAL_PROMPT: '0'
         run: |
           git tag -f latest
           git push -f origin latest
@@ -185,6 +189,10 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
       - name: Tag for Dev Build
         if: github.ref_name == 'dev'
+        shell: pwsh
+        timeout-minutes: 2
+        env:
+          GIT_TERMINAL_PROMPT: '0'
         run: |
           git tag -f devel
           git push -f origin devel
