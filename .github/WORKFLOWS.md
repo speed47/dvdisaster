@@ -47,6 +47,24 @@ suite. C/C++ uses a manual build with the existing GTK setup; Actions uses
 `build-mode: none` and skips the application setup and build steps. Results use
 separate language categories in code scanning.
 
+### Source suppressions
+
+The C/C++ job also runs `codeql/cpp-queries:AlertSuppression.ql`. Place a
+`// codeql[rule-id]` comment immediately before the flagged line and document
+the justification alongside it. Comments apply only to the next line; the
+rule remains enabled elsewhere.
+
+The `advanced-security/dismiss-alerts` action, pinned through `actions.lock`, consumes the local
+SARIF and dismisses matching alerts as "won't fix" only on pushes to the
+repository's default branch. Pull requests and other branches generate
+suppression metadata without changing repository-wide dismissals. Removing a
+comment lets the action reopen alerts it previously dismissed; manual
+dismissals are preserved. The action is recorded in `actions.lock`.
+
+The three output-file permission suppressions intentionally retain the user's
+umask for logs, debug text, and sector dumps. Newly created configuration files
+exclude group and other write permissions.
+
 ## Compatibility notes
 
 The November 2026 update was checked against the upstream release notes:
