@@ -219,7 +219,11 @@ jobs:
       - name: configure
         run: ./configure --with-gui=no
       - name: make
-        run: nproc && make -j$(nproc) && make static && mv -f dvdisaster-static dvdisaster
+        run: |
+          nproc && make -j$(nproc)
+          glib_static_libs=$(pkg-config --static --libs glib-2.0)
+          make static GLIB_LIBS="$glib_static_libs"
+          mv -f dvdisaster-static dvdisaster
       - name: check executable
         run: |
           ./dvdisaster --version && ./dvdisaster --version | grep -q dirty || true
@@ -317,6 +321,7 @@ jobs:
           ./$exe --appimage-extract
           rm -vf $exe
           sed -i -re "s=gio/modules=:::::::::::=g" squashfs-root/usr/lib/libgio*.so*
+          chmod -R a+rX squashfs-root
           env LINUXDEPLOY_OUTPUT_VERSION=$(echo "${{ github.ref }}" | grep -Eo '[^/]+$') ./appimagetool-x86_64.AppImage -v squashfs-root
           mv -v dvdisaster*AppImage $exe
           chmod 755 $exe
