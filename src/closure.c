@@ -187,7 +187,7 @@ void GuiReadDotfile()
       if(feof(dotfile)) break;
       if(*line == '#') continue;
       int result = sscanf(line, "%40[0-9a-zA-Z-]%n", symbol, &n);
-      if(result == EOF || !result) continue;
+      if(result != 1) continue;
       if(line[n] != ':') continue;
 
       /* Separate line contents into symbol: value pair */
@@ -494,8 +494,10 @@ GlobalClosure *Closure;
 int exitCode = EXIT_SUCCESS;
 
 void InitClosure()
-{  int v1=0,v2=0,v3=0,dots=0;
-   char *v,version[strlen(VERSION)+1];
+{  gint64 parts[3], version_number;
+   const char *v = VERSION;
+   char *end;
+   int i;
 
    Closure = g_malloc0(sizeof(GlobalClosure));
 
@@ -527,25 +529,25 @@ void InitClosure()
    Closure->versionString = g_strdup_printf("dvdisaster %s build %s, %s%s",
 					    Closure->cookedVersion, buildCount, SYS_NAME, BITNESS_STRING);
 
-   /* Replace the dot with a locale-resistant separator */
+   /* Parse decimal components without locale-dependent conversions. */
 
-   strcpy(version,VERSION);
-   for(v=version; *v; v++)
-     if(*v=='.') 
-     {  *v='x';
-        dots++;
-     }
-
-   if(dots == 2) 
-   {  v1 = v2 = v3 = 0;
-      sscanf(version,"%dx%dx%d",&v1,&v2,&v3);
+   for(i=0; i<3; i++)
+   {  errno = 0;
+      parts[i] = g_ascii_strtoll(v, &end, 10);
+      if(!g_ascii_isdigit(*v) || errno == ERANGE || parts[i] > G_MAXINT ||
+         (i < 2 ? *end != '.' : *end != '\0'))
+      {  g_printf("Error: malformed version number %s\n", VERSION);
+         exit(EXIT_FAILURE);
+      }
+      if(i < 2) v = end+1;
    }
-   else 
-   {  g_printf("Error: malformed version number %s\n",VERSION);
+
+   version_number = 10000*parts[0] + 100*parts[1] + parts[2];
+   if(version_number > G_MAXINT)
+   {  g_printf("Error: malformed version number %s\n", VERSION);
       exit(EXIT_FAILURE);
    }
-
-   Closure->version = 10000*v1 + 100*v2 + v3;
+   Closure->version = (int)version_number;
 
    /* Get home and system directories */
 
