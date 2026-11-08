@@ -65,6 +65,12 @@ The three output-file permission suppressions intentionally retain the user's
 umask for logs, debug text, and sector dumps. Newly created configuration files
 exclude group and other write permissions.
 
+Path-injection suppressions cover image, ECC, device, and log paths restored
+from trusted user configuration. These settings intentionally accept arbitrary
+paths, just like file selections made by the user; they are not confined to a
+base directory. Configuration files must therefore be trusted by the user
+running the application.
+
 ## Compatibility notes
 
 The November 2026 update was checked against the upstream release notes:

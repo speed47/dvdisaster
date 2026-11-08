@@ -269,8 +269,10 @@ reopen_image:
       if(rc->msg) g_free(rc->msg);
       rc->msg = g_strdup(_("Reading new medium image."));
       
+      // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
       if(!(rc->writerImage = LargeOpen(Closure->imageName, O_WRONLY | O_CREAT, IMG_PERMS)))
 	 Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
+      // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
       if(!(rc->readerImage = LargeOpen(Closure->imageName, O_RDONLY, IMG_PERMS)))
 	 Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
@@ -302,8 +304,10 @@ reopen_image:
       so that the reader looks for "dead_sector" markers
       and skips already read blocks. */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    if(!(rc->readerImage = LargeOpen(Closure->imageName, O_RDONLY, IMG_PERMS)))
       Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    if(!(rc->writerImage = LargeOpen(Closure->imageName, O_WRONLY, IMG_PERMS)))
       Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
@@ -800,6 +804,7 @@ void ReadMediumLinear(gpointer data)
         and possibly the respective ecc file.
         The on disk image is maintained in rc->reader|writerImage. */
 
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    rc->image = OpenImageFromDevice(Closure->device, 0);
    Closure->readErrors = Closure->crcErrors = rc->readOK = 0;
 
@@ -811,6 +816,7 @@ void ReadMediumLinear(gpointer data)
    /*** See if we have an ecc file which belongs to the medium,
         and attach it with the Image struct. */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    OpenEccFileForImage(rc->image, Closure->eccName, O_RDONLY, IMG_PERMS);
 
    /*** If ecc information is available in both the image and the

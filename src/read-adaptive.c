@@ -87,6 +87,7 @@ static EccInfo* open_ecc_file(int mode)
 
    file_flags = mode & WRITEABLE_ECC ? O_RDWR | O_CREAT : O_RDONLY;
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    if(!(ei->file = LargeOpen(Closure->eccName, file_flags, IMG_PERMS)))
    {  free_ecc_info(ei);
       ei = NULL;
@@ -622,6 +623,7 @@ static void open_and_determine_mode(read_closure *rc)
  
    /* open the device */
 
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    rc->medium = OpenImageFromDevice(Closure->device, 0);
    rc->dh = rc->medium->dh;
    rc->readMode = IMAGE_ONLY;
@@ -643,6 +645,7 @@ static void open_and_determine_mode(read_closure *rc)
       This properly detects RS01, RS03 (file mode), and other ecc file types
       by delegating to each codec's recognizeEccFile method. */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    OpenEccFileForImage(rc->medium, Closure->eccName, O_RDONLY, IMG_PERMS);
 
    if(rc->medium->eccFileMethod)
@@ -1496,6 +1499,7 @@ void ReadMediumAdaptive(gpointer data)
 
 reopen_image:
    if(!LargeStat(Closure->imageName, &image_file_size))
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    {  if(!(rc->image = LargeOpen(Closure->imageName, O_RDWR | O_CREAT, IMG_PERMS)))
 	Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
@@ -1526,6 +1530,7 @@ reopen_image:
 
       /* Open the existing image file. */
 
+      // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
       if(!(rc->image = LargeOpen(Closure->imageName, O_RDWR, IMG_PERMS)))
 	Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 

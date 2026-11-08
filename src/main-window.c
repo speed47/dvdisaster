@@ -165,7 +165,9 @@ static void action_cb(GtkWidget *widget, gpointer data)
       case ACTION_FIX:
       { Image *image;
 
+	// codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+	// codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
 	if(ReportImageEccInconsistencies(image)) /* abort if no method found */
 	  return;
@@ -205,7 +207,9 @@ static void action_cb(GtkWidget *widget, gpointer data)
 
       { Image *image;
 
+	// codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+	// codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
 
 	/* Determine method. Ecc files win over augmented ecc. */

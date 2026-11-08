@@ -107,6 +107,7 @@ void PrintMediumInfo(void *mi_ptr)
    while (gtk_events_pending()) gtk_main_iteration();
 #endif
 
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromDevice(Closure->device, 2 /* allow blanks, see comment in OpenImageFromDevice() */);
    /*** in case of !image, say that we didn't find any medium */
    GuiSetLabelText(mi->physicalType, _("Medium not present"));

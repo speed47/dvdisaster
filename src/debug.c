@@ -391,7 +391,9 @@ void RandomError(char *arg)
    Method *method = NULL;
    char buf[5];
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
    ReportImageEccInconsistencies(image);
 
@@ -440,6 +442,7 @@ void Byteset(char *arg)
 
    /*** Open the image file */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -498,6 +501,7 @@ void Erase(char *arg)
    
    /*** Open the image file */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -561,6 +565,7 @@ void TruncateImageFile(char *arg)
 
    /*** Open the image file */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -685,6 +690,7 @@ void ZeroUnreadable(void)
    gint64 s,cnt=0;
    int percent, last_percent = 0;
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -791,6 +797,7 @@ void ShowHeader(char *arg)
    
    /*** Open the image file */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -832,6 +839,7 @@ void ShowSector(char *arg)
 
    /*** Open the image file */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -878,6 +886,7 @@ void ReadSector(char *arg)
 
    /*** Open the device */
 
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromDevice(Closure->device, 0);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -932,6 +941,7 @@ void RawSector(char *arg)
 
    /*** Open the device */
 
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromDevice(Closure->device, 0);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));
@@ -1078,6 +1088,7 @@ void SendCDB(char *cdb_raw)
    }
 
    PrintLog("\n");
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    status = SendReadCDB(Closure->device, ab->buf, cdb, cdb_len, alloc_len);
 
    if(!status)

@@ -848,6 +848,7 @@ int main(int argc, char *argv[])
 	   Image *image;
 
 	   PrintLog(_("\nOpening %s"), Closure->imageName);
+	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
 	   if(!image)
 	   {  PrintLog(": %s.\n", strerror(errno));
@@ -858,6 +859,7 @@ int main(int argc, char *argv[])
 	      else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 	   }
+	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDWR, IMG_PERMS);
 	   ReportImageEccInconsistencies(image);
 
@@ -874,7 +876,9 @@ int main(int argc, char *argv[])
 	{  Method *method;
 	   Image *image;
 
+	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
 
 	   /* Determine method. Ecc files win over augmented ecc. */
@@ -936,6 +940,7 @@ int main(int argc, char *argv[])
 	 break;
 
       case MODE_MARKED_IMAGE:
+	 // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	 RandomImage(Closure->imageName, debug_arg, 1);
 	 break;
 
@@ -949,6 +954,7 @@ int main(int argc, char *argv[])
 	 break;
 
       case MODE_RANDOM_IMAGE:
+	// codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	RandomImage(Closure->imageName, debug_arg, 0);
 	 break;
 
