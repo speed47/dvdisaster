@@ -44,7 +44,7 @@ jobs:
       if: matrix.language == 'cpp'
       run: |
         sudo apt-get update && sudo apt-get install -y libglib2.0-dev man jq libgtk-3-dev
-        ./configure --with-werror
+        FORCE_CFLAGS="-std=gnu17" ./configure --with-werror
         nproc && make -j$(nproc)
       env:
         DEBIAN_FRONTEND: noninteractive
