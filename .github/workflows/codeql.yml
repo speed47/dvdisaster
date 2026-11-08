@@ -23,6 +23,7 @@ jobs:
         include:
           - language: cpp
             build-mode: manual
+            suppression-query: codeql/cpp-queries:AlertSuppression.ql
           - language: actions
             build-mode: none
 
@@ -39,6 +40,7 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         queries: +security-extended
+        packs: ${{ matrix.suppression-query }}
         config-file: ${{ matrix.language == 'cpp' && './.github/codeql/cpp.yml' || '' }}
 
     - name: Build app
@@ -51,6 +53,18 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
 
     - name: Perform CodeQL Analysis
+      id: analyze
       uses: github/codeql-action/analyze@v4.39.3
       with:
         category: "/language:${{matrix.language}}"
+        output: sarif-results
+
+    # Alert dismissal is repository-wide; never apply feature-branch suppressions.
+    - name: Apply source suppressions
+      if: matrix.language == 'cpp' && github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      uses: advanced-security/dismiss-alerts@v2.0.3
+      with:
+        sarif-id: ${{ steps.analyze.outputs.sarif-id }}
+        sarif-file: sarif-results/cpp.sarif
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
