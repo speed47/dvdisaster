@@ -1,0 +1,4 @@
+name: speed47/dvdisaster-glib
+version: 0.0.1
+dependencies:
+  codeql/cpp-all: "*"
