@@ -38,7 +38,8 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
-        queries: security-extended
+        queries: +security-extended
+        config-file: ${{ matrix.language == 'cpp' && './.github/codeql/cpp.yml' || '' }}
 
     - name: Build app
       if: matrix.language == 'cpp'

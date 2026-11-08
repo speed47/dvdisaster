@@ -1,0 +1,7 @@
+name: C/C++ security queries with GLib format-string models
+queries:
+  - uses: ./.github/codeql/glib/NonConstantFormat.ql
+query-filters:
+  # The local query runs the same checks with GLib models imported.
+  - exclude:
+      id: cpp/non-constant-format
