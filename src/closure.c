@@ -295,6 +295,7 @@ void GuiReadDotfile()
 static void update_dotfile()
 {  const char *no_dot_files;
    FILE *dotfile;
+   int fd, flags = O_WRONLY | O_CREAT | O_TRUNC;
 
    /*** If the environment $NO_DOT_FILES is set,
         do not alter the dotfile. */
@@ -306,10 +307,23 @@ static void update_dotfile()
 
    /*** Otherwise, save our session */
 
-   dotfile = g_fopen(Closure->dotFile, "wb");
+   /* Respect umask, but never create a group- or other-writable config. */
+#ifdef O_BINARY
+   flags |= O_BINARY;
+#endif
+   fd = g_open(Closure->dotFile, flags, 0644);
+   if(fd < 0)
+   {  g_printf("Could not open configuration file %s: %s\n",
+              Closure->dotFile, strerror(errno));
+      return;
+   }
+
+   dotfile = fdopen(fd, "wb");
    if(!dotfile)
-   {  g_printf("Could not open configuration file %s: %s\n", 
-		Closure->dotFile, strerror(errno));
+   {  int saved_errno = errno;
+      close(fd);
+      g_printf("Could not open configuration file %s: %s\n",
+		Closure->dotFile, strerror(saved_errno));
       return;
    }
 
