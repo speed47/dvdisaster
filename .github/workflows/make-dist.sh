@@ -4,7 +4,7 @@ set -e
 github_ref="$1"
 
 case "$MSYSTEM" in
-    MINGW64) os=win64;   suf=$os-portable; exe=.exe;;
+    UCRT64|MINGW64) os=win64;   suf=$os-portable; exe=.exe;;
     MINGW32) os=win32;   suf=$os-portable; exe=.exe;;
     *)       os=linux64; suf=$os-static;   exe='';;
 esac
@@ -56,7 +56,7 @@ if [ "$os" != "linux64" ]; then
     fi
     echo "!> Looking for dependencies of $binary..."
     # ntldd -R $binary
-    for i in $(ntldd -R "$binary" | awk '/mingw/ {print $3}' | tr \\\\ / | grep -Eo '[^/]+$')
+    for i in $(ntldd -R "$binary" | awk '/=>/ {print $3}' | tr \\\\ / | grep -Eo '[^/]+$')
     do
       src="$MINGW_PREFIX/bin/$i"
       echo -n "!>> Inspecting $src... "
