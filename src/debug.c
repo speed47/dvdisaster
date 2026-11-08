@@ -1356,6 +1356,8 @@ void AppendToTextFile(char* filename, char *format, ...)
 {  va_list argp;
    FILE *file;
 
+   /* Debug output intentionally follows the user's umask. */
+   // codeql[cpp/world-writable-file-creation]
    file = g_fopen(filename, "a");
    if(!file)
      Stop("Could not open %s: %s\n", filename, strerror(errno));

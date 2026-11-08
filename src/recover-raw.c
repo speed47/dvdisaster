@@ -38,6 +38,8 @@ void DumpSector(RawBuffer *rb, char *path)
 
    filename = g_strdup_printf("%s%lld.h", path, (long long)rb->lba);
 
+   /* Sector dump output intentionally follows the user's umask. */
+   // codeql[cpp/world-writable-file-creation]
    file = g_fopen(filename, "w");
    
    fprintf(file, 

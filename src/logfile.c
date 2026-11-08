@@ -73,6 +73,8 @@ void VPrintLogFile(char *format, va_list argp)
       LogTimeStamp();
    }
 
+   /* Log output intentionally follows the user's umask. */
+   // codeql[cpp/world-writable-file-creation]
    file = g_fopen(Closure->logFile, "a");
    if(!file)
      return;
