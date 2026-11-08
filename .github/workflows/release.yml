@@ -8,12 +8,16 @@ on:
     tags:
       - 'v*'
 
+permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   mac:
+    permissions:
+      contents: write
     strategy:
       matrix:
         ui: [cli, gui]
@@ -27,7 +31,7 @@ jobs:
             runs-on: macos-15
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
       - name: install prerequisites
         env:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -71,7 +75,7 @@ jobs:
         run: |
           screencapture -T 15 -x screenshot.png
       - name: upload screenshot
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: macos-${{ matrix.arch }}-${{ matrix.ui }}.zip
           path: screenshot.png
@@ -82,7 +86,7 @@ jobs:
           git push -f origin latest
       - name: Upload to Continuous Build
         if: github.ref_name == 'master'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -96,7 +100,7 @@ jobs:
           git push -f origin devel
       - name: Upload to Dev Build
         if: github.ref_name == 'dev'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -106,7 +110,7 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
       - name: Upload to Draft Release
         if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
@@ -115,6 +119,8 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
 
   win:
+    permissions:
+      contents: write
     runs-on: windows-latest
     strategy:
       matrix:
@@ -126,7 +132,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2.33.0
         with:
           msystem: MINGW64
           update: false
@@ -137,7 +143,7 @@ jobs:
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
       - name: configure
         run: ./configure ${{ matrix.clionly }}
       - name: make
@@ -170,7 +176,7 @@ jobs:
           git push -f origin latest
       - name: Upload to Continuous Build
         if: github.ref_name == 'master'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -184,7 +190,7 @@ jobs:
           git push -f origin devel
       - name: Upload to Dev Build
         if: github.ref_name == 'dev'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -194,7 +200,7 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
       - name: Upload to Draft Release
         if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
@@ -203,9 +209,11 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
 
   linux64-cli:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
       - name: install prerequisites
         run: sudo apt update && sudo apt install -y libglib2.0-dev man
       - name: configure
@@ -227,7 +235,7 @@ jobs:
           git push -f origin latest
       - name: Upload to Continuous Build
         if: github.ref_name == 'master'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -241,7 +249,7 @@ jobs:
           git push -f origin devel
       - name: Upload to Dev Build
         if: github.ref_name == 'dev'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -251,7 +259,7 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
       - name: Upload to Draft Release
         if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
@@ -260,9 +268,11 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
 
   linux64-appimage:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
       - name: install prerequisites on host
         run: sudo apt-get update && sudo apt-get install -y fuse
       - name: docker
@@ -324,7 +334,7 @@ jobs:
           git push -f origin latest
       - name: Upload to Continuous Build
         if: github.ref_name == 'master'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -338,7 +348,7 @@ jobs:
           git push -f origin devel
       - name: Upload to Dev Build
         if: github.ref_name == 'dev'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
@@ -348,7 +358,7 @@ jobs:
           files: ${{ steps.dist.outputs.archive }}
       - name: Upload to Draft Release
         if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.4
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
