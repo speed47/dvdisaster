@@ -181,6 +181,8 @@ jobs:
     - name: regression tests
       if: matrix.printf == 'normal'
       env:
+        # Parallel image tests can exceed the /dev/shm quota.
+        TMPDIR: ${{ runner.temp }}
         REGTEST_NO_UTF8: 1
         MAX_JOBS: 4
       run: |
@@ -216,6 +218,8 @@ jobs:
       run: make -j$(nproc)
     - name: regression tests
       env:
+        # Parallel image tests can exceed the /dev/shm quota.
+        TMPDIR: ${{ runner.temp }}
         REGTEST_NO_UTF8: 1
         MAX_JOBS: 4
       run: |
