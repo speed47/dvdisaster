@@ -23,7 +23,6 @@
 /*** src type: no GUI code ***/
 
 #include "dvdisaster.h"
-#include <time.h>
 
 /*
  * Create default dotfile path
@@ -43,14 +42,21 @@ void DefaultLogFile()
  */
 
 void LogTimeStamp()
-{  time_t now;
+{  GDateTime *now;
+   gchar *timestamp = NULL;
 
    if(!Closure->logFileEnabled)
       return;
 
-   time(&now);
-   PrintLogFile("*\n* %s\n* logging started at %s*\n",
-		Closure->versionString, ctime(&now));
+   now = g_date_time_new_now_local();
+   if(now)
+   {  timestamp = g_date_time_format(now, "%a %b %e %H:%M:%S %Y");
+      g_date_time_unref(now);
+   }
+
+   PrintLogFile("*\n* %s\n* logging started at %s\n*\n",
+		Closure->versionString, timestamp ? timestamp : "unknown time");
+   g_free(timestamp);
 }
 
 
