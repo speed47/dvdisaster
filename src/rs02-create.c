@@ -1030,6 +1030,7 @@ void RS02Create(void)
 
    PrintLog(_("\nOpening %s"), Closure->imageName);
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
    {  PrintLog(": %s.\n", strerror(errno));

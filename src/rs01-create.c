@@ -265,6 +265,7 @@ void RS01Create(void)
 
    PrintLog(_("\nOpening %s"), Closure->imageName);
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
    ec->image = image;
    if(!image)
@@ -279,6 +280,7 @@ void RS01Create(void)
    if(!Closure->eccName || !strlen(Closure->eccName))
      Stop(_("No error correction file specified!\n"));
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image->eccFile = LargeOpen(Closure->eccName, O_RDWR | O_CREAT, IMG_PERMS);
    if(!image->eccFile)
       Stop(_("Can't open %s:\n%s"),Closure->eccName,strerror(errno));

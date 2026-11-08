@@ -765,6 +765,7 @@ void StripECCFromImageFile()
    RegisterCleanup(_("Strip ECC aborted"), stripecc_cleanup, (gpointer)image);
 
    /*** Open the image file */
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromFile(Closure->imageName, O_RDWR, IMG_PERMS);
    if(!image)
      Stop(_("Can't open %s:\n%s"), Closure->imageName, strerror(errno));

@@ -2092,6 +2092,7 @@ gint64 CurrentMediumSize(int get_blank_size)
 
 
    /* 2 means: allow blank media, see comment in OpenImageFromDevice */
+   // codeql[cpp/path-injection] Device path intentionally restored from trusted user configuration; arbitrary paths are supported.
    image = OpenImageFromDevice(Closure->device, 2);
    if(!image) return 0;
    if(InquireDevice(image->dh, 1) != 0x05) 

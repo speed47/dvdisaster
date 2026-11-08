@@ -74,7 +74,7 @@ void VPrintLogFile(char *format, va_list argp)
    }
 
    /* Log output intentionally follows the user's umask. */
-   // codeql[cpp/world-writable-file-creation]
+   // codeql[cpp/world-writable-file-creation] codeql[cpp/path-injection] Trusted user-configured log path; intentionally honor umask.
    file = g_fopen(Closure->logFile, "a");
    if(!file)
      return;

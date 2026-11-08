@@ -346,6 +346,7 @@ static void save_sector(raw_editor_context *rec)
 
    /*** Open image, verify fingerprint */
 
+   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
    if(!(image = LargeOpen(Closure->imageName, O_RDWR, IMG_PERMS)))
       Stop(_("Can't open %s:\n%s"),Closure->imageName,strerror(errno));
 
