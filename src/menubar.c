@@ -387,7 +387,7 @@ static void file_select_cb(GtkWidget *widget, gpointer data)
 
 void set_path(GtkWidget *entry, char *path)
 {
-  if(path[0] == '/' || path[0] == '\\' || path[1] == ':' || strlen(path) < 1)
+  if(!path[0] || path[0] == '/' || path[0] == '\\' || path[1] == ':')
    {  gtk_entry_set_text(GTK_ENTRY(entry), path);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
    }
@@ -395,9 +395,9 @@ void set_path(GtkWidget *entry, char *path)
    {  char buf[PATH_MAX + strlen(path) + 2];
 
       if(!getcwd(buf, PATH_MAX)) return;
-      strcat(buf,"/");
+      g_strlcat(buf, "/", sizeof(buf));
 
-      strcat(buf,path);
+      g_strlcat(buf, path, sizeof(buf));
       gtk_entry_set_text(GTK_ENTRY(entry), buf);
       gtk_editable_set_position(GTK_EDITABLE(entry), -1);
    }

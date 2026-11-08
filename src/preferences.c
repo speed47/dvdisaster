@@ -1027,7 +1027,7 @@ static void cache_defective_dir_cb(GtkWidget *widget, gpointer data)
                                            _("_Cancel"), GTK_RESPONSE_CANCEL,
                                            _("_Open"), GTK_RESPONSE_ACCEPT,
                                            NULL);
-      sprintf(filename, "%s/", Closure->dDumpDir);
+      g_snprintf(filename, sizeof(filename), "%s/", Closure->dDumpDir);
       gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 
       if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
