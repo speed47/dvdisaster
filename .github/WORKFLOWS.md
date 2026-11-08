@@ -65,8 +65,10 @@ The November 2026 update was checked against the upstream release notes:
   CodeQL bundle and checkout path, so the newer minimum bundle requirement does
   not require configuration changes.
 - [MSYS2 v2.33.0](https://github.com/msys2/setup-msys2/releases/tag/v2.33.0)
-  continues to support the configured MINGW64 environment, with a deprecation
-  warning. The workflows do not rely on the removed default Perl installation.
+  runs Windows builds in UCRT64 with matching `mingw-w64-ucrt-x86_64-*`
+  packages. Packaging uses `MINGW_PREFIX` to locate the UCRT64 runtime DLLs
+  and keeps the existing win64 archive names. The workflows do not rely on
+  the removed default Perl installation.
 - [Upload artifact v7.0.2](https://github.com/actions/upload-artifact/releases/tag/v7.0.2)
   preserves the screenshot upload inputs and matrix-specific artifact names.
 

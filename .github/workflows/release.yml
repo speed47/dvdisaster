@@ -134,12 +134,12 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2.33.0
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: false
-          install: git diffutils make pkg-config mingw-w64-x86_64-glib2 mingw-w64-x86_64-gcc mingw-w64-x86_64-ntldd-git man zip
+          install: git diffutils make pkg-config mingw-w64-ucrt-x86_64-glib2 mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ntldd man zip
       - name: install GUI prereqs
         if: matrix.ui == 'gui'
-        run: pacman -S --noconfirm mingw-w64-x86_64-gtk3 mingw-w64-x86_64-librsvg
+        run: pacman -S --noconfirm mingw-w64-ucrt-x86_64-gtk3 mingw-w64-ucrt-x86_64-librsvg
       - name: git config
         run: git config --global core.autocrlf input
         shell: bash
