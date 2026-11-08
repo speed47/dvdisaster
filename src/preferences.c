@@ -1111,6 +1111,7 @@ static void method_select_cb(GtkWidget *widget, gpointer data)
    {  GtkWidget *other;
 
       strncpy(Closure->methodName, method->name, 4);
+      GuiUpdateMethodPreferences();
       gtk_notebook_set_current_page(GTK_NOTEBOOK(pc->methodNotebook), n);
 
       if(pc->methodChooserA == widget)

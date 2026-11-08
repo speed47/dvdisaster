@@ -352,13 +352,17 @@ static gboolean notebook_idle_func(gpointer data)
  * Cut&Paste from RS01; bad idea; but RS01 will be obsoleted soon.
  */
 
+static gboolean restoring_redundancy = FALSE;
+
 static void nroots_cb(GtkWidget *widget, gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
    int value;
 
+   if(restoring_redundancy) return;
+
    value = gtk_range_get_value(GTK_RANGE(widget));
    if(Closure->redundancy) g_free(Closure->redundancy);
-   Closure->redundancy = g_strdup_printf("%d", value);
+   Closure->redundancy = g_strdup_printf("%dr", value);
 
    if(widget == wl->redundancyScaleA)
         set_range_value(GTK_RANGE(wl->redundancyScaleB), value);
@@ -370,6 +374,8 @@ static void nroots_cb(GtkWidget *widget, gpointer data)
 static void ecc_size_cb(GtkWidget *widget, gpointer data)
 {  RS03Widgets *wl = (RS03Widgets*)data;
    int value;
+
+   if(restoring_redundancy) return;
 
    value = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(widget));
    if(Closure->redundancy) g_free(Closure->redundancy);
@@ -386,6 +392,8 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 {  Method *method = (Method*)data;
    RS03Widgets *wl = (RS03Widgets*)method->widgetList;
    int state  = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+
+   if(restoring_redundancy) return;
 
    if(state == TRUE)
    {  if(widget == wl->radio3A || widget == wl->radio3B)
@@ -444,7 +452,7 @@ static void toggle_cb(GtkWidget *widget, gpointer data)
 	 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio3B), TRUE);
 
 	 if(Closure->redundancy) g_free(Closure->redundancy);
-	 Closure->redundancy = g_strdup_printf("%d", nroots);
+	 Closure->redundancy = g_strdup_printf("%dr", nroots);
       }
 
       if(   widget == wl->radio4A  /* relative to space usage */
@@ -539,67 +547,65 @@ static void threads_cb(GtkWidget *widget, gpointer data)
  * If they changed there, update our preferences page.
  */
 
+/* Updating preferences must not rewrite the setting through GTK callbacks. */
+static void restore_redundancy(Method *method)
+{  RS03Widgets *wl = (RS03Widgets*)method->widgetList;
+   const char *value = Closure->redundancy;
+   size_t len = value ? strlen(value) : 0;
+   int roots = 32, choice = 0;
+   GtkWidget *radios[] = { wl->radio1A, wl->radio1B, wl->radio2A, wl->radio2B,
+                          wl->radio3A, wl->radio3B, wl->radio4A, wl->radio4B };
+   unsigned int i;
+
+   if(restoring_redundancy || !wl->radio4LabelB)
+      return;
+
+   if(value && !strcmp(value, "high"))
+   {  roots = 64;
+      choice = 1;
+   }
+   else if(len && strcmp(value, "normal"))
+   {  if(value[len-1] == 'm')
+      {  choice = 3;
+         roots = gtk_range_get_value(GTK_RANGE(wl->redundancyScaleA));
+      }
+      else
+      {  choice = 2;
+         if(value[len-1] == '%')
+         {  double percent = g_ascii_strtod(value, NULL);
+            if(percent >= 3.2 && percent <= 200.0)
+               roots = (int)round(255.0 * percent / (100.0 + percent));
+         }
+         else roots = atoi(value);
+      }
+   }
+
+   restoring_redundancy = TRUE;
+   gtk_range_set_value(GTK_RANGE(wl->redundancyScaleA), roots);
+   gtk_range_set_value(GTK_RANGE(wl->redundancyScaleB), roots);
+   if(choice == 3)
+   {  gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(value));
+      gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(value));
+   }
+   for(i=0; i<8; i++)
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radios[i]), i/2 == choice);
+
+   gtk_widget_set_sensitive(wl->redundancyScaleA, choice == 2);
+   gtk_widget_set_sensitive(wl->redundancyScaleB, choice == 2);
+   gtk_widget_set_sensitive(wl->redundancySpinA, choice == 3);
+   gtk_widget_set_sensitive(wl->redundancySpinB, choice == 3);
+   gtk_widget_set_sensitive(wl->radio4LabelA, choice == 3);
+   gtk_widget_set_sensitive(wl->radio4LabelB, choice == 3);
+   restoring_redundancy = FALSE;
+}
+
 void ResetRS03PrefsPage(Method *method)
 {  RS03Widgets *wl = (RS03Widgets*)method->widgetList;
    int index;
 
    /* Error correction file redundancy */
 
-   if(Closure->redundancy)
-   {  
-      if(!strcmp(Closure->redundancy, "normal"))
-      {  if(wl->radio1A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio1A)) == FALSE)
-	 {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio1A), TRUE);
-            activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio1B), TRUE);
-	 }
-      }
-      else if(!strcmp(Closure->redundancy, "high"))
-      {  if(wl->radio2A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio2A)) == FALSE)
-	 {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio2A), TRUE);
-	    activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio2B), TRUE);
-	 }
-      }
-      else
-      {  int last = strlen(Closure->redundancy)-1;
-
-         if(Closure->redundancy[last] == 'm')
-	 {  if(wl->redundancySpinA)
-	    {  int old = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(wl->redundancySpinA));
-	       int new;
-
-	       Closure->redundancy[last] = 0;
-	       new = atoi(Closure->redundancy);
-	       Closure->redundancy[last] = 'm';
-
-	       if(new != old)
-	       {  set_spin_button_value(GTK_SPIN_BUTTON(wl->redundancySpinA), new);
-		  set_spin_button_value(GTK_SPIN_BUTTON(wl->redundancySpinB), new);
-	       }
-
-	       if(wl->radio4A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio4A)) == FALSE)
-	       {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio4A), TRUE);
-		  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio4B), TRUE);
-	       }
-	    }
-	 }
-	 else
-	 {  if(wl->redundancyScaleA)
-	    {  int old = gtk_range_get_value(GTK_RANGE(wl->redundancyScaleA));
-	       int new = atoi(Closure->redundancy);
-
-	       if(new != old)
-	       {  set_range_value(GTK_RANGE(wl->redundancyScaleA), new);
-	          set_range_value(GTK_RANGE(wl->redundancyScaleB), new);
-	       }
-
-	       if(wl->radio3A && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wl->radio3A)) == FALSE)
-	       {  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio3A), TRUE);
-		  activate_toggle_button(GTK_TOGGLE_BUTTON(wl->radio3B), TRUE);
-	       }
-	    }
-	 }
-      }
-   }
+   restore_redundancy(method);
 
    /* Prefetching */
 
@@ -1060,37 +1066,9 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       "images of vastly different size, smaller images receive more "
       "redundancy than larger ones. This is usually not what you want."));
 
-   /* Preset redundancy values
-      FIXME: replace by ResetRS03Prefs()? */
+   /* Preset redundancy values */
 
-   if(Closure->redundancy)
-   {  if(!strcmp(Closure->redundancy, "normal"))
-      {  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio1A), TRUE);
-         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio1B), TRUE);
-      }
-      else if(!strcmp(Closure->redundancy, "high"))
-      {  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio2A), TRUE);
-         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio2B), TRUE);
-      }
-      else
-      {  int last = strlen(Closure->redundancy)-1;
-
-         if(Closure->redundancy[last] == 'm')
-	 {  Closure->redundancy[last] = 0;
-	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinA), atoi(Closure->redundancy));
-	    gtk_spin_button_set_value(GTK_SPIN_BUTTON(wl->redundancySpinB), atoi(Closure->redundancy));
-	    Closure->redundancy[last] = 'm';
-	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio4A), TRUE);
-	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio4B), TRUE);
-	 }
-	 else
-	 {  gtk_range_set_value(GTK_RANGE(wl->redundancyScaleA), atoi(Closure->redundancy));
-	    gtk_range_set_value(GTK_RANGE(wl->redundancyScaleB), atoi(Closure->redundancy));
-	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio3A), TRUE);
-	    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(wl->radio3B), TRUE);
-	 }
-      }
-   }
+   restore_redundancy(method);
 
    /*** IO parameters */
 
