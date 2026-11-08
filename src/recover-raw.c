@@ -75,9 +75,13 @@ void DumpSector(RawBuffer *rb, char *path)
 RawBuffer *CreateRawBuffer(int sample_length)
 {  RawBuffer *rb;
    int i,j;
+   int samples_max = Closure->maxReadAttempts;
+
+   if(samples_max < 1 || samples_max > MAX_RAW_SAMPLES)
+      Stop(_("Raw recovery sample count must be in range 1...%d"), MAX_RAW_SAMPLES);
 
    rb = g_malloc0(sizeof(RawBuffer));
-   rb->samplesMax = MAX(1, Closure->maxReadAttempts);
+   rb->samplesMax = samples_max;
    rb->sampleSize = sample_length;
 
    rb->gt = CreateGaloisTables(0x11d);
@@ -87,41 +91,41 @@ RawBuffer *CreateRawBuffer(int sample_length)
 
    rb->workBuf   = CreateAlignedBuffer(sample_length*MAX_CLUSTER_SECTORS);
    rb->zeroSector= g_malloc0(sample_length);
-   rb->rawBuf    = g_malloc(Closure->maxReadAttempts * sizeof(unsigned char*));
+   rb->rawBuf    = g_malloc(samples_max * sizeof(unsigned char*));
    rb->recovered = g_malloc(sample_length);
    rb->byteState = g_malloc(sample_length);
    rb->byteCount = g_malloc(sample_length);
    rb->reference = g_malloc(sample_length);
 
-   for(i=0; i<Closure->maxReadAttempts; i++)
+   for(i=0; i<samples_max; i++)
    {  rb->rawBuf[i] = g_malloc(sample_length);
    }
 
    for(i=0; i<N_P_VECTORS; i++)
-   {  rb->pParity1[i] = g_malloc(Closure->maxReadAttempts);
-      rb->pParity2[i] = g_malloc(Closure->maxReadAttempts);
+   {  rb->pParity1[i] = g_malloc(samples_max);
+      rb->pParity2[i] = g_malloc(samples_max);
    }
 
    for(i=0; i<N_Q_VECTORS; i++)
-   {  rb->qParity1[i] = g_malloc(Closure->maxReadAttempts);
-      rb->qParity2[i] = g_malloc(Closure->maxReadAttempts);
+   {  rb->qParity1[i] = g_malloc(samples_max);
+      rb->qParity2[i] = g_malloc(samples_max);
    }
 
-   rb->pLoad = g_malloc0(Closure->maxReadAttempts * sizeof(int));
-   rb->qLoad = g_malloc0(Closure->maxReadAttempts * sizeof(int));
+   rb->pLoad = g_malloc0(samples_max * sizeof(int));
+   rb->qLoad = g_malloc0(samples_max * sizeof(int));
 
    for(i=0; i<N_P_VECTORS; i++)
-      rb->pList[i]  = g_malloc(Closure->maxReadAttempts * sizeof(char*));
+      rb->pList[i]  = g_malloc(samples_max * sizeof(char*));
 
    for(i=0; i<N_P_VECTORS; i++)
-     for(j=0; j<Closure->maxReadAttempts; j++)
+     for(j=0; j<samples_max; j++)
        rb->pList[i][j] = g_malloc(P_VECTOR_SIZE);
 
    for(i=0; i<N_Q_VECTORS; i++)
-      rb->qList[i]  = g_malloc(Closure->maxReadAttempts * sizeof(char*));
+      rb->qList[i]  = g_malloc(samples_max * sizeof(char*));
 
    for(i=0; i<N_Q_VECTORS; i++)
-     for(j=0; j<Closure->maxReadAttempts; j++)
+     for(j=0; j<samples_max; j++)
        rb->qList[i][j] = g_malloc(Q_VECTOR_SIZE);
 
    memset(rb->pn, 0, sizeof(rb->pn));
@@ -135,6 +139,9 @@ void ReallocRawBuffer(RawBuffer *rb, int new_samples_max)
 
    if(new_samples_max <= rb->samplesMax)
       return;
+
+   if(new_samples_max > MAX_RAW_SAMPLES)
+      Stop(_("Raw recovery sample count must be in range 1...%d"), MAX_RAW_SAMPLES);
 
    rb->rawBuf = g_realloc(rb->rawBuf, new_samples_max * sizeof(unsigned char*));
 
