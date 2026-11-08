@@ -619,15 +619,30 @@ int main(int argc, char *argv[])
 	   debug_mode_required = TRUE;
 	   break;
          case MODIFIER_SET_VERSION:
-	 {  int v1,v2;
+	 {  gint64 v1, v2, version_number;
+            char *end;
+            const char *minor;
 	    if(!Closure->debugMode)
 	      Stop(_("--set-version is only allowed in debug mode"));
-	    g_free(Closure->cookedVersion);
-	    Closure->cookedVersion = g_strdup(optarg);
-	    sscanf(Closure->cookedVersion,"%d.%d",&v1,&v2);
-	    Closure->version=10000*v1+100*v2;
- 	    debug_mode_required = TRUE;
-	 } 
+            errno = 0;
+            v1 = g_ascii_strtoll(optarg, &end, 10);
+            if(!g_ascii_isdigit(*optarg) || errno == ERANGE || v1 > G_MAXINT || *end != '.')
+               Stop(_("Invalid version number for --set-version: %s"), optarg);
+            minor = end+1;
+            errno = 0;
+            v2 = g_ascii_strtoll(minor, &end, 10);
+            if(!g_ascii_isdigit(*minor) || errno == ERANGE || v2 > G_MAXINT)
+               Stop(_("Invalid version number for --set-version: %s"), optarg);
+            /* Preserve support for suffixes after the major.minor pair. */
+            version_number = 10000*v1 + 100*v2;
+            if(version_number > G_MAXINT)
+               Stop(_("Invalid version number for --set-version: %s"), optarg);
+            g_free(Closure->cookedVersion);
+            Closure->cookedVersion = g_strdup(optarg);
+            Closure->version = (int)version_number;
+
+            debug_mode_required = TRUE;
+         }
 	    break;
         case MODIFIER_SIMULATE_CD:
 	   if(optarg) Closure->simulateCD = g_strdup(optarg);
