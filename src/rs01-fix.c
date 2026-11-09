@@ -66,6 +66,7 @@ typedef struct
    unsigned char *imgBlock[256];
    guint32 *crcBuf[256];
    unsigned char parity[2048*GF_FIELDMAX]; /* parity bytes of the current 2048 ecc blocks */
+   guint8 synBlock[GF_FIELDMAX*2048];
 } fix_closure;
 
 static void fix_cleanup(gpointer data)
@@ -356,6 +357,9 @@ void RS01Fix(Image *image)
       fc->crcBuf[i]   = g_malloc(sizeof(int) * cache_size);
    }
 
+   for(i=ndata; i<GF_FIELDMAX; i++)  /* only the current parity sector is needed */
+      fc->imgBlock[i] = g_malloc(2048);
+
    /*** Setup the block counters for mapping medium sectors to
 	ecc blocks */
 
@@ -482,6 +486,7 @@ void RS01Fix(Image *image)
      }
      else  /* try to correct them */
      {  int bi;
+        unsigned char *layer[GF_FIELDMAX];
 
         /* Read the parity bytes for all 2048 ecc blocks at once */
 
@@ -492,6 +497,17 @@ void RS01Fix(Image *image)
 	if(n != 2048*nroots)
 	  Stop(_("Can't read ecc file:\n%s"),strerror(errno));
 
+	/* Transpose parity into layers and calculate the syndromes */
+
+	for(i=0; i<GF_FIELDMAX; i++)
+	  layer[i] = fc->imgBlock[i] + (i<ndata ? cache_offset : 0);
+
+	for(bi=0; bi<2048; bi++)
+	  for(i=0; i<nroots; i++)
+	    layer[ndata+i][bi] = fc->parity[bi*nroots+i];
+
+	CalcSyndromes(rt, layer, 0, fc->synBlock);
+
         for(bi=0; bi<2048; bi++)
         {  int offset = cache_offset+bi;
 	   int r, deg_lambda, el, deg_omega;
@@ -501,21 +517,12 @@ void RS01Fix(Image *image)
 	   int root[nroots], reg[nroots+1], loc[nroots];
 	   int syn_error, count;
 
-	   unsigned char *parity = fc->parity + bi*nroots;
-
 	   parity_block++;
 
 	   /* Form the syndromes; i.e., evaluate data(x) at roots of g(x) */
 
 	   for(i=0; i<nroots; i++)
-	     s[i] = fc->imgBlock[0][offset];
-
-	   for(j=1; j<GF_FIELDMAX; j++)
-	   {  int data = j>=ndata ? parity[j-ndata] : fc->imgBlock[j][offset];
-
-	      for(i=0;i<nroots;i++)
-                s[i] = data ^ rt->synLut[(i<<8) + s[i]];
-	   }
+	     s[i] = fc->synBlock[2048*i+bi];
 
 	   /* Convert syndromes to index form, check for nonzero condition */
 
