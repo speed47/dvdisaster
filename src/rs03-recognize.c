@@ -466,8 +466,10 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
 
 	    sector = RS03SectorIndex(rc->layout[layer], layer, layer_sector);
 
-	    /* reading beyond the image won't yield anything */
-	    if(sector >= image_sectors)
+	    /* CRC blocks require a complete sector. Do not probe a partial
+	       last sector even though it counts toward the image's layout size. */
+	    if(sector >= image_sectors
+	       || (image->type == IMAGE_FILE && sector >= image->file->size / 2048))
 	      goto mark_invalid_layer;
 
             if (++(*trynumber_inout) > maxtries && maxtries > 0) {
@@ -700,7 +702,8 @@ int RS03RecognizeImage(Image *image)
        Verbose("RS03RecognizeImage: file %s\n", image->file->path);
        if(image->eccFile)
 	 Stop("Internal error: RS03RecognizeImage() called with ecc file\n");
-       image_sectors = image->file->size / 2048;  /* RS03 data never ends in a partial sector */
+       /* Keep the rounded-up size for selecting candidate layer sizes. */
+       image_sectors = image->sectorSize;
        break;
 
      case IMAGE_MEDIUM:

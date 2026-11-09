@@ -1378,6 +1378,24 @@ if try "fix custom-n truncated image, bad header, with -n" fix_custom_n_truncate
    run_regtest fix_custom_n_truncated_with_n "-f" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Recover a custom-n image with a partial last sector, without -n or bruteforce.
+# The rounded-up size is 27540 sectors, so the derived layer candidates are
+# 107, 108 and 109 (the correct size). Rounding down instead tries 106..108.
+# Damage the CRC signatures those wrong candidates would find, so recognition
+# must actually try layer size 109 rather than succeed by chance.
+
+if try "fix custom-n truncated image, partial last sector, bad signatures" fix_custom_n_truncated_partial; then (
+   dd if=$CUSTOM_MASTERISO of=$TMPISO bs=$((27540*2048-1)) count=1 >>$LOGFILE 2>&1
+
+   $NEWVER --debug -i$TMPISO --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   for sector in 21060 21079 21094; do
+      $NEWVER --debug -i$TMPISO --byteset $sector,1024,0 >>$LOGFILE 2>&1
+   done
+
+   # The reference checksum also checks that repair restores the entire image.
+   run_regtest fix_custom_n_truncated_partial "-f" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Fix truncated image created with custom -n, with damaged header, without -n.
 # Fails because the image is truncated past the CRC area so the smart
 # algorithm can't find the layout, and bruteforce is not enabled.
