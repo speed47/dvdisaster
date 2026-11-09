@@ -1,0 +1,128 @@
+de69a9052f315f990753bebcde6724fd
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 27539 medium sectors and 2047 bytes.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+    2 repaired sectors: 27577d 27686d 
+    2 repaired sectors: 27578d 27687d 
+    2 repaired sectors: 27579d 27688d 
+    2 repaired sectors: 27580d 27689d 
+    2 repaired sectors: 27581d 27690d 
+    2 repaired sectors: 27582d 27691d 
+    2 repaired sectors: 27583d 27692d 
+    2 repaired sectors: 27584d 27693d 
+    2 repaired sectors: 27585d 27694d 
+    2 repaired sectors: 27586d 27695d 
+    2 repaired sectors: 27587d 27696d 
+    2 repaired sectors: 27588d 27697d 
+    2 repaired sectors: 27589d 27698d 
+    2 repaired sectors: 27590d 27699d 
+    2 repaired sectors: 27591d 27700d 
+    2 repaired sectors: 27592d 27701d 
+    2 repaired sectors: 27593d 27702d 
+    2 repaired sectors: 27594d 27703d 
+    2 repaired sectors: 27595d 27704d 
+    2 repaired sectors: 27596d 27705d 
+    2 repaired sectors: 27597d 27706d 
+    2 repaired sectors: 27598d 27707d 
+    2 repaired sectors: 27599d 27708d 
+-> Non-predicted error in sector 21060 at byte 1024 (value 00 '.', expected 2a '*')
+    3 repaired sectors: 21060n 27600d 27709d 
+    2 repaired sectors: 27601d 27710d 
+    2 repaired sectors: 27602d 27711d 
+    2 repaired sectors: 27603d 27712d 
+    2 repaired sectors: 27604d 27713d 
+    2 repaired sectors: 27605d 27714d 
+    2 repaired sectors: 27606d 27715d 
+    2 repaired sectors: 27607d 27716d 
+    2 repaired sectors: 27608d 27717d 
+    2 repaired sectors: 27609d 27718d 
+    2 repaired sectors: 27610d 27719d 
+    2 repaired sectors: 27611d 27720d 
+    2 repaired sectors: 27612d 27721d 
+    2 repaired sectors: 27613d 27722d 
+    2 repaired sectors: 27614d 27723d 
+    2 repaired sectors: 27615d 27724d 
+    2 repaired sectors: 27616d 27725d 
+    2 repaired sectors: 27617d 27726d 
+    2 repaired sectors: 27618d 27727d 
+-> Non-predicted error in sector 21079 at byte 1024 (value 00 '.', expected 2a '*')
+    3 repaired sectors: 21079n 27619d 27728d 
+    2 repaired sectors: 27620d 27729d 
+    2 repaired sectors: 27621d 27730d 
+    2 repaired sectors: 27622d 27731d 
+    2 repaired sectors: 27623d 27732d 
+    2 repaired sectors: 27624d 27733d 
+    2 repaired sectors: 27625d 27734d 
+    2 repaired sectors: 27626d 27735d 
+    2 repaired sectors: 27627d 27736d 
+    2 repaired sectors: 27628d 27737d 
+    2 repaired sectors: 27629d 27738d 
+    2 repaired sectors: 27630d 27739d 
+    2 repaired sectors: 27631d 27740d 
+    2 repaired sectors: 27632d 27741d 
+    2 repaired sectors: 27633d 27742d 
+-> Non-predicted error in sector 21094 at byte 1024 (value 00 '.', expected 2a '*')
+    3 repaired sectors: 21094n 27634d 27743d 
+    2 repaired sectors: 27635d 27744d 
+    2 repaired sectors: 27636d 27745d 
+    2 repaired sectors: 27637d 27746d 
+    2 repaired sectors: 27638d 27747d 
+    2 repaired sectors: 27639d 27748d 
+    2 repaired sectors: 27640d 27749d 
+    2 repaired sectors: 27641d 27750d 
+    2 repaired sectors: 27642d 27751d 
+    2 repaired sectors: 27643d 27752d 
+    2 repaired sectors: 27644d 27753d 
+    2 repaired sectors: 27645d 27754d 
+    2 repaired sectors: 27646d 27755d 
+    2 repaired sectors: 27647d 27756d 
+-> Non-predicted error in sector 27539 at byte 2047 (value 64 'd', expected 74 't')
+    3 repaired sectors: 27539n 27648d 27757d 
+CRC error in sector 21000
+-> CRC-predicted error in sector 21000 at byte    1 (value 01 '.', expected 64 'd')
+    4 repaired sectors: 21000c 27540d 27649d 27758d 
+    3 repaired sectors: 27541d 27650d 27759d 
+    3 repaired sectors: 27542d 27651d 27760d 
+    3 repaired sectors: 27543d 27652d 27761d 
+    3 repaired sectors: 27544d 27653d 27762d 
+    3 repaired sectors: 27545d 27654d 27763d 
+    3 repaired sectors: 27546d 27655d 27764d 
+    3 repaired sectors: 27547d 27656d 27765d 
+    3 repaired sectors: 27548d 27657d 27766d 
+    3 repaired sectors: 27549d 27658d 27767d 
+    3 repaired sectors: 27550d 27659d 27768d 
+    3 repaired sectors: 27551d 27660d 27769d 
+    3 repaired sectors: 27552d 27661d 27770d 
+    3 repaired sectors: 27553d 27662d 27771d 
+    3 repaired sectors: 27554d 27663d 27772d 
+    3 repaired sectors: 27555d 27664d 27773d 
+    3 repaired sectors: 27556d 27665d 27774d 
+    3 repaired sectors: 27557d 27666d 27775d 
+    3 repaired sectors: 27558d 27667d 27776d 
+    3 repaired sectors: 27559d 27668d 27777d 
+    3 repaired sectors: 27560d 27669d 27778d 
+    3 repaired sectors: 27561d 27670d 27779d 
+    3 repaired sectors: 27562d 27671d 27780d 
+    3 repaired sectors: 27563d 27672d 27781d 
+    3 repaired sectors: 27564d 27673d 27782d 
+    3 repaired sectors: 27565d 27674d 27783d 
+    3 repaired sectors: 27566d 27675d 27784d 
+    3 repaired sectors: 27567d 27676d 27785d 
+    3 repaired sectors: 27568d 27677d 27786d 
+    3 repaired sectors: 27569d 27678d 27787d 
+    3 repaired sectors: 27570d 27679d 27788d 
+    3 repaired sectors: 27571d 27680d 27789d 
+    3 repaired sectors: 27572d 27681d 27790d 
+    3 repaired sectors: 27573d 27682d 27791d 
+    3 repaired sectors: 27574d 27683d 27792d 
+    3 repaired sectors: 27575d 27684d 27793d 
+    3 repaired sectors: 27576d 27685d 27794d 
+Repaired sectors: 260 (4 data, 256 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  2.4; worst = 4.

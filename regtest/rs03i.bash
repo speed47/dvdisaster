@@ -769,6 +769,18 @@ REGTEST_SECTION="Creation tests"
 
 # Create ecc file
 
+# Small image with an incomplete last sector
+# (failed with "Failed reading sector 400 in image")
+
+if try "augmented image creation, small image with incomplete last sector" ecc_create_small_partial; then (
+  $NEWVER --debug -i$TMPISO --random-image 400 >>$LOGFILE 2>&1
+  dd if="$RNDSEQ" count=1 bs=56 >>$TMPISO 2>/dev/null
+
+  IGNORE_LOG_LINE="^Avg performance|^Augmenting image with Method RS03"
+  extra_args="--debug --set-version $SETVERSION"
+  run_regtest ecc_create_small_partial "-mRS03 -c" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 if try "augmented image creation" ecc_create; then (
    $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
 
@@ -1364,6 +1376,24 @@ if try "fix custom-n truncated image, bad header, with -n" fix_custom_n_truncate
 
    extra_args="--debug -n$CUSTOM_ECCSIZE"
    run_regtest fix_custom_n_truncated_with_n "-f" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Recover a custom-n image with a partial last sector, without -n or bruteforce.
+# The rounded-up size is 27540 sectors, so the derived layer candidates are
+# 107, 108 and 109 (the correct size). Rounding down instead tries 106..108.
+# Damage the CRC signatures those wrong candidates would find, so recognition
+# must actually try layer size 109 rather than succeed by chance.
+
+if try "fix custom-n truncated image, partial last sector, bad signatures" fix_custom_n_truncated_partial; then (
+   dd if=$CUSTOM_MASTERISO of=$TMPISO bs=$((27540*2048-1)) count=1 >>$LOGFILE 2>&1
+
+   $NEWVER --debug -i$TMPISO --byteset $ISOSIZE,1,1 >>$LOGFILE 2>&1
+   for sector in 21060 21079 21094; do
+      $NEWVER --debug -i$TMPISO --byteset $sector,1024,0 >>$LOGFILE 2>&1
+   done
+
+   # The reference checksum also checks that repair restores the entire image.
+   run_regtest fix_custom_n_truncated_partial "-f" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
 # Fix truncated image created with custom -n, with damaged header, without -n.
