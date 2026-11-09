@@ -237,7 +237,19 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "dvd-size2"))       { Closure->dvdSize2 = Closure->savedDVDSize2 = atoll(value); continue; }
       if(!strcmp(symbol, "ecc-target"))      { Closure->eccTarget  = atoi(value); continue; }
       if(!strcmp(symbol, "eject"))           { Closure->eject  = atoi(value); continue; }
-      if(!strcmp(symbol, "encoding-algorithm")) { Closure->encodingAlgorithm = atoi(value); continue; }
+      if(!strcmp(symbol, "encoding-algorithm"))
+      {  int algorithm = bounded_setting(value, ENCODING_ALG_DEFAULT, ENCODING_ALG_ALTIVEC,
+                                         ENCODING_ALG_DEFAULT);
+
+         /* Preferences may have been copied from a different processor or build. */
+         if(algorithm == ENCODING_ALG_INVALID
+            || (algorithm == ENCODING_ALG_SSE2 && !Closure->useSSE2)
+            || (algorithm == ENCODING_ALG_ALTIVEC && !Closure->useAltiVec))
+            algorithm = ENCODING_ALG_DEFAULT;
+
+         Closure->encodingAlgorithm = algorithm;
+         continue;
+      }
       if(!strcmp(symbol, "encoding-io-strategy")) { Closure->encodingIOStrategy = atoi(value); continue; }
       if(!strcmp(symbol, "examine-rs02"))    { Closure->examineRS02  = atoi(value); continue; }
       if(!strcmp(symbol, "examine-rs03"))    { Closure->examineRS03  = atoi(value); continue; }
