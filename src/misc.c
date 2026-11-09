@@ -251,6 +251,7 @@ void PrintCLI(char *format, ...)
       return;
    }
 
+   ClearProgress();
    va_start(argp, format);
    g_vprintf(format, argp);
    va_end(argp);
@@ -287,15 +288,24 @@ void PrintProgress(char *format, ...)
    {  n = 255;
       msg[255] = 0;
    }
-   Closure->progressLength = n;
 
    if(strchr(msg, '\n'))
+   {  if(*msg != '\n')
+	 ClearProgress();
+      g_mutex_lock(&Closure->progressLock);
       g_printf("%s", msg);
+      Closure->progressLength = 0;
+      g_mutex_unlock(&Closure->progressLock);
+   }
    else
-   {  g_mutex_lock(&Closure->progressLock);
-      Closure->bs[n] = 0;
-      g_printf("%s%s", msg, Closure->bs);
-      Closure->bs[n] = '\b';
+   {  int width;
+
+      g_mutex_lock(&Closure->progressLock);
+      width = MAX(n, Closure->progressLength);
+      Closure->bs[width] = 0;
+      g_printf("%s%*s%s", msg, width-n, "", Closure->bs);
+      Closure->bs[width] = '\b';
+      Closure->progressLength = n;
       g_mutex_unlock(&Closure->progressLock);
    }
 
@@ -303,16 +313,45 @@ void PrintProgress(char *format, ...)
 }
 
 /*
+ * Print progress with the estimated remaining time appended.
+ * The timer must have been started at the beginning of the operation.
+ */
+
+void PrintProgressETA(GTimer *timer, int permille, char *format, ...)
+{  char msg[256];
+   va_list argp;
+   double elapsed = g_timer_elapsed(timer, NULL);
+   double remaining;
+   gint64 eta;
+
+   va_start(argp, format);
+   g_vsnprintf(msg, 256, format, argp);
+   va_end(argp);
+
+   if(elapsed < 5.0 || permille <= 0)
+   {  PrintProgress("%s", msg);
+      return;
+   }
+
+   remaining = elapsed * (1000 - MIN(permille, 1000)) / permille;
+   eta = remaining >= G_MAXINT64 ? G_MAXINT64 : (gint64)remaining;
+   PrintProgress("%s (ETA %02" PRId64 ":%02" PRId64 ":%02" PRId64 ")",
+		 msg, eta/3600, (eta/60)%60, eta%60);
+}
+
+/*
  * Clear last progress string
  */
 
 void ClearProgress(void)
-{  int n = Closure->progressLength;
+{  int n;
 
    if(Closure->noProgress)
      return;
   
    g_mutex_lock(&Closure->progressLock);
+   n = Closure->progressLength;
+   Closure->progressLength = 0;
    Closure->bs[n] = Closure->sp[n] = 0;
    g_printf("%s%s", Closure->sp, Closure->bs);
    Closure->bs[n] = '\b';
@@ -455,7 +494,8 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
       log_window_append(tmp2);
    }
    else
-   {  g_printf("%s", tmp2);
+   {  ClearProgress();
+      g_printf("%s", tmp2);
 
       fflush(stdout);
    }

@@ -961,7 +961,7 @@ static gint32 *enc_alpha_to;
 	 percent = (1000*progress)/max_percent;
 	 if(last_percent != percent) 
 	 {  GuiSetProgress(ec->wl->encPBar2, percent, 1000);
-	    PrintProgress(_("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
+	    PrintProgressETA(ec->timer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
 	    last_percent = percent;
 	 }
       }
