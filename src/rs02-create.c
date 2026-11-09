@@ -39,6 +39,7 @@ typedef struct
    ReedSolomonTables *rt;
    EccHeader *eh;
    unsigned char *data;
+   unsigned char *paritybase;
    unsigned char *parity;
    unsigned char *slice[256];
    struct MD5Context md5Ctxt[256];
@@ -79,7 +80,7 @@ static void ecc_cleanup(gpointer data)
    if(ec->eh) g_free(ec->eh);
    if(ec->lay) g_free(ec->lay);
    if(ec->data) g_free(ec->data);
-   if(ec->parity) g_free(ec->parity);
+   if(ec->paritybase) g_free(ec->paritybase);
    if(ec->msg) g_free(ec->msg);
    if(ec->timer) g_timer_destroy(ec->timer);
 
@@ -498,7 +499,10 @@ static void create_reed_solomon(ecc_closure *ec)
    if(n_layer_sectors*2048 != n_parity_blocks)
      Stop("Internal error: parity blocks are not a multiple of sector size.\n");
 
-   ec->parity = g_try_malloc(n_parity_bytes);
+   /* AltiVec requires both the buffer address and stride to be 16-byte aligned. */
+   ec->paritybase = g_try_malloc(n_parity_bytes+16);
+   if(ec->paritybase)
+      ec->parity = ec->paritybase + (16 - ((uintptr_t)ec->paritybase & 15));
    ec->data   = g_try_malloc(n_layer_bytes);
 
    /*** Create buffers for dividing the ecc information into nroots slices */
