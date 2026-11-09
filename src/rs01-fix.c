@@ -353,10 +353,12 @@ void RS01Fix(Image *image)
    cache_size = 2*Closure->cacheMiB;  /* ndata medium sectors are approx. 0.5MiB */
 
    for(i=0; i<ndata; i++)
+   {  fc->imgBlock[i] = g_malloc(cache_size*2048);
       fc->crcBuf[i]   = g_malloc(sizeof(int) * cache_size);
+   }
 
-   for(i=0; i<GF_FIELDMAX; i++)  /* layers >= ndata receive the parity bytes */
-      fc->imgBlock[i] = g_malloc(cache_size*2048);
+   for(i=ndata; i<GF_FIELDMAX; i++)  /* only the current parity sector is needed */
+      fc->imgBlock[i] = g_malloc(2048);
 
    /*** Setup the block counters for mapping medium sectors to
 	ecc blocks */
@@ -484,6 +486,7 @@ void RS01Fix(Image *image)
      }
      else  /* try to correct them */
      {  int bi;
+        unsigned char *layer[GF_FIELDMAX];
 
         /* Read the parity bytes for all 2048 ecc blocks at once */
 
@@ -496,11 +499,14 @@ void RS01Fix(Image *image)
 
 	/* Transpose parity into layers and calculate the syndromes */
 
+	for(i=0; i<GF_FIELDMAX; i++)
+	  layer[i] = fc->imgBlock[i] + (i<ndata ? cache_offset : 0);
+
 	for(bi=0; bi<2048; bi++)
 	  for(i=0; i<nroots; i++)
-	    fc->imgBlock[ndata+i][cache_offset+bi] = fc->parity[bi*nroots+i];
+	    layer[ndata+i][bi] = fc->parity[bi*nroots+i];
 
-	CalcSyndromes(rt, fc->imgBlock, cache_offset, fc->synBlock);
+	CalcSyndromes(rt, layer, 0, fc->synBlock);
 
         for(bi=0; bi<2048; bi++)
         {  int offset = cache_offset+bi;
