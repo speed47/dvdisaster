@@ -136,6 +136,7 @@ typedef struct
    Image *image;
    int earlyTermination;
    unsigned char *data;
+   unsigned char *paritybase;
    unsigned char *parity;
    char *msg;
    GTimer *timer;
@@ -160,7 +161,7 @@ static void ecc_cleanup(gpointer data)
    if(ec->gt) FreeGaloisTables(ec->gt);
    if(ec->rt) FreeReedSolomonTables(ec->rt);
    if(ec->data) g_free(ec->data);
-   if(ec->parity) g_free(ec->parity);
+   if(ec->paritybase) g_free(ec->paritybase);
 
    if(ec->image) CloseImage(ec->image);
    if(ec->msg)   g_free(ec->msg);
@@ -431,7 +432,10 @@ void RS01Create(void)
    if(n_layer_sectors*2048 != n_parity_blocks)
      Stop("Internal error: parity blocks are not a multiple of sector size.\n");
 
-   ec->parity = g_try_malloc(n_parity_bytes);
+   /* AltiVec requires both the buffer address and stride to be 16-byte aligned. */
+   ec->paritybase = g_try_malloc(n_parity_bytes+16);
+   if(ec->paritybase)
+      ec->parity = ec->paritybase + (16 - ((uintptr_t)ec->paritybase & 15));
    ec->data   = g_try_malloc(n_layer_bytes);
 
    if(!ec->parity || !ec->data)
