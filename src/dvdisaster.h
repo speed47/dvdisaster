@@ -816,6 +816,9 @@ typedef struct _ReedSolomonTables
 
    guint8 *bLut[GF_FIELDSIZE];   /* 8bit encoder lookup table */
    guint8 *synLut;       /* Syndrome calculation speedup */
+#ifdef HAVE_GFNI
+   guint64 *synMatrix;   /* GFNI multiplication matrices, one per syndrome */
+#endif
 } ReedSolomonTables;
 
 GaloisTables* CreateGaloisTables(gint32);

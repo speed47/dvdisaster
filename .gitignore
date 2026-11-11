@@ -14,5 +14,7 @@ inlined-icons.c
 help-dialogs.h
 dvdisaster
 build.h
+test-syndromes
+test-syndromes.exe
 dvdisaster.mo
 locale/messages.pot

@@ -185,6 +185,20 @@ ReedSolomonTables *CreateReedSolomonTables(GaloisTables *gt,
      for(j=0; j<GF_FIELDSIZE; j++)
        *lut++ = j ? gt->alphaTo[mod_fieldmax(gt->indexOf[j] + (rt->fcr+i)*rt->primElem)] : 0;
 
+#ifdef HAVE_GFNI
+   /* Multiplication by a constant is linear over GF(2). Its columns are
+      the products of that constant with the eight basis bytes. GFNI packs
+      the row producing output bit b in byte 7-b of each 64-bit matrix.
+      Deriving these from synLut preserves our field polynomial (0x187),
+      rather than the 0x11b polynomial used by GF2P8MULB. */
+   rt->synMatrix = g_malloc0(rt->nroots * sizeof(*rt->synMatrix));
+   for(i=0; i<rt->nroots; i++)
+      for(int bit=0; bit<8; bit++)
+         for(int input=0; input<8; input++)
+            rt->synMatrix[i] |= (guint64)((rt->synLut[(i<<8)+(1<<input)] >> bit) & 1)
+                               << (8*(7-bit)+input);
+#endif
+
    return rt;
 }
 
@@ -197,6 +211,9 @@ void FreeReedSolomonTables(ReedSolomonTables *rt)
   {  g_free(rt->bLut[i]);
   }
   g_free(rt->synLut);
+#ifdef HAVE_GFNI
+  g_free(rt->synMatrix);
+#endif
 
   g_free(rt);
 }

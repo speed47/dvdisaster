@@ -38,9 +38,11 @@
  * which maps 1:1 onto pshufb (x86) and tbl (ARM).
  */
 
-#ifdef HAVE_AVX2
+#if defined(HAVE_AVX2) || defined(HAVE_GFNI)
 #include <immintrin.h>
+#endif
 
+#ifdef HAVE_AVX2
 __attribute__((target("avx2"), always_inline))
 static inline __m256i syndrome_update_avx2(__m256i s, const unsigned char *data,
                                          __m256i tlo, __m256i thi, __m256i mask)
@@ -83,6 +85,39 @@ static void syndromes_avx2(guint8 *lo, guint8 *hi, unsigned char **layer, int of
 }
 #endif
 
+#ifdef HAVE_GFNI
+__attribute__((target("avx2,gfni")))
+static void syndromes_gfni(guint64 matrix, unsigned char **layer, int offset, guint8 *syn)
+{
+   __m256i m = _mm256_set1_epi64x(matrix);
+   for(int k=0; k<2048; k+=128)
+   {
+      const unsigned char *d = layer[0]+offset+k;
+      __m256i s0 = _mm256_loadu_si256((const __m256i*)d);
+      __m256i s1 = _mm256_loadu_si256((const __m256i*)(d+32));
+      __m256i s2 = _mm256_loadu_si256((const __m256i*)(d+64));
+      __m256i s3 = _mm256_loadu_si256((const __m256i*)(d+96));
+      for(int j=1; j<GF_FIELDMAX; j++)
+      {
+         d = layer[j]+offset+k;
+         s0 = _mm256_xor_si256(_mm256_loadu_si256((const __m256i*)d),
+                              _mm256_gf2p8affine_epi64_epi8(s0, m, 0));
+         s1 = _mm256_xor_si256(_mm256_loadu_si256((const __m256i*)(d+32)),
+                              _mm256_gf2p8affine_epi64_epi8(s1, m, 0));
+         s2 = _mm256_xor_si256(_mm256_loadu_si256((const __m256i*)(d+64)),
+                              _mm256_gf2p8affine_epi64_epi8(s2, m, 0));
+         s3 = _mm256_xor_si256(_mm256_loadu_si256((const __m256i*)(d+96)),
+                              _mm256_gf2p8affine_epi64_epi8(s3, m, 0));
+      }
+      _mm256_storeu_si256((__m256i*)(syn+k), s0);
+      _mm256_storeu_si256((__m256i*)(syn+k+32), s1);
+      _mm256_storeu_si256((__m256i*)(syn+k+64), s2);
+      _mm256_storeu_si256((__m256i*)(syn+k+96), s3);
+   }
+}
+
+#endif
+
 #ifdef __aarch64__
 #include <arm_neon.h>
 
@@ -111,6 +146,11 @@ static void syndromes_neon(guint8 *lo, guint8 *hi, unsigned char **layer, int of
 
 void CalcSyndromes(ReedSolomonTables *rt, unsigned char **layer, int offset, guint8 *syn)
 {  int i,j,k;
+#ifdef HAVE_GFNI
+   /* The 256-bit kernel uses AVX2 loads/XORs and the VEX form of GFNI.
+      Compiler support for it is independent of the AVX2 backend setting. */
+   int use_gfni = __builtin_cpu_supports("avx2") && __builtin_cpu_supports("gfni");
+#endif
 #ifdef HAVE_AVX2
    static int use_avx2 = -1;
 
@@ -121,6 +161,13 @@ void CalcSyndromes(ReedSolomonTables *rt, unsigned char **layer, int offset, gui
    for(i=0; i<rt->nroots; i++, syn+=2048)
    {  guint8 *lut = rt->synLut + (i<<8);
       guint8 lo[16], hi[16];
+
+#ifdef HAVE_GFNI
+      if(use_gfni)
+      {  syndromes_gfni(rt->synMatrix[i], layer, offset, syn);
+         continue;
+      }
+#endif
 
       for(k=0; k<16; k++)
       {  lo[k] = lut[k];

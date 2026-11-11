@@ -39,6 +39,17 @@ disabled. The test and lockfile verification workflows grant only
 
 The stale action does not delete branches, so it does not need `contents: write`.
 
+## Syndrome test coverage
+
+The test workflow runs `make check-syndromes` after compilation in the Linux,
+Windows, macOS Intel and macOS ARM matrices, including GUI, CLI and printf
+format-checking builds. The Linux sanitizer jobs run it with ASan/UBSan too,
+with UBSan configured to fail the step on a finding.
+
+The target exercises the fallback and each available x86 backend separately.
+Unsupported backends report a skip; GFNI execution coverage therefore depends
+on the runner CPU supporting it. The fallback exercises NEON on macOS ARM.
+
 ## CodeQL coverage
 
 The CodeQL workflow scans C/C++ source and GitHub Actions workflows in separate

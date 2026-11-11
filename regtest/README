@@ -1,3 +1,21 @@
+Syndrome backend tests
+----------------------
+
+After configuring, run `make check-syndromes` from the repository root.
+This compares complete syndromes against independent multiplication using
+polynomial 0x187, including unaligned buffers and nonzero offsets. On GFNI
+hosts it also checks every byte value for all 255 nonzero multipliers using
+the matrices created by the production code.
+
+The test restricts runtime CPU features to exercise the fallback, AVX2 and
+GFNI paths separately. Backends unavailable in the build or on the host
+are skipped; the fallback is scalar on x86 and NEON on AArch64.
+Configure with --with-gfni=no to omit GFNI, or --with-gfni=yes to require
+compiler support. Default detection compiles and links without executing
+GFNI instructions. This setting is independent of --with-avx2: the GFNI
+kernel still requires AVX2 and GFNI CPU support at runtime.
+
+
 General structure of the database log file
 ------------------------------------------
 
