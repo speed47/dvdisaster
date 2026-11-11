@@ -102,8 +102,8 @@ typedef struct
    GtkWidget *redundancySpinA, *redundancySpinB;
    GtkWidget *prefetchScaleA, *prefetchScaleB;
    GtkWidget *threadsScaleA, *threadsScaleB;
-   GtkWidget *eaRadio1A,*eaRadio2A,*eaRadio3A,*eaRadio4A;
-   GtkWidget *eaRadio1B,*eaRadio2B,*eaRadio3B,*eaRadio4B;
+   GtkWidget *eaRadio1A,*eaRadio2A,*eaRadio3A,*eaRadio4A,*eaRadio5A,*eaRadio6A;
+   GtkWidget *eaRadio1B,*eaRadio2B,*eaRadio3B,*eaRadio4B,*eaRadio5B,*eaRadio6B;
    GtkWidget *ioRadio1A,*ioRadio2A;
    GtkWidget *ioRadio1B,*ioRadio2B;
    LabelWithOnlineHelp *prefetchLwoh;

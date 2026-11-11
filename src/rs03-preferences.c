@@ -127,13 +127,7 @@ static void encoding_alg_cb(GtkWidget *widget, gpointer data)
    }
 
    if(widget == wl->eaRadio3A || widget == wl->eaRadio3B)
-   { 
-#ifdef HAVE_SSE2 
-      Closure->encodingAlgorithm = ENCODING_ALG_SSE2;
-#endif
-#ifdef HAVE_ALTIVEC 
-      Closure->encodingAlgorithm = ENCODING_ALG_ALTIVEC;
-#endif
+   {  Closure->encodingAlgorithm = ENCODING_ALG_SSE2;
 
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio3A), TRUE); 
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio3B), TRUE); 
@@ -144,6 +138,20 @@ static void encoding_alg_cb(GtkWidget *widget, gpointer data)
 
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio4A), TRUE); 
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio4B), TRUE); 
+   }
+
+   if(widget == wl->eaRadio5A || widget == wl->eaRadio5B)
+   {  Closure->encodingAlgorithm = ENCODING_ALG_AVX2;
+
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio5A), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio5B), TRUE);
+   }
+
+   if(widget == wl->eaRadio6A || widget == wl->eaRadio6B)
+   {  Closure->encodingAlgorithm = ENCODING_ALG_ALTIVEC;
+
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio6A), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio6B), TRUE);
    }
 }
 
@@ -1281,7 +1289,8 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-      GtkWidget *radio1, *radio2, *radio3=NULL, *radio4;
+      GtkWidget *radio1, *radio2, *radio3, *radio4, *radio5, *radio6;
+      char *auto_label;
 
       gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
       if(!i) gtk_box_pack_start(GTK_BOX(hbox), lwoh->tooltip, FALSE, FALSE, 0);
@@ -1298,33 +1307,48 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       lab = gtk_label_new(_utf("64bit"));
       gtk_container_add(GTK_CONTAINER(radio2), lab);
 
-      if(Closure->useSSE2)
-      {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
-	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
-	 lab = gtk_label_new(_utf("SSE2"));
-	 gtk_container_add(GTK_CONTAINER(radio3), lab);
-      }
-      if(Closure->useAltiVec)
-      {  radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
-	 g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
-	 gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
-	 lab = gtk_label_new(_utf("AltiVec"));
-	 gtk_container_add(GTK_CONTAINER(radio3), lab);
-      }
+      radio3 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      g_signal_connect(G_OBJECT(radio3), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
+      gtk_box_pack_start(GTK_BOX(hbox), radio3, FALSE, FALSE, 0);
+      lab = gtk_label_new(_utf("SSE2"));
+      gtk_container_add(GTK_CONTAINER(radio3), lab);
+      gtk_widget_set_sensitive(radio3, Closure->useSSE2);
+      if(!Closure->useSSE2)
+         gtk_widget_set_tooltip_text(radio3, _utf("This encoder is not supported on this system."));
+
+      radio5 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      g_signal_connect(G_OBJECT(radio5), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
+      gtk_box_pack_start(GTK_BOX(hbox), radio5, FALSE, FALSE, 0);
+      lab = gtk_label_new("AVX2");
+      gtk_container_add(GTK_CONTAINER(radio5), lab);
+      gtk_widget_set_sensitive(radio5, Closure->useAVX2);
+      if(!Closure->useAVX2)
+         gtk_widget_set_tooltip_text(radio5, _utf("This encoder is not supported on this system."));
+
+      radio6 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      g_signal_connect(G_OBJECT(radio6), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
+      gtk_box_pack_start(GTK_BOX(hbox), radio6, FALSE, FALSE, 0);
+      lab = gtk_label_new(_utf("AltiVec"));
+      gtk_container_add(GTK_CONTAINER(radio6), lab);
+      gtk_widget_set_sensitive(radio6, Closure->useAltiVec);
+      if(!Closure->useAltiVec)
+         gtk_widget_set_tooltip_text(radio6, _utf("This encoder is not supported on this system."));
 
       radio4 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
       g_signal_connect(G_OBJECT(radio4), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
       gtk_box_pack_start(GTK_BOX(hbox), radio4, FALSE, FALSE, 0);
-      lab = gtk_label_new(_utf("auto"));
+      auto_label = g_strdup_printf("%s (%s)", _utf("auto"), GetRSEncoderName(ENCODING_ALG_DEFAULT));
+      lab = gtk_label_new(auto_label);
+      g_free(auto_label);
       gtk_container_add(GTK_CONTAINER(radio4), lab);
 
       switch(Closure->encodingAlgorithm)
       {  case ENCODING_ALG_DEFAULT: activate_toggle_button(GTK_TOGGLE_BUTTON(radio4), TRUE); break;
          case ENCODING_ALG_32BIT:   activate_toggle_button(GTK_TOGGLE_BUTTON(radio1), TRUE); break;
          case ENCODING_ALG_64BIT:   activate_toggle_button(GTK_TOGGLE_BUTTON(radio2), TRUE); break;
-         case ENCODING_ALG_SSE2:    
-         case ENCODING_ALG_ALTIVEC: activate_toggle_button(GTK_TOGGLE_BUTTON(radio3), TRUE); break;
+         case ENCODING_ALG_SSE2:    activate_toggle_button(GTK_TOGGLE_BUTTON(radio3), TRUE); break;
+         case ENCODING_ALG_ALTIVEC: activate_toggle_button(GTK_TOGGLE_BUTTON(radio6), TRUE); break;
+         case ENCODING_ALG_AVX2:   activate_toggle_button(GTK_TOGGLE_BUTTON(radio5), TRUE); break;
       }
 
       if(!i)
@@ -1332,6 +1356,8 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio2A = radio2;
 	 wl->eaRadio3A = radio3;
 	 wl->eaRadio4A = radio4;
+	 wl->eaRadio5A = radio5;
+	 wl->eaRadio6A = radio6;
 	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
       }
       else  
@@ -1339,6 +1365,8 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio2B = radio2;
 	 wl->eaRadio3B = radio3;
 	 wl->eaRadio4B = radio4;
+	 wl->eaRadio5B = radio5;
+	 wl->eaRadio6B = radio6;
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
@@ -1348,11 +1376,13 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
      "dvdisaster can either use a generic encoding algorithm using 32bit or 64bit "
      "wide operations running on the integer unit of the processor, or use "
      "processor specific extensions.\n\n"
-     "Available extensions are SSE2 for x86 based processors and AltiVec "
-     "on PowerPC processors. These extensions encode with 128bit wide operations "
-     "and will usually provide the fastest encoding variant. If \"auto\" is selected, the "
-     "SSE2/AltiVec algorithms will be selected if the processor supports them; "
-     "otherwise the 64bit algorithm will be used."
+     "Available extensions are SSE2 and AVX2 for x86 based processors and AltiVec "
+     "on PowerPC processors. SSE2 and AltiVec use 128bit wide operations; AVX2 "
+     "uses 256bit wide operations. Unsupported extensions are greyed out.\n\n"
+     "If \"auto\" is selected, dvdisaster prefers AVX2, then SSE2, then AltiVec, "
+     "and otherwise uses the 64bit algorithm. The algorithm selected for this "
+     "processor is shown in parentheses. Selecting an explicit algorithm forces "
+     "that variant."
 			    ));
 }
 #endif /* WITH_GUI_YES */

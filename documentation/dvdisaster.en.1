@@ -328,17 +328,17 @@ please switch back to the older driver using \-\-driver=cdrom.
 .B \-\-eject
 eject medium after successful read.
 .TP
-.B \-\-encoding-algorithm [32bit|64bit|SSE2|AltiVec]
+.B \-\-encoding-algorithm [auto|32bit|64bit|SSE2|AVX2|AltiVec]
 This option affects the speed of generating RS03 error correction data.
 dvdisaster can either use a generic encoding algorithm using 32bit or 64bit 
 wide operations running on the integer unit of the processor, or use
 processor specific extensions.
 .RS
-Available extensions are SSE2 for x86 based processors and AltiVec
-on PowerPC processors. These extensions encode with 128bit wide operations
-and will usually provide the fastest encoding variant. The
-SSE2/AltiVec algorithms will automatically be selected 
-if the processor supports them and nothing else is specified by this option.
+Available extensions are SSE2 and AVX2 for x86 based processors and AltiVec
+on PowerPC processors. SSE2 and AltiVec use 128bit wide operations;
+AVX2 uses 256bit wide operations. Explicit choices require processor support.
+With auto, dvdisaster prefers AVX2, then SSE2, then AltiVec, and otherwise
+uses the 64bit algorithm. Automatic selection is the default.
 .RE
 .TP
 .B \-\-encoding-io-strategy [readwrite|mmap]

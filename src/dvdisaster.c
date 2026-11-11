@@ -445,34 +445,32 @@ int main(int argc, char *argv[])
 	   break;
          case MODIFIER_ENCODING_ALGORITHM:
 	   Closure->encodingAlgorithm = ENCODING_ALG_INVALID;
+	   if(!strcmp(optarg, "auto"))
+	     Closure->encodingAlgorithm = ENCODING_ALG_DEFAULT;
 	   if(!strcmp(optarg, "32bit"))
 	     Closure->encodingAlgorithm = ENCODING_ALG_32BIT;
 	   if(!strcmp(optarg, "64bit"))
 	     Closure->encodingAlgorithm = ENCODING_ALG_64BIT;
-#ifdef HAVE_SSE2
 	   if(!strcmp(optarg, "SSE2"))
 	   {  Closure->encodingAlgorithm = ENCODING_ALG_SSE2;
 
 	     if(!Closure->useSSE2)
-	       Stop(_("--encoding-algorithm: SSE2 not supported on this processor!"));
+	       Stop(_("--encoding-algorithm: SSE2 not supported by this build or processor!"));
 	   }
+	   if(!strcmp(optarg, "AVX2"))
+	   {  Closure->encodingAlgorithm = ENCODING_ALG_AVX2;
 
-	   if(Closure->encodingAlgorithm == ENCODING_ALG_INVALID)
-	     Stop(_("--encoding-algorithm: valid types are 32bit, 64bit, SSE2"));
-#endif
-#ifdef HAVE_ALTIVEC
+	     if(!Closure->useAVX2)
+	       Stop(_("--encoding-algorithm: AVX2 not supported by this build or processor!"));
+	   }
 	   if(!strcmp(optarg, "AltiVec"))
 	   {  Closure->encodingAlgorithm = ENCODING_ALG_ALTIVEC;
 
 	     if(!Closure->useAltiVec)
-	       Stop(_("--encoding-algorithm: AltiVec not supported on this processor!"));
+	       Stop(_("--encoding-algorithm: AltiVec not supported by this build or processor!"));
 	   }
-
 	   if(Closure->encodingAlgorithm == ENCODING_ALG_INVALID)
-	     Stop(_("--encoding-algorithm: valid types are 32bit, 64bit, AltiVec"));
-#endif
-	   if(Closure->encodingAlgorithm == ENCODING_ALG_INVALID)
-	     Stop(_("--encoding-algorithm: valid types are 32bit, 64bit"));
+	     Stop(_("--encoding-algorithm: valid types are auto, 32bit, 64bit, SSE2, AVX2, AltiVec"));
 	   break;
 	 case MODIFIER_ENCODING_IO_STRATEGY:
 	   if(!strcmp(optarg, "readwrite"))
@@ -1028,7 +1026,7 @@ int main(int argc, char *argv[])
 #endif
       PrintCLI(_("  --bruteforce-rs03-search   - enable bruteforce linear scan for RS03 data (slow!)\n"));
       PrintCLI(_("  --eject                    - eject medium after successful read\n"));
-      PrintCLI(_("  --encoding-algorithm x     - possible values: 32bit, 64bit, SSE2, AltiVec\n"));
+      PrintCLI(_("  --encoding-algorithm x     - possible values: auto, 32bit, 64bit, SSE2, AVX2, AltiVec\n"));
       PrintCLI(_("  --encoding-io-strategy x   - possible values: readwrite, mmap\n"));
       PrintCLI(_("  --fill-unreadable n        - fill unreadable sectors with byte n\n"));
       PrintCLI(_("  --ignore-fatal-sense       - continue reading after potentially fatal error conditon\n"));
