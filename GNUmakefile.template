@@ -153,6 +153,9 @@ $(BUILDTMP)/rs-encoder-altivec.o: src/rs-encoder-altivec.c
 	@echo "Compiling:" src/rs-encoder-altivec.c
 	@$(CC) $(ALTIVEC_OPTIONS) $(COPTS) -c src/rs-encoder-altivec.c -o $(BUILDTMP)/rs-encoder-altivec.o
 
+# rs-encoder-avx2.c uses a function target attribute and the generic C rule.
+# Do not enable AVX2 for the runtime probe or the rest of the binary.
+
 locale:
 	@$(MAKE) --no-print-directory -C locale
 

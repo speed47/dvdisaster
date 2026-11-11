@@ -1483,11 +1483,13 @@ typedef enum
    ENCODING_ALG_32BIT,
    ENCODING_ALG_64BIT,
    ENCODING_ALG_SSE2,   
-   ENCODING_ALG_ALTIVEC
+   ENCODING_ALG_ALTIVEC,
+   ENCODING_ALG_AVX2     /* Append new values to preserve saved preferences. */
 } CODEC_TYPE;
 
 void EncodeNextLayer(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void DescribeRSEncoder(char**, char**);
+char *GetRSEncoderName(CODEC_TYPE);
 int ProbeSSE2(void);
 int ProbeAVX2(void);
 int ProbeAltiVec(void);

@@ -221,16 +221,28 @@ static void encode_next_layer_64bit(ReedSolomonTables *rt, unsigned char *data, 
 }
 
 /*
- * Dispatch upon availability of SSE2 intrinsics
+ * Select the preferred encoder supported by this host.
  */
+
+static CODEC_TYPE default_encoding_algorithm(void)
+{
+   if(Closure->useAVX2)    return ENCODING_ALG_AVX2;
+   if(Closure->useSSE2)    return ENCODING_ALG_SSE2;
+   if(Closure->useAltiVec) return ENCODING_ALG_ALTIVEC;
+   return ENCODING_ALG_64BIT;
+}
 
 void encode_next_layer_sse2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void encode_next_layer_altivec(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void encode_next_layer_avx2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 
 void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
-{   
-    switch(Closure->encodingAlgorithm)
+{   CODEC_TYPE algorithm = Closure->encodingAlgorithm;
+
+    if(algorithm == ENCODING_ALG_DEFAULT)
+      algorithm = default_encoding_algorithm();
+
+    switch(algorithm)
     {  case ENCODING_ALG_32BIT:
           encode_next_layer_portable(rt, data, parity, layer_size, shift);
 	  break;
@@ -243,16 +255,11 @@ void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *
        case ENCODING_ALG_ALTIVEC:
 	  encode_next_layer_altivec(rt, data, parity, layer_size, shift);
 	  break;
-       case ENCODING_ALG_DEFAULT:
-	 if(Closure->useAVX2)
-	   encode_next_layer_avx2(rt, data, parity, layer_size, shift);
-	 else if(Closure->useSSE2)
-	   encode_next_layer_sse2(rt, data, parity, layer_size, shift);
-	 else if(Closure->useAltiVec)
-	   encode_next_layer_altivec(rt, data, parity, layer_size, shift);
-	 else
-	   encode_next_layer_64bit(rt, data, parity, layer_size, shift);
-	 break;
+       case ENCODING_ALG_AVX2:
+	  encode_next_layer_avx2(rt, data, parity, layer_size, shift);
+	  break;
+       default:
+	  Stop("Invalid encoding algorithm.\n");
     }
 }
 
@@ -260,32 +267,24 @@ void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *
  * Provide textual description for current encoder parameters
  */
 
+char *GetRSEncoderName(CODEC_TYPE algorithm)
+{
+  if(algorithm == ENCODING_ALG_DEFAULT)
+    algorithm = default_encoding_algorithm();
+
+  switch(algorithm)
+  {  case ENCODING_ALG_32BIT:   return "32bit";
+     case ENCODING_ALG_64BIT:   return "64bit";
+     case ENCODING_ALG_SSE2:    return "SSE2";
+     case ENCODING_ALG_ALTIVEC: return "AltiVec";
+     case ENCODING_ALG_AVX2:    return "AVX2";
+     default:                 return "unknown";
+  }
+}
+
 void DescribeRSEncoder(char **algorithm, char **iostrategy)
 {
-  switch(Closure->encodingAlgorithm)
-  {  case ENCODING_ALG_32BIT:
-        *algorithm="32bit";
-	break;
-     case ENCODING_ALG_64BIT:
-        *algorithm="64bit";
-	break;
-     case ENCODING_ALG_SSE2:
-        *algorithm="SSE2";
-	break;
-     case ENCODING_ALG_ALTIVEC:
-        *algorithm="AltiVec";
-	break;
-     case ENCODING_ALG_DEFAULT:
-        if(Closure->useAVX2)
-	  *algorithm="AVX2";
-        else if(Closure->useSSE2)
-	  *algorithm="SSE2";
-	else if(Closure->useAltiVec)
-	  *algorithm="AltiVec";
-	else
-	  *algorithm="64bit";
-	break;
-  }
+  *algorithm = GetRSEncoderName(Closure->encodingAlgorithm);
 
   if(Closure->encodingIOStrategy == IO_STRATEGY_MMAP)
        *iostrategy="mmap";

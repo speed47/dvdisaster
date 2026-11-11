@@ -131,6 +131,20 @@ The script will possibly print some errors about missing libraries.
 Type "configure --help" to learn about pointing configure 
 to the correct path of already installed libraries.
 
+AVX2 and GFNI compiler support are detected independently of each other
+and of SSE2. These checks compile and link test programs without running
+them; CPU support is checked when dvdisaster runs. Use --with-avx2=yes or
+--with-gfni=yes to require compiler support for the corresponding backend.
+
+The --with-avx2=no option disables the AVX2 encoder and the AVX2 lookup-table
+syndrome backend. It does not disable the GFNI syndrome backend, which also
+uses AVX2 instructions. Use --with-gfni=no to disable that backend.
+To disable all of dvdisaster's AVX2-dependent backends, use both options:
+
+user@host> ./configure --with-avx2=no --with-gfni=no
+
+The SSE2 encoder remains available. Add --with-sse2=no to disable it too.
+
 The "--help" option will also give information about some
 options which are useful if you plan to install the package
 to a certain location.

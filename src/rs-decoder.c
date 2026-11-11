@@ -38,7 +38,7 @@
  * which maps 1:1 onto pshufb (x86) and tbl (ARM).
  */
 
-#if defined(HAVE_SSE2) && defined(__GNUC__)
+#ifdef HAVE_AVX2
 #include <immintrin.h>
 
 __attribute__((target("avx2")))
@@ -96,7 +96,7 @@ static void syndromes_neon(guint8 *lo, guint8 *hi, unsigned char **layer, int of
 
 void CalcSyndromes(ReedSolomonTables *rt, unsigned char **layer, int offset, guint8 *syn)
 {  int i,j,k;
-#if defined(HAVE_SSE2) && defined(__GNUC__)
+#ifdef HAVE_AVX2
    static int use_avx2 = -1;
 
    if(use_avx2 < 0)
@@ -112,7 +112,7 @@ void CalcSyndromes(ReedSolomonTables *rt, unsigned char **layer, int offset, gui
 	 hi[k] = lut[k<<4];
       }
 
-#if defined(HAVE_SSE2) && defined(__GNUC__)
+#ifdef HAVE_AVX2
       if(use_avx2)
       {  syndromes_avx2(lo, hi, layer, offset, syn);
 	 continue;

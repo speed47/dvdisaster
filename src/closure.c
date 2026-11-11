@@ -238,12 +238,13 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "ecc-target"))      { Closure->eccTarget  = atoi(value); continue; }
       if(!strcmp(symbol, "eject"))           { Closure->eject  = atoi(value); continue; }
       if(!strcmp(symbol, "encoding-algorithm"))
-      {  int algorithm = bounded_setting(value, ENCODING_ALG_DEFAULT, ENCODING_ALG_ALTIVEC,
+      {  int algorithm = bounded_setting(value, ENCODING_ALG_DEFAULT, ENCODING_ALG_AVX2,
                                          ENCODING_ALG_DEFAULT);
 
          /* Preferences may have been copied from a different processor or build. */
          if(algorithm == ENCODING_ALG_INVALID
             || (algorithm == ENCODING_ALG_SSE2 && !Closure->useSSE2)
+            || (algorithm == ENCODING_ALG_AVX2 && !Closure->useAVX2)
             || (algorithm == ENCODING_ALG_ALTIVEC && !Closure->useAltiVec))
             algorithm = ENCODING_ALG_DEFAULT;
 
