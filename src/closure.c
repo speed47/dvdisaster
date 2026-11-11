@@ -150,7 +150,7 @@ static void get_color(GdkRGBA *color, char *value)
 
 #define MAX_LINE_LEN 512
 
-/* Ignore malformed or out-of-range allocation settings, keeping the default. */
+/* Ignore malformed or out-of-range settings, keeping the current value. */
 static int bounded_setting(const char *value, int minimum, int maximum, int fallback)
 {  char *end;
    gint64 number = g_ascii_strtoll(value, &end, 10);
@@ -268,8 +268,8 @@ void GuiReadDotfile()
       if(!strcmp(symbol, "max-read-attempts"))   { Closure->maxReadAttempts = bounded_setting(value, 1, MAX_RAW_SAMPLES, Closure->maxReadAttempts); continue; }
       if(!strcmp(symbol, "min-read-attempts"))   { Closure->minReadAttempts = bounded_setting(value, 1, MAX_RAW_SAMPLES, Closure->minReadAttempts); continue; }
       if(!strcmp(symbol, "old-missing-sector-marker"))  { Closure->dsmVersion  = !atoi(value); continue; }
-      if(!strcmp(symbol, "pause-after-errors")) { Closure->pauseAfterErrors = atoi(value); continue; }
-      if(!strcmp(symbol, "pause-duration"))  { Closure->pauseDuration = atoi(value); continue; }
+      if(!strcmp(symbol, "pause-after-errors")) { Closure->pauseAfterErrors = bounded_setting(value, 0, G_MAXINT, Closure->pauseAfterErrors); continue; }
+      if(!strcmp(symbol, "pause-duration"))  { Closure->pauseDuration = bounded_setting(value, 1, G_MAXINT, Closure->pauseDuration); continue; }
       if(!strcmp(symbol, "prefetch-sectors")){ Closure->prefetchSectors  = bounded_setting(value, 32, MAX_PREFETCH_CACHE_SIZE, Closure->prefetchSectors); continue; }
       if(!strcmp(symbol, "raw-mode"))        { Closure->rawMode = atoi(value); continue; }
       if(!strcmp(symbol, "read-and-create")) { Closure->readAndCreate = atoi(value); continue; }
