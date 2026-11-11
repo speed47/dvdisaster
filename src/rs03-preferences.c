@@ -994,7 +994,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       gtk_widget_set_sensitive(scale, FALSE);
       g_signal_connect(scale, "format-value", G_CALLBACK(format_cb), (gpointer)PREF_NROOTS);
       g_signal_connect(scale, "value-changed", G_CALLBACK(nroots_cb), (gpointer)wl);
-      gtk_container_add(GTK_CONTAINER(hbox), scale);
+      gtk_box_pack_start(GTK_BOX(hbox), scale, TRUE, TRUE, 0);
 
       if(!i)
       {  wl->redundancyScaleA = scale;
