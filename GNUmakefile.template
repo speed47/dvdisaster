@@ -156,6 +156,19 @@ $(BUILDTMP)/rs-encoder-altivec.o: src/rs-encoder-altivec.c
 # rs-encoder-avx2.c uses a function target attribute and the generic C rule.
 # Do not enable AVX2 for the runtime probe or the rest of the binary.
 
+# rs-decoder.c likewise uses function targets for its AVX2 and GFNI kernels.
+
+.PHONY: check-syndromes
+$(BUILDTMP)/test-syndromes$(CFG_EXE_SUFFIX): regtest/syndromes.c src/rs-decoder.c src/galois.c src/dvdisaster.h GNUmakefile
+	$(CC) $(COPTS) -UNDEBUG -Isrc regtest/syndromes.c src/galois.c $(LOPTS) $(GLIB_LIBS) -lm -o $@
+
+check-syndromes: $(BUILDTMP)/test-syndromes$(CFG_EXE_SUFFIX)
+	@for backend in fallback avx2 gfni; do \
+	  $(BUILDTMP)/test-syndromes$(CFG_EXE_SUFFIX) $$backend; status=$$?; \
+	  if test $$status -eq 77; then echo "$$backend: skipped (compiler or CPU support unavailable)"; \
+	  elif test $$status -ne 0; then exit $$status; fi; \
+	done
+
 locale:
 	@$(MAKE) --no-print-directory -C locale
 
@@ -343,6 +356,7 @@ clean:
 	@echo "Removing rebuildable files"
 	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster .dvdisaster core core.* *.core
 	@rm -f "$(BUILDTMP)"/inlined-icons.c src/help-dialogs.h
+	@rm -f "$(BUILDTMP)"/test-syndromes "$(BUILDTMP)"/test-syndromes.exe
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;

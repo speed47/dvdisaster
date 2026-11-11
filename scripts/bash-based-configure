@@ -65,6 +65,7 @@
 # CHECK_BITNESS		Test whether system is 32bit or 64bit
 # CHECK_SSE2		Test whether we can compile for SSE2 extensions
 # CHECK_AVX2		Test AVX2 intrinsics, function targets and runtime detection
+# CHECK_GFNI		Test GFNI intrinsics, function targets and runtime detection
 # CHECK_ALTIVEC		Test whether we can compile for AltiVec extensions
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
@@ -2158,6 +2159,68 @@ EOF
       if test "$cfg_with_avx2" == "yes"; then
          echo "AVX2 was requested, but the compiler cannot build the AVX2 runtime-dispatched code."
          echo "See $LOGFILE for details, or use --with-avx2=no."
+         exit 1
+      fi
+   fi
+}
+
+#
+# Check GFNI without enabling it globally or executing the test binary.
+#
+
+function CHECK_GFNI()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-gfni=[yes | no]"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_GFNI */\n" >>$LOGFILE
+   echo -n "Checking for GFNI intrinsics and runtime detection..."
+
+   case "$cfg_with_gfni" in
+      no) echo " no (user supplied)"
+          return 0
+          ;;
+      yes|"") ;;
+      *) echo -e " $cfg_with_gfni (illegal value)\n"
+         echo "Please use one of the following values:"
+         echo "--with-gfni=[yes | no]"
+         exit 1
+         ;;
+   esac
+
+   # Test the complete GFNI kernel requirements independently of CHECK_AVX2.
+   # try_compile only builds/links this program; it does not run it.
+   cat > conftest.c <<EOF
+#include <immintrin.h>
+
+__attribute__((target("avx2,gfni"), noinline))
+static void conftest_gfni(unsigned char *data)
+{
+   __m256i a = _mm256_loadu_si256((const __m256i*)data);
+   __m256i b = _mm256_set1_epi64x(0x0102040810204080LL);
+   __m256i c = _mm256_gf2p8affine_epi64_epi8(a, b, 0);
+   _mm256_storeu_si256((__m256i*)data, _mm256_xor_si256(a, c));
+}
+
+int main(void)
+{
+   unsigned char data[32] = {0};
+   if(__builtin_cpu_supports("avx2") && __builtin_cpu_supports("gfni"))
+      conftest_gfni(data);
+   return data[0];
+}
+EOF
+
+   if try_compile; then
+      echo " yes"
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_GFNI"
+   else
+      echo " no"
+      if test "$cfg_with_gfni" == "yes"; then
+         echo "GFNI was requested, but the compiler cannot build the GFNI runtime-dispatched code."
+         echo "See $LOGFILE for details, or use --with-gfni=no."
          exit 1
       fi
    fi
