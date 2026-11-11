@@ -508,8 +508,21 @@ void RS01Verify(Image *image)
    }
 
    if(!Closure->quickVerify)
-   {  if(image->eccFile)
-	 vc->map = CreateBitmap0(image->expectedSectors);
+   {  /* Bitmap sizes are limited to int, but the RS01 header stores an
+         unchecked 64-bit sector count. Keep verification available when the
+         margin cannot be represented, without narrowing the allocation size. */
+      if(image->eccFile && image->expectedSectors <= G_MAXINT)
+      {  EccHeader *header = image->eccFileHeader;
+         guint64 sectors_per_layer = (image->expectedSectors+header->dataBytes-1)/header->dataBytes;
+         guint64 expected_size = sizeof(EccHeader)
+                               + image->expectedSectors*sizeof(guint32)
+                               + sectors_per_layer*2048*header->eccBytes;
+
+         /* eccSum does not protect the header. Check its layout before
+            allocating memory based on it or trusting the available parity. */
+         if(image->eccFile->size == expected_size)
+            vc->map = CreateBitmap0(image->expectedSectors);
+      }
       RS01ScanImage(self, image, NULL, PRINT_MODE, vc->map);
    }
 
@@ -908,8 +921,12 @@ process_ecc:
       GuiSetLabelText(wl->cmpEccMd5Sum, "%s", edigest);
    }
 
-   if(vc->map)
+   /* Image erasures only measure the margin if the ECC layout (checked
+      before allocating the bitmap) and the parity checksum are both valid. */
+   if(vc->map && !memcmp(eh->eccSum, digest, 16))
       ecc_margin(vc, eh->eccBytes);
+   else if(image->file)
+      GuiSetLabelText(wl->cmpImageMargin, _("n/a"));
 
 skip_ecc:
    PrintLog("\n");

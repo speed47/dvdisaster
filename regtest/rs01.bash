@@ -208,6 +208,41 @@ if try "image with ecc margin exceeded" ecc_margin_exceeded; then (
   run_regtest ecc_margin_exceeded "-t" $TMPISO $MASTERECC
 ) & limit_jobs; fi
 
+# A missing image sector needs parity which exists but has a bad checksum.
+# Do not print a numeric margin based on untrusted parity.
+if try "ecc margin with corrupted parity" ecc_margin_bad_parity; then (
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+  # The parity starts at byte 4096 + 4*21000; erase a sector within it.
+  $NEWVER --debug -i$TMPECC --erase 100 >>$LOGFILE 2>&1
+
+  run_regtest ecc_margin_bad_parity "-t" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
+# Keep the CRC table, but remove the final block of parity. Sector 94 is in
+# that block (ceil(21000/223) == 95 sectors per layer) and cannot be repaired.
+if try "ecc margin with truncated parity" ecc_margin_truncated_parity; then (
+  cp $MASTERISO $TMPISO
+  # Header + CRC table + 94 complete parity blocks, each 2048*32 bytes.
+  head -c $((4096 + 4*ISOSIZE + 94*2048*32)) $MASTERECC >$TMPECC
+  $NEWVER --debug -i$TMPISO --erase 94 >>$LOGFILE 2>&1
+
+  run_regtest ecc_margin_truncated_parity "-t" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
+# Changing only the unprotected sector count leaves eccSum valid. A count
+# of 20999 instead of 21000 also passes the rounded-down ecc block count
+# check, but the four extra bytes make the claimed layout inconsistent.
+if try "ecc margin with inconsistent size and valid checksum" ecc_margin_wrong_size; then (
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPECC --byteset 0,68,7 >>$LOGFILE 2>&1
+
+  run_regtest ecc_margin_wrong_size "-t" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
 # CRC error in fingerprint sector
 if try "crc in fingerprint sector" crc_in_fingerprint; then (
   cp $MASTERISO $TMPISO
@@ -248,6 +283,35 @@ if try "Ecc header with zero dataBytes" ecc_header_zero_databytes; then (
   $NEWVER --debug -i $TMPECC --byteset 0,76,0 >>$LOGFILE 2>&1
 
   run_regtest ecc_header_zero_databytes "-t" $MASTERISO $TMPECC
+) & limit_jobs; fi
+
+# RS01's sector count is not protected by a header checksum. These values
+# must still produce diagnostics without allocating a truncated bitmap or
+# accessing it with the original 64-bit count.
+if try "Ecc header sector count exceeds signed int" ecc_header_sectors_int_overflow; then (
+  cp $MASTERECC $TMPECC
+  # 21000 + 2^31: used to become a negative bitmap size.
+  $NEWVER --debug -i$TMPECC --byteset 0,71,128 >>$LOGFILE 2>&1
+
+  run_regtest ecc_header_sectors_int_overflow "-t" $MASTERISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
+if try "Ecc header sector count wraps to a small bitmap" ecc_header_sectors_wrapped; then (
+  cp $MASTERECC $TMPECC
+  # 21000 + 2^32: the scan fits, but the margin traversal used to overrun.
+  $NEWVER --debug -i$TMPECC --byteset 0,72,1 >>$LOGFILE 2>&1
+
+  run_regtest ecc_header_sectors_wrapped "-t" $MASTERISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
+if try "Ecc header sector count wraps to a zero-sized bitmap" ecc_header_sectors_wrapped_zero; then (
+  cp $MASTERECC $TMPECC
+  # Exactly 2^32: even marking good sectors during the scan used to overrun.
+  $NEWVER --debug -i$TMPECC --byteset 0,68,0 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPECC --byteset 0,69,0 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPECC --byteset 0,72,1 >>$LOGFILE 2>&1
+
+  run_regtest ecc_header_sectors_wrapped_zero "-t" $MASTERISO $TMPECC EXITCODE
 ) & limit_jobs; fi
 
 # Test image containing several uncorrectable dead sector markers
