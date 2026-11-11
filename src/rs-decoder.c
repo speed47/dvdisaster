@@ -41,29 +41,44 @@
 #ifdef HAVE_AVX2
 #include <immintrin.h>
 
+__attribute__((target("avx2"), always_inline))
+static inline __m256i syndrome_update_avx2(__m256i s, const unsigned char *data,
+                                         __m256i tlo, __m256i thi, __m256i mask)
+{  __m256i l = _mm256_shuffle_epi8(tlo, _mm256_and_si256(s, mask));
+   __m256i h = _mm256_shuffle_epi8(thi, _mm256_and_si256(_mm256_srli_epi16(s, 4), mask));
+   __m256i d = _mm256_loadu_si256((const __m256i*)data);
+
+   return _mm256_xor_si256(d, _mm256_xor_si256(l, h));
+}
+
 __attribute__((target("avx2")))
 static void syndromes_avx2(guint8 *lo, guint8 *hi, unsigned char **layer, int offset, guint8 *syn)
 {  __m256i tlo = _mm256_broadcastsi128_si256(_mm_loadu_si128((__m128i*)lo));
    __m256i thi = _mm256_broadcastsi128_si256(_mm_loadu_si128((__m128i*)hi));
    __m256i m   = _mm256_set1_epi8(0x0f);
-   int j,k,v;
+   int j,k;
 
    for(k=0; k<2048; k+=128)
-   {  __m256i s[4];
-
-      for(v=0; v<4; v++)
-	 s[v] = _mm256_loadu_si256((__m256i*)(layer[0]+offset+k+32*v));
+   {  const unsigned char *d = layer[0]+offset+k;
+      /* Explicit accumulators keep the four independent codeword groups in
+         registers at -O2; an indexed array can cause stack traffic per layer. */
+      __m256i s0 = _mm256_loadu_si256((const __m256i*)d);
+      __m256i s1 = _mm256_loadu_si256((const __m256i*)(d+32));
+      __m256i s2 = _mm256_loadu_si256((const __m256i*)(d+64));
+      __m256i s3 = _mm256_loadu_si256((const __m256i*)(d+96));
 
       for(j=1; j<GF_FIELDMAX; j++)
-	 for(v=0; v<4; v++)
-	 {  __m256i l = _mm256_shuffle_epi8(tlo, _mm256_and_si256(s[v], m));
-	    __m256i h = _mm256_shuffle_epi8(thi, _mm256_and_si256(_mm256_srli_epi16(s[v], 4), m));
-	    __m256i d = _mm256_loadu_si256((__m256i*)(layer[j]+offset+k+32*v));
-	    s[v] = _mm256_xor_si256(d, _mm256_xor_si256(l, h));
-	 }
+      {  d = layer[j]+offset+k;
+         s0 = syndrome_update_avx2(s0, d,    tlo, thi, m);
+         s1 = syndrome_update_avx2(s1, d+32, tlo, thi, m);
+         s2 = syndrome_update_avx2(s2, d+64, tlo, thi, m);
+         s3 = syndrome_update_avx2(s3, d+96, tlo, thi, m);
+      }
 
-      for(v=0; v<4; v++)
-	 _mm256_storeu_si256((__m256i*)(syn+k+32*v), s[v]);
+      _mm256_storeu_si256((__m256i*)(syn+k),    s0);
+      _mm256_storeu_si256((__m256i*)(syn+k+32), s1);
+      _mm256_storeu_si256((__m256i*)(syn+k+64), s2);
+      _mm256_storeu_si256((__m256i*)(syn+k+96), s3);
    }
 }
 #endif
