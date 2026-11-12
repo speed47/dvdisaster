@@ -13,6 +13,8 @@ RS01_no_files yes
 RS01_no_image yes
 RS01_no_ecc yes
 RS01_defective_image_no_ecc yes
+RS01_xorriso_md5_good yes
+RS01_xorriso_md5_altered yes
 RS01_plus56_bytes yes
 RS01_image_plus56_bytes yes
 RS01_ecc_plus56_bytes yes

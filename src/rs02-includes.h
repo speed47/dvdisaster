@@ -67,6 +67,7 @@ typedef struct
    GtkWidget *cmpCrcSection;
    GtkWidget *cmpEccSection;
    GtkWidget *cmpImageResult;
+   GtkWidget *cmpXorrisoTags;
 
    GtkWidget *cmpEccNotebook;
    GtkWidget *cmpEccCreatedBy;

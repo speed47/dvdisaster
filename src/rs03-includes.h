@@ -77,6 +77,7 @@ typedef struct
    GtkWidget *cmpImageErasureCnt;
    GtkWidget *cmpImagePrognosisMsg;
    GtkWidget *cmpImageResult;
+   GtkWidget *cmpXorrisoTags;
 
    GtkWidget *cmpEccCreatedBy;
    GtkWidget *cmpEccMethod;

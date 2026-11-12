@@ -1,0 +1,19 @@
+bfaf24096b9fe666247a776118ddf20c
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-xorriso-md5.iso: present, contains 21000 medium sectors.
+- good image       : all sectors present
+- image md5sum     : bfaf24096b9fe666247a776118ddf20c
+
+no.ecc: not present
+
+
+xorriso MD5 checksum tags:
+- superblock tag   : good (sector 20, covering sectors 0-19)
+- tree tag         : good (sector 40, covering sectors 0-39)
+- session tag      : good (sector 20000, covering sectors 0-19999)
+- all xorriso checksums are good.

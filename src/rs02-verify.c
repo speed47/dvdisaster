@@ -42,6 +42,7 @@ void ResetRS02VerifyWindow(Method *self)
    GuiSetLabelText(wl->cmpCrcSection, "");
    GuiSetLabelText(wl->cmpEccSection, "");
    GuiSetLabelText(wl->cmpImageResult, "");
+   GuiSetLabelText(wl->cmpXorrisoTags, "");
 
    GuiSetLabelText(wl->cmpEccCreatedBy, "dvdisaster");
    GuiSetLabelText(wl->cmpEccMethod, "");
@@ -255,6 +256,10 @@ void CreateRS02VerifyWindow(Method *self, GtkWidget *parent)
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
    gtk_grid_attach(GTK_GRID(grid2), lab, 1, 5, 2, 1);
+
+   lab = wl->cmpXorrisoTags = gtk_label_new(NULL);
+   gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 8, 2, 1);
 
    /*** Image spiral */
 
@@ -1144,5 +1149,12 @@ continue_with_ecc:
    /*** Close and clean up */
 
 terminate:
+   if(Closure->guiMode && !Closure->quickVerify)
+   {  char *tags = CheckXorrisoTags(Closure->imageName);
+
+      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
+      g_free(tags);
+   }
+
    cleanup((gpointer)cc);
 }
