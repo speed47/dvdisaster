@@ -2487,9 +2487,30 @@ static int read_raw_cd_sector(DeviceHandle *dh, unsigned char *outbuf, int lba, 
  * dh->read dispatches to one the routines above.
  */
 
+static void pause_after_read_error(DeviceHandle *dh)
+{  gint64 ticks;
+
+   if(Closure->pauseAfterErrors <= 0 || Closure->stopActions)
+      return;
+   if(++dh->errorsSincePause < Closure->pauseAfterErrors)
+      return;
+
+   dh->errorsSincePause = 0;
+   PrintCLIorLabel(Closure->status,
+                  _("Pausing %d seconds to let the drive cool down...\n"),
+                  Closure->pauseDuration);
+   for(ticks = (gint64)Closure->pauseDuration * 10;
+       ticks > 0 && !Closure->stopActions; ticks--)
+      g_usleep(G_USEC_PER_SEC/10);
+   GuiSetLabelText(Closure->status, "");
+}
+
 int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 {  int retry,status = -1;
    int recommended_attempts = Closure->minReadAttempts;
+
+   if(Closure->stopActions)
+      return status;
 
    /* See if we are in a simulated defective area */ 
 
@@ -2502,6 +2523,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 	  dh->sense.asc       = 255;
 	  dh->sense.ascq      = 255;
 	  RememberSense(dh->sense.sense_key, dh->sense.asc, dh->sense.ascq);
+	  pause_after_read_error(dh);
 	  return TRUE;
        }
    }
@@ -2529,6 +2551,9 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
    for(retry=1; retry<=recommended_attempts; retry++)
    {  
+      if(Closure->stopActions)
+         return status;
+
       /* Dispatch between normal reader and raw reader */
 
       if(Closure->readRaw && dh->readRaw)
@@ -2553,6 +2578,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 	 {  PrintCLIorLabel(Closure->status,
 			    _("Sectors %" PRId64 " - %" PRId64 ": %s\n"),
 			    s, s+nsectors-1, GetLastSenseString(FALSE));
+	    pause_after_read_error(dh);
 	    return status;
 	 }
 
@@ -2578,6 +2604,10 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
 	 if(dh->canReadDefective && retry >= recommended_attempts)
 	    RememberSense(3, 255, 7);  /* Recovery failed */
+
+	 pause_after_read_error(dh);
+	 if(Closure->stopActions)
+	    return status;
       }
       else /* good return status */
       {  if(recommended_attempts > 1 && retry > 1)

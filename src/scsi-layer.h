@@ -156,6 +156,7 @@ typedef struct _DeviceHandle
    double singleRate;         /* supposed KB/sec @ single speed */
    int maxRate;               /* guessed maximum transfer rate */
    int clusterSize;           /* number of sectors per cluster */
+   int errorsSincePause;      /* failed read attempts on this opened device */
 
    /*
     * Raw reading support

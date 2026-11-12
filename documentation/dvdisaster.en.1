@@ -51,6 +51,8 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-no-progress \|]
 .RB [\| \-\-old-ds-marker \|]
 .RB [\| \-\-no-bdr-defect-management \|]
+.RB [\| \-\-pause-after-errors
+.IR n[:s] \|]
 .RB [\| \-\-prefetch-sectors
 .IR n \|]
 .RB [\| \-\-raw-mode
@@ -408,6 +410,14 @@ would not be recognized in the image.
 
 Do not process the same image with different settings for this option.
 .RE
+.TP
+.B \-\-pause-after-errors n[:s]
+pause reading for s seconds (default: 60) after every n failed read attempts
+so that drives which overheat on defective media can cool down.
+The counter is reset when the device is opened for a new operation.
+Failed multi-sector reads and individual retries each count as one attempt.
+Use n=0 to disable pauses (the default); s must be positive.
+An explicit option also overrides the saved GUI settings and is saved on exit.
 .TP
 .B \-\-prefetch-sectors n
 number of sectors to preload during RS03 de-/encoding (default: 32)
