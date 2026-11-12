@@ -1,0 +1,39 @@
+9503f278d4550a9507a317664481adf8
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03f-tmp.iso: 21000 medium sectors.
+Using ecc file eccdir/master.ecc
+
+Fix mode(RS03f): Repairable sectors will be fixed in the image.
+    1 repaired sectors: 900d 
+    1 repaired sectors: 901d 
+    1 repaired sectors: 902d 
+    1 repaired sectors: 903d 
+    1 repaired sectors: 904d 
+    1 repaired sectors: 905d 
+    1 repaired sectors: 906d 
+    1 repaired sectors: 907d 
+    1 repaired sectors: 908d 
+    1 repaired sectors: 909d 
+    1 repaired sectors: 910d 
+    1 repaired sectors: 911d 
+    1 repaired sectors: 912d 
+    1 repaired sectors: 913d 
+    1 repaired sectors: 914d 
+    1 repaired sectors: 915d 
+    1 repaired sectors: 916d 
+    1 repaired sectors: 917d 
+    1 repaired sectors: 918d 
+    1 repaired sectors: 919d 
+    1 repaired sectors: 920d 
+    1 repaired sectors: 921d 
+    1 repaired sectors: 922d 
+    1 repaired sectors: 923d 
+    1 repaired sectors: 924d 
+Repaired sectors: 25 (25 data, 0 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  1.0; worst = 1.

@@ -791,6 +791,19 @@ if try "fixing image with missing data sectors" fix_missing_data_sectors; then (
   run_regtest fix_missing_data_sectors "-f" $TMPISO $TMPECC
 ) & limit_jobs; fi
 
+# Fix image with the ecc file picked from a directory
+
+if try "fixing image, ecc file found in directory" fix_find_ecc_in_dir; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  ln -sf $ISODIR/no.ecc $TEST_TMPDIR/eccdir/dangling.ecc
+
+  $NEWVER --debug -i $TMPISO --erase 900-924 >>$LOGFILE 2>&1
+
+  run_regtest fix_find_ecc_in_dir "-f" $TMPISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
 # Fix ecc file with missing crc sectors
 
 if try "fixing ecc file with missing crc sectors" fix_missing_crc_sectors; then (
