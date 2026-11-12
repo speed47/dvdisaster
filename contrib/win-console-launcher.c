@@ -38,6 +38,21 @@ static HANDLE child;
 static CRITICAL_SECTION child_lock;
 static WinConsole console;
 
+/* The CRT permits quotes around individual parts of argv[0]. Unlike later
+   arguments, backslashes are literal here. Preserve the argument tail as is. */
+static const wchar_t *skip_program_name(const wchar_t *command)
+{  BOOL quoted = FALSE;
+
+   while(*command)
+   {  if(*command == L'"')
+         quoted = !quoted;
+      else if(!quoted && (*command == L' ' || *command == L'\t'))
+         break;
+      command++;
+   }
+   return command;
+}
+
 /* A CLI child with redirected output may not be attached to our console.
    Forward cancellation until it has explicitly handed off to GUI mode. */
 static BOOL WINAPI ctrl_handler(DWORD type)
@@ -63,7 +78,8 @@ int main(void)
    SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };
    HANDLE waits[2];
    wchar_t handoff[80];
-   wchar_t *args, *cmd, *slash;
+   const wchar_t *args;
+   wchar_t *cmd, *slash;
    DWORD n, code;
 
    /* dvdisaster.exe in the directory of this launcher */
@@ -75,15 +91,7 @@ int main(void)
    }
    wcscpy(slash + 1, L"dvdisaster.exe");
 
-   /* Skip argv[0] the way the CRT does: up to the closing quote,
-      or up to the first blank. Keep the rest as is. */
-   args = GetCommandLineW();
-   if(*args == L'"')
-   {  args++;
-      while(*args && *args != L'"') args++;
-      if(*args) args++;
-   }
-   else while(*args && *args != L' ' && *args != L'\t') args++;
+   args = skip_program_name(GetCommandLineW());
 
    cmd = malloc((wcslen(exe) + wcslen(args) + 3) * sizeof(wchar_t));
    if(!cmd) return 1;

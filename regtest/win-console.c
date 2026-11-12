@@ -1,4 +1,4 @@
-/* Native Windows regression tests for the launcher cancellation / GUI handoff.
+/* Native Windows regression tests for launcher arguments and GUI handoff.
  * Includes the launcher to call its control handler at deterministic points.
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -8,6 +8,29 @@
 #undef main
 
 static HANDLE handler_started;
+
+static void check_arguments(void)
+{  static const struct
+   {  const wchar_t *command;
+      const wchar_t *arguments;
+   } cases[] = {
+      { L"dvdisaster --version", L" --version" },
+      { L"\"C:\\Program Files\\dvdisaster\\dvdisaster.com\" --version", L" --version" },
+      { L"C:\\\"Program Files\"\\dvdisaster\\dvdisaster.com --version", L" --version" },
+      { L"\"C:\\Program Files\"\\dvdisaster\\dvdisaster.com --version", L" --version" },
+      { L"C:\\\"Program Files\"\\\"DVD Tools\"\\dvdisaster.com\t-r -i \"disc image.iso\"",
+        L"\t-r -i \"disc image.iso\"" },
+      { L"dvdisaster  \t-i \"disc image.iso\" \"\" \"a\\\"b\" \"C:\\dir\\\\\"",
+        L"  \t-i \"disc image.iso\" \"\" \"a\\\"b\" \"C:\\dir\\\\\"" },
+      { L"dvdisaster", L"" },
+      { L"\"C:\\Program Files\\dvdisaster.com\"", L"" },
+      { L"C:\\\"Program Files\"\\dvdisaster.com", L"" },
+      { L"dvdisaster \t", L" \t" }
+   };
+
+   for(unsigned i=0; i<sizeof(cases)/sizeof(cases[0]); i++)
+      assert(!wcscmp(skip_program_name(cases[i].command), cases[i].arguments));
+}
 
 static DWORD WINAPI cancel_thread(void *unused)
 {
@@ -91,6 +114,7 @@ int main(void)
    DWORD code;
    WinConsole gui;
 
+   check_arguments();
    InitializeCriticalSection(&child_lock);
    handler_started = CreateEventW(NULL, TRUE, FALSE, NULL);
    assert(handler_started);
@@ -132,6 +156,6 @@ int main(void)
 
    CloseHandle(handler_started);
    DeleteCriticalSection(&child_lock);
-   puts("Windows console cancellation and GUI handoff tests passed.");
+   puts("Windows console argument, cancellation and GUI handoff tests passed.");
    return 0;
 }
