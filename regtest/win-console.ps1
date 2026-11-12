@@ -1,17 +1,18 @@
-# Run GUI launches in a separate console, then verify that the GUI survives
-# both the launcher's exit and the console host's exit.
+# Run GUI launches in a separate console, verify that the GUI is no longer
+# attached to that console, then check it survives the probe process's exit.
 param(
     [Parameter(Mandatory=$true)][string]$Dist,
     [switch]$Probe,
     [switch]$Direct,
     [switch]$WithImage,
+    [switch]$Capture,
     [string]$Result
 )
 $ErrorActionPreference = 'Stop'
 $Dist = (Resolve-Path $Dist).Path
 
 if ($Probe) {
-    $state = @{ LauncherPid = 0; ChildPid = 0; Ready = $false; Error = '' }
+    $state = @{ LauncherPid = 0; ChildPid = 0; ConsolePids = @(); Ready = $false; Error = '' }
     try {
         # Exercise each output stream redirected independently in a real console.
         $stdout = "$Result.stdout"
@@ -39,8 +40,16 @@ if ($Probe) {
         $launch.UseShellExecute = $false
         $launch.CreateNoWindow = $false
         $launch.WorkingDirectory = $PWD.Path
+        $launch.RedirectStandardOutput = $Capture.IsPresent
+        $launch.RedirectStandardError = $Capture.IsPresent
         if ($WithImage) { $launch.Arguments = '-i handoff-test.iso' }
         $process = [System.Diagnostics.Process]::Start($launch)
+        if ($Capture) {
+            # Read concurrently, as a capturing shell does, but bound the EOF
+            # wait so a GUI retaining pipe writers produces a useful failure.
+            $capturedOutput = $process.StandardOutput.ReadToEndAsync()
+            $capturedError = $process.StandardError.ReadToEndAsync()
+        }
         if ($Direct) { $state.ChildPid = $process.Id }
         else { $state.LauncherPid = $process.Id }
         $state | ConvertTo-Json | Set-Content $Result
@@ -50,6 +59,14 @@ if ($Probe) {
             $launcherExitCode = $process.ExitCode
             if ($null -eq $launcherExitCode) { throw 'Launcher exit code is unavailable' }
             if ($launcherExitCode -ne 0) { throw "Launcher exited with $launcherExitCode" }
+            if ($Capture) {
+                if (!$capturedOutput.Wait(5000) -or !$capturedError.Wait(5000)) {
+                    throw 'GUI kept inherited output pipes open after launcher exit'
+                }
+                if ($capturedOutput.Result -notmatch 'GUI detached from console') {
+                    throw 'Captured output is missing the GUI detachment message'
+                }
+            }
             $children = @(Get-CimInstance Win32_Process -Filter "ParentProcessId = $($process.Id) AND Name = 'dvdisaster.exe'")
             if ($children.Count -ne 1) { throw "Expected one GUI child, got $($children.Count)" }
             $state.ChildPid = $children[0].ProcessId
@@ -66,69 +83,77 @@ if ($Probe) {
         } while ((Get-Date) -lt $deadline)
         if ($gui.MainWindowHandle -eq 0) { throw 'GUI did not create a window' }
         Add-Type -Name ConsoleProbe -Namespace Dvdisaster -MemberDefinition @'
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-        public static extern System.IntPtr GetConsoleWindow();
-        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint="PostMessageW")]
-        public static extern bool PostMessage(System.IntPtr window, uint message, System.IntPtr wparam, System.IntPtr lparam);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError=true)]
+        public static extern uint GetConsoleProcessList(
+            [System.Runtime.InteropServices.Out] uint[] processList, uint processCount);
 '@
-        $window = [Dvdisaster.ConsoleProbe]::GetConsoleWindow()
-        if ($window -eq [IntPtr]::Zero) { throw 'Probe has no console window' }
+        # A console window handle can be a message-only window in CI; posting
+        # WM_CLOSE to it need not close the console. Check actual membership
+        # instead, with this probe's PID as a positive control for the query.
+        $consolePids = New-Object 'uint32[]' 16
+        while ($true) {
+            $count = [Dvdisaster.ConsoleProbe]::GetConsoleProcessList($consolePids, $consolePids.Length)
+            if ($count -eq 0) {
+                throw "Cannot query probe console (Windows error $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))"
+            }
+            if ($count -le $consolePids.Length) { break }
+            $consolePids = New-Object 'uint32[]' $count
+        }
+        $state.ConsolePids = @($consolePids[0..($count - 1)])
+        if ($state.ConsolePids -notcontains $PID) { throw 'Probe is missing from its own console process list' }
+        if ($state.ConsolePids -contains $state.ChildPid) { throw 'GUI is still attached to the probe console' }
         $state.Ready = $true
     } catch {
         $state.Error = $_.ToString()
     }
     $state | ConvertTo-Json | Set-Content $Result
-    # Merely exiting the shell would leave its console alive if the GUI were
-    # still attached. Close the console window explicitly to test detachment.
-    if ($state.Ready) {
-        if (![Dvdisaster.ConsoleProbe]::PostMessage($window, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)) {
-            $state.Ready = $false
-            $state.Error = 'Could not close the probe console'
-            $state | ConvertTo-Json | Set-Content $Result
-            exit 0
-        }
-        # Do not catch the pipeline cancellation caused by console closure.
-        Start-Sleep -Seconds 10
-        $state.Ready = $false
-        $state.Error = 'Probe survived closing its console'
-        $state | ConvertTo-Json | Set-Content $Result
-    }
+    # Membership was checked before exiting, so a GUI accidentally keeping
+    # this console alive cannot turn the survival check into a false pass.
     exit 0
 }
 
 $temporary = Join-Path ([IO.Path]::GetTempPath()) ([IO.Path]::GetRandomFileName())
 New-Item -ItemType Directory $temporary | Out-Null
 try {
-    foreach ($directLaunch in @($false, $true)) {
-        foreach ($imageArgument in @($false, $true)) {
-            $resultFile = Join-Path $temporary 'result.json'
-            Remove-Item $resultFile -ErrorAction SilentlyContinue
-            $arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"",
-                           '-Probe', '-Dist', "`"$Dist`"", '-Result', "`"$resultFile`"")
-            if ($directLaunch) { $arguments += '-Direct' }
-            if ($imageArgument) { $arguments += '-WithImage' }
-            $hostProcess = Start-Process powershell.exe -ArgumentList $arguments -PassThru
-            try {
-                if (!$hostProcess.WaitForExit(90000)) { throw 'Console probe timed out' }
+    $cases = @(
+        @{ Direct = $false; Image = $false; Capture = $false },
+        @{ Direct = $false; Image = $true;  Capture = $false },
+        @{ Direct = $false; Image = $false; Capture = $true },
+        @{ Direct = $false; Image = $true;  Capture = $true },
+        @{ Direct = $true;  Image = $false; Capture = $false },
+        @{ Direct = $true;  Image = $true;  Capture = $false }
+    )
+    foreach ($case in $cases) {
+        $caseDescription = "direct=$($case.Direct) image=$($case.Image) capture=$($case.Capture)"
+        Write-Host "Checking GUI console independence: $caseDescription"
+        $resultFile = Join-Path $temporary 'result.json'
+        Remove-Item $resultFile -ErrorAction SilentlyContinue
+        $arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"",
+                       '-Probe', '-Dist', "`"$Dist`"", '-Result', "`"$resultFile`"")
+        if ($case.Direct) { $arguments += '-Direct' }
+        if ($case.Image) { $arguments += '-WithImage' }
+        if ($case.Capture) { $arguments += '-Capture' }
+        $hostProcess = Start-Process powershell.exe -ArgumentList $arguments -PassThru
+        try {
+            if (!$hostProcess.WaitForExit(90000)) { throw 'Console probe timed out' }
+            $state = Get-Content -Raw $resultFile | ConvertFrom-Json
+            if (!$state.Ready) { throw "Console probe failed ($caseDescription): $($state.Error)" }
+            # Allow the console host to finish processing the probe's exit.
+            Start-Sleep -Milliseconds 500
+            $gui = Get-Process -Id $state.ChildPid
+            if ($gui.HasExited) { throw 'Exiting the console probe terminated the GUI' }
+            Write-Host "GUI detached and survived probe exit: $caseDescription (console PIDs: $($state.ConsolePids -join ', '))"
+        } finally {
+            # Only clean up processes created by this probe.
+            if (!$hostProcess.HasExited) { $hostProcess.Kill(); $hostProcess.WaitForExit() }
+            if (Test-Path $resultFile) {
                 $state = Get-Content -Raw $resultFile | ConvertFrom-Json
-                if (!$state.Ready) { throw "Console probe failed: $($state.Error)" }
-                # Allow delivery of the console-close notification before checking.
-                Start-Sleep -Milliseconds 500
-                $gui = Get-Process -Id $state.ChildPid
-                if ($gui.HasExited) { throw 'Closing the console terminated the GUI' }
-                Write-Host "GUI survived console exit: direct=$directLaunch image=$imageArgument"
-            } finally {
-                # Only clean up processes created by this probe.
-                if (!$hostProcess.HasExited) { $hostProcess.Kill(); $hostProcess.WaitForExit() }
-                if (Test-Path $resultFile) {
-                    $state = Get-Content -Raw $resultFile | ConvertFrom-Json
-                    if ($state.LauncherPid) {
-                        Get-CimInstance Win32_Process -Filter "ParentProcessId = $($state.LauncherPid) AND Name = 'dvdisaster.exe'" |
-                            ForEach-Object { Stop-Process -Id $_.ProcessId -ErrorAction SilentlyContinue }
-                        Stop-Process -Id $state.LauncherPid -ErrorAction SilentlyContinue
-                    }
-                    if ($state.ChildPid) { Stop-Process -Id $state.ChildPid -ErrorAction SilentlyContinue }
+                if ($state.LauncherPid) {
+                    Get-CimInstance Win32_Process -Filter "ParentProcessId = $($state.LauncherPid) AND Name = 'dvdisaster.exe'" |
+                        ForEach-Object { Stop-Process -Id $_.ProcessId -ErrorAction SilentlyContinue }
+                    Stop-Process -Id $state.LauncherPid -ErrorAction SilentlyContinue
                 }
+                if ($state.ChildPid) { Stop-Process -Id $state.ChildPid -ErrorAction SilentlyContinue }
             }
         }
     }

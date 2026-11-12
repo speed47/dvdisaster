@@ -24,6 +24,7 @@ This version is built on top of the latest upstream version, with the following 
 - Windows and macOS builds are supported again, those were dropped upstream a few versions back
 - The Windows GUI build can also be used from the command line: run `dvdisaster` (not `dvdisaster.exe`) from cmd or PowerShell, this picks the bundled `dvdisaster.com` console launcher, which waits for completion and returns the exit code
   - When no command-line operation is selected, the GUI opens and the launcher exits; closing the console then leaves the GUI running
+  - Captured or piped GUI launches return startup output and the detachment message; later GUI output is no longer sent to those pipes. Output redirected directly to a file remains available for GUI logging, but PowerShell may implement file redirection through a pipe.
 - Non-regression tests on each code change (also run under AddressSanitizer/UBSan), along with prebuilt binaries for Linux64, Windows32/64 and macOS, for both CLI and GUI versions
 - Fixed a bunch of other (minor) quirks, a few (minor) bugs, added a couple other (minor) features
 

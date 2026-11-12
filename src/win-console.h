@@ -5,6 +5,7 @@
 #define DVDISASTER_WIN_CONSOLE_H
 
 #include <windows.h>
+#include <io.h>
 #include <stdio.h>
 #include <wchar.h>
 
@@ -50,6 +51,42 @@ static inline BOOL WinConsoleInit(WinConsole *console, int argc)
    return TRUE;
 }
 
+static inline BOOL WinConsoleReleaseOutputPipes(void)
+{  FILE *streams[2] = { stdout, stderr };
+   DWORD ids[2] = { STD_OUTPUT_HANDLE, STD_ERROR_HANDLE };
+   HANDLE native[2], crt[2];
+   BOOL native_pipe[2], crt_pipe[2];
+
+   /* Snapshot both streams before reopening either: stdout and stderr may
+      share a Windows handle (2>&1), or the CRT may own separate duplicates. */
+   for(int i=0; i<2; i++)
+   {  int fd = _fileno(streams[i]);
+      native[i] = GetStdHandle(ids[i]);
+      crt[i] = fd >= 0 ? (HANDLE)_get_osfhandle(fd) : INVALID_HANDLE_VALUE;
+      native_pipe[i] = GetFileType(native[i]) == FILE_TYPE_PIPE;
+      crt_pipe[i] = GetFileType(crt[i]) == FILE_TYPE_PIPE;
+   }
+
+   for(int i=0; i<2; i++)
+      if(crt_pipe[i] || (native_pipe[i] && crt[i] == INVALID_HANDLE_VALUE))
+         if(!freopen("NUL", "w", streams[i]))
+         {  SetLastError(ERROR_OPEN_FAILED);
+            return FALSE;
+         }
+
+   for(int i=0; i<2; i++)
+      if(native_pipe[i])
+      {  /* freopen closes CRT-owned handles. Release any additional Win32
+            pipe handle exactly once, then update the standard-handle table. */
+         if(native[i] != crt[0] && native[i] != crt[1]
+            && (i == 0 || native[i] != native[0]))
+            if(!CloseHandle(native[i])) return FALSE;
+         if(!SetStdHandle(ids[i], (HANDLE)_get_osfhandle(_fileno(streams[i]))))
+            return FALSE;
+      }
+   return TRUE;
+}
+
 static inline BOOL WinConsoleEnterGUI(WinConsole *console)
 {  BOOL ok = TRUE;
 
@@ -64,7 +101,11 @@ static inline BOOL WinConsoleEnterGUI(WinConsole *console)
    /* The launcher takes the same mutex before cancelling. Once this event
       is signalled, it must never terminate the GUI, even before its main
       thread has noticed the event. Detach before making that promise. */
-   if(console->attached)
+   /* Pipe readers must see EOF when the launcher exits, rather than waiting
+      for the GUI. Keep disk-file logging and direct .exe launches intact. */
+   if(console->gui_event)
+      ok = WinConsoleReleaseOutputPipes();
+   if(ok && console->attached)
    {  ok = FreeConsole();
       if(ok) console->attached = FALSE;
    }

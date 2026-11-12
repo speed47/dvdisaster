@@ -133,7 +133,16 @@ ${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 # Building the dvdisaster binary
 
 ifeq ($(CFG_SYS_OPTIONS),-DSYS_MINGW)
-dvdisaster: contrib/win-console-launcher.c src/win-console.h
+ifneq ($(filter -DWITH_GUI_YES,$(WITH_OPTIONS)),)
+all install: dvdisaster.com
+# Also support "make dvdisaster", without relinking the GUI when only the
+# launcher changes or has been removed.
+dvdisaster: | dvdisaster.com
+
+dvdisaster.com: contrib/win-console-launcher.c src/win-console.h
+	@echo "Linking  : dvdisaster.com"
+	@$(CC) $(CFLAGS) contrib/win-console-launcher.c -o $@
+endif
 endif
 
 dvdisaster: $(OFILES)
@@ -141,10 +150,6 @@ dvdisaster: $(OFILES)
 	@if test $(CFG_SYS_OPTIONS) == -DSYS_MINGW; \
 	then windres -v src/winres.rc -O coff -o ${BUILDTMP}/winres.o >/dev/null || exit $$?; \
 	     $(CC) $(LOPTS) $(OFILES) $(LIBS) ${BUILDTMP}/winres.o -o dvdisaster || exit $$?; \
-	     if echo $(WITH_OPTIONS) | grep -q WITH_GUI_YES; \
-	     then echo "Linking  : dvdisaster.com"; \
-	          $(CC) $(CFLAGS) contrib/win-console-launcher.c -o dvdisaster.com ; \
-	     fi ; \
 	else $(CC) $(LOPTS) $(OFILES) $(LIBS) -o dvdisaster ; \
 	fi
 	@if test -e locale/de/LC_MESSAGES/dvdisaster.mo \
