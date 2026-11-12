@@ -2502,6 +2502,7 @@ static void pause_after_read_error(DeviceHandle *dh)
    for(ticks = (gint64)Closure->pauseDuration * 10;
        ticks > 0 && !Closure->stopActions; ticks--)
       g_usleep(G_USEC_PER_SEC/10);
+   GuiSetLabelText(Closure->status, "");
 }
 
 int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
