@@ -241,7 +241,7 @@ void CreateRS02VerifyWindow(Method *self, GtkWidget *parent)
    gtk_grid_attach(GTK_GRID(grid2), lab, 1, 5, 1, 1);
    lab = wl->cmpCrcSection = gtk_label_new(".");
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-   gtk_grid_attach(GTK_GRID(grid2), lab, 2, 6, 1, 1);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 2, 5, 1, 1);
 
    lab = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
@@ -254,7 +254,7 @@ void CreateRS02VerifyWindow(Method *self, GtkWidget *parent)
    lab = wl->cmpImageResult = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
    gtk_widget_set_margin_top(lab, 2);
-   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 5, 2, 1);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 7, 2, 1);
 
    /*** Image spiral */
 
