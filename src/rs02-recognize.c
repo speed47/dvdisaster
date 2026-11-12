@@ -270,7 +270,7 @@ int RS02Recognize(Image *image)
 	 max_sectors = MAX(image->dh->readCapacity, image->dh->userAreaSize);
 	 break;
    }
-   if(max_sectors == 0)  /* empty image or medium: nothing to find */
+   if(max_sectors == 0)  /* no complete image sectors or no medium search range */
    {  FreeAlignedBuffer(ab);
       return FALSE;
    }

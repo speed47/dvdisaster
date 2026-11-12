@@ -1,0 +1,16 @@
+bb7df04e1b0a2570657527a7e108ae23
+9d61542f72715d5a9a65cd0e7f612176
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs02-tmp.iso: 16 medium sectors.
+
+*
+* dvdisaster - can not continue:
+*
+Image data is too small for RS02 error correction.
+At least 17 complete sectors (34816 bytes) are required.
+
+Exit status: 1

@@ -690,6 +690,22 @@ void RS02Create(void)
 		   _("<big>Augmenting the image with error correction data.</big>\n<i>%s</i>"), 
 		   _("- checking image -"));
 
+   /* The fingerprint must come from a complete sector in the data portion.
+      Otherwise augmentation makes the previously unreadable fingerprint
+      sector readable, and recognition rejects our own header. Check the
+      original data size before removing any existing ECC. */
+
+   {  gint64 data_sectors = image->eccHeader
+                           ? uchar_to_gint64(image->eccHeader->sectors) : image->sectorSize;
+      int in_last = image->eccHeader ? image->eccHeader->inLast : image->inLast;
+
+      if(data_sectors <= FINGERPRINT_SECTOR
+         || (data_sectors == FINGERPRINT_SECTOR+1 && in_last != 2048))
+         Stop(_("Image data is too small for RS02 error correction.\n"
+                "At least %d complete sectors (%d bytes) are required."),
+              FINGERPRINT_SECTOR+1, (FINGERPRINT_SECTOR+1)*2048);
+   }
+
    /*** If the image already contains error correction information, remove it. */
 
    remove_old_ecc(ec);

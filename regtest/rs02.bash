@@ -405,7 +405,7 @@ if try "tiny image, old style hdr, truncated img" tiny_old_header; then (
 
 if try "empty image" empty_image; then (
    : >$TMPISO
-   run_regtest empty_image "-a RS02 -t" $TMPISO $NO_FILE
+   run_regtest empty_image "-a RS02 -t" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 # Augmented image is protected by an outer RS01 error correction file
@@ -552,6 +552,40 @@ if try "image with uncorrectable dead sector markers (3)" uncorrectable_dsm_in_i
 ### Creation tests
 
 REGTEST_SECTION="Creation tests"
+
+# Reject inputs without a complete fingerprint sector. The reference hashes
+# check that both the image and an existing external ECC file are preserved.
+
+for bytes in 0 1 2047 2048 32768 34815; do
+if try "RS02 creation with $bytes bytes" ecc_too_small_$bytes; then (
+  dd if=/dev/zero of="$TMPISO" bs=1 count=$bytes >>$LOGFILE 2>&1
+  printf 'existing ecc file\n' >"$TMPECC"
+
+  replace_config method-name RS02
+  run_regtest ecc_too_small_$bytes "-mRS02 -n43r -c" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+done
+
+# A full fingerprint sector is sufficient; verify the generated ECC as well.
+
+if try "RS02 creation at minimum image size" ecc_minimum_image; then (
+  dd if=/dev/zero of="$TMPISO" bs=2048 count=17 >>$LOGFILE 2>&1
+
+  replace_config method-name RS02
+  extra_args="--debug --set-version $SETVERSION"
+  run_regtest ecc_minimum_image "-mRS02 -n43r -c -t" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# Existing RS03 ECC makes the file large enough, but the original data is
+# still too short. Reject it before stripping the existing protection.
+
+if try "RS02 creation from RS03 with short data" ecc_from_small_rs03; then (
+  dd if=/dev/zero of="$TMPISO" bs=1 count=34815 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n255 -c >>$LOGFILE 2>&1
+
+  replace_config method-name RS02
+  run_regtest ecc_from_small_rs03 "-mRS02 -n43r -c" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
 
 # Create test image
 

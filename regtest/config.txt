@@ -40,6 +40,9 @@ RS01_uncorrectable_dsm_in_image2_verbose yes
 # Create tests
 
 RS01_ecc_create yes
+RS01_ecc_small_image_0 yes
+RS01_ecc_small_image_1 yes
+RS01_ecc_small_image_2047 yes
 RS01_ecc_missing_image yes
 RS01_ecc_no_read_perm yes
 RS01_ecc_no_write_perm yes
@@ -218,6 +221,14 @@ RS02_uncorrectable_dsm_in_image3 yes
 
 # Creation tests
 RS02_ecc_create yes
+RS02_ecc_too_small_0 yes
+RS02_ecc_too_small_1 yes
+RS02_ecc_too_small_2047 yes
+RS02_ecc_too_small_2048 yes
+RS02_ecc_too_small_32768 yes
+RS02_ecc_too_small_34815 yes
+RS02_ecc_minimum_image yes
+RS02_ecc_from_small_rs03 yes
 RS02_ecc_create_tiny yes
 RS02_ecc_missing_image yes
 RS02_ecc_no_read_perm yes
@@ -587,6 +598,8 @@ RS03f_uncorrectable_dsm_in_image2_verbose yes
 # Create tests
 
 RS03f_ecc_create yes
+RS03f_ecc_empty_image_no yes
+RS03f_ecc_empty_image_yes yes
 RS03f_ecc_existing_file yes
 RS03f_ecc_missing_image yes
 RS03f_ecc_no_read_perm yes

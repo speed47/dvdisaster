@@ -11,3 +11,4 @@ rs02-tmp.iso: present, contains 0 medium sectors.
 
 none.file: not present
 
+Exit status: 0
