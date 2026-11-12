@@ -100,6 +100,30 @@ static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expecte
       return 1;
    }
 
+   if(image_expected)
+   {  guint64 first_crc_pos;
+
+      /* A valid checksum alone does not identify our image: its payload
+         may contain another augmented image. Check the block's location
+         against its recorded layout, not the layer size guessed by the
+         search (which may legitimately differ due to rounding).
+         eh is in native byte order and plausible_header bounded its
+         sectorsPerLayer, so the multiplication below cannot overflow. */
+
+      if(eh.eccBytes < 8 || eh.eccBytes > 170)
+      {  Verbose(".. invalid root count in CRC block %" PRIu64 "\n", sector);
+         return 1;
+      }
+
+      first_crc_pos = (GF_FIELDMAX - eh.eccBytes - 1) * eh.sectorsPerLayer;
+      if(sector < first_crc_pos || sector >= first_crc_pos + eh.sectorsPerLayer)
+      {  Verbose(".. CRC block %" PRIu64 " outside its CRC layer - IGNORED\n", sector);
+         /* Keep searching this candidate layer: a displaced block may
+            have overwritten a genuine CRC block with readable data. */
+         return 1;
+      }
+   }
+
    return 2;
 }
 
@@ -505,7 +529,7 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
 	    if(crc_state)
 	    {  int nroots=255-layer-1;
 
-	       if(crc_state == 1) /* corrupted crc header, try this layer again later */
+	       if(crc_state == 1) /* unusable CRC block, try this layer again later */
 		 continue;
 	       Verbose("** Success: sector %" PRId64 ", rediscovered format with %d roots\n",
 		       sector, nroots);

@@ -365,11 +365,19 @@ RS02_adaptive_with_wrong_rs03_file yes
 
 RS03i_strip_ecc yes
 RS03i_strip_ecc_not yes
+RS03i_strip_crc_before_layer yes
+RS03i_strip_crc_after_layer yes
 
 # Verify tests
 
 RS03i_good yes
 RS03i_good_quick yes
+RS03i_verify_displaced_crc yes
+RS03i_verify_displaced_first_crc yes
+RS03i_verify_first_crc yes
+RS03i_verify_last_crc yes
+RS03i_recognize_bdr_nodm yes
+RS03i_recognize_bdr_dm yes
 RS03i_no_image yes
 RS03i_truncated yes
 RS03i_plus1 yes

@@ -1,0 +1,19 @@
+42d338835a45743d16203e2f81181f60
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs03i-tmp.iso present.
+
+Error correction properties:
+- type             : Augmented image
+- method           : RS03, 61 roots, 31.4% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+
+Data integrity:
+- medium sectors   : 27795 total / 21000 data
+* quick mode        : image NOT scanned

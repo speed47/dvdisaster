@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . common.bash
+. fixtures-rs03.bash
 
 ISOSIZE=21000
 ECCSIZE=25000
@@ -69,6 +70,29 @@ if try "strip ECC from a non-augmented image" strip_ecc_not; then (
   $NEWVER -i$TMPISO --strip >>$LOGFILE 2>&1
 
   run_regtest strip_ecc_not "-v --strip" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# A payload can contain CRC blocks from an embedded augmented image.
+# Copy a genuine block to a probe before its declared CRC layer [21070,21168).
+# Stripping must fail and leave the entire file unchanged.
+
+if try "refuse strip with displaced CRC block before CRC layer" strip_crc_before_layer; then (
+  dd if=/dev/zero of=$TMPISO bs=2048 count=1 seek=24989 >>$LOGFILE 2>&1
+  dd if=$MASTERISO of=$TMPISO bs=2048 skip=21070 seek=20972 count=1 conv=notrunc >>$LOGFILE 2>&1
+
+  extra_args="--debug -n$ECCSIZE"
+  run_regtest strip_crc_before_layer "--strip" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# The end of the declared CRC layer is exclusive. This block is at the
+# first sector of the ECC layer, which is also one of the search probes.
+
+if try "refuse strip with displaced CRC block after CRC layer" strip_crc_after_layer; then (
+  dd if=/dev/zero of=$TMPISO bs=2048 count=1 seek=24989 >>$LOGFILE 2>&1
+  dd if=$MASTERISO of=$TMPISO bs=2048 skip=21070 seek=21168 count=1 conv=notrunc >>$LOGFILE 2>&1
+
+  extra_args="--debug -n$ECCSIZE"
+  run_regtest strip_crc_after_layer "--strip" $TMPISO $NO_FILE EXITCODE
 ) & limit_jobs; fi
 
 ### Verification tests
@@ -761,6 +785,72 @@ if try "verify custom-n image, bad header, with -n" verify_custom_n_bad_header_w
 
    extra_args="--debug -n$CUSTOM_ECCSIZE"
    run_regtest verify_custom_n_bad_header_with_n "-t" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Headerless, truncated BD-R images must be recognized with either setting.
+# Use the real single-layer capacities divided by 255, without -n. These
+# fixtures retain only the CRC block at 200*spl and end at 250*spl, so neither
+# the initial wrong layout nor any image-derived guess can recognize them.
+# Do not hash the sparse images (their logical sizes are over 20 GB).
+
+if try "recognize truncated no-DM BD-R image with default setting" recognize_bdr_nodm; then (
+   make_bdr_recognition_fixture "$TMPISO" 47919 >>$LOGFILE 2>&1 # 12219392 / 255
+
+   run_regtest recognize_bdr_nodm "-tq" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+if try "recognize truncated DM BD-R image with no-DM setting" recognize_bdr_dm; then (
+   make_bdr_recognition_fixture "$TMPISO" 46377 >>$LOGFILE 2>&1 # 11826176 / 255
+
+   extra_args="--no-bdr-defect-management"
+   run_regtest recognize_bdr_dm "-tq" $TMPISO $NO_FILE EXITCODE
+) & limit_jobs; fi
+
+# The first image-derived guess is 108 sectors per layer. Plant a CRC block
+# from a different image at its first probe (84*108). Rejecting that block
+# must allow the search to find the outer image's 109-sector layout.
+
+if try "verify custom-n image containing displaced CRC block" verify_displaced_crc; then (
+   cp $CUSTOM_MASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase $ISOSIZE >>$LOGFILE 2>&1
+   dd if=$MASTERISO of=$TMPISO bs=2048 skip=21070 seek=9072 count=1 conv=notrunc >>$LOGFILE 2>&1
+
+   run_regtest verify_displaced_crc "-tq" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# A misplaced block can overwrite a real CRC block. Do not discard the
+# candidate layer after rejecting it: the next block can still be valid.
+
+if try "verify image with first CRC block from another image" verify_displaced_first_crc; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase $ISOSIZE >>$LOGFILE 2>&1
+   dd if=$LARGEMASTERISO of=$TMPISO bs=2048 skip=$LMI_FIRSTCRC seek=21070 count=1 conv=notrunc >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$ECCSIZE"
+   run_regtest verify_displaced_first_crc "-tq" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# The first sector of the CRC layer is included, even when it is the only
+# surviving CRC block and the ECC header is unreadable.
+
+if try "verify image with only the first CRC block surviving" verify_first_crc; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase $ISOSIZE >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase 21071-21167 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$ECCSIZE"
+   run_regtest verify_first_crc "-tq" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
+# Accept the last sector inside the CRC layer even if every preceding CRC
+# block and the ECC header are unreadable. No second CRC block is required.
+
+if try "verify image with only the last CRC block surviving" verify_last_crc; then (
+   cp $MASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase 21000-21166 >>$LOGFILE 2>&1
+
+   extra_args="--debug -n$ECCSIZE"
+   run_regtest verify_last_crc "-tq" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
 ### Creation tests
