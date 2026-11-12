@@ -24,6 +24,10 @@
 
 #include "dvdisaster.h"
 
+#if defined(SYS_MINGW) && defined(WITH_GUI_YES)
+#include "win-console.h"
+#endif
+
 
 /*
  * Those are now declared as extern in dvdisaster.h,
@@ -145,6 +149,14 @@ int main(int argc, char *argv[])
    int devices_queried = FALSE;
 #endif
    
+#if defined(SYS_MINGW) && defined(WITH_GUI_YES)
+   WinConsole console = { 0 };
+   if(!WinConsoleInit(&console, argc))
+   {  fprintf(stderr, "dvdisaster: invalid console launcher handoff\n");
+      return EXIT_FAILURE;
+   }
+#endif
+
 #ifdef WITH_MEMDEBUG_YES
     atexit(check_memleaks);
 #endif
@@ -1134,6 +1146,14 @@ int main(int argc, char *argv[])
 
       /* Going to use the GUI, tell the user most command-line options are ignored as we're restoring the GUI prefs */
       PrintCLI(_("Using GUI mode: most command-line options are ignored. Look at the preferences in the GUI instead.\n"));
+
+#ifdef SYS_MINGW
+      if(!WinConsoleEnterGUI(&console))
+      {  fprintf(stderr, "dvdisaster: can't detach from console launcher (error %lu)\n", GetLastError());
+         FreeClosure();
+         return EXIT_FAILURE;
+      }
+#endif
 
       Closure->guiMode = TRUE;
       GuiReadDotfile();
