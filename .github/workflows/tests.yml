@@ -128,6 +128,12 @@ jobs:
           ./dvdisaster.exe --version | grep NOGUI
     - name: try to prepare dist
       run: ./.github/workflows/make-dist.sh ${{ github.ref }}
+    - name: test console cancellation and GUI handoff
+      if: matrix.ui == 'gui'
+      timeout-minutes: 2
+      run: |
+          gcc -Wall -Wextra -Werror -UNDEBUG regtest/win-console.c -o build/test-win-console.exe
+          ./build/test-win-console.exe
     - name: check console launcher from PowerShell (GUI)
       if: matrix.ui == 'gui'
       shell: pwsh
@@ -155,6 +161,11 @@ jobs:
           if ($t -notmatch '^0 .*dvdisaster.*dvdisaster') { throw "console: $t" }
           Write-Host "console: $t"
           exit 0
+    - name: check GUI independence from the console
+      if: matrix.ui == 'gui'
+      shell: pwsh
+      timeout-minutes: 7
+      run: ./regtest/win-console.ps1 -Dist ./dist
     - name: run regression tests
       if: matrix.printf == 'normal'
       env:

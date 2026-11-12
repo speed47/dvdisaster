@@ -122,11 +122,19 @@ ${BUILDTMP}/build.o : src/build.c src/build.h
 	@echo "Compiling:" src/build.o
 	@$(CC) $(COPTS) -c src/build.c -o $@
 
+${BUILDTMP}/dvdisaster.o : src/dvdisaster.c src/win-console.h
+	@echo "Compiling:" src/dvdisaster.c
+	@$(CC) $(COPTS) -c src/dvdisaster.c -o $@
+
 ${BUILDTMP}/closure.o : src/closure.c $(ICONS)
 	@echo "Compiling:" src/closure.c
 	@$(CC) $(COPTS) -c src/closure.c -o $@
 
 # Building the dvdisaster binary
+
+ifeq ($(CFG_SYS_OPTIONS),-DSYS_MINGW)
+dvdisaster: contrib/win-console-launcher.c src/win-console.h
+endif
 
 dvdisaster: $(OFILES)
 	@echo "Linking  : dvdisaster"

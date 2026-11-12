@@ -25,7 +25,7 @@
 #include "dvdisaster.h"
 
 #if defined(SYS_MINGW) && defined(WITH_GUI_YES)
-#include <windows.h>
+#include "win-console.h"
 #endif
 
 
@@ -150,17 +150,10 @@ int main(int argc, char *argv[])
 #endif
    
 #if defined(SYS_MINGW) && defined(WITH_GUI_YES)
-   /* We're a GUI subsystem program, so Windows doesn't hand us console
-      std handles. When used from a console (e.g. through dvdisaster.com),
-      write to it unless output has been redirected. */
-   if(argc > 1)
-   {  int out = GetFileType(GetStdHandle(STD_OUTPUT_HANDLE)) == FILE_TYPE_UNKNOWN;
-      int err = GetFileType(GetStdHandle(STD_ERROR_HANDLE)) == FILE_TYPE_UNKNOWN;
-
-      if((out || err) && AttachConsole(ATTACH_PARENT_PROCESS))
-      {  if(out) freopen("CONOUT$", "w", stdout);
-	 if(err) freopen("CONOUT$", "w", stderr);
-      }
+   WinConsole console = { 0 };
+   if(!WinConsoleInit(&console, argc))
+   {  fprintf(stderr, "dvdisaster: invalid console launcher handoff\n");
+      return EXIT_FAILURE;
    }
 #endif
 
@@ -1153,6 +1146,14 @@ int main(int argc, char *argv[])
 
       /* Going to use the GUI, tell the user most command-line options are ignored as we're restoring the GUI prefs */
       PrintCLI(_("Using GUI mode: most command-line options are ignored. Look at the preferences in the GUI instead.\n"));
+
+#ifdef SYS_MINGW
+      if(!WinConsoleEnterGUI(&console))
+      {  fprintf(stderr, "dvdisaster: can't detach from console launcher (error %lu)\n", GetLastError());
+         FreeClosure();
+         return EXIT_FAILURE;
+      }
+#endif
 
       Closure->guiMode = TRUE;
       GuiReadDotfile();

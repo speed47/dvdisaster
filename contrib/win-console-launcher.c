@@ -24,24 +24,34 @@
  * wait for it nor get its exit code. When the user types "dvdisaster",
  * the shells pick dvdisaster.com first (PATHEXT), which runs dvdisaster.exe
  * from the same directory with our std handles, waits for it and returns
- * its exit code.
+ * its exit code. If the executable selects GUI mode, it signals the launcher
+ * to exit and continues independently of the console.
  */
 
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
+#include "../src/win-console.h"
 
 static HANDLE child;
 static CRITICAL_SECTION child_lock;
+static WinConsole console;
 
-/* The GUI child isn't attached to our console and won't see Ctrl+C,
-   so do what the default handler of a console program would do. */
+/* A CLI child with redirected output may not be attached to our console.
+   Forward cancellation until it has explicitly handed off to GUI mode. */
 static BOOL WINAPI ctrl_handler(DWORD type)
 {
    (void)type;
    EnterCriticalSection(&child_lock);
-   if(child) TerminateProcess(child, STATUS_CONTROL_C_EXIT);
+   if(child)
+   {  DWORD result = WaitForSingleObject(console.mutex, INFINITE);
+      if(result == WAIT_OBJECT_0 || result == WAIT_ABANDONED)
+      {  if(WaitForSingleObject(console.gui_event, 0) != WAIT_OBJECT_0)
+            TerminateProcess(child, STATUS_CONTROL_C_EXIT);
+         ReleaseMutex(console.mutex);
+      }
+   }
    LeaveCriticalSection(&child_lock);
    return TRUE;
 }
@@ -50,6 +60,9 @@ int main(void)
 {  static wchar_t exe[32768];
    STARTUPINFOW si = { 0 };
    PROCESS_INFORMATION pi;
+   SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };
+   HANDLE waits[2];
+   wchar_t handoff[80];
    wchar_t *args, *cmd, *slash;
    DWORD n, code;
 
@@ -85,11 +98,27 @@ int main(void)
    si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
    si.hStdError  = GetStdHandle(STD_ERROR_HANDLE);
 
+   console.gui_event = CreateEventW(&sa, TRUE, FALSE, NULL);
+   console.mutex = CreateMutexW(&sa, FALSE, NULL);
+   if(!console.gui_event || !console.mutex)
+   {  fprintf(stderr, "dvdisaster.com: can't create GUI handoff (error %lu)\n", GetLastError());
+      return 1;
+   }
+   swprintf(handoff, 80, L"%p %p", console.gui_event, console.mutex);
+   if(!SetEnvironmentVariableW(DVDISASTER_CONSOLE_HANDOFF, handoff))
+   {  fprintf(stderr, "dvdisaster.com: can't pass GUI handoff (error %lu)\n", GetLastError());
+      return 1;
+   }
+
    /* A control event during process creation must wait until the child
       handle is published, rather than being silently discarded. */
    InitializeCriticalSection(&child_lock);
    EnterCriticalSection(&child_lock);
-   SetConsoleCtrlHandler(ctrl_handler, TRUE);
+   if(!SetConsoleCtrlHandler(ctrl_handler, TRUE))
+   {  fprintf(stderr, "dvdisaster.com: can't install control handler (error %lu)\n", GetLastError());
+      LeaveCriticalSection(&child_lock);
+      return 1;
+   }
    if(!CreateProcessW(exe, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi))
    {  fprintf(stderr, "dvdisaster.com: can't start %ls (error %lu)\n", exe, GetLastError());
       LeaveCriticalSection(&child_lock);
@@ -97,9 +126,28 @@ int main(void)
    }
    child = pi.hProcess;
    LeaveCriticalSection(&child_lock);
+   SetEnvironmentVariableW(DVDISASTER_CONSOLE_HANDOFF, NULL);
+   free(cmd);
    CloseHandle(pi.hThread);
 
-   WaitForSingleObject(pi.hProcess, INFINITE);
-   if(!GetExitCodeProcess(pi.hProcess, &code)) code = 1;
+   waits[0] = pi.hProcess;
+   waits[1] = console.gui_event;
+   n = WaitForMultipleObjects(2, waits, FALSE, INFINITE);
+   if(n == WAIT_OBJECT_0)
+   {  if(!GetExitCodeProcess(pi.hProcess, &code)) code = 1;
+   }
+   else if(n == WAIT_OBJECT_0 + 1) code = 0;
+   else
+   {  fprintf(stderr, "dvdisaster.com: can't wait for child (error %lu)\n", GetLastError());
+      code = 1;
+   }
+
+   EnterCriticalSection(&child_lock);
+   child = NULL;
+   CloseHandle(pi.hProcess);
+   LeaveCriticalSection(&child_lock);
+   if(n == WAIT_OBJECT_0 + 1)
+      puts("dvdisaster: GUI detached from console. You can close this console window.");
+   /* Keep the handler's synchronization objects alive until process exit. */
    return (int)code;
 }
