@@ -320,6 +320,19 @@ if try "image with uncorrectable dead sector markers (2), verbose output" uncorr
 
 REGTEST_SECTION="Creation tests"
 
+# Small and empty images remain supported by RS01. Check creation and verify
+# together so that creation cannot silently produce unusable ECC files.
+
+for bytes in 0 1 2047; do
+if try "RS01 creation with $bytes bytes" ecc_small_image_$bytes; then (
+  dd if=/dev/zero of="$TMPISO" bs=1 count=$bytes >>$LOGFILE 2>&1
+
+  replace_config method-name RS01
+  extra_args="--debug --set-version $SETVERSION"
+  run_regtest ecc_small_image_$bytes "-mRS01 -n32r -c -t" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+done
+
 # Create ecc file
 if try "ecc file creation" ecc_create; then (
 

@@ -1309,6 +1309,12 @@ void RS03Create(void)
    else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
 		   image->sectorSize-1, image->inLast);
 
+   /* A separate ECC file for zero data sectors has zero-sized layers and
+      cannot be recognized. Reject it before deleting an existing ECC file. */
+
+   if(Closure->eccTarget == ECC_FILE && image->sectorSize == 0)
+      Stop(_("Cannot create an RS03 error correction file for an empty image."));
+
    /*** If the image already contains error correction information, remove it. */
 
    remove_old_ecc(ec);

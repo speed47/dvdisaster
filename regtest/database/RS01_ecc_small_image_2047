@@ -1,0 +1,26 @@
+28a9b7f22a303f6a1205385b5164a2a5
+16461989465dfc30b377c1533d8b8aae
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs01-tmp.iso: 0 medium sectors and 2047 bytes.
+Encoding with Method RS01: 32 roots, 14.3% redundancy.
+Error correction file "rs01-tmp.ecc" created.
+Make sure to keep this file on a reliable medium.
+
+rs01-tmp.iso: present, contains 0 medium sectors and 2047 bytes.
+- good image       : all sectors present
+- image md5sum     : 28a9b7f22a303f6a1205385b5164a2a5
+
+rs01-tmp.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 0 sectors + 2047 bytes (good)
+- image md5sum     : 28a9b7f22a303f6a1205385b5164a2a5 (good)
+* fingerprint match: NOT POSSIBLE - related sector is missing in image!
+- ecc blocks       : 2048 (good)
+- ecc md5sum       : fc65498e50e2b987afe349e24f64004f (good)
+
+Exit status: 0

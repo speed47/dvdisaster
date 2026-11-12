@@ -1,0 +1,25 @@
+98ab2d0c7bce77965943cde1ec130d05
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs02-tmp.iso: 17 medium sectors.
+Augmenting image with Method RS02:
+ 0 MiB data, 0 MiB ecc (43 roots; 20.3% redundancy).
+Image has been augmented with error correction data.
+New image size is 0 MiB (67 sectors).
+
+rs02-tmp.iso: present, contains 67 medium sectors.
+- good image       : all sectors present
+- data md5sum      : 51cd32b9d6e55e859e53259c64331d30
+
+Error correction data: created by dvdisaster-0.80
+- method           : RS02, 43 roots, 20.3% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 67 / 17 (good)
+- data md5sum      : 51cd32b9d6e55e859e53259c64331d30 (good)
+- crc md5sum       : 60482acd04893d8cbff7d8376ee0adc6 (good)
+- ecc md5sum       : 769345d87ba7c17556073848c114cf8b (good)
+Exit status: 0

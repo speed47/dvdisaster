@@ -1,0 +1,15 @@
+d41d8cd98f00b204e9800998ecf8427e
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03f-tmp.iso: 0 medium sectors.
+
+*
+* dvdisaster - can not continue:
+*
+Cannot create an RS03 error correction file for an empty image.
+
+Exit status: 1

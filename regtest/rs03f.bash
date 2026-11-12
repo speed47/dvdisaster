@@ -562,6 +562,30 @@ if try "image with uncorrectable dead sector markers (2), verbose" uncorrectable
 
 REGTEST_SECTION="Creation tests"
 
+# Reject an empty image before creating or replacing the ECC file.
+# The reference hashes also check preservation of an existing ECC file.
+
+for existing in no yes; do
+if try "empty image, existing ecc file: $existing" ecc_empty_image_$existing; then (
+  : >"$TMPISO"
+  if test "$existing" = yes; then
+    printf 'existing ecc file\n' >"$TMPECC"
+  else
+    # run_regtest removes TEST_TMPDIR. Keep this path outside it so we can
+    # check that no ECC file was created before the suite cleans up.
+    TMPECC="$TEST_TMPDIR.ecc"
+  fi
+
+  replace_config method-name RS03
+  replace_config ecc-target 0
+  run_regtest ecc_empty_image_$existing "-mRS03 -n32r -o file -c" $TMPISO $TMPECC EXITCODE
+  if test "$existing" = no && test -e "$TMPECC"; then
+    locked_print "BAD: empty-image creation left an ECC file behind"
+    echo 1 >"$RESULTS_DIR/${CODEC_PREFIX}_ecc_empty_image_$existing.status"
+  fi
+) & limit_jobs; fi
+done
+
 # Create ecc file
 
 if try "ecc file creation" ecc_create; then (
