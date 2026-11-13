@@ -100,6 +100,30 @@ static int valid_crc_block(unsigned char *buf, guint64 sector, int image_expecte
       return 1;
    }
 
+   if(image_expected)
+   {  guint64 first_crc_pos;
+
+      /* A valid checksum alone does not identify our image: its payload
+         may contain another augmented image. Check the block's location
+         against its recorded layout, not the layer size guessed by the
+         search (which may legitimately differ due to rounding).
+         eh is in native byte order and plausible_header bounded its
+         sectorsPerLayer, so the multiplication below cannot overflow. */
+
+      if(eh.eccBytes < 8 || eh.eccBytes > 170)
+      {  Verbose(".. invalid root count in CRC block %" PRIu64 "\n", sector);
+         return 1;
+      }
+
+      first_crc_pos = (GF_FIELDMAX - eh.eccBytes - 1) * eh.sectorsPerLayer;
+      if(sector < first_crc_pos || sector >= first_crc_pos + eh.sectorsPerLayer)
+      {  Verbose(".. CRC block %" PRIu64 " outside its CRC layer - IGNORED\n", sector);
+         /* Keep searching this candidate layer: a displaced block may
+            have overwritten a genuine CRC block with readable data. */
+         return 1;
+      }
+   }
+
    return 2;
 }
 
@@ -505,7 +529,7 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
 	    if(crc_state)
 	    {  int nroots=255-layer-1;
 
-	       if(crc_state == 1) /* corrupted crc header, try this layer again later */
+	       if(crc_state == 1) /* unusable CRC block, try this layer again later */
 		 continue;
 	       Verbose("** Success: sector %" PRId64 ", rediscovered format with %d roots\n",
 		       sector, nroots);
@@ -691,6 +715,26 @@ static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
    return found;
 }
 
+/*
+ * Layer size of the smallest standard medium which can hold image_sectors.
+ * nodm selects the BD-R sizes without defect management.
+ */
+
+static guint64 medium_layer_size(guint64 image_sectors, int nodm)
+{  const guint64 bd_sl_sz = (nodm ? BD_SL_SIZE_NODM : BD_SL_SIZE);
+   const guint64 bd_dl_sz = (nodm ? BD_DL_SIZE_NODM : BD_DL_SIZE);
+   const guint64 bd_tl_sz = (nodm ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE);
+   const guint64 bd_ql_sz = (nodm ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE);
+
+   if(image_sectors < CDR_SIZE)         return CDR_SIZE/GF_FIELDMAX;
+   if(image_sectors < DVD_SL_SIZE)      return DVD_SL_SIZE/GF_FIELDMAX;
+   if(image_sectors < DVD_DL_SIZE)      return DVD_DL_SIZE/GF_FIELDMAX;
+   if(image_sectors < bd_sl_sz)         return bd_sl_sz/GF_FIELDMAX;
+   if(image_sectors < bd_dl_sz)         return bd_dl_sz/GF_FIELDMAX;
+   if(image_sectors < bd_tl_sz)         return bd_tl_sz/GF_FIELDMAX;
+   return bd_ql_sz/GF_FIELDMAX;
+}
+
 int RS03RecognizeImage(Image *image)
 {  guint64 image_sectors;
    guint64 layer_size;
@@ -769,26 +813,21 @@ int RS03RecognizeImage(Image *image)
       Verbose("Image size set to %" PRId64 " (layer size %" PRId64 ")\n",
 	      Closure->mediumSize, layer_size);
    }
-   else
-   {
-      const guint64 bd_sl_sz = (Closure->noBdrDefectManagement ? BD_SL_SIZE_NODM : BD_SL_SIZE);
-      const guint64 bd_dl_sz = (Closure->noBdrDefectManagement ? BD_DL_SIZE_NODM : BD_DL_SIZE);
-      const guint64 bd_tl_sz = (Closure->noBdrDefectManagement ? BDXL_TL_SIZE_NODM : BDXL_TL_SIZE);
-      const guint64 bd_ql_sz = (Closure->noBdrDefectManagement ? BDXL_QL_SIZE_NODM : BDXL_QL_SIZE);
-      if(image_sectors < CDR_SIZE)         layer_size = CDR_SIZE/GF_FIELDMAX;
-      else if(image_sectors < DVD_SL_SIZE) layer_size = DVD_SL_SIZE/GF_FIELDMAX;
-      else if(image_sectors < DVD_DL_SIZE) layer_size = DVD_DL_SIZE/GF_FIELDMAX;
-      else if(image_sectors < bd_sl_sz)
-         layer_size = bd_sl_sz/GF_FIELDMAX;
-      else if(image_sectors < bd_dl_sz)
-         layer_size = bd_dl_sz/GF_FIELDMAX;
-      else if(image_sectors < bd_tl_sz)
-         layer_size = bd_tl_sz/GF_FIELDMAX;
-      else layer_size = bd_ql_sz/GF_FIELDMAX;
-   }
+   else layer_size = medium_layer_size(image_sectors, Closure->noBdrDefectManagement);
 
    if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
       return TRUE;
+
+   /* The image may have been created with the other BD-R defect management
+      setting (--no-bdr-defect-management), so try that layout as well. */
+
+   if(Closure->mediumSize < GF_FIELDMAX)
+   {  guint64 other_size = medium_layer_size(image_sectors, !Closure->noBdrDefectManagement);
+
+      if(other_size != layer_size
+	 && search_crc_blocks_for_layer_size(image, image_sectors, other_size, maxtries, &trynumber))
+	 return TRUE;
+   }
 
    /* Phase 1: If the known medium size didn't work and we're in exhaustive mode,
       try deriving layer_size directly from the image file size.
