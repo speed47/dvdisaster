@@ -47,8 +47,8 @@ jobs:
       run: |
         cat Makefile.config
         make -j$(sysctl -n hw.ncpu || echo 2)
-    - name: syndrome backend tests
-      run: make check-syndromes
+    - name: encoder and syndrome backend tests
+      run: make check-encoders check-syndromes
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)
@@ -107,8 +107,8 @@ jobs:
           ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }}    --with-werror
     - name: make
       run: nproc && make -j$(nproc)
-    - name: syndrome backend tests
-      run: make check-syndromes
+    - name: encoder and syndrome backend tests
+      run: make check-encoders check-syndromes
     - name: check executable
       run: |
           ./dvdisaster.exe --version
@@ -206,8 +206,8 @@ jobs:
           ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
     - name: make
       run: nproc && make -j$(nproc)
-    - name: syndrome backend tests
-      run: make check-syndromes
+    - name: encoder and syndrome backend tests
+      run: make check-encoders check-syndromes
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)
@@ -260,11 +260,11 @@ jobs:
       run: ./configure --with-gui=no
     - name: make
       run: make -j$(nproc)
-    - name: syndrome backend tests
+    - name: encoder and syndrome backend tests
       env:
         # UBSan normally recovers; fail this step on its first finding.
         UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
-      run: make check-syndromes
+      run: make check-encoders check-syndromes
     - name: regression tests
       env:
         # Parallel image tests can exceed the /dev/shm quota.

@@ -153,6 +153,13 @@ static void encoding_alg_cb(GtkWidget *widget, gpointer data)
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio6A), TRUE);
       activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio6B), TRUE);
    }
+
+   if(widget == wl->eaRadio7A || widget == wl->eaRadio7B)
+   {  Closure->encodingAlgorithm = ENCODING_ALG_NEON;
+
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio7A), TRUE);
+      activate_toggle_button(GTK_TOGGLE_BUTTON(wl->eaRadio7B), TRUE);
+   }
 }
 
 /*
@@ -1267,7 +1274,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 
    for(i=0; i<2; i++)
    {  GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-      GtkWidget *radio1, *radio2, *radio3, *radio4, *radio5, *radio6;
+      GtkWidget *radio1, *radio2, *radio3, *radio4, *radio5, *radio6, *radio7;
       char *auto_label;
 
       gtk_box_pack_start(GTK_BOX(hbox), i ? lwoh->normalLabel : lwoh->linkBox, FALSE, FALSE, 0);
@@ -1312,6 +1319,15 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
       if(!Closure->useAltiVec)
          gtk_widget_set_tooltip_text(radio6, _utf("This encoder is not supported on this system."));
 
+      radio7 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
+      g_signal_connect(G_OBJECT(radio7), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
+      gtk_box_pack_start(GTK_BOX(hbox), radio7, FALSE, FALSE, 0);
+      lab = gtk_label_new("NEON");
+      gtk_container_add(GTK_CONTAINER(radio7), lab);
+      gtk_widget_set_sensitive(radio7, Closure->useNEON);
+      if(!Closure->useNEON)
+         gtk_widget_set_tooltip_text(radio7, _utf("This encoder is not supported on this system."));
+
       radio4 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(radio2));
       g_signal_connect(G_OBJECT(radio4), "toggled", G_CALLBACK(encoding_alg_cb), (gpointer)wl);
       gtk_box_pack_start(GTK_BOX(hbox), radio4, FALSE, FALSE, 0);
@@ -1327,6 +1343,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
          case ENCODING_ALG_SSE2:    activate_toggle_button(GTK_TOGGLE_BUTTON(radio3), TRUE); break;
          case ENCODING_ALG_ALTIVEC: activate_toggle_button(GTK_TOGGLE_BUTTON(radio6), TRUE); break;
          case ENCODING_ALG_AVX2:   activate_toggle_button(GTK_TOGGLE_BUTTON(radio5), TRUE); break;
+         case ENCODING_ALG_NEON:   activate_toggle_button(GTK_TOGGLE_BUTTON(radio7), TRUE); break;
       }
 
       if(!i)
@@ -1336,6 +1353,7 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio4A = radio4;
 	 wl->eaRadio5A = radio5;
 	 wl->eaRadio6A = radio6;
+	 wl->eaRadio7A = radio7;
 	 gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
       }
       else  
@@ -1345,19 +1363,20 @@ void CreateRS03PrefsPage(Method *method, GtkWidget *parent)
 	 wl->eaRadio4B = radio4;
 	 wl->eaRadio5B = radio5;
 	 wl->eaRadio6B = radio6;
+	 wl->eaRadio7B = radio7;
 	 GuiAddHelpWidget(lwoh, hbox);
       }
    }
 
    GuiAddHelpParagraph(lwoh, _("<b>Encoding algorithm</b>\n\n"
-     "This option affects the speed of generating RS03 error correction data.\n"
+     "This option affects the speed of generating RS01, RS02 and RS03 error correction data.\n"
      "dvdisaster can either use a generic encoding algorithm using 32bit or 64bit "
      "wide operations running on the integer unit of the processor, or use "
      "processor specific extensions.\n\n"
-     "Available extensions are SSE2 and AVX2 for x86 based processors and AltiVec "
-     "on PowerPC processors. SSE2 and AltiVec use 128bit wide operations; AVX2 "
+     "Available extensions are SSE2 and AVX2 for x86 based processors, AltiVec "
+     "on PowerPC processors and NEON on ARM64 processors. SSE2, AltiVec and NEON use 128bit wide operations; AVX2 "
      "uses 256bit wide operations. Unsupported extensions are greyed out.\n\n"
-     "If \"auto\" is selected, dvdisaster prefers AVX2, then SSE2, then AltiVec, "
+     "If \"auto\" is selected, dvdisaster prefers AVX2, then SSE2, then AltiVec, then NEON, "
      "and otherwise uses the 64bit algorithm. The algorithm selected for this "
      "processor is shown in parentheses. Selecting an explicit algorithm forces "
      "that variant."
