@@ -24,6 +24,20 @@
 
 #include "dvdisaster.h"
 
+#ifdef HAVE_ARM_CRC32
+#include "crc32-arm.h"
+
+static int crc32_use_arm(void)
+{  static gsize backend = 0;
+
+   /* g_once requires a nonzero result: 1 = software, 2 = ARM CRC32. */
+   if(g_once_init_enter(&backend))
+      g_once_init_leave(&backend, crc32_arm_available() ? 2 : 1);
+
+   return backend == 2;
+}
+#endif
+
 /***
  *** Crc32 used in the dvdisaster error correction data
  ***/
@@ -129,7 +143,7 @@ static guint32 crctable[256] =
 
 static guint32 crcslice[8][256];
 
-guint32 Crc32(unsigned char *data, int len)
+static guint32 crc32_software(const unsigned char *data, int len)
 {  static gsize tables_ready = 0;
    guint32 crc = ~0;
 
@@ -155,6 +169,19 @@ guint32 Crc32(unsigned char *data, int len)
 
    while(len--)
       crc = crctable[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
+
+   return crc;
+}
+
+guint32 Crc32(unsigned char *data, int len)
+{  guint32 crc;
+
+#ifdef HAVE_ARM_CRC32
+   if(crc32_use_arm())
+      crc = crc32_arm(data, len);
+   else
+#endif
+      crc = crc32_software(data, len);
 
 #ifdef HAVE_BIG_ENDIAN
    crc = SwapBytes32(crc);

@@ -177,6 +177,22 @@ $(BUILDTMP)/rs-encoder-altivec.o: src/rs-encoder-altivec.c
 
 # AArch64 NEON is a baseline feature; its encoder uses the generic C rule.
 
+$(BUILDTMP)/crc32.o: src/crc32.c src/crc32-arm.h
+	@echo "Compiling:" src/crc32.c
+	@$(CC) $(COPTS) -c src/crc32.c -o $@
+
+# POSIX CRC tests: the second binary simulates a CPU without ARM CRC32.
+.PHONY: check-crc32
+$(BUILDTMP)/test-crc32$(CFG_EXE_SUFFIX): regtest/crc32.c src/crc32.c src/crc32-arm.h src/dvdisaster.h GNUmakefile
+	$(CC) $(COPTS) -UNDEBUG -Isrc regtest/crc32.c $(LOPTS) $(GLIB_LIBS) -pthread -o $@
+
+$(BUILDTMP)/test-crc32-fallback$(CFG_EXE_SUFFIX): regtest/crc32.c src/crc32.c src/crc32-arm.h src/dvdisaster.h GNUmakefile
+	$(CC) $(COPTS) -UNDEBUG -DCRC32_TEST_NO_ARM_CRC32 -Isrc regtest/crc32.c $(LOPTS) $(GLIB_LIBS) -pthread -o $@
+
+check-crc32: $(BUILDTMP)/test-crc32$(CFG_EXE_SUFFIX) $(BUILDTMP)/test-crc32-fallback$(CFG_EXE_SUFFIX)
+	$(BUILDTMP)/test-crc32$(CFG_EXE_SUFFIX)
+	$(BUILDTMP)/test-crc32-fallback$(CFG_EXE_SUFFIX)
+
 .PHONY: check-encoders
 ENCODER_TEST_OBJECTS = $(addprefix $(BUILDTMP)/,galois.o rs-encoder.o rs-encoder-sse2.o rs-encoder-avx2.o rs-encoder-altivec.o rs-encoder-neon.o)
 $(BUILDTMP)/test-encoders$(CFG_EXE_SUFFIX): regtest/encoders.c $(ENCODER_TEST_OBJECTS) src/dvdisaster.h GNUmakefile
@@ -397,6 +413,7 @@ clean:
 	@rm -f *.o "$(BUILDTMP)"/*.o medium.* abbild.* dvdisaster dvdisaster.com .dvdisaster core core.* *.core
 	@rm -f "$(BUILDTMP)"/inlined-icons.c src/help-dialogs.h
 	@rm -f "$(BUILDTMP)"/test-syndromes "$(BUILDTMP)"/test-syndromes.exe
+	@rm -f "$(BUILDTMP)"/test-crc32 "$(BUILDTMP)"/test-crc32-fallback
 	@find . -name \*\~ -print | xargs rm -f;
 	@find . -name \*.mo -print | xargs rm -f;
 	@find . -name \#\*\# -print | xargs rm -f;

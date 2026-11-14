@@ -206,8 +206,8 @@ jobs:
           ./configure ${{ matrix.clionly }} ${{ matrix.debugprintf }} --with-werror
     - name: make
       run: nproc && make -j$(nproc)
-    - name: encoder and syndrome backend tests
-      run: make check-encoders check-syndromes
+    - name: encoder, syndrome and CRC32 backend tests
+      run: make check-encoders check-syndromes check-crc32
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)
@@ -260,11 +260,11 @@ jobs:
       run: ./configure --with-gui=no
     - name: make
       run: make -j$(nproc)
-    - name: encoder and syndrome backend tests
+    - name: encoder, syndrome and CRC32 backend tests
       env:
         # UBSan normally recovers; fail this step on its first finding.
         UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
-      run: make check-encoders check-syndromes
+      run: make check-encoders check-syndromes check-crc32
     - name: regression tests
       env:
         # Parallel image tests can exceed the /dev/shm quota.
