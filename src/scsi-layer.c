@@ -2482,6 +2482,37 @@ static int read_raw_cd_sector(DeviceHandle *dh, unsigned char *outbuf, int lba, 
    return ret;
 }
 
+/* Explain access restrictions once per device handle, without blocking reads. */
+
+static void explain_access_restriction(DeviceHandle *dh)
+{  char *message;
+
+   if(dh->copyProtectionExplained)
+      return;
+   dh->copyProtectionExplained = TRUE;
+
+   message = g_strdup_printf(_("The drive refused access to some sectors.\n\n"
+			       "The drive reported a copy-protection, authentication, or access restriction\n"
+			       "that dvdisaster cannot resolve. This error does not by itself indicate\n"
+			       "damaged media. Repeated read attempts will be skipped.\n\n"
+			       "The operation will continue, but a complete image may not be obtainable.\n\n"
+			       "Drive-reported reason: %s"), GetLastSenseString(FALSE));
+
+   PrintLog("\n%s\n\n", message);
+
+#ifdef WITH_GUI_YES
+   if(Closure->guiMode)
+   {  char *utf_message = g_locale_to_utf8(message, -1, NULL, NULL, NULL);
+      char *markup = g_markup_escape_text(utf_message, -1);
+
+      GuiShowMessage(Closure->window, markup, GTK_MESSAGE_WARNING);
+      g_free(markup);
+      g_free(utf_message);
+   }
+#endif
+   g_free(message);
+}
+
 /*
  * Sector reading through the device handle.
  * dh->read dispatches to one the routines above.
@@ -2600,17 +2631,10 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 			    _("Sector %" PRId64 ", try %d: %s\n"),
 			    s, retry, GetLastSenseString(FALSE));
 
-	 /* Copy protected or encrypted sectors can not be read without the
-	    authentication done by player software, so re-reading is pointless. */
+	 /* Access restrictions cannot be resolved by re-reading sectors. */
 
 	 if(last_asc == 0x6F)
-	 {  if(!dh->copyProtectionExplained)
-	    {  PrintLog(_("\n* The drive refuses to read copy protected or encrypted sectors\n"
-			  "* without the authentication done by player software, which dvdisaster\n"
-			  "* does not perform. Such media (e.g. video DVD or Blu-ray discs) can not\n"
-			  "* be read or protected with dvdisaster.\n\n"));
-	       dh->copyProtectionExplained = TRUE;
-	    }
+	 {  explain_access_restriction(dh);
 	    return status;
 	 }
 

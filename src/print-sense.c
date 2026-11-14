@@ -519,6 +519,11 @@ static struct error_info additional[] =
   {0x6F,0x03,R,"Read of scrambled sector without authentication"},
   {0x6F,0x04,R,"Media region code is mismatched to logical unit region"},
   {0x6F,0x05,R,"Drive region must be permanent/region reset count error"},
+  {0x6F,0x06,R,"Insufficient block count for binding nonce recording"},
+  {0x6F,0x07,R,"Conflict in binding nonce recording"},
+  {0x6F,0x08,R,"Insufficient permission"},
+  {0x6F,0x09,R,"Invalid drive-host pairing server"},
+  {0x6F,0x0A,R,"Drive-host pairing suspended"},
   /*
    * FIXME(eric) - need a way to represent wildcards here.
    */

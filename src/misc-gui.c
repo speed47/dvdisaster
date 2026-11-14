@@ -347,7 +347,8 @@ static gboolean message_idle_func(gpointer data)
 					       GTK_DIALOG_DESTROY_WITH_PARENT,
 					       mi->type,
 					       GTK_BUTTONS_CLOSE,
-					       mi->msg, NULL);
+					       NULL);
+   gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), mi->msg);
 
    g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
    gtk_widget_show(dialog);
