@@ -9,6 +9,7 @@ INTERACTIVE_DIFF yes
 # Verify tests
 RS01_good yes
 RS01_good_quick yes
+RS01_mapfile_export yes
 RS01_no_files yes
 RS01_no_image yes
 RS01_no_ecc yes
