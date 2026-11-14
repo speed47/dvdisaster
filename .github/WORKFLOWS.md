@@ -50,6 +50,15 @@ The target exercises the fallback and each available x86 backend separately.
 Unsupported backends report a skip; GFNI execution coverage therefore depends
 on the runner CPU supporting it. The fallback exercises NEON on macOS ARM.
 
+## CRC32 test coverage
+
+The Linux test matrices and sanitizer jobs run `make check-crc32`. This checks
+production dispatch and a build that masks the ARM capability, including
+concurrent initialization, independent CRC results, unaligned buffers and page
+boundaries. ARM hardware execution requires a Linux AArch64 host; x86 runners
+exercise the software path. Use `build/test-crc32 --require-arm` on ARM to fail
+if the accelerated backend is unavailable.
+
 ## CodeQL coverage
 
 The CodeQL workflow scans C/C++ source and GitHub Actions workflows in separate

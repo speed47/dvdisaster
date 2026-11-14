@@ -2225,8 +2225,55 @@ EOF
 }
 
 #
-# Check GFNI without enabling it globally or executing the test binary.
+# Check ARM CRC32 without enabling it globally or executing the test binary.
 #
+
+function CHECK_ARM_CRC32()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-arm-crc32=[yes | no] (Linux AArch64 CRC32)"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_ARM_CRC32 */\n" >>$LOGFILE
+   echo -n "Checking for Linux AArch64 CRC32 intrinsics and runtime detection..."
+
+   case "$cfg_with_arm_crc32" in
+      no) echo " no (user supplied)"
+          return 0
+          ;;
+      yes|"") ;;
+      *) echo -e " $cfg_with_arm_crc32 (illegal value)\n"
+         echo "Please use --with-arm-crc32=[yes | no]."
+         exit 1
+         ;;
+   esac
+
+   # Compile the actual accelerator and capability probe. Do not execute the
+   # binary or enable optional instructions for the rest of the application.
+   cat > conftest.c <<EOF
+#include "src/crc32-arm.h"
+int main(void)
+{
+   unsigned char data[16] = {0};
+   return crc32_arm_available() ? (int)crc32_arm(data, sizeof(data)) : 0;
+}
+EOF
+
+   if try_compile; then
+      echo " yes"
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_ARM_CRC32"
+   else
+      echo " no"
+      if test "$cfg_with_arm_crc32" == "yes"; then
+         echo "ARM CRC32 was requested, but the compiler cannot build its Linux AArch64 runtime-dispatched code."
+         echo "See $LOGFILE for details, or use --with-arm-crc32=no."
+         exit 1
+      fi
+   fi
+}
+
+# Check GFNI without enabling it globally or executing the test binary.
 
 function CHECK_GFNI()
 {

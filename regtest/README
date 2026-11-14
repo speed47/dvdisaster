@@ -35,6 +35,30 @@ GFNI instructions. This setting is independent of --with-avx2: the GFNI
 kernel still requires AVX2 and GFNI CPU support at runtime.
 
 
+CRC32 backend tests
+-------------------
+
+On POSIX systems, run `make check-crc32` after configuring. The test compares
+production dispatch, the software implementation, and any available ARM kernel
+against an independent bitwise IEEE CRC32 reference. Coverage includes the
+uncomplemented known vector, empty input, random lengths and alignments, buffers
+ending at an inaccessible page, and eight concurrent first callers. A second
+test binary masks the ARM capability to exercise runtime software fallback.
+
+Linux AArch64 builds automatically enable hardware CRC32 when the compiler and
+headers support it. `--with-arm-crc32=no` omits the backend; `--with-arm-crc32=yes`
+requires compiler support. Configure compiles the exact kernel without executing
+it or enabling optional instructions globally. Runtime selection uses HWCAP_CRC32.
+Other platforms retain slicing-by-8. The format's IEEE polynomial, initial value,
+absence of final complement, and little-endian storage remain unchanged.
+
+Use `build/test-crc32 --require-arm` to require hardware execution on a suitable
+host. `gcc -O2 -DCRC32_ARM_STANDALONE regtest/crc32.c -pthread -o /tmp/test-crc32-arm`
+also tests the kernel without GLib, but does not cover application dispatch.
+The test prints a small software-versus-hardware timing comparison; use complete
+application workloads to evaluate user-visible gains.
+
+
 General structure of the database log file
 ------------------------------------------
 
