@@ -59,6 +59,7 @@ typedef struct
    GtkWidget *cmpChkSumErrors;
    GtkWidget *cmpMissingSectors;
    GtkWidget *cmpImageMd5Sum;
+   GtkWidget *cmpImageMargin;
    GtkWidget *cmpImageResult;
 
    GtkWidget *cmpEccNotebook;
@@ -143,7 +144,7 @@ void RS01ResetCksums(Image*);
 void RS01UpdateCksums(Image*, gint64, unsigned char*);
 int RS01FinalizeCksums(Image*);
 void RS01ReadSector(Image*, unsigned char*, gint64);
-void RS01ScanImage(Method*, Image*, struct MD5Context*, int);
+void RS01ScanImage(Method*, Image*, struct MD5Context*, int, Bitmap*);
 int  RS01Recognize(LargeFile*, EccHeader**);
 guint64 RS01ExpectedImageSize(Image*);
 

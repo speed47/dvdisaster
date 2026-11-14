@@ -141,4 +141,5 @@ Error correction data: created by dvdisaster-0.80
 - crc md5sum       : 9ec24e5d61de7d32d6987adfd3762ea0 (good)
 - ecc md5sum       : 2e33b26c0c14624662be79875844ab76 (good)
 - erasure counts   :  avg =  1.5; worst = 2 per ecc block.
+- ecc margin       : worst block uses 2 of 35 roots (5%)
 - prognosis        : 34932 of 34932 sectors recoverable (100.0%)

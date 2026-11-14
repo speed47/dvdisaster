@@ -1,0 +1,21 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-master.iso: present, contains 21000 medium sectors.
+* truncated image  : 2147483648 sectors too short
+* BAD image        : 2147483648 sectors missing
+
+rs01-tmp.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.55 (good)
+* medium sectors   : 2147504648 (BAD)
+- image md5sum     : 9503f278d4550a9507a317664481adf8
+- fingerprint match: good
+* ecc blocks       : 576460752035182592 (BAD, expected 19722375168)
+- ecc md5sum       : 2c9545f3ec387a9ce8b50e152cf39c17 (good)
+
+Exit status: 0

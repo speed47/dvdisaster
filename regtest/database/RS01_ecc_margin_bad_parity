@@ -1,0 +1,21 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+* missing sector   : 1000
+* BAD image        : 1 sectors missing
+
+rs01-tmp.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.55 (good)
+- medium sectors   : 21000 (good)
+- image md5sum     : 9503f278d4550a9507a317664481adf8
+- fingerprint match: good
+- ecc blocks       : 194560 (good)
+* ecc md5sum       : BAD, ecc file may be damaged!
+
+Exit status: 0

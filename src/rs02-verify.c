@@ -530,19 +530,26 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
+      PrintLog(_("- ecc margin       : worst block uses %d of %d roots (%d%%)\n"),
+	       worst_ecc, vc->lay->nroots, (100*worst_ecc)/vc->lay->nroots);
+
       PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
 
       if(Closure->guiMode)
-      {  GuiSetLabelText(vc->wl->cmpEcc1Name, "");
-	 GuiSetLabelText(vc->wl->cmpEcc1Msg,  "");
-	 GuiSetLabelText(vc->wl->cmpEcc2Name, _("Erasure counts:"));
+      {  GuiSetLabelText(vc->wl->cmpEcc1Name, _("Erasure counts:"));
+	 GuiSetLabelText(vc->wl->cmpEcc2Name, _("Ecc margin:"));
 	 GuiSetLabelText(vc->wl->cmpEcc3Name, _("Prognosis:"));
 
-	 GuiSetLabelText(vc->wl->cmpEcc2Msg,
+	 GuiSetLabelText(vc->wl->cmpEcc1Msg,
 			 _("<span %s>avg =  %.1f; worst = %d per ecc block.</span>"),
 			 worst_ecc <= vc->lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
 			 (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
+
+	 GuiSetLabelText(vc->wl->cmpEcc2Msg,
+			 _("<span %s>worst block uses %d of %d roots (%d%%)</span>"),
+			 worst_ecc <= vc->lay->nroots ? Closure->greenMarkup : Closure->redMarkup,
+			 worst_ecc, vc->lay->nroots, (100*worst_ecc)/vc->lay->nroots);
 
 	 GuiSetLabelText(vc->wl->cmpEcc3Msg,
 			 _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
