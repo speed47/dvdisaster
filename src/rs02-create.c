@@ -457,7 +457,7 @@ static void create_reed_solomon(ecc_closure *ec)
    guint64 n_parity_blocks,n_layer_sectors;
    guint64 n_parity_bytes,n_layer_bytes;
    guint64 si,chunk;
-   int last_percent, percent, max_percent, progress;
+   int last_percent, percent;
    int layer,i,j,k;
    unsigned char *par_ptr;
    int out_of_memory = 0;
@@ -477,21 +477,15 @@ static void create_reed_solomon(ecc_closure *ec)
    ec->rt = CreateReedSolomonTables(ec->gt, RS_FIRST_ROOT, RS_PRIM_ELEM, nroots);
 
 
-   /*** Allocate buffers for the parity calculation and image data caching. 
+   /*** Buffer consecutive sectors from every input layer, then encode one
+        sector-sized parity block through all layers before moving to the next.
+        This keeps the active parity data in cache while retaining grouped I/O.
+        RS02 also needs nroots output slices for transposing the parity data.
+        Share the cache-size budget between all input and output buffers. */
 
-        The algorithm builds the parity file consecutively in chunks of n_parity_blocks.
-        We use all the amount of memory allowed by cacheMiB for caching the parity blocks. */
-
-   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots_aligned;  /* 1 MiB = 2^20 */
-   n_parity_blocks >>= 1;                              /* two buffer sets for scrambling */
-   n_parity_blocks &= ~0x7ff;                          /* round down to multiple of 2048 */
+   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (ndata + nroots_aligned + nroots);
+   n_parity_blocks &= ~0x7ff;                   /* round down to multiple of 2048 */
    n_parity_bytes  = (guint64)nroots_aligned * n_parity_blocks;
-
-   /* Each chunk of parity blocks is built iteratively by processing the data in layers
-      (first all bytes at pos 0, then pos 1, until ndata layers have been processed).
-      So we need to buffer n_layer_bytes = n_parity_blocks of input data.
-      For practical reasons we require that the layer size is a multiple of the
-      medium sector size of 2048 bytes. */
 
    n_layer_bytes   = n_parity_blocks;
    n_layer_sectors = n_parity_blocks/2048;
@@ -503,7 +497,7 @@ static void create_reed_solomon(ecc_closure *ec)
    ec->paritybase = g_try_malloc(n_parity_bytes+16);
    if(ec->paritybase)
       ec->parity = ec->paritybase + (16 - ((uintptr_t)ec->paritybase & 15));
-   ec->data   = g_try_malloc(n_layer_bytes);
+   ec->data   = g_try_malloc_n(ndata, n_layer_bytes);
 
    /*** Create buffers for dividing the ecc information into nroots slices */
 
@@ -535,8 +529,6 @@ static void create_reed_solomon(ecc_closure *ec)
 
    /*** Create ecc information for the protected sectors portion of the image. */ 
 
-   max_percent = ndata * ((lay->sectorsPerLayer / n_layer_sectors) + 1);
-   progress = percent = 0;
    last_percent = -1;
    g_timer_start(ec->timer);
 
@@ -546,12 +538,7 @@ static void create_reed_solomon(ecc_closure *ec)
       the whole image has been processed. */
 
    for(chunk=0; chunk<lay->sectorsPerLayer; chunk+=n_layer_sectors) 
-   {  guint64 actual_layer_bytes,actual_layer_sectors;
-      int sp;
-
-      /* Prepare the parity data for the next chunk. */
-
-      memset(ec->parity, 0, n_parity_bytes);
+   {  guint64 actual_layer_sectors;
 
       /* The last chunk may contain fewer sectors. */
 
@@ -559,44 +546,41 @@ static void create_reed_solomon(ecc_closure *ec)
            actual_layer_sectors = n_layer_sectors;
       else actual_layer_sectors = lay->sectorsPerLayer-chunk;
 
-      actual_layer_bytes   = 2048*actual_layer_sectors;
-
-      /* Work each of the ndata data layers 
-	 into the parity data of the current chunk. */
-
-      sp = nroots - ndata % nroots;  /* => (ndata + sp) mod nroots = 0 so that parity */
-	                             /* is aligned at sp=0 after ndata iterations */
-      if(sp==nroots) sp=0;
+      /* Read consecutive sectors from each layer into its own input buffer. */
 
       for(layer=0; layer<ndata; layer++)
-      {  int offset = 0;
+      {  unsigned char *data = ec->data + layer*n_layer_bytes;
 
-	 if(Closure->stopActions) /* User hit the Stop button */
-	   abort_encoding(ec, TRUE);
+         if(Closure->stopActions)
+            abort_encoding(ec, TRUE);
 
-         /* Read the next data sectors of this layer. */
+         for(si=0; si<actual_layer_sectors; si++)
+            RS02ReadSector(image, lay, data+2048*si, block_idx[layer]++);
+      }
 
-   	 for(si=0; si<actual_layer_sectors; si++)
-	 {  RS02ReadSector(image, lay, ec->data+offset, block_idx[layer]);
-	    block_idx[layer]++;
-	    offset += 2048;
-	 }
+      /* Finish each parity block while it is still cached. The circular shift
+         starts afresh for every block and ends at zero after all data layers. */
 
-	 /* Now process the data bytes of the current layer. */
+      for(si=0; si<actual_layer_sectors; si++)
+      {  unsigned char *parity = ec->parity + 2048*si*nroots_aligned;
+         int sp = ec->rt->shiftInit;
 
-	 EncodeNextLayer(ec->rt, ec->data, ec->parity, actual_layer_bytes, sp);
+         if(Closure->stopActions)
+            abort_encoding(ec, TRUE);
 
-	 if(++sp>=nroots) sp=0;   /* shift */
+         memset(parity, 0, 2048*nroots_aligned);
+         for(layer=0; layer<ndata; layer++)
+         {  EncodeNextLayer(ec->rt, ec->data + layer*n_layer_bytes + 2048*si,
+                            parity, 2048, sp);
+            if(++sp>=nroots) sp=0;
+         }
 
-	 /* Report progress */
-
-	 progress++;
-	 percent = (1000*progress)/max_percent;
-	 if(last_percent != percent) 
-	 {  GuiSetProgress(ec->wl->encPBar2, percent, 1000);
-	    PrintProgressETA(ec->timer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
-	    last_percent = percent;
-	 }
+         percent = (1000*(chunk+si+1))/lay->sectorsPerLayer;
+         if(last_percent != percent)
+         {  GuiSetProgress(ec->wl->encPBar2, percent, 1000);
+            PrintProgressETA(ec->timer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
+            last_percent = percent;
+         }
       }
 
       /* The parity bytes have been prepared as sequences of nroots bytes for each 

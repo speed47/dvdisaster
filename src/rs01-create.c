@@ -197,7 +197,7 @@ void RS01Create(void)
    guint64 block_idx[256];  /* must be >= ndata */
    guint64 s,si,n;
    int i;
-   int percent = 0,max_percent,progress = 0, last_percent = -1;
+   int percent = 0, last_percent = -1;
    guint64 n_parity_blocks,n_layer_sectors;
    guint64 n_parity_bytes,n_layer_bytes;
    guint64 chunk;
@@ -411,20 +411,14 @@ void RS01Create(void)
    if(!LargeSeek(image->eccFile, (gint64)sizeof(EccHeader) + image->sectorSize*sizeof(guint32)))
 	Stop(_("Failed skipping ecc+crc header: %s"),strerror(errno));
 
-   /*** Allocate buffers for the parity calculation and image data caching. 
+   /*** Buffer consecutive sectors from every input layer, then encode one
+        sector-sized parity block through all layers before moving to the next.
+        This keeps the active parity data in cache while retaining grouped I/O.
+        Share the cache-size budget between all input and output buffers. */
 
-        The algorithm builds the parity file consecutively in chunks of n_parity_blocks.
-        We use all the amount of memory allowed by cacheMiB for caching the parity blocks. */
-
-   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (guint64)nroots_aligned;
+   n_parity_blocks = ((guint64)Closure->cacheMiB<<20) / (ndata + nroots_aligned);
    n_parity_blocks &= ~0x7ff;                   /* round down to multiple of 2048 */
    n_parity_bytes  = (guint64)nroots_aligned * n_parity_blocks;
-
-   /* Each chunk of parity blocks is built iteratively by processing the data in layers
-      (first all bytes at pos 0, then pos 1, until ndata layers have been processed).
-      So one buffer of n_layer_bytes = n_parity_blocks needs to be buffered.
-      For practical reasons we require that the layer size is a multiple of the
-      medium sector size of 2048 bytes. */
 
    n_layer_bytes   = n_parity_blocks;
    n_layer_sectors = n_parity_blocks/2048;
@@ -436,7 +430,7 @@ void RS01Create(void)
    ec->paritybase = g_try_malloc(n_parity_bytes+16);
    if(ec->paritybase)
       ec->parity = ec->paritybase + (16 - ((uintptr_t)ec->paritybase & 15));
-   ec->data   = g_try_malloc(n_layer_bytes);
+   ec->data   = g_try_malloc_n(ndata, n_layer_bytes);
 
    if(!ec->parity || !ec->data)
       Stop(_("Failed allocating memory for I/O cache.\n"
@@ -455,7 +449,6 @@ void RS01Create(void)
 
    /*** Create ecc information for the medium image. */ 
 
-   max_percent = ndata * ((s / n_layer_sectors) + 1);
    g_timer_start(ec->timer);
 
    /* Process the image.
@@ -465,10 +458,6 @@ void RS01Create(void)
    for(chunk=0; chunk<s; chunk+=n_layer_sectors) 
    {  guint64 actual_layer_bytes,actual_layer_sectors;
 
-      /* Prepare the parity data for the next chunk. */
-
-      memset(ec->parity, 0, n_parity_bytes);
-
       /* The last chunk may contain fewer sectors. */
 
       if(chunk+n_layer_sectors < s)
@@ -477,52 +466,42 @@ void RS01Create(void)
 
       actual_layer_bytes   = 2048*actual_layer_sectors;
 
-      /* Work each of the ndata data layers 
-	 into the parity data of the current chunk. */
+      /* Read consecutive sectors from each layer into its own input buffer. */
 
-      {  int sp = rt->shiftInit;  /* => (ndata + sp) mod nroots = 0 */
+      for(layer=0; layer<ndata; layer++)
+      {  unsigned char *data = ec->data + layer*n_layer_bytes;
 
+         if(Closure->stopActions)
+            goto abort_encoding;
+
+         for(si=0; si<actual_layer_sectors; si++)
+            RS01ReadSector(image, data+2048*si, block_idx[layer]++);
+      }
+
+      /* Finish each parity block while it is still cached. The circular shift
+         starts afresh for every block and ends at zero after all data layers. */
+
+      for(si=0; si<actual_layer_sectors; si++)
+      {  unsigned char *parity = ec->parity + 2048*si*nroots_aligned;
+         int sp = rt->shiftInit;
+
+         if(Closure->stopActions)
+            goto abort_encoding;
+
+         memset(parity, 0, 2048*nroots_aligned);
          for(layer=0; layer<ndata; layer++)
-	 {  int offset = 0;
+         {  EncodeNextLayer(rt, ec->data + layer*n_layer_bytes + 2048*si,
+                            parity, 2048, sp);
+            if(++sp>=nroots) sp=0;
+         }
 
-	    if(Closure->stopActions) /* User hit the Stop button */
-	    {  if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
-	       {  GuiSetLabelText(wl->encFootline, 
-				  _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
-				  Closure->redMarkup);
-	       }
-	       ec->earlyTermination = FALSE;  /* suppress respective error message */
-	       LargeClose(image->eccFile);
-	       image->eccFile = NULL;
-	       g_unlink(Closure->eccName); /* Do not leave partial .ecc file behind */
-	       goto terminate;
-	    }
-
-	    /* Read the next data sectors of this layer. */
-
-	    for(si=0; si<actual_layer_sectors; si++)
-	    {  RS01ReadSector(image, ec->data+offset, block_idx[layer]);
-	       block_idx[layer]++;
-	       offset += 2048;
-	    }
-
-	    /* Now process the data bytes of the current layer. */
-
-	    EncodeNextLayer(rt, ec->data, ec->parity, actual_layer_bytes, sp);
-
-	    if(++sp>=nroots) sp=0;   /* shift */
-
-	    /* Report progress */
-
-	    progress++;
-	    percent = (1000*progress)/max_percent;
-	    if(last_percent != percent) 
-	    {  GuiSetProgress(wl->encPBar2, percent, 1000);
-	       PrintProgressETA(ec->timer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
-	       last_percent = percent;
-	    }
-	 }
-	}
+         percent = (1000*(chunk+si+1))/s;
+         if(last_percent != percent)
+         {  GuiSetProgress(wl->encPBar2, percent, 1000);
+            PrintProgressETA(ec->timer, percent, _("Ecc generation: %3d.%1d%%"), percent/10, percent%10);
+            last_percent = percent;
+         }
+      }
 
       /* EncodeNextLayer() uses a stride of nroots_aligned bytes; compact to nroots */
 
@@ -581,6 +560,17 @@ void RS01Create(void)
    /*** Clean up */
 
    ec->earlyTermination = FALSE;
+   goto terminate;
+
+abort_encoding:
+   if(Closure->stopActions == STOP_CURRENT_ACTION)
+      GuiSetLabelText(wl->encFootline,
+                     _("<span %s>Aborted by user request!</span> (partial error correction file removed)"),
+                     Closure->redMarkup);
+   ec->earlyTermination = FALSE;
+   LargeClose(image->eccFile);
+   image->eccFile = NULL;
+   g_unlink(Closure->eccName);
 
 terminate:
    ecc_cleanup((gpointer)ec);
