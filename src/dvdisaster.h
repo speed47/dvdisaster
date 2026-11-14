@@ -308,6 +308,7 @@ typedef struct _GlobalClosure
    int useSSE2;         /* TRUE means to use SSE2 version of the codec. */
    int useAVX2;         /* TRUE means to use AVX2 version of the codec. */
    int useAltiVec;      /* TRUE means to use AltiVec version of the codec. */
+   int useNEON;         /* TRUE means to use AArch64 NEON encoding. */
    int clSize;          /* Bytesize of cache line */
    int useSCSIDriver;   /* Whether to use generic or sg driver on Linux */
    int fixedSpeedValues;/* output fixed speed reading to make comparing debugging output easier */  
@@ -1488,7 +1489,8 @@ typedef enum
    ENCODING_ALG_64BIT,
    ENCODING_ALG_SSE2,   
    ENCODING_ALG_ALTIVEC,
-   ENCODING_ALG_AVX2     /* Append new values to preserve saved preferences. */
+   ENCODING_ALG_AVX2,
+   ENCODING_ALG_NEON     /* Append new values to preserve saved preferences. */
 } CODEC_TYPE;
 
 void EncodeNextLayer(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
@@ -1497,6 +1499,7 @@ char *GetRSEncoderName(CODEC_TYPE);
 int ProbeSSE2(void);
 int ProbeAVX2(void);
 int ProbeAltiVec(void);
+int ProbeNEON(void);
 
 /***
  *** show-manual.c

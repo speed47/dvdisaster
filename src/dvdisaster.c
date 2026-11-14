@@ -234,6 +234,7 @@ int main(int argc, char *argv[])
    Closure->useSSE2 = ProbeSSE2();
    Closure->useAVX2 = ProbeAVX2();
    Closure->useAltiVec = ProbeAltiVec();
+   Closure->useNEON = ProbeNEON();
    Closure->clSize = ProbeCacheLineSize();
 
    /*** Parse the options */
@@ -485,8 +486,14 @@ int main(int argc, char *argv[])
 	     if(!Closure->useAltiVec)
 	       Stop(_("--encoding-algorithm: AltiVec not supported by this build or processor!"));
 	   }
+           if(!strcmp(optarg, "NEON"))
+           {  Closure->encodingAlgorithm = ENCODING_ALG_NEON;
+
+              if(!Closure->useNEON)
+                 Stop(_("--encoding-algorithm: NEON not supported by this build or processor!"));
+           }
 	   if(Closure->encodingAlgorithm == ENCODING_ALG_INVALID)
-	     Stop(_("--encoding-algorithm: valid types are auto, 32bit, 64bit, SSE2, AVX2, AltiVec"));
+	     Stop(_("--encoding-algorithm: valid types are auto, 32bit, 64bit, SSE2, AVX2, AltiVec, NEON"));
 	   break;
 	 case MODIFIER_ENCODING_IO_STRATEGY:
 	   if(!strcmp(optarg, "readwrite"))
@@ -1058,7 +1065,7 @@ int main(int argc, char *argv[])
 #endif
       PrintCLI(_("  --bruteforce-rs03-search   - enable bruteforce linear scan for RS03 data (slow!)\n"));
       PrintCLI(_("  --eject                    - eject medium after successful read\n"));
-      PrintCLI(_("  --encoding-algorithm x     - possible values: auto, 32bit, 64bit, SSE2, AVX2, AltiVec\n"));
+      PrintCLI(_("  --encoding-algorithm x     - possible values: auto, 32bit, 64bit, SSE2, AVX2, AltiVec, NEON\n"));
       PrintCLI(_("  --encoding-io-strategy x   - possible values: readwrite, mmap\n"));
       PrintCLI(_("  --fill-unreadable n        - fill unreadable sectors with byte n\n"));
       PrintCLI(_("  --ignore-fatal-sense       - continue reading after potentially fatal error conditon\n"));

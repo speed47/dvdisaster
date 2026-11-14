@@ -229,12 +229,14 @@ static CODEC_TYPE default_encoding_algorithm(void)
    if(Closure->useAVX2)    return ENCODING_ALG_AVX2;
    if(Closure->useSSE2)    return ENCODING_ALG_SSE2;
    if(Closure->useAltiVec) return ENCODING_ALG_ALTIVEC;
+   if(Closure->useNEON)    return ENCODING_ALG_NEON;
    return ENCODING_ALG_64BIT;
 }
 
 void encode_next_layer_sse2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void encode_next_layer_altivec(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 void encode_next_layer_avx2(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
+void encode_next_layer_neon(ReedSolomonTables*, unsigned char*, unsigned char*, guint64, int);
 
 void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *parity, guint64 layer_size, int shift)
 {   CODEC_TYPE algorithm = Closure->encodingAlgorithm;
@@ -258,6 +260,9 @@ void EncodeNextLayer(ReedSolomonTables *rt, unsigned char *data, unsigned char *
        case ENCODING_ALG_AVX2:
 	  encode_next_layer_avx2(rt, data, parity, layer_size, shift);
 	  break;
+       case ENCODING_ALG_NEON:
+          encode_next_layer_neon(rt, data, parity, layer_size, shift);
+          break;
        default:
 	  Stop("Invalid encoding algorithm.\n");
     }
@@ -278,6 +283,7 @@ char *GetRSEncoderName(CODEC_TYPE algorithm)
      case ENCODING_ALG_SSE2:    return "SSE2";
      case ENCODING_ALG_ALTIVEC: return "AltiVec";
      case ENCODING_ALG_AVX2:    return "AVX2";
+     case ENCODING_ALG_NEON:    return "NEON";
      default:                 return "unknown";
   }
 }

@@ -67,6 +67,7 @@
 # CHECK_AVX2		Test AVX2 intrinsics, function targets and runtime detection
 # CHECK_GFNI		Test GFNI intrinsics, function targets and runtime detection
 # CHECK_ALTIVEC		Test whether we can compile for AltiVec extensions
+# CHECK_NEON             Test AArch64 NEON encoder intrinsics
 # FINALIZE_HELP		Finish --help output (optional, but user friendly)
 #
 # WITH_OPTION name default  adds -DWITH_OPTION_VALUE for -with-option=value args
@@ -2159,6 +2160,65 @@ EOF
       if test "$cfg_with_avx2" == "yes"; then
          echo "AVX2 was requested, but the compiler cannot build the AVX2 runtime-dispatched code."
          echo "See $LOGFILE for details, or use --with-avx2=no."
+         exit 1
+      fi
+   fi
+}
+
+#
+# Check AArch64 NEON encoding without executing the test binary.
+#
+
+function CHECK_NEON()
+{
+   if test -n "$cfg_help_mode"; then
+     echo " --with-neon=[yes | no] (AArch64 encoder)"
+     return 0
+   fi
+
+   echo -e "\n/* *** CHECK_NEON */\n" >>$LOGFILE
+   echo -n "Checking for AArch64 NEON encoder intrinsics..."
+
+   case "$cfg_with_neon" in
+      no) echo " no (user supplied)"
+          return 0
+          ;;
+      yes|"") ;;
+      *) echo -e " $cfg_with_neon (illegal value)\n"
+         echo "Please use --with-neon=[yes | no]."
+         exit 1
+         ;;
+   esac
+
+   # NEON is part of the supported AArch64 userspace baseline. Do not add
+   # target-wide ISA flags or execute the test when cross-compiling.
+   cat > conftest.c <<EOF
+#if !defined(__aarch64__)
+#error The NEON encoder requires AArch64
+#endif
+#include <arm_neon.h>
+
+void conftest_neon(unsigned char *parity, const unsigned char *lut)
+{
+   vst1q_u8(parity, veorq_u8(vld1q_u8(parity), vld1q_u8(lut)));
+}
+
+int main(void)
+{
+   unsigned char data[32] = {0};
+   conftest_neon(data, data+1);
+   return data[0];
+}
+EOF
+
+   if try_compile; then
+      echo " yes"
+      CFG_HAVE_OPTIONS="$CFG_HAVE_OPTIONS -DHAVE_NEON"
+   else
+      echo " no"
+      if test "$cfg_with_neon" == "yes"; then
+         echo "NEON was requested, but the compiler cannot build the AArch64 NEON encoder."
+         echo "See $LOGFILE for details, or use --with-neon=no."
          exit 1
       fi
    fi

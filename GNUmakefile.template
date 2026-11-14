@@ -175,6 +175,20 @@ $(BUILDTMP)/rs-encoder-altivec.o: src/rs-encoder-altivec.c
 
 # rs-decoder.c likewise uses function targets for its AVX2 and GFNI kernels.
 
+# AArch64 NEON is a baseline feature; its encoder uses the generic C rule.
+
+.PHONY: check-encoders
+ENCODER_TEST_OBJECTS = $(addprefix $(BUILDTMP)/,galois.o rs-encoder.o rs-encoder-sse2.o rs-encoder-avx2.o rs-encoder-altivec.o rs-encoder-neon.o)
+$(BUILDTMP)/test-encoders$(CFG_EXE_SUFFIX): regtest/encoders.c $(ENCODER_TEST_OBJECTS) src/dvdisaster.h GNUmakefile
+	$(CC) $(COPTS) -UNDEBUG -Isrc regtest/encoders.c $(ENCODER_TEST_OBJECTS) $(LOPTS) $(GLIB_LIBS) -lm -o $@
+
+check-encoders: $(BUILDTMP)/test-encoders$(CFG_EXE_SUFFIX)
+	@for backend in auto 32bit 64bit SSE2 AVX2 AltiVec NEON; do \
+	  $(BUILDTMP)/test-encoders$(CFG_EXE_SUFFIX) $$backend; status=$$?; \
+	  if test $$status -eq 77; then echo "$$backend: skipped (compiler or CPU support unavailable)"; \
+	  elif test $$status -ne 0; then exit $$status; fi; \
+	done
+
 .PHONY: check-syndromes
 $(BUILDTMP)/test-syndromes$(CFG_EXE_SUFFIX): regtest/syndromes.c src/rs-decoder.c src/galois.c src/dvdisaster.h GNUmakefile
 	$(CC) $(COPTS) -UNDEBUG -Isrc regtest/syndromes.c src/galois.c $(LOPTS) $(GLIB_LIBS) -lm -o $@

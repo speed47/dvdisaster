@@ -312,18 +312,19 @@ w\[:a]hlen Sie bitte wieder mit \-\-driver=cdrom den \[:a]lteren Treiber aus.
 .B \-\-eject
 Datentr\[:a]ger nach erfolgreichem Lesen auswerfen.
 .TP
-.B \-\-encoding-algorithm [auto|32bit|64bit|SSE2|AVX2|AltiVec]
+.B \-\-encoding-algorithm [auto|32bit|64bit|SSE2|AVX2|AltiVec|NEON]
 Diese Einstellung beeinflu\[ss]t die Geschwindigkeit beim Erstellen von
-RS03-Fehlerkorrektur-Daten. dvdisaster kann entweder ein allgemeines
+RS01-, RS02- und RS03-Fehlerkorrektur-Daten. dvdisaster kann entweder ein allgemeines
 Kodierungsverfahren mit 32bit- oder 64bit breiten Rechenschritten
 verwenden, die auf der Ganzzahl-Einheit des Prozessors ausgef\[:u]hrt
 werden, oder es kann Prozessor-spezifische Erweiterungen nutzen.
 .RS
 W\[:a]hlbare Erweiterungen sind SSE2 und AVX2 auf x86-basierten Prozessoren
-sowie AltiVec auf PowerPC-basierten Prozessoren. SSE2 und AltiVec rechnen
+sowie AltiVec auf PowerPC-basierten Prozessoren und NEON auf ARM64-Prozessoren.
+SSE2, AltiVec und NEON rechnen
 mit 128bit breiten Operationen, AVX2 mit 256bit breiten Operationen.
 Eine ausdr\[:u]ckliche Auswahl setzt die Unterst\[:u]tzung durch den Prozessor voraus.
-Bei auto bevorzugt dvdisaster AVX2, danach SSE2 und danach AltiVec;
+Bei auto bevorzugt dvdisaster AVX2, danach SSE2, AltiVec und NEON;
 andernfalls wird der 64bit-Kodierer verwendet. Die automatische Auswahl
 ist die Voreinstellung.
 

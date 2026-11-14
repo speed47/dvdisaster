@@ -1,3 +1,22 @@
+Encoder backend tests
+---------------------
+
+After configuring, run `make check-encoders`. This checks every available
+encoder, including automatic selection, against a separate polynomial-form
+shift register using GF(0x187) multiplication. Coverage includes all shift
+positions at representative root counts, all feedback bytes, zero feedback,
+unaligned buffers for SIMD backends, buffer guards, tails and complete
+codewords. Padding bytes are scratch space and are not compared.
+
+On AArch64, configure automatically enables the NEON encoder. Use
+--with-neon=no to disable it or --with-neon=yes to require compiler support.
+The probe compiles and links without executing ARM code or adding ISA flags.
+This option controls encoding only; the existing AArch64 syndrome kernel
+is independent. Select the encoder with --encoding-algorithm NEON or auto.
+The test executable also accepts one backend name, e.g. `test-encoders NEON`,
+so cross-built tests can be run explicitly through qemu-aarch64.
+
+
 Syndrome backend tests
 ----------------------
 
