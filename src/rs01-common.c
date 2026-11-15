@@ -313,8 +313,8 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	if(!current_missing || s==image->sectorSize-1)
 	{  if(first_missing>=0)
 	    {   if(first_missing == last_missing)
-		     PrintCLI(_("* missing sector   : %" PRId64 "\n"), first_missing);
-		else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
+		     PrintCLIError(_("* missing sector   : %" PRId64 "\n"), first_missing);
+		else PrintCLIError(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
 	      first_missing = -1;
 	   }
 	}
@@ -361,7 +361,7 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	    }
 
 	    if(crc != crcbuf[crcidx++] && !current_missing)
-	    {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
+	    {  PrintCLIError(_("* CRC error, sector: %" PRId64 "\n"), s);
 	       image->crcErrors++;
 	    }
 	 }

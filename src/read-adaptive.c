@@ -119,7 +119,7 @@ static EccInfo* open_ecc_file(int mode)
        }
        
        if(Closure->version < ei->eh->neededVersion)
-	    PrintCLI(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
+	    PrintCLIError(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
 		    "*          Please read the image without using this ecc file\n"
 		    "*          or upgrade dvdisaster.\n\n"), 
@@ -672,7 +672,7 @@ static void open_and_determine_mode(read_closure *rc)
 	 PrintLog(_("%s-type ECC found\n"), method_name);
 
 	 if(Closure->version < rc->eh->neededVersion)
-	    PrintCLI(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
+	    PrintCLIError(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
 		       "*          Proceeding could trigger incorrect behaviour.\n"
 		       "*          Please upgrade dvdisaster.\n\n"),
 		     rc->eh->neededVersion/10000,
@@ -690,7 +690,7 @@ static void open_and_determine_mode(read_closure *rc)
       PrintLog(_("%s-type ECC found\n"), "RS02");
 
       if(Closure->version < rc->eh->neededVersion)
-	 PrintCLI(_("* Warning: This image requires dvdisaster-%d.%d!\n"
+	 PrintCLIError(_("* Warning: This image requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
 		    "*          Please upgrade dvdisaster.\n\n"), 
 		  rc->eh->neededVersion/10000,
@@ -1444,7 +1444,7 @@ void ReadMediumAdaptive(gpointer data)
    open_and_determine_mode(rc);
 
    if(rc->readMode == IMAGE_ONLY)
-   {  PrintCLI(_("* Warning: Using adaptive reading without error correction data\n"
+   {  PrintCLIError(_("* Warning: Using adaptive reading without error correction data\n"
 		 "*          has little advantage over linear reading, but may\n"
 		 "*          cause significant wear on the drive due to excessive\n"
 		 "*          seek operations.\n"
@@ -1728,7 +1728,7 @@ reread:
 		  {  //unsigned char buf[2048];
 
 		     PrintCLI("\n");
-		     PrintCLI(_("CRC error in sector %" PRId64 "\n"),b);
+		     PrintCLIError(_("CRC error in sector %" PRId64 "\n"),b);
 		     print_progress(rc, TRUE);
 
 #if 0 // remark: Do we still need to mark CRC defects as completely missing?
@@ -1892,10 +1892,10 @@ reread:
 	 {  unsigned char buf[2048];
 
 	    PrintCLI("\n");
-	    if(nsectors>1) PrintCLIorLabel(Closure->status,
+	    if(nsectors>1) PrintErrorCLIorLabel(Closure->status,
 					   _("Sectors %" PRId64 "-%" PRId64 ": %s\n"),
 					   s, s+nsectors-1, GetLastSenseString(FALSE));  
-	    else	   PrintCLIorLabel(Closure->status,
+	    else	   PrintErrorCLIorLabel(Closure->status,
 					   _("Sector %" PRId64 ": %s\n"),
 					   s, GetLastSenseString(FALSE));  
 
@@ -2032,7 +2032,7 @@ finished:
       char *t = g_strdup_printf(_("Only %2d.%1d%% of the image are readable or correctable"),
 				  percent/10, percent%10); 
 
-      PrintLog(_("\n%s\n"
+      PrintError(_("\n%s\n"
 		  "(%" PRId64 " readable,  %" PRId64 " correctable,  %" PRId64 " still missing).\n"),
 		t, rc->readable, rc->correctable, rc->expectedSectors-total);
       GuiSetAdaptiveReadFootline(t, 0);
@@ -2058,7 +2058,7 @@ finished:
 	 char *t = g_strdup_printf(_("No unreadable intervals with >= %d sectors left."),
 				   Closure->sectorSkip);
 
-	 PrintLog(_("\n%s\n" 
+	 PrintError(_("\n%s\n"
 		     "%2d.%1d%% of the image have been read (%" PRId64 " sectors).\n"),
 		   t, percent/10, percent%10, rc->readable);
 

@@ -26,7 +26,7 @@
 
 #include "scsi-layer.h"
 
-#include <time.h>
+#include <signal.h>
 
 /***
  *** Machine readable summary of a command line run (--json).
@@ -76,8 +76,12 @@ static GString* item_value(char *section, char *key, int keep)
 
    /* keep the keys of a section together */
 
-   if(last >= 0) g_ptr_array_insert(items, last+1, item);
-   else          g_ptr_array_add(items, item);
+   g_ptr_array_add(items, item);
+   if(last >= 0)
+   {  for(i=items->len-1; i>last+1; i--)
+         items->pdata[i] = items->pdata[i-1];
+      items->pdata[last+1] = item;
+   }
 
    return item->value;
 }
@@ -86,6 +90,20 @@ static void append_json_string(GString *out, const char *s)
 {  g_string_append_c(out, '"');
    for(; *s; s++)
    {  unsigned char c = *s;
+
+      /* Paths and device strings need not be UTF-8. Keep valid sequences
+         verbatim and replace invalid bytes, using the GLib 2.36 API. */
+      if(c >= 0x80)
+      {  gunichar ch = g_utf8_get_char_validated(s, -1);
+         if(ch == (gunichar)-1 || ch == (gunichar)-2)
+            g_string_append(out, "\\ufffd");
+         else
+         {  const char *next = g_utf8_next_char(s);
+            g_string_append_len(out, s, next-s);
+            s = next-1;
+         }
+         continue;
+      }
 
       switch(c)
       {  case '"':  g_string_append(out, "\\\""); break;
@@ -177,15 +195,18 @@ void ReportEccHeader(EccHeader *eh)
  * if we are terminated by Stop().
  */
 
-static char *verdicts[] = { "ok", "error", "defects", "data_loss" };
+static char *verdicts[] = { "ok", "error", "defects", "incomplete" };
 
 void WriteReport(char *error_msg)
 {  GString *out;
    char *section = "";
-   char timestamp[32];
-   time_t now;
+   char *timestamp;
+   GDateTime *now;
    FILE *file;
-   int i;
+   int i, report_errno = 0;
+#ifdef SIGPIPE
+   void (*old_sigpipe)(int) = SIG_ERR;
+#endif
 
    if(!Closure->jsonFile || Closure->guiMode)
      return;
@@ -198,11 +219,15 @@ void WriteReport(char *error_msg)
 
    /* Top level keys first, then the sections in order of appearance */
 
-   now = time(NULL);
-   strftime(timestamp, sizeof(timestamp), "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+   now = g_date_time_new_now_utc();
+   timestamp = now ? g_date_time_format(now, "%Y-%m-%dT%H:%M:%SZ") : NULL;
+   if(now) g_date_time_unref(now);
    out = g_string_new("{\n  \"program\": \"dvdisaster\",\n  \"version\": ");
    append_json_string(out, Closure->cookedVersion);
-   g_string_append_printf(out, ",\n  \"time\": \"%s\"", timestamp);
+   g_string_append(out, ",\n  \"time\": ");
+   if(timestamp) append_json_string(out, timestamp);
+   else          g_string_append(out, "null");
+   g_free(timestamp);
 
    for(i=0; i<items->len; i++)
    {  report_item *item = g_ptr_array_index(items, i);
@@ -230,16 +255,49 @@ void WriteReport(char *error_msg)
 
    if(!strcmp(Closure->jsonFile, "-"))
       file = stdout;
-   else file = g_fopen(Closure->jsonFile, "wb");
-
-   if(!file)
-   {  g_fprintf(stderr, _("Could not open %s: %s"), Closure->jsonFile, strerror(errno));
-      g_fprintf(stderr, "\n");
-   }
    else
-   {  fputs(out->str, file);
-      if(file == stdout) fflush(stdout);
-      else               fclose(file);
+   {  int flags = O_WRONLY | O_CREAT | O_EXCL;
+      int fd;
+
+#ifdef SYS_MINGW
+      flags |= O_BINARY;
+#endif
+      /* Atomic exclusive creation also refuses existing symlinks. */
+      fd = g_open(Closure->jsonFile, flags, 0666);
+      file = fd < 0 ? NULL : fdopen(fd, "wb");
+      if(!file)
+      {  report_errno = errno ? errno : EIO;
+         if(fd >= 0) close(fd);
+      }
+   }
+
+   if(file)
+   {
+#ifdef SIGPIPE
+      /* A closed report pipe is an output error, not an image/ECC result. */
+      if(file == stdout) old_sigpipe = signal(SIGPIPE, SIG_IGN);
+#endif
+      if(fputs(out->str, file) == EOF)
+         report_errno = errno ? errno : EIO;
+      if(file == stdout)
+      {  if(fflush(file) == EOF && !report_errno)
+            report_errno = errno ? errno : EIO;
+      }
+      else if(fclose(file) == EOF && !report_errno)
+         report_errno = errno ? errno : EIO;
+#ifdef SIGPIPE
+      if(old_sigpipe != SIG_ERR) signal(SIGPIPE, old_sigpipe);
+#endif
+   }
+
+   /* Reporting must not change the image/ECC result. Always diagnose failed
+      output on stderr, unless the caller explicitly requested -qq. */
+   if(report_errno)
+   {  char *msg = g_strdup_printf(_("Could not write JSON report %s: %s\n"),
+                                 Closure->jsonFile, strerror(report_errno));
+      if(Closure->quiet < 2) g_fprintf(stderr, "%s", msg);
+      if(Closure->logFileEnabled) PrintLogFile("%s", msg);
+      g_free(msg);
    }
 
    /* Clean up */

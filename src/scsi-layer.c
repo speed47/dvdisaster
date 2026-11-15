@@ -2606,7 +2606,7 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 //       Why only apply this shortcut to raw reading?
 //	 if(dh->canReadDefective && nsectors > 1 && Closure->sectorSkip == 0)
 	 if(nsectors > 1 && Closure->sectorSkip == 0)
-	 {  PrintCLIorLabel(Closure->status,
+	 {  PrintErrorCLIorLabel(Closure->status,
 			    _("Sectors %" PRId64 " - %" PRId64 ": %s\n"),
 			    s, s+nsectors-1, GetLastSenseString(FALSE));
 	    pause_after_read_error(dh);
@@ -2621,13 +2621,13 @@ int ReadSectors(DeviceHandle *dh, unsigned char *buf, gint64 s, int nsectors)
 
 	 if(last_key == 3 && last_asc == 255 && last_ascq == 2 && dh->rawBuffer)
 	 {  unsigned char *frame = dh->rawBuffer->workBuf->buf;
-	    PrintCLIorLabel(Closure->status,
+	    PrintErrorCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ", try %d: %s Sector returned: %d.\n"),
 			    s, retry, GetLastSenseString(FALSE),
 			    MSFtoLBA(frame[12], frame[13], frame[14]));
 	 }
 	 else
-	    PrintCLIorLabel(Closure->status,
+	    PrintErrorCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ", try %d: %s\n"),
 			    s, retry, GetLastSenseString(FALSE));
 

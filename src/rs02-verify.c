@@ -787,8 +787,8 @@ void RS02Verify(Image *image)
       if(!current_missing || s==expected_sectors-1)
       {  if(first_missing>=0)
 	 {   if(first_missing == last_missing)
-	           PrintCLI(_("* missing sector   : %" PRId64 "\n"), first_missing);
-	     else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
+	           PrintCLIError(_("* missing sector   : %" PRId64 "\n"), first_missing);
+	     else PrintCLIError(_("* missing sectors  : %" PRId64 " - %" PRId64 "\n"), first_missing, last_missing);
 	     first_missing = -1;
 	 }
       }
@@ -800,7 +800,7 @@ void RS02Verify(Image *image)
       {  guint32 crc = Crc32(buf, 2048);
 
 	 if(cc->crcValid[crc_idx] && crc != cc->crcBuf[crc_idx])
-	 {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
+	 {  PrintCLIError(_("* CRC error, sector: %" PRId64 "\n"), s);
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
@@ -900,14 +900,14 @@ void RS02Verify(Image *image)
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
       if(!total_missing && !total_crc_errors)
-         PrintLog(_("* suspicious image : contains damaged ecc headers\n"));
+         PrintError(_("* suspicious image : contains damaged ecc headers\n"));
       else
       {  if(!total_crc_errors)
-	   PrintLog(_("* BAD image        : %" PRId64 " sectors missing\n"), total_missing);
+	   PrintError(_("* BAD image        : %" PRId64 " sectors missing\n"), total_missing);
 	 if(!total_missing)
-	   PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"), total_crc_errors);
+	   PrintError(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"), total_crc_errors);
 	 if(total_missing && total_crc_errors)
-	   PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
+	   PrintError(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"),
 		    total_missing, total_crc_errors);
       }
 
@@ -1007,7 +1007,7 @@ continue_with_ecc:
 		      (eh->neededVersion%10000)/100);
    }
    else 
-   {  PrintLog(_("* requires         : dvdisaster-%d.%d (BAD)\n"
+   {  PrintError(_("* requires         : dvdisaster-%d.%d (BAD)\n"
 		 "* Warning          : The following output might be incorrect.\n"
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
@@ -1041,10 +1041,10 @@ continue_with_ecc:
    }
    else 
    {  if(image->sectorSize > expected_sectors && image->sectorSize - expected_sectors <= 2)   
-           PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"),
+           PrintError(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"),
 		    expected_sectors);
       else
-      {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
+      {  PrintError(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
 	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
 
@@ -1068,7 +1068,7 @@ continue_with_ecc:
 
       if(n) PrintLog(_("- data md5sum      : %s (good)\n"),hdr_digest);
       else
-      {  PrintLog(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
+      {  PrintError(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
 	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
 
@@ -1096,7 +1096,7 @@ continue_with_ecc:
 	 GuiSetLabelText(wl->cmpEcc2Msg, "%s", digest);
       }
       else 
-      {  PrintLog(_("* crc md5sum       : %s (BAD)\n"),digest);
+      {  PrintError(_("* crc md5sum       : %s (BAD)\n"),digest);
 	 GuiSetLabelText(wl->cmpEcc2Msg, "<span %s>%s</span>", Closure->redMarkup, digest);
 	 ecc_md5_failure = TRUE;
       }
@@ -1117,7 +1117,7 @@ continue_with_ecc:
 	   GuiSetLabelText(wl->cmpEcc3Msg, "%s", digest);
       }
       else 
-      {    PrintLog(_("* ecc md5sum       : %s (BAD)\n"),digest);
+      {    PrintError(_("* ecc md5sum       : %s (BAD)\n"),digest);
 	   GuiSetLabelText(wl->cmpEcc3Msg, "<span %s>%s</span>", Closure->redMarkup, digest);
 	   ecc_md5_failure = TRUE;
       }

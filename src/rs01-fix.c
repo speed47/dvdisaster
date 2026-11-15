@@ -427,7 +427,7 @@ void RS01Fix(Image *image)
 	   else if(crc != fc->crcBuf[i][cache_sector])
 	   {  erasure_map[i] = 3;
 	      erasure_list[erasure_count++] = i;
-	      PrintCLI(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
+	      PrintCLIError(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
 	   }
 	}
      }
@@ -645,14 +645,14 @@ void RS01Fix(Image *image)
 	   /* deg(lambda) unequal to number of roots => uncorrectable error detected */
 
 	   if(deg_lambda != count)
-	   {  PrintLog("Decoder problem (%d != %d) for %d sectors: ", deg_lambda, count, erasure_count);
+	   {  PrintError("Decoder problem (%d != %d) for %d sectors: ", deg_lambda, count, erasure_count);
 
 	      for(i=0; i<erasure_count; i++)
 	      {  gint64 idx = block_idx[erasure_list[i]];
 	       
-                 PrintLog("%" PRId64 " ", idx);
+                 PrintError("%" PRId64 " ", idx);
 	      }
-	      PrintLog("\n");
+	      PrintError("\n");
 	      break;
 	   }
 
@@ -711,13 +711,13 @@ void RS01Fix(Image *image)
 		    }
 
 		    if(!erasure_map[location])
-		      PrintLog(_("Unexpected byte error in sector %" PRId64 ", byte %d\n"),
+		      PrintError(_("Unexpected byte error in sector %" PRId64 ", byte %d\n"),
 			       block_idx[location], bi);
 
 		    fc->imgBlock[location][offset] ^= gf_alpha_to[mod_fieldmax(gf_index_of[num1] + gf_index_of[num2] + GF_FIELDMAX - gf_index_of[den])];
 		 }
 		 else
-		   PrintLog(_("Bad error location %d; corrupted .ecc file?\n"), location);
+		   PrintError(_("Bad error location %d; corrupted .ecc file?\n"), location);
 	      }
 	   }
 	}
@@ -790,7 +790,7 @@ skip:
    PrintProgress(_("Ecc progress: 100.0%%\n"));
    if(corrected > 0) PrintLog(_("Repaired sectors: %" PRId64 "     \n"),corrected);
    if(uncorrected > 0) 
-   {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
+   {  PrintError(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);
       GuiSwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			      _("Image sectors could not be fully restored "
 				"(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),

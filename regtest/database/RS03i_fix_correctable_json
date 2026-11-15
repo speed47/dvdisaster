@@ -42,8 +42,8 @@ Erasure counts per ecc block:  avg =  1.0; worst = 2.
 {
   "program": "dvdisaster",
   "actions": ["fix"],
-  "exit_code": 2,
-  "verdict": "defects",
+  "exit_code": 0,
+  "verdict": "ok",
   "image": {
     "path": "rs03i-tmp.iso",
     "size": 51179520

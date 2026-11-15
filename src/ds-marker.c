@@ -296,7 +296,7 @@ void ExplainMissingSector(unsigned char *buf, guint64 sector, int error, int sou
 
    if(!Closure->guiMode && !Closure->verbose && *number > 0)
    {  if(*number == 1)
-	 PrintLog(_("* ... more unrecoverable sectors found ...\n"
+	 PrintError(_("* ... more unrecoverable sectors found ...\n"
 		    "* further messages are suppressed unless the -v option is given.\n"));
       (*number)++;
       return;

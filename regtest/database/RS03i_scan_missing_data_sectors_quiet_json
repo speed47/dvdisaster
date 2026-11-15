@@ -1,9 +1,22 @@
 ignore
 ignore
+Sector 1008: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 1024, try 1: Medium Error; Unrecovered read error.
+Sector 1024: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 1040, try 1: Medium Error; Unrecovered read error.
+Sector 1040: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 21216, try 1: Medium Error; Unrecovered read error.
+Sector 21216: Medium Error; Unrecovered read error. Skipping 15 sectors.
+Sector 22448, try 1: Medium Error; Unrecovered read error.
+Sector 22448: Medium Error; Unrecovered read error. Skipping 15 sectors.
+
+96 unreadable sectors.
+{
+  "program": "dvdisaster",
   "actions": ["scan"],
   "device": "sim-cd",
-  "exit_code": 2,
-  "verdict": "defects",
+  "exit_code": 1,
+  "verdict": "error",
   "drive": {
     "info": "Simulated CD drive 1.00"
   },
@@ -25,4 +38,4 @@ ignore
     "crc_errors": 0
   }
 }
-Exit status: 2
+Exit status: 1

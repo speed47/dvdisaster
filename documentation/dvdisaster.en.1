@@ -301,6 +301,8 @@ Possible values are RS01 and RS02.
 .TP
 .B \-q, \-\-quiet
 print nothing except error messages and warnings, which go to stderr.
+Repeat the option (\-q \-q or \-qq) to suppress errors and warnings too.
+Explicit JSON output and the exit status are unaffected.
 Useful together with \-\-json and the exit status (see EXIT STATUS).
 .TP
 .B \-v, \-\-verbose n%
@@ -410,11 +412,22 @@ this setting anyways. Use \-1 to leave the drive at its default setting.
 writes a summary of the run as a JSON object to \fIfile\fP when dvdisaster exits;
 use \- for stdout.
 .RS
+The destination file must not already exist. Existing files and symlinks
+are never overwritten. With \-\-json \-, use \-q (or \-qq) to keep normal
+messages out of stdout and obtain a valid JSON document; keep stderr separate.
+Report output failures are diagnosed on stderr unless \-qq is used, and
+do not change the exit status describing the image/ECC operation.
+A failed write may leave an incomplete report file.
+Strings preserve valid UTF-8; invalid bytes are replaced by U+FFFD, so such
+filenames cannot be reconstructed exactly from the report.
+.PP
 The report contains the program version, the actions, drive and medium
 information, the image and ecc file, the sector counts of scanning/reading,
 verifying and fixing, the error correction method and redundancy, md5 sums
 where available, and the exit code with its meaning ("ok", "error",
-"defects", "data_loss"). Keys which do not apply to a run are left out.
+"defects", "incomplete"). Detailed verdicts require \-\-detailed-exit-status;
+otherwise the verdict is "ok" or "error". Keys which do not apply to a run
+are left out.
 .RE
 .TP
 .B \-\-medium-info

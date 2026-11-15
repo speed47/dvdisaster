@@ -486,7 +486,7 @@ static int simple_lec(RawBuffer *rb, unsigned char *frame, char *msg)
 
    if(q_failures || p_failures || q_corrected || p_corrected)
    {
-     PrintCLIorLabel(Closure->status, 
+     PrintErrorCLIorLabel(Closure->status,
 		     "Sector %" PRId64 "  L-EC P/Q results: %d/%d failures, %d/%d corrected (%s).\n",
 		     rb->lba, p_failures, q_failures, p_corrected, q_corrected, msg);
      return 1;

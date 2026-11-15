@@ -72,12 +72,12 @@ Data integrity:
   ... ecc section    : 0 sectors missing
 * Ecc block test   : 97 good, 1 bad; 2048 bad sub blocks
 - erasure counts   :  avg =  50.0; worst = 50 per ecc block.
-- prognosis        : 24940 of 24990 sectors recoverable (99.7%)
+- prognosis        : 24940 of 24990 sectors estimated recoverable (99.7%)
 {
   "program": "dvdisaster",
   "actions": ["verify"],
-  "exit_code": 3,
-  "verdict": "data_loss",
+  "exit_code": 1,
+  "verdict": "error",
   "image": {
     "path": "rs03i-tmp.iso",
     "size": 51179520

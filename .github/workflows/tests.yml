@@ -208,6 +208,9 @@ jobs:
       run: nproc && make -j$(nproc)
     - name: encoder, syndrome and CRC32 backend tests
       run: make check-encoders check-syndromes check-crc32
+    - name: JSON report and quiet-mode tests
+      if: matrix.printf == 'normal'
+      run: python3 tests/cli/json-report.py
     - name: check executability
       run: ./dvdisaster --version
     - name: check executable (GUI)

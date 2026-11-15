@@ -390,6 +390,47 @@ void PrintLog(char *format, ...)
    va_end(argp);
 }
 
+/* A diagnostic keeps the usual GUI/log output, but survives -q on stderr. */
+
+void PrintError(char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintLog("%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
+}
+
+void PrintCLIError(char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintCLI("%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
+}
+
+void PrintErrorCLIorLabel(GtkWidget *label, char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintCLIorLabel(label, "%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
+}
+
 /*
  * Print a message to both stdout and the log window,
  * prepending each line with an asterisk and space.
@@ -428,6 +469,8 @@ void PrintLogWithAsterisks(char *format, ...)
 
    if(Closure->guiMode)
       log_window_vprintf(new_format, argp);
+   else if(Closure->quiet == 1)
+      g_vfprintf(stderr, new_format, argp);
    else if(!Closure->quiet)
    {
       print_greetings(stdout);
@@ -610,9 +653,9 @@ void vLogWarning(char *format, va_list argp)
    if(Closure->guiMode)
    {  log_window_append(str->str);
    }
-   else if(Closure->quiet)
+   else if(Closure->quiet == 1)
       g_fprintf(stderr, "%s", str->str);
-   else
+   else if(!Closure->quiet)
    {  print_greetings(stdout);
       g_printf("%s", str->str);
       fflush(stdout);
@@ -663,14 +706,16 @@ void Stop(char *format, ...)
    if(!Closure->guiMode) 
    {  FILE *out = Closure->quiet ? stderr : stdout;  /* -q: errors only, to stderr */
 
-      if(!Closure->quiet)
-	 print_greetings(stdout);
-      g_fprintf(out, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
-      va_start(argp, format);
-      g_vfprintf(out, format, argp);
-      va_end(argp);
-      g_fprintf(out, "\n\n");
-      fflush(out);
+      if(Closure->quiet < 2)
+      {  if(!Closure->quiet)
+            print_greetings(stdout);
+         g_fprintf(out, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
+         va_start(argp, format);
+         g_vfprintf(out, format, argp);
+         va_end(argp);
+         g_fprintf(out, "\n\n");
+         fflush(out);
+      }
 
       if(Closure->jsonFile)
       {  char *msg;

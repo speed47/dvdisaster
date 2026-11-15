@@ -419,7 +419,9 @@ int main(int argc, char *argv[])
 		      g_sprintf(Closure->imageName,"%s.iso",optarg);
 		   }
 	           break;
-         case 'q': Closure->quiet = TRUE; break;
+         case 'q': Closure->quiet = MIN(Closure->quiet+1, 2);
+                   opterr = Closure->quiet < 2;
+                   break;
          case 'r': mode = MODE_SEQUENCE; sequence |= 1<<MODE_READ; 
 	           if(optarg) read_range = g_strdup(optarg);
 		   break;
@@ -941,7 +943,9 @@ int main(int argc, char *argv[])
 	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
 	   if(!image && errno != ENOENT)
+	   {  PrintError(_("\nCould not open %s: %s\n"), Closure->imageName, strerror(errno));
 	      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
+	   }
 	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
 	   if(image && !image->eccFile && image->eccFileState != ECCFILE_MISSING)
@@ -1086,6 +1090,7 @@ int main(int argc, char *argv[])
 		 "                               BDNODM, BD2NODM, BDXL3NODM, BDXL4NODM,\n"
 		 "                               or a raw sector count\n"));
       PrintCLI(_("  -q, --quiet                - print only errors and warnings (to stderr)\n"));
+      PrintCLI(_("  -qq                       - suppress errors and warnings too\n"));
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --detailed-exit-status     - distinguish defects and incomplete recovery (see man page)\n"));
@@ -1106,6 +1111,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --ignore-iso-size          - ignore image size from ISO/UDF data (dangerous - see man page!)\n"));
       PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
       PrintCLI(_("  --json f                   - write a JSON report of the results to file f (- for stdout)\n"));
+      PrintCLI(_("                               file must not exist; use -q with --json -\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));
