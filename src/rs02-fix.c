@@ -162,6 +162,8 @@ void RS02Fix(Image *image)
    gint64 damaged_eccblocks=0;
    gint64 damaged_eccsecs=0;
    gint64 expected_sectors;
+   int headers_repaired;
+   gint64 original_image_size = image->file->size;
    char *t=NULL;
 
    /*** Register the cleanup procedure for GUI mode */
@@ -286,10 +288,10 @@ void RS02Fix(Image *image)
    eh_swapped = g_malloc(sizeof(EccHeader));
    memcpy(eh_swapped, eh, sizeof(EccHeader));
    SwapEccHeaderBytes(eh_swapped);
-   WriteRS02Headers(image->file, lay, eh_swapped);
+   headers_repaired = WriteRS02Headers(image->file, lay, eh_swapped, TRUE);
    g_free(eh_swapped);
 #else
-   WriteRS02Headers(image->file, lay, eh);
+   headers_repaired = WriteRS02Headers(image->file, lay, eh, TRUE);
 #endif
 
    /*** Prepare buffers for ecc code processing.
@@ -817,7 +819,7 @@ skip:
 			      corrected, Closure->redMarkup, uncorrected);
    }
    else
-   {  if(!corrected)
+   {  if(!corrected && original_image_size == image->file->size && !headers_repaired)
       {    t=_("Good! All sectors are already present.");
            PrintLog("%s\n", t);
       }
@@ -826,6 +828,10 @@ skip:
 	   PrintLog("%s\n", t);
       }
    }
+   if(uncorrected > 0)    SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
+   else if(corrected > 0 || original_image_size != image->file->size || headers_repaired)
+      SetExitCode(EXIT_SUCCESS, EXIT_CODE_DEFECTS);
+
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);

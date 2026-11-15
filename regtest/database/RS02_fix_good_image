@@ -9,3 +9,5 @@ Opening rs02-tmp.iso: 34932 medium sectors.
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.
 Good! All sectors are already present.
+Exit status: 0
+Detailed exit status: 0

@@ -283,6 +283,7 @@ typedef struct _GlobalClosure
    int regtestMode;     /* tweaks output for compatibility with regtests */
    int debugCDump;      /* dump as #include file instead of hexdump */
    int verbose;         /* may activate additional messages */
+   int detailedExitStatus; /* opt-in CLI statuses; not a saved GUI preference */
    int quickVerify;     /* do only non time-consuming verify actions */
    int screenShotMode;  /* screen shot mode */
    int autoSuffix;      /* automatically extend files with suffices .iso/.ecc */
@@ -440,6 +441,12 @@ typedef struct _GlobalClosure
 extern GlobalClosure *Closure;  /* these should be the only global variables! */
 extern int exitCode;            /* value to use on exit() */
 
+/* Exit codes in addition to EXIT_SUCCESS (0) and EXIT_FAILURE (1);
+   see EXIT STATUS in the man page */
+
+#define EXIT_CODE_DEFECTS   2       /* defects detected, or successful repair/adaptive read */
+#define EXIT_CODE_INCOMPLETE 3       /* incomplete recovery, predicted or observed */
+
 #ifdef WITH_GUI_YES
    extern GdkRGBA transparent;
 #endif  /* WITH_GUI_YES */
@@ -576,6 +583,7 @@ int ProbeCacheLineSize();
 void InitClosure(void);
 void LocalizedFileDefaults(void);
 void FreeClosure(void);
+void SetExitCode(int, int);
 void WriteSignature(void);
 int  VerifySignature(void);
 

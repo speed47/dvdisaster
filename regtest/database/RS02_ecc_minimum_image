@@ -23,3 +23,4 @@ Error correction data: created by dvdisaster-0.80
 - crc md5sum       : 60482acd04893d8cbff7d8376ee0adc6 (good)
 - ecc md5sum       : 769345d87ba7c17556073848c114cf8b (good)
 Exit status: 0
+Detailed exit status: 0

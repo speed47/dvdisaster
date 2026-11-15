@@ -1,0 +1,15 @@
+814f4c46fbb687eb43613fdfde9458cf
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs02-tmp.iso: 34932 medium sectors.
+
+Fix mode(RS02): Repairable sectors will be fixed in the image.
+Repaired sectors: 4795 (0 data, 4795 ecc)
+Good! All sectors are repaired.
+Erasure counts per ecc block:  avg =  35.0; worst = 35.
+Exit status: 0
+Detailed exit status: 2

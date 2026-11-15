@@ -536,6 +536,19 @@ find_dotfile:
 GlobalClosure *Closure;
 int exitCode = EXIT_SUCCESS;
 
+/* Keep action success separate from the detailed condition: status 2 can
+   mean a failed integrity check or a successful repair/adaptive read.
+   Aggregate in the selected mode; operational failure always takes priority. */
+
+void SetExitCode(int result, int detailed_result)
+{  int code = Closure->detailedExitStatus ? detailed_result : result;
+
+   if(exitCode == EXIT_FAILURE)
+      return;
+   if(code == EXIT_FAILURE || code > exitCode)
+      exitCode = code;
+}
+
 void InitClosure()
 {  gint64 parts[3], version_number;
    const char *v = VERSION;

@@ -2032,8 +2032,10 @@ finished:
       GuiSetAdaptiveReadFootline(t, 0);
 
       g_free(t);
-      exitCode = EXIT_FAILURE;
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
    }
+   else if(rc->map && rc->readable < rc->expectedSectors)
+      SetExitCode(EXIT_SUCCESS, EXIT_CODE_DEFECTS);
 
    /* Results for reading in IMAGE_ONLY mode */
 
@@ -2056,7 +2058,7 @@ finished:
 
 	 GuiSetAdaptiveReadFootline(t, 0);
 	 g_free(t);
-	 exitCode = EXIT_FAILURE;
+	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
    }
 

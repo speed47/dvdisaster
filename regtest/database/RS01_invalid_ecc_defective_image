@@ -1,0 +1,15 @@
+4dcbfced2edca5870881ca7f099b8c7d
+76ef3273d97f042ddd057ee5f8361b65
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+* missing sector   : 1000
+* BAD image        : 1 sectors missing
+
+rs01-tmp.ecc: invalid
+
+Exit status: 1
+Detailed exit status: 1

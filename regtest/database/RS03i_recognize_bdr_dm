@@ -17,4 +17,4 @@ Error correction properties:
 Data integrity:
 * medium sectors   : 11594250 (11826135 expected)
 * quick mode        : image NOT scanned
-Exit status: 0
+Exit status: 1

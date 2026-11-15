@@ -1,3 +1,4 @@
+# Deterministic RS03 test fixtures.
 # Small on-disk fixtures for recognition tests at real BD-R capacities.
 # Only one CRC block survives; the header and the other sectors are zero.
 # These are recognition fixtures, not images suitable for full verification.
@@ -59,4 +60,24 @@ function make_bdr_recognition_fixture()
     fi
     dd if=/dev/zero of="$image" bs=2048 count=1 seek="$((250*spl-1))" conv=notrunc
     dd if="$block" of="$image" bs=2048 count=1 seek="$((200*spl))" conv=notrunc
+)
+
+# Damage one block of rs03i-master.iso (98 sectors/layer, 39 roots).
+# Thirty data-sector erasures plus ten unlocated parity errors exceed its
+# correction capacity: 30 + 2*10 > 39. The parity sectors stay readable,
+# so an erasure-only prognosis incorrectly promises full recovery.
+# Use the same fixture for verify and fix; neither test depends on the other.
+function make_rs03i_mixed_damage_fixture()
+(
+    set -e
+    local master=$1 image=$2 i
+
+    cp "$master" "$image"
+    for ((i=0; i<30; i++)); do
+        "$NEWVER" --debug -i"$image" --erase "$((1000+i*98))"
+    done
+    for ((i=0; i<10; i++)); do
+        dd if="$RNDSEQ" of="$image" bs=2048 count=1 \
+           seek="$(((216+i)*98+20))" conv=notrunc
+    done
 )

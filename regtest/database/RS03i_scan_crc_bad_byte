@@ -14,3 +14,4 @@ Reading CRC information from ecc data (RS03) ... done.
 
 All sectors successfully read, but incomplete or damaged checksums.
 Exit status: 1
+Detailed exit status: 2

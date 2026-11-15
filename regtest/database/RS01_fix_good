@@ -9,3 +9,5 @@ Opening rs01-tmp.iso: 21000 medium sectors.
 
 Fix mode(RS01): Repairable sectors will be fixed in the image.
 Good! All sectors are already present.
+Exit status: 0
+Detailed exit status: 0

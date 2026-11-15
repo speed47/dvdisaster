@@ -127,6 +127,7 @@ void RS01Fix(Image *image)
    int worst_ecc,damaged_ecc,damaged_sec,percent,last_percent = -1;
    int cache_size,cache_sector,cache_offset = 0;
    int local_plot_max;
+   gint64 original_image_size = image->file->size;
    char *t = NULL;
    gint32 nroots;         /* These are copied to increase performance. */
    gint32 ndata;
@@ -796,7 +797,7 @@ skip:
 			      corrected, Closure->redMarkup, uncorrected);
    }
    else
-   {  if(!corrected)
+   {  if(!corrected && original_image_size == image->file->size)
       {    t=_("Good! All sectors are already present.");
            PrintLog("%s\n", t);
       }
@@ -805,6 +806,10 @@ skip:
 	   PrintLog("%s\n", t);
       }
    }
+   if(uncorrected > 0)    SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
+   else if(corrected > 0 || original_image_size != image->file->size)
+      SetExitCode(EXIT_SUCCESS, EXIT_CODE_DEFECTS);
+
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sec/(double)damaged_ecc,worst_ecc);

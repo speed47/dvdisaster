@@ -11,4 +11,6 @@ Fix mode(RS02): Repairable sectors will be fixed in the image.
 * Warning: Image file is 1 sectors longer than expected.
 *          Assuming this is a TAO mode medium.
 *          1 sectors will be removed from the image end.
-Good! All sectors are already present.
+Good! All sectors are repaired.
+Exit status: 0
+Detailed exit status: 2

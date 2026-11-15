@@ -22,3 +22,4 @@ Sector 21001: Medium Error; Unrecovered read error.
 *          See the manual for details.
 *          Use the --dao option to disable this message.
 Exit status: 0
+Detailed exit status: 0

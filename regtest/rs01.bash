@@ -52,7 +52,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 if try "good image" good; then (
 
-   run_regtest good "-t" $MASTERISO $MASTERECC
+   run_regtest good "-t" $MASTERISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Test good files
@@ -62,17 +62,36 @@ if try "good image, quick test" good_quick; then (
 
 # Test with neither image nor ecc file
 if try "missing files" no_files; then (
-   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc
+   run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
-# Test with missing image, ecc file
+# A retained ECC file can be verified without keeping the original image.
+# This must succeed for RS01 as it does for RS03f.
 if try "missing image" no_image; then (
-   run_regtest no_image "-t" $ISODIR/no.iso  $MASTERECC
+   run_regtest no_image "-t" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Test with good image, no ecc file
 if try "missing ecc" no_ecc; then (
-   run_regtest no_ecc "-t" $MASTERISO $ISODIR/no.ecc
+   run_regtest no_ecc "-t" $MASTERISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# An explicitly supplied, existing but unusable ECC file is an error.
+# Keep no_ecc as the control: image-only verification remains supported.
+if try "invalid ecc file with good image" invalid_ecc; then (
+   cp $RNDSEQ $TMPECC
+
+   run_regtest invalid_ecc "-t" $MASTERISO $TMPECC EXITCODES
+) & limit_jobs; fi
+
+# Missing sectors without usable ECC first produce detailed status 3.
+# The unusable ECC file is an operational error and must take precedence.
+if try "invalid ecc file with defective image" invalid_ecc_defective_image; then (
+   cp $MASTERISO $TMPISO
+   cp $RNDSEQ $TMPECC
+   $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+
+   run_regtest invalid_ecc_defective_image "-t" $TMPISO $TMPECC EXITCODES
 ) & limit_jobs; fi
 
 # Test with missing sectors, no ecc file
@@ -83,7 +102,7 @@ if try "defective image, no ecc" defective_image_no_ecc; then (
    $NEWVER -i$TMPISO --debug --erase 12450-12457 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
-  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc
+  run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
@@ -98,7 +117,7 @@ if try "image with 56 extra bytes, no ecc" image_plus56_bytes; then (
 
 # Test with no image, ecc for image not multiple of 2048 
 if try "only ecc for image with 56 extra bytes" ecc_plus56_bytes; then (
-  run_regtest ecc_plus56_bytes "-t" $ISODIR/no.iso $ECC_PLUS56
+  run_regtest ecc_plus56_bytes "-t" $ISODIR/no.iso $ECC_PLUS56 EXITCODES
 ) & limit_jobs; fi
 
 # Test with normal image, ecc for image not multiple of 2048 
@@ -220,7 +239,7 @@ if try "Ecc header is missing" missing_ecc_header; then (
   cp $MASTERECC $TMPECC
   $NEWVER --debug -i $TMPECC --erase 0 >>$LOGFILE 2>&1
 
-  run_regtest missing_ecc_header "-t" $MASTERISO $TMPECC
+  run_regtest missing_ecc_header "-t" $MASTERISO $TMPECC EXITCODES
 ) & limit_jobs; fi
 
 # Ecc header has checksum error
@@ -488,7 +507,7 @@ REGTEST_SECTION="Repair tests"
 if try "fixing good image" fix_good; then (
 
   cp $MASTERISO $TMPISO
-  run_regtest fix_good "-f" $TMPISO $MASTERECC
+  run_regtest fix_good "-f" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image without read permission
@@ -565,7 +584,7 @@ if try "fixing image with missing sectors" fix_missing_sectors; then (
   $NEWVER -i$TMPISO --debug --erase 2141-2176 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --erase $((ISOSIZE-1)) >>$LOGFILE 2>&1
 
-  run_regtest fix_missing_sectors "-f" $TMPISO $MASTERECC
+  run_regtest fix_missing_sectors "-f" $TMPISO $MASTERECC EXITCODES
 
 ) & limit_jobs; fi
 
@@ -590,7 +609,7 @@ if try "fixing image with one additional sector" fix_additional_sector; then (
   cat $TEST_TMPDIR/padding >>$TMPISO
   rm -f $TEST_TMPDIR/padding
 
-  run_regtest fix_additional_sector "-f" $TMPISO $MASTERECC
+  run_regtest fix_additional_sector "-f" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image with additional sectors (general case)
@@ -612,7 +631,7 @@ if try "fixing image with 17 additional sectors with --truncate" fix_plus17_trun
   cat $TEST_TMPDIR/padding >>$TMPISO
   rm -f $TEST_TMPDIR/padding
 
-  run_regtest fix_plus17_truncate "-f --truncate" $TMPISO $MASTERECC
+  run_regtest fix_plus17_truncate "-f --truncate" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image+56bytes 
@@ -690,7 +709,7 @@ if try "fixing image not a multiple of 2048 missing a few bytes" fix_plus56_litt
   cat $TEST_TMPDIR/padding >>$TMPISO
   rm -f $TEST_TMPDIR/padding
 
-  run_regtest fix_plus56_little_truncated "-f" $TMPISO $ECC_PLUS56
+  run_regtest fix_plus56_little_truncated "-f" $TMPISO $ECC_PLUS56 EXITCODES
 ) & limit_jobs; fi
 
 ### Scanning tests
@@ -702,7 +721,7 @@ REGTEST_SECTION="Scanning tests"
 if try "scanning image, no ecc data" scan_no_ecc; then (
 
   extra_args="--debug -d sim-cd --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest scan_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso $ISODIR/no.ecc EXITCODE
+  run_regtest scan_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Scan image from non-existant device
@@ -736,7 +755,7 @@ if try "scanning image, defective media, no ecc data" scan_defective_no_ecc; the
   $NEWVER --debug -i$SIMISO --erase 2410 >>$LOGFILE 2>&1
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_defective_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODE
+  run_regtest scan_defective_no_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Scan image from above test again, this time with a 1 sector skip size
@@ -795,7 +814,7 @@ if try "scanning new image with invalid range, no ecc data" scan_new_with_invali
 if try "scanning image, ecc data" scan_with_ecc; then (
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest scan_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
+  run_regtest scan_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Scan image with non existing error correction file given
@@ -832,7 +851,7 @@ if try "scanning image, crc errors, ecc data" scan_crc_errors_with_ecc; then (
   $NEWVER --debug -i$SIMISO --byteset 20999,55,123 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_crc_errors_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
+  run_regtest scan_crc_errors_with_ecc "--spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -858,7 +877,7 @@ if try "scanning image, more sectors than expected, ecc data" scan_longer_with_e
     
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
+  run_regtest scan_longer_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -872,7 +891,7 @@ if try "scanning image, tao tail case, ecc data" scan_tao_tail_with_ecc; then (
     
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODE
+  run_regtest scan_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -s" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Scan image with error correction data available
@@ -1216,7 +1235,7 @@ if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then (
   $NEWVER --debug -i$SIMISO --byteset 20999,55,123 >>$LOGFILE 2>&1
     
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODE
+  run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Read image with error correction data available

@@ -66,7 +66,7 @@ if try "good image, quick test" good_quick; then (
 # Test with missing image, ecc file
 
 if try "missing image" no_image; then (
-  run_regtest no_image "-t" $ISODIR/no.iso  $MASTERECC
+  run_regtest no_image "-t" $ISODIR/no.iso  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048
@@ -90,7 +90,7 @@ if try "no image; ecc for image with 56 extra bytes" no_image_plus56_bytes; then
 
   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -mRS03 -n$REDUNDANCY -o file -c >>$LOGFILE 2>&1
 
-  run_regtest no_image_plus56_bytes "-t" $ISODIR/no.iso $TMPECC
+  run_regtest no_image_plus56_bytes "-t" $ISODIR/no.iso $TMPECC EXITCODES
 ) & limit_jobs; fi
 
 
@@ -800,7 +800,7 @@ if try "fixing good image" fix_good; then (
   cp $MASTERISO $TMPISO
   cp $MASTERECC $TMPECC
 
-  run_regtest fix_good "-f" $TMPISO $TMPECC
+  run_regtest fix_good "-f" $TMPISO $TMPECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image with missing data sectors
@@ -812,7 +812,7 @@ if try "fixing image with missing data sectors" fix_missing_data_sectors; then (
   $NEWVER --debug -i $TMPISO --erase 900-924 >>$LOGFILE 2>&1
   $NEWVER --debug -i $TMPISO --erase 73 >>$LOGFILE 2>&1
 
-  run_regtest fix_missing_data_sectors "-f" $TMPISO $TMPECC
+  run_regtest fix_missing_data_sectors "-f" $TMPISO $TMPECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix ecc file with missing crc sectors
@@ -946,7 +946,7 @@ if try "fixing image with one additional sector" fix_additional_sector; then (
   cp $MASTERISO $TMPISO
   dd if="$RNDSEQ" count=1 bs=2048 >>$TMPISO 2>/dev/null
 
-  run_regtest fix_additional_sector "-f" $TMPISO $MASTERECC
+  run_regtest fix_additional_sector "-f" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image with additional sectors (general case)
@@ -965,7 +965,7 @@ if try "fixing image with 17 additional sectors with --truncate" fix_plus17_trun
   cp $MASTERISO $TMPISO
   dd if=/dev/zero count=17 bs=2048 >>$TMPISO 2>/dev/null
 
-  run_regtest fix_plus17_truncate "-f --truncate" $TMPISO $MASTERECC
+  run_regtest fix_plus17_truncate "-f --truncate" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Fix image+56bytes 
@@ -1084,7 +1084,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $MASTERECC EXITCODE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Scan complete / optimal image
@@ -1240,7 +1240,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO $MASTERECC EXITCODE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Image contains bad byte in the crc section

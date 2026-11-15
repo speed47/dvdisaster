@@ -81,7 +81,7 @@ if try "refuse strip with displaced CRC block before CRC layer" strip_crc_before
   dd if=$MASTERISO of=$TMPISO bs=2048 skip=21070 seek=20972 count=1 conv=notrunc >>$LOGFILE 2>&1
 
   extra_args="--debug -n$ECCSIZE"
-  run_regtest strip_crc_before_layer "--strip" $TMPISO $NO_FILE EXITCODE
+  run_regtest strip_crc_before_layer "--strip" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # The end of the declared CRC layer is exclusive. This block is at the
@@ -92,7 +92,7 @@ if try "refuse strip with displaced CRC block after CRC layer" strip_crc_after_l
   dd if=$MASTERISO of=$TMPISO bs=2048 skip=21070 seek=21168 count=1 conv=notrunc >>$LOGFILE 2>&1
 
   extra_args="--debug -n$ECCSIZE"
-  run_regtest strip_crc_after_layer "--strip" $TMPISO $NO_FILE EXITCODE
+  run_regtest strip_crc_after_layer "--strip" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 ### Verification tests
@@ -102,7 +102,7 @@ REGTEST_SECTION="Verify tests"
 # Test good files
 
 if try "good image" good; then (
-  run_regtest good "-t" $MASTERISO $NO_FILE
+  run_regtest good "-t" $MASTERISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Test good files, quick test
@@ -197,7 +197,27 @@ if try "several missing data sectors" missing_data_sectors; then (
    $NEWVER -i$TMPISO --debug --erase 13420-14109 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --erase 17812 >>$LOGFILE 2>&1
 
-   run_regtest missing_data_sectors "-t" $TMPISO $NO_FILE
+   run_regtest missing_data_sectors "-t" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# One ecc block has more missing sectors than it can correct
+
+if try "uncorrectable ecc block" uncorrectable_block; then (
+   cp $MASTERISO $TMPISO
+   for i in $(seq 0 49); do
+      $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+   done
+
+   run_regtest uncorrectable_block "-t" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# Mixed erasures and parity corruption expose the limits of a prognosis:
+# detailed status 2 permits a repair attempt; it does not promise success.
+# The paired fix_mixed_damage test demonstrates actual failure (status 3).
+if try "uncorrectable mixed data and parity damage" mixed_damage; then (
+   make_rs03i_mixed_damage_fixture "$MASTERISO" "$TMPISO" >>$LOGFILE 2>&1
+
+   run_regtest mixed_damage "-t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains several missing ecc sectors
@@ -791,6 +811,8 @@ if try "verify custom-n image, bad header, with -n" verify_custom_n_bad_header_w
 # Use the real single-layer capacities divided by 255, without -n. These
 # fixtures retain only the CRC block at 200*spl and end at 250*spl, so neither
 # the initial wrong layout nor any image-derived guess can recognize them.
+# Successful recognition still reports a failed size check (default status 1);
+# quick verification does not scan the image or estimate repairability.
 # Do not hash the sparse images (their logical sizes are over 20 GB).
 
 if try "recognize truncated no-DM BD-R image with default setting" recognize_bdr_nodm; then (
@@ -1168,7 +1190,7 @@ if try "trying fix with no write permission" fix_no_write_perm; then (
 if try "trying fix with good image" fix_good_image; then (
   cp $MASTERISO $TMPISO
 
-  run_regtest fix_good_image "-f" $TMPISO $NO_FILE
+  run_regtest fix_good_image "-f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix a truncated image
@@ -1187,7 +1209,7 @@ if try "trying fix with trailing bytes" fix_trailing_bytes; then (
    cp $MASTERISO $TMPISO
    echo "some trailing garbage appended for testing" >>$TMPISO
 
-   run_regtest fix_trailing_bytes "-f" $TMPISO  $NO_FILE
+   run_regtest fix_trailing_bytes "-f" $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix an image with trailing garbage (TAO case)
@@ -1196,7 +1218,7 @@ if try "trying fix with trailing garbage (TAO case)" fix_trailing_tao; then (
    cp $MASTERISO $TMPISO
    dd if=/dev/zero count=2 bs=2048 >>$TMPISO 2>>$LOGFILE
 
-   run_regtest fix_trailing_tao "-f" $TMPISO  $NO_FILE
+   run_regtest fix_trailing_tao "-f" $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix an image with trailing garbage (general case), without doing anything
@@ -1214,7 +1236,7 @@ if try "trying fix with trailing garbage with --truncate" fix_trailing_garbage2;
    cp $MASTERISO $TMPISO
    dd if=/dev/zero count=23 bs=2048 >>$TMPISO 2>>$LOGFILE
 
-   run_regtest fix_trailing_garbage2 "-f --truncate" $TMPISO  $NO_FILE
+   run_regtest fix_trailing_garbage2 "-f --truncate" $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix image with missing sectors (real damage and everything else being okay)
@@ -1225,7 +1247,33 @@ if try "trying to fix correctable image" fix_correctable; then (
   $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
   $NEWVER --debug -i$TMPISO --byteset 2000,0,111 >>$LOGFILE 2>&1
 
-  run_regtest fix_correctable "-f" $TMPISO  $NO_FILE
+  run_regtest fix_correctable "-f" $TMPISO  $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# Fix image with one uncorrectable ecc block
+
+if try "trying to fix image with uncorrectable ecc block" fix_uncorrectable_block; then (
+  cp $MASTERISO $TMPISO
+  for i in $(seq 0 49); do
+     $NEWVER -i$TMPISO --debug --erase $((1000+i*98)) >>$LOGFILE 2>&1
+  done
+
+  run_regtest fix_uncorrectable_block "-f" $TMPISO  $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# The same mixed-damage fixture used by verification is not repairable.
+# Its golden also checks that the failed repair preserves the image bytes.
+if try "fixing uncorrectable mixed data and parity damage" fix_mixed_damage; then (
+  make_rs03i_mixed_damage_fixture "$MASTERISO" "$TMPISO" >>$LOGFILE 2>&1
+
+  run_regtest fix_mixed_damage "-f" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# Failed repair (3) must survive the following verification's estimate (2).
+if try "failed repair followed by verification" fix_mixed_damage_verify; then (
+  make_rs03i_mixed_damage_fixture "$MASTERISO" "$TMPISO" >>$LOGFILE 2>&1
+
+  run_regtest fix_mixed_damage_verify "-f -t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix image with missing sectors in several border locations
@@ -1525,7 +1573,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Scan complete / optimal image, verbose output
@@ -1636,7 +1684,7 @@ if try "scanning image with missing data sectors" scan_missing_data_sectors; the
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO  $NO_FILE
+   run_regtest scan_missing_data_sectors "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains 1 row of missing sectors and a single one
@@ -1670,7 +1718,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains bad byte in the crc section
@@ -1680,7 +1728,7 @@ if try "scanning image with bad crc byte" scan_crc_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 21077,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_crc_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODE
+   run_regtest scan_crc_bad_byte "--spinup-delay=0 -s " $TMPISO  $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains bad byte in the ecc section
@@ -2179,7 +2227,17 @@ if try "reading image with missing data sectors" read_missing_data_sectors; then
    $NEWVER -i$SIMISO --debug --erase 22450-22457 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest read_missing_data_sectors "--spinup-delay=0 -r " $TMPISO  $NO_FILE
+   run_regtest read_missing_data_sectors "--spinup-delay=0 -r " $TMPISO  $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# A linear read with missing sectors fails, even if repair and verification
+# subsequently succeed: default status 1 must survive successful actions.
+if try "linear read with defects, repair and verify" read_fix_verify; then (
+   cp $MASTERISO $SIMISO
+   $NEWVER --debug -i$SIMISO --erase 1000 >>$LOGFILE 2>&1
+
+   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+   run_regtest read_fix_verify "--spinup-delay=0 -r -f -t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains 1 row of missing sectors and a single one

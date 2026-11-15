@@ -14,3 +14,5 @@ Adaptive reading: Trying to collect enough data for error correction.
 Analysing existing image file: 34932 readable, 0 correctable, 0 still missing.
 
 Sufficient data for reconstructing the image is available.
+Exit status: 0
+Detailed exit status: 0

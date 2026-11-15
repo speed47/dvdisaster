@@ -106,3 +106,5 @@ Fix mode(RS01): Repairable sectors will be fixed in the image.
 Repaired sectors: 240     
 Good! All sectors are repaired.
 Erasure counts per ecc block:  avg =  2.5; worst = 3.
+Exit status: 0
+Detailed exit status: 2

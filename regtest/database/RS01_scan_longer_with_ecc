@@ -14,3 +14,4 @@ Reading CRC information from ecc data (RS01) ... done.
 
 All sectors successfully read, but wrong image length (44 sectors difference)
 Exit status: 1
+Detailed exit status: 2

@@ -157,6 +157,7 @@ void RS03Fix(Image *image)
    gint64 damaged_eccblocks=0;
    gint64 damaged_eccsecs=0;
    gint64 expected_sectors;
+   gint64 original_image_size = image->file->size;
    char *t=NULL;
 #ifdef WITH_GUI_YES
    char *msg;
@@ -913,20 +914,21 @@ skip:
 			      _("Image sectors could not be fully restored "
 				"(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
 			      corrected, Closure->redMarkup, uncorrected);
-      exitCode = 2;
    }
    else
-   {  if(!corrected)
+   {  if(!corrected && original_image_size == image->file->size)
       {    t=_("Good! All sectors are already present.");
            PrintLog("%s\n", t);
-	   exitCode = 0;
       }
       else 
       {    t=_("Good! All sectors are repaired.");
 	   PrintLog("%s\n", t);
-	   exitCode = 1;
       }
    }
+   if(uncorrected > 0)    SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
+   else if(corrected > 0 || original_image_size != image->file->size)
+      SetExitCode(EXIT_SUCCESS, EXIT_CODE_DEFECTS);
+
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
 	     (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);

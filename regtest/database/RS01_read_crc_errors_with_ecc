@@ -18,3 +18,4 @@ Reading CRC information from ecc data (RS01) ... done.
 
 4 CRC errors.
 Exit status: 1
+Detailed exit status: 2
