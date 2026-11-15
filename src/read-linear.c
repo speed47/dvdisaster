@@ -709,7 +709,7 @@ static gpointer worker_thread(read_closure *rc)
 	   {  switch(CheckAgainstCrcBuffer(Closure->crcBuf, sector, buf))
 	      {  case CRC_BAD:
 		   ClearProgress();
-		   PrintCLI(_("* CRC error, sector: %lld\n"), (long long int)s+i);
+		   PrintCLIError(_("* CRC error, sector: %lld\n"), (long long int)s+i);
 		   Closure->crcErrors++;
 		   if(rc->readMap)  /* trigger re-read */
 		   {  g_mutex_lock(rc->mutex);  /* reader sets bits in the same words */
@@ -767,7 +767,7 @@ void ReadMediumLinear(gpointer data)
    int nsectors; 
    char *t = NULL;
    int status,n;
-   int tao_tail;
+   int tao_tail, run_out, summary_error = FALSE;
    int i;
 
    /*** This value might be temporarily changed later. */
@@ -873,14 +873,14 @@ void ReadMediumLinear(gpointer data)
       else
 #endif /* WITH_GUI_YES */
       {  if(rc->image->eccFileState == ECCFILE_PRESENT)
-	    PrintCLI(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
+	    PrintCLIError(_("* Warning: This ecc file requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
 		    "*          Please read the image without using this ecc file\n"
 		    "*          or upgrade dvdisaster.\n\n"), 
 		  rc->eccHeader->neededVersion/10000,
 		  (rc->eccHeader->neededVersion%10000)/100);
 	else
-	    PrintCLI(_("* Warning: This image requires dvdisaster-%d.%d!\n"
+	    PrintCLIError(_("* Warning: This image requires dvdisaster-%d.%d!\n"
 		    "*          Proceeding could trigger incorrect behaviour.\n"
 		    "*          Please upgrade dvdisaster.\n\n"), 
 		  rc->eccHeader->neededVersion/10000,
@@ -1267,7 +1267,7 @@ reread:
 	 if(Closure->sectorSkip && nsectors > 1)
 	 {  int i;
 
-	    PrintCLIorLabel(Closure->status,
+	    PrintErrorCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ": %s Skipping %d sectors.\n"),
 			    rc->readPos, GetLastSenseString(FALSE), nfill-1);  
 	    for(i=0; i<nfill; i++)         /* workaround: large values for nfill */
@@ -1295,7 +1295,7 @@ reread:
 	       goto reread;
 	    }
 	    else 
-	    {  PrintCLIorLabel(Closure->status,
+	    {  PrintErrorCLIorLabel(Closure->status,
 			       _("Sector %" PRId64 ": %s\n"),
 			       rc->readPos, GetLastSenseString(FALSE));  
 	       if(rc->readPos >= rc->image->dh->sectors - 2) tao_tail++;
@@ -1390,7 +1390,7 @@ step_counter:
       if(corrupted_sectors > 0 && !Closure->readErrors)
 	{  t = g_strdup_printf(_("All sectors are readable, but %d contain defective content."),
 			       corrupted_sectors);
-	   SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
+	   summary_error = TRUE;
       }
       else
       /* Image was fully readable and had no CRC errors (if CRC was available at all!).
@@ -1408,12 +1408,12 @@ step_counter:
 	 {  t = g_strdup(_("All sectors successfully read, but wrong ecc md5sum."));
 	 }
 
-	 if(t) SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
+	 if(t) summary_error = TRUE;
 	 else
 	 {  if(rc->eccMethod) /* we had CRC sums to compare against */
 	    {  if(rc->crcIncomplete)
 	       {  t = g_strdup(_("All sectors successfully read, but incomplete or damaged checksums."));
-		  SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
+		  summary_error = TRUE;
 	       }
 	       else t = g_strdup(_("All sectors successfully read. Checksums match."));
 	    }
@@ -1437,9 +1437,27 @@ step_counter:
    /* Unreadable sectors set the exit code further below (TAO tail case) */
 
    if(Closure->crcErrors)
+      summary_error = TRUE;
+
+   /* The two unreadable run-out sectors at the end of a TAO CD don't count as defects */
+
+   run_out = rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors
+             && !Closure->noTruncate ? tao_tail : 0;
+
+   if(summary_error)
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
-   PrintLog("\n%s\n",t);
+   if(summary_error || Closure->readErrors > run_out)
+      PrintError("\n%s\n", t);
+   else
+      PrintLog("\n%s\n", t);
+
+   ReportDevice(rc->image->dh);
+   ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
+   ReportNumber(rc->scanMode ? "scan" : "read", "readable", rc->readOK);
+   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors - run_out);
+   ReportNumber(rc->scanMode ? "scan" : "read", "crc_errors", Closure->crcErrors);
+
    if(Closure->guiMode)
    {  if(rc->scanMode)
       {  GuiSwitchAndSetFootline(Closure->readLinearNotebook,
@@ -1457,7 +1475,7 @@ step_counter:
    if(!Closure->fixedSpeedValues)
      PrintTimeToLog(rc->readTimer, "for reading/scanning.\n");
 
-   if(rc->image->dh->mainType == CD && tao_tail && tao_tail == Closure->readErrors && !Closure->noTruncate)
+   if(run_out)
    {  int answer;
    
       if(Closure->guiMode)

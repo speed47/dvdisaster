@@ -486,7 +486,7 @@ void RS03Fix(Image *image)
 	   if(crc_valid && !erasure_map[i] && crc != crc_buf[crc_idx])
 	   {  erasure_map[i] = 3;
 	      erasure_list[erasure_count++] = i;
-	      PrintCLI(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
+	      PrintCLIError(_("CRC error in sector %" PRId64 "\n"),block_idx[i]);
 	      damaged_sectors++;
 	      crc_errors++;
 	   }
@@ -909,7 +909,7 @@ skip:
 	       corrected, data_corr, ecc_corr);
    }
    if(uncorrected > 0) 
-   {  PrintLog(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);      
+   {  PrintError(_("Unrepaired sectors: %" PRId64 "\n"), uncorrected);
       GuiSwitchAndSetFootline(wl->fixNotebook, 1, wl->fixFootline,
 			      _("Image sectors could not be fully restored "
 				"(%" PRId64 " repaired; <span %s>%" PRId64 " unrepaired</span>)"),
@@ -928,6 +928,8 @@ skip:
    if(uncorrected > 0)    SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
    else if(corrected > 0 || original_image_size != image->file->size)
       SetExitCode(EXIT_SUCCESS, EXIT_CODE_DEFECTS);
+   ReportNumber("fix", "repaired", corrected);
+   ReportNumber("fix", "unrepaired", uncorrected);
 
    if(corrected > 0 || uncorrected > 0)
      PrintLog(_("Erasure counts per ecc block:  avg =  %.1f; worst = %d.\n"),
@@ -945,17 +947,17 @@ skip:
 	   damaged_eccblocks, 2048*lay->sectorsPerLayer,
 	   damaged_eccsecs, lay->sectorsPerLayer);
    if(data_count != (ndata-1)*lay->sectorsPerLayer)
-        g_printf("ONLY %lld of %lld data sectors processed\n", 
+        PrintCLIError("ONLY %lld of %lld data sectors processed\n",
 		 (long long int)data_count, (long long int)(ndata-1)*lay->sectorsPerLayer);
    else Verbose("all data sectors processed\n");
 
    if(crc_count != lay->sectorsPerLayer)
-        g_printf("%lld of %lld crc sectors processed\n", 
+        PrintCLIError("%lld of %lld crc sectors processed\n",
 		 (long long int)crc_count, (long long int)lay->sectorsPerLayer);
    else Verbose("all  crc sectors processed\n");
 
    if(ecc_count != nroots*lay->sectorsPerLayer)
-        g_printf("%lld of %lld ecc sectors processed\n", 
+        PrintCLIError("%lld of %lld ecc sectors processed\n",
 		 (long long int)ecc_count, (long long int)nroots*lay->sectorsPerLayer);
    else Verbose("all  ecc sectors processed\n");
 

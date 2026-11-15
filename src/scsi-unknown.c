@@ -34,7 +34,7 @@
 
 char* DefaultDevice()
 {
-   PrintLog(_("* Unsupported operating system - no SCSI layer available.\n"
+   PrintError(_("* Unsupported operating system - no SCSI layer available.\n"
 	      "* No drives can be used.\n"));
 
    return strdup("no_drives");

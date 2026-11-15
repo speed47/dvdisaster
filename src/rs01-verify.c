@@ -435,11 +435,16 @@ void RS01Verify(Image *image)
 
    /* Report basic image properties */
 
-   PrintLog("\n%s: ", Closure->imageName);
+   if((!image || !image->file) && (!image || !image->eccFile))
+      PrintError("\n%s: ", Closure->imageName);
+   else
+      PrintLog("\n%s: ", Closure->imageName);
    if(!image || !image->file)
-   {  PrintLog(_("not present\n"));
-      if(!image || !image->eccFile)
+   {  if(!image || !image->eccFile)
+      {  PrintError(_("not present\n"));
          SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
+      }
+      else PrintLog(_("not present\n"));
 
       GuiSwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
       goto process_ecc;
@@ -476,7 +481,7 @@ void RS01Verify(Image *image)
       if(image->sectorSize < image->expectedSectors)
       {  diff = image->expectedSectors - image->sectorSize;
 
-	 PrintLog(_("* truncated image  : %" PRId64 " sectors too short\n"), diff);
+	 PrintError(_("* truncated image  : %" PRId64 " sectors too short\n"), diff);
 	 GuiSetLabelText(wl->cmpImageSectors, 
 			 _("<span %s>%" PRId64 " (%" PRId64 " sectors too short)</span>"),
 			 Closure->redMarkup, image->sectorSize, diff);
@@ -492,6 +497,13 @@ void RS01Verify(Image *image)
    if(image->sectorsMissing || image->crcErrors || excess_sectors)
       SetExitCode(EXIT_FAILURE, image->eccFile ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
+   if(!Closure->quickVerify)
+   {  ReportNumber("verify", "missing_sectors", image->sectorsMissing);
+      ReportNumber("verify", "crc_errors", image->crcErrors);
+      if(!image->sectorsMissing)
+	 ReportMd5("verify", "image_md5", image->mediumSum);
+   }
+
    if(image->crcErrors)
    {  GuiSetLabelText(wl->cmpChkSumErrors, 
 		      "<span %s>%" PRId64 "</span>",
@@ -503,7 +515,7 @@ void RS01Verify(Image *image)
 		      Closure->redMarkup, image->sectorsMissing);
    }
    if(excess_sectors)
-   {  PrintLog(_("* image too long   : %" PRId64 " excess sectors\n"), excess_sectors);
+   {  PrintError(_("* image too long   : %" PRId64 " excess sectors\n"), excess_sectors);
       GuiSetLabelText(wl->cmpImageSectors, 
 		      _("<span %s>%" PRId64 " (%" PRId64 " excess sectors)</span>"),
 		      Closure->redMarkup, image->sectorSize, excess_sectors);
@@ -526,7 +538,7 @@ void RS01Verify(Image *image)
 	    GuiSetLabelText(wl->cmpImageMd5Sum, "%s", idigest);
 	 }
 	 else
-	 {  PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"
+	 {  PrintError(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"
 		       "- image md5sum     : %s\n"),image->crcErrors,idigest);
 
 	    GuiSetLabelText(wl->cmpImageResult, _("<span %s>Image complete, but contains checksum errors!</span>"), Closure->redMarkup);
@@ -535,8 +547,8 @@ void RS01Verify(Image *image)
       }
       else /* sectors are missing */
       {  if(!image->crcErrors)
-	      PrintLog(_("* BAD image        : %" PRId64 " sectors missing\n"), image->sectorsMissing);
-	 else PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
+	      PrintError(_("* BAD image        : %" PRId64 " sectors missing\n"), image->sectorsMissing);
+	 else PrintError(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"),
 		         image->sectorsMissing, image->crcErrors);
 
 	 GuiSetLabelText(wl->cmpImageResult,
@@ -551,10 +563,13 @@ process_ecc:
 		   _("Comparing image and error correction files."),
 		   _("- Checking ecc file -"));
 
-   PrintLog("\n%s: ", Closure->eccName);
+   if(!image || (!image->eccFile && image->eccFileState != ECCFILE_MISSING))
+      PrintError("\n%s: ", Closure->eccName);
+   else
+      PrintLog("\n%s: ", Closure->eccName);
 
    if(!image)
-   {  PrintLog(_("not present\n"));
+   {  PrintError(_("not present\n"));
       GuiSwitchAndSetFootline(wl->cmpEccNotebook, 0, 
 			      wl->cmpEccEmptyMsg,_("No error correction file present."));
       goto skip_ecc;
@@ -566,22 +581,22 @@ process_ecc:
 
       switch(image->eccFileState)
       {  case ECCFILE_NOPERM:
-	    PrintLog(_("permission denied\n"));
+	    PrintError(_("permission denied\n"));
 	    break;
 	 case ECCFILE_MISSING:
 	    PrintLog(_("not present\n"));
 	    break;
 	 case ECCFILE_INVALID:
-	    PrintLog(_("invalid\n"));
+	    PrintError(_("invalid\n"));
 	    break;
 	 case ECCFILE_DEFECTIVE_HEADER:
-	    PrintLog(_("defective header (unusable)\n"));
+	    PrintError(_("defective header (unusable)\n"));
 	    break;
 	 case ECCFILE_WRONG_CODEC:
-	    PrintLog(_("unknown codec (unusable)\n"));
+	    PrintError(_("unknown codec (unusable)\n"));
 	    break;
 	 default:
-	    PrintLog(_("unusable\n"));
+	    PrintError(_("unusable\n"));
 	    break;
       }
 
@@ -656,7 +671,7 @@ process_ecc:
 		       (eh->neededVersion%10000)/100);
    }
    else 
-   {  PrintLog(_("* requires         : dvdisaster-%d.%d (BAD)\n"
+   {  PrintError(_("* requires         : dvdisaster-%d.%d (BAD)\n"
 		 "* Warning          : The following output might be incorrect.\n"
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
@@ -712,7 +727,7 @@ process_ecc:
       else /* sector sizes differ */
       { /* TAO case (1 or 2 sectors more than expected) */
 	if(image->sectorSize > image->expectedSectors && image->sectorSize - image->expectedSectors <= 2)   
-	{  PrintLog(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"), image->expectedSectors);
+	{  PrintError(_("* medium sectors   : %" PRId64 " (BAD, perhaps TAO/DAO mismatch)\n"), image->expectedSectors);
 	   if(!ecc_in_last)  
 	   {  GuiSetLabelText(wl->cmpEccMediumSectors, "<span %s>%" PRId64 "</span>", 
 			      Closure->redMarkup, image->expectedSectors);
@@ -724,7 +739,7 @@ process_ecc:
 	}
 	else  /* more than 2 Sectors difference */ 
 	{  if(!ecc_in_last)
-	   {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"), image->expectedSectors);
+	   {  PrintError(_("* medium sectors   : %" PRId64 " (BAD)\n"), image->expectedSectors);
 	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	      GuiSetLabelText(wl->cmpEccMediumSectors, "<span %s>%" PRId64 "</span>", 
 			      Closure->redMarkup, image->expectedSectors);
@@ -732,7 +747,7 @@ process_ecc:
 		ecc_advice = g_strdup_printf(_("<span %s>Image size does not match error correction file.</span>"), Closure->redMarkup);
 	   }
 	   else /* byte size difference */
-	   {  PrintLog(_("* medium sectors   : %" PRId64 " sectors + %d bytes (BAD)\n"),
+	   {  PrintError(_("* medium sectors   : %" PRId64 " sectors + %d bytes (BAD)\n"),
 		       image->expectedSectors-1, ecc_in_last);
 	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	      GuiSetLabelText(wl->cmpEccMediumSectors, 
@@ -756,7 +771,7 @@ process_ecc:
 	    GuiSetLabelText(wl->cmpEccImgMd5Sum, "%s", edigest);
 	 }
 	 else
-	 {  PrintLog(_("* image md5sum     : %s (BAD)\n"),edigest);
+	 {  PrintError(_("* image md5sum     : %s (BAD)\n"),edigest);
 	    SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	    GuiSetLabelText(wl->cmpEccImgMd5Sum, "<span %s>%s</span>",
 			    Closure->redMarkup, edigest);
@@ -772,7 +787,7 @@ process_ecc:
 
    if(image && image->file)
    {  if(image->fpState != FP_PRESENT)
-      {  PrintLog(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
+      {  PrintError(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
 	 GuiSetLabelText(wl->cmpEccFingerprint,
 			 _("<span %s>missing sector prevents calculation</span>"),
 			 Closure->redMarkup);
@@ -780,7 +795,7 @@ process_ecc:
       else
       { 
 	if(memcmp(image->imageFP, eh->mediumFP, 16)) 
-	{  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
+	{  PrintError(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
 	   SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
 	   GuiSetLabelText(wl->cmpEccFingerprint, 
@@ -811,7 +826,7 @@ process_ecc:
       GuiSetLabelText(wl->cmpEccBlocks, "%" PRId64, ecc_blocks);
    }
    else
-   {  PrintLog(_("* ecc blocks       : %" PRId64 " (BAD, expected %" PRId64 ")\n"),
+   {  PrintError(_("* ecc blocks       : %" PRId64 " (BAD, expected %" PRId64 ")\n"),
 	       ecc_blocks,ecc_expected);
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       GuiSetLabelText(wl->cmpEccBlocks,
@@ -855,7 +870,7 @@ process_ecc:
    AsciiDigest(edigest, digest);
 
    if(memcmp(eh->eccSum, digest, 16))
-   {  PrintLog(_("* ecc md5sum       : BAD, ecc file may be damaged!\n"));
+   {  PrintError(_("* ecc md5sum       : BAD, ecc file may be damaged!\n"));
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       GuiSetLabelText(wl->cmpEccMd5Sum, _("<span %s>bad</span>"), Closure->redMarkup);
       if(!ecc_advice)

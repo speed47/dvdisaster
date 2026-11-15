@@ -469,6 +469,8 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
    /* now see what is correctable */
    
    recoverable = expected - missing + correctable;
+   ReportNumber("verify", "recoverable_sectors", recoverable);
+   ReportNumber("verify", "worst_ecc_block_erasures", worst_ecc);
 
    if(damaged_sectors > 0)
    {  int percentage  = (1000*recoverable) / expected;
@@ -536,7 +538,7 @@ static int check_syndromes(verify_closure *vc)
 	 GuiSetLabelText(vc->wl->cmpEccSyndromes,
 			 _("<span %s>Out of memory; try reducing sector prefetch!</span>"),
 			 Closure->redMarkup);
-	 PrintLog(_("* Ecc block test   : out of memory; try reducing sector prefetch!\n"));
+	 PrintError(_("* Ecc block test   : out of memory; try reducing sector prefetch!\n"));
 	 return 0;
       }
    }
@@ -642,7 +644,7 @@ static int check_syndromes(verify_closure *vc)
    {  GuiSetLabelText(vc->wl->cmpEccSyndromes,
 		   _("<span %s>%" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks</span>"),
 		   Closure->redMarkup, ecc_good, ecc_bad, ecc_bad_sub);
-      PrintLog(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
+      PrintError(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
 	       ecc_good, ecc_bad, ecc_bad_sub);
 
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
@@ -759,7 +761,7 @@ void RS03Verify(Image *image)
 	 if(Closure->guiMode)
 	    ecc_advice = g_strdup_printf("<span %s>%s</span>", Closure->redMarkup, msg);
 
-	 PrintLog(_("* Warning          : %s\n"), msg);
+	 PrintError(_("* Warning          : %s\n"), msg);
 	 g_free(msg);
 	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
@@ -835,7 +837,7 @@ void RS03Verify(Image *image)
       GuiSetLabelText(wl->cmpEccRequires, "dvdisaster-%s", version);
    }
    else 
-   {  PrintLog(_("* requires         : dvdisaster-%s (BAD)\n"
+   {  PrintError(_("* requires         : dvdisaster-%s (BAD)\n"
 		 "* Warning          : The following output might be incorrect.\n"
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       version);
@@ -866,14 +868,14 @@ void RS03Verify(Image *image)
    if(eh->methodFlags[0] & MFLAG_ECC_FILE)
    {  if(image && image->file)
       {  if(image->fpState != FP_PRESENT)
-         {  PrintLog(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
+         {  PrintError(_("* fingerprint match: NOT POSSIBLE - related sector is missing in image!\n"));
 
 	    GuiSetLabelText(wl->cmpEccFingerprint, _("<span %s>missing sector prevents calculation</span>"), Closure->redMarkup);
 	 }
 	 else
 	 { 
 	   if(memcmp(image->imageFP, eh->mediumFP, 16)) 
-	   {  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
+	   {  PrintError(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
 	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
 	      GuiSetLabelText(wl->cmpEccFingerprint, 
@@ -984,10 +986,10 @@ void RS03Verify(Image *image)
 #endif /* WITH_GUI_YES */
       
       if(lay->target == ECC_FILE)
-	PrintLog(_("* sectors          : %s (%s expected); %" PRId64 " sectors in ecc file\n"),
+	PrintError(_("* sectors          : %s (%s expected); %" PRId64 " sectors in ecc file\n"),
 		 image_size, expected_size, eccfile_sectors);
       else
-	PrintLog(_("* medium sectors   : %s (%s expected)\n"),
+	PrintError(_("* medium sectors   : %s (%s expected)\n"),
 		 image_size, expected_size);
       SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       g_free(image_size);
@@ -1123,8 +1125,8 @@ void RS03Verify(Image *image)
 		 ecc_msg = g_strdup(" ");
 	    }
 	    if(first_missing == last_missing)
-	         PrintCLI(_("* missing sector   : %" PRId64 "%s\n"), first,ecc_msg);
-	    else PrintCLI(_("* missing sectors  : %" PRId64 " - %" PRId64 "%s\n"), first, last, ecc_msg);
+	         PrintCLIError(_("* missing sector   : %" PRId64 "%s\n"), first,ecc_msg);
+	    else PrintCLIError(_("* missing sectors  : %" PRId64 " - %" PRId64 "%s\n"), first, last, ecc_msg);
 	    first_missing = -1;
 	    g_free(ecc_msg);
 	 }
@@ -1140,7 +1142,7 @@ void RS03Verify(Image *image)
 
 	 if(GetBit(vc->crcBuf->valid,crc_idx)
 	    && crc != vc->crcBuf->crcbuf[crc_idx])
-	 {  PrintCLI(_("* CRC error, sector: %" PRId64 "\n"), s);
+	 {  PrintCLIError(_("* CRC error, sector: %" PRId64 "\n"), s);
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
@@ -1252,17 +1254,22 @@ void RS03Verify(Image *image)
 
    /* Do a resume of our findings */ 
 
+   ReportNumber("verify", "missing_sectors", total_missing);
+   ReportNumber("verify", "crc_errors", data_crc_errors);
+   if(!data_missing)
+      ReportString("verify", "data_md5", data_digest);
+
    if(!total_missing && !data_crc_errors && !csc->signatureErrors)
       PrintLog(_("- good image/file  : all sectors present\n"
 		 "- data md5sum      : %s\n"),data_digest);
    else
    {  if(!data_crc_errors && !csc->signatureErrors)
-         PrintLog(_("* BAD image/file   : %" PRId64 " sectors missing\n"), total_missing);
+         PrintError(_("* BAD image/file   : %" PRId64 " sectors missing\n"), total_missing);
       if(!total_missing)
-	 PrintLog(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"), 
+	 PrintError(_("* suspicious image : all sectors present, but %" PRId64 " CRC errors\n"),
 		  data_crc_errors);
       if(total_missing && data_crc_errors)
-	 PrintLog(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"), 
+	 PrintError(_("* BAD image        : %" PRId64 " sectors missing, %" PRId64 " CRC errors\n"),
 		  total_missing, data_crc_errors);
 
       PrintLog(_("  ... data section   : %" PRId64 " sectors missing; %" PRId64 " CRC errors\n"), 
@@ -1302,7 +1309,7 @@ void RS03Verify(Image *image)
 		      _("<span %s>Skipped; not useful on known defective image</span>"),
 		      Closure->redMarkup);
 
-     PrintLog(_("* Ecc block test   : skipped; not useful on defective image\n"));
+     PrintError(_("* Ecc block test   : skipped; not useful on defective image\n"));
    }
    else
 #ifdef WITH_GUI_YES

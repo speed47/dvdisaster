@@ -251,6 +251,9 @@ void PrintCLI(char *format, ...)
       return;
    }
 
+   if(Closure->quiet)
+      return;
+
    ClearProgress();
    va_start(argp, format);
    g_vprintf(format, argp);
@@ -271,7 +274,7 @@ void PrintProgress(char *format, ...)
    va_list argp;
    int n;
 
-   if(Closure->guiMode)
+   if(Closure->guiMode || Closure->quiet)
      return;
   
    print_greetings(stdout);
@@ -346,7 +349,7 @@ void PrintProgressETA(GTimer *timer, int permille, char *format, ...)
 void ClearProgress(void)
 {  int n;
 
-   if(Closure->noProgress)
+   if(Closure->noProgress || Closure->quiet)
      return;
   
    g_mutex_lock(&Closure->progressLock);
@@ -376,7 +379,7 @@ void PrintLog(char *format, ...)
 
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
-   else 
+   else if(!Closure->quiet)
    {
       print_greetings(stdout);
       g_vprintf(format, argp);
@@ -385,6 +388,47 @@ void PrintLog(char *format, ...)
    }
 
    va_end(argp);
+}
+
+/* A diagnostic keeps the usual GUI/log output, but survives -q on stderr. */
+
+void PrintError(char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintLog("%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
+}
+
+void PrintCLIError(char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintCLI("%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
+}
+
+void PrintErrorCLIorLabel(GtkWidget *label, char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+   PrintCLIorLabel(label, "%s", msg);
+   if(!Closure->guiMode && Closure->quiet == 1)
+      g_fprintf(stderr, "%s", msg);
+   g_free(msg);
 }
 
 /*
@@ -425,7 +469,9 @@ void PrintLogWithAsterisks(char *format, ...)
 
    if(Closure->guiMode)
       log_window_vprintf(new_format, argp);
-   else 
+   else if(Closure->quiet == 1)
+      g_vfprintf(stderr, new_format, argp);
+   else if(!Closure->quiet)
    {
       print_greetings(stdout);
       g_vprintf(new_format, argp);
@@ -457,7 +503,7 @@ void Verbose(char *format, ...)
 
    if(Closure->guiMode)
       log_window_vprintf(format, argp);
-   else 
+   else if(!Closure->quiet)
    {
       print_greetings(stdout);
       g_vprintf(format, argp);
@@ -493,7 +539,7 @@ void PrintTimeToLog(GTimer *timer, char *format, ...)
    { 
       log_window_append(tmp2);
    }
-   else
+   else if(!Closure->quiet)
    {  ClearProgress();
       g_printf("%s", tmp2);
 
@@ -539,6 +585,7 @@ void PrintCLIorLabel(GtkWidget *label, char *format, ...)
    }
    else
 #endif
+   if(!Closure->quiet)
    {  g_vprintf(format, argp);
 
       fflush(stdout);
@@ -606,7 +653,9 @@ void vLogWarning(char *format, va_list argp)
    if(Closure->guiMode)
    {  log_window_append(str->str);
    }
-   else
+   else if(Closure->quiet == 1)
+      g_fprintf(stderr, "%s", str->str);
+   else if(!Closure->quiet)
    {  print_greetings(stdout);
       g_printf("%s", str->str);
       fflush(stdout);
@@ -655,13 +704,29 @@ void Stop(char *format, ...)
    /*** CLI mode */
    
    if(!Closure->guiMode) 
-   {  print_greetings(stdout);
-      g_printf("%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
-      va_start(argp, format);
-      g_vprintf(format, argp);
-      va_end(argp);
-      g_printf("\n\n");
-      fflush(stdout);
+   {  FILE *out = Closure->quiet ? stderr : stdout;  /* -q: errors only, to stderr */
+
+      if(Closure->quiet < 2)
+      {  if(!Closure->quiet)
+            print_greetings(stdout);
+         g_fprintf(out, "%s", _("\n*\n* dvdisaster - can not continue:\n*\n"));
+         va_start(argp, format);
+         g_vfprintf(out, format, argp);
+         va_end(argp);
+         g_fprintf(out, "\n\n");
+         fflush(out);
+      }
+
+      if(Closure->jsonFile)
+      {  char *msg;
+
+	 va_start(argp, format);
+	 msg = g_strdup_vprintf(format, argp);
+	 va_end(argp);
+	 exitCode = EXIT_FAILURE;
+	 WriteReport(g_strstrip(msg));
+	 g_free(msg);
+      }
    }
 
    /*** GUI mode */
