@@ -13,4 +13,5 @@ Scanning medium for read errors.
 Reading CRC information from ecc data (RS03) ... done.
 
 All sectors successfully read, but incomplete or damaged checksums.
-Exit status: 2
+Exit status: 1
+Detailed exit status: 2

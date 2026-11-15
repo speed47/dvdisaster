@@ -1,0 +1,15 @@
+9c88f3a407b2aa0218d159fcff56c29a
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 24990 medium sectors.
+
+Fix mode(RS03i): Repairable sectors will be fixed in the image.
+Decoder problem (35 != 31) for 30 sectors: 1000 1098 1196 1294 1392 1490 1588 1686 1784 1882 1980 2078 2176 2274 2372 2470 2568 2666 2764 2862 2960 3058 3156 3254 3352 3450 3548 3646 3744 3842 
+Unrepaired sectors: 30
+Erasure counts per ecc block:  avg =  30.0; worst = 30.
+Exit status: 1
+Detailed exit status: 3

@@ -14,3 +14,4 @@ Image data is too small for RS02 error correction.
 At least 17 complete sectors (34816 bytes) are required.
 
 Exit status: 1
+Detailed exit status: 1

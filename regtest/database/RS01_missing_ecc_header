@@ -11,3 +11,5 @@ rs01-master.iso: present, contains 21000 medium sectors.
 
 rs01-tmp.ecc: invalid
 
+Exit status: 1
+Detailed exit status: 1

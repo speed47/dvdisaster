@@ -755,7 +755,7 @@ void RS02Create(void)
 	and write all copies of the header out */
 
    prepare_header(ec);
-   WriteRS02Headers(image->file, ec->lay, ec->eh);
+   WriteRS02Headers(image->file, ec->lay, ec->eh, FALSE);
 
    PrintTimeToLog(ec->timer, "for ECC generation.\n");
 

@@ -33,6 +33,7 @@ oder Kratzer
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| \-\-detailed-exit-status \|]
 .RB [\| \-\-defective-dump \|
 .IR d \|]
 .RB [\| \-\-driver \|
@@ -300,6 +301,9 @@ unterstelle DAO; Abbild am Ende nicht k\[:u]rzen.
 Gibt das Unterverzeichnis zum Sammeln von unvollst\[:a]ndigen
 Roh-Sektoren an.
 .TP
+.B \-\-detailed-exit-status
+detaillierte Exit-Werte f\[:u]r Defekte und Reparaturergebnisse; siehe EXIT-STATUS.
+.TP
 .B \-\-driver d  (nur f\[:u]r Linux)
 W\[:a]hlt zwischen dem sg (SG_IO)-Treiber (voreingestellt) und dem
 \[:a]lteren cdrom (CDROM_SEND_PACKET)-Treiber zum Zugriff auf die Laufwerke aus.
@@ -456,39 +460,62 @@ gibt die Versionsnummer und einige Konfigurationseigenschaften aus
 .PP
 
 .SH EXIT-STATUS
+Ohne Zusatzoption bedeutet 0 Erfolg und 1 einen Fehler.
+Beim Pr\[:u]fen oder Scannen bedeuten erkannte Defekte einen fehlgeschlagenen
+Integrit\[:a]tstest, auch wenn die Pr\[:u]fung selbst beendet wurde.
+Unvollst\[:a]ndiges lineares Lesen liefert ebenfalls 1. Eine erfolgreiche
+Reparatur oder adaptives Lesen mit gen\[:u]gend Daten f\[:u]r einen
+Wiederherstellungsversuch liefert 0.
+.PP
+Eine intakte ECC-Datei kann ohne Abbild gepr\[:u]ft werden. Ein Abbild kann
+auch ohne ECC auf erkennbare Defekte gepr\[:u]ft werden. Eine vorhandene,
+aber unbrauchbare ECC-Datei, keine nutzbare Eingabe, ung\[:u]ltige Optionen,
+nicht unterst\[:u]tzte Versionen und Ein-/Ausgabefehler liefern 1.
+Auch nach Ausgabe des Hilfetextes wird 1 zur\[:u]ckgegeben.
+.PP
+Mit \fB\-\-detailed-exit-status\fP werden folgende Werte verwendet:
 .TP
 .B 0
-Erfolg; es wurden keine Fehler gefunden (bzw. es musste nichts repariert werden).
+Keine Defekte erkannt und keine Reparatur erforderlich.
 .TP
 .B 1
-Fehler; die Aktion konnte nicht ausgef\[:u]hrt werden, z.B. wegen
-ung\[:u]ltiger Optionen, fehlender oder unbrauchbarer Dateien, Laufwerks-
-oder Ein-/Ausgabefehlern.
-Wird auch nach Ausgabe des Hilfetextes zur\[:u]ckgegeben.
+Die Aktion konnte nicht ausgef\[:u]hrt werden, etwa wegen ung\[:u]ltiger
+Optionen, unbrauchbarer ben\[:o]tigter Dateien, einer nicht unterst\[:u]tzten
+Version oder eines Laufwerks- bzw. Ein-/Ausgabefehlers.
 .TP
 .B 2
-Es wurden Fehler gefunden, aber kein Datenverlust festgestellt: der
-Datentr\[:a]ger bzw. das Abbild enth\[:a]lt unlesbare Sektoren oder
-Pr\[:u]fsummenfehler, oder die Fehlerkorrektur-Daten sind besch\[:a]digt
-(\-s, \-r, \-t).
-Bei \-f wurden alle defekten Sektoren repariert.
-Bei \-t mit RS02/RS03-Daten ist eine vollst\[:a]ndige Wiederherstellung m\[:o]glich.
-Bei \-\-adaptive-read wurde das Lesen beendet, weil die fehlenden Sektoren
-mit \-f wiederhergestellt werden k\[:o]nnen.
+Defekte erkannt; eine Wiederherstellung kann versucht werden (\-t).
+Die Pr\[:u]fung sch\[:a]tzt die Wiederherstellung als m\[:o]glich ein; erst ein
+Reparaturversuch zeigt, ob sie gelingt. RS01-Pr\[:u]fung sowie Scannen und
+lineares Lesen (\-s, \-r) sch\[:a]tzen die Reparierbarkeit nicht ab und
+liefern bei erkannten Defekten 2.
+Bei \-f wurden alle erkannten Defekte repariert, einschlie\[ss]lich
+Kopfstrukturen und Dateil\[:a]nge. Das erneute Schreiben einer bereits
+korrekten Kopfstruktur z\[:a]hlt nicht als Reparatur.
+Bei \-\-adaptive-read wurden gen\[:u]gend Daten f\[:u]r einen
+Wiederherstellungsversuch mit \-f gesammelt.
 .TP
 .B 3
-Datenverlust; die Fehler k\[:o]nnen mit den vorhandenen
-Fehlerkorrektur-Daten nicht vollst\[:a]ndig repariert werden: \-f hat
-unreparierte Sektoren hinterlassen, \-t sagt voraus da\[ss] keine
-vollst\[:a]ndige Wiederherstellung m\[:o]glich ist (oder hat f\[:u]r ein
-defektes Abbild keine Fehlerkorrektur-Daten gefunden), oder
-\-\-adaptive-read konnte nicht gen\[:u]gend Daten f\[:u]r eine
-vollst\[:a]ndige Wiederherstellung lesen.
+Unvollst\[:a]ndige Wiederherstellung: \-f hat unreparierte Defekte
+hinterlassen, \-t erwartet keine vollst\[:a]ndige Wiederherstellung
+(oder hat fehlende Abbildsektoren ohne ECC gefunden), oder adaptives
+Lesen mit ECC konnte nicht gen\[:u]gend Daten sammeln.
+Pr\[:u]fprognosen sind Sch\[:a]tzungen, keine Ergebnisse eines Reparaturversuchs.
+Adaptives Lesen ohne ECC liefert bei ungelesenen Sektoren 2.
 .PP
-\-s und \-r (ohne \-\-adaptive-read) sowie \-t mit RS01 sch\[:a]tzen nicht
-ab, ob Fehler reparierbar sind, und liefern bei jedem Fehler 2.
-Werden mehrere Aktionen kombiniert (z.B. \-r \-f), hat 1 Vorrang,
-ansonsten wird der h\[:o]chste Wert zur\[:u]ckgegeben.
+Bei kombinierten Aktionen bleibt der Standardstatus nach einer
+fehlgeschlagenen Aktion 1. Im detaillierten Modus gilt die Rangfolge
+1, 3, 2, 0; ein sp\[:a]terer Erfolg l\[:o]scht einen fr\[:u]heren Status nicht.
+Erfolgreiches adaptives Lesen mit Reparatur und Pr\[:u]fung liefert daher
+standardm\[:a]\[ss]ig 0 und im detaillierten Modus 2. Lineares Lesen mit Defekten
+und anschlie\[ss]ender erfolgreicher Reparatur und Pr\[:u]fung liefert
+standardm\[:a]\[ss]ig 1 und im detaillierten Modus 2.
+.PP
+Die detaillierten Werte 2 und 3 sind f\[:u]r die Shell Fehlerstatus.
+Skripte m\[:u]ssen diese ausdr\[:u]cklich behandeln, anstatt sich auf
+\fB&&\fP oder \fBset \-e\fP zu verlassen.
+Erfolgreiche RS03-Reparaturen liefern nun standardm\[:a]\[ss]ig 0;
+\[:a]ltere Versionen lieferten 1.
 
 .SH SIEHE AUCH
 .B Dokumentation

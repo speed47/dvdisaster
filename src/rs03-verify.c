@@ -476,10 +476,10 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
+      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors estimated recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
-      SetExitCode(worst_ecc <= lay->nroots && recoverable >= expected
-		  ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
+      SetExitCode(EXIT_FAILURE, worst_ecc <= lay->nroots && recoverable >= expected
+		  ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
       GuiSetLabelText(vc->wl->cmpImageErasure, _("Erasure counts:"));
       GuiSetLabelText(vc->wl->cmpImagePrognosis, _("Prognosis:"));
@@ -490,7 +490,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 		      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
       GuiSetLabelText(vc->wl->cmpImagePrognosisMsg,
-		      _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
+		      _("<span %s>%" PRId64 " of %" PRId64 " sectors estimated recoverable (%d.%d%%)</span>"),
 		      recoverable < expected ? Closure->redMarkup : Closure->greenMarkup,
 		      recoverable, expected, percentage/10, percentage%10);
    }	      
@@ -645,7 +645,7 @@ static int check_syndromes(verify_closure *vc)
       PrintLog(_("* Ecc block test   : %" PRId64 " good, %" PRId64 " bad; %" PRId64 " bad sub blocks\n"),
 	       ecc_good, ecc_bad, ecc_bad_sub);
 
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
    }
    return ecc_bad;
 }
@@ -761,7 +761,7 @@ void RS03Verify(Image *image)
 
 	 PrintLog(_("* Warning          : %s\n"), msg);
 	 g_free(msg);
-	 SetExitCode(EXIT_CODE_DEFECTS);
+	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
    }
    
@@ -846,7 +846,7 @@ void RS03Verify(Image *image)
       if(!ecc_advice) 
 	ecc_advice = g_strdup_printf(_("<span %s>Please upgrade your version of dvdisaster!</span>"), Closure->redMarkup);
 
-      SetExitCode(EXIT_FAILURE);
+      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
    }
 
    g_free(version);
@@ -874,7 +874,7 @@ void RS03Verify(Image *image)
 	 { 
 	   if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	   {  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
-	      SetExitCode(EXIT_CODE_DEFECTS);
+	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
 	      GuiSetLabelText(wl->cmpEccFingerprint, 
 			      _("<span %s>mismatch</span>"), Closure->redMarkup);
@@ -989,7 +989,7 @@ void RS03Verify(Image *image)
       else
 	PrintLog(_("* medium sectors   : %s (%s expected)\n"),
 		 image_size, expected_size);
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       g_free(image_size);
       g_free(expected_size);
    }
@@ -1102,7 +1102,7 @@ void RS03Verify(Image *image)
 	    else ecc_missing++;
 	 }
 	 defective = TRUE;
-	 SetExitCode(EXIT_CODE_DEFECTS);
+	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
 
       /* Report dead sectors. Combine subsequent missing sectors into one report. */
@@ -1144,7 +1144,7 @@ void RS03Verify(Image *image)
 	    data_crc_errors++;
 	    new_crc_errors++;
 	    defective = TRUE;
-	    SetExitCode(EXIT_CODE_DEFECTS);
+	    SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	 }
       }
       crc_idx++;
@@ -1345,12 +1345,12 @@ void RS03Verify(Image *image)
    {  if(total_missing || data_crc_errors)
       {  if(try_it)
 	 {  GuiSetLabelText(wl->cmpImageResult,
-			    _("<span %s>Full data recovery is likely.</span>"),
+			    _("<span %s>Defects detected; recovery can be attempted.</span>"),
 			    Closure->greenMarkup);
 	 }
          else
 	 {  GuiSetLabelText(wl->cmpImageResult,
-			    _("<span %s>Full data recovery is NOT possible.</span>"),
+			    _("<span %s>Full data recovery is NOT expected.</span>"),
 			    Closure->redMarkup);
 	 }
       }

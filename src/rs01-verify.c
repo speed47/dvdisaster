@@ -438,7 +438,8 @@ void RS01Verify(Image *image)
    PrintLog("\n%s: ", Closure->imageName);
    if(!image || !image->file)
    {  PrintLog(_("not present\n"));
-      SetExitCode(EXIT_FAILURE);
+      if(!image || !image->eccFile)
+         SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 
       GuiSwitchAndSetFootline(wl->cmpImageNotebook, 0, NULL, NULL);
       goto process_ecc;
@@ -489,7 +490,7 @@ void RS01Verify(Image *image)
    /*** Show summary of image read */
 
    if(image->sectorsMissing || image->crcErrors || excess_sectors)
-      SetExitCode(image->eccFile ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
+      SetExitCode(EXIT_FAILURE, image->eccFile ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
    if(image->crcErrors)
    {  GuiSetLabelText(wl->cmpChkSumErrors, 
@@ -560,7 +561,9 @@ process_ecc:
    }
 
    if(image && !image->eccFile)
-   {  
+   {  if(image->eccFileState != ECCFILE_MISSING)
+         SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
+
       switch(image->eccFileState)
       {  case ECCFILE_NOPERM:
 	    PrintLog(_("permission denied\n"));
@@ -658,7 +661,7 @@ process_ecc:
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
-       SetExitCode(EXIT_FAILURE);
+       SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 
        GuiSetLabelText(wl->cmpEccRequires, 
 		       "<span %s>dvdisaster-%d.%d</span>",
@@ -722,7 +725,7 @@ process_ecc:
 	else  /* more than 2 Sectors difference */ 
 	{  if(!ecc_in_last)
 	   {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"), image->expectedSectors);
-	      SetExitCode(EXIT_CODE_DEFECTS);
+	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	      GuiSetLabelText(wl->cmpEccMediumSectors, "<span %s>%" PRId64 "</span>", 
 			      Closure->redMarkup, image->expectedSectors);
 	      if(!ecc_advice)
@@ -731,7 +734,7 @@ process_ecc:
 	   else /* byte size difference */
 	   {  PrintLog(_("* medium sectors   : %" PRId64 " sectors + %d bytes (BAD)\n"),
 		       image->expectedSectors-1, ecc_in_last);
-	      SetExitCode(EXIT_CODE_DEFECTS);
+	      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	      GuiSetLabelText(wl->cmpEccMediumSectors, 
 			      _("<span %s>%" PRId64 " sectors + %d bytes</span>"), 
 			      Closure->redMarkup, image->expectedSectors-1, ecc_in_last);
@@ -754,7 +757,7 @@ process_ecc:
 	 }
 	 else
 	 {  PrintLog(_("* image md5sum     : %s (BAD)\n"),edigest);
-	    SetExitCode(EXIT_CODE_DEFECTS);
+	    SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 	    GuiSetLabelText(wl->cmpEccImgMd5Sum, "<span %s>%s</span>",
 			    Closure->redMarkup, edigest);
 	    GuiSetLabelText(wl->cmpImageMd5Sum, "<span %s>%s</span>",
@@ -778,7 +781,7 @@ process_ecc:
       { 
 	if(memcmp(image->imageFP, eh->mediumFP, 16)) 
 	{  PrintLog(_("* fingerprint match: MISMATCH - .iso and .ecc don't belong together!\n"));
-	   SetExitCode(EXIT_CODE_DEFECTS);
+	   SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
 	   GuiSetLabelText(wl->cmpEccFingerprint, 
 			   _("<span %s>mismatch</span>"), Closure->redMarkup);
@@ -810,7 +813,7 @@ process_ecc:
    else
    {  PrintLog(_("* ecc blocks       : %" PRId64 " (BAD, expected %" PRId64 ")\n"),
 	       ecc_blocks,ecc_expected);
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       GuiSetLabelText(wl->cmpEccBlocks,
 		      _("<span %s>%" PRId64 " (bad, expected %" PRId64 ")</span>"),
 		      Closure->redMarkup,ecc_blocks,ecc_expected);
@@ -853,7 +856,7 @@ process_ecc:
 
    if(memcmp(eh->eccSum, digest, 16))
    {  PrintLog(_("* ecc md5sum       : BAD, ecc file may be damaged!\n"));
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       GuiSetLabelText(wl->cmpEccMd5Sum, _("<span %s>bad</span>"), Closure->redMarkup);
       if(!ecc_advice)
 	ecc_advice = g_strdup_printf(_("<span %s>Error correction file may be damaged!</span>"), Closure->redMarkup);

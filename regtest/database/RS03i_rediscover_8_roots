@@ -340,5 +340,5 @@ CalcRS03Layout(): returning cached layout (augmented)
   ... ecc section    : 0 sectors missing
 * Ecc block test   : 1408 good, 1 bad; 324 bad sub blocks
 - erasure counts   :  avg =  1.0; worst = 1 per ecc block.
-- prognosis        : 359295 of 359295 sectors recoverable (100.0%)
+- prognosis        : 359295 of 359295 sectors estimated recoverable (100.0%)
 FreeCrcBuf - buffer cleared

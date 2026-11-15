@@ -170,7 +170,7 @@ void RS02SliceIndex(RS02Layout*, gint64, gint64*, gint64*);
 RS02Layout *CalcRS02Layout(Image*);
 RS02Layout *RS02LayoutFromImage(Image*);
 guint64 RS02ExpectedImageSize(Image*);
-void WriteRS02Headers(LargeFile*, RS02Layout*, EccHeader*);
+int WriteRS02Headers(LargeFile*, RS02Layout*, EccHeader*, int);
 
 /* rs02-create.c */
 

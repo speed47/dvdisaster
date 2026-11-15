@@ -405,7 +405,7 @@ if try "tiny image, old style hdr, truncated img" tiny_old_header; then (
 
 if try "empty image" empty_image; then (
    : >$TMPISO
-   run_regtest empty_image "-a RS02 -t" $TMPISO $NO_FILE EXITCODE
+   run_regtest empty_image "-a RS02 -t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Augmented image is protected by an outer RS01 error correction file
@@ -573,7 +573,7 @@ if try "RS02 creation at minimum image size" ecc_minimum_image; then (
 
   replace_config method-name RS02
   extra_args="--debug --set-version $SETVERSION"
-  run_regtest ecc_minimum_image "-mRS02 -n43r -c -t" $TMPISO $NO_FILE EXITCODE
+  run_regtest ecc_minimum_image "-mRS02 -n43r -c -t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Existing RS03 ECC makes the file large enough, but the original data is
@@ -584,7 +584,7 @@ if try "RS02 creation from RS03 with short data" ecc_from_small_rs03; then (
   $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -mRS03 -n255 -c >>$LOGFILE 2>&1
 
   replace_config method-name RS02
-  run_regtest ecc_from_small_rs03 "-mRS02 -n43r -c" $TMPISO $NO_FILE EXITCODE
+  run_regtest ecc_from_small_rs03 "-mRS02 -n43r -c" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Create test image
@@ -863,7 +863,7 @@ if try "trying fix with no write permission" fix_no_write_perm; then (
 if try "trying fix with good image" fix_good_image; then (
   cp $MASTERISO $TMPISO
 
-  run_regtest fix_good_image "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+  run_regtest fix_good_image "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix image containing 137 extra bytes
@@ -907,7 +907,7 @@ if try "trying fix with trailing bytes" fix_trailing_bytes; then (
    cp $MASTERISO $TMPISO
    echo "some trailing garbage appended for testing" >>$TMPISO
 
-   run_regtest fix_trailing_bytes "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+   run_regtest fix_trailing_bytes "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix an image with trailing garbage (TAO case)
@@ -916,7 +916,7 @@ if try "trying fix with trailing garbage (TAO case)" fix_trailing_tao; then (
    cp $MASTERISO $TMPISO
    dd if=/dev/zero count=2 bs=2048 >>$TMPISO 2>/dev/null
 
-   run_regtest fix_trailing_tao "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+   run_regtest fix_trailing_tao "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Fix an image with trailing garbage (general case), without doing anything
@@ -934,16 +934,18 @@ if try "trying fix with trailing garbage with --truncate" fix_trailing_garbage2;
    cp $MASTERISO $TMPISO
    dd if=/dev/zero count=23 bs=2048 >>$TMPISO 2>/dev/null
 
-   run_regtest fix_trailing_garbage2 "--debug --set-version $SETVERSION -f --truncate" $TMPISO $NO_FILE
+   run_regtest fix_trailing_garbage2 "--debug --set-version $SETVERSION -f --truncate" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
+# Header-only repairs must return 2 even when no Reed-Solomon decoding is
+# needed. The golden image hash must still match the undamaged master.
 # Image contains bad master header
 
 if try "trying fix with missing master header" fix_bad_master; then (
    cp $MASTERISO $TMPISO
    $NEWVER -i$TMPISO --debug --erase 30000 >>$LOGFILE 2>&1
 
-   run_regtest fix_bad_master "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+   run_regtest fix_bad_master "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains one header w/o cookie
@@ -952,7 +954,7 @@ if try "image with defective header" fix_bad_header; then (
    cp $MASTERISO $TMPISO
    $NEWVER -i$TMPISO --debug --byteset 30592,1,1 >>$LOGFILE 2>&1
 
-   run_regtest fix_bad_header "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+   run_regtest fix_bad_header "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains one header with CRC errors and one w/o cookie
@@ -962,7 +964,7 @@ if try "image with defective headers" fix_bad_headers; then (
    $NEWVER -i$TMPISO --debug --byteset 30592,1,1 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --byteset 31488,100,1 >>$LOGFILE 2>&1
 
-   run_regtest fix_bad_headers "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+   run_regtest fix_bad_headers "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains 3 missing headers and two with CRC errors
@@ -975,7 +977,7 @@ if try "image with defective headers" fix_missing_headers; then (
    $NEWVER -i$TMPISO --debug --byteset 30592,100,1 >>$LOGFILE 2>&1
    $NEWVER -i$TMPISO --debug --byteset 31488,100,1 >>$LOGFILE 2>&1
 
-  run_regtest fix_missing_headers "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE
+  run_regtest fix_missing_headers "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains 2 rows of missing sectors and a single one
@@ -1109,7 +1111,7 @@ if try "scanning good image" scan_good; then (
   cp $MASTERISO $SIMISO
 
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
+  run_regtest scan_good "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Scan image which is shorter than expected
@@ -1255,7 +1257,7 @@ if try "scanning image with bad data byte" scan_data_bad_byte; then (
    $NEWVER -i$SIMISO --debug --byteset 1235,50,10 >>$LOGFILE 2>&1
 
    extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
-   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODE
+   run_regtest scan_data_bad_byte "--spinup-delay=0 -s" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Image contains bad byte in the CRC section
@@ -1927,7 +1929,27 @@ REGTEST_SECTION="Reading tests (adaptive)"
 if try "reading good image" adaptive_good; then (
   cp $MASTERISO $SIMISO
 
-  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE EXITCODE
+  run_regtest adaptive_good "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# Adaptive reading and repair are successful actions (default 0, detailed 2).
+# Only opt-in detailed mode requires special handling by && or set -e callers.
+if try "repairing a successful adaptive read" adaptive_fix; then (
+  cp $MASTERISO $SIMISO
+  $NEWVER --regtest --debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 \
+    --no-progress -r --adaptive-read -i$TMPISO -e$NO_FILE >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE="^ +[0-9]+ repaired sectors:"
+  run_regtest adaptive_fix "--debug --set-version $SETVERSION -f" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# A successful later verification must not erase the repair status when
+# reading, repair and verification are requested in a single invocation.
+if try "adaptive read, repair and verify in one invocation" adaptive_read_fix_verify; then (
+  cp $MASTERISO $SIMISO
+
+  IGNORE_LOG_LINE="Repairable:|^ +[0-9]+ repaired sectors:"
+  run_regtest adaptive_read_fix_verify "--debug --set-version $SETVERSION --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 --adaptive-read -r -f -t" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Read a defective range which does not provide enough data for a full recovery
@@ -1936,7 +1958,7 @@ if try "reading image with insufficient data" adaptive_insufficient; then (
   cp $MASTERISO $SIMISO
   $NEWVER --debug -i$SIMISO --erase 1000-19000 >>$LOGFILE 2>&1
 
-  run_regtest adaptive_insufficient "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r500-1500 --adaptive-read" $TMPISO $NO_FILE EXITCODE
+  run_regtest adaptive_insufficient "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r500-1500 --adaptive-read" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Read into existing and complete image file
@@ -1945,7 +1967,7 @@ if try "reading good image in good file" adaptive_good_file; then (
   cp $MASTERISO $SIMISO
   cp $MASTERISO $TMPISO
 
-  run_regtest adaptive_good_file "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE
+  run_regtest adaptive_good_file "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
 # Read complete / optimal image with verbose debugging output

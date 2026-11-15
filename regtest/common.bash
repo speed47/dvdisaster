@@ -331,6 +331,7 @@ function run_regtest()
    local ecc_md5=""
    local pass="false"
    local output=""
+   local detailed_status="" detailed_iso="" detailed_ecc=""
 
    local fail_on_bad=$(grep "FAIL_ON_BAD" $CONFIGFILE)
    fail_on_bad=$(echo $fail_on_bad | cut -d\  -f 2)
@@ -361,11 +362,34 @@ function run_regtest()
    if test "$gui_mode" == "false"; then
       rm -f $NEWLOG
 
+      # Exercise both status modes from identical inputs. Run the detailed
+      # action on private copies first; repairs/reads must not change the
+      # starting point of the default run or any shared master fixture.
+      if echo "$options" | grep -qw EXITCODES; then
+         local detailed_dir="$TEST_TMPDIR/detailed"
+         detailed_iso="$detailed_dir/$(basename "$testiso")"
+         detailed_ecc="$detailed_dir/$(basename "$testecc")"
+         if ! mkdir -p "$detailed_dir" \
+            || { test -e "$testiso" && ! cp -p "$testiso" "$detailed_iso"; } \
+            || { test -e "$testecc" && ! cp -p "$testecc" "$detailed_ecc"; }; then
+            locked_print "${TEST_HEADER} - FAILED (could not copy exit-status inputs)"
+            echo 1 > "$RESULTS_DIR/${CODEC_PREFIX}_${testsymbol}.status"
+            return
+         fi
+         LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress --detailed-exit-status \
+            -i"$detailed_iso" -e"$detailed_ecc" ${extra_args} ${testparms} \
+            >"$detailed_dir/log.txt" 2>&1
+         detailed_status=$?
+      fi
+
       echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE
       LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +4  >>$NEWLOG
       local exit_status=${PIPESTATUS[0]}
-      if echo "$options" | grep -qw EXITCODE; then
+      if echo "$options" | grep -Eqw 'EXITCODE|EXITCODES'; then
          echo "Exit status: $exit_status" >>$NEWLOG
+      fi
+      if test -n "$detailed_status"; then
+         echo "Detailed exit status: $detailed_status" >>$NEWLOG
       fi
 
       if ! test -r $REFLOG; then
@@ -485,6 +509,27 @@ function run_regtest()
 ... generated ecc: $md5"
 	   pass="false"
        fi
+   fi
+
+   # The opt-in must not affect repaired/read bytes. Check its outputs
+   # against the same golden hashes used for the default invocation.
+   if test -n "$detailed_status"; then
+      local expected actual kind path
+      for kind in image ecc; do
+         if test "$kind" = image; then
+            expected="$image_md5"; path="$detailed_iso"
+         else
+            expected="$ecc_md5"; path="$detailed_ecc"
+         fi
+         if test "$expected" != ignore; then
+            actual=$($MD5SUM "$path" | cut -d\  -f 1)
+            if test "$expected" != "$actual"; then
+               output="${output:+${output}
+}BAD; detailed-mode $kind hash: expected $expected; generated $actual"
+               pass="false"
+            fi
+         fi
+      done
    fi
 
    # Print result atomically

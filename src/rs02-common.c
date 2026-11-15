@@ -565,27 +565,30 @@ guint64 RS02ExpectedImageSize(Image *image)
 }
 
 /***
- *** Write the RS02 headers into the image.
+ *** Write the RS02 headers into the image. When repairing, compare their
+ *** on-disk bytes first so rewriting an intact header is not a repair event.
+ *** Returns TRUE if any header differed (only meaningful with check_existing).
  ***/
 
-void WriteRS02Headers(LargeFile *file, RS02Layout *lay, EccHeader *eh)
-{  guint64 hpos;
-  //   guint64 end = lay->eccSectors+lay->dataSectors-2;
+int WriteRS02Headers(LargeFile *file, RS02Layout *lay, EccHeader *eh, int check_existing)
+{  guint64 hpos = lay->firstEccHeader;
    guint64 end = lay->eccSectors+lay->dataSectors;
+   int changed = FALSE;
    int n;
 
-   if(!LargeSeek(file, 2048*lay->firstEccHeader))
-     Stop(_("Failed seeking to ecc header at %" PRId64 ": %s\n"), lay->firstEccHeader, strerror(errno));
-   
-   n = LargeWrite(file, eh, sizeof(EccHeader));
-   if(n != sizeof(EccHeader))
-     Stop(_("Failed writing ecc header at %" PRId64 ": %s\n"), lay->firstEccHeader, strerror(errno));
-
-   hpos = (lay->protectedSectors + lay->headerModulo - 1) / lay->headerModulo;
-   hpos *= lay->headerModulo;
-
    while(hpos < end)
-   { 
+   {  if(check_existing)
+      {  EccHeader previous;
+
+         if(!LargeSeek(file, 2048*hpos))
+            Stop(_("Failed seeking to ecc header at %" PRId64 ": %s\n"), hpos, strerror(errno));
+         n = LargeRead(file, &previous, sizeof(previous));
+         if(n < 0)
+            Stop(_("Failed reading ecc header at %" PRId64 ": %s\n"), hpos, strerror(errno));
+         if(n != sizeof(previous) || memcmp(&previous, eh, sizeof(previous)))
+            changed = TRUE;
+      }
+
       if(!LargeSeek(file, 2048*hpos))
 	Stop(_("Failed seeking to ecc header at %" PRId64 ": %s\n"), hpos, strerror(errno));
 
@@ -593,8 +596,11 @@ void WriteRS02Headers(LargeFile *file, RS02Layout *lay, EccHeader *eh)
       if(n != sizeof(EccHeader))
 	Stop(_("Failed writing ecc header at %" PRId64 ": %s\n"), hpos, strerror(errno));
 
-      hpos += lay->headerModulo;
+      if(hpos == lay->firstEccHeader)
+         hpos = ((lay->protectedSectors + lay->headerModulo - 1) / lay->headerModulo) * lay->headerModulo;
+      else hpos += lay->headerModulo;
    }
+   return changed;
 }
 
 /*

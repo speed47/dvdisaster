@@ -530,10 +530,10 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
       PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	      (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
-      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)\n"),
+      PrintLog(_("- prognosis        : %" PRId64 " of %" PRId64 " sectors estimated recoverable (%d.%d%%)\n"),
 	       recoverable, expected, percentage/10, percentage%10);
-      SetExitCode(worst_ecc <= vc->lay->nroots && recoverable >= expected
-		  ? EXIT_CODE_DEFECTS : EXIT_CODE_DATA_LOSS);
+      SetExitCode(EXIT_FAILURE, worst_ecc <= vc->lay->nroots && recoverable >= expected
+		  ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
       if(Closure->guiMode)
       {  GuiSetLabelText(vc->wl->cmpEcc1Name, "");
@@ -547,7 +547,7 @@ static int prognosis(verify_closure *vc, gint64 missing, gint64 expected)
 			 (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
 
 	 GuiSetLabelText(vc->wl->cmpEcc3Msg,
-			 _("<span %s>%" PRId64 " of %" PRId64 " sectors recoverable (%d.%d%%)</span>"),
+			 _("<span %s>%" PRId64 " of %" PRId64 " sectors estimated recoverable (%d.%d%%)</span>"),
 			 recoverable < expected ? Closure->redMarkup : Closure->greenMarkup,
 			 recoverable, expected, percentage/10, percentage%10);
       }
@@ -890,7 +890,7 @@ void RS02Verify(Image *image)
    else
    {  gint64 total_crc_errors = data_crc_errors + hdr_crc_errors;
 
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
       if(!total_missing && !total_crc_errors)
          PrintLog(_("* suspicious image : contains damaged ecc headers\n"));
@@ -1005,7 +1005,7 @@ continue_with_ecc:
 		 "*                  : Please upgrade dvdisaster.\n"),
 	       eh->neededVersion/10000,
 	       (eh->neededVersion%10000)/100);
-     SetExitCode(EXIT_FAILURE);
+     SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 
      if(Closure->guiMode)
      {  GuiSetLabelText(wl->cmpEccRequires, 
@@ -1038,7 +1038,7 @@ continue_with_ecc:
 		    expected_sectors);
       else
       {  PrintLog(_("* medium sectors   : %" PRId64 " (BAD)\n"),expected_sectors);
-	 SetExitCode(EXIT_CODE_DEFECTS);
+	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
 
       if(Closure->guiMode)
@@ -1062,7 +1062,7 @@ continue_with_ecc:
       if(n) PrintLog(_("- data md5sum      : %s (good)\n"),hdr_digest);
       else
       {  PrintLog(_("* data md5sum      : %s (BAD)\n"),hdr_digest);
-	 SetExitCode(EXIT_CODE_DEFECTS);
+	 SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
       }
 
       if(n)
@@ -1125,7 +1125,7 @@ continue_with_ecc:
    /*** Print final results */
 
    if(ecc_md5_failure)
-      SetExitCode(EXIT_CODE_DEFECTS);
+      SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 
    try_it = prognosis(cc, total_missing + data_crc_errors - hdr_correctable, expected_sectors);
 
@@ -1143,12 +1143,12 @@ continue_with_ecc:
         else
 	{  if(try_it)
 	   {  GuiSetLabelText(wl->cmpEccResult,
-			      _("<span %s>Full data recovery is likely.</span>"),
+			      _("<span %s>Defects detected; recovery can be attempted.</span>"),
 			      Closure->greenMarkup);
 	   }
 	   else
 	   {  GuiSetLabelText(wl->cmpEccResult,
-			      _("<span %s>Full data recovery is NOT possible.</span>"),
+			      _("<span %s>Full data recovery is NOT expected.</span>"),
 			      Closure->redMarkup);
 	   }
 	}

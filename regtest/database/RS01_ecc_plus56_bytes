@@ -15,3 +15,5 @@ rs01-plus56_bytes.ecc: created by dvdisaster-0.80
 - ecc blocks       : 194560 (good)
 - ecc md5sum       : 7d9fc305cb58bcfb371a1cc8f79b89c9 (good)
 
+Exit status: 0
+Detailed exit status: 0

@@ -86,6 +86,7 @@ typedef enum
    MODIFIER_DAO, 
    MODIFIER_DEBUG,
    MODIFIER_DEFECTIVE_DUMP,
+   MODIFIER_DETAILED_EXIT_STATUS,
    MODIFIER_DRIVER,
    MODIFIER_EJECT,
    MODIFIER_ENCODING_ALGORITHM,
@@ -258,6 +259,7 @@ int main(int argc, char *argv[])
 	{"debug", 0, 0, MODIFIER_DEBUG },
 	{"debug1", 1, 0, MODE_DEBUG_MAINT1 },
 	{"defective-dump", 1, 0, MODIFIER_DEFECTIVE_DUMP },
+	{"detailed-exit-status", 0, 0, MODIFIER_DETAILED_EXIT_STATUS },
 	{"device", 0, 0, 'd'},
 	{"driver", 1, 0, MODIFIER_DRIVER },
         {"ecc", 1, 0, 'e'},
@@ -439,6 +441,9 @@ int main(int argc, char *argv[])
 
          case MODIFIER_ADAPTIVE_READ:
 	   Closure->adaptiveRead = TRUE;
+	   break;
+         case MODIFIER_DETAILED_EXIT_STATUS:
+	   Closure->detailedExitStatus = TRUE;
 	   break;
          case MODIFIER_AUTO_SUFFIX:
 	   Closure->autoSuffix = TRUE;
@@ -915,8 +920,12 @@ int main(int argc, char *argv[])
 
 	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
+	   if(!image && errno != ENOENT)
+	      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
 	   image = OpenEccFileForImage(image, Closure->eccName, O_RDONLY, IMG_PERMS);
+	   if(image && !image->eccFile && image->eccFileState != ECCFILE_MISSING)
+	      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 
 	   /* Determine method. Ecc files win over augmented ecc. */
 
@@ -1032,7 +1041,7 @@ int main(int argc, char *argv[])
 	     "  dvdisaster -t, --test   # Test integrity of the .iso and .ecc files.\n"
 	     "  dvdisaster -z, --strip  # Strip ECC data from an augmented .iso.\n"
 	     "  dvdisaster -u, --unlink # Delete .iso files (when other actions complete)\n\n"));
-      PrintCLI(_("Exit codes: 0 ok, 1 error, 2 defects found, 3 not fully repairable (see man page).\n\n"));
+      PrintCLI(_("Exit codes: 0 success, 1 failure (see --detailed-exit-status).\n\n"));
 
       PrintCLI(_("Drive and file specification:\n"
 	     "  -d, --device device         - read from given device   (default: %s)\n"
@@ -1056,6 +1065,7 @@ int main(int argc, char *argv[])
 		 "                               or a raw sector count\n"));
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
+      PrintCLI(_("  --detailed-exit-status     - distinguish defects and incomplete recovery (see man page)\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
       PrintCLI(_("  --auto-suffix              - automatically add .iso and .ecc file suffixes\n"));
       PrintCLI(_("  --cache-size n             - image cache size in MiB during -c mode (default: 32MiB)\n"));

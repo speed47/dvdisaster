@@ -20,3 +20,4 @@ Data integrity:
 - data md5sum      : 9503f278d4550a9507a317664481adf8
 - Ecc block test   : pass
 Exit status: 0
+Detailed exit status: 0

@@ -32,6 +32,7 @@ DVDISASTER \- data loss/scratch/aging protection for optical media
 .RB [\| \-\-cache-size
 .IR n \|]
 .RB [\| \-\-dao \|]
+.RB [\| \-\-detailed-exit-status \|]
 .RB [\| \-\-defective-dump
 .IR d \|]
 .RB [\| \-\-driver
@@ -319,6 +320,9 @@ assume DAO disc; do not trim image end.
 .B \-\-defective-dump d
 Specifies the sub directory for storing incomplete raw sectors.
 .TP
+.B \-\-detailed-exit-status
+use detailed exit codes for defects and recovery results; see EXIT STATUS.
+.TP
 .B \-\-driver d (Linux only)
 Selects between the sg (SG_IO) driver (default setting) and the
 older cdrom (CDROM_SEND_PACKET) driver for accessing the optical drives.
@@ -463,35 +467,56 @@ print version number and some configuration information.
 .PP
 
 .SH EXIT STATUS
+By default, 0 means successful completion and 1 means failure.
+A scan or verification which detects defects fails its integrity check,
+even if the checking procedure itself completed. An incomplete linear
+read also returns 1. A successful repair, or an adaptive read which
+collects enough data to attempt reconstruction, returns 0.
+.PP
+A healthy ECC file can be verified without its image. An image can also
+be checked without ECC, although only detectable defects can be reported.
+An existing but unusable ECC file, no usable input, invalid options,
+unsupported versions, and operational I/O errors return 1.
+Printing the help text also returns 1.
+.PP
+With \fB\-\-detailed-exit-status\fP, the following codes are used:
 .TP
 .B 0
-Success; no defects were found (or none had to be repaired).
+No defects were detected and no repairs were needed.
 .TP
 .B 1
-Error; the action could not be carried out, e.g. because of invalid
-options, missing or unusable files, drive or I/O errors.
-This is also returned after printing the help text.
+Operational error; the action could not be carried out, for example
+because of invalid options, unusable required files, an unsupported
+version, or a drive or I/O error.
 .TP
 .B 2
-Defects were found, but no data loss was detected: the medium or image
-has unreadable sectors or checksum errors, or the error correction data
-is damaged (\-s, \-r, \-t).
-With \-f, all defective sectors have been repaired.
-With \-t on RS02/RS03 data, a full recovery is possible.
-With \-\-adaptive-read, reading stopped because the missing sectors can
-be recovered with \-f.
+Defects detected; recovery can be attempted (\-t). Verification estimates
+that recovery is possible, but only attempting repair can establish
+whether it succeeds. RS01 verification and scanning/linear reading
+(\-s, \-r) do not assess repairability and report 2 for detected defects.
+With \-f, all detected defects have been repaired, including header and
+file-length repairs. Rewriting an already correct header is not a repair.
+With \-\-adaptive-read, sufficient data was collected to attempt
+reconstruction with \-f.
 .TP
 .B 3
-Data loss; the defects can not be fully repaired with the available
-error correction data: \-f left unrepaired sectors, \-t predicts that
-full recovery is not possible (or found no error correction data for a
-defective image), or \-\-adaptive-read could not read enough data for a
-full recovery.
+Recovery is incomplete: \-f left unrepaired defects, \-t predicts
+incomplete recovery (or found missing image sectors without ECC), or
+\-\-adaptive-read with ECC could not collect enough data for reconstruction.
+Verification prognoses are estimates, not results of an attempted repair.
+Adaptive reading without ECC returns 2 for unread sectors.
 .PP
-\-s and \-r (without \-\-adaptive-read) and \-t with RS01 do not estimate
-whether defects can be repaired and return 2 for any defects.
-When several actions are combined (e.g. \-r \-f), 1 takes precedence,
-otherwise the highest value is returned.
+When actions are combined, any failed action keeps the default result at 1.
+In detailed mode, precedence is 1, then 3, then 2, then 0; a later success
+does not clear an earlier result. Thus successful adaptive reading,
+repair and verification in one call return 0 by default and 2 in detailed
+mode. A linear read with defects followed by successful repair and
+verification returns 1 by default and 2 in detailed mode.
+.PP
+Detailed codes 2 and 3 are nonzero shell statuses. Scripts using this
+option must handle them explicitly instead of relying on \fB&&\fP or
+\fBset \-e\fP to continue after successful repair or adaptive reading.
+Successful RS03 repairs now return 0 by default; older versions returned 1.
 
 .SH SEE ALSO
 .B Documentation
