@@ -1,0 +1,20 @@
+529c77e0ced8d8177e9387b3473b8a5f
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated optical drive 1.00
+Using READ(10).
+Medium "Random Image": BD-RE, 21000 sectors, created 16-07-2006, Manuf.-ID: SIMDRV,001.
+
+* Warning: No error correction data recognized on this BD-RE medium.
+*          Overwritable media report their formatted capacity (here 21000 sectors),
+*          which may exceed the size of the written image.
+Limiting sector range to [0,63].
+Creating new rs03i-tmp.iso image.
+
+All sectors successfully read.
+Exit status: 0
+Detailed exit status: 0

@@ -9,13 +9,13 @@ Device: sim-cd, Simulated optical drive 1.00
 Using READ(10).
 Medium "Random Image": BD-RE, 235219 sectors, created 16-07-2006, Manuf.-ID: SIMDRV,001.
 
-* Warning: No error correction data found on this BD-RE medium.
-*          Overwritable media report their formatted size (here 434521 sectors)
-*          instead of the size of the written image, and some burning programs
-*          write them in packet mode. If this medium was written from an image
-*          augmented with RS02/RS03 data, search for the ecc data with -a RS02
-*          or -a RS03 (preferences: "Exhaustive RS02 header search" or
-*          "Recover RS03 signatures") or write the image without packet writing.
+* Warning: No error correction data recognized on this BD-RE medium.
+*          Overwritable media report their formatted capacity (here 434521 sectors),
+*          which may exceed the size of the written image.
+*          If you expected RS02 error correction data, try an exhaustive search with -a RS02
+*          (preferences: "Exhaustive RS02 header search").
+*          If you expected RS03 error correction data, try an exhaustive search with -a RS03
+*          (preferences: "Recover RS03 signatures").
 Limiting sector range to [32,63].
 Scanning medium for read errors.
 

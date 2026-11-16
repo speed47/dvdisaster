@@ -2891,8 +2891,8 @@ Image* OpenImageFromDevice(char *device, int query_only)
 /*
  * Overwritable media (DVD-RAM, DVD-RW in restricted overwrite mode,
  * DVD+RW and BD-RE) report their formatted capacity instead of the size
- * of the image written onto them, and burning software may write them
- * in packet mode. Explain why no augmented ecc data may have been found.
+ * of the image written onto them. Explain the possible size mismatch and
+ * suggest exhaustive searches only for codecs where they are not enabled.
  * Call after OpenEccFileForImage().
  */
 
@@ -2904,14 +2904,18 @@ void HintOverwritableMedium(Image *image)
 
    switch(dh->profile)
    {  case 0x12: case 0x13: case 0x1a: case 0x2a: case 0x43:
-	LogWarning(_("No error correction data found on this %s medium.\n"
-		     "Overwritable media report their formatted size (here %" PRId64 " sectors)\n"
-		     "instead of the size of the written image, and some burning programs\n"
-		     "write them in packet mode. If this medium was written from an image\n"
-		     "augmented with RS02/RS03 data, search for the ecc data with -a RS02\n"
-		     "or -a RS03 (preferences: \"Exhaustive RS02 header search\" or\n"
-		     "\"Recover RS03 signatures\") or write the image without packet writing.\n"),
-		   dh->profileDescr, dh->readCapacity+1);
+      {  const char *rs02_hint = Closure->examineRS02 ? "" :
+            _("If you expected RS02 error correction data, try an exhaustive search with -a RS02\n"
+              "(preferences: \"Exhaustive RS02 header search\").\n");
+         const char *rs03_hint = Closure->examineRS03 ? "" :
+            _("If you expected RS03 error correction data, try an exhaustive search with -a RS03\n"
+              "(preferences: \"Recover RS03 signatures\").\n");
+
+         LogWarning(_("No error correction data recognized on this %s medium.\n"
+                      "Overwritable media report their formatted capacity (here %" PRId64 " sectors),\n"
+                      "which may exceed the size of the written image.\n%s%s"),
+                    dh->profileDescr, dh->readCapacity+1, rs02_hint, rs03_hint);
+      }
 	break;
    }
 }

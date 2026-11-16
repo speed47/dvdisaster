@@ -2733,8 +2733,12 @@ done
 # Ordinary unaugmented media get the hint. A matching external ECC file
 # suppresses it, independently of embedded-ECC recognition. Exercise both
 # callers of HintOverwritableMedium and both DVD and BD probing paths.
+# Cover all four exhaustive-search settings with both reader strategies;
+# only disabled searches should be suggested.
 
-for medium in bdre dvdplusrw bdre_adaptive bdre_ecc bdre_ecc_adaptive; do
+for medium in bdre dvdplusrw bdre_adaptive bdre_ecc bdre_ecc_adaptive \
+              bdre_rs02 bdre_rs03 bdre_both \
+              bdre_rs02_adaptive bdre_rs03_adaptive bdre_both_adaptive; do
    if try "read unaugmented medium ($medium)" read_hint_$medium; then (
       dd if=$MASTERISO of=$SIMISO bs=2048 count=$ISOSIZE >>$LOGFILE 2>&1
       ecc=$NO_FILE
@@ -2744,6 +2748,15 @@ for medium in bdre dvdplusrw bdre_adaptive bdre_ecc bdre_ecc_adaptive; do
             ecc=$TMPECC
             ;;
       esac
+      replace_config examine-rs02 0
+      replace_config examine-rs03 0
+      assume=""
+      case "$medium" in
+         *rs02*|*both*) replace_config examine-rs02 1; assume="$assume -a RS02";;
+      esac
+      case "$medium" in
+         *rs03*|*both*) replace_config examine-rs03 1; assume="$assume -a RS03";;
+      esac
       profile=0x43
       [ "$medium" = dvdplusrw ] && profile=0x1a
       adaptive=""
@@ -2751,7 +2764,7 @@ for medium in bdre dvdplusrw bdre_adaptive bdre_ecc bdre_ecc_adaptive; do
       IGNORE_LOG_LINE="^Repairable:"
       replace_config adaptive-read "$([ -n "$adaptive" ] && echo 1 || echo 0)"
       extra_args="--debug --sim-cd=$SIMISO --sim-profile=$profile --fixed-speed-values"
-      run_regtest read_hint_$medium "--spinup-delay=0 $adaptive -r0-63" $TMPISO $ecc EXITCODES
+      run_regtest read_hint_$medium "--spinup-delay=0 $assume $adaptive -r0-63" $TMPISO $ecc EXITCODES
    ) & limit_jobs; fi
 done
 
