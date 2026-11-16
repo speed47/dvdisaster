@@ -322,8 +322,9 @@ RS03: try number = 168, reading sector 118360
 - layer slice 5
 RS03: try number = 169, reading sector 118361
 ** Success: sector 118361, rediscovered format with 170 roots
-...augmented image found
 GetImageFingerprint(16): read & cached
+...augmented image found
+GetImageFingerprint(16): cached
 
 rs03i-tmp.iso present.
 Redundancy clipped from 80 to 84

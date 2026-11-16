@@ -1677,6 +1677,31 @@ if try "fix padded image with damaged fingerprint using explicit size" fix_trail
    run_regtest fix_trailing_bad_fingerprint_with_n "-f --truncate" $TMPISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
+# Same stale recording, but without trailing space and one sector short of the
+# old CD layout, as on media reporting one sector less than their formatted
+# capacity. The standard medium size search finds the old CRC layer directly;
+# it must apply the same fingerprint check as the smaller-size fallback.
+
+if try "refuse stale ECC found at the standard medium size" fix_standard_size_stale_ecc; then (
+   cp $LARGEMASTERISO $TMPISO
+   dd if=$MASTERISO of=$TMPISO bs=2048 count=$ISOSIZE conv=notrunc >>$LOGFILE 2>&1
+   dd if=/dev/zero of=$TMPISO bs=2048 seek=18 count=1 conv=notrunc >>$LOGFILE 2>&1
+   truncate -s -2048 $TMPISO
+
+   run_regtest fix_standard_size_stale_ecc "-f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# The bruteforce scan must not accept the stale CRC layer rejected above.
+
+if try "refuse stale ECC with bruteforce search" fix_trailing_stale_ecc_bruteforce; then (
+   cp $LARGEMASTERISO $TMPISO
+   dd if=$MASTERISO of=$TMPISO bs=2048 count=$ISOSIZE conv=notrunc >>$LOGFILE 2>&1
+   dd if=/dev/zero of=$TMPISO bs=2048 seek=18 count=1 conv=notrunc >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   run_regtest fix_trailing_stale_ecc_bruteforce "--bruteforce-rs03-search -f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
 ### Scanning tests
 
 REGTEST_SECTION="Scanning tests"

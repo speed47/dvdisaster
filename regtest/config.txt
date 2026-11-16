@@ -508,6 +508,8 @@ RS03i_fix_trailing_stale_ecc yes
 RS03i_fix_trailing_missing_fingerprint yes
 RS03i_fix_trailing_bad_fingerprint yes
 RS03i_fix_trailing_bad_fingerprint_with_n yes
+RS03i_fix_standard_size_stale_ecc yes
+RS03i_fix_trailing_stale_ecc_bruteforce yes
 
 # Scanning tests
 

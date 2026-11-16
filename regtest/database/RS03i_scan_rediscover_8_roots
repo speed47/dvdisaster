@@ -316,6 +316,7 @@ RS03: try number = 161, reading sector 343796
 RS03: try number = 162, reading sector 345205
 RS03: try number = 163, reading sector 346614
 ** Success: sector 346614, rediscovered format with 8 roots
+GetImageFingerprint(16): cached
 ...augmented image found
 # Calling query_size()
 # *** query_size(Simulated CD drive 1.00) ***

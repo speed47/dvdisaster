@@ -328,8 +328,9 @@ RS03: try number = 170, reading sector 346620
 - layer slice 7
 RS03: try number = 171, reading sector 346621
 ** Success: sector 346621, rediscovered format with 8 roots
-...augmented image found
 GetImageFingerprint(16): read & cached
+...augmented image found
+GetImageFingerprint(16): cached
 
 rs03i-tmp.iso present.
 Calculated layout for RS03 image:
