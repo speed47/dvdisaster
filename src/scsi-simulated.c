@@ -36,7 +36,10 @@ void InitSimulatedCD()
       return;
 
    g_ptr_array_add(Closure->deviceNodes, g_strdup("sim-cd"));
-   g_ptr_array_add(Closure->deviceNames, g_strdup_printf(_("Simulated CD (%s)"), Closure->simulateCD));
+   g_ptr_array_add(Closure->deviceNames,
+	 g_strdup_printf(Closure->simulateProfile < 0x10 ? _("Simulated CD (%s)")
+	                                                : _("Simulated optical medium (%s)"),
+	                 Closure->simulateCD));
 }
 
 /***
@@ -69,7 +72,7 @@ static void write_sense(Sense *sense, int sense_key, int asc, int ascq)
 }
 
 int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsigned char *out_buf, int size, Sense *sense, int direction)
-{  unsigned char buf[2048];
+{  unsigned char buf[4100];
    int real_size;
    int alloc_len;
    char *nodelay;
@@ -92,7 +95,8 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 		 buf[4] = real_size-4;   /* ADDITIONAL LENGTH */
 
 		 memcpy(&buf[8], "Simulate", 8);           /* VENDOR ID */
-		 memcpy(&buf[16],"d CD drive       ", 16); /* PRODUCT ID */
+		 memcpy(&buf[16], Closure->simulateProfile < 0x10
+		                    ? "d CD drive      " : "d optical drive ", 16);
 		 memcpy(&buf[32],"1.00", 4);               /* VERSION */
 
 		 memcpy(out_buf, buf, real_size);
@@ -131,12 +135,6 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 		 return 0;
 	      }
 	 break;
-
-#if 0
-      case 0x28: assert_cdb_length(cdb[0], cdb_size, 10);  /* READ(10) */
-                 assert_cdb_direction(cdb[0], DATA_READ, direction);
-	 break;
-#endif
 
       case 0x43: assert_cdb_length(cdb[0], cdb_size, 10);  /* READ TOC/PMA/ATIP */
                  assert_cdb_direction(cdb[0], DATA_READ, direction);
@@ -186,7 +184,8 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
 
 		 memset(out_buf, 0, 8);
 		 out_buf[3] = 8;  /* data length */
-		 out_buf[7] = 9;  /* CD-R profile */
+		 out_buf[6] = Closure->simulateProfile >> 8;
+		 out_buf[7] = Closure->simulateProfile & 0xff;
 		 return 0;
 	 break;
 
@@ -215,28 +214,71 @@ int SimulateSendPacket(DeviceHandle *dh, unsigned char *cdb, int cdb_size, unsig
       case 0x5a: assert_cdb_length(cdb[0], cdb_size, 10);  /* MODE SENSE */
                  assert_cdb_direction(cdb[0], DATA_READ, direction);
 	 break;
-      case 0xad: assert_cdb_length(cdb[0], cdb_size, 12);  /* READ DVD STRUCTURE */
-                 assert_cdb_direction(cdb[0], DATA_READ, direction);
-	 break;
 #endif
 
-      case 0xbe: assert_cdb_length(cdb[0], cdb_size, 12);  /* READ CD */
+      /* Minimal, single-layer structures for the normal DVD/BD probing
+         paths. The image length is the simulated medium's capacity; tests
+         may append unused sectors independently of its ISO/ECC size. */
+      case 0xad: assert_cdb_length(cdb[0], cdb_size, 12);  /* READ DISC STRUCTURE */
                  assert_cdb_direction(cdb[0], DATA_READ, direction);
-	   {     guint64 lba,last_pos;
+	   {
+	      int profile = Closure->simulateProfile;
+	      guint64 sectors = dh->simImage->size / 2048;
+
+	      memset(buf, 0, sizeof(buf));
+	      if(cdb[1] == 1 && cdb[7] == 0 && profile >= 0x40)
+	      {  real_size = 4100;
+	         buf[0] = 0x10; buf[1] = 0x02;  /* length excludes these two bytes */
+	         memcpy(buf+4, "DI", 2);
+	         memcpy(buf+12, profile == 0x43 ? "BDW" : profile == 0x41 ? "BDR" : "BDO", 3);
+	         memcpy(buf+104, "SIMDRV001", 9);
+	      }
+	      else if(cdb[1] == 0 && cdb[7] == 0 && profile >= 0x10 && profile < 0x40
+	              && sectors > 0 && sectors <= 0x1000000 - 0x30000)
+	      {  guint32 end = 0x30000 + sectors - 1;
+
+	         real_size = 2052;
+	         buf[0] = 0x08; buf[1] = 0x02;
+	         buf[4] = profile == 0x1a ? 0x90 : profile == 0x1b ? 0xa0 : 0;
+	         buf[6] = profile == 0x1a ? 4 : profile == 0x1b ? 2 : 1;
+	         buf[9] = 3;  /* user data starts at PSN 0x30000 */
+	         buf[13] = end >> 16;
+	         buf[14] = end >> 8;
+	         buf[15] = end;
+	      }
+	      else
+	      {  write_sense(sense, 5, 0x24, 0); /* unsupported structure/format */
+	         return -1;
+	      }
+	      alloc_len = cdb[8]<<8 | cdb[9];
+	      memcpy(out_buf, buf, MIN(real_size, MIN(size, alloc_len)));
+	      return 0;
+	   }
+
+      case 0x28: /* READ(10), used for DVD and BD */
+      case 0xbe: /* READ CD */
+                 assert_cdb_length(cdb[0], cdb_size, cdb[0] == 0x28 ? 10 : 12);
+                 assert_cdb_direction(cdb[0], DATA_READ, direction);
+	   {     guint64 lba, sectors = dh->simImage->size / 2048;
 	         useconds_t delay;
 		 int fact;
 		 int i;
 
-		 if(cdb[9] & ~16)  /* We can only deliver user data */
+		 if(cdb[0] == 0xbe && (cdb[9] & ~16))  /* We can only deliver user data */
 		 {  write_sense(sense, 5, 0xff, 0xe0);
 		    return -1;
 		 }
 
-		 lba = cdb[2] << 24 | cdb[3] << 16 | cdb[4] << 8 | cdb[5];
-		 alloc_len = cdb[6] << 16 | cdb[7] << 8 | cdb[8];
+		 lba = (guint32)cdb[2] << 24 | cdb[3] << 16 | cdb[4] << 8 | cdb[5];
+		 alloc_len = cdb[7] << 8 | cdb[8];
+		 if(cdb[0] == 0xbe) alloc_len |= cdb[6] << 16;
 
-		 last_pos = 2048*lba + 2048*alloc_len - 1;
-		 if(last_pos > dh->simImage->size)
+		 if(alloc_len > size/2048)
+		 {  write_sense(sense, 5, 0x24, 0); /* transfer exceeds caller's buffer */
+		    return -1;
+		 }
+		 if(!alloc_len) return 0;
+		 if(lba >= sectors || alloc_len > sectors-lba)
 		 {  write_sense(sense, 5, 0x21, 0x00);  /* Illegal LBA */
 		    return -1;
 		 }

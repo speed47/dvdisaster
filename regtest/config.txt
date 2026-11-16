@@ -583,6 +583,22 @@ RS03i_read_with_crc_error_in_padding yes
 
 # Reading tests (adaptive)
 
+# Simulated overwritable media
+
+RS03i_scan_trailing_bdre yes
+RS03i_scan_trailing_dvdplusrw yes
+RS03i_scan_trailing_bdr yes
+RS03i_scan_trailing_bdre_quick yes
+RS03i_scan_trailing_bdre_stale yes
+RS03i_scan_trailing_bdre_missing_fp yes
+RS03i_read_trailing_bdre_linear yes
+RS03i_read_trailing_bdre_adaptive yes
+RS03i_read_hint_bdre yes
+RS03i_read_hint_dvdplusrw yes
+RS03i_read_hint_bdre_adaptive yes
+RS03i_read_hint_bdre_ecc yes
+RS03i_read_hint_bdre_ecc_adaptive yes
+
 ### RS03 error correction file tests
 
 # Verify tests

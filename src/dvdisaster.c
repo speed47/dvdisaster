@@ -117,6 +117,7 @@ typedef enum
    MODIFIER_SCREEN_SHOT,
    MODIFIER_SET_VERSION,
    MODIFIER_SIMULATE_CD,
+   MODIFIER_SIMULATE_PROFILE,
    MODIFIER_SIMULATE_DEFECTS,
    MODIFIER_SPEED_WARNING, 
    MODIFIER_SPINUP_DELAY, 
@@ -314,6 +315,7 @@ int main(int argc, char *argv[])
 	{"show-header", 1, 0, MODE_SHOW_HEADER},
 	{"show-sector", 1, 0, MODE_SHOW_SECTOR},
 	{"sim-cd", 2, 0, MODIFIER_SIMULATE_CD},
+	{"sim-profile", 1, 0, MODIFIER_SIMULATE_PROFILE},
 	{"sim-defects", 1, 0, MODIFIER_SIMULATE_DEFECTS},
 	{"speed-warning", 2, 0, MODIFIER_SPEED_WARNING},
 	{"spinup-delay", 1, 0, MODIFIER_SPINUP_DELAY},
@@ -700,6 +702,28 @@ int main(int argc, char *argv[])
 	   if(optarg) Closure->simulateCD = g_strdup(optarg);
 	   debug_mode_required = TRUE;
 	   break;
+        case MODIFIER_SIMULATE_PROFILE:
+	{  char *end;
+	   unsigned long profile;
+
+	   errno = 0;
+	   profile = strtoul(optarg, &end, 0);
+	   if(errno || end == optarg || *end || profile > 0xffff)
+	      Stop("Invalid --sim-profile: %s\n", optarg);
+
+	   /* These profiles have matching structure responses in the simulator. */
+	   switch(profile)
+	   {  case 0x08: case 0x09: case 0x0a: /* CD-ROM, CD-R, CD-RW */
+	      case 0x10: case 0x1a: case 0x1b: /* DVD-ROM, DVD+RW, DVD+R */
+	      case 0x40: case 0x41: case 0x43: /* BD-ROM, BD-R, BD-RE */
+	         Closure->simulateProfile = profile;
+	         break;
+	      default:
+	         Stop("Unsupported --sim-profile: %s\n", optarg);
+	   }
+	   debug_mode_required = TRUE;
+	   break;
+	}
         case MODIFIER_SIMULATE_DEFECTS:
 	   if(optarg) Closure->simulateDefects = atoi(optarg);
 	   else Closure->simulateDefects = 10;
@@ -1156,6 +1180,7 @@ int main(int argc, char *argv[])
 	PrintCLI(_("  --show-header n          - assumes given sector is a ecc header and prints it\n"));
 	PrintCLI(_("  --show-sector n          - shows hexdump of the given sector in an image file\n"));
 	PrintCLI(_("  --sim-cd image           - simulate a SCSI-Level CD with contents supplied by the ISO image\n"));
+	PrintCLI(_("  --sim-profile number     - simulated MMC profile, decimal or hex (default: 0x09/CD-R)\n"));
 	PrintCLI(_("  --sim-defects n          - simulate n%% defective sectors on medium\n"));
 	PrintCLI(_("  --truncate n             - truncates image to n sectors\n")); 
 	PrintCLI(_("  --zero-unreadable        - replace the \"unreadable sector\" markers with zeros\n\n"));

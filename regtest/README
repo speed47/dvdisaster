@@ -1,3 +1,27 @@
+Simulated medium profiles
+-------------------------
+
+`--debug --sim-cd=image.iso` retains its original CD-R behavior. Add
+`--sim-profile=0x43` for BD-RE or `--sim-profile=0x1a` for DVD+RW.
+The option accepts decimal or hexadecimal MMC profile numbers:
+
+  0x08 CD-ROM   0x09 CD-R    0x0a CD-RW
+  0x10 DVD-ROM  0x1a DVD+RW  0x1b DVD+R
+  0x40 BD-ROM   0x41 BD-R   0x43 BD-RE
+
+Other profiles are rejected. DVD and BD simulations supply minimal single-layer
+disc structures and use READ(10), including the same missing-sector and error
+simulation as READ CD. The image length determines the reported capacity;
+append sectors to model unused formatted space. This is a read-only test
+device, not a simulation of formatting, writing, or every MMC command.
+`DVDISASTER_SCSI_SIMULATED_NODELAY=1` disables the synthetic read delay for
+all profiles (the regression runner sets it automatically).
+
+The RS03i profile tests cover padded images on BD-RE/DVD+RW, the non-rewritable
+and non-exhaustive search gates, stale ECC, unreadable fingerprints, both reader
+entry points, and missing-ECC hints with and without matching external ECC.
+
+
 Encoder backend tests
 ---------------------
 

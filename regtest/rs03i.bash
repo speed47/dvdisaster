@@ -2678,5 +2678,82 @@ if try "reading image with crc error in padding area" read_with_crc_error_in_pad
 
 REGTEST_SECTION="Reading tests (adaptive)"
 
+### Simulated overwritable media
+
+REGTEST_SECTION="Simulated overwritable media"
+
+# Keep the bytes identical while changing the SCSI profile: only rewritable
+# media in exhaustive mode may use the smaller-standard-size fallback.
+# The limited scan avoids timing-dependent output while still exercising
+# device probing, ECC recognition and CRC reads through READ(10).
+# Unlike the file fixture, append 75226 sectors: READ CAPACITY returns the
+# last LBA, and its image-derived layer guesses must miss the CRC layer, too.
+
+for medium in bdre dvdplusrw bdr bdre_quick bdre_stale bdre_missing_fp; do
+   if try "scan padded medium ($medium)" scan_trailing_$medium; then (
+      cp $LARGEMASTERISO $SIMISO
+      $NEWVER --debug -i$SIMISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+      if [ "$medium" = bdre_stale ]; then
+         dd if=$MASTERISO of=$SIMISO bs=2048 count=$ISOSIZE conv=notrunc >>$LOGFILE 2>&1
+      elif [ "$medium" = bdre_missing_fp ]; then
+         $NEWVER --debug -i$SIMISO --erase 16 >>$LOGFILE 2>&1
+      fi
+      dd if=/dev/zero bs=2048 count=75226 >>$SIMISO 2>>$LOGFILE
+
+      profile=0x43
+      [ "$medium" = dvdplusrw ] && profile=0x1a
+      [ "$medium" = bdr ] && profile=0x41
+      assume="-a RS03"
+      [ "$medium" = bdre_quick ] && assume=""
+      replace_config examine-rs03 "$([ -n "$assume" ] && echo 1 || echo 0)"
+      extra_args="--debug --sim-cd=$SIMISO --sim-profile=$profile --fixed-speed-values"
+      run_regtest scan_trailing_$medium "--spinup-delay=0 $assume -s32-63" $TMPISO $NO_FILE EXITCODES
+   ) & limit_jobs; fi
+done
+
+# Both reader entry points must recognize the padded RS03 recording and
+# suppress the missing-ECC hint. Check the resulting image bytes, too.
+
+for strategy in linear adaptive; do
+   if try "read padded BD-RE ($strategy)" read_trailing_bdre_$strategy; then (
+      cp $LARGEMASTERISO $SIMISO
+      $NEWVER --debug -i$SIMISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+      dd if=/dev/zero bs=2048 count=75226 >>$SIMISO 2>>$LOGFILE
+
+      adaptive=""
+      [ "$strategy" = adaptive ] && adaptive="--adaptive-read"
+      replace_config examine-rs03 1
+      IGNORE_LOG_LINE="^Repairable:"
+      replace_config adaptive-read "$([ -n "$adaptive" ] && echo 1 || echo 0)"
+      extra_args="--debug --sim-cd=$SIMISO --sim-profile=0x43 --fixed-speed-values"
+      run_regtest read_trailing_bdre_$strategy "--spinup-delay=0 -a RS03 $adaptive -r0-63" $TMPISO $NO_FILE EXITCODES
+   ) & limit_jobs; fi
+done
+
+# Ordinary unaugmented media get the hint. A matching external ECC file
+# suppresses it, independently of embedded-ECC recognition. Exercise both
+# callers of HintOverwritableMedium and both DVD and BD probing paths.
+
+for medium in bdre dvdplusrw bdre_adaptive bdre_ecc bdre_ecc_adaptive; do
+   if try "read unaugmented medium ($medium)" read_hint_$medium; then (
+      dd if=$MASTERISO of=$SIMISO bs=2048 count=$ISOSIZE >>$LOGFILE 2>&1
+      ecc=$NO_FILE
+      case "$medium" in
+         *ecc*)
+            $NEWVER --regtest --debug --set-version $SETVERSION -i$SIMISO -e$TMPECC -mRS01 -n8r -c >>$LOGFILE 2>&1
+            ecc=$TMPECC
+            ;;
+      esac
+      profile=0x43
+      [ "$medium" = dvdplusrw ] && profile=0x1a
+      adaptive=""
+      case "$medium" in *adaptive) adaptive="--adaptive-read";; esac
+      IGNORE_LOG_LINE="^Repairable:"
+      replace_config adaptive-read "$([ -n "$adaptive" ] && echo 1 || echo 0)"
+      extra_args="--debug --sim-cd=$SIMISO --sim-profile=$profile --fixed-speed-values"
+      run_regtest read_hint_$medium "--spinup-delay=0 $adaptive -r0-63" $TMPISO $ecc EXITCODES
+   ) & limit_jobs; fi
+done
+
 collect_results
 exit $nbfailed

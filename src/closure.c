@@ -556,6 +556,7 @@ void InitClosure()
    int i;
 
    Closure = g_malloc0(sizeof(GlobalClosure));
+   Closure->simulateProfile = 0x09;  /* CD-R; keep existing simulations unchanged */
 
    /* Extract the version string */
 

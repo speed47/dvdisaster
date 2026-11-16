@@ -1,0 +1,24 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated optical drive 1.00
+Using READ(10).
+Medium "Random Image": BD-RE, 21000 sectors, created 16-07-2006, Manuf.-ID: SIMDRV,001.
+
+* Warning: No error correction data found on this BD-RE medium.
+*          Overwritable media report their formatted size (here 434521 sectors)
+*          instead of the size of the written image, and some burning programs
+*          write them in packet mode. If this medium was written from an image
+*          augmented with RS02/RS03 data, search for the ecc data with -a RS02
+*          or -a RS03 (preferences: "Exhaustive RS02 header search" or
+*          "Recover RS03 signatures") or write the image without packet writing.
+Limiting sector range to [32,63].
+Scanning medium for read errors.
+
+All sectors successfully read.
+Exit status: 0
+Detailed exit status: 0
