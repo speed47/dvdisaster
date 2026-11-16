@@ -944,7 +944,7 @@ int RS03RecognizeImage(Image *image)
       readback has the same extra sectors. RS03 augmentation normally uses a
       standard target capacity, so try those layouts below the reported size. */
 
-   if(maxtries < 0 && (image->type == IMAGE_FILE || image->dh->rewriteable))
+   if(maxtries < 0 && (image->type == IMAGE_FILE || image->dh->overwritable))
    {  static const guint64 sizes[] = { BDXL_QL_SIZE_NODM, BDXL_QL_SIZE, BDXL_TL_SIZE_NODM, BDXL_TL_SIZE,
 					BD_DL_SIZE_NODM, BD_DL_SIZE, BD_SL_SIZE_NODM, BD_SL_SIZE,
 					DVD_DL_SIZE, DVD_SL_SIZE, CDR_SIZE };

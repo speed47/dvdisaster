@@ -590,6 +590,7 @@ RS03i_read_with_crc_error_in_padding yes
 RS03i_scan_trailing_bdre yes
 RS03i_scan_trailing_dvdplusrw yes
 RS03i_scan_trailing_bdr yes
+RS03i_scan_trailing_cdrw yes
 RS03i_scan_trailing_bdre_quick yes
 RS03i_scan_trailing_bdre_stale yes
 RS03i_scan_trailing_bdre_missing_fp yes

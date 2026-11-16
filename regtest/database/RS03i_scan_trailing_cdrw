@@ -1,0 +1,17 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-RW mode 1, 235219 sectors, created 16-07-2006.
+
+Limiting sector range to [32,63].
+Scanning medium for read errors.
+
+All sectors successfully read.
+Exit status: 0
+Detailed exit status: 0

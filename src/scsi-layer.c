@@ -323,12 +323,14 @@ static int get_configuration(DeviceHandle *dh)
 	         dh->shortProfile = "DVD-RAM";
                  dh->mainType = DVD;
 		 dh->rewriteable = TRUE;
+		 dh->overwritable = TRUE;
 		 dh->subType = DVD_RAM;
 	         break;
       case 0x13: dh->profileDescr = "DVD-RW Restricted overwrite";
 	         dh->shortProfile = "DVD-RW";
 	         dh->mainType = DVD; dh->isDash = TRUE;
 		 dh->rewriteable = TRUE;
+		 dh->overwritable = TRUE;
 		 dh->subType = DVD_DASH_RW;
 	         break;
       case 0x14: dh->profileDescr = "DVD-RW Sequential overwrite";
@@ -358,6 +360,7 @@ static int get_configuration(DeviceHandle *dh)
 	         dh->shortProfile = "DVD+RW";
 	         dh->mainType = DVD; dh->isPlus = TRUE;
 		 dh->rewriteable = TRUE;
+		 dh->overwritable = TRUE;
 		 dh->subType = DVD_PLUS_RW;
 	         break;
       case 0x1b: dh->profileDescr = "DVD+R";
@@ -369,6 +372,7 @@ static int get_configuration(DeviceHandle *dh)
 	         dh->shortProfile = "DVD+RW DL";
 	         dh->mainType = DVD; dh->isPlus = TRUE;
 		 dh->rewriteable = TRUE;
+		 dh->overwritable = TRUE;
 		 dh->subType = DVD_PLUS_RW_DL;
 	         break;
       case 0x2b: dh->profileDescr = "DVD+R DL";
@@ -396,6 +400,7 @@ static int get_configuration(DeviceHandle *dh)
  	         dh->shortProfile = "BD-RE";
 	         dh->mainType = BD;
 		 dh->rewriteable = TRUE;
+		 dh->overwritable = TRUE;
 		 dh->subType = BD_RE;
 	         break;
 
@@ -415,6 +420,7 @@ static int get_configuration(DeviceHandle *dh)
                  dh->shortProfile = "HD-DVD-RW";
                  dh->mainType = HD_DVD;
                  dh->subType = HD_DVD_RW;
+                 dh->overwritable = TRUE;  /* MMC: profile 0x52 is HD DVD-RAM */
                  break;
 
       default:   dh->profileDescr = "Unknown profile";
@@ -2907,21 +2913,18 @@ void HintOverwritableMedium(Image *image)
    if(Closure->stopActions)
      return;
 
-   switch(dh->profile)
-   {  case 0x12: case 0x13: case 0x1a: case 0x2a: case 0x43:
-      {  const char *rs02_hint = Closure->examineRS02 ? "" :
-            _("If you expected RS02 error correction data, try an exhaustive search with -a RS02\n"
-              "(preferences: \"Exhaustive RS02 header search\").\n");
-         const char *rs03_hint = Closure->examineRS03 ? "" :
-            _("If you expected RS03 error correction data, try an exhaustive search with -a RS03\n"
-              "(preferences: \"Recover RS03 signatures\").\n");
+   if(dh->overwritable)
+   {  const char *rs02_hint = Closure->examineRS02 ? "" :
+         _("If you expected RS02 error correction data, try an exhaustive search with -a RS02\n"
+           "(preferences: \"Exhaustive RS02 header search\").\n");
+      const char *rs03_hint = Closure->examineRS03 ? "" :
+         _("If you expected RS03 error correction data, try an exhaustive search with -a RS03\n"
+           "(preferences: \"Recover RS03 signatures\").\n");
 
-         LogWarning(_("No error correction data recognized on this %s medium.\n"
-                      "Overwritable media report their formatted capacity (here %" PRId64 " sectors),\n"
-                      "which may exceed the size of the written image.\n%s%s"),
-                    dh->profileDescr, dh->readCapacity+1, rs02_hint, rs03_hint);
-      }
-	break;
+      LogWarning(_("No error correction data recognized on this %s medium.\n"
+                   "Overwritable media report their formatted capacity (here %" PRId64 " sectors),\n"
+                   "which may exceed the size of the written image.\n%s%s"),
+                 dh->profileDescr, dh->readCapacity+1, rs02_hint, rs03_hint);
    }
 }
 

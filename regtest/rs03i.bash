@@ -2707,14 +2707,15 @@ REGTEST_SECTION="Reading tests (adaptive)"
 
 REGTEST_SECTION="Simulated overwritable media"
 
-# Keep the bytes identical while changing the SCSI profile: only rewritable
+# Keep the bytes identical while changing the SCSI profile: only overwritable
 # media in exhaustive mode may use the smaller-standard-size fallback.
+# CD-RW is rewritable but reports its recorded size, so it must not.
 # The limited scan avoids timing-dependent output while still exercising
 # device probing, ECC recognition and CRC reads through READ(10).
 # Unlike the file fixture, append 75226 sectors: READ CAPACITY returns the
 # last LBA, and its image-derived layer guesses must miss the CRC layer, too.
 
-for medium in bdre dvdplusrw bdr bdre_quick bdre_stale bdre_missing_fp; do
+for medium in bdre dvdplusrw bdr cdrw bdre_quick bdre_stale bdre_missing_fp; do
    if try "scan padded medium ($medium)" scan_trailing_$medium; then (
       cp $LARGEMASTERISO $SIMISO
       $NEWVER --debug -i$SIMISO --erase $LMI_HEADER >>$LOGFILE 2>&1
@@ -2728,6 +2729,7 @@ for medium in bdre dvdplusrw bdr bdre_quick bdre_stale bdre_missing_fp; do
       profile=0x43
       [ "$medium" = dvdplusrw ] && profile=0x1a
       [ "$medium" = bdr ] && profile=0x41
+      [ "$medium" = cdrw ] && profile=0x0a
       assume="-a RS03"
       [ "$medium" = bdre_quick ] && assume=""
       replace_config examine-rs03 "$([ -n "$assume" ] && echo 1 || echo 0)"
