@@ -956,9 +956,15 @@ int RS03RecognizeImage(Image *image)
    /* Overwritable media (BD-RE, DVD+RW, ...) report their formatted capacity,
       which may be larger than the image written onto them. A full-capacity
       readback has the same extra sectors. RS03 augmentation normally uses a
-      standard target capacity, so try those layouts below the reported size. */
+      standard target capacity, so try those layouts below the reported size.
+      An image file ending at its ISO volume size has no sectors beyond its
+      file system, so it can not contain such a layout: skip the extra reads
+      for plain ISO images. Without ISO information, search anyway. */
 
-   if(maxtries < 0 && (image->type == IMAGE_FILE || image->dh->overwritable))
+   if(maxtries < 0
+      && (image->type == IMAGE_FILE
+	  ? (!image->isoInfo || image->isoInfo->volumeSize < image_sectors)
+	  : image->dh->overwritable))
    {  static const guint64 sizes[] = { BDXL_QL_SIZE_NODM, BDXL_QL_SIZE, BDXL_TL_SIZE_NODM, BDXL_TL_SIZE,
 					BD_DL_SIZE_NODM, BD_DL_SIZE, BD_SL_SIZE_NODM, BD_SL_SIZE,
 					DVD_DL_SIZE, DVD_SL_SIZE, CDR_SIZE };

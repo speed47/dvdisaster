@@ -658,6 +658,21 @@ if try "image with no ecc at all" random_image; then (
   run_regtest random_image "-tq -v" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# Plain image larger than CD capacity which ends at its ISO volume size.
+# It has no sectors beyond its file system, so the search for smaller
+# standard capacity layouts must be skipped.
+
+if try "plain image beyond cd capacity" random_image_beyond_cd; then (
+
+  $NEWVER --debug -i$TMPISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+  # set the ISO volume space size (both-endian, PVD offset 80) to 360000
+  { rs03_fixture_le 360000 4; printf '\x00\x05\x7e\x40'; } \
+    | dd of=$TMPISO bs=1 seek=$((16*2048+80)) conv=notrunc status=none
+  truncate -s $((360000*2048)) $TMPISO
+
+  run_regtest random_image_beyond_cd "-tq -v" $TMPISO $NO_FILE
+) & limit_jobs; fi
+
 # Image with 8 roots (smallest possible case)
 
 if try "image with 8 roots, no ecc header" rediscover_8_roots; then (

@@ -430,6 +430,7 @@ RS03i_crc_block_zero_layer_size yes
 RS03i_missing_header_truncated yes
 RS03i_missing_header_no_crcsec yes
 RS03i_random_image yes
+RS03i_random_image_beyond_cd yes
 RS03i_rediscover_8_roots yes
 RS03i_rediscover_8_roots2 yes
 RS03i_rediscover_170_roots yes
