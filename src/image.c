@@ -204,10 +204,12 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
 	    GetImageFingerprint(image, NULL, image->eccFileHeader->fpSector);
 	    return image;
 	 }
+	 if(image->eccFileState == ECCFILE_CANCELLED)
+	    break;  /* user stopped the search; do not try other codecs */
       }
    }
 
-   /* bail out (unrecognized ecc file) */
+   /* bail out (unrecognized ecc file or cancelled search) */
 
    LargeClose(image->eccFile);
    image->eccFile = NULL;
@@ -224,6 +226,14 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
 
 int ReportImageEccInconsistencies(Image *image)
 {
+  /* The user stopped the action while the ecc data was being searched for.
+     Whatever is missing below is a consequence of that, so abort quietly. */
+
+  if(Closure->stopActions)
+  {  if(image) CloseImage(image);
+     return TRUE;
+  }
+
   /* No image file */
 
   if(!image || image->type == IMAGE_NONE)
