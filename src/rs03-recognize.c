@@ -140,8 +140,10 @@ int RS03RecognizeFile(LargeFile *ecc_file, EccHeader **eh)
 
    /*** First see whether we have a valid ecc header. */
    
+   if(Closure->stopActions) goto cancelled;
    LargeSeek(ecc_file, 0);
    n = LargeRead(ecc_file, *eh, sizeof(EccHeader));
+   if(Closure->stopActions) goto cancelled;
 
    /* short read -> definitely not an ecc file */
    
@@ -204,7 +206,9 @@ int RS03RecognizeFile(LargeFile *ecc_file, EccHeader **eh)
    
    for(;;)
    {  unsigned char buf[2048];
+      if(Closure->stopActions) goto cancelled;
       n = LargeRead(ecc_file, buf, 2048);
+      if(Closure->stopActions) goto cancelled;
 
       if(n != 2048)
       {  if(n== 0 && LargeEOF(ecc_file))
@@ -257,6 +261,12 @@ int RS03RecognizeFile(LargeFile *ecc_file, EccHeader **eh)
    g_free(*eh);
    *eh=NULL;
    Verbose("RS03RecognizeFile(): no ecc found\n");
+   return ECCFILE_INVALID;
+
+cancelled:
+   Verbose("RS03RecognizeFile(): search cancelled\n");
+   g_free(*eh);
+   *eh = NULL;
    return ECCFILE_INVALID;
 }
 
@@ -383,19 +393,23 @@ EccHeader* FindRS03HeaderInImage(Image *image)
    if(!ii) Verbose(" . NO ISO structures found!\n");
 
    if(ii)
-   {  hdr_pos = ii->volumeSize;
+   {  if(Closure->stopActions) return NULL;
+      hdr_pos = ii->volumeSize;
 
       if(ImageReadSectors(image, buf, hdr_pos, 2) == 2)
-	{  eh = valid_header(buf, hdr_pos, TRUE);
+	{  if(Closure->stopActions) return NULL;
+	 eh = valid_header(buf, hdr_pos, TRUE);
 	 if(eh) 
 	 { Verbose("FindRS03HeaderInImage(): Header found at pos +0\n"); 
 	   return eh;
 	 }
       }
 
+      if(Closure->stopActions) return NULL;
       hdr_pos = (gint64)ii->volumeSize - 150;
       if(hdr_pos >= 0 && ImageReadSectors(image, buf, hdr_pos, 2) == 2)
-	{  eh = valid_header(buf, hdr_pos, TRUE);
+	{  if(Closure->stopActions) return NULL;
+	 eh = valid_header(buf, hdr_pos, TRUE);
 	 if(eh) 
 	 { Verbose("FindRS03HeaderInImage(): Header found at pos -150\n"); 
 	   return eh;
@@ -403,9 +417,11 @@ EccHeader* FindRS03HeaderInImage(Image *image)
       }
 
       /* xorriso appends 150 sectors of padding by default */
+      if(Closure->stopActions) return NULL;
       hdr_pos = (gint64)ii->volumeSize + 150;
       if(ImageReadSectors(image, buf, hdr_pos, 2) == 2)
-	{  eh = valid_header(buf, hdr_pos, TRUE);
+	{  if(Closure->stopActions) return NULL;
+	 eh = valid_header(buf, hdr_pos, TRUE);
 	 if(eh) 
 	 { Verbose("FindRS03HeaderInImage(): Header found at pos +150\n"); 
 	   return eh;
@@ -453,6 +469,10 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
    int layer, layer_sector;
    int i;
 
+   /* The caller must distinguish cancellation from a failed size guess
+      using stopActions, so it does not start another search phase. */
+   if(Closure->stopActions) goto out;
+
    Verbose(".. trying layer size %" PRId64 "\n", (gint64)layer_size);
    Verbose("Scanning layers for signatures.\n");
 
@@ -487,6 +507,8 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
       {  if(!rc->layer_checked[layer])
 	 {  gint64 sector;
 	    int crc_state;
+
+	    if(Closure->stopActions) goto out;
 
 	    sector = RS03SectorIndex(rc->layout[layer], layer, layer_sector);
 
@@ -523,6 +545,8 @@ static int search_crc_blocks_for_layer_size(Image *image, guint64 image_sectors,
 	       }
 	    }
 
+	    if(Closure->stopActions) goto out;
+
 	    /* CRC header found? */
 
 	    crc_state = valid_crc_block(rc->ab->buf, sector, TRUE);
@@ -558,6 +582,7 @@ mark_invalid_layer:
 
    Verbose("-- layer size %" PRId64 " exhausted; %d layers remain untested\n",
 	   (gint64)layer_size, untested_layers);
+out:
    free_recognize_context(rc);
    return FALSE;
 }
@@ -589,6 +614,8 @@ static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
    {  int crc_state;
       CrcBlock *cb;
 
+      if(Closure->stopActions) goto out;
+
       if(sector % 100000 == 0)
 	 Verbose("RS03 bruteforce: scanning sector %" PRId64 " (%.1f%%)\n",
 		 (gint64)sector, (100.0 * sector) / image_sectors);
@@ -611,6 +638,8 @@ static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
 	 default:
 	    continue;
       }
+
+      if(Closure->stopActions) goto out;
 
       crc_state = valid_crc_block(ab->buf, sector, TRUE);
       if(crc_state != 2)
@@ -678,6 +707,8 @@ static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
 		     break;
 	       }
 
+	       if(Closure->stopActions) goto out;
+
 	       if(n_ok && valid_crc_block(ab2->buf, check_sector, TRUE) == 2)
 	       {  CrcBlock cb2_copy;
 		  memcpy(&cb2_copy, ab2->buf, sizeof(CrcBlock));
@@ -710,6 +741,7 @@ static int bruteforce_scan_for_crc_blocks(Image *image, guint64 image_sectors)
       }
    }
 
+out:
    FreeAlignedBuffer(ab);
    FreeAlignedBuffer(ab2);
    return found;
@@ -741,6 +773,8 @@ int RS03RecognizeImage(Image *image)
    gint64 trynumber;
    gint64 maxtries;
 
+   if(Closure->stopActions) return FALSE;
+
    switch(image->type)
    { case IMAGE_FILE:
        Verbose("RS03RecognizeImage: file %s\n", image->file->path);
@@ -766,6 +800,7 @@ int RS03RecognizeImage(Image *image)
    if (!Closure->debugMode || !Closure->ignoreRS03header)
    { image->eccHeader = FindRS03HeaderInImage(image);
 
+     if(Closure->stopActions) goto cancelled;
      if(image->eccHeader)
         return TRUE;
    }
@@ -817,6 +852,7 @@ int RS03RecognizeImage(Image *image)
 
    if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
       return TRUE;
+   if(Closure->stopActions) goto cancelled;
 
    /* The image may have been created with the other BD-R defect management
       setting (--no-bdr-defect-management), so try that layout as well. */
@@ -827,6 +863,7 @@ int RS03RecognizeImage(Image *image)
       if(other_size != layer_size
 	 && search_crc_blocks_for_layer_size(image, image_sectors, other_size, maxtries, &trynumber))
 	 return TRUE;
+      if(Closure->stopActions) goto cancelled;
    }
 
    /* Phase 1: If the known medium size didn't work and we're in exhaustive mode,
@@ -849,6 +886,7 @@ int RS03RecognizeImage(Image *image)
 
 	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
 	    return TRUE;
+	 if(Closure->stopActions) goto cancelled;
       }
    }
 
@@ -881,13 +919,16 @@ int RS03RecognizeImage(Image *image)
 	       which uses the existing search above instead of this fallback. */
 	    if(eh->fpSector >= 0 && eh->fpSector < uchar_to_gint64(eh->sectors)
 	       && (!GetImageFingerprint(image, fingerprint, eh->fpSector)
-	           || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint))))
+	           || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint)))
+	       && !Closure->stopActions)
 	       return TRUE;
+	    if(Closure->stopActions) goto cancelled;
 
 	    Verbose("RS03: smaller medium candidate has an invalid or mismatching fingerprint, skipping\n");
 	    g_free(image->eccHeader);
 	    image->eccHeader = NULL;
 	 }
+	 if(Closure->stopActions) goto cancelled;
       }
    }
 
@@ -900,9 +941,16 @@ int RS03RecognizeImage(Image *image)
    {  Verbose("RS03RecognizeImage: entering bruteforce linear scan\n");
       if(bruteforce_scan_for_crc_blocks(image, image_sectors))
 	 return TRUE;
+      if(Closure->stopActions) goto cancelled;
    }
 
    Verbose("RS03RecognizeImage: no RS03 data found\n");
+   return FALSE;
+
+cancelled:
+   Verbose("RS03RecognizeImage: search cancelled\n");
+   g_free(image->eccHeader);
+   image->eccHeader = NULL;
    return FALSE;
 }
 
