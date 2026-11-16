@@ -184,6 +184,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs03f-tmp.iso
+
 ExamineUDF(File: rs03f-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -313,7 +314,7 @@ FindRS03HeaderInImage: file rs03f-tmp.iso
 FindRS03HeaderInImage(): Header found at pos +0
 ...augmented image found
 GetImageFingerprint(16): read & cached
-: 23970 medium sectors.
+rs03f-tmp.iso: 23970 medium sectors.
 Calculated layout for RS03 file:
 data sectors      = 23970
 data padding      = 0

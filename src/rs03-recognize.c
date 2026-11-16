@@ -777,22 +777,35 @@ static guint64 medium_layer_size(guint64 image_sectors, int nodm)
  * at creation (e.g. a partial last sector of a tiny image, which augmentation
  * then padded); there is nothing to compare against.
  * Frees image->eccHeader and returns FALSE when the candidate is rejected.
+ * Sets *fp_mismatch when the rejection was due to a readable fingerprint
+ * sector that disagrees with the recorded fingerprint.
  */
 
-static int accept_candidate_fingerprint(Image *image)
+static int accept_candidate_fingerprint(Image *image, int *fp_mismatch)
 {  static const guint8 no_fingerprint[16];
    EccHeader *eh = image->eccHeader;
    guint8 fingerprint[16];
+   int accept;
 
-   if(eh->fpSector >= 0 && eh->fpSector < uchar_to_gint64(eh->sectors)
-      && (!memcmp(eh->mediumFP, no_fingerprint, sizeof(no_fingerprint))
-	  || !GetImageFingerprint(image, fingerprint, eh->fpSector)
-	  || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint)))
-      && !Closure->stopActions)
+   if(eh->fpSector < 0 || eh->fpSector >= uchar_to_gint64(eh->sectors))
+   {  accept = FALSE;
+      Verbose("RS03: candidate has an invalid fingerprint sector, skipping\n");
+   }
+   else if(!memcmp(eh->mediumFP, no_fingerprint, sizeof(no_fingerprint))
+	   || !GetImageFingerprint(image, fingerprint, eh->fpSector)
+	   || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint)))
+      accept = TRUE;
+   else
+   {  accept = FALSE;
+      if(!Closure->stopActions)
+      {  *fp_mismatch = TRUE;
+	 Verbose("RS03: candidate has a mismatching fingerprint, skipping\n");
+      }
+   }
+
+   if(accept && !Closure->stopActions)
       return TRUE;
 
-   if(!Closure->stopActions)
-      Verbose("RS03: candidate has an invalid or mismatching fingerprint, skipping\n");
    g_free(image->eccHeader);
    image->eccHeader = NULL;
    return FALSE;
@@ -803,14 +816,15 @@ static int accept_candidate_fingerprint(Image *image)
  */
 
 static int search_layer_size_checked(Image *image, guint64 image_sectors, guint64 layer_size,
-				     gint64 maxtries, gint64 *trynumber)
+				     gint64 maxtries, gint64 *trynumber, int *fp_mismatch)
 {
    return search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, trynumber)
-	  && accept_candidate_fingerprint(image);
+	  && accept_candidate_fingerprint(image, fp_mismatch);
 }
 
 int RS03RecognizeImage(Image *image)
-{  guint64 image_sectors;
+{  int fp_mismatch = FALSE;
+   guint64 image_sectors;
    guint64 layer_size;
    gint64 trynumber;
    gint64 maxtries;
@@ -899,7 +913,7 @@ int RS03RecognizeImage(Image *image)
    {  if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
 	 return TRUE;
    }
-   else if(search_layer_size_checked(image, image_sectors, layer_size, maxtries, &trynumber))
+   else if(search_layer_size_checked(image, image_sectors, layer_size, maxtries, &trynumber, &fp_mismatch))
       return TRUE;
    if(Closure->stopActions) goto cancelled;
 
@@ -910,7 +924,7 @@ int RS03RecognizeImage(Image *image)
    {  guint64 other_size = medium_layer_size(image_sectors, !Closure->noBdrDefectManagement);
 
       if(other_size != layer_size
-	 && search_layer_size_checked(image, image_sectors, other_size, maxtries, &trynumber))
+	 && search_layer_size_checked(image, image_sectors, other_size, maxtries, &trynumber, &fp_mismatch))
 	 return TRUE;
       if(Closure->stopActions) goto cancelled;
    }
@@ -933,7 +947,7 @@ int RS03RecognizeImage(Image *image)
 	 if(try_size == 0 || try_size == layer_size)
 	    continue;  /* skip zero or already-tried size */
 
-	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber))
+	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber, &fp_mismatch))
 	    return TRUE;
 	 if(Closure->stopActions) goto cancelled;
       }
@@ -956,7 +970,7 @@ int RS03RecognizeImage(Image *image)
 	 if(GF_FIELDMAX*try_size >= image_sectors || try_size == layer_size)
 	    continue;
 
-	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber))
+	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber, &fp_mismatch))
 	    return TRUE;
 	 if(Closure->stopActions) goto cancelled;
       }
@@ -970,12 +984,22 @@ int RS03RecognizeImage(Image *image)
    if(Closure->bruteforceRS03Search && maxtries < 0)
    {  Verbose("RS03RecognizeImage: entering bruteforce linear scan\n");
       if(bruteforce_scan_for_crc_blocks(image, image_sectors)
-	 && accept_candidate_fingerprint(image))
+	 && accept_candidate_fingerprint(image, &fp_mismatch))
 	 return TRUE;
       if(Closure->stopActions) goto cancelled;
    }
 
    Verbose("RS03RecognizeImage: no RS03 data found\n");
+
+   /* Rejecting ECC for a fingerprint mismatch protects against ECC left
+      behind by an earlier recording, but it also blocks a genuine image
+      whose fingerprint sector is readable yet damaged. Tell the user. */
+
+   if(fp_mismatch)
+      LogWarning(_("RS03 error correction data was found, but its fingerprint does not match\n"
+		   "sector 16 of this image. It may belong to an earlier recording on this medium.\n"
+		   "If you are sure it belongs to this image, specify the original medium size\n"
+		   "with -n (for example, -n BD).\n"));
    return FALSE;
 
 cancelled:

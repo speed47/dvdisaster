@@ -183,6 +183,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs01-tmp.iso
+
 ExamineUDF(File: rs01-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -309,7 +310,7 @@ FindRS03HeaderInImage: file rs01-tmp.iso
 FindRS03HeaderInImage(): Header found at pos +0
 ...augmented image found
 GetImageFingerprint(16): read & cached
-: 26775 medium sectors.
+rs01-tmp.iso: 26775 medium sectors.
 CrcBufValid: buffer VALID
 Encoding with Method RS01: 32 roots, 14.3% redundancy.
 Error correction file "rs01-tmp.ecc" created.

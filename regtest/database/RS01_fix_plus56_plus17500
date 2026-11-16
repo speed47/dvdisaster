@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs01-tmp.iso: 21008 medium sectors and 1172 bytes.
+Opening rs01-tmp.iso
+rs01-tmp.iso: 21008 medium sectors and 1172 bytes.
 
 Fix mode(RS01): Repairable sectors will be fixed in the image.
 Image has been truncated by 8 sectors.

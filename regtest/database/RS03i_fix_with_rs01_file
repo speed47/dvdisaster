@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs03i-tmp.iso: 24990 medium sectors.
+Opening rs03i-tmp.iso
+rs03i-tmp.iso: 24990 medium sectors.
 
 Fix mode(RS01): Repairable sectors will be fixed in the image.
 CRC error in sector 24989

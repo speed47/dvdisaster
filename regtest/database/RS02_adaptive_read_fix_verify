@@ -14,7 +14,8 @@ Adaptive reading: Trying to collect enough data for error correction.
 Creating new rs02-tmp.iso image.
 Sufficient data for reconstructing the image is available.
 
-Opening rs02-tmp.iso: 34932 medium sectors.
+Opening rs02-tmp.iso
+rs02-tmp.iso: 34932 medium sectors.
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.
 Repaired sectors: 4795 (0 data, 4795 ecc)

@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs03f-master.iso: 21000 medium sectors.
+Opening rs03f-master.iso
+rs03f-master.iso: 21000 medium sectors.
 41 MiB data, 3 MiB ecc (20 roots;  8.5% redundancy).
 Error correction file "rs03f-tmp.ecc" created.
 Make sure to keep this file on a reliable medium.

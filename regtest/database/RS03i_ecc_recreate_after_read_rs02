@@ -126,6 +126,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs03i-tmp.iso
+
 ExamineUDF(File: rs03i-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -191,7 +192,7 @@ Interleaving layout:
 first layer sector with CRC data 40 (sector# 21002)
 
 GetImageFingerprint(16): cached
-: 23908 medium sectors.
+rs03i-tmp.iso: 23908 medium sectors.
 * Warning: Image "rs03i-tmp.iso" already contains error correction information.
 *          Truncating image to data part (21000 sectors).
 Image size is now: 21000 medium sectors.

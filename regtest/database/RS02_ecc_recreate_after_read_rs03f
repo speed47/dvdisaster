@@ -14,7 +14,8 @@ Reading CRC information from ecc data (RS03) ... done.
 
 All sectors successfully read. Checksums match.
 
-Opening rs02-tmp.iso: 30000 medium sectors.
+Opening rs02-tmp.iso
+rs02-tmp.iso: 30000 medium sectors.
 Augmenting image with Method RS02:
  58 MiB data, 9 MiB ecc (35 roots; 15.9% redundancy).
 * Warning: Using redundancies below 20% may not give

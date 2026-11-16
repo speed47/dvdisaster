@@ -6,6 +6,7 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs03i-tmp.iso
+
 ExamineUDF(File: rs03i-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -305,7 +306,7 @@ RS03: try number = 165, reading sector 21071
 ** Success: sector 21071, rediscovered format with 39 roots
 ...augmented image found
 GetImageFingerprint(16): read & cached
-: 24990 medium sectors.
+rs03i-tmp.iso: 24990 medium sectors.
 Calculated layout for RS03 image:
 data sectors      = 21000
 data padding      = 68

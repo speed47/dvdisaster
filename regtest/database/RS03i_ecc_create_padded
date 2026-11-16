@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs03i-tmp.iso: 21150 medium sectors.
+Opening rs03i-tmp.iso
+rs03i-tmp.iso: 21150 medium sectors.
 * Warning: The image contains 150 sectors beyond the size recorded in its ISO file system (21000 sectors).
 *          These sectors are all zero, consistent with xorriso's default 300 KiB padding.
 *          If you use xorriso, consider "-padding 0" when creating future images

@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs02-tmp.iso: 359225 medium sectors.
+Opening rs02-tmp.iso
+rs02-tmp.iso: 359225 medium sectors.
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.
     1 repaired sectors: 223600d 
