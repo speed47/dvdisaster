@@ -195,6 +195,8 @@ typedef struct _DeviceHandle
    int incomplete;            /* disc is not finalized or otherwise broken */
    int discStatus;            /* obtained from READ DISC INFORMATION query */
    int rewriteable;
+   int overwritable;          /* random-access rewritable medium (DVD-RAM, DVD+RW, BD-RE, ...)
+				 which reports its formatted capacity, not the recorded size */
    char *mediumDescr;         /* textual description of medium */
 
    /*
