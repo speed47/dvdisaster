@@ -598,6 +598,12 @@ RS03i_read_hint_dvdplusrw yes
 RS03i_read_hint_bdre_adaptive yes
 RS03i_read_hint_bdre_ecc yes
 RS03i_read_hint_bdre_ecc_adaptive yes
+RS03i_read_hint_bdre_rs02 yes
+RS03i_read_hint_bdre_rs03 yes
+RS03i_read_hint_bdre_both yes
+RS03i_read_hint_bdre_rs02_adaptive yes
+RS03i_read_hint_bdre_rs03_adaptive yes
+RS03i_read_hint_bdre_both_adaptive yes
 
 ### RS03 error correction file tests
 
