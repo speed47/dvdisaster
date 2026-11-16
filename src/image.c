@@ -90,29 +90,79 @@ void ExamineECC(Image *image)
 /***
  *** Warn if the image extends beyond its ISO file system.
  ***
- * Mastering software like xorriso appends 300 KiB of padding by default.
- * The padding gets protected along with the data, wastes space on the medium
- * and moves the ecc header away from where it is quickly found behind the
- * ISO file system.
+ * Trailing sectors may be mastering padding or intentional additional data.
+ * Explain that they will be protected, without blocking image creation.
  */
 
-void WarnAboutImagePadding(Image *image)
-{
-   /* Images whose size is not a multiple of 2048 are not from a mastering
-      program; leave them alone. */
+/* Match the padding pattern, not the identity of the mastering software.
+   A failed probe simply leaves us with the generic trailing-data notice. */
 
-   if(image->isoInfo && image->inLast == 2048
-      && image->sectorSize > image->isoInfo->volumeSize)
-     ModalWarning(GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, NULL,
-		  _("The image is %" PRId64 " sectors larger than its ISO file system (%d sectors).\n"
-		    "This is usually padding added by the mastering software\n"
-		    "(e.g. xorriso appends 300 KiB unless \"-padding 0\" is given).\n"
-		    "The padding uses up space which is lost for error correction data,\n"
-		    "and the error correction data may not be found when reading the\n"
-		    "medium without an exhaustive search. Consider creating the image\n"
-		    "without padding.\n"),
-		  image->sectorSize - image->isoInfo->volumeSize,
-		  image->isoInfo->volumeSize);
+static int has_xorriso_padding(Image *image)
+{  static const unsigned char zeros[2048] = {0};
+   unsigned char buf[2048];
+   guint64 offset;
+   int sector, matches = FALSE;
+
+   if(image->type != IMAGE_FILE
+      || image->sectorSize - image->isoInfo->volumeSize != 150)
+     return FALSE;
+
+   offset = image->file->offset;
+   if(LargeSeek(image->file, (guint64)image->isoInfo->volumeSize * 2048))
+   {  for(sector=0; sector<150; sector++)
+        if(LargeRead(image->file, buf, sizeof(buf)) != sizeof(buf)
+           || memcmp(buf, zeros, sizeof(buf)))
+          break;
+      matches = sector == 150;
+   }
+
+   if(!LargeSeek(image->file, offset))
+     matches = FALSE;
+
+   return matches;
+}
+
+void WarnAboutImagePadding(Image *image)
+{  char *message;
+   const char *details;
+
+   /* Limit this notice to images with an ISO file system and whole sectors. */
+
+   if(!image->isoInfo || image->inLast != 2048
+      || image->sectorSize <= image->isoInfo->volumeSize)
+     return;
+
+   if(has_xorriso_padding(image))
+     details = _("These sectors are all zero, consistent with xorriso's default 300 KiB padding.\n"
+                 "If you use xorriso, consider \"-padding 0\" when creating future images\n"
+                 "to omit this padding and potentially leave more space for error correction.\n"
+                 "These sectors will be preserved and protected by error correction.\n");
+   else
+     details = _("These sectors may contain padding or additional data. They will be\n"
+                 "preserved and protected by error correction.\n"
+                 "If your mastering software added unnecessary padding, disabling it\n"
+                 "when creating future images may leave more space for error correction.\n");
+
+   message = g_strdup_printf(
+     _("The image contains %" PRId64 " sectors beyond the size recorded in its ISO file system (%u sectors).\n"
+       "%s"
+       "Creation will continue.\n"),
+     image->sectorSize - image->isoInfo->volumeSize,
+     image->isoInfo->volumeSize, details);
+
+   LogWarning("%s", message);
+
+#ifdef WITH_GUI_YES
+   if(Closure->guiMode)
+   {  char *utf_message = g_locale_to_utf8(message, -1, NULL, NULL, NULL);
+      char *markup = g_markup_escape_text(utf_message, -1);
+
+      GuiShowMessage(Closure->window, markup, GTK_MESSAGE_WARNING);
+      g_free(markup);
+      g_free(utf_message);
+   }
+#endif
+   g_free(message);
 }
 
 /***

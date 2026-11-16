@@ -6,13 +6,12 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs03i-tmp.iso: 21150 medium sectors.
-* Warning: The image is 150 sectors larger than its ISO file system (21000 sectors).
-*          This is usually padding added by the mastering software
-*          (e.g. xorriso appends 300 KiB unless "-padding 0" is given).
-*          The padding uses up space which is lost for error correction data,
-*          and the error correction data may not be found when reading the
-*          medium without an exhaustive search. Consider creating the image
-*          without padding.
+* Warning: The image contains 150 sectors beyond the size recorded in its ISO file system (21000 sectors).
+*          These sectors are all zero, consistent with xorriso's default 300 KiB padding.
+*          If you use xorriso, consider "-padding 0" when creating future images
+*          to omit this padding and potentially leave more space for error correction.
+*          These sectors will be preserved and protected by error correction.
+*          Creation will continue.
 41 MiB data, 7 MiB ecc (38 roots; 17.5% redundancy), 0 MiB padding.
 * Warning: Using redundancies below 20% may not give
 *          the expected data loss protection.
