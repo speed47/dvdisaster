@@ -767,6 +767,48 @@ static guint64 medium_layer_size(guint64 image_sectors, int nodm)
    return bd_ql_sz/GF_FIELDMAX;
 }
 
+/*
+ * A shorter recording on reused media can leave the previous recording's
+ * ECC behind. Accept a header found by the automatic layout search only if
+ * the readable fingerprint agrees. As in RS02, an unreadable fingerprint must
+ * not prevent recovery. A readable but damaged fingerprint can still be
+ * recovered by supplying the original medium size (-n), which skips this check.
+ * An all-zero stored fingerprint means the fingerprint sector was unavailable
+ * at creation (e.g. a partial last sector of a tiny image, which augmentation
+ * then padded); there is nothing to compare against.
+ * Frees image->eccHeader and returns FALSE when the candidate is rejected.
+ */
+
+static int accept_candidate_fingerprint(Image *image)
+{  static const guint8 no_fingerprint[16];
+   EccHeader *eh = image->eccHeader;
+   guint8 fingerprint[16];
+
+   if(eh->fpSector >= 0 && eh->fpSector < uchar_to_gint64(eh->sectors)
+      && (!memcmp(eh->mediumFP, no_fingerprint, sizeof(no_fingerprint))
+	  || !GetImageFingerprint(image, fingerprint, eh->fpSector)
+	  || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint)))
+      && !Closure->stopActions)
+      return TRUE;
+
+   if(!Closure->stopActions)
+      Verbose("RS03: candidate has an invalid or mismatching fingerprint, skipping\n");
+   g_free(image->eccHeader);
+   image->eccHeader = NULL;
+   return FALSE;
+}
+
+/*
+ * Search one layer size and apply the fingerprint check to a hit.
+ */
+
+static int search_layer_size_checked(Image *image, guint64 image_sectors, guint64 layer_size,
+				     gint64 maxtries, gint64 *trynumber)
+{
+   return search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, trynumber)
+	  && accept_candidate_fingerprint(image);
+}
+
 int RS03RecognizeImage(Image *image)
 {  guint64 image_sectors;
    guint64 layer_size;
@@ -850,7 +892,14 @@ int RS03RecognizeImage(Image *image)
    }
    else layer_size = medium_layer_size(image_sectors, Closure->noBdrDefectManagement);
 
-   if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
+   /* An explicit medium size (-n) is the user's override for a readable but
+      damaged fingerprint, so only check the fingerprint of the guessed size. */
+
+   if(Closure->mediumSize >= GF_FIELDMAX)
+   {  if(search_crc_blocks_for_layer_size(image, image_sectors, layer_size, maxtries, &trynumber))
+	 return TRUE;
+   }
+   else if(search_layer_size_checked(image, image_sectors, layer_size, maxtries, &trynumber))
       return TRUE;
    if(Closure->stopActions) goto cancelled;
 
@@ -861,7 +910,7 @@ int RS03RecognizeImage(Image *image)
    {  guint64 other_size = medium_layer_size(image_sectors, !Closure->noBdrDefectManagement);
 
       if(other_size != layer_size
-	 && search_crc_blocks_for_layer_size(image, image_sectors, other_size, maxtries, &trynumber))
+	 && search_layer_size_checked(image, image_sectors, other_size, maxtries, &trynumber))
 	 return TRUE;
       if(Closure->stopActions) goto cancelled;
    }
@@ -884,7 +933,7 @@ int RS03RecognizeImage(Image *image)
 	 if(try_size == 0 || try_size == layer_size)
 	    continue;  /* skip zero or already-tried size */
 
-	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
+	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber))
 	    return TRUE;
 	 if(Closure->stopActions) goto cancelled;
       }
@@ -907,27 +956,8 @@ int RS03RecognizeImage(Image *image)
 	 if(GF_FIELDMAX*try_size >= image_sectors || try_size == layer_size)
 	    continue;
 
-	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
-	 {  EccHeader *eh = image->eccHeader;
-	    guint8 fingerprint[16];
-
-	    /* A shorter recording can leave the previous recording's ECC
-	       behind. Only trust this extra size heuristic if the readable
-	       fingerprint agrees. As in RS02, an unreadable fingerprint must
-	       not prevent recovery. A readable but damaged fingerprint can
-	       still be recovered by supplying the original medium size (-n),
-	       which uses the existing search above instead of this fallback. */
-	    if(eh->fpSector >= 0 && eh->fpSector < uchar_to_gint64(eh->sectors)
-	       && (!GetImageFingerprint(image, fingerprint, eh->fpSector)
-	           || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint)))
-	       && !Closure->stopActions)
-	       return TRUE;
-	    if(Closure->stopActions) goto cancelled;
-
-	    Verbose("RS03: smaller medium candidate has an invalid or mismatching fingerprint, skipping\n");
-	    g_free(image->eccHeader);
-	    image->eccHeader = NULL;
-	 }
+	 if(search_layer_size_checked(image, image_sectors, try_size, maxtries, &trynumber))
+	    return TRUE;
 	 if(Closure->stopActions) goto cancelled;
       }
    }
@@ -939,7 +969,8 @@ int RS03RecognizeImage(Image *image)
 
    if(Closure->bruteforceRS03Search && maxtries < 0)
    {  Verbose("RS03RecognizeImage: entering bruteforce linear scan\n");
-      if(bruteforce_scan_for_crc_blocks(image, image_sectors))
+      if(bruteforce_scan_for_crc_blocks(image, image_sectors)
+	 && accept_candidate_fingerprint(image))
 	 return TRUE;
       if(Closure->stopActions) goto cancelled;
    }

@@ -279,12 +279,16 @@ However, see --no-bdr-defect-management below.
 .PP
 When an augmented image is followed by unused medium space and its header
 cannot be located, RS03 also tries smaller standard target capacities.
-This fallback rejects candidates whose recorded fingerprint disagrees with
-the readable fingerprint sector, since an overwritten medium may retain ECC
-from an older recording. An unreadable fingerprint sector does not prevent
-recovery. If the fingerprint sector is readable but damaged, supplying the
-original target size with \-n (for example, \-n BD) uses the existing explicit
-layout search. Only do this when the ECC belongs to the recording being repaired.
+.PP
+Whenever the header cannot be located, every automatic layout search
+(standard target capacities, image-derived sizes, the smaller-capacity
+fallback and \-\-bruteforce-rs03-search) rejects ECC whose recorded
+fingerprint disagrees with the readable fingerprint sector, since an
+overwritten medium may retain ECC from an older recording. An unreadable
+fingerprint sector does not prevent recovery. If the fingerprint sector is
+readable but damaged, supplying the original target size with \-n (for
+example, \-n BD) searches that layout without the fingerprint check.
+Only do this when the ECC belongs to the recording being repaired.
 .RE
 .RE
 

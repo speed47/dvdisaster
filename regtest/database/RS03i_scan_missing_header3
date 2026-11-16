@@ -561,6 +561,7 @@ RS03: try number = 395, reading sector 235307
 - layer slice 5
 RS03: try number = 396, reading sector 235308
 ** Success: sector 235308, rediscovered format with 87 roots
+GetImageFingerprint(16): cached
 ...augmented image found
 # Calling query_size()
 # *** query_size(Simulated CD drive 1.00) ***
