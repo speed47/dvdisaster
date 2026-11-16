@@ -2902,6 +2902,11 @@ void HintOverwritableMedium(Image *image)
    if(image->eccMethod || image->eccFileMethod)
      return;
 
+   /* A stopped search proves nothing about the medium's contents. */
+
+   if(Closure->stopActions)
+     return;
+
    switch(dh->profile)
    {  case 0x12: case 0x13: case 0x1a: case 0x2a: case 0x43:
       {  const char *rs02_hint = Closure->examineRS02 ? "" :

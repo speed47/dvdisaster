@@ -267,7 +267,7 @@ cancelled:
    Verbose("RS03RecognizeFile(): search cancelled\n");
    g_free(*eh);
    *eh = NULL;
-   return ECCFILE_INVALID;
+   return ECCFILE_CANCELLED;
 }
 
 /***

@@ -595,6 +595,9 @@ process_ecc:
 	 case ECCFILE_WRONG_CODEC:
 	    PrintError(_("unknown codec (unusable)\n"));
 	    break;
+	 case ECCFILE_CANCELLED:
+	    PrintError(_("search cancelled\n"));
+	    break;
 	 default:
 	    PrintError(_("unusable\n"));
 	    break;
