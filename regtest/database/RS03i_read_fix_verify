@@ -16,7 +16,8 @@ Sector 992: Medium Error; Unrecovered read error. Skipping 15 sectors.
 
 16 unreadable sectors.
 
-Opening rs03i-tmp.iso: 24990 medium sectors.
+Opening rs03i-tmp.iso
+rs03i-tmp.iso: 24990 medium sectors.
 
 Fix mode(RS03i): Repairable sectors will be fixed in the image.
     1 repaired sectors: 992d 

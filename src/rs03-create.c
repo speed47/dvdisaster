@@ -1288,7 +1288,7 @@ void RS03Create(void)
 
    /*** Open image file. */
 
-   PrintLog(_("\nOpening %s"), Closure->imageName);
+   PrintLog(_("\nOpening %s\n"), Closure->imageName);
 
    if(Closure->eccTarget == ECC_IMAGE)   /* augmented image */
       // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
@@ -1298,15 +1298,15 @@ void RS03Create(void)
       image = OpenImageFromFile(Closure->imageName, O_RDONLY, IMG_PERMS);
  
    if(!image)
-   {  PrintLog(": %s.\n", strerror(errno));
+   {  PrintLog("%s: %s.\n", Closure->imageName, strerror(errno));
       Stop(_("Image file %s: %s."),Closure->imageName, strerror(errno));
    }
 
    ec->image = image;
 
    if(image->inLast == 2048)
-        PrintLog(_(": %" PRId64 " medium sectors.\n"), image->sectorSize);
-   else PrintLog(_(": %" PRId64 " medium sectors and %d bytes.\n"), 
+        PrintLog(_("%s: %" PRId64 " medium sectors.\n"), Closure->imageName, image->sectorSize);
+   else PrintLog(_("%s: %" PRId64 " medium sectors and %d bytes.\n"), Closure->imageName,
 		   image->sectorSize-1, image->inLast);
 
    /* A separate ECC file for zero data sectors has zero-sized layers and

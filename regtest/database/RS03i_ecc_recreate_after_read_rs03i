@@ -183,6 +183,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs03i-tmp.iso
+
 ExamineUDF(File: rs03i-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -311,7 +312,7 @@ FindRS03HeaderInImage: file rs03i-tmp.iso
 FindRS03HeaderInImage(): Header found at pos +0
 ...augmented image found
 GetImageFingerprint(16): read & cached
-: 22950 medium sectors.
+rs03i-tmp.iso: 22950 medium sectors.
 * Warning: Image "rs03i-tmp.iso" already contains error correction information.
 *          Truncating image to data part (21000 sectors).
 Image size is now: 21000 medium sectors.

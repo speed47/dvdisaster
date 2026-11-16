@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs03f-tmp.iso: 20731 medium sectors.
+Opening rs03f-tmp.iso
+rs03f-tmp.iso: 20731 medium sectors.
 
 Fix mode(RS03f): Repairable sectors will be fixed in the image.
     3 repaired sectors: 20790d 20880d 20970d 

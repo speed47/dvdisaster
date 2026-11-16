@@ -7,6 +7,10 @@ See the file "COPYING" for further information.
 
 Device: sim-cd, Simulated optical drive 1.00
 Using READ(10).
+* Warning: RS03 error correction data was found, but its fingerprint does not match
+*          sector 16 of this image. It may belong to an earlier recording on this medium.
+*          If you are sure it belongs to this image, specify the original medium size
+*          with -n (for example, -n BD).
 Medium "Random Image": BD-RE, 21000 sectors, created 16-07-2006, Manuf.-ID: SIMDRV,001.
 
 * Warning: No error correction data recognized on this BD-RE medium.

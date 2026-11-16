@@ -6,6 +6,7 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs02-tmp.iso
+
 ExamineUDF(File: rs02-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -73,7 +74,7 @@ Interleaving layout:
 first layer sector with CRC data 136 (sector# 30002)
 
 GetImageFingerprint(16): cached
-: 34932 medium sectors.
+rs02-tmp.iso: 34932 medium sectors.
 RS02LayoutFromImage(): returning cached layout
 
 Fix mode(RS02): Repairable sectors will be fixed in the image.

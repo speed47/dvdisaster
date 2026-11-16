@@ -6,6 +6,7 @@ under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
 Opening rs03f-master.iso
+
 ExamineUDF(File: rs03f-master.iso)
  Examining the ISO file system...
   Sector 16:
@@ -641,7 +642,7 @@ RS03: try number = 492, reading sector 20501
 RS03RecognizeImage: no RS03 data found
 ...no augmented image detected.
 GetImageFingerprint(16): read & cached
-: 21000 medium sectors.
+rs03f-master.iso: 21000 medium sectors.
 RS03RecognizeFile(): examining rs03f-tmp.ecc
 RS03RecognizeFile(): no magic cookie in header
 RS03RecognizeFile(): exhaustive search for CRC blocks started

@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs02-tmp.iso: 34935 medium sectors.
+Opening rs02-tmp.iso
+rs02-tmp.iso: 34935 medium sectors.
 * Warning: Image "rs02-tmp.iso" already contains error correction information.
 *          Truncating image to data part (30000 sectors).
 Image size is now: 30000 medium sectors.

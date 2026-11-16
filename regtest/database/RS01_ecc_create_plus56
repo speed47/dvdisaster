@@ -5,7 +5,8 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs01-plus56_bytes.iso: 21000 medium sectors and 56 bytes.
+Opening rs01-plus56_bytes.iso
+rs01-plus56_bytes.iso: 21000 medium sectors and 56 bytes.
 Encoding with Method RS01: 32 roots, 14.3% redundancy.
 Error correction file "rs01-tmp.ecc" created.
 Make sure to keep this file on a reliable medium.

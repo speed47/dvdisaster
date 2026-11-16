@@ -14,7 +14,8 @@ Reading CRC information from ecc data (RS03) ... done.
 
 All sectors successfully read. Checksums match.
 
-Opening rs02-tmp.iso: 36975 medium sectors.
+Opening rs02-tmp.iso
+rs02-tmp.iso: 36975 medium sectors.
 * Warning: Image "rs02-tmp.iso" already contains error correction information.
 *          Truncating image to data part (30000 sectors).
 Image size is now: 30000 medium sectors.

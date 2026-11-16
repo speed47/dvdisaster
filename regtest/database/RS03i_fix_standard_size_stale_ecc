@@ -5,7 +5,12 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Opening rs03i-tmp.iso: 359294 medium sectors.
+Opening rs03i-tmp.iso
+* Warning: RS03 error correction data was found, but its fingerprint does not match
+*          sector 16 of this image. It may belong to an earlier recording on this medium.
+*          If you are sure it belongs to this image, specify the original medium size
+*          with -n (for example, -n BD).
+rs03i-tmp.iso: 359294 medium sectors.
 
 *
 * dvdisaster - can not continue:

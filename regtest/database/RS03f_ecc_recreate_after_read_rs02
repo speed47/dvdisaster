@@ -127,6 +127,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs03f-tmp.iso
+
 ExamineUDF(File: rs03f-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -192,7 +193,7 @@ Interleaving layout:
 first layer sector with CRC data 40 (sector# 21002)
 
 GetImageFingerprint(16): cached
-: 23908 medium sectors.
+rs03f-tmp.iso: 23908 medium sectors.
 CalcRS03Layout(): removed cached layout from other codec
 Calculated layout for RS03 file:
 data sectors      = 23908

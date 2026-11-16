@@ -180,6 +180,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs02-tmp.iso
+
 ExamineUDF(File: rs02-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -954,7 +955,7 @@ RS03: try number = 627, reading sector 29146
 RS03RecognizeImage: no RS03 data found
 ...no augmented image detected.
 GetImageFingerprint(16): read & cached
-: 30000 medium sectors.
+rs02-tmp.iso: 30000 medium sectors.
 Calculated layout for RS02 image:
 data sectors      = 30000
 crc sectors       = 59

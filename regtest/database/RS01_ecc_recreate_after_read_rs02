@@ -126,6 +126,7 @@ CrcBuf contents, image path none (medium):
   missing crcs: 0
 
 Opening rs01-tmp.iso
+
 ExamineUDF(File: rs01-tmp.iso)
  Examining the ISO file system...
   Sector 16:
@@ -191,7 +192,7 @@ Interleaving layout:
 first layer sector with CRC data 14 (sector# 21002)
 
 GetImageFingerprint(16): cached
-: 26920 medium sectors.
+rs01-tmp.iso: 26920 medium sectors.
 CrcBufValid: buffer VALID
 Encoding with Method RS01: 32 roots, 14.3% redundancy.
 Error correction file "rs01-tmp.ecc" created.
