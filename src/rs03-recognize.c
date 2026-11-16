@@ -853,9 +853,9 @@ int RS03RecognizeImage(Image *image)
    }
 
    /* Overwritable media (BD-RE, DVD+RW, ...) report their formatted capacity,
-      which may be larger than the image written onto them; an image read back
-      from them has the same size. Try the layouts of the standard medium sizes
-      which are smaller than the reported size. */
+      which may be larger than the image written onto them. A full-capacity
+      readback has the same extra sectors. RS03 augmentation normally uses a
+      standard target capacity, so try those layouts below the reported size. */
 
    if(maxtries < 0 && (image->type == IMAGE_FILE || image->dh->rewriteable))
    {  static const guint64 sizes[] = { BDXL_QL_SIZE_NODM, BDXL_QL_SIZE, BDXL_TL_SIZE_NODM, BDXL_TL_SIZE,
@@ -870,7 +870,24 @@ int RS03RecognizeImage(Image *image)
 	    continue;
 
 	 if(search_crc_blocks_for_layer_size(image, image_sectors, try_size, maxtries, &trynumber))
-	    return TRUE;
+	 {  EccHeader *eh = image->eccHeader;
+	    guint8 fingerprint[16];
+
+	    /* A shorter recording can leave the previous recording's ECC
+	       behind. Only trust this extra size heuristic if the readable
+	       fingerprint agrees. As in RS02, an unreadable fingerprint must
+	       not prevent recovery. A readable but damaged fingerprint can
+	       still be recovered by supplying the original medium size (-n),
+	       which uses the existing search above instead of this fallback. */
+	    if(eh->fpSector >= 0 && eh->fpSector < uchar_to_gint64(eh->sectors)
+	       && (!GetImageFingerprint(image, fingerprint, eh->fpSector)
+	           || !memcmp(fingerprint, eh->mediumFP, sizeof(fingerprint))))
+	       return TRUE;
+
+	    Verbose("RS03: smaller medium candidate has an invalid or mismatching fingerprint, skipping\n");
+	    g_free(image->eccHeader);
+	    image->eccHeader = NULL;
+	 }
       }
    }
 
