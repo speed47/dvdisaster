@@ -1628,6 +1628,55 @@ if try "fix image followed by unused medium sectors, missing header" fix_trailin
    run_regtest fix_trailing_medium_space "-f --truncate" $TMPISO $NO_FILE
 ) & limit_jobs; fi
 
+# A shorter, unaugmented recording overwrites only the start of a reused
+# medium. Its readable fingerprint differs, but the old header and CRC layer
+# survive. Refuse repair, including --truncate, and preserve every input byte.
+
+if try "refuse stale ECC after a shorter recording" fix_trailing_stale_ecc; then (
+   cp $LARGEMASTERISO $TMPISO
+   dd if=$MASTERISO of=$TMPISO bs=2048 count=$ISOSIZE conv=notrunc >>$LOGFILE 2>&1
+   dd if=/dev/zero of=$TMPISO bs=2048 seek=18 count=1 conv=notrunc >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   run_regtest fix_trailing_stale_ecc "-f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# A missing fingerprint is not evidence of a different recording: the new
+# fallback must still recover a padded image with both sector 16 and its ECC
+# header erased.
+
+if try "fix padded image with missing fingerprint and header" fix_trailing_missing_fingerprint; then (
+   cp $LARGEMASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --erase 16 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   run_regtest fix_trailing_missing_fingerprint "-f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+# A readable fingerprint with bit rot is ambiguous, too. The automatic
+# fallback must leave it untouched; explicitly choosing its original layout
+# with -n remains available for recovery (tested separately below).
+
+if try "refuse padded image with mismatching fingerprint" fix_trailing_bad_fingerprint; then (
+   cp $LARGEMASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --byteset 16,40,65 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   run_regtest fix_trailing_bad_fingerprint "-f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
+if try "fix padded image with damaged fingerprint using explicit size" fix_trailing_bad_fingerprint_with_n; then (
+   cp $LARGEMASTERISO $TMPISO
+   $NEWVER --debug -i$TMPISO --byteset 16,40,65 >>$LOGFILE 2>&1
+   $NEWVER --debug -i$TMPISO --erase $LMI_HEADER >>$LOGFILE 2>&1
+   dd if=/dev/zero bs=2048 count=75225 >>$TMPISO 2>>$LOGFILE
+
+   extra_args="-nCD"
+   run_regtest fix_trailing_bad_fingerprint_with_n "-f --truncate" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
+
 ### Scanning tests
 
 REGTEST_SECTION="Scanning tests"

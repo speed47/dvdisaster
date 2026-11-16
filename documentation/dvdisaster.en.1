@@ -276,6 +276,15 @@ RS03 images:
 Setting the redundancy is not possible due to constraints in the format.
 The codec will automatically choose the size of the smallest fitting medium.
 However, see --no-bdr-defect-management below.
+.PP
+When an augmented image is followed by unused medium space and its header
+cannot be located, RS03 also tries smaller standard target capacities.
+This fallback rejects candidates whose recorded fingerprint disagrees with
+the readable fingerprint sector, since an overwritten medium may retain ECC
+from an older recording. An unreadable fingerprint sector does not prevent
+recovery. If the fingerprint sector is readable but damaged, supplying the
+original target size with \-n (for example, \-n BD) uses the existing explicit
+layout search. Only do this when the ECC belongs to the recording being repaired.
 .RE
 .RE
 

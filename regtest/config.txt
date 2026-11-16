@@ -504,6 +504,10 @@ RS03i_fix_custom_n_truncated_partial yes
 RS03i_fix_custom_n_truncated_no_bruteforce yes
 RS03i_fix_custom_n_truncated_bruteforce yes
 RS03i_fix_trailing_medium_space yes
+RS03i_fix_trailing_stale_ecc yes
+RS03i_fix_trailing_missing_fingerprint yes
+RS03i_fix_trailing_bad_fingerprint yes
+RS03i_fix_trailing_bad_fingerprint_with_n yes
 
 # Scanning tests
 
