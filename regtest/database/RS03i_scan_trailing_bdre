@@ -1,0 +1,18 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated optical drive 1.00
+Using READ(10).
+Medium "Random Image": BD-RE, 359295 sectors, Ecc, created 16-07-2006, Manuf.-ID: SIMDRV,001.
+
+Limiting sector range to [32,63].
+Scanning medium for read errors.
+Reading CRC information from ecc data (RS03) ... done.
+
+All sectors successfully read. Checksums match.
+Exit status: 0
+Detailed exit status: 0

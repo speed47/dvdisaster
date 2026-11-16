@@ -1,0 +1,30 @@
+232aa76fae8e2e9892b082697f30521e
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated optical drive 1.00
+Using READ(10).
+Medium "Random Image": BD-RE, 359295 sectors, Ecc, created 16-07-2006, Manuf.-ID: SIMDRV,001.
+
+RS03-type ECC found
+* Warning: Adaptive reading has not been adapted yet to handle RS03-augmented images in an optimal way.
+*          The 'divide and conquer' reading method will still be applied, by attempting to detect and skip
+*          badly damaged zones and give priority to good zones first. However we won't stop reading automatically
+*          once enough data and ECC data have been recovered to be able to rebuild the image, as we do for RS02.
+*          You should stop the reading and launch a 'verify' yourself from time to time to see if this is the case.
+Adaptive reading: Stopping when unreadable intervals < 16.
+* Warning: Using adaptive reading without error correction data
+*          has little advantage over linear reading, but may
+*          cause significant wear on the drive due to excessive
+*          seek operations.
+*          Please consider using linear reading instead.
+Limiting sector range to [0,63].
+Creating new rs03i-tmp.iso image.
+
+No unreadable intervals with >= 16 sectors left.
+ 0.0% of the image have been read (64 sectors).
+Exit status: 1
+Detailed exit status: 2
