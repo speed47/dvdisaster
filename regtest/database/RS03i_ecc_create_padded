@@ -1,0 +1,19 @@
+a706ddb1b1632a1934e6843f32d71dc5
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Opening rs03i-tmp.iso: 21150 medium sectors.
+* Warning: The image contains 150 sectors beyond the size recorded in its ISO file system (21000 sectors).
+*          These sectors are all zero, consistent with xorriso's default 300 KiB padding.
+*          If you use xorriso, consider "-padding 0" when creating future images
+*          to omit this padding and potentially leave more space for error correction.
+*          These sectors will be preserved and protected by error correction.
+*          Creation will continue.
+41 MiB data, 7 MiB ecc (38 roots; 17.5% redundancy), 0 MiB padding.
+* Warning: Using redundancies below 20% may not give
+*          the expected data loss protection.
+Image has been augmented with error correction data.
+New image size is 48 MiB (24990 sectors).
