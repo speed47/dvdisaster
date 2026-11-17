@@ -1,0 +1,15 @@
+9503f278d4550a9507a317664481adf8
+4be4dcc0f6b88965334ccf1050dfa5fa
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+*
+* dvdisaster - can not continue:
+*
+--mapfile can only be used together with -r/--read.
+
+--- no mapfile ---
+Exit status: 1
+Detailed exit status: 1

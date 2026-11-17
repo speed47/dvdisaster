@@ -446,10 +446,23 @@ are left out.
 .RE
 .TP
 .B \-\-mapfile f
-write a GNU ddrescue compatible mapfile of the image to file f. Present sectors
-are marked as finished (+), missing sectors (dead sector markers) as bad sectors (\-).
-The mapfile can be viewed with ddrescueview or used to continue with ddrescue.
-With -r or -s it is written after reading.
+together with \-r: writes a GNU ddrescue compatible mapfile describing the
+outcome of reading to file \fIf\fP. It is written right after reading, before
+a \-c or \-f given in the same call. The file must not already exist; existing
+files and symlinks are never overwritten. If it can not be written, dvdisaster
+exits with an error status.
+.RS
+Sectors are marked as finished (+) when read or already present in the image,
+bad (\-) when reading them individually failed or they had a CRC error,
+non-trimmed (*) when they belong to a failed multi-sector read which was not
+split up (see \-j), and non-tried (?) when they were not read, e.g. skipped
+after a read error, not needed by adaptive reading, or still missing from an
+earlier session.
+.PP
+The mapfile can be viewed with ddrescueview, or used to continue with another
+drive, e.g. \fBddrescue \-b2048 /dev/sr1 image.iso image.map\fP; add
+\fB\-r\fP \fIn\fP to also retry the bad (\-) sectors.
+.RE
 .TP
 .B \-\-medium-info
 Prints information about the currently inserted medium.

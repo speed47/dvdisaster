@@ -9,7 +9,6 @@ INTERACTIVE_DIFF yes
 # Verify tests
 RS01_good yes
 RS01_good_quick yes
-RS01_mapfile_export yes
 RS01_no_files yes
 RS01_good_json yes
 RS01_no_files_quiet_json yes
@@ -142,6 +141,13 @@ RS01_read_with_ecc_good_file yes
 RS01_read_with_non_existing_ecc yes
 RS01_read_with_no_permission_for_ecc yes
 RS01_read_crc_errors_with_ecc yes
+RS01_read_mapfile_defective yes
+RS01_read_mapfile_single yes
+RS01_read_mapfile_large_skip yes
+RS01_read_mapfile_crc yes
+RS01_read_mapfile_exists yes
+RS01_read_mapfile_requires_read yes
+RS01_read_mapfile_write_error yes
 RS01_read_shorter_with_ecc yes
 RS01_read_longer_with_ecc yes
 RS01_read_tao_tail_with_ecc yes
@@ -170,6 +176,7 @@ RS01_adaptive_no_ecc yes
 RS01_adaptive_no_device yes
 RS01_adaptive_no_device_access yes
 RS01_adaptive_defective_no_ecc yes
+RS01_adaptive_mapfile yes
 RS01_adaptive_defective_large_skip yes
 RS01_adaptive_truncated_no_ecc yes
 RS01_adaptive_truncated_no_ecc_again yes

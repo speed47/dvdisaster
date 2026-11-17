@@ -60,14 +60,6 @@ if try "good image, quick test" good_quick; then (
   run_regtest good_quick "-tq" $MASTERISO $MASTERECC
 ) & limit_jobs; fi
 
-# Export a ddrescue mapfile of an image with missing sectors
-if try "exporting a ddrescue mapfile" mapfile_export; then (
-   cp $MASTERISO $TMPISO
-   $NEWVER --debug -i$TMPISO --erase 1000-1099 >>$LOGFILE 2>&1
-   $NEWVER --debug -i$TMPISO --erase 20999 >>$LOGFILE 2>&1
-   run_regtest mapfile_export "--mapfile $TMPECC" $TMPISO $TMPECC
-) & limit_jobs; fi
-
 # Test with neither image nor ecc file
 if try "missing files" no_files; then (
    run_regtest no_files "-t" $ISODIR/no.iso  $ISODIR/no.ecc EXITCODES
@@ -1375,6 +1367,98 @@ if try "reading image, crc errors, ecc data" read_crc_errors_with_ecc; then (
   run_regtest read_crc_errors_with_ecc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
+# ddrescue mapfile (--mapfile) of a linear read from defective media.
+# Failed 16 sector blocks are not split up: non-trimmed (*).
+
+if try "reading image, defective media, mapfile" read_mapfile_defective; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000-1004 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 5000 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest read_mapfile_defective "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Same with -j 1: sectors are tried individually, failures are bad (-).
+
+if try "reading image, defective media, mapfile, 1 sec step" read_mapfile_single; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000-1004 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 5000 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+
+  replace_config jump 0
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest read_mapfile_single "--spinup-delay=0 -r -j 1" $TMPISO  $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Same with -j 64: the sectors skipped after the failed block
+# have not been tried at all (?).
+
+if try "reading image, defective media, mapfile, large sector skip" read_mapfile_large_skip; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000-1004 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 5000 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest read_mapfile_large_skip "--spinup-delay=0 -r -j 64" $TMPISO  $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Sectors with CRC errors are present in the image, but bad (-) in the mapfile.
+
+if try "reading image, crc errors, ecc data, mapfile" read_mapfile_crc; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --byteset 1,180,200 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --byteset 7910,23,98 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest read_mapfile_crc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODES
+) & limit_jobs; fi
+
+# --mapfile never overwrites an existing file; reading is not even started.
+
+if try "reading image, mapfile already exists" read_mapfile_exists; then (
+
+  rm -f $TMPISO
+  map_file=$TEST_TMPDIR/rs01.map
+  echo "precious contents" >$map_file
+
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_mapfile_exists "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# --mapfile requires -r.
+
+if try "verifying image with mapfile" read_mapfile_requires_read; then (
+
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest read_mapfile_requires_read "-t" $MASTERISO  $MASTERECC EXITCODES
+) & limit_jobs; fi
+
+# Failing to write the mapfile turns a successful read into a failure.
+
+if try "reading image, mapfile can not be written" read_mapfile_write_error; then (
+
+  rm -f $TMPISO
+  # Relative (we run in regtest/) to get the same message on Windows,
+  # where the log filter strips absolute paths up to their last slash.
+  map_file=nonexistent-mapfile-dir/rs01.map
+
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_mapfile_write_error "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODE
+) & limit_jobs; fi
+
 # Read image with error correction data available
 # which is a few sectors shorter than expected.
 
@@ -1785,6 +1869,20 @@ if try "reading image, defective media, large sector skip" adaptive_defective_la
   $NEWVER --debug -i$SIMISO --erase 6400-10000 >>$LOGFILE 2>&1
   
   run_regtest adaptive_defective_large_skip "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r -j 256 --adaptive-read -v" $TMPISO  $ISODIR/no.ecc
+) & limit_jobs; fi
+
+# ddrescue mapfile of an adaptive read which stops as soon as enough
+# data for error correction is available: the rest is non-tried (?).
+
+if try "reading image, defective media, ecc data, mapfile" adaptive_mapfile; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 5000-5039 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest adaptive_mapfile "--debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Complete a truncated image

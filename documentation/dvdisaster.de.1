@@ -425,10 +425,26 @@ werden weggelassen.
 .RE
 .TP
 .B \-\-mapfile f
-schreibt eine zu GNU ddrescue kompatible Map-Datei des Abbilds in die Datei f.
-Vorhandene Sektoren werden als fertig (+), fehlende Sektoren (Markierungen f\[:u]r
-defekte Sektoren) als defekt (\-) eingetragen. Die Datei kann mit ddrescueview
-angezeigt oder zum Weiterlesen mit ddrescue verwendet werden.
+zusammen mit \-r: schreibt eine zu GNU ddrescue kompatible Map-Datei mit dem
+Ergebnis des Lesens in die Datei \fIf\fP. Sie wird direkt nach dem Lesen
+geschrieben, vor einem im selben Aufruf angegebenen \-c oder \-f. Die Datei darf
+noch nicht existieren; vorhandene Dateien und symbolische Links werden nicht
+\[:u]berschrieben. Kann sie nicht geschrieben werden, endet dvdisaster mit
+einem Fehlerstatus.
+.RS
+Sektoren werden als fertig (+) eingetragen, wenn sie gelesen wurden oder schon
+im Abbild vorhanden sind, als defekt (\-), wenn das Einzellesen fehlschlug oder
+ein CRC-Fehler auftrat, als nicht getrimmt (*), wenn sie zu einem fehlgeschlagenen
+Lesevorgang mehrerer Sektoren geh\[:o]ren, der nicht aufgeteilt wurde (siehe \-j),
+und als nicht versucht (?), wenn sie nicht gelesen wurden, z.B. nach einem
+Lesefehler \[:u]bersprungen, beim angepassten Lesen nicht ben\[:o]tigt oder aus
+einer fr\[:u]heren Sitzung noch fehlend.
+.PP
+Die Map-Datei kann mit ddrescueview angezeigt oder zum Weiterlesen mit einem
+anderen Laufwerk verwendet werden, z.B. \fBddrescue \-b2048 /dev/sr1 image.iso
+image.map\fP; mit \fB\-r\fP \fIn\fP werden auch die defekten (\-) Sektoren
+erneut versucht.
+.RE
 .TP
 .B \-\-medium-info
 Gibt Informationen \[:u]ber den Datentr\[:a]ger im ausgew\[:a]hlten Laufwerk aus.

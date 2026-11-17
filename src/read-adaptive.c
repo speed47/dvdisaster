@@ -1476,6 +1476,10 @@ void ReadMediumAdaptive(gpointer data)
       || rc->readMode == ECC_IN_IMAGE)
       rc->map = CreateBitmap0(rc->expectedSectors);
 
+   /*** Record the read outcome for --mapfile (no-op without it) */
+
+   MapfileInit(MAX(rc->sectors, rc->dh->sectors));
+
 #ifdef CHECK_VISITED
    rc->count = g_malloc0((int)rc->expectedSectors+160);
 #endif
@@ -1742,7 +1746,8 @@ reread:
 			     b, "unv", strerror(errno));
 
 		     mark_sector(rc, b, Closure->yellowSector);
-		     
+		     MapfileReadBad(b, 1);
+
 		     if(rc->highestWrittenSector < b)
 			rc->highestWrittenSector = b;
 		     break;
@@ -1757,6 +1762,7 @@ reread:
 		     if(rc->map)
 			SetBit(rc->map, b);
 		     rc->readable++;
+		     MapfileReadOK(b, 1);
 
 		     mark_sector(rc, b, Closure->greenSector);
 		    
@@ -1777,6 +1783,7 @@ reread:
 		  if(rc->map)  /* Avoids confusion in the ecc stage */
 		     ClearBit(rc->map, b);
 		  rc->readable--;
+		  MapfileReadBad(b, 1);
 	       }
 	    }
 
@@ -1901,6 +1908,7 @@ reread:
 					   s, GetLastSenseString(FALSE));  
 
 	    rc->unreadable += nsectors;
+	    MapfileReadBad(s, nsectors);  /* always single sector reads here */
 
 	    /* Write nsectors of "dead sector" markers */
 

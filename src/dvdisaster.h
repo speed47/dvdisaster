@@ -237,6 +237,8 @@ typedef struct _GlobalClosure
    char *imageName;     /* complete path of current image file */
    char *eccName;       /* complete path of current ecc file */
    char *mapFile;       /* write ddrescue mapfile to this file */
+   struct _Bitmap *mapBad;         /* sectors read individually and failed, or CRC bad */
+   struct _Bitmap *mapFailedBlock; /* sectors of a failed multi-sector read */
    GPtrArray *methodList; /* List of available methods */
    char *methodName;    /* Name of currently selected codec */
    gint64 readStart;    /* Range to read */
@@ -956,7 +958,12 @@ typedef struct _Image
 } Image;
 
 Image* OpenImageFromFile(char*, int, mode_t);
-void WriteMapfile(char*, char*);
+gboolean WriteMapfile(char*, char*);
+void MapfileInit(gint64);
+void MapfileReadOK(gint64, gint64);
+void MapfileReadBad(gint64, gint64);
+void MapfileBlockFailed(gint64, gint64);
+void MapfileFree(void);
 Image* OpenImageFromDevice(char*, int);   /* really in scsi-layer.h */
 Image* OpenEccFileForImage(Image*, char*, int, mode_t);
 int ReportImageEccInconsistencies(Image*);
