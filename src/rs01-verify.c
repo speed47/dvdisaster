@@ -412,6 +412,7 @@ static void ecc_margin(verify_closure *vc, int nroots)
    gint64 sectors_per_layer = (image->expectedSectors+ndata-1)/ndata;
    gint64 eccblock,s;
    gint64 damaged_sectors = 0, damaged_eccsecs = 0;
+   gint64 correctable = 0, recoverable;
    int i,worst_ecc = 0;
 
    /* ecc block n consists of the sectors n, n+sectors_per_layer, ... */
@@ -426,10 +427,20 @@ static void ecc_margin(verify_closure *vc, int nroots)
       damaged_sectors += count;
       if(count>0)         damaged_eccsecs++;
       if(count>worst_ecc) worst_ecc = count;
+      if(count<=nroots)   correctable += count;
    }
+
+   /* Report the numbers for undamaged images too, so that the margin
+      can be tracked over time from a clean baseline. */
+
+   recoverable = image->expectedSectors - damaged_sectors + correctable;
+   ReportNumber("verify", "recoverable_sectors", recoverable);
+   ReportNumber("verify", "worst_ecc_block_erasures", worst_ecc);
 
    if(!damaged_sectors)
      return;
+
+   SetExitCode(EXIT_FAILURE, worst_ecc <= nroots ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
    PrintLog(_("- erasure counts   :  avg =  %.1f; worst = %d per ecc block.\n"),
 	    (double)damaged_sectors/(double)damaged_eccsecs,worst_ecc);
