@@ -18,4 +18,4 @@ rs01-tmp.ecc: created by dvdisaster-0.80
 * ecc blocks       : 192512 (BAD, expected 194560)
 * ecc md5sum       : BAD, ecc file may be damaged!
 
-Exit status: 0
+Exit status: 1
