@@ -301,8 +301,12 @@ auf gr\[:o]\[ss]eren Systemen einen Kontrollfaden f\[:u]r Verwaltungszwecke frei
 d.h. benutzen Sie 7 Kontrollf\[:a]den auf einem 8-Kern-System.
 .TP
 .B \-\-abort-file f
-bricht die laufende Aktion ab (wie der Stop-Knopf der graphischen Oberfl\[:a]che),
-sobald die Datei f existiert. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
+mit \-r oder \-s: bricht das Lesen oder Untersuchen ab (wie der Stop-Knopf der
+graphischen Oberfl\[:a]che), sobald die Datei f existiert. Bereits gelesene
+Daten bleiben im Abbild (und in der \-\-mapfile) erhalten; im selben Aufruf
+folgende Aktionen (\-c, \-f, \-t) werden ausgelassen, und der R\[:u]ckgabewert
+ist 1 (3 mit \-\-detailed-exit-status). dvdisaster startet nicht, wenn f
+bereits existiert, und entfernt f nicht. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
 .TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
@@ -429,7 +433,8 @@ Redundanz, md5-Summen soweit vorhanden, sowie den Exit-Status mit seiner
 Bedeutung ("ok", "error", "defects", "incomplete"). Detaillierte Ergebnisse
 erfordern \-\-detailed-exit-status; sonst lautet das Ergebnis "ok" oder "error".
 Nicht zutreffende Eintr\[:a]ge
-werden weggelassen.
+werden weggelassen. Ein durch \-\-time-limit oder \-\-abort-file abgebrochener
+Lauf enth\[:a]lt "stopped_by" ("time_limit" oder "abort_file").
 .RE
 .TP
 .B \-\-mapfile f
@@ -526,8 +531,11 @@ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
 .TP
 .B \-\-time-limit n
-bricht die laufende Aktion nach n Sekunden ab (wie der Stop-Knopf der
-graphischen Oberfl\[:a]che). Bereits gelesene Daten bleiben im Abbild erhalten.
+mit \-r oder \-s: bricht das Lesen oder Untersuchen n Sekunden nach dem Start
+der ersten Aktion ab (wie der Stop-Knopf der graphischen Oberfl\[:a]che), in
+gleicher Weise wie \-\-abort-file. Der Abbruch erfolgt zwischen zwei
+Leseanforderungen; ein Laufwerk, das einen defekten Sektor wiederholt
+liest, kann ihn verz\[:o]gern.
 .TP
 .B \-\-version
 gibt die Versionsnummer und einige Konfigurationseigenschaften aus
@@ -576,6 +584,8 @@ hinterlassen, \-t erwartet keine vollst\[:a]ndige Wiederherstellung
 Lesen mit ECC konnte nicht gen\[:u]gend Daten sammeln.
 Pr\[:u]fprognosen sind Sch\[:a]tzungen, keine Ergebnisse eines Reparaturversuchs.
 Adaptives Lesen ohne ECC liefert bei ungelesenen Sektoren 2.
+Durch \-\-time-limit oder \-\-abort-file abgebrochenes Lesen oder Untersuchen
+liefert 3.
 .PP
 Bei kombinierten Aktionen bleibt der Standardstatus nach einer
 fehlgeschlagenen Aktion 1. Im detaillierten Modus gilt die Rangfolge

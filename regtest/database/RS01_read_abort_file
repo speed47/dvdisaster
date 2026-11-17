@@ -5,10 +5,10 @@ is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
 
-Abort file found, stopping.
+*
+* dvdisaster - can not continue:
+*
+Abort file rs01-read_abort_file.abort exists; remove it to start.
 
-Device: sim-cd, Simulated CD drive 1.00
-Using READ CD.
-Medium: CD-R mode 1, 21000 sectors.
-
-Creating new rs01-tmp.iso image.
+Exit status: 1
+Detailed exit status: 1
