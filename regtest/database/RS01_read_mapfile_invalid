@@ -8,7 +8,7 @@ See the file "COPYING" for further information.
 *
 * dvdisaster - can not continue:
 *
-Mapfile rs01.map already exists; refusing to overwrite it.
+Mapfile rs01.map exists, but is not a valid ddrescue mapfile (invalid status line 1); refusing to overwrite it.
 
 --- mapfile ---
 precious contents

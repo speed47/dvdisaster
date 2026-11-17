@@ -1,0 +1,29 @@
+bea7158d1ca3b31c7381babf5e8e11a3
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Completing image rs01-tmp.iso. Continuing with sector 10000.
+Sector 14992, try 1: Medium Error; Unrecovered read error.
+Sector 14992: Medium Error; Unrecovered read error. Skipping 15 sectors.
+
+10984 sectors read; 16 unreadable sectors.
+Mapfile rs01.map updated.
+--- mapfile ---
+# Mapfile. Created by dvdisaster
+# current_pos  current_status  current_pass
+0x00000000     +               1
+#      pos        size  status
+0x00000000  0x001f4000  +
+0x001f4000  0x00000800  -
+0x001f4800  0x01b53800  +
+0x01d48000  0x00008000  *
+0x01d50000  0x00bb4000  +
+Exit status: 1
+Detailed exit status: 2
