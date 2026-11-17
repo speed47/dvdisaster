@@ -138,50 +138,73 @@ static int bounded_option(const char *value, int minimum, int maximum, const cha
 }
 
 /*
- * Stop the current action (like the GUI Stop button) when
- * the time limit is reached or the abort file appears.
+ * --time-limit and --abort-file stop reading/scanning the same way
+ * the GUI Stop button does, keeping what has been read so far.
+ *
+ * Only the readers handle Closure->stopActions properly in CLI mode;
+ * the stop paths of the codecs (create, fix, verify) rely on the GUI
+ * worker thread exiting in their cleanup functions and would continue
+ * with freed data in CLI mode. Therefore the watchdog is only armed
+ * while reading or scanning, and the remaining actions are skipped
+ * once it has fired.
  */
 
-static volatile int watchdog_done = FALSE;
+static GMutex watchdog_mutex;
+static int watchdog_armed = FALSE;
+static int watchdog_done  = FALSE;
+static char *watchdog_reason = NULL;  /* set once the watchdog fired */
 
-static int stop_requested(GTimer *timer)
-{  if(Closure->abortFile && g_file_test(Closure->abortFile, G_FILE_TEST_EXISTS))
-   {  PrintLog(_("\nAbort file found, stopping.\n"));
-      return TRUE;
-   }
+static gboolean abort_file_exists(void)
+{  GStatBuf st;
 
-   if(Closure->timeLimit > 0 && g_timer_elapsed(timer, NULL) >= Closure->timeLimit)
-   {  PrintLog(_("\nTime limit of %d seconds reached, stopping.\n"), Closure->timeLimit);
-      return TRUE;
-   }
-
-   return FALSE;
+   return Closure->abortFile && !g_lstat(Closure->abortFile, &st);
 }
 
 static gpointer watchdog_thread(gpointer data)
 {  GTimer *timer = (GTimer*)data;
+   int done = FALSE;
 
-   while(!watchdog_done && !Closure->stopActions)
-   {  if(stop_requested(timer))
-	 Closure->stopActions = STOP_CURRENT_ACTION;
-      else g_usleep(G_USEC_PER_SEC/10);
+   while(!done)
+   {  g_mutex_lock(&watchdog_mutex);
+      if(watchdog_armed && !watchdog_reason)
+      {  if(abort_file_exists())
+	 {  PrintLog(_("\nAbort file %s found, stopping.\n"), Closure->abortFile);
+	    watchdog_reason = "abort_file";
+	 }
+	 else if(Closure->timeLimit > 0 && g_timer_elapsed(timer, NULL) >= Closure->timeLimit)
+	 {  PrintLog(_("\nTime limit of %d seconds reached, stopping.\n"), Closure->timeLimit);
+	    watchdog_reason = "time_limit";
+	 }
+	 if(watchdog_reason)
+	    Closure->stopActions = STOP_CURRENT_ACTION;
+      }
+      done = watchdog_done;
+      g_mutex_unlock(&watchdog_mutex);
+
+      if(!done) g_usleep(G_USEC_PER_SEC/10);
    }
 
    g_timer_destroy(timer);
    return NULL;
 }
 
-static GThread* start_watchdog(void)
-{  GTimer *timer = g_timer_new();
+/* Arm or disarm the watchdog; returns TRUE if it has fired. */
 
-   if(stop_requested(timer))  /* before starting, so that nothing is done at all */
-      Closure->stopActions = STOP_CURRENT_ACTION;
+static gboolean watchdog_arm(gboolean arm)
+{  gboolean fired;
 
-   return g_thread_new("stop_watchdog", watchdog_thread, timer);
+   g_mutex_lock(&watchdog_mutex);
+   watchdog_armed = arm;
+   fired = watchdog_reason != NULL;
+   g_mutex_unlock(&watchdog_mutex);
+
+   return fired;
 }
 
 int main(int argc, char *argv[])
 {  GThread *watchdog = NULL;
+   gboolean stopped = FALSE;     /* --time-limit/--abort-file fired */
+   int started = 0;              /* actions started before the stop */
    int mode = MODE_NONE; 
    int sequence = MODE_NONE;
    char *debug_arg = NULL;
@@ -802,7 +825,7 @@ int main(int argc, char *argv[])
 	   if(optarg) Closure->spinupDelay = atoi(optarg);
 	   break;
          case MODIFIER_TIME_LIMIT:
-	   Closure->timeLimit = atoi(optarg);
+	   Closure->timeLimit = bounded_option(optarg, 1, G_MAXINT, "--time-limit");
 	   break;
          case MODIFIER_SPEED_WARNING:
 	   if(optarg) Closure->speedWarning = atoi(optarg);
@@ -976,6 +999,17 @@ int main(int argc, char *argv[])
       }
    }
 
+   /*** --time-limit and --abort-file only stop reading/scanning (see above).
+        An abort file which is already there means "do not start":
+        refuse to run before touching the drive or the image. */
+
+   if((Closure->timeLimit > 0 || Closure->abortFile) && mode != MODE_HELP)
+   {  if(mode != MODE_SEQUENCE || !(sequence & (1<<MODE_READ | 1<<MODE_SCAN)))
+	 Stop(_("--time-limit and --abort-file can only be used together with -r/--read or -s/--scan."));
+      if(abort_file_exists())
+	 Stop(_("Abort file %s exists; remove it to start."), Closure->abortFile);
+   }
+
    /*** Determine the default device (OS dependent!) if 
 	- none has been specified on the command line
         - and one if actually required in command line mode.
@@ -996,8 +1030,10 @@ int main(int argc, char *argv[])
         The major modes can be executed in sequence, 
 	but not all combinations may be really useful. */
 
-   if(mode != MODE_NONE && (Closure->timeLimit > 0 || Closure->abortFile))
-      watchdog = start_watchdog();
+   /* Only reached in MODE_SEQUENCE with -r or -s (checked above) */
+
+   if(Closure->timeLimit > 0 || Closure->abortFile)
+      watchdog = g_thread_new("stop_watchdog", watchdog_thread, g_timer_new());
 
    switch(mode)
    {  case MODE_SEQUENCE:
@@ -1006,16 +1042,22 @@ int main(int argc, char *argv[])
 
 	if(sequence & 1<<MODE_SCAN)
 	{  ReportAction("scan");
+	   started |= 1<<MODE_SCAN;
+	   watchdog_arm(TRUE);
 	   ReadMediumLinear((gpointer)1);
+	   stopped = watchdog_arm(FALSE);
 	}
 
-	if(sequence & 1<<MODE_READ)
+	if(sequence & 1<<MODE_READ && !stopped)
 	{  ReportAction("read");
+	   started |= 1<<MODE_READ;
 	   if(sequence & 1<<MODE_CREATE) 
 	      Closure->readAndCreate = TRUE;
+	   watchdog_arm(TRUE);
 	   if(Closure->adaptiveRead) 
 	        ReadMediumAdaptive((gpointer)0);
 	   else ReadMediumLinear((gpointer)0);
+	   stopped = watchdog_arm(FALSE);
 
 	   /* Describes the reading outcome, so write it before
 	      a possible repair in the same call changes the image. */
@@ -1023,6 +1065,18 @@ int main(int argc, char *argv[])
 	   if(Closure->mapFile && !WriteMapfile(Closure->imageName, Closure->mapFile))
 	      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 	   MapfileFree();  /* no-op without --mapfile */
+	}
+
+	/* Reading/scanning was stopped by --time-limit or --abort-file:
+	   the image is incomplete, so do not continue with other actions,
+	   and do not report success. */
+
+	if(stopped)
+	{  if(sequence & ~started)
+	      PrintLog(_("Remaining actions skipped.\n"));
+	   sequence = started;
+	   ReportString(NULL, "stopped_by", watchdog_reason);
+	   SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
 	}
 
 	if(sequence & 1<<MODE_CREATE)
@@ -1228,7 +1282,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  -v, --verbose              - more logs, set env VERBOSE=1 for pre-options parsing logs\n"));
       PrintCLI(_("  -x, --threads n            - use n threads for en-/decoding (if supported by codec)\n"));
       PrintCLI(_("  --detailed-exit-status     - distinguish defects and incomplete recovery (see man page)\n"));
-      PrintCLI(_("  --abort-file f             - stop the current action when file f appears\n"));
+      PrintCLI(_("  --abort-file f             - with -r/-s: stop reading when file f appears\n"));
       PrintCLI(_("  --adaptive-read            - use optimized strategy for reading damaged media\n"));
       PrintCLI(_("  --auto-suffix              - automatically add .iso and .ecc file suffixes\n"));
       PrintCLI(_("  --cache-size n             - image cache size in MiB during -c mode (default: 32MiB)\n"));
@@ -1263,7 +1317,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --resource-file p          - get resource file from given path\n"));
       PrintCLI(_("  --speed-warning n          - print warning if speed changes by more than n percent\n"));
       PrintCLI(_("  --spinup-delay n           - wait n seconds for drive to spin up\n"));
-      PrintCLI(_("  --time-limit n             - stop the current action after n seconds\n"));
+      PrintCLI(_("  --time-limit n             - with -r/-s: stop reading after n seconds\n"));
       PrintCLI(_("  --version                  - print version and some configuration info\n"));
       PrintCLI(_("  --debug                    - allow advanced dangerous options (use with --help for a list)\n"));
 
@@ -1353,7 +1407,9 @@ int main(int argc, char *argv[])
 #endif
    
    if(watchdog)
-   {  watchdog_done = TRUE;
+   {  g_mutex_lock(&watchdog_mutex);
+      watchdog_done = TRUE;
+      g_mutex_unlock(&watchdog_mutex);
       g_thread_join(watchdog);
    }
 

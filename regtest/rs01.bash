@@ -1142,12 +1142,32 @@ if try "reading medium with copy protected sectors" read_copy_protected; then (
   run_regtest read_copy_protected "--spinup-delay=0 --read-attempts=3 -r" $TMPISO $ISODIR/no.ecc
 ) & limit_jobs; fi
 
-# Reading stops before the first sector when the abort file exists
+# An already existing abort file means "do not start":
+# neither the drive nor the image are touched.
 
 if try "reading with existing abort file" read_abort_file; then (
-  touch $TMPISO.abort
+  rm -f $TMPISO
+  # Relative (we run in regtest/) to get the same message on all platforms.
+  abort_file=rs01-read_abort_file.abort
+  touch $abort_file
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest read_abort_file "--spinup-delay=0 --abort-file=$TMPISO.abort -r" $TMPISO $ISODIR/no.ecc
+  run_regtest read_abort_file "--spinup-delay=0 --abort-file=$abort_file -r" $TMPISO $ISODIR/no.ecc EXITCODES
+  rm -f $abort_file
+) & limit_jobs; fi
+
+# A time limit which is not reached does not change reading.
+
+if try "reading with time limit not reached" read_time_limit_not_reached; then (
+  rm -f $TMPISO
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_time_limit_not_reached "--spinup-delay=0 --time-limit=3600 -r" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# --time-limit and --abort-file only stop reading/scanning; the stop
+# paths of the other actions are not safe in CLI mode.
+
+if try "verifying image with time limit" read_time_limit_requires_read; then (
+  run_regtest read_time_limit_requires_read "--time-limit=10 -t" $MASTERISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Read into existing and complete image file
