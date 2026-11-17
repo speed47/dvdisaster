@@ -21,3 +21,5 @@ rs01-master.ecc: created by dvdisaster-0.80
 - erasure counts   :  avg =  33.7; worst = 34 per ecc block.
 - ecc margin       : worst block uses 34 of 32 roots (106%)
 
+Exit status: 1
+Detailed exit status: 3
