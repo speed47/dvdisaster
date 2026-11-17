@@ -703,12 +703,23 @@ int main(int argc, char *argv[])
 	   debug_mode_required = TRUE;
 	   break;
         case MODIFIER_SIMULATE_PROFILE:
-	{  char *end;
+	{  const char *digits = optarg;
+	   char *end;
 	   unsigned long profile;
+	   int base = 10;
+
+	   /* Decimal or 0x-prefixed hex only: base 0 would read a leading
+	      zero as octal, and strtoul() also skips spaces and accepts signs. */
+	   if(digits[0] == '0' && (digits[1] == 'x' || digits[1] == 'X'))
+	   {  digits += 2;
+	      base = 16;
+	   }
+	   if(base == 16 ? !g_ascii_isxdigit(digits[0]) : !g_ascii_isdigit(digits[0]))
+	      Stop("Invalid --sim-profile: %s\n", optarg);
 
 	   errno = 0;
-	   profile = strtoul(optarg, &end, 0);
-	   if(errno || end == optarg || *end || profile > 0xffff)
+	   profile = strtoul(digits, &end, base);
+	   if(errno || end == digits || *end || profile > 0xffff)
 	      Stop("Invalid --sim-profile: %s\n", optarg);
 
 	   /* These profiles have matching structure responses in the simulator. */
