@@ -38,7 +38,9 @@ rs01-master.ecc: created by dvdisaster-0.80
   "verify": {
     "missing_sectors": 0,
     "crc_errors": 0,
-    "image_md5": "9503f278d4550a9507a317664481adf8"
+    "image_md5": "9503f278d4550a9507a317664481adf8",
+    "recoverable_sectors": 21000,
+    "worst_ecc_block_erasures": 0
   },
   "ecc_file": {
     "path": "rs01-master.ecc",
