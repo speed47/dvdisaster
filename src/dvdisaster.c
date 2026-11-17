@@ -138,6 +138,52 @@ static int bounded_option(const char *value, int minimum, int maximum, const cha
 }
 
 /*
+ * Parse a duration into seconds: either a plain number of seconds,
+ * or Go-style number/unit pairs with the units h, m and s,
+ * e.g. "90", "15s", "15m30s", "1h21s". Pairs are added up.
+ */
+
+static int duration_option(const char *value, const char *option)
+{  const char *p = value;
+   gint64 total = 0;
+
+   if(!*p) goto invalid;
+
+   while(*p)
+   {  const char *start = p;
+      gint64 number = 0, unit;
+
+      if(!g_ascii_isdigit(*p)) goto invalid;
+      while(g_ascii_isdigit(*p))
+      {  number = 10*number + (*p++ - '0');
+	 if(number > G_MAXINT) goto invalid;
+      }
+
+      switch(*p)
+      {  case 'h': unit = 3600; p++; break;
+	 case 'm': unit = 60;   p++; break;
+	 case 's': unit = 1;    p++; break;
+	 case 0:               /* a plain number of seconds, but not "1h30" */
+	    if(start != value) goto invalid;
+	    unit = 1;
+	    break;
+	 default: goto invalid;
+      }
+
+      total += number*unit;
+      if(total > G_MAXINT) goto invalid;
+   }
+
+   if(total < 1) goto invalid;
+   return (int)total;
+
+invalid:
+   Stop(_("%s must be a number of seconds or a duration like 15m30s or 1h21s "
+	  "(units h, m, s), between 1 second and %d seconds"), option, G_MAXINT);
+   return 0;
+}
+
+/*
  * --time-limit and --abort-file stop reading/scanning the same way
  * the GUI Stop button does, keeping what has been read so far.
  *
@@ -825,7 +871,7 @@ int main(int argc, char *argv[])
 	   if(optarg) Closure->spinupDelay = atoi(optarg);
 	   break;
          case MODIFIER_TIME_LIMIT:
-	   Closure->timeLimit = bounded_option(optarg, 1, G_MAXINT, "--time-limit");
+	   Closure->timeLimit = duration_option(optarg, "--time-limit");
 	   break;
          case MODIFIER_SPEED_WARNING:
 	   if(optarg) Closure->speedWarning = atoi(optarg);
@@ -1317,7 +1363,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --resource-file p          - get resource file from given path\n"));
       PrintCLI(_("  --speed-warning n          - print warning if speed changes by more than n percent\n"));
       PrintCLI(_("  --spinup-delay n           - wait n seconds for drive to spin up\n"));
-      PrintCLI(_("  --time-limit n             - with -r/-s: stop reading after n seconds\n"));
+      PrintCLI(_("  --time-limit d             - with -r/-s: stop reading after duration d (e.g. 90, 15m30s, 1h21s)\n"));
       PrintCLI(_("  --version                  - print version and some configuration info\n"));
       PrintCLI(_("  --debug                    - allow advanced dangerous options (use with --help for a list)\n"));
 

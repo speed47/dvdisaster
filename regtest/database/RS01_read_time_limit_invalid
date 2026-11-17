@@ -1,0 +1,14 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+*
+* dvdisaster - can not continue:
+*
+--time-limit must be a number of seconds or a duration like 15m30s or 1h21s (units h, m, s), between 1 second and 2147483647 seconds
+
+Exit status: 1
+Detailed exit status: 1

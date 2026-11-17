@@ -1160,7 +1160,16 @@ if try "reading with existing abort file" read_abort_file; then (
 if try "reading with time limit not reached" read_time_limit_not_reached; then (
   rm -f $TMPISO
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest read_time_limit_not_reached "--spinup-delay=0 --time-limit=3600 -r" $TMPISO $ISODIR/no.ecc EXITCODES
+  run_regtest read_time_limit_not_reached "--spinup-delay=0 --time-limit=1h30m -r" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# --time-limit takes seconds or h/m/s durations; anything else is rejected
+# ("1h30" lacks the unit of its last number).
+
+if try "reading with invalid time limit" read_time_limit_invalid; then (
+  rm -f $TMPISO
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_time_limit_invalid "--spinup-delay=0 --time-limit=1h30 -r" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # --time-limit and --abort-file only stop reading/scanning; the stop
