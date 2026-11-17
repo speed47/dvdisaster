@@ -78,7 +78,7 @@ oder Kratzer
 .RB [\| \-\-spinup\-delay
 .IR n \|]
 .RB [\| \-\-time-limit
-.IR n \|]
+.IR d \|]
 .RB [\| \-\-version \|]
 
 .SH BESCHREIBUNG
@@ -530,10 +530,12 @@ warnt bei Geschwindigkeits\[:a]nderung um mehr als n Prozent.
 .B \-\-spinup-delay n
 gibt dem Laufwerk n Sekunden Zeit zum Hochlaufen.
 .TP
-.B \-\-time-limit n
-mit \-r oder \-s: bricht das Lesen oder Untersuchen n Sekunden nach dem Start
-der ersten Aktion ab (wie der Stop-Knopf der graphischen Oberfl\[:a]che), in
-gleicher Weise wie \-\-abort-file. Der Abbruch erfolgt zwischen zwei
+.B \-\-time-limit d
+mit \-r oder \-s: bricht das Lesen oder Untersuchen ab, sobald die Dauer d
+seit dem Start der ersten Aktion vergangen ist (wie der Stop-Knopf der
+graphischen Oberfl\[:a]che), in gleicher Weise wie \-\-abort-file. d ist
+entweder eine Anzahl Sekunden oder Zahlen mit den Einheiten h, m und s,
+z.B. 15s, 15m30s oder 1h21s. Der Abbruch erfolgt zwischen zwei
 Leseanforderungen; ein Laufwerk, das einen defekten Sektor wiederholt
 liest, kann ihn verz\[:o]gern.
 .TP

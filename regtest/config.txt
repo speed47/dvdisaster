@@ -125,6 +125,7 @@ RS01_read_no_ecc yes
 RS01_read_copy_protected yes
 RS01_read_abort_file yes
 RS01_read_time_limit_not_reached yes
+RS01_read_time_limit_invalid yes
 RS01_read_time_limit_requires_read yes
 RS01_read_no_ecc_good_file yes
 RS01_read_no_device yes
