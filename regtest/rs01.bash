@@ -1426,16 +1426,35 @@ if try "reading image, crc errors, ecc data, mapfile" read_mapfile_crc; then (
   run_regtest read_mapfile_crc "--spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
-# --mapfile never overwrites an existing file; reading is not even started.
+# --mapfile never overwrites an existing file which is not a ddrescue
+# mapfile; reading is not even started.
 
-if try "reading image, mapfile already exists" read_mapfile_exists; then (
+if try "reading image, existing file is not a mapfile" read_mapfile_invalid; then (
 
   rm -f $TMPISO
   map_file=$TEST_TMPDIR/rs01.map
   echo "precious contents" >$map_file
 
   extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
-  run_regtest read_mapfile_exists "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODES
+  run_regtest read_mapfile_invalid "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Complete an image in a second run, updating the mapfile of the first run:
+# sector 1000 failed in the first run and is not tried again (the second
+# run continues at sector 10000), so it stays bad (-).
+
+if try "completing image, updating mapfile" read_mapfile_update; then (
+
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$SIMISO --erase 15000-15003 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  $NEWVER --debug --sim-cd=$SIMISO --fixed-speed-values --spinup-delay=0 --no-progress \
+     -i$TMPISO -r0-9999 -j 1 --mapfile $map_file >>$LOGFILE 2>&1
+
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_mapfile_update "--spinup-delay=0 -r" $TMPISO  $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # --mapfile requires -r.

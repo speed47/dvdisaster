@@ -427,18 +427,23 @@ werden weggelassen.
 .B \-\-mapfile f
 zusammen mit \-r: schreibt eine zu GNU ddrescue kompatible Map-Datei mit dem
 Ergebnis des Lesens in die Datei \fIf\fP. Sie wird direkt nach dem Lesen
-geschrieben, vor einem im selben Aufruf angegebenen \-c oder \-f. Die Datei darf
-noch nicht existieren; vorhandene Dateien und symbolische Links werden nicht
-\[:u]berschrieben. Kann sie nicht geschrieben werden, endet dvdisaster mit
-einem Fehlerstatus.
+geschrieben, vor einem im selben Aufruf angegebenen \-c oder \-f. Kann sie nicht
+geschrieben werden, endet dvdisaster mit einem Fehlerstatus.
 .RS
+Existiert \fIf\fP bereits, muss es eine g\[:u]ltige ddrescue-Map-Datei sein,
+z.B. aus einem fr\[:u]heren Lauf von dvdisaster oder ddrescue f\[:u]r dasselbe
+Abbild (Lesen desselben Datentr\[:a]gers in mehreren L\[:a]ufen); sie wird dann
+wie bei ddrescue aktualisiert: weiterhin fehlende Sektoren, die nicht erneut
+versucht wurden, behalten ihren fr\[:u]heren Fehlerstatus. Andere vorhandene
+Dateien und symbolische Links werden nicht \[:u]berschrieben, und eine
+fehlgeschlagene Aktualisierung l\[:a]sst die vorhandene Map-Datei unver\[:a]ndert.
+.PP
 Sektoren werden als fertig (+) eingetragen, wenn sie gelesen wurden oder schon
 im Abbild vorhanden sind, als defekt (\-), wenn das Einzellesen fehlschlug oder
 ein CRC-Fehler auftrat, als nicht getrimmt (*), wenn sie zu einem fehlgeschlagenen
 Lesevorgang mehrerer Sektoren geh\[:o]ren, der nicht aufgeteilt wurde (siehe \-j),
 und als nicht versucht (?), wenn sie nicht gelesen wurden, z.B. nach einem
-Lesefehler \[:u]bersprungen, beim angepassten Lesen nicht ben\[:o]tigt oder aus
-einer fr\[:u]heren Sitzung noch fehlend.
+Lesefehler \[:u]bersprungen oder beim angepassten Lesen nicht ben\[:o]tigt.
 .PP
 Die Map-Datei kann mit ddrescueview angezeigt oder zum Weiterlesen mit einem
 anderen Laufwerk verwendet werden, z.B. \fBddrescue \-b2048 /dev/sr1 image.iso

@@ -894,9 +894,9 @@ int main(int argc, char *argv[])
    }
 
    /*** --mapfile describes the outcome of reading, so it requires -r.
-        Refuse to overwrite any existing file (fail early, before a
-        possibly long reading session; the mapfile itself is created
-        exclusively when it is written). */
+        An existing file is only accepted (and later updated) if it is
+        a valid ddrescue mapfile; anything else is never overwritten.
+        Checked before a possibly long reading session. */
 
    if(Closure->mapFile && mode != MODE_HELP)
    {  GStatBuf st;
@@ -907,7 +907,18 @@ int main(int argc, char *argv[])
 	 || !g_strcmp0(Closure->mapFile, Closure->eccName))
 	 Stop(_("--mapfile must not point to the image or the error correction file."));
       if(!g_lstat(Closure->mapFile, &st))
-	 Stop(_("Mapfile %s already exists; refusing to overwrite it."), Closure->mapFile);
+      {  char *error;
+
+	 if(!S_ISREG(st.st_mode))
+	    Stop(_("Mapfile %s exists, but is not a regular file; refusing to overwrite it."),
+		 Closure->mapFile);
+	 if(!ReadPreviousMapfile(Closure->mapFile, &error))
+	 {  char *msg = g_strdup_printf(_("Mapfile %s exists, but is not a valid ddrescue mapfile (%s); refusing to overwrite it."),
+				       Closure->mapFile, error);
+	    g_free(error);
+	    Stop("%s", msg);
+	 }
+      }
    }
 
    /*** Determine the default device (OS dependent!) if 
@@ -1178,6 +1189,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --json f                   - write a JSON report of the results to file f (- for stdout)\n"));
       PrintCLI(_("                               file must not exist; use -q with --json -\n"));
       PrintCLI(_("  --mapfile f                - with -r: write a GNU ddrescue mapfile to file f\n"));
+      PrintCLI(_("                               an existing ddrescue mapfile is updated\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));

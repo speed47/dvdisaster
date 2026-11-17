@@ -145,7 +145,8 @@ RS01_read_mapfile_defective yes
 RS01_read_mapfile_single yes
 RS01_read_mapfile_large_skip yes
 RS01_read_mapfile_crc yes
-RS01_read_mapfile_exists yes
+RS01_read_mapfile_invalid yes
+RS01_read_mapfile_update yes
 RS01_read_mapfile_requires_read yes
 RS01_read_mapfile_write_error yes
 RS01_read_shorter_with_ecc yes

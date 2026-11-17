@@ -239,6 +239,7 @@ typedef struct _GlobalClosure
    char *mapFile;       /* write ddrescue mapfile to this file */
    struct _Bitmap *mapBad;         /* sectors read individually and failed, or CRC bad */
    struct _Bitmap *mapFailedBlock; /* sectors of a failed multi-sector read */
+   GArray *mapPrevious;            /* blocks of an existing mapfile being updated */
    GPtrArray *methodList; /* List of available methods */
    char *methodName;    /* Name of currently selected codec */
    gint64 readStart;    /* Range to read */
@@ -958,6 +959,7 @@ typedef struct _Image
 } Image;
 
 Image* OpenImageFromFile(char*, int, mode_t);
+gboolean ReadPreviousMapfile(char*, char**);
 gboolean WriteMapfile(char*, char*);
 void MapfileInit(gint64);
 void MapfileReadOK(gint64, gint64);
