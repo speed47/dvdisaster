@@ -1,7 +1,16 @@
 ignore
-b4937ea315d4c86f3426e266658a4cae
+ignore
 This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
-Mapfile written to rs01-tmp.ecc.
+
+*
+* dvdisaster - can not continue:
+*
+Mapfile rs01.map already exists; refusing to overwrite it.
+
+--- mapfile ---
+precious contents
+Exit status: 1
+Detailed exit status: 1

@@ -443,32 +443,118 @@ void CloseImage(Image *image)
 }
 
 /*
- * Write a GNU ddrescue compatible mapfile describing which sectors
- * of the image are present (+) or missing (-).
+ * GNU ddrescue compatible mapfile (--mapfile, only together with -r).
+ *
+ * The reading code records the outcome of its read attempts here;
+ * the image contents alone can not tell apart sectors which have been
+ * tried and failed from sectors which have been skipped or never
+ * been tried. Status of each sector in the mapfile:
+ *
+ *   -  read individually and failed, or read with a CRC error
+ *   +  present in the image
+ *   *  part of a failed multi-sector read which was not split up
+ *      ("non-trimmed": ddrescue will trim/scrape it by default)
+ *   ?  not tried (skipped, outside the reading range, not needed
+ *      by adaptive reading, missing from an earlier session)
+ *
+ * The bitmaps are only allocated when --mapfile was given, so the
+ * recording functions are no-ops otherwise. In linear reading the
+ * reader and worker threads update them under the reader mutex.
  */
 
-static void write_map_run(FILE *map, guint64 pos, guint64 size, int present)
-{  fprintf(map, "0x%08" PRIx64 "  0x%08" PRIx64 "  %c\n", pos, size, present ? '+' : '-');
+void MapfileInit(gint64 sectors)
+{  if(!Closure->mapFile || sectors <= 0)
+     return;
+
+   MapfileFree();
+   Closure->mapBad = CreateBitmap0(sectors);
+   Closure->mapFailedBlock = CreateBitmap0(sectors);
 }
 
-void WriteMapfile(char *image_name, char *map_name)
+void MapfileFree(void)
+{  if(Closure->mapBad) FreeBitmap(Closure->mapBad);
+   if(Closure->mapFailedBlock) FreeBitmap(Closure->mapFailedBlock);
+   Closure->mapBad = Closure->mapFailedBlock = NULL;
+}
+
+void MapfileReadOK(gint64 sector, gint64 n)
+{  Bitmap *bad = Closure->mapBad, *block = Closure->mapFailedBlock;
+
+   if(!bad) return;
+   for(; n>0 && sector >= 0 && sector < bad->size; sector++, n--)
+   {  ClearBit(bad, sector);
+      ClearBit(block, sector);
+   }
+}
+
+void MapfileReadBad(gint64 sector, gint64 n)
+{  Bitmap *bad = Closure->mapBad, *block = Closure->mapFailedBlock;
+
+   if(!bad) return;
+   for(; n>0 && sector >= 0 && sector < bad->size; sector++, n--)
+   {  SetBit(bad, sector);
+      ClearBit(block, sector);
+   }
+}
+
+void MapfileBlockFailed(gint64 sector, gint64 n)
+{  Bitmap *block = Closure->mapFailedBlock;
+
+   if(!block) return;
+   for(; n>0 && sector >= 0 && sector < block->size; sector++, n--)
+      SetBit(block, sector);
+}
+
+static int map_status(gint64 sector, unsigned char *buf)
+{  Bitmap *bad = Closure->mapBad, *block = Closure->mapFailedBlock;
+   int known = bad && sector < bad->size;
+
+   if(known && GetBit(bad, sector))
+     return '-';
+   if(CheckForMissingSector(buf, sector, NULL, 0) == SECTOR_PRESENT)
+     return '+';
+   if(known && GetBit(block, sector))
+     return '*';
+   return '?';
+}
+
+static void write_map_run(FILE *map, guint64 pos, guint64 size, int status)
+{  fprintf(map, "0x%08" PRIx64 "  0x%08" PRIx64 "  %c\n", pos, size, status);
+}
+
+/*
+ * Returns FALSE (after printing the reason) if the mapfile could not
+ * be written. Never overwrites an existing file; a partially written
+ * mapfile is removed.
+ */
+
+gboolean WriteMapfile(char *image_name, char *map_name)
 {  LargeFile *image;
    FILE *map;
    unsigned char *buf;
    guint64 size, sectors, s, run_start = 0;
-   int run_present = -1;
+   int run_status = 0;
+   int err = 0;
+   char *what = NULL;
 
    if(!LargeStat(image_name, &size))
-     Stop(_("Image file %s not present."), image_name);
+   {  PrintError(_("Could not write mapfile %s: image file %s not present.\n"),
+		 map_name, image_name);
+      return FALSE;
+   }
 
    image = LargeOpen(image_name, O_RDONLY, IMG_PERMS);
    if(!image)
-     Stop(_("Can't open %s:\n%s"), image_name, strerror(errno));
+   {  PrintError(_("Could not write mapfile %s: can't open %s: %s\n"),
+		 map_name, image_name, strerror(errno));
+      return FALSE;
+   }
 
-   map = g_fopen(map_name, "wb");
+   map = OpenNewFile(map_name);
    if(!map)
-   {  LargeClose(image);
-      Stop(_("Can't open %s:\n%s"), map_name, strerror(errno));
+   {  PrintError(_("Could not write mapfile %s: %s\n"), map_name, strerror(errno));
+      LargeClose(image);
+      return FALSE;
    }
 
    fprintf(map, "# Mapfile. Created by dvdisaster\n"
@@ -481,31 +567,55 @@ void WriteMapfile(char *image_name, char *map_name)
 
    for(s=0; s<sectors; s+=64)
    {  int i, n = MIN(64, sectors-s);
-      int bytes = LargeRead(image, buf, n*2048);
+      gint64 expected = MIN((guint64)n*2048, size-s*2048);
+      gint64 bytes = LargeRead(image, buf, expected);
 
-      if(bytes < 0) bytes = 0;
+      if(bytes != expected)
+      {  err = bytes < 0 && errno ? errno : EIO;
+	 what = image_name;
+	 break;
+      }
       if(bytes < n*2048)   /* incomplete last sector */
 	 memset(buf+bytes, 0, n*2048-bytes);
 
       for(i=0; i<n; i++)
-      {  int present = CheckForMissingSector(buf+2048*i, s+i, NULL, 0) == SECTOR_PRESENT;
+      {  int status = map_status(s+i, buf+2048*i);
 
-	 if(present != run_present)
-	 {  if(run_present >= 0)
-	       write_map_run(map, run_start*2048, (s+i-run_start)*2048, run_present);
-	    run_present = present;
+	 if(status != run_status)
+	 {  if(run_status)
+	       write_map_run(map, run_start*2048, (s+i-run_start)*2048, run_status);
+	    run_status = status;
 	    run_start = s+i;
 	 }
       }
+      if(ferror(map))
+	 break;
    }
 
-   if(run_present >= 0)
-      write_map_run(map, run_start*2048, size-run_start*2048, run_present);
+   if(!err && run_status)
+      write_map_run(map, run_start*2048, size-run_start*2048, run_status);
+
+   if(!err && ferror(map))
+   {  err = errno ? errno : EIO;
+      what = map_name;
+   }
+   if(fclose(map) == EOF && !err)
+   {  err = errno ? errno : EIO;
+      what = map_name;
+   }
 
    g_free(buf);
-   fclose(map);
    LargeClose(image);
 
-   PrintLog(_("Mapfile written to %s.\n"), map_name);
-}
+   if(err)
+   {  if(what == image_name)
+	   PrintError(_("Could not write mapfile %s: error reading %s: %s\n"),
+		      map_name, image_name, strerror(err));
+      else PrintError(_("Could not write mapfile %s: %s\n"), map_name, strerror(err));
+      g_unlink(map_name);  /* created exclusively by us above */
+      return FALSE;
+   }
 
+   PrintLog(_("Mapfile written to %s.\n"), map_name);
+   return TRUE;
+}

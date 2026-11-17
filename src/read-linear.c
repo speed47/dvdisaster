@@ -711,11 +711,11 @@ static gpointer worker_thread(read_closure *rc)
 		   ClearProgress();
 		   PrintCLIError(_("* CRC error, sector: %lld\n"), (long long int)s+i);
 		   Closure->crcErrors++;
+		   g_mutex_lock(rc->mutex);  /* reader sets bits in the same words */
 		   if(rc->readMap)  /* trigger re-read */
-		   {  g_mutex_lock(rc->mutex);  /* reader sets bits in the same words */
 		      ClearBit(rc->readMap, sector);
-		      g_mutex_unlock(rc->mutex);
-		   }
+		   MapfileReadBad(sector, 1);
+		   g_mutex_unlock(rc->mutex);
 		   break;
 
 	         case CRC_UNKNOWN:  /* CRC data missing or detected as defective */
@@ -916,6 +916,11 @@ void ReadMediumLinear(gpointer data)
 
    if(Closure->readingPasses > 1)
       rc->readMap = CreateBitmap0(rc->image->dh->sectors);
+
+   /*** Record the read outcome for --mapfile (no-op without it) */
+
+   if(!rc->scanMode)
+      MapfileInit(rc->image->dh->sectors);
 
    /*** Start the worker thread. We concentrate on reading from the drive here;
 	writing the image file and calculating the checksums is done in a
@@ -1147,7 +1152,11 @@ reread:
       /*** Warn the user if we see dead sector markers on the image. */
 
       if(!status)
-      {  for(i=0; i<nsectors; i++)
+      {  g_mutex_lock(rc->mutex);  /* worker updates the same bitmap words */
+	 MapfileReadOK(rc->readPos, nsectors);
+	 g_mutex_unlock(rc->mutex);
+
+	 for(i=0; i<nsectors; i++)
 	 {  unsigned char *sector_buf = rc->alignedBuf[rc->readPtr]->buf;
 	    int err;
 
@@ -1160,6 +1169,9 @@ reread:
 	    if(err != SECTOR_PRESENT)
 	    {  ExplainMissingSector(sector_buf+i*2048, rc->readPos+i, err, SOURCE_MEDIUM, &unrecoverable_sectors);
 	       corrupted_sectors++;  /* readable, but written corrupted */
+	       g_mutex_lock(rc->mutex);
+	       MapfileReadBad(rc->readPos+i, 1);
+	       g_mutex_unlock(rc->mutex);
 	    }
 	 }
       }
@@ -1268,6 +1280,12 @@ reread:
 	 if(Closure->sectorSkip && nsectors > 1)
 	 {  int i;
 
+	    /* The whole block failed, but its sectors were not tried
+	       one by one; sectors skipped beyond it were not tried at all. */
+	    g_mutex_lock(rc->mutex);
+	    MapfileBlockFailed(rc->readPos, nsectors);
+	    g_mutex_unlock(rc->mutex);
+
 	    PrintErrorCLIorLabel(Closure->status,
 			    _("Sector %" PRId64 ": %s Skipping %d sectors.\n"),
 			    rc->readPos, GetLastSenseString(FALSE), nfill-1);  
@@ -1301,6 +1319,9 @@ reread:
 			       rc->readPos, GetLastSenseString(FALSE));  
 	       if(rc->readPos >= rc->image->dh->sectors - 2) tao_tail++;
 	       Closure->readErrors++;
+	       g_mutex_lock(rc->mutex);
+	       MapfileReadBad(rc->readPos, 1);
+	       g_mutex_unlock(rc->mutex);
 	    }
 	 }
       }

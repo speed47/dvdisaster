@@ -332,6 +332,9 @@ function run_regtest()
    local pass="false"
    local output=""
    local detailed_status="" detailed_iso="" detailed_ecc=""
+   # Tests may set "map_file" (like extra_args): --mapfile is then passed to
+   # dvdisaster and the resulting mapfile contents are appended to the log.
+   local mapfile_args="" detailed_mapfile_args=""
 
    local fail_on_bad=$(grep "FAIL_ON_BAD" $CONFIGFILE)
    fail_on_bad=$(echo $fail_on_bad | cut -d\  -f 2)
@@ -365,26 +368,44 @@ function run_regtest()
       # Exercise both status modes from identical inputs. Run the detailed
       # action on private copies first; repairs/reads must not change the
       # starting point of the default run or any shared master fixture.
+      if test -n "$map_file"; then
+         mapfile_args="--mapfile $map_file"
+      fi
+
       if echo "$options" | grep -qw EXITCODES; then
          local detailed_dir="$TEST_TMPDIR/detailed"
          detailed_iso="$detailed_dir/$(basename "$testiso")"
          detailed_ecc="$detailed_dir/$(basename "$testecc")"
+         if test -n "$map_file"; then
+            detailed_mapfile_args="--mapfile $detailed_dir/$(basename "$map_file")"
+            rm -f "$detailed_dir/$(basename "$map_file")"
+         fi
          if ! mkdir -p "$detailed_dir" \
             || { test -e "$testiso" && ! cp -p "$testiso" "$detailed_iso"; } \
-            || { test -e "$testecc" && ! cp -p "$testecc" "$detailed_ecc"; }; then
+            || { test -e "$testecc" && ! cp -p "$testecc" "$detailed_ecc"; } \
+            || { test -n "$map_file" && test -e "$map_file" \
+                 && ! cp -p "$map_file" "$detailed_dir/$(basename "$map_file")"; }; then
             locked_print "${TEST_HEADER} - FAILED (could not copy exit-status inputs)"
             echo 1 > "$RESULTS_DIR/${CODEC_PREFIX}_${testsymbol}.status"
             return
          fi
          LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress --detailed-exit-status \
-            -i"$detailed_iso" -e"$detailed_ecc" ${extra_args} ${testparms} \
+            -i"$detailed_iso" -e"$detailed_ecc" ${extra_args} ${detailed_mapfile_args} ${testparms} \
             >"$detailed_dir/log.txt" 2>&1
          detailed_status=$?
       fi
 
-      echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms}" >>$LOGFILE
-      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${testparms} 2>&1 | tail -n +4  >>$NEWLOG
+      echo "LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${mapfile_args} ${testparms}" >>$LOGFILE
+      LANG=en_EN.UTF-8 $NEWVER --regtest --no-progress -i${testiso} ${testeccopt} ${extra_args} ${mapfile_args} ${testparms} 2>&1 | tail -n +4  >>$NEWLOG
       local exit_status=${PIPESTATUS[0]}
+      if test -n "$map_file"; then
+         if test -e "$map_file"; then
+            echo "--- mapfile ---" >>$NEWLOG
+            cat "$map_file" >>$NEWLOG
+         else
+            echo "--- no mapfile ---" >>$NEWLOG
+         fi
+      fi
       if echo "$options" | grep -Eqw 'EXITCODE|EXITCODES'; then
          echo "Exit status: $exit_status" >>$NEWLOG
       fi
@@ -479,7 +500,7 @@ function run_regtest()
        rm -f $LOGDIR/.dvdisaster-regtest
    fi
 
-   unset extra_args
+   unset extra_args map_file
 
    if test -r "$REFLOG"; then
       image_md5=$(head -n 1 $REFLOG)

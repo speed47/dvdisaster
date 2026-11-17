@@ -591,8 +591,6 @@ int main(int argc, char *argv[])
 	 case MODIFIER_MAPFILE:
 	    g_free(Closure->mapFile);
 	    Closure->mapFile = g_strdup(optarg);
-	    if(mode == MODE_NONE)
-	       mode = MODE_SEQUENCE;
 	    break;
 	 case MODIFIER_NO_BDR_DEFECT_MANAGEMENT:
 	    Closure->noBdrDefectManagement = TRUE;
@@ -895,6 +893,23 @@ int main(int argc, char *argv[])
       Closure->imageName = ApplyAutoSuffix(Closure->imageName, "iso");
    }
 
+   /*** --mapfile describes the outcome of reading, so it requires -r.
+        Refuse to overwrite any existing file (fail early, before a
+        possibly long reading session; the mapfile itself is created
+        exclusively when it is written). */
+
+   if(Closure->mapFile && mode != MODE_HELP)
+   {  GStatBuf st;
+
+      if(mode != MODE_SEQUENCE || !(sequence & 1<<MODE_READ))
+	 Stop(_("--mapfile can only be used together with -r/--read."));
+      if(   !g_strcmp0(Closure->mapFile, Closure->imageName)
+	 || !g_strcmp0(Closure->mapFile, Closure->eccName))
+	 Stop(_("--mapfile must not point to the image or the error correction file."));
+      if(!g_lstat(Closure->mapFile, &st))
+	 Stop(_("Mapfile %s already exists; refusing to overwrite it."), Closure->mapFile);
+   }
+
    /*** Determine the default device (OS dependent!) if 
 	- none has been specified on the command line
         - and one if actually required in command line mode.
@@ -932,6 +947,13 @@ int main(int argc, char *argv[])
 	   if(Closure->adaptiveRead) 
 	        ReadMediumAdaptive((gpointer)0);
 	   else ReadMediumLinear((gpointer)0);
+
+	   /* Describes the reading outcome, so write it before
+	      a possible repair in the same call changes the image. */
+	   // codeql[cpp/path-injection] Image/ECC path intentionally restored from trusted user configuration; arbitrary paths are supported.
+	   if(Closure->mapFile && !WriteMapfile(Closure->imageName, Closure->mapFile))
+	      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
+	   MapfileFree();  /* no-op without --mapfile */
 	}
 
 	if(sequence & 1<<MODE_CREATE)
@@ -1089,11 +1111,6 @@ int main(int argc, char *argv[])
 	break;
    }
 
-   /*** Write a ddrescue mapfile of the image if requested */
-
-   if(Closure->mapFile && mode == MODE_SEQUENCE)
-      WriteMapfile(Closure->imageName, Closure->mapFile);
-
    if(debug_arg) g_free(debug_arg);
 
    /*** If no mode was selected, print the help screen. */
@@ -1160,7 +1177,7 @@ int main(int argc, char *argv[])
       PrintCLI(_("  --internal-rereads n       - drive may attempt n rereads before reporting an error\n"));
       PrintCLI(_("  --json f                   - write a JSON report of the results to file f (- for stdout)\n"));
       PrintCLI(_("                               file must not exist; use -q with --json -\n"));
-      PrintCLI(_("  --mapfile f                - write a GNU ddrescue mapfile of the image to file f\n"));
+      PrintCLI(_("  --mapfile f                - with -r: write a GNU ddrescue mapfile to file f\n"));
       PrintCLI(_("  --medium-info              - print info about medium in drive\n"));
       PrintCLI(_("  --no-bdr-defect-management - use bigger RS03 images for BD-R (see man page!)\n"));
       PrintCLI(_("  --no-progress              - do not print progress information\n"));
