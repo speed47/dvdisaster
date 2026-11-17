@@ -35,6 +35,9 @@ RS01_ecc_margin_exceeded yes
 RS01_ecc_margin_bad_parity yes
 RS01_ecc_margin_truncated_parity yes
 RS01_ecc_margin_wrong_size yes
+RS01_ecc_margin_good_json yes
+RS01_ecc_margin_exceeded_json yes
+RS01_ecc_margin_bad_parity_json yes
 RS01_crc_in_fingerprint yes
 RS01_missing_fingerprint yes
 RS01_missing_ecc_header yes

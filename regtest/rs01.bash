@@ -240,7 +240,7 @@ if try "image with ecc margin exceeded" ecc_margin_exceeded; then (
   $NEWVER -i$TMPISO --debug --erase 1000-4199 >>$LOGFILE 2>&1
   $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
-  run_regtest ecc_margin_exceeded "-t" $TMPISO $MASTERECC
+  run_regtest ecc_margin_exceeded "-t" $TMPISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # A missing image sector needs parity which exists but has a bad checksum.
@@ -276,6 +276,32 @@ if try "ecc margin with inconsistent size and valid checksum" ecc_margin_wrong_s
   $NEWVER --debug -i$TMPECC --byteset 0,68,7 >>$LOGFILE 2>&1
 
   run_regtest ecc_margin_wrong_size "-t" $TMPISO $TMPECC EXITCODE
+) & limit_jobs; fi
+
+# JSON report of the ecc margin. Undamaged images report a zero baseline.
+if try "ecc margin in json report, good image" ecc_margin_good_json; then (
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest ecc_margin_good_json "-t --json -" $MASTERISO $MASTERECC
+) & limit_jobs; fi
+
+if try "ecc margin in json report, margin exceeded" ecc_margin_exceeded_json; then (
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --erase 1000-4199 >>$LOGFILE 2>&1
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest ecc_margin_exceeded_json "-t --json -" $TMPISO $MASTERECC
+) & limit_jobs; fi
+
+# Untrusted parity: the margin fields must be absent, not zero.
+if try "ecc margin in json report, corrupted parity" ecc_margin_bad_parity_json; then (
+  cp $MASTERISO $TMPISO
+  cp $MASTERECC $TMPECC
+  $NEWVER --debug -i$TMPISO --erase 1000 >>$LOGFILE 2>&1
+  $NEWVER --debug -i$TMPECC --erase 100 >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest ecc_margin_bad_parity_json "-t --json -" $TMPISO $TMPECC
 ) & limit_jobs; fi
 
 # CRC error in fingerprint sector
