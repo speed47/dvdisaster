@@ -1207,6 +1207,7 @@ void vLogWarning(char*, va_list);
 
 void LogWarning(char*, ...) PRINTF_FORMAT(1);
 void Stop(char*, ...) __attribute__((noreturn)) PRINTF_FORMAT(1);
+FILE* OpenNewFile(const char*);
 void RegisterCleanup(char*, void (*)(gpointer), gpointer);
 void UnregisterCleanup(void);
 

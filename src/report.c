@@ -256,19 +256,10 @@ void WriteReport(char *error_msg)
    if(!strcmp(Closure->jsonFile, "-"))
       file = stdout;
    else
-   {  int flags = O_WRONLY | O_CREAT | O_EXCL;
-      int fd;
-
-#ifdef SYS_MINGW
-      flags |= O_BINARY;
-#endif
-      /* Atomic exclusive creation also refuses existing symlinks. */
-      fd = g_open(Closure->jsonFile, flags, 0666);
-      file = fd < 0 ? NULL : fdopen(fd, "wb");
+   {  /* Atomic exclusive creation also refuses existing symlinks. */
+      file = OpenNewFile(Closure->jsonFile);
       if(!file)
-      {  report_errno = errno ? errno : EIO;
-         if(fd >= 0) close(fd);
-      }
+         report_errno = errno ? errno : EIO;
    }
 
    if(file)

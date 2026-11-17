@@ -674,6 +674,34 @@ void LogWarning(char *format, ...)
 }
 
 /*
+ * Create a new file for writing. Never overwrites an existing file:
+ * the exclusive creation also refuses existing (even dangling) symlinks.
+ * Returns NULL with errno set on failure.
+ */
+
+FILE* OpenNewFile(const char *path)
+{  int flags = O_WRONLY | O_CREAT | O_EXCL;
+   FILE *file;
+   int fd;
+
+#ifdef SYS_MINGW
+   flags |= O_BINARY;
+#endif
+   fd = g_open(path, flags, 0666);
+   if(fd < 0)
+     return NULL;
+
+   file = fdopen(fd, "wb");
+   if(!file)
+   {  int err = errno ? errno : EIO;
+
+      close(fd);
+      errno = err;
+   }
+   return file;
+}
+
+/*
  * Tell user that current action was aborted due to a serious error.
  *
  * There are three different circumstances under which this routine
