@@ -72,6 +72,7 @@ Data integrity:
   ... ecc section    : 0 sectors missing
 * Ecc block test   : 97 good, 1 bad; 2048 bad sub blocks
 - erasure counts   :  avg =  50.0; worst = 50 per ecc block.
+- ecc margin       : worst block uses 50 of 39 roots (128%)
 - prognosis        : 24940 of 24990 sectors estimated recoverable (99.7%)
 Exit status: 1
 Detailed exit status: 3
