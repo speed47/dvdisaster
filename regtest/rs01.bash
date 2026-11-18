@@ -45,26 +45,12 @@ if ! file_exists $ECC_PLUS56; then
     FILE_MSG=""
 fi
 
-# Image with xorriso style MD5 checksum tags ("xorriso -md5 on"). Written by
-# script so that the test does not depend on xorriso and its version;
-# tag format see doc/checksums.txt in libisofs.
-
-function write_xorriso_tag()
-{  local iso=$1 id=$2 pos=$3 start=$4 next=$5
-   local md5=$(dd if=$iso bs=2048 skip=$start count=$((pos-start)) 2>/dev/null | $MD5SUM | cut -d\  -f 1)
-   local text="$id pos=$pos range_start=$start range_size=$((pos-start))${next:+ next=$next} md5=$md5"
-   local self=$(printf "%s" "$text" | $MD5SUM | cut -d\  -f 1)
-
-   { printf "%s self=%s\n" "$text" "$self"; head -c 2048 /dev/zero; } | head -c 2048 \
-     | dd of=$iso bs=2048 seek=$pos conv=notrunc 2>/dev/null
-}
+# Image with xorriso MD5 checksum tags, one session (see common.bash)
 
 XORRISOISO=$ISODIR/rs01-xorriso-md5.iso
 if ! file_exists $XORRISOISO; then
     cp $MASTERISO $XORRISOISO
-    write_xorriso_tag $XORRISOISO libisofs_sb_checksum_tag_v1 20 0 40
-    write_xorriso_tag $XORRISOISO libisofs_tree_checksum_tag_v1 40 0 20000
-    write_xorriso_tag $XORRISOISO libisofs_checksum_tag_v1 20000 0
+    write_xorriso_session $XORRISOISO 0 20000
     echo -e "$FILE_MSG"
     FILE_MSG=""
 fi
@@ -145,17 +131,82 @@ if try "defective image, no ecc" defective_image_no_ecc; then (
   run_regtest defective_image_no_ecc "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
-# Test image with good xorriso MD5 checksum tags, no ecc file
+# xorriso MD5 checksum tags are checked during the image pass of -t.
+# A tag mismatch is a defect: exit status 1, detailed 3 without ecc data.
+
 if try "xorriso md5 tags, good" xorriso_md5_good; then (
-  run_regtest xorriso_md5_good "-t" $XORRISOISO $ISODIR/no.ecc
+  run_regtest xorriso_md5_good "-t" $XORRISOISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
-# Test image with xorriso MD5 checksum tags and altered payload
 if try "xorriso md5 tags, altered data" xorriso_md5_altered; then (
   cp $XORRISOISO $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
 
-  run_regtest xorriso_md5_altered "-t" $TMPISO $ISODIR/no.ecc
+  run_regtest xorriso_md5_altered "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+if try "xorriso md5 tags, altered data, json report" xorriso_md5_altered_json; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  IGNORE_LOG_LINE='^  "(version|time)": '
+  run_regtest xorriso_md5_altered_json "-t --json -" $TMPISO $ISODIR/no.ecc
+) & limit_jobs; fi
+
+# The quick test does not read the image, so the tags are not checked
+if try "xorriso md5 tags, quick test" xorriso_md5_quick; then (
+  run_regtest xorriso_md5_quick "-tq" $XORRISOISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# With an ecc file a tag mismatch gives detailed status 2, like a CRC error
+if try "xorriso md5 tags, altered data, with ecc" xorriso_md5_altered_ecc; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_altered_ecc "-t" $TMPISO $TMPECC EXITCODES
+) & limit_jobs; fi
+
+if try "xorriso md5 tags, missing sector" xorriso_md5_missing_sector; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --erase 5000 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_missing_sector "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Image ends before the session tag: the chain is reported as broken
+if try "xorriso md5 tags, truncated image" xorriso_md5_truncated; then (
+  dd if=$XORRISOISO of=$TMPISO bs=2048 count=15000 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_truncated "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Tree tag with a wrong self checksum. The session tag covers the tree
+# tag sector, so it does not match any more either.
+if try "xorriso md5 tags, damaged tag" xorriso_md5_damaged_tag; then (
+  cp $XORRISOISO $TMPISO
+  XORRISO_BAD_SELF=1 write_xorriso_tag $TMPISO libisofs_tree_checksum_tag_v1 40 0 20000
+
+  run_regtest xorriso_md5_damaged_tag "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Second session not starting at a multiple of 32 (as on write-once media),
+# altered only in the second session.
+if try "xorriso md5 tags, second session altered" xorriso_md5_multisession; then (
+  cp $XORRISOISO $TMPISO
+  write_xorriso_session $TMPISO 20084 20900
+  $NEWVER -i$TMPISO --debug --byteset 20500,0,99 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_multisession "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Image for overwritable media: relocated superblock tag, session at 32
+if try "xorriso md5 tags, relocated superblock" xorriso_md5_rlsb; then (
+  cp $MASTERISO $TMPISO
+  write_xorriso_tag $TMPISO libisofs_rlsb32_checksum_tag_v1 20 0
+  write_xorriso_session $TMPISO 32 20000
+
+  run_regtest xorriso_md5_rlsb "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Test with good image and ecc file, both not multiple of 2048

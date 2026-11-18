@@ -1,0 +1,30 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+* CRC error, sector: 13444
+* suspicious image : all sectors present, but 1 CRC errors
+- image md5sum     : fb823929b3b5d9408f1d52e2f5ee468e
+
+rs01-tmp.ecc: created by dvdisaster-0.80
+- method           : RS01, 32 roots, 14.3% redundancy.
+- requires         : dvdisaster-0.55 (good)
+- medium sectors   : 21000 (good)
+* image md5sum     : bfaf24096b9fe666247a776118ddf20c (BAD)
+- fingerprint match: good
+- ecc blocks       : 194560 (good)
+- ecc md5sum       : f75480413b1038ed77c4e20698064f77 (good)
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- ecc margin       : worst block uses 1 of 32 roots (3%)
+
+
+xorriso MD5 checksum tags:
+- superblock tag   : good (sector 20, covering sectors 0-19)
+- tree tag         : good (sector 40, covering sectors 0-39)
+- session tag      : MD5 MISMATCH (sector 20000, covering sectors 0-19999)
+Exit status: 1
+Detailed exit status: 2

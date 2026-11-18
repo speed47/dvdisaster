@@ -51,6 +51,17 @@ if ! file_exists $CUSTOM_MASTERISO; then
     FILE_MSG=""
 fi
 
+# Augmented image with xorriso MD5 checksum tags (see common.bash)
+
+XORRISOISO=$ISODIR/rs03i-xorriso-md5.iso
+if ! file_exists $XORRISOISO; then
+    $NEWVER --regtest --debug -i$XORRISOISO --random-image $ISOSIZE >>$LOGFILE 2>&1
+    write_xorriso_session $XORRISOISO 0 20000
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$XORRISOISO -mRS03 -n$ECCSIZE -c >>$LOGFILE 2>&1
+    echo -e "$FILE_MSG"
+    FILE_MSG=""
+fi
+
 ### Strip tests
 
 REGTEST_SECTION="Strip tests"
@@ -98,6 +109,14 @@ if try "refuse strip with displaced CRC block after CRC layer" strip_crc_after_l
 ### Verification tests
 
 REGTEST_SECTION="Verify tests"
+
+# xorriso MD5 tags are checked in the same pass as the CRCs
+if try "xorriso md5 tags, altered data" xorriso_md5_altered; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_altered "-t" $TMPISO $NO_FILE EXITCODES
+) & limit_jobs; fi
 
 # Test good files
 

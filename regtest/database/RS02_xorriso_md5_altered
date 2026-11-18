@@ -1,0 +1,33 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs02-tmp.iso: present, contains 34932 medium sectors.
+* CRC error, sector: 13444
+* suspicious image : all sectors present, but 1 CRC errors
+  ... ecc headers    : 39 ok, 0 CRC errors, 0 missing
+  ... data section   : 0 sectors missing; 1 CRC errors
+  ... data md5sum    : df48d25ef9ac79f8b46788a92689f7a1
+  ... crc section    : 0 sectors missing
+  ... ecc section    : 0 sectors missing
+
+Error correction data: created by dvdisaster-0.80
+- method           : RS02, 35 roots, 15.9% redundancy.
+- requires         : dvdisaster-0.66 (good)
+- medium sectors   : 34932 / 30000 (good)
+* data md5sum      : 23d2be9b1cb6621d20e6e6e6a0e8fc49 (BAD)
+- crc md5sum       : 41163a47f07cbf2aa395a366fab502d4 (good)
+- ecc md5sum       : 9443a0f61f926cde41aa911979296703 (good)
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- ecc margin       : worst block uses 1 of 35 roots (2%)
+- prognosis        : 34932 of 34932 sectors estimated recoverable (100.0%)
+
+xorriso MD5 checksum tags:
+- superblock tag   : good (sector 20, covering sectors 0-19)
+- tree tag         : good (sector 40, covering sectors 0-39)
+- session tag      : MD5 MISMATCH (sector 29000, covering sectors 0-28999)
+Exit status: 1
+Detailed exit status: 2

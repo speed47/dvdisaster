@@ -1,0 +1,34 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs03i-tmp.iso present.
+
+Error correction properties:
+- type             : Augmented image
+- method           : RS03, 39 roots, 18.1% redundancy.
+- created by       : dvdisaster-0.80
+- requires         : dvdisaster-0.79
+- data md5sum      : none available
+
+Data integrity:
+- medium sectors   : 24990 total / 21000 data
+* CRC error, sector: 13444
+* suspicious image : all sectors present, but 1 CRC errors
+  ... data section   : 0 sectors missing; 1 CRC errors
+  ... crc section    : 0 sectors missing
+  ... ecc section    : 0 sectors missing
+* Ecc block test   : 97 good, 1 bad; 1 bad sub blocks
+- erasure counts   :  avg =  1.0; worst = 1 per ecc block.
+- ecc margin       : worst block uses 1 of 39 roots (2%)
+- prognosis        : 24990 of 24990 sectors estimated recoverable (100.0%)
+
+xorriso MD5 checksum tags:
+- superblock tag   : good (sector 20, covering sectors 0-19)
+- tree tag         : good (sector 40, covering sectors 0-39)
+- session tag      : MD5 MISMATCH (sector 20000, covering sectors 0-19999)
+Exit status: 1
+Detailed exit status: 2

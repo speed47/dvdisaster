@@ -16,3 +16,5 @@ xorriso MD5 checksum tags:
 - superblock tag   : good (sector 20, covering sectors 0-19)
 - tree tag         : good (sector 40, covering sectors 0-39)
 - session tag      : MD5 MISMATCH (sector 20000, covering sectors 0-19999)
+Exit status: 1
+Detailed exit status: 3

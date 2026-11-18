@@ -17,3 +17,5 @@ xorriso MD5 checksum tags:
 - tree tag         : good (sector 40, covering sectors 0-39)
 - session tag      : good (sector 20000, covering sectors 0-19999)
 - all xorriso checksums are good.
+Exit status: 0
+Detailed exit status: 0

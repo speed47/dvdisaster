@@ -19,6 +19,14 @@ RS01_invalid_ecc_defective_image yes
 RS01_defective_image_no_ecc yes
 RS01_xorriso_md5_good yes
 RS01_xorriso_md5_altered yes
+RS01_xorriso_md5_altered_json yes
+RS01_xorriso_md5_quick yes
+RS01_xorriso_md5_altered_ecc yes
+RS01_xorriso_md5_missing_sector yes
+RS01_xorriso_md5_truncated yes
+RS01_xorriso_md5_damaged_tag yes
+RS01_xorriso_md5_multisession yes
+RS01_xorriso_md5_rlsb yes
 RS01_plus56_bytes yes
 RS01_image_plus56_bytes yes
 RS01_ecc_plus56_bytes yes
@@ -220,6 +228,8 @@ RS02_strip_ecc_not yes
 
 # Verify tests
 RS02_good yes
+RS02_xorriso_md5_good yes
+RS02_xorriso_md5_altered yes
 RS02_good_quick yes
 RS02_no_image yes
 RS02_truncated yes
@@ -413,6 +423,7 @@ RS03i_strip_crc_after_layer yes
 # Verify tests
 
 RS03i_good yes
+RS03i_xorriso_md5_altered yes
 RS03i_good_quick yes
 RS03i_verify_displaced_crc yes
 RS03i_verify_displaced_first_crc yes
@@ -645,6 +656,7 @@ RS03i_read_hint_bdre_both_adaptive yes
 # Verify tests
 
 RS03f_good yes
+RS03f_xorriso_md5_altered yes
 RS03f_good_quick yes
 RS03f_no_image yes
 RS03f_plus56_bytes yes

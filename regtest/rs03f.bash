@@ -28,6 +28,24 @@ if ! file_exists $MASTERECC; then
     FILE_MSG=""
 fi
 
+# Image with xorriso MD5 checksum tags and its ecc file (see common.bash)
+
+XORRISOISO=$ISODIR/rs03f-xorriso-md5.iso
+XORRISOECC=$ISODIR/rs03f-xorriso-md5.ecc
+if ! file_exists $XORRISOISO; then
+    cp $MASTERISO $XORRISOISO
+    write_xorriso_session $XORRISOISO 0 20000
+    rm -f $XORRISOECC
+    echo -e "$FILE_MSG"
+    FILE_MSG=""
+fi
+
+if ! file_exists $XORRISOECC; then
+    $NEWVER --regtest --debug --set-version $SETVERSION -i$XORRISOISO -e$XORRISOECC -mRS03 -n$REDUNDANCY -o file -c >>$LOGFILE 2>&1
+    echo -e "$FILE_MSG"
+    FILE_MSG=""
+fi
+
 # Create image whose length is not a multiple of 2048
 
 ISO_PLUS56=$ISODIR/rs03f-plus56_bytes.iso
@@ -48,6 +66,14 @@ fi
 ### Verification tests
 
 REGTEST_SECTION="Verify tests"
+
+# xorriso MD5 tags are checked in the same pass as the CRCs
+if try "xorriso md5 tags, altered data" xorriso_md5_altered; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_altered "-t" $TMPISO $XORRISOECC EXITCODES
+) & limit_jobs; fi
 
 # Test good files
 
