@@ -219,7 +219,8 @@ void RS01ReadSector(Image *image, unsigned char *buf, gint64 s)
 
 #define CRCBUFSIZE (1024*256)
 
-void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode, Bitmap *map)
+void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, int mode, Bitmap *map,
+		   XorrisoCheck *xorriso)
 {  unsigned char buf[2048];
    guint32 *crcbuf = NULL;
    int unrecoverable_sectors = 0;
@@ -301,6 +302,8 @@ void RS01ScanImage(Method *method, Image* image, struct MD5Context *ecc_ctxt, in
 	ExplainMissingSector(buf, s, err, SOURCE_IMAGE, &unrecoverable_sectors);
       }
       else current_missing = FALSE;
+
+      XorrisoCheckSector(xorriso, s, buf, !current_missing);  /* NULL: no check */
 
       if(current_missing)
       {  if(first_missing < 0) first_missing = s;

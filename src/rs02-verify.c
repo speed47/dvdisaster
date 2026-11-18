@@ -380,6 +380,7 @@ typedef struct
    guint32 *crcBuf;
    gint8   *crcValid;
    unsigned char crcSum[16];
+   XorrisoCheck *xorriso;
 } verify_closure;
 
 static void cleanup(gpointer data)
@@ -394,6 +395,7 @@ static void cleanup(gpointer data)
    if(cc->map) FreeBitmap(cc->map);
    if(cc->crcBuf) g_free(cc->crcBuf);
    if(cc->crcValid) g_free(cc->crcValid);
+   XorrisoCheckFree(cc->xorriso);
    
    g_free(cc);
 
@@ -740,6 +742,7 @@ void RS02Verify(Image *image)
    MD5Init(&image_md5);
    MD5Init(&ecc_md5);
    MD5Init(&meta_md5);
+   cc->xorriso = XorrisoCheckNew();
 
    first_missing = last_missing = -1;
    crc_idx = 0;
@@ -782,6 +785,11 @@ void RS02Verify(Image *image)
       current_missing = CheckForMissingSector(buf, s, eh->mediumFP, eh->fpSector);
       if(current_missing != SECTOR_PRESENT)
 	ExplainMissingSector(buf, s, current_missing, SOURCE_IMAGE, &unrecoverable_sectors);
+
+      /* xorriso MD5 tags cover the data (ISO) portion only */
+
+      if(s < lay->dataSectors)
+	 XorrisoCheckSector(cc->xorriso, s, buf, current_missing == SECTOR_PRESENT);
 
       if(current_missing)
       {  if(first_missing < 0) first_missing = s;
@@ -1176,9 +1184,10 @@ continue_with_ecc:
    /*** Close and clean up */
 
 terminate:
-   if(Closure->guiMode && !Closure->quickVerify)
-   {  char *tags = CheckXorrisoTags(Closure->imageName);
+   if(cc->xorriso && !Closure->stopActions)
+   {  char *tags = XorrisoCheckFinish(cc->xorriso, TRUE);
 
+      cc->xorriso = NULL;
       GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
       g_free(tags);
    }
