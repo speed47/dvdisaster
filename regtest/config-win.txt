@@ -24,3 +24,4 @@ RS03f_fix_no_write_perm_ecc no
 RS01_scan_no_device_access no
 RS01_read_no_device_access no
 RS01_adaptive_no_device_access no
+RS01_read_abort_file_unusable no

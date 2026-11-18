@@ -1,0 +1,29 @@
+62ac6b7828b793a25ee718e56c05a072
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Creating new rs01-tmp.iso image.
+Reading CRC information from ecc data (RS01) ... done.
+
+Time limit of 3600 seconds reached, stopping.
+* CRC error, sector: 4990
+Stopped: 5008 sectors read, 0 sectors unreadable/skipped, 1 CRC errors so far.
+Mapfile written to rs01.map.
+--- mapfile ---
+# Mapfile. Created by dvdisaster
+# current_pos  current_status  current_pass
+0x009c8000     ?               1
+#      pos        size  status
+0x00000000  0x009bf000  +
+0x009bf000  0x00000800  -
+0x009bf800  0x00008800  +
+0x009c8000  0x01f3c000  ?
+Exit status: 1
+Detailed exit status: 3

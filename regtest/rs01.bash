@@ -1191,6 +1191,32 @@ if try "reading with time limit expiring" read_time_limit_stop; then (
   run_regtest read_time_limit_stop "--spinup-delay=0 --time-limit=1h --sim-stop-at=5000 -r -c" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
+# A CRC error just before the stop is counted (by the worker thread,
+# which has to finish its queued buffers first) and marked bad (-).
+
+if try "reading with time limit expiring, crc error" read_time_limit_stop_crc; then (
+  cp $MASTERISO $SIMISO
+  $NEWVER --debug -i$SIMISO --byteset 4990,23,98 >>$LOGFILE 2>&1
+  rm -f $TMPISO
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  # SORTED: the worker may report the CRC error before or after the stop message
+  run_regtest read_time_limit_stop_crc "--spinup-delay=0 --time-limit=1h --sim-stop-at=5000 -r" $TMPISO $MASTERECC "EXITCODES SORTED"
+) & limit_jobs; fi
+
+# An abort file which can not be checked (here: a path through a regular
+# file, ENOTDIR) could never be found: refuse to start.
+
+if try "reading with unusable abort file path" read_abort_file_unusable; then (
+  rm -f $TMPISO
+  # Relative (we run in regtest/) to get the same message on all platforms.
+  not_a_dir=rs01-read_abort_file_unusable.file
+  touch $not_a_dir
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_abort_file_unusable "--spinup-delay=0 --abort-file=$not_a_dir/stop -r" $TMPISO $ISODIR/no.ecc EXITCODES
+  rm -f $not_a_dir
+) & limit_jobs; fi
+
 # An empty --abort-file (e.g. an unset shell variable) could never trigger.
 
 if try "reading with empty abort file name" read_abort_file_empty; then (
@@ -1573,6 +1599,21 @@ if try "reading image, tao tail case, ecc data" read_tao_tail_with_ecc; then (
   replace_config ignore-iso-size 1
   extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
   run_regtest read_tao_tail_with_ecc "--ignore-iso-size --spinup-delay=0 -r" $TMPISO  $MASTERECC
+) & limit_jobs; fi
+
+# Same with --mapfile: the two run-out sectors truncated from the image
+# are not part of the medium, so they are not listed in the mapfile.
+
+if try "reading image, tao tail case, ecc data, mapfile" read_tao_tail_mapfile; then (
+
+  cp $MASTERISO $SIMISO
+  cat fixed-random-sequence >>$SIMISO
+  $NEWVER --debug -i$SIMISO --erase 21000-21001 >>$LOGFILE 2>&1
+
+  replace_config ignore-iso-size 1
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  extra_args="--debug --sim-cd=$SIMISO --fixed-speed-values"
+  run_regtest read_tao_tail_mapfile "--ignore-iso-size --spinup-delay=0 -r" $TMPISO  $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
 # Read image with error correction data available

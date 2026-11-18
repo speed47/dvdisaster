@@ -127,6 +127,8 @@ RS01_read_abort_file yes
 RS01_read_time_limit_not_reached yes
 RS01_read_time_limit_invalid yes
 RS01_read_time_limit_stop yes
+RS01_read_time_limit_stop_crc yes
+RS01_read_abort_file_unusable yes
 RS01_read_abort_file_empty yes
 RS01_read_time_limit_requires_read yes
 RS01_read_no_ecc_good_file yes
@@ -158,6 +160,7 @@ RS01_read_mapfile_write_error yes
 RS01_read_shorter_with_ecc yes
 RS01_read_longer_with_ecc yes
 RS01_read_tao_tail_with_ecc yes
+RS01_read_tao_tail_mapfile yes
 RS01_read_no_tao_tail_with_ecc yes
 RS01_read_more_missing_at_end_with_ecc yes
 RS01_read_wrong_fp_with_ecc yes

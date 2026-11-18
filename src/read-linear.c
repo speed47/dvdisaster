@@ -999,8 +999,15 @@ next_reading_pass:
       if(Closure->stopActions)   /* somebody hit the Stop button */
       {
 	 if(Closure->stopReason)
-	 {  PrintLog(_("Stopped: %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far.\n"),
-		     rc->readOK, Closure->readErrors);
+	 {  /* The worker still writes the queued buffers and counts their
+	       CRC errors: let it finish before reporting (as at the end). */
+	    if(rc->worker && !rc->workerError)
+	    {  send_eof(rc);
+	       g_thread_join(rc->worker);
+	       rc->worker = NULL;
+	    }
+	    PrintLog(_("Stopped: %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped, %" PRId64 " CRC errors so far.\n"),
+		     rc->readOK, Closure->readErrors, Closure->crcErrors);
 	    report_results(rc, 0);
 	 }
 	 if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
@@ -1543,8 +1550,10 @@ step_counter:
 			       );
       }
       if(!rc->scanMode && answer)
-        if(!LargeTruncate(rc->writerImage, (gint64)(2048*(rc->image->dh->sectors-tao_tail))))
-	  Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
+      {  if(!LargeTruncate(rc->writerImage, (gint64)(2048*(rc->image->dh->sectors-tao_tail))))
+	   Stop(_("Could not truncate %s: %s\n"),Closure->imageName,strerror(errno));
+	 MapfileTruncate(rc->image->dh->sectors-tao_tail);  /* run-out sectors are not part of the medium */
+      }
    }
    else if(Closure->readErrors) SetExitCode(EXIT_FAILURE, EXIT_CODE_DEFECTS);
 

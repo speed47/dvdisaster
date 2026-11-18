@@ -12,14 +12,15 @@ Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
 Creating new rs01-tmp.iso image.
 
 Time limit of 3600 seconds reached, stopping.
-Stopped: 5008 sectors read, 0 sectors unreadable/skipped so far.
+Stopped: 5008 sectors read, 0 sectors unreadable/skipped, 0 CRC errors so far.
 Mapfile written to rs01.map.
 Remaining actions skipped.
 --- mapfile ---
 # Mapfile. Created by dvdisaster
 # current_pos  current_status  current_pass
-0x00000000     +               1
+0x009c8000     ?               1
 #      pos        size  status
 0x00000000  0x009c8000  +
+0x009c8000  0x01f3c000  ?
 Exit status: 1
 Detailed exit status: 3

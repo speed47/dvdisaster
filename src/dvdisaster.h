@@ -239,6 +239,7 @@ typedef struct _GlobalClosure
    char *mapFile;       /* write ddrescue mapfile to this file */
    struct _Bitmap *mapBad;         /* sectors read individually and failed, or CRC bad */
    struct _Bitmap *mapFailedBlock; /* sectors of a failed multi-sector read */
+   gint64 mapSectors;              /* medium size covered by the mapfile */
    GArray *mapPrevious;            /* blocks of an existing mapfile being updated */
    GPtrArray *methodList; /* List of available methods */
    char *methodName;    /* Name of currently selected codec */
@@ -281,6 +282,7 @@ typedef struct _GlobalClosure
    GTimer *stopTimer;   /* runs while --time-limit/--abort-file are in effect */
    double nextAbortFileCheck; /* stopTimer value for the next check of abortFile */
    char *stopReason;    /* "time_limit" or "abort_file" once reading was stopped */
+   int abortFileWarned; /* an error checking abortFile was reported */
    gint64 simStopSector;/* debug: act as if --time-limit expired at this sector (-1 = off) */
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
@@ -968,6 +970,7 @@ Image* OpenImageFromFile(char*, int, mode_t);
 gboolean ReadPreviousMapfile(char*, char**);
 gboolean WriteMapfile(char*, char*);
 void MapfileInit(gint64);
+void MapfileTruncate(gint64);
 void MapfileReadOK(gint64, gint64);
 void MapfileReadBad(gint64, gint64);
 void MapfileBlockFailed(gint64, gint64);
@@ -1223,8 +1226,8 @@ void vLogWarning(char*, va_list);
 void LogWarning(char*, ...) PRINTF_FORMAT(1);
 void Stop(char*, ...) __attribute__((noreturn)) PRINTF_FORMAT(1);
 FILE* OpenNewFile(const char*);
-gboolean AbortFileExists(void);
-int CheckStopRequest(gint64);
+gboolean AbortFileExists(int*);
+void CheckStopRequest(gint64);
 void RegisterCleanup(char*, void (*)(gpointer), gpointer);
 void UnregisterCleanup(void);
 

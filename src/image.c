@@ -476,6 +476,7 @@ static void free_bitmaps(void)
 {  if(Closure->mapBad) FreeBitmap(Closure->mapBad);
    if(Closure->mapFailedBlock) FreeBitmap(Closure->mapFailedBlock);
    Closure->mapBad = Closure->mapFailedBlock = NULL;
+   Closure->mapSectors = 0;
 }
 
 void MapfileInit(gint64 sectors)
@@ -485,6 +486,16 @@ void MapfileInit(gint64 sectors)
    free_bitmaps();
    Closure->mapBad = CreateBitmap0(sectors);
    Closure->mapFailedBlock = CreateBitmap0(sectors);
+   Closure->mapSectors = sectors;
+}
+
+/* The medium ends earlier than reported, e.g. at the two run-out
+   sectors of a TAO CD which are truncated from the image: the mapfile
+   does not list the sectors beyond. */
+
+void MapfileTruncate(gint64 sectors)
+{  if(sectors >= 0 && sectors < Closure->mapSectors)
+      Closure->mapSectors = sectors;
 }
 
 void MapfileFree(void)
@@ -665,8 +676,8 @@ static int map_status(gint64 sector, unsigned char *buf, guint *cursor)
 
    if(known && GetBit(bad, sector))
      return '-';
-   if(CheckForMissingSector(buf, sector, NULL, 0) == SECTOR_PRESENT)
-     return '+';
+   if(buf && CheckForMissingSector(buf, sector, NULL, 0) == SECTOR_PRESENT)
+     return '+';   /* buf is NULL for medium sectors beyond the image end */
 
    status = known && GetBit(block, sector) ? '*' : '?';
    previous = previous_status(2048*sector, 2048*sector+2048, cursor);
@@ -702,7 +713,7 @@ gboolean WriteMapfile(char *image_name, char *map_name)
 {  LargeFile *image;
    map_writer w = { NULL, 0, 0, 0 };
    unsigned char *buf;
-   guint64 size, sectors, s;
+   guint64 size, sectors, s, covered;
    guint cursor = 0;
    gboolean update = Closure->mapPrevious != NULL;
    char *out_name = update ? g_strdup_printf("%s.tmp", map_name) : g_strdup(map_name);
@@ -732,10 +743,15 @@ gboolean WriteMapfile(char *image_name, char *map_name)
       return FALSE;
    }
 
+   /* A read stopped by --time-limit/--abort-file is still in its
+      first (copying non-tried) phase at the image end. */
+
    fprintf(w.file, "# Mapfile. Created by dvdisaster\n"
-	           "# current_pos  current_status  current_pass\n"
-	           "0x00000000     +               1\n"
-	           "#      pos        size  status\n");
+	           "# current_pos  current_status  current_pass\n");
+   if(Closure->stopReason)
+        fprintf(w.file, "0x%08" PRIx64 "     ?               1\n", size);
+   else fprintf(w.file, "0x00000000     +               1\n");
+   fprintf(w.file, "#      pos        size  status\n");
 
    buf = g_malloc(64*2048);
    sectors = (size+2047)/2048;
@@ -760,7 +776,19 @@ gboolean WriteMapfile(char *image_name, char *map_name)
       }
    }
 
-   /* Keep the previous mapfile's areas beyond the image end;
+   /* Medium sectors beyond the image end, e.g. after a stopped read:
+      bad (-) or failed (*) as recorded during reading, otherwise
+      non-tried (?). Only for an image of whole sectors, so that the
+      blocks stay contiguous. */
+
+   covered = size;
+   if(!err && Closure->mapBad && size % 2048 == 0)
+   {  for(s=sectors; s<(guint64)Closure->mapSectors; s++)
+	 map_emit(&w, s*2048, 2048, map_status(s, NULL, &cursor));
+      covered = MAX(size, 2048*(guint64)Closure->mapSectors);
+   }
+
+   /* Keep the previous mapfile's areas beyond that;
       their data is not in the image (any more), though. */
 
    if(!err && update)
@@ -768,7 +796,7 @@ gboolean WriteMapfile(char *image_name, char *map_name)
 
       for(i=0; i<Closure->mapPrevious->len; i++)
       {  map_run *r = &g_array_index(Closure->mapPrevious, map_run, i);
-	 guint64 start = MAX(r->pos, size);
+	 guint64 start = MAX(r->pos, covered);
 
 	 if(r->pos + r->size > start)
 	    map_emit(&w, start, r->pos + r->size - start,
