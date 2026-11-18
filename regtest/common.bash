@@ -148,11 +148,14 @@ function file_exists()
 # that the tests do not depend on xorriso and its version; tag format see
 # doc/checksums.txt in libisofs. The tag at sector pos covers the sectors
 # start..pos-1. XORRISO_BAD_SELF=1 writes a tag with a wrong self checksum.
+# XORRISO_LBA_OFFSET=n writes the sector numbers in the tag n sectors higher,
+# like a session image written for appending at sector n (-C).
 
 function write_xorriso_tag()
 {  local iso=$1 id=$2 pos=$3 start=$4 next=$5
    local md5=$(dd if=$iso bs=2048 skip=$start count=$((pos-start)) 2>/dev/null | $MD5SUM | cut -d\  -f 1)
-   local text="$id pos=$pos range_start=$start range_size=$((pos-start))${next:+ next=$next} md5=$md5"
+   local off=${XORRISO_LBA_OFFSET:-0}
+   local text="$id pos=$((pos+off)) range_start=$((start+off)) range_size=$((pos-start))${next:+ next=$((next+off))} md5=$md5"
    local self=$(printf "%s" "$text" | $MD5SUM | cut -d\  -f 1)
 
    test -n "$XORRISO_BAD_SELF" && self=00000000000000000000000000000000

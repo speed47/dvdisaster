@@ -696,9 +696,9 @@ void RS03Verify(Image *image)
    int last_percent = 0;
    unsigned char buf[2048];
    gint64 first_missing, last_missing;
-   gint64 total_missing,data_missing,crc_missing,ecc_missing;
+   gint64 total_missing,data_missing = 0,crc_missing,ecc_missing;
    gint64 new_missing = 0, new_crc_errors = 0;
-   gint64 data_crc_errors;
+   gint64 data_crc_errors = 0;
    gint64 virtual_expected;
    gint64 expected_image_sectors;
    gint64 eccfile_sectors = 0,expected_eccfile_sectors = 0;
@@ -719,6 +719,7 @@ void RS03Verify(Image *image)
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, vc);
+   vc->wl = (RS03Widgets*)self->widgetList;
    vc->image = image;
    vc->wl = wl;
 
@@ -1399,13 +1400,8 @@ void RS03Verify(Image *image)
    /*** Close and clean up */
 
 terminate:
-   if(vc->xorriso && !Closure->stopActions)
-   {  char *tags = XorrisoCheckFinish(vc->xorriso, TRUE);
-
-      vc->xorriso = NULL;
-      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
-      g_free(tags);
-   }
+   XorrisoCheckReport(vc->xorriso, data_missing || data_crc_errors,
+		      vc->wl ? vc->wl->cmpXorrisoTags : NULL);
 
    cleanup((gpointer)vc);
 }

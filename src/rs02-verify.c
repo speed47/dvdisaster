@@ -619,6 +619,7 @@ void RS02Verify(Image *image)
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, cc);
+   cc->wl = (RS02Widgets*)self->widgetList;
    cc->wl = wl;
 
    /* extract some important information */
@@ -1184,13 +1185,8 @@ continue_with_ecc:
    /*** Close and clean up */
 
 terminate:
-   if(cc->xorriso && !Closure->stopActions)
-   {  char *tags = XorrisoCheckFinish(cc->xorriso, TRUE);
-
-      cc->xorriso = NULL;
-      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
-      g_free(tags);
-   }
+   XorrisoCheckReport(cc->xorriso, data_missing || data_crc_errors,
+		      cc->wl ? cc->wl->cmpXorrisoTags : NULL);
 
    cleanup((gpointer)cc);
 }

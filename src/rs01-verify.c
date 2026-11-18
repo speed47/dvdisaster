@@ -995,13 +995,9 @@ skip_ecc:
    /*** Close and clean up */
 
 terminate:
-   if(vc->xorriso && !Closure->stopActions)
-   {  char *tags = XorrisoCheckFinish(vc->xorriso, image->eccFile != NULL);
-
-      vc->xorriso = NULL;
-      GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
-      g_free(tags);
-   }
+   XorrisoCheckReport(vc->xorriso,
+		      image && image->eccFile && (image->sectorsMissing || image->crcErrors),
+		      vc->wl ? vc->wl->cmpXorrisoTags : NULL);
 
    cleanup(vc);
 }

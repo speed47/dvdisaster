@@ -177,10 +177,13 @@ Enth\[:a]lt das Abbild MD5-Pr\[:u]fsummen, wie sie
 schreibt (Superblock-, Verzeichnisbaum- und Sitzungs-Pr\[:u]fsummen),
 so pr\[:u]ft der vollst\[:a]ndige Test die Sektoren des Abbilds w\[:a]hrend des
 Lesens auch damit; das Abbild wird dabei nur einmal gelesen.
-Dies funktioniert auch ohne Fehlerkorrektur-Daten. Eine abweichende
-Pr\[:u]fsumme z\[:a]hlt wie ein CRC-Fehler als Defekt: der Exit-Status ist 1,
-mit \-\-detailed-exit-status 2 wenn Fehlerkorrektur-Daten vorhanden sind,
-sonst 3.
+Dies funktioniert auch ohne Fehlerkorrektur-Daten. Eine abweichende,
+besch\[:a]digte oder nicht pr\[:u]fbare Pr\[:u]fsumme ist ein Defekt: der
+Exit-Status ist 1, mit \-\-detailed-exit-status 2 wenn auch die
+Fehlerkorrektur-Daten Defekte im Abbild finden (eine Reparatur also
+versucht werden kann), sonst 3.
+Pr\[:u]fsummen, die zu etwas anderem geh\[:o]ren, z.B. zu einer als Datei
+im Abbild gespeicherten .iso mit Pr\[:u]fsummen, werden ignoriert.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
