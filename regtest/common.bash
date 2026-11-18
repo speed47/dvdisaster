@@ -144,6 +144,33 @@ function file_exists()
     return 1
 }
 
+# xorriso style MD5 checksum tags ("xorriso -md5 on"), written by script so
+# that the tests do not depend on xorriso and its version; tag format see
+# doc/checksums.txt in libisofs. The tag at sector pos covers the sectors
+# start..pos-1. XORRISO_BAD_SELF=1 writes a tag with a wrong self checksum.
+
+function write_xorriso_tag()
+{  local iso=$1 id=$2 pos=$3 start=$4 next=$5
+   local md5=$(dd if=$iso bs=2048 skip=$start count=$((pos-start)) 2>/dev/null | $MD5SUM | cut -d\  -f 1)
+   local text="$id pos=$pos range_start=$start range_size=$((pos-start))${next:+ next=$next} md5=$md5"
+   local self=$(printf "%s" "$text" | $MD5SUM | cut -d\  -f 1)
+
+   test -n "$XORRISO_BAD_SELF" && self=00000000000000000000000000000000
+   { printf "%s self=%s\n" "$text" "$self"; head -c 2048 /dev/zero; } | head -c 2048 \
+     | dd of=$iso bs=2048 seek=$pos conv=notrunc 2>/dev/null
+}
+
+# Add one session to iso: superblock tag at start+20, tree tag at start+40,
+# session tag at sector end.
+
+function write_xorriso_session()
+{  local iso=$1 start=$2 end=$3
+
+   write_xorriso_tag $iso libisofs_sb_checksum_tag_v1 $((start+20)) $start $((start+40))
+   write_xorriso_tag $iso libisofs_tree_checksum_tag_v1 $((start+40)) $start $end
+   write_xorriso_tag $iso libisofs_checksum_tag_v1 $end $start
+}
+
 # Locked output: serialize printing across parallel subshells
 
 function locked_print()

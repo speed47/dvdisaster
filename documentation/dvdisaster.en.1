@@ -166,7 +166,10 @@ which can be gathered without fully scanning the files.
 If the image contains MD5 checksum tags as written by
 .B xorriso \-md5 on
 (superblock, directory tree and session tags), the full test also
-checks the image sectors against them. This works without ecc data.
+checks the image sectors against them while reading the image; the image
+is still read only once. This works without ecc data. A mismatching tag
+counts as a defect like a CRC error: the exit status is 1, or with
+\-\-detailed-exit-status 2 when ecc data is available and 3 otherwise.
 .TP
 .B \-u, \-\-unlink
 Delete .iso files (when other actions complete).
@@ -458,7 +461,8 @@ filenames cannot be reconstructed exactly from the report.
 The report contains the program version, the actions, drive and medium
 information, the image and ecc file, the sector counts of scanning/reading,
 verifying and fixing, the error correction method and redundancy, md5 sums
-where available, and the exit code with its meaning ("ok", "error",
+where available, the number of good and bad xorriso MD5 checksum tags
+("xorriso_tags", only for images containing such tags), and the exit code with its meaning ("ok", "error",
 "defects", "incomplete"). Detailed verdicts require \-\-detailed-exit-status;
 otherwise the verdict is "ok" or "error". Keys which do not apply to a run
 are left out. A run stopped by \-\-time-limit or \-\-abort-file contains

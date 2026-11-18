@@ -175,8 +175,12 @@ die ohne vollst\[:a]ndiges Lesen der Dateien ermittelt werden k\[:o]nnen.
 Enth\[:a]lt das Abbild MD5-Pr\[:u]fsummen, wie sie
 .B xorriso \-md5 on
 schreibt (Superblock-, Verzeichnisbaum- und Sitzungs-Pr\[:u]fsummen),
-so pr\[:u]ft der vollst\[:a]ndige Test die Sektoren des Abbilds auch damit.
-Dies funktioniert auch ohne Fehlerkorrektur-Daten.
+so pr\[:u]ft der vollst\[:a]ndige Test die Sektoren des Abbilds w\[:a]hrend des
+Lesens auch damit; das Abbild wird dabei nur einmal gelesen.
+Dies funktioniert auch ohne Fehlerkorrektur-Daten. Eine abweichende
+Pr\[:u]fsumme z\[:a]hlt wie ein CRC-Fehler als Defekt: der Exit-Status ist 1,
+mit \-\-detailed-exit-status 2 wenn Fehlerkorrektur-Daten vorhanden sind,
+sonst 3.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
@@ -437,7 +441,9 @@ ersetzt. Solche Dateinamen lassen sich aus dem Bericht nicht exakt rekonstruiere
 Der Bericht enth\[:a]lt die Programmversion, die Aktionen, Angaben zu Laufwerk
 und Datentr\[:a]ger, Abbild und Fehlerkorrektur-Datei, die Sektorz\[:a]hler von
 Lesen/\[:U]berpr\[:u]fen, Testen und Reparieren, Fehlerkorrektur-Methode und
-Redundanz, md5-Summen soweit vorhanden, sowie den Exit-Status mit seiner
+Redundanz, md5-Summen soweit vorhanden, die Anzahl guter und fehlerhafter
+xorriso-MD5-Pr\[:u]fsummen ("xorriso_tags", nur f\[:u]r Abbilder mit solchen
+Pr\[:u]fsummen) sowie den Exit-Status mit seiner
 Bedeutung ("ok", "error", "defects", "incomplete"). Detaillierte Ergebnisse
 erfordern \-\-detailed-exit-status; sonst lautet das Ergebnis "ok" oder "error".
 Nicht zutreffende Eintr\[:a]ge

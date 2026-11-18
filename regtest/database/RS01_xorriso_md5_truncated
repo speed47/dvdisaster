@@ -1,0 +1,20 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-tmp.iso: present, contains 15000 medium sectors.
+- good image       : all sectors present
+- image md5sum     : 36658fd9246d688d6d1dd7f9e024df5c
+
+no.ecc: not present
+
+
+xorriso MD5 checksum tags:
+- superblock tag   : good (sector 20, covering sectors 0-19)
+- tree tag         : good (sector 40, covering sectors 0-39)
+- next tag         : missing (expected at sector 20000)
+Exit status: 1
+Detailed exit status: 3
