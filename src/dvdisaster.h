@@ -1623,7 +1623,7 @@ typedef struct _XorrisoCheck XorrisoCheck;
 
 XorrisoCheck* XorrisoCheckNew(void);
 void XorrisoCheckSector(XorrisoCheck*, gint64, unsigned char*, int);
-char* XorrisoCheckFinish(XorrisoCheck*, int);
+void XorrisoCheckReport(XorrisoCheck*, int, GtkWidget*);
 void XorrisoCheckFree(XorrisoCheck*);
 
 #endif	/* DVDISASTER_H */

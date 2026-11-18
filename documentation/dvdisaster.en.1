@@ -167,9 +167,12 @@ If the image contains MD5 checksum tags as written by
 .B xorriso \-md5 on
 (superblock, directory tree and session tags), the full test also
 checks the image sectors against them while reading the image; the image
-is still read only once. This works without ecc data. A mismatching tag
-counts as a defect like a CRC error: the exit status is 1, or with
-\-\-detailed-exit-status 2 when ecc data is available and 3 otherwise.
+is still read only once. This works without ecc data. A mismatching,
+damaged or uncheckable tag is a defect: the exit status is 1, or with
+\-\-detailed-exit-status 2 when the ecc data finds defects in the image
+too (so that repair can be attempted), and 3 otherwise.
+Tags belonging to something else, e.g. to a tagged .iso stored as a file
+in the image, are ignored.
 .TP
 .B \-u, \-\-unlink
 Delete .iso files (when other actions complete).

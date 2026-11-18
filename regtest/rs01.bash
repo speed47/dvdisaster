@@ -181,13 +181,69 @@ if try "xorriso md5 tags, truncated image" xorriso_md5_truncated; then (
   run_regtest xorriso_md5_truncated "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
-# Tree tag with a wrong self checksum. The session tag covers the tree
-# tag sector, so it does not match any more either.
+# Tree tag with a wrong self checksum. Its next= can not be trusted,
+# so the session tag is reported as not checked.
 if try "xorriso md5 tags, damaged tag" xorriso_md5_damaged_tag; then (
   cp $XORRISOISO $TMPISO
   XORRISO_BAD_SELF=1 write_xorriso_tag $TMPISO libisofs_tree_checksum_tag_v1 40 0 20000
 
   run_regtest xorriso_md5_damaged_tag "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# A damaged superblock tag must not hide its session: the tree and session
+# tags are reported as not checked.
+if try "xorriso md5 tags, damaged superblock tag" xorriso_md5_damaged_sb; then (
+  cp $XORRISOISO $TMPISO
+  XORRISO_BAD_SELF=1 write_xorriso_tag $TMPISO libisofs_sb_checksum_tag_v1 20 0 40
+
+  run_regtest xorriso_md5_damaged_sb "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+if try "xorriso md5 tags, unreadable superblock tag" xorriso_md5_unreadable_sb; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --erase 20 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_unreadable_sb "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Ecc file created from an already altered image: the ecc data finds the
+# image intact and can not repair the mismatch, so detailed status is 3.
+if try "xorriso md5 tags, altered before ecc creation" xorriso_md5_bad_before_ecc; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 13444,0,154 >>$LOGFILE 2>&1
+  $NEWVER --regtest --debug --set-version $SETVERSION -i$TMPISO -e$TMPECC -c $REDUNDANCY >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_bad_before_ecc "-t" $TMPISO $TMPECC EXITCODES
+) & limit_jobs; fi
+
+# A tree tag which can not be parsed any more (md5 digit replaced by 'X'
+# at byte 80 of the tag line) is reported once, as damaged.
+if try "xorriso md5 tags, unparseable tree tag" xorriso_md5_unparseable_tag; then (
+  cp $XORRISOISO $TMPISO
+  $NEWVER -i$TMPISO --debug --byteset 40,80,88 >>$LOGFILE 2>&1
+
+  run_regtest xorriso_md5_unparseable_tag "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# Tags of something else must be ignored: a tagged .iso stored as a file
+# (at sector 500) in an untagged image ...
+if try "xorriso md5 tags, tagged iso stored in an image" xorriso_md5_nested_iso; then (
+  dd if=$MASTERISO of=$TEST_TMPDIR/inner.iso bs=2048 count=3000 >>$LOGFILE 2>&1
+  write_xorriso_session $TEST_TMPDIR/inner.iso 0 2500
+  cp $MASTERISO $TMPISO
+  dd if=$TEST_TMPDIR/inner.iso of=$TMPISO bs=2048 seek=500 conv=notrunc >>$LOGFILE 2>&1
+  rm -f $TEST_TMPDIR/inner.iso
+
+  run_regtest xorriso_md5_nested_iso "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# ... and a session image written for appending at sector 100000, whose
+# tags carry the sector numbers on the medium.
+if try "xorriso md5 tags, session image for appending" xorriso_md5_offset_session; then (
+  cp $MASTERISO $TMPISO
+  XORRISO_LBA_OFFSET=100000 write_xorriso_session $TMPISO 0 20000
+
+  run_regtest xorriso_md5_offset_session "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Second session not starting at a multiple of 32 (as on write-once media),

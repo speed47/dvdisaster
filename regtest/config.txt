@@ -25,6 +25,12 @@ RS01_xorriso_md5_altered_ecc yes
 RS01_xorriso_md5_missing_sector yes
 RS01_xorriso_md5_truncated yes
 RS01_xorriso_md5_damaged_tag yes
+RS01_xorriso_md5_damaged_sb yes
+RS01_xorriso_md5_unreadable_sb yes
+RS01_xorriso_md5_bad_before_ecc yes
+RS01_xorriso_md5_unparseable_tag yes
+RS01_xorriso_md5_nested_iso yes
+RS01_xorriso_md5_offset_session yes
 RS01_xorriso_md5_multisession yes
 RS01_xorriso_md5_rlsb yes
 RS01_plus56_bytes yes

@@ -70,6 +70,21 @@ static int is_md5(char *p)
 {  return strspn(p, "0123456789abcdef") == 32;
 }
 
+/* Tag type from the tag id at the beginning of buf alone, or NO_TAG */
+
+static int tag_id_type(unsigned char *buf)
+{  int type;
+
+   for(type=RLSB_TAG; type<=SESSION_TAG; type++)
+   {  int len = strlen(tag_ids[type]);
+
+      if(!strncmp((char*)buf, tag_ids[type], len) && !strncmp((char*)buf+len, " pos=", 5))
+	 return type;
+   }
+
+   return NO_TAG;
+}
+
 /* Parse the tag at the beginning of buf. Returns the tag type or NO_TAG. */
 
 static int parse_tag(unsigned char *buf, XorrisoTag *tag)
@@ -84,13 +99,8 @@ static int parse_tag(unsigned char *buf, XorrisoTag *tag)
       return NO_TAG;
    *p = 0;
 
-   for(type=RLSB_TAG; type<=SESSION_TAG; type++)
-   {  int len = strlen(tag_ids[type]);
-
-      if(!strncmp(line, tag_ids[type], len) && !strncmp(line+len, " pos=", 5))
-	 break;
-   }
-   if(type > SESSION_TAG)
+   type = tag_id_type((unsigned char*)line);
+   if(type == NO_TAG)
       return NO_TAG;
 
    md5 = strstr(line, " md5=");
@@ -116,16 +126,17 @@ static int parse_tag(unsigned char *buf, XorrisoTag *tag)
 
 #define RING 32           /* a superblock tag covers less than 32 sectors */
 
-enum { RES_GOOD, RES_MISMATCH, RES_DAMAGED, RES_UNREADABLE, RES_MISSING_NEXT };
+enum { RES_GOOD, RES_MISMATCH, RES_DAMAGED, RES_UNREADABLE, RES_MISSING_NEXT,
+       RES_UNCHECKED };
 
 typedef struct
 {  int type, result;
-   gint64 pos, start;    /* RES_MISSING_NEXT: pos is the expected sector */
+   gint64 pos, start;    /* RES_MISSING_NEXT: pos is the expected sector;
+			    start < 0: range unknown */
 } TagResult;
 
 struct _XorrisoCheck
 {  gint64 nextLba;                    /* next sector expected from the caller */
-   int outOfOrder;                    /* caller skipped sectors; results void */
 
    unsigned char ring[RING][2048];    /* the last RING sectors */
    int ringPresent[RING];
@@ -181,26 +192,49 @@ static void check_tag(XorrisoCheck *xc, XorrisoTag *tag, gint64 start,
    add_result(xc, tag->type, result, tag->pos, start);
 }
 
-/* Outside of a session: look for a (relocated) superblock tag.
-   Its range lies within the last RING sectors. */
+/* Outside of a session: look for a (relocated) superblock tag, which
+   starts the check of a session. Its range lies within the last RING
+   sectors. Other sectors carrying a tag id are reported, so that a
+   damaged superblock tag does not hide its whole session:
+   - a tag failing to parse or its self check is a damaged tag,
+   - a good tree or session tag here lacks its superblock tag (damaged
+     beyond recognition or unreadable) and can not be checked.
+   A good tag whose pos is not its own sector belongs to something else,
+   e.g. a tagged .iso stored as a file in the image, or a session image
+   written for appending at an offset (-C), and is ignored. */
 
-static void look_for_superblock(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
+static void look_for_tag(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
 {  struct MD5Context ctx;
    XorrisoTag tag;
    gint64 s, start;
-   int type, missing = 0;
+   int type, id_type, missing = 0;
 
    if(strncmp((char*)buf, "libisofs_", 9))   /* fast path */
       return;
 
+   id_type = tag_id_type(buf);
+   if(id_type == NO_TAG)
+      return;
+
    type = parse_tag(buf, &tag);
-   if(type != SB_TAG && type != RLSB_TAG)
+   if(type == NO_TAG || !tag.selfOk)
+   {  add_result(xc, id_type, RES_DAMAGED, lba, -1);
       return;
-   if(tag.pos != lba || tag.rangeStart < 0
-      || lba - tag.rangeStart <= 0 || lba - tag.rangeStart >= RING)
+   }
+
+   if(tag.pos != lba)   /* foreign tag */
       return;
-   if(type == RLSB_TAG && tag.rangeStart != 0)
+
+   if(type == TREE_TAG || type == SESSION_TAG)
+   {  add_result(xc, type, RES_UNCHECKED, lba, -1);
       return;
+   }
+
+   if(tag.rangeStart < 0 || lba - tag.rangeStart <= 0 || lba - tag.rangeStart >= RING
+      || (type == RLSB_TAG && tag.rangeStart != 0))
+   {  add_result(xc, type, RES_DAMAGED, lba, -1);
+      return;
+   }
 
    start = tag.rangeStart;
    MD5Init(&ctx);
@@ -229,29 +263,39 @@ static void look_for_superblock(XorrisoCheck *xc, gint64 lba, unsigned char *buf
 }
 
 /* Feed the next image sector. Sectors must be fed in ascending order
-   starting at sector 0; present is FALSE for missing (unreadable) sectors. */
+   starting at sector 0, without gaps; present is FALSE for missing
+   (unreadable) sectors. Anything else is a bug in the calling codec. */
 
 void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int present)
-{  if(!xc || xc->outOfOrder)
+{  if(!xc)
       return;
    if(lba != xc->nextLba)
-   {  xc->outOfOrder = TRUE;
-      return;
-   }
+      Stop("Internal error: XorrisoCheckSector() got sector %" PRId64 ", expected %" PRId64 "\n",
+	   lba, xc->nextLba);
    xc->nextLba++;
 
-   memcpy(xc->ring[lba%RING], buf, 2048);
-   xc->ringPresent[lba%RING] = present;
+   /* The ring is only read by look_for_tag(), i.e. outside of a chain.
+      Inside a chain, keep only the sectors right before the next expected
+      tag, where the chain may end or break. */
+
+   if(!xc->inChain || lba >= xc->expectedTag - RING)
+   {  memcpy(xc->ring[lba%RING], buf, 2048);
+      xc->ringPresent[lba%RING] = present;
+   }
 
    if(xc->inChain)
    {  if(lba == xc->expectedTag)
       {  XorrisoTag tag;
 	 int type = present ? parse_tag(buf, &tag) : NO_TAG;
+	 int id_type = present ? tag_id_type(buf) : NO_TAG;
 
 	 if((type == TREE_TAG || type == SESSION_TAG) && tag.pos == lba)
 	 {  check_tag(xc, &tag, xc->sessionStart, &xc->ctx, xc->sessionMissing);
 
-	    if(type == SESSION_TAG)
+	    /* A damaged tag's next= can not be trusted; later tags of the
+	       session are then reported as not checked. */
+
+	    if(type == SESSION_TAG || !tag.selfOk)
 	    {  xc->inChain = FALSE;
 	       return;
 	    }
@@ -265,10 +309,23 @@ void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int pr
 	    return;
 	 }
 
-	 /* Chain is broken; this sector might start something new */
-
-	 add_result(xc, 0, present ? RES_MISSING_NEXT : RES_UNREADABLE, lba, xc->sessionStart);
 	 xc->inChain = FALSE;
+
+	 if(!present)
+	 {  add_result(xc, 0, RES_UNREADABLE, lba, xc->sessionStart);
+	    return;
+	 }
+
+	 /* The expected tag is there but damaged: report it once */
+
+	 if(id_type != NO_TAG && (type == NO_TAG || !tag.selfOk))
+	 {  add_result(xc, id_type, RES_DAMAGED, lba, -1);
+	    return;
+	 }
+
+	 /* No tag of this chain here; the sector might start something new */
+
+	 add_result(xc, 0, RES_MISSING_NEXT, lba, xc->sessionStart);
       }
       else
       {  MD5Update(&xc->ctx, buf, 2048);
@@ -278,15 +335,14 @@ void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int pr
    }
 
    if(present)
-      look_for_superblock(xc, lba, buf);
+      look_for_tag(xc, lba, buf);
 }
 
 /* Print the results after the image has been read completely.
    Sets the exit code and the JSON report. Returns NULL if the image
-   has no tags, otherwise the printed text for the GUI (to be freed by
-   the caller). Frees xc. */
+   has no tags, otherwise the printed text (to be freed by the caller). */
 
-char* XorrisoCheckFinish(XorrisoCheck *xc, int have_ecc)
+static char* finish(XorrisoCheck *xc, int repairable)
 {  static char *names[] = { "next tag", "relocated sb tag", "superblock tag",
 			    "tree tag", "session tag" };
    GString *out;
@@ -297,12 +353,12 @@ char* XorrisoCheckFinish(XorrisoCheck *xc, int have_ecc)
       return NULL;
 
    if(xc->inChain)   /* image ends before the next tag of the chain */
-      add_result(xc, 0, RES_MISSING_NEXT, xc->expectedTag, xc->sessionStart);
-
-   if(xc->outOfOrder || !xc->results->len)
-   {  XorrisoCheckFree(xc);
-      return NULL;
+   {  add_result(xc, 0, RES_MISSING_NEXT, xc->expectedTag, xc->sessionStart);
+      xc->inChain = FALSE;
    }
+
+   if(!xc->results->len)
+      return NULL;
 
    out = g_string_new(NULL);
    g_string_append(out, _("\nxorriso MD5 checksum tags:\n"));
@@ -322,15 +378,16 @@ char* XorrisoCheckFinish(XorrisoCheck *xc, int have_ecc)
       {  case RES_GOOD:       result = _("good"); good++; break;
          case RES_MISMATCH:   result = _("MD5 MISMATCH"); bad++; break;
          case RES_DAMAGED:    result = _("damaged tag"); bad++; break;
+         case RES_UNCHECKED:  result = _("not checked, previous tag missing or damaged"); bad++; break;
          default:             result = _("unreadable sectors"); bad++; break;
       }
 
-      if(r->type)
+      if(r->type && r->start >= 0)
 	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
 				names[r->type], result, r->pos, r->start, r->pos-1);
-      else  /* next tag of a chain itself unreadable */
+      else  /* range unknown, or next tag of a chain itself unreadable */
 	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ")\n",
-				names[0], result, r->pos);
+				names[r->type], result, r->pos);
    }
 
    if(!bad)
@@ -341,14 +398,33 @@ char* XorrisoCheckFinish(XorrisoCheck *xc, int have_ecc)
    ReportNumber("xorriso_tags", "good", good);
    ReportNumber("xorriso_tags", "bad", bad);
 
-   /* Like missing sectors or CRC errors: repairable only with ecc data */
+   /* Bad tags alone can not be repaired: when the ecc data finds the image
+      intact, it was created from the defective image (or the tags themselves
+      are damaged). Recovery can only be attempted if the ecc data finds
+      defects too. */
 
    if(bad)
-      SetExitCode(EXIT_FAILURE, have_ecc ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
+      SetExitCode(EXIT_FAILURE, repairable ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
    text = g_strdup(g_strstrip(out->str));
    g_string_free(out, TRUE);
-   XorrisoCheckFree(xc);
 
    return text;
+}
+
+/* Called by the codecs at the end of their verify function, also after
+   errors or interruption (xc may be NULL then). Reports the results and
+   shows them in label (may be NULL). xc remains owned by the caller.
+   repairable: the codec has found defects in the image which its ecc
+   data can attempt to repair; otherwise bad tags can not be repaired. */
+
+void XorrisoCheckReport(XorrisoCheck *xc, int repairable, GtkWidget *label)
+{  char *text;
+
+   if(!xc || Closure->stopActions)   /* image not read completely */
+      return;
+
+   text = finish(xc, repairable);
+   GuiSetLabelText(label, "%s", text ? text : "");
+   g_free(text);
 }

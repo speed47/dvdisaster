@@ -1,0 +1,15 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+- good image       : all sectors present
+- image md5sum     : be82995fa725c74f49cf1b6decdeb0f2
+
+no.ecc: not present
+
+Exit status: 0
+Detailed exit status: 0
