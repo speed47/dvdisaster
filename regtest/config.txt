@@ -126,6 +126,8 @@ RS01_read_copy_protected yes
 RS01_read_abort_file yes
 RS01_read_time_limit_not_reached yes
 RS01_read_time_limit_invalid yes
+RS01_read_time_limit_stop yes
+RS01_read_abort_file_empty yes
 RS01_read_time_limit_requires_read yes
 RS01_read_no_ecc_good_file yes
 RS01_read_no_device yes
@@ -178,6 +180,7 @@ RS01_read_medium_with_dsm_in_image2_verbose yes
 
 RS01_adaptive_good yes
 RS01_adaptive_no_ecc yes
+RS01_adaptive_time_limit_stop yes
 RS01_adaptive_no_device yes
 RS01_adaptive_no_device_access yes
 RS01_adaptive_defective_no_ecc yes

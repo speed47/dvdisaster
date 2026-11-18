@@ -557,6 +557,7 @@ void InitClosure()
 
    Closure = g_malloc0(sizeof(GlobalClosure));
    Closure->simulateProfile = 0x09;  /* CD-R; keep existing simulations unchanged */
+   Closure->simStopSector = -1;
 
    /* Extract the version string */
 
@@ -769,6 +770,7 @@ void FreeClosure()
    cond_free(Closure->mapFile);
    MapfileFree();
    cond_free(Closure->abortFile);
+   if(Closure->stopTimer) g_timer_destroy(Closure->stopTimer);
    cond_free(Closure->redundancy);
 
    CallMethodDestructors();

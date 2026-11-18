@@ -1,0 +1,25 @@
+4a2a53dddb19b7771bc98f17c6fa2f77
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+Device: sim-cd, Simulated CD drive 1.00
+Using READ CD.
+Medium "Random Image": CD-R mode 1, 21000 sectors, created 16-07-2006.
+
+Creating new rs01-tmp.iso image.
+
+Time limit of 3600 seconds reached, stopping.
+Stopped: 5008 sectors read, 0 sectors unreadable/skipped so far.
+Mapfile written to rs01.map.
+Remaining actions skipped.
+--- mapfile ---
+# Mapfile. Created by dvdisaster
+# current_pos  current_status  current_pass
+0x00000000     +               1
+#      pos        size  status
+0x00000000  0x009c8000  +
+Exit status: 1
+Detailed exit status: 3

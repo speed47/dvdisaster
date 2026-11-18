@@ -276,8 +276,12 @@ typedef struct _GlobalClosure
    int speedWarning;    /* Print warning if speed changes by more than given percentage */
    int fillUnreadable;  /* Byte value for filling unreadable sectors or -1 */
    int spinupDelay;     /* Seconds to wait for drive to spin up */
-   int timeLimit;       /* stop actions after this many seconds (0 = no limit) */
-   char *abortFile;     /* stop actions when this file appears */
+   int timeLimit;       /* stop reading after this many seconds (0 = no limit) */
+   char *abortFile;     /* stop reading when this file appears */
+   GTimer *stopTimer;   /* runs while --time-limit/--abort-file are in effect */
+   double nextAbortFileCheck; /* stopTimer value for the next check of abortFile */
+   char *stopReason;    /* "time_limit" or "abort_file" once reading was stopped */
+   gint64 simStopSector;/* debug: act as if --time-limit expired at this sector (-1 = off) */
    int truncate;        /* confirms truncation of large images */
    int noTruncate;      /* do not truncate image at the end */
    int noProgress;      /* do not print the percentage progress indicator */
@@ -1219,6 +1223,8 @@ void vLogWarning(char*, va_list);
 void LogWarning(char*, ...) PRINTF_FORMAT(1);
 void Stop(char*, ...) __attribute__((noreturn)) PRINTF_FORMAT(1);
 FILE* OpenNewFile(const char*);
+gboolean AbortFileExists(void);
+int CheckStopRequest(gint64);
 void RegisterCleanup(char*, void (*)(gpointer), gpointer);
 void UnregisterCleanup(void);
 

@@ -121,6 +121,7 @@ typedef enum
    MODIFIER_SIMULATE_CD,
    MODIFIER_SIMULATE_PROFILE,
    MODIFIER_SIMULATE_DEFECTS,
+   MODIFIER_SIMULATE_STOP,
    MODIFIER_SPEED_WARNING, 
    MODIFIER_SPINUP_DELAY, 
    MODIFIER_TIME_LIMIT,
@@ -183,73 +184,8 @@ invalid:
    return 0;
 }
 
-/*
- * --time-limit and --abort-file stop reading/scanning the same way
- * the GUI Stop button does, keeping what has been read so far.
- *
- * Only the readers handle Closure->stopActions properly in CLI mode;
- * the stop paths of the codecs (create, fix, verify) rely on the GUI
- * worker thread exiting in their cleanup functions and would continue
- * with freed data in CLI mode. Therefore the watchdog is only armed
- * while reading or scanning, and the remaining actions are skipped
- * once it has fired.
- */
-
-static GMutex watchdog_mutex;
-static int watchdog_armed = FALSE;
-static int watchdog_done  = FALSE;
-static char *watchdog_reason = NULL;  /* set once the watchdog fired */
-
-static gboolean abort_file_exists(void)
-{  GStatBuf st;
-
-   return Closure->abortFile && !g_lstat(Closure->abortFile, &st);
-}
-
-static gpointer watchdog_thread(gpointer data)
-{  GTimer *timer = (GTimer*)data;
-   int done = FALSE;
-
-   while(!done)
-   {  g_mutex_lock(&watchdog_mutex);
-      if(watchdog_armed && !watchdog_reason)
-      {  if(abort_file_exists())
-	 {  PrintLog(_("\nAbort file %s found, stopping.\n"), Closure->abortFile);
-	    watchdog_reason = "abort_file";
-	 }
-	 else if(Closure->timeLimit > 0 && g_timer_elapsed(timer, NULL) >= Closure->timeLimit)
-	 {  PrintLog(_("\nTime limit of %d seconds reached, stopping.\n"), Closure->timeLimit);
-	    watchdog_reason = "time_limit";
-	 }
-	 if(watchdog_reason)
-	    Closure->stopActions = STOP_CURRENT_ACTION;
-      }
-      done = watchdog_done;
-      g_mutex_unlock(&watchdog_mutex);
-
-      if(!done) g_usleep(G_USEC_PER_SEC/10);
-   }
-
-   g_timer_destroy(timer);
-   return NULL;
-}
-
-/* Arm or disarm the watchdog; returns TRUE if it has fired. */
-
-static gboolean watchdog_arm(gboolean arm)
-{  gboolean fired;
-
-   g_mutex_lock(&watchdog_mutex);
-   watchdog_armed = arm;
-   fired = watchdog_reason != NULL;
-   g_mutex_unlock(&watchdog_mutex);
-
-   return fired;
-}
-
 int main(int argc, char *argv[])
-{  GThread *watchdog = NULL;
-   gboolean stopped = FALSE;     /* --time-limit/--abort-file fired */
+{  gboolean stopped = FALSE;     /* reading was stopped by --time-limit/--abort-file */
    int started = 0;              /* actions started before the stop */
    int mode = MODE_NONE; 
    int sequence = MODE_NONE;
@@ -435,6 +371,7 @@ int main(int argc, char *argv[])
 	{"sim-cd", 2, 0, MODIFIER_SIMULATE_CD},
 	{"sim-profile", 1, 0, MODIFIER_SIMULATE_PROFILE},
 	{"sim-defects", 1, 0, MODIFIER_SIMULATE_DEFECTS},
+	{"sim-stop-at", 1, 0, MODIFIER_SIMULATE_STOP},
 	{"speed-warning", 2, 0, MODIFIER_SPEED_WARNING},
 	{"spinup-delay", 1, 0, MODIFIER_SPINUP_DELAY},
 	{"strip", 0, 0, 'z'},
@@ -567,6 +504,8 @@ int main(int argc, char *argv[])
          case  0 : break; /* flag argument */
 
          case MODIFIER_ABORT_FILE:
+	   if(!*optarg)   /* e.g. an unset shell variable: could never trigger */
+	      Stop(_("--abort-file requires a file name."));
 	   g_free(Closure->abortFile);
 	   Closure->abortFile = g_strdup(optarg);
 	   break;
@@ -867,6 +806,10 @@ int main(int argc, char *argv[])
 	   else Closure->simulateDefects = 10;
 	   debug_mode_required = TRUE;
 	   break;
+        case MODIFIER_SIMULATE_STOP:
+	   Closure->simStopSector = bounded_option(optarg, 0, G_MAXINT, "--sim-stop-at");
+	   debug_mode_required = TRUE;
+	   break;
          case MODIFIER_SPINUP_DELAY:
 	   if(optarg) Closure->spinupDelay = atoi(optarg);
 	   break;
@@ -1045,15 +988,20 @@ int main(int argc, char *argv[])
       }
    }
 
-   /*** --time-limit and --abort-file only stop reading/scanning (see above).
-        An abort file which is already there means "do not start":
-        refuse to run before touching the drive or the image. */
+   /*** --time-limit and --abort-file only stop reading/scanning
+        (see CheckStopRequest()). An abort file which is already there
+        means "do not start": refuse to run before touching the drive
+        or the image. */
 
-   if((Closure->timeLimit > 0 || Closure->abortFile) && mode != MODE_HELP)
-   {  if(mode != MODE_SEQUENCE || !(sequence & (1<<MODE_READ | 1<<MODE_SCAN)))
-	 Stop(_("--time-limit and --abort-file can only be used together with -r/--read or -s/--scan."));
-      if(abort_file_exists())
-	 Stop(_("Abort file %s exists; remove it to start."), Closure->abortFile);
+   if(mode != MODE_HELP)
+   {  if(Closure->simStopSector >= 0 && !Closure->timeLimit)
+	 Stop(_("--sim-stop-at can only be used together with --time-limit."));
+      if(Closure->timeLimit > 0 || Closure->abortFile)
+      {  if(mode != MODE_SEQUENCE || !(sequence & (1<<MODE_READ | 1<<MODE_SCAN)))
+	    Stop(_("--time-limit and --abort-file can only be used together with -r/--read or -s/--scan."));
+	 if(AbortFileExists())
+	    Stop(_("Abort file %s exists; remove it to start."), Closure->abortFile);
+      }
    }
 
    /*** Determine the default device (OS dependent!) if 
@@ -1076,10 +1024,11 @@ int main(int argc, char *argv[])
         The major modes can be executed in sequence, 
 	but not all combinations may be really useful. */
 
-   /* Only reached in MODE_SEQUENCE with -r or -s (checked above) */
+   /* Starts the clock for --time-limit and enables CheckStopRequest()
+      (mode is checked here, as MODE_HELP is exempt from the checks above). */
 
-   if(Closure->timeLimit > 0 || Closure->abortFile)
-      watchdog = g_thread_new("stop_watchdog", watchdog_thread, g_timer_new());
+   if(mode == MODE_SEQUENCE && (Closure->timeLimit > 0 || Closure->abortFile))
+      Closure->stopTimer = g_timer_new();
 
    switch(mode)
    {  case MODE_SEQUENCE:
@@ -1089,9 +1038,8 @@ int main(int argc, char *argv[])
 	if(sequence & 1<<MODE_SCAN)
 	{  ReportAction("scan");
 	   started |= 1<<MODE_SCAN;
-	   watchdog_arm(TRUE);
 	   ReadMediumLinear((gpointer)1);
-	   stopped = watchdog_arm(FALSE);
+	   stopped = Closure->stopReason != NULL;
 	}
 
 	if(sequence & 1<<MODE_READ && !stopped)
@@ -1099,11 +1047,10 @@ int main(int argc, char *argv[])
 	   started |= 1<<MODE_READ;
 	   if(sequence & 1<<MODE_CREATE) 
 	      Closure->readAndCreate = TRUE;
-	   watchdog_arm(TRUE);
 	   if(Closure->adaptiveRead) 
 	        ReadMediumAdaptive((gpointer)0);
 	   else ReadMediumLinear((gpointer)0);
-	   stopped = watchdog_arm(FALSE);
+	   stopped = Closure->stopReason != NULL;
 
 	   /* Describes the reading outcome, so write it before
 	      a possible repair in the same call changes the image. */
@@ -1121,7 +1068,7 @@ int main(int argc, char *argv[])
 	{  if(sequence & ~started)
 	      PrintLog(_("Remaining actions skipped.\n"));
 	   sequence = started;
-	   ReportString(NULL, "stopped_by", watchdog_reason);
+	   ReportString(NULL, "stopped_by", Closure->stopReason);
 	   SetExitCode(EXIT_FAILURE, EXIT_CODE_INCOMPLETE);
 	}
 
@@ -1396,6 +1343,7 @@ int main(int argc, char *argv[])
 	PrintCLI(_("  --sim-cd image           - simulate a SCSI-Level CD with contents supplied by the ISO image\n"));
 	PrintCLI(_("  --sim-profile number     - simulated MMC profile, decimal or hex (default: 0x09/CD-R)\n"));
 	PrintCLI(_("  --sim-defects n          - simulate n%% defective sectors on medium\n"));
+	PrintCLI(_("  --sim-stop-at n          - with --time-limit: expire it when reading reaches sector n\n"));
 	PrintCLI(_("  --truncate n             - truncates image to n sectors\n")); 
 	PrintCLI(_("  --zero-unreadable        - replace the \"unreadable sector\" markers with zeros\n\n"));
       }
@@ -1452,13 +1400,6 @@ int main(int argc, char *argv[])
    }
 #endif
    
-   if(watchdog)
-   {  g_mutex_lock(&watchdog_mutex);
-      watchdog_done = TRUE;
-      g_mutex_unlock(&watchdog_mutex);
-      g_thread_join(watchdog);
-   }
-
    if(mode == MODE_SEQUENCE)
    {  guint64 size;
 

@@ -702,6 +702,52 @@ FILE* OpenNewFile(const char *path)
 }
 
 /*
+ * --time-limit and --abort-file stop reading/scanning like the GUI Stop button.
+ *
+ * CheckStopRequest() is only called at the stop checks of the readers' main
+ * loops, i.e. between two read requests. Stopping there is safe in CLI mode
+ * (other stop checks, e.g. in the codecs, rely on the GUI worker thread
+ * exiting in their cleanup functions), records no bogus read errors for
+ * an interrupted request, and Closure->stopReason means that reading was
+ * really cut short. The abort file is checked at most once per second, as
+ * it may be on a network file system. Returns TRUE if reading must stop.
+ */
+
+gboolean AbortFileExists(void)
+{  GStatBuf st;
+
+   return Closure->abortFile && !g_lstat(Closure->abortFile, &st);
+}
+
+int CheckStopRequest(gint64 sector)
+{  double elapsed;
+
+   if(!Closure->stopTimer || Closure->stopReason)
+      return FALSE;
+
+   elapsed = g_timer_elapsed(Closure->stopTimer, NULL);
+
+   if(   (Closure->timeLimit > 0 && elapsed >= Closure->timeLimit)
+      || (Closure->simStopSector >= 0 && sector >= Closure->simStopSector))
+   {  PrintLog(_("\nTime limit of %d seconds reached, stopping.\n"), Closure->timeLimit);
+      Closure->stopReason = "time_limit";
+   }
+   else if(Closure->abortFile && elapsed >= Closure->nextAbortFileCheck)
+   {  Closure->nextAbortFileCheck = elapsed + 1.0;
+      if(AbortFileExists())
+      {  PrintLog(_("\nAbort file %s found, stopping.\n"), Closure->abortFile);
+	 Closure->stopReason = "abort_file";
+      }
+   }
+
+   if(!Closure->stopReason)
+      return FALSE;
+
+   Closure->stopActions = STOP_CURRENT_ACTION;
+   return TRUE;
+}
+
+/*
  * Tell user that current action was aborted due to a serious error.
  *
  * There are three different circumstances under which this routine

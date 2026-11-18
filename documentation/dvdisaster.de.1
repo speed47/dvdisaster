@@ -306,7 +306,8 @@ graphischen Oberfl\[:a]che), sobald die Datei f existiert. Bereits gelesene
 Daten bleiben im Abbild (und in der \-\-mapfile) erhalten; im selben Aufruf
 folgende Aktionen (\-c, \-f, \-t) werden ausgelassen, und der R\[:u]ckgabewert
 ist 1 (3 mit \-\-detailed-exit-status). dvdisaster startet nicht, wenn f
-bereits existiert, und entfernt f nicht. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
+bereits existiert, und entfernt f nicht. Die Datei wird etwa einmal pro Sekunde
+gepr\[:u]ft. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
 .TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
@@ -537,7 +538,8 @@ graphischen Oberfl\[:a]che), in gleicher Weise wie \-\-abort-file. d ist
 entweder eine Anzahl Sekunden oder Zahlen mit den Einheiten h, m und s,
 z.B. 15s, 15m30s oder 1h21s. Der Abbruch erfolgt zwischen zwei
 Leseanforderungen; ein Laufwerk, das einen defekten Sektor wiederholt
-liest, kann ihn verz\[:o]gern.
+liest, kann ihn verz\[:o]gern, ebenso eine mit \-\-pause-after-errors
+angeforderte Pause.
 .TP
 .B \-\-version
 gibt die Versionsnummer und einige Konfigurationseigenschaften aus
