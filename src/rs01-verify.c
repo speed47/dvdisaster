@@ -392,6 +392,7 @@ typedef struct
 {  Image *image;
    RS01Widgets *wl;
    Bitmap *map;
+   XorrisoCheck *xorriso;
 } verify_closure;
 
 static void cleanup(gpointer data)
@@ -401,6 +402,7 @@ static void cleanup(gpointer data)
 
    if(vc->image) CloseImage(vc->image);
    if(vc->map) FreeBitmap(vc->map);
+   XorrisoCheckFree(vc->xorriso);
    g_free(vc);
 
    GuiAllowActions(TRUE);
@@ -546,7 +548,8 @@ void RS01Verify(Image *image)
          if(image->eccFile->size == expected_size)
             vc->map = CreateBitmap0(image->expectedSectors);
       }
-      RS01ScanImage(self, image, NULL, PRINT_MODE, vc->map);
+      vc->xorriso = XorrisoCheckNew();
+      RS01ScanImage(self, image, NULL, PRINT_MODE, vc->map, vc->xorriso);
    }
 
    if(Closure->stopActions)   
@@ -992,9 +995,10 @@ skip_ecc:
    /*** Close and clean up */
 
 terminate:
-   if(Closure->guiMode && !Closure->quickVerify)
-   {  char *tags = CheckXorrisoTags(Closure->imageName);
+   if(vc->xorriso && !Closure->stopActions)
+   {  char *tags = XorrisoCheckFinish(vc->xorriso, image->eccFile != NULL);
 
+      vc->xorriso = NULL;
       GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
       g_free(tags);
    }

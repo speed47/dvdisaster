@@ -420,6 +420,7 @@ typedef struct
    guint8 synBlock[GF_FIELDMAX*2048];
    GaloisTables *gt;
    ReedSolomonTables *rt;
+   XorrisoCheck *xorriso;
 } verify_closure;
 
 static void cleanup(gpointer data)
@@ -436,6 +437,7 @@ static void cleanup(gpointer data)
    }
    if(vc->map) FreeBitmap(vc->map);
    if(vc->crcBuf) FreeCrcBuf(vc->crcBuf);
+   XorrisoCheckFree(vc->xorriso);
 
    for(i=0; i<255; i++)
       if(vc->eccBlock[i])
@@ -1045,6 +1047,7 @@ void RS03Verify(Image *image)
        Stop(_("Failed seeking to start of ecc file: %s\n"), strerror(errno));
 
    MD5Init(&image_md5);
+   vc->xorriso = XorrisoCheckNew();
 
    first_missing = last_missing = -1;
    total_missing = data_missing = crc_missing = ecc_missing = 0;
@@ -1085,6 +1088,11 @@ void RS03Verify(Image *image)
       /* Look for the dead sector marker */
 
       current_missing = CheckForMissingSector(buf, s, eh->mediumFP, eh->fpSector);
+
+      /* xorriso MD5 tags cover the data (ISO) portion only */
+
+      if(s < lay->dataSectors)
+	 XorrisoCheckSector(vc->xorriso, s, buf, current_missing == SECTOR_PRESENT);
 
       /* Truncated images and ecc files may create "legal" dead sectors. */
 
@@ -1391,9 +1399,10 @@ void RS03Verify(Image *image)
    /*** Close and clean up */
 
 terminate:
-   if(Closure->guiMode && !Closure->quickVerify)
-   {  char *tags = CheckXorrisoTags(Closure->imageName);
+   if(vc->xorriso && !Closure->stopActions)
+   {  char *tags = XorrisoCheckFinish(vc->xorriso, TRUE);
 
+      vc->xorriso = NULL;
       GuiSetLabelText(wl->cmpXorrisoTags, "%s", tags ? tags : "");
       g_free(tags);
    }

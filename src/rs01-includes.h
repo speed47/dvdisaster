@@ -145,7 +145,7 @@ void RS01ResetCksums(Image*);
 void RS01UpdateCksums(Image*, gint64, unsigned char*);
 int RS01FinalizeCksums(Image*);
 void RS01ReadSector(Image*, unsigned char*, gint64);
-void RS01ScanImage(Method*, Image*, struct MD5Context*, int, Bitmap*);
+void RS01ScanImage(Method*, Image*, struct MD5Context*, int, Bitmap*, XorrisoCheck*);
 int  RS01Recognize(LargeFile*, EccHeader**);
 guint64 RS01ExpectedImageSize(Image*);
 

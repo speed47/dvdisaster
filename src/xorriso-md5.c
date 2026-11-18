@@ -39,7 +39,13 @@
  * via next= to the tree tag, which points to the session tag.
  * Images written for overwritable media begin with a relocated superblock
  * (tag at sector 16-31) and have their first session at sector 32.
- * Further sessions start at the next multiple of 32 after a session tag.
+ *
+ * The check does not read the image itself. The verify functions of the
+ * codecs feed it every image sector in ascending order while they read
+ * the image anyway (XorrisoCheckSector()), so the image is read only once.
+ * The last 32 sectors are kept, which covers the range of a superblock
+ * tag; a session is therefore recognized by its superblock tag wherever
+ * it starts, without guessing the session start.
  */
 
 enum { NO_TAG, RLSB_TAG, SB_TAG, TREE_TAG, SESSION_TAG };
@@ -53,8 +59,6 @@ typedef struct
    char md5[33];
    int selfOk;
 } XorrisoTag;
-
-#define CHUNK 64
 
 static gint64 get_num(char *line, char *key)
 {  char *p = strstr(line, key);
@@ -110,155 +114,241 @@ static int parse_tag(unsigned char *buf, XorrisoTag *tag)
    return type;
 }
 
-/* Add sectors *lba ... end-1 to the md5 sum */
+#define RING 32           /* a superblock tag covers less than 32 sectors */
 
-static int md5_sectors(Image *image, struct MD5Context *ctx, gint64 *lba, gint64 end, unsigned char *buf)
-{  while(*lba < end)
-   {  int n = end - *lba > CHUNK ? CHUNK : end - *lba;
+enum { RES_GOOD, RES_MISMATCH, RES_DAMAGED, RES_UNREADABLE, RES_MISSING_NEXT };
 
-      if(ImageReadSectors(image, buf, *lba, n) != n)
-	 return FALSE;
-      MD5Update(ctx, buf, n*2048);
-      *lba += n;
-   }
+typedef struct
+{  int type, result;
+   gint64 pos, start;    /* RES_MISSING_NEXT: pos is the expected sector */
+} TagResult;
 
-   return TRUE;
+struct _XorrisoCheck
+{  gint64 nextLba;                    /* next sector expected from the caller */
+   int outOfOrder;                    /* caller skipped sectors; results void */
+
+   unsigned char ring[RING][2048];    /* the last RING sectors */
+   int ringPresent[RING];
+
+   int inChain;                       /* inside a session, after its superblock tag */
+   gint64 sessionStart, expectedTag;
+   int sessionMissing;                /* missing sectors in sessionStart..current */
+   struct MD5Context ctx;             /* md5 of sessionStart..current */
+
+   GArray *results;
+};
+
+XorrisoCheck* XorrisoCheckNew(void)
+{  XorrisoCheck *xc = g_malloc0(sizeof(XorrisoCheck));
+
+   xc->results = g_array_new(FALSE, FALSE, sizeof(TagResult));
+   return xc;
 }
 
-/* Print to the log and collect the text for the GUI */
-
-static void tag_log(GString *out, char *format, ...)
-{  va_list argp;
-   char *msg;
-
-   va_start(argp, format);
-   msg = g_strdup_vprintf(format, argp);
-   va_end(argp);
-
-   PrintLog("%s", msg);
-   g_string_append(out, msg);
-   g_free(msg);
+void XorrisoCheckFree(XorrisoCheck *xc)
+{  if(!xc) return;
+   g_array_free(xc->results, TRUE);
+   g_free(xc);
 }
 
-static void print_tag(GString *out, XorrisoTag *tag, gint64 start, char *result)
-{  static char *names[] = { NULL, "relocated sb tag", "superblock tag",
-			    "tree tag", "session tag" };
+static void add_result(XorrisoCheck *xc, int type, int result, gint64 pos, gint64 start)
+{  TagResult r;
 
-   tag_log(out, "- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
-	    names[tag->type], result, tag->pos, start, tag->pos-1);
+   r.type = type; r.result = result; r.pos = pos; r.start = start;
+   g_array_append_val(xc->results, r);
 }
 
-/* Verify the tag chain of the session starting at sector start.
-   Returns the sector of the final tag, or -1 if the chain is broken. */
+/* Compare a tag against the md5 of its range */
 
-static gint64 check_session(Image *image, gint64 start, XorrisoTag *tag, unsigned char *buf, int *bad, GString *out)
+static void check_tag(XorrisoCheck *xc, XorrisoTag *tag, gint64 start,
+		      struct MD5Context *range_ctx, int missing)
+{  struct MD5Context copy = *range_ctx;
+   unsigned char digest[16];
+   char ascii[33];
+   int result;
+
+   MD5Final(digest, &copy);
+   AsciiDigest(ascii, digest);
+
+   if(!tag->selfOk || tag->rangeStart != start || tag->rangeSize != tag->pos - start)
+        result = RES_DAMAGED;
+   else if(missing)
+        result = RES_UNREADABLE;
+   else if(strcmp(ascii, tag->md5))
+        result = RES_MISMATCH;
+   else result = RES_GOOD;
+
+   add_result(xc, tag->type, result, tag->pos, start);
+}
+
+/* Outside of a session: look for a (relocated) superblock tag.
+   Its range lies within the last RING sectors. */
+
+static void look_for_superblock(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
 {  struct MD5Context ctx;
-   gint64 lba = start;
+   XorrisoTag tag;
+   gint64 s, start;
+   int type, missing = 0;
 
+   if(strncmp((char*)buf, "libisofs_", 9))   /* fast path */
+      return;
+
+   type = parse_tag(buf, &tag);
+   if(type != SB_TAG && type != RLSB_TAG)
+      return;
+   if(tag.pos != lba || tag.rangeStart < 0
+      || lba - tag.rangeStart <= 0 || lba - tag.rangeStart >= RING)
+      return;
+   if(type == RLSB_TAG && tag.rangeStart != 0)
+      return;
+
+   start = tag.rangeStart;
    MD5Init(&ctx);
+   for(s=start; s<lba; s++)
+   {  MD5Update(&ctx, xc->ring[s%RING], 2048);
+      if(!xc->ringPresent[s%RING]) missing = 1;
+   }
+   check_tag(xc, &tag, start, &ctx, missing);
 
-   for(;;)
-   {  struct MD5Context copy;
-      unsigned char digest[16];
-      char ascii[33];
-      gint64 next;
+   if(type == RLSB_TAG)  /* stands alone; the first session follows at 32 */
+      return;
 
-      if(!md5_sectors(image, &ctx, &lba, tag->pos, buf))
-      {  print_tag(out, tag, start, _("unreadable sectors"));
-	 (*bad)++;
-	 return -1;
-      }
+   /* Superblock tag: the tree and session tags cover the session
+      from its start, including the superblock tag itself. */
 
-      copy = ctx;
-      MD5Final(digest, &copy);
-      AsciiDigest(ascii, digest);
-
-      if(!tag->selfOk || tag->rangeStart != start || tag->rangeSize != tag->pos - start)
-      {  print_tag(out, tag, start, _("damaged tag"));
-	 (*bad)++;
-      }
-      else if(strcmp(ascii, tag->md5))
-      {  print_tag(out, tag, start, _("MD5 MISMATCH"));
-	 (*bad)++;
-      }
-      else print_tag(out, tag, start, _("good"));
-
-      if(tag->type == RLSB_TAG || tag->type == SESSION_TAG)
-	 return tag->pos;
-
-      /* Superblock and tree tags point to the next tag of the chain */
-
-      next = tag->next;
-      if(next <= tag->pos
-	 || ImageReadSectors(image, buf, next, 1) != 1
-	 || parse_tag(buf, tag) <= SB_TAG
-	 || tag->pos != next)
-      {  tag_log(out, _("- %-17s: missing (expected at sector %" PRId64 ")\n"), "next tag", next);
-	 (*bad)++;
-	 return -1;
-      }
+   xc->inChain = TRUE;
+   xc->sessionStart = start;
+   xc->sessionMissing = missing;
+   xc->ctx = ctx;
+   MD5Update(&xc->ctx, buf, 2048);
+   xc->expectedTag = tag.next;
+   if(tag.next <= lba)
+   {  add_result(xc, 0, RES_MISSING_NEXT, tag.next, start);
+      xc->inChain = FALSE;
    }
 }
 
-/* Look for xorriso checksum tags in the image file and verify them.
-   Prints nothing and returns NULL if the image has no such tags,
-   otherwise returns the printed text (to be freed by the caller). */
+/* Feed the next image sector. Sectors must be fed in ascending order
+   starting at sector 0; present is FALSE for missing (unreadable) sectors. */
 
-char* CheckXorrisoTags(char *image_name)
-{  Image *image = g_malloc0(sizeof(Image));
+void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int present)
+{  if(!xc || xc->outOfOrder)
+      return;
+   if(lba != xc->nextLba)
+   {  xc->outOfOrder = TRUE;
+      return;
+   }
+   xc->nextLba++;
+
+   memcpy(xc->ring[lba%RING], buf, 2048);
+   xc->ringPresent[lba%RING] = present;
+
+   if(xc->inChain)
+   {  if(lba == xc->expectedTag)
+      {  XorrisoTag tag;
+	 int type = present ? parse_tag(buf, &tag) : NO_TAG;
+
+	 if((type == TREE_TAG || type == SESSION_TAG) && tag.pos == lba)
+	 {  check_tag(xc, &tag, xc->sessionStart, &xc->ctx, xc->sessionMissing);
+
+	    if(type == SESSION_TAG)
+	    {  xc->inChain = FALSE;
+	       return;
+	    }
+
+	    MD5Update(&xc->ctx, buf, 2048);
+	    xc->expectedTag = tag.next;
+	    if(tag.next <= lba)
+	    {  add_result(xc, 0, RES_MISSING_NEXT, tag.next, xc->sessionStart);
+	       xc->inChain = FALSE;
+	    }
+	    return;
+	 }
+
+	 /* Chain is broken; this sector might start something new */
+
+	 add_result(xc, 0, present ? RES_MISSING_NEXT : RES_UNREADABLE, lba, xc->sessionStart);
+	 xc->inChain = FALSE;
+      }
+      else
+      {  MD5Update(&xc->ctx, buf, 2048);
+	 if(!present) xc->sessionMissing = TRUE;
+	 return;
+      }
+   }
+
+   if(present)
+      look_for_superblock(xc, lba, buf);
+}
+
+/* Print the results after the image has been read completely.
+   Sets the exit code and the JSON report. Returns NULL if the image
+   has no tags, otherwise the printed text for the GUI (to be freed by
+   the caller). Frees xc. */
+
+char* XorrisoCheckFinish(XorrisoCheck *xc, int have_ecc)
+{  static char *names[] = { "next tag", "relocated sb tag", "superblock tag",
+			    "tree tag", "session tag" };
    GString *out;
-   char *result = NULL;
-   unsigned char *buf;
-   gint64 start = 0;
-   int found = 0, bad = 0;
+   char *text;
+   int i, good = 0, bad = 0;
 
-   /* Plain file access; OpenImageFromFile() would examine the image again */
+   if(!xc)
+      return NULL;
 
-   image->type = IMAGE_FILE;
-   image->file = LargeOpen(image_name, O_RDONLY, IMG_PERMS);
-   if(!image->file)
-   {  g_free(image);
+   if(xc->inChain)   /* image ends before the next tag of the chain */
+      add_result(xc, 0, RES_MISSING_NEXT, xc->expectedTag, xc->sessionStart);
+
+   if(xc->outOfOrder || !xc->results->len)
+   {  XorrisoCheckFree(xc);
       return NULL;
    }
-   CalcSectors(image->file->size, &image->sectorSize, &image->inLast);
 
-   buf = g_malloc(CHUNK*2048);
    out = g_string_new(NULL);
+   g_string_append(out, _("\nxorriso MD5 checksum tags:\n"));
 
-   while(start+32 <= (gint64)image->sectorSize)
-   {  XorrisoTag tag;
-      gint64 lba, end;
+   for(i=0; i<xc->results->len; i++)
+   {  TagResult *r = &g_array_index(xc->results, TagResult, i);
+      char *result;
 
-      /* Superblock tag follows the volume descriptors */
+      if(r->result == RES_MISSING_NEXT)
+      {  bad++;
+	 g_string_append_printf(out, _("- %-17s: missing (expected at sector %" PRId64 ")\n"),
+				names[0], r->pos);
+	 continue;
+      }
 
-      for(lba=start+16; lba<start+32; lba++)
-	 if(ImageReadSectors(image, buf, lba, 1) == 1
-	    && parse_tag(buf, &tag) != NO_TAG
-	    && tag.pos == lba
-	    && (tag.type == SB_TAG || (tag.type == RLSB_TAG && !start)))
-	    break;
-      if(lba == start+32)
-	 break;
+      switch(r->result)
+      {  case RES_GOOD:       result = _("good"); good++; break;
+         case RES_MISMATCH:   result = _("MD5 MISMATCH"); bad++; break;
+         case RES_DAMAGED:    result = _("damaged tag"); bad++; break;
+         default:             result = _("unreadable sectors"); bad++; break;
+      }
 
-      if(!found++)
-	 tag_log(out, _("\nxorriso MD5 checksum tags:\n"));
-
-      end = check_session(image, start, &tag, buf, &bad, out);
-      if(end < 0)
-	 break;
-      start = (end/32+1)*32;
+      if(r->type)
+	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
+				names[r->type], result, r->pos, r->start, r->pos-1);
+      else  /* next tag of a chain itself unreadable */
+	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ")\n",
+				names[0], result, r->pos);
    }
 
-   if(found && !bad)
-      tag_log(out, _("- all xorriso checksums are good.\n"));
+   if(!bad)
+      g_string_append(out, _("- all xorriso checksums are good.\n"));
 
-   if(found)
-      result = g_strdup(g_strstrip(out->str));
+   PrintLog("%s", out->str);
+
+   ReportNumber("xorriso_tags", "good", good);
+   ReportNumber("xorriso_tags", "bad", bad);
+
+   /* Like missing sectors or CRC errors: repairable only with ecc data */
+
+   if(bad)
+      SetExitCode(EXIT_FAILURE, have_ecc ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
+
+   text = g_strdup(g_strstrip(out->str));
    g_string_free(out, TRUE);
+   XorrisoCheckFree(xc);
 
-   g_free(buf);
-   LargeClose(image->file);
-   g_free(image);
-
-   return result;
+   return text;
 }

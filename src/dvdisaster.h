@@ -1619,6 +1619,11 @@ void StripECCFromImageFile(void);
  *** xorriso-md5.c
  ***/
 
-char* CheckXorrisoTags(char*);
+typedef struct _XorrisoCheck XorrisoCheck;
+
+XorrisoCheck* XorrisoCheckNew(void);
+void XorrisoCheckSector(XorrisoCheck*, gint64, unsigned char*, int);
+char* XorrisoCheckFinish(XorrisoCheck*, int);
+void XorrisoCheckFree(XorrisoCheck*);
 
 #endif	/* DVDISASTER_H */
