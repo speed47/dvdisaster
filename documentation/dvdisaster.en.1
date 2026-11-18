@@ -339,7 +339,8 @@ graphical user interface) as soon as the file f exists. What has been read
 so far is kept in the image (and in the \-\-mapfile); actions following in
 the same call (\-c, \-f, \-t) are skipped and the exit status is 1
 (3 with \-\-detailed-exit-status). dvdisaster refuses to start if f already
-exists, and does not remove it. Useful for unattended runs.
+exists, and does not remove it. The file is checked about once per second.
+Useful for unattended runs.
 .TP
 .B \-\-adaptive-read
 use optimized strategy for reading damaged media.
@@ -551,7 +552,8 @@ graphical user interface) once the duration d has passed since the start of
 the first action, in the same way as \-\-abort-file. d is either a number of
 seconds, or numbers followed by the units h, m and s, such as 15s, 15m30s
 or 1h21s. The stop takes effect
-between two read requests, so a drive retrying a defective sector may delay it.
+between two read requests, so a drive retrying a defective sector may delay it,
+as may a pause requested by \-\-pause-after-errors.
 .TP
 .B \-\-version
 print version number and some configuration information.

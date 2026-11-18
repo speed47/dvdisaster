@@ -758,6 +758,19 @@ static void insert_buttons(GtkDialog *dialog)
 } 
 #endif
 
+/* Read statistics for the --json report; also written when
+   reading was stopped by --time-limit or --abort-file. */
+
+static void report_results(read_closure *rc, gint64 run_out)
+{  char *section = rc->scanMode ? "scan" : "read";
+
+   ReportDevice(rc->image->dh);
+   ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
+   ReportNumber(section, "readable", rc->readOK);
+   ReportNumber(section, "unreadable", Closure->readErrors - run_out);
+   ReportNumber(section, "crc_errors", Closure->crcErrors);
+}
+
 void ReadMediumLinear(gpointer data)
 {  read_closure *rc = g_malloc0(sizeof(read_closure));
    int md5_failure = 0;
@@ -981,8 +994,15 @@ next_reading_pass:
    while(rc->readPos<=rc->lastSector)
    {  int cluster_mask = rc->image->dh->clusterSize-1;
 
+      CheckStopRequest(rc->readPos);  /* --time-limit, --abort-file */
+
       if(Closure->stopActions)   /* somebody hit the Stop button */
       {
+	 if(Closure->stopReason)
+	 {  PrintLog(_("Stopped: %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far.\n"),
+		     rc->readOK, Closure->readErrors);
+	    report_results(rc, 0);
+	 }
 	 if(Closure->stopActions == STOP_CURRENT_ACTION) /* suppress memleak warning when closing window */
 	 {   GuiSwitchAndSetFootline(Closure->readLinearNotebook, 1, Closure->readLinearFootline, 
 				     _("<span %s>Aborted by user request!</span> %" PRId64 " sectors read, %" PRId64 " sectors unreadable/skipped so far."),
@@ -1474,11 +1494,7 @@ step_counter:
    else
       PrintLog("\n%s\n", t);
 
-   ReportDevice(rc->image->dh);
-   ReportEccHeader(rc->image->eccFileHeader ? rc->image->eccFileHeader : rc->image->eccHeader);
-   ReportNumber(rc->scanMode ? "scan" : "read", "readable", rc->readOK);
-   ReportNumber(rc->scanMode ? "scan" : "read", "unreadable", Closure->readErrors - run_out);
-   ReportNumber(rc->scanMode ? "scan" : "read", "crc_errors", Closure->crcErrors);
+   report_results(rc, run_out);
 
    if(Closure->guiMode)
    {  if(rc->scanMode)

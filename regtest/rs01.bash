@@ -1179,6 +1179,26 @@ if try "verifying image with time limit" read_time_limit_requires_read; then (
   run_regtest read_time_limit_requires_read "--time-limit=10 -t" $MASTERISO $MASTERECC EXITCODES
 ) & limit_jobs; fi
 
+# Reading stopped by the time limit in the middle of the medium
+# (--sim-stop-at makes it expire at a given sector, deterministically):
+# the image and mapfile keep what was read, -c is skipped, and the
+# exit status is 1 (3 in detailed mode).
+
+if try "reading with time limit expiring" read_time_limit_stop; then (
+  rm -f $TMPISO
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_time_limit_stop "--spinup-delay=0 --time-limit=1h --sim-stop-at=5000 -r -c" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
+# An empty --abort-file (e.g. an unset shell variable) could never trigger.
+
+if try "reading with empty abort file name" read_abort_file_empty; then (
+  rm -f $TMPISO
+  extra_args="--debug --sim-cd=$MASTERISO --fixed-speed-values"
+  run_regtest read_abort_file_empty "--spinup-delay=0 --abort-file= -r" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
 # Read into existing and complete image file
 
 if try "reading good image in good file" read_no_ecc_good_file; then (
@@ -1865,6 +1885,15 @@ if try "reading good image" adaptive_good; then (
 if try "reading image, no ecc data" adaptive_no_ecc; then (
 
   run_regtest adaptive_no_ecc "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc
+) & limit_jobs; fi
+
+# Adaptive reading stopped by the time limit in the middle of the medium
+# (see read_time_limit_stop).
+
+if try "reading image, time limit expiring" adaptive_time_limit_stop; then (
+  rm -f $TMPISO
+  map_file=$TEST_TMPDIR/rs01.map; rm -f $map_file
+  run_regtest adaptive_time_limit_stop "--debug --sim-cd=$MASTERISO --fixed-speed-values --spinup-delay=0 --time-limit=1h --sim-stop-at=5000 -r --adaptive-read" $TMPISO  $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
 # Read image from non-existant device

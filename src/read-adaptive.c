@@ -1394,6 +1394,17 @@ void fill_correctable_gap(read_closure *rc, gint64 correctable)
    }
 }
 
+/* Read statistics for the --json report; also written when
+   reading was stopped by --time-limit or --abort-file. */
+
+static void report_results(read_closure *rc)
+{  ReportDevice(rc->dh);
+   ReportEccHeader(rc->eh);
+   ReportNumber("read", "readable", rc->readable);
+   ReportNumber("read", "correctable", rc->correctable);
+   ReportNumber("read", "missing", rc->expectedSectors - rc->readable - rc->correctable);
+}
+
 /*
  * The adaptive read strategy 
  */
@@ -1611,8 +1622,15 @@ reopen_image:
       for(s=rc->intervalStart; s<=rc->intervalEnd; ) /* s is incremented elsewhere */
       {  int nsectors,cnt;
  
+	 CheckStopRequest(s);              /* --time-limit, --abort-file */
+
 	 if(Closure->stopActions)          /* somebody hit the Stop button */
-	 {  GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
+	 {  if(Closure->stopReason)
+	    {  PrintLog(_("Stopped: %" PRId64 " sectors read, %" PRId64 " correctable, %" PRId64 " still missing.\n"),
+			rc->readable, rc->correctable, rc->expectedSectors - rc->readable - rc->correctable);
+	       report_results(rc);
+	    }
+	    GuiSetAdaptiveReadFootline(_("Aborted by user request!"), Closure->redText);
 
 	    rc->earlyTermination = FALSE;  /* suppress respective error message */
 	    goto terminate;
@@ -2026,11 +2044,7 @@ finished:
 
    /*** Summarize results. */
 
-   ReportDevice(rc->dh);
-   ReportEccHeader(rc->eh);
-   ReportNumber("read", "readable", rc->readable);
-   ReportNumber("read", "correctable", rc->correctable);
-   ReportNumber("read", "missing", rc->expectedSectors - rc->readable - rc->correctable);
+   report_results(rc);
 
    /* We were in ECC_IN_FILE or ECC_IN_IMAGE mode,
       but did not recover sufficient data. */
