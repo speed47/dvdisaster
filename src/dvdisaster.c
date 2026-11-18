@@ -185,8 +185,7 @@ invalid:
 }
 
 int main(int argc, char *argv[])
-{  gboolean stopped = FALSE;     /* reading was stopped by --time-limit/--abort-file */
-   int started = 0;              /* actions started before the stop */
+{  int started = 0;              /* actions started before a --time-limit/--abort-file stop */
    int mode = MODE_NONE; 
    int sequence = MODE_NONE;
    char *debug_arg = NULL;
@@ -997,10 +996,14 @@ int main(int argc, char *argv[])
    {  if(Closure->simStopSector >= 0 && !Closure->timeLimit)
 	 Stop(_("--sim-stop-at can only be used together with --time-limit."));
       if(Closure->timeLimit > 0 || Closure->abortFile)
-      {  if(mode != MODE_SEQUENCE || !(sequence & (1<<MODE_READ | 1<<MODE_SCAN)))
+      {  int err;
+
+	 if(mode != MODE_SEQUENCE || !(sequence & (1<<MODE_READ | 1<<MODE_SCAN)))
 	    Stop(_("--time-limit and --abort-file can only be used together with -r/--read or -s/--scan."));
-	 if(AbortFileExists())
+	 if(AbortFileExists(&err))
 	    Stop(_("Abort file %s exists; remove it to start."), Closure->abortFile);
+	 if(err)
+	    Stop(_("Can not check abort file %s: %s"), Closure->abortFile, strerror(err));
       }
    }
 
@@ -1039,10 +1042,9 @@ int main(int argc, char *argv[])
 	{  ReportAction("scan");
 	   started |= 1<<MODE_SCAN;
 	   ReadMediumLinear((gpointer)1);
-	   stopped = Closure->stopReason != NULL;
 	}
 
-	if(sequence & 1<<MODE_READ && !stopped)
+	if(sequence & 1<<MODE_READ && !Closure->stopReason)
 	{  ReportAction("read");
 	   started |= 1<<MODE_READ;
 	   if(sequence & 1<<MODE_CREATE) 
@@ -1050,7 +1052,6 @@ int main(int argc, char *argv[])
 	   if(Closure->adaptiveRead) 
 	        ReadMediumAdaptive((gpointer)0);
 	   else ReadMediumLinear((gpointer)0);
-	   stopped = Closure->stopReason != NULL;
 
 	   /* Describes the reading outcome, so write it before
 	      a possible repair in the same call changes the image. */
@@ -1064,7 +1065,7 @@ int main(int argc, char *argv[])
 	   the image is incomplete, so do not continue with other actions,
 	   and do not report success. */
 
-	if(stopped)
+	if(Closure->stopReason)
 	{  if(sequence & ~started)
 	      PrintLog(_("Remaining actions skipped.\n"));
 	   sequence = started;

@@ -710,20 +710,33 @@ FILE* OpenNewFile(const char *path)
  * exiting in their cleanup functions), records no bogus read errors for
  * an interrupted request, and Closure->stopReason means that reading was
  * really cut short. The abort file is checked at most once per second, as
- * it may be on a network file system. Returns TRUE if reading must stop.
+ * it may be on a network file system. Callers then test Closure->stopActions,
+ * which also covers the GUI Stop button.
  */
 
-gboolean AbortFileExists(void)
+/* Only "no such file" means that the abort file is not there; any other
+   error (permissions, stale NFS handle, ...) is returned in *err, as the
+   abort file could otherwise never be found. */
+
+gboolean AbortFileExists(int *err)
 {  GStatBuf st;
 
-   return Closure->abortFile && !g_lstat(Closure->abortFile, &st);
+   *err = 0;
+   if(!Closure->abortFile)
+      return FALSE;
+   if(!g_lstat(Closure->abortFile, &st))
+      return TRUE;
+   if(errno != ENOENT)
+      *err = errno ? errno : EIO;
+   return FALSE;
 }
 
-int CheckStopRequest(gint64 sector)
+void CheckStopRequest(gint64 sector)
 {  double elapsed;
+   int err;
 
    if(!Closure->stopTimer || Closure->stopReason)
-      return FALSE;
+      return;
 
    elapsed = g_timer_elapsed(Closure->stopTimer, NULL);
 
@@ -734,17 +747,19 @@ int CheckStopRequest(gint64 sector)
    }
    else if(Closure->abortFile && elapsed >= Closure->nextAbortFileCheck)
    {  Closure->nextAbortFileCheck = elapsed + 1.0;
-      if(AbortFileExists())
+      if(AbortFileExists(&err))
       {  PrintLog(_("\nAbort file %s found, stopping.\n"), Closure->abortFile);
 	 Closure->stopReason = "abort_file";
       }
+      else if(err && !Closure->abortFileWarned)  /* keep reading, but tell once */
+      {  PrintError(_("\nWarning: can not check abort file %s: %s\n"),
+		    Closure->abortFile, strerror(err));
+	 Closure->abortFileWarned = TRUE;
+      }
    }
 
-   if(!Closure->stopReason)
-      return FALSE;
-
-   Closure->stopActions = STOP_CURRENT_ACTION;
-   return TRUE;
+   if(Closure->stopReason)
+      Closure->stopActions = STOP_CURRENT_ACTION;
 }
 
 /*

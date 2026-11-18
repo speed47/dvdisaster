@@ -1,0 +1,14 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+
+*
+* dvdisaster - can not continue:
+*
+Can not check abort file rs01-read_abort_file_unusable.file/stop: Not a directory
+
+Exit status: 1
+Detailed exit status: 1

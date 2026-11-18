@@ -307,7 +307,9 @@ Daten bleiben im Abbild (und in der \-\-mapfile) erhalten; im selben Aufruf
 folgende Aktionen (\-c, \-f, \-t) werden ausgelassen, und der R\[:u]ckgabewert
 ist 1 (3 mit \-\-detailed-exit-status). dvdisaster startet nicht, wenn f
 bereits existiert, und entfernt f nicht. Die Datei wird etwa einmal pro Sekunde
-gepr\[:u]ft. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
+gepr\[:u]ft. Kann sie nicht gepr\[:u]ft werden (z.B. fehlende Rechte), startet
+dvdisaster nicht; tritt das w\[:a]hrend des Lesens auf, wird einmal gewarnt
+und weitergelesen. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
 .TP
 .B \-\-adaptive-read
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
@@ -458,6 +460,13 @@ ein CRC-Fehler auftrat, als nicht getrimmt (*), wenn sie zu einem fehlgeschlagen
 Lesevorgang mehrerer Sektoren geh\[:o]ren, der nicht aufgeteilt wurde (siehe \-j),
 und als nicht versucht (?), wenn sie nicht gelesen wurden, z.B. nach einem
 Lesefehler \[:u]bersprungen oder beim angepassten Lesen nicht ben\[:o]tigt.
+Die Map-Datei umfasst den ganzen Datentr\[:a]ger: Sektoren hinter dem Ende des
+Abbilds, z.B. nach einem durch \-\-time-limit oder \-\-abort-file abgebrochenen
+Lesen, werden als nicht versucht (?) eingetragen, sofern ihr Lesen nicht
+fehlschlug. Die beiden Auslaufsektoren einer TAO-CD, die aus dem Abbild
+entfernt werden, geh\[:o]ren nicht zum Datentr\[:a]ger und werden nicht
+eingetragen. Ein abgebrochenes Lesen wird au\[ss]erdem als nicht beendet
+vermerkt (aktueller Status ?, am Ende des Abbilds).
 .PP
 Die Map-Datei kann mit ddrescueview angezeigt oder zum Weiterlesen mit einem
 anderen Laufwerk verwendet werden, z.B. \fBddrescue \-b2048 /dev/sr1 image.iso

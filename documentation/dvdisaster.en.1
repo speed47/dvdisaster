@@ -340,6 +340,8 @@ so far is kept in the image (and in the \-\-mapfile); actions following in
 the same call (\-c, \-f, \-t) are skipped and the exit status is 1
 (3 with \-\-detailed-exit-status). dvdisaster refuses to start if f already
 exists, and does not remove it. The file is checked about once per second.
+If it can not be checked (e.g. missing permissions), dvdisaster does not
+start; if that happens while reading, it warns once and keeps reading.
 Useful for unattended runs.
 .TP
 .B \-\-adaptive-read
@@ -476,7 +478,13 @@ Sectors are marked as finished (+) when read or already present in the image,
 bad (\-) when reading them individually failed or they had a CRC error,
 non-trimmed (*) when they belong to a failed multi-sector read which was not
 split up (see \-j), and non-tried (?) when they were not read, e.g. skipped
-after a read error or not needed by adaptive reading.
+after a read error or not needed by adaptive reading. The mapfile covers the
+whole medium: sectors beyond the end of the image, e.g. after reading was
+stopped by \-\-time-limit or \-\-abort-file, are listed as non-tried (?)
+unless reading them failed. The two run-out sectors of a TAO CD, which are
+truncated from the image, are not part of the medium and not listed.
+A stopped read is also recorded as unfinished (current status ?, at the end
+of the image).
 .PP
 The mapfile can be viewed with ddrescueview, or used to continue with another
 drive, e.g. \fBddrescue \-b2048 /dev/sr1 image.iso image.map\fP; add
