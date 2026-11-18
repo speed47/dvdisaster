@@ -272,7 +272,7 @@ void CreateRS01VerifyWindow(Method *self, GtkWidget *parent)
 
    lab = wl->cmpXorrisoTags = gtk_label_new(NULL);
    gtk_label_set_xalign(GTK_LABEL(lab), 0.0);
-   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 6, 2, 1);
+   gtk_grid_attach(GTK_GRID(grid2), lab, 1, 7, 2, 1);
 
    /*** Image spiral */
 
