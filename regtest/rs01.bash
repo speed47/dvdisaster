@@ -265,6 +265,19 @@ if try "xorriso md5 tags, relocated superblock" xorriso_md5_rlsb; then (
   run_regtest xorriso_md5_rlsb "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
+# Image first written at sector 0 (xorriso -as mkisofs --md5), then grown
+# by appending a session: sectors 0-31 now hold the relocated superblock
+# tag, the first session's superblock tag is gone. Its tree and session
+# tags can not match any more and must be ignored, not reported as defects.
+if try "xorriso md5 tags, grown image first written at sector 0" xorriso_md5_grown_from_0; then (
+  cp $MASTERISO $TMPISO
+  write_xorriso_session $TMPISO 0 1000
+  write_xorriso_tag $TMPISO libisofs_rlsb32_checksum_tag_v1 20 0
+  write_xorriso_session $TMPISO 1024 20000
+
+  run_regtest xorriso_md5_grown_from_0 "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
 # Test with good image and ecc file, both not multiple of 2048
 if try "image with 56 extra bytes" plus56_bytes; then (
   run_regtest plus56_bytes "-t" $ISO_PLUS56 $ECC_PLUS56

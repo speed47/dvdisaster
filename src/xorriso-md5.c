@@ -145,6 +145,7 @@ struct _XorrisoCheck
    gint64 sessionStart, expectedTag;
    int sessionMissing;                /* missing sectors in sessionStart..current */
    struct MD5Context ctx;             /* md5 of sessionStart..current */
+   int sawRlsb;                       /* relocated superblock tag seen */
 
    GArray *results;
 };
@@ -201,7 +202,13 @@ static void check_tag(XorrisoCheck *xc, XorrisoTag *tag, gint64 start,
      beyond recognition or unreadable) and can not be checked.
    A good tag whose pos is not its own sector belongs to something else,
    e.g. a tagged .iso stored as a file in the image, or a session image
-   written for appending at an offset (-C), and is ignored. */
+   written for appending at an offset (-C), and is ignored.
+   Also ignored: tree and session tags covering a range from sector 0 in
+   an image with a relocated superblock tag. They belong to a first
+   session written at sector 0 (e.g. by xorriso -as mkisofs --md5) to
+   which sessions were appended later; growing the image overwrote
+   sectors 0-31 with the relocated superblock, so these tags can not
+   match any more and their superblock tag is gone. */
 
 static void look_for_tag(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
 {  struct MD5Context ctx;
@@ -225,8 +232,13 @@ static void look_for_tag(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
    if(tag.pos != lba)   /* foreign tag */
       return;
 
+   if(type == RLSB_TAG)
+      xc->sawRlsb = TRUE;
+
    if(type == TREE_TAG || type == SESSION_TAG)
-   {  add_result(xc, type, RES_UNCHECKED, lba, -1);
+   {  if(xc->sawRlsb && tag.rangeStart == 0)   /* superseded first session */
+	 return;
+      add_result(xc, type, RES_UNCHECKED, lba, -1);
       return;
    }
 
