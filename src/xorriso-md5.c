@@ -85,6 +85,17 @@ static int tag_id_type(unsigned char *buf)
    return NO_TAG;
 }
 
+/* The pos= of a tag id at the beginning of buf, even if the tag is
+   damaged otherwise; -1 if unknown */
+
+static gint64 tag_id_pos(unsigned char *buf)
+{  char line[256];
+
+   memcpy(line, buf, 255);
+   line[255] = 0;
+   return get_num(line, " pos=");
+}
+
 /* Parse the tag at the beginning of buf. Returns the tag type or NO_TAG. */
 
 static int parse_tag(unsigned char *buf, XorrisoTag *tag)
@@ -197,7 +208,8 @@ static void check_tag(XorrisoCheck *xc, XorrisoTag *tag, gint64 start,
    starts the check of a session. Its range lies within the last RING
    sectors. Other sectors carrying a tag id are reported, so that a
    damaged superblock tag does not hide its whole session:
-   - a tag failing to parse or its self check is a damaged tag,
+   - a tag failing to parse or its self check is a damaged tag, unless
+     its pos= is not its own sector (then it is not ours, see below),
    - a good tree or session tag here lacks its superblock tag (damaged
      beyond recognition or unreadable) and can not be checked.
    A good tag whose pos is not its own sector belongs to something else,
@@ -225,7 +237,9 @@ static void look_for_tag(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
 
    type = parse_tag(buf, &tag);
    if(type == NO_TAG || !tag.selfOk)
-   {  add_result(xc, id_type, RES_DAMAGED, lba, -1);
+   {  if(tag_id_pos(buf) != lba)   /* foreign, or data looking like a tag */
+	 return;
+      add_result(xc, id_type, RES_DAMAGED, lba, -1);
       return;
    }
 
