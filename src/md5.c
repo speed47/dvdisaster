@@ -321,17 +321,17 @@ void AsciiDigest(char *out, unsigned char *in)
 #ifdef SIMPLE_MD5SUM
 
 #include <stdio.h>
+#include <glib/gstdio.h>
+#ifdef SYS_MINGW
+#include <io.h>
+#include <fcntl.h>
+#endif
 
-static void print_sum(char *path)
-{  FILE *file;
-   struct MD5Context ctxt;
+static void sum_stream(FILE *file, char *name)
+{  struct MD5Context ctxt;
    unsigned char buf[32768];
    unsigned char digest[16];
    char ascii_digest[33];
-   int size = 0;
-
-   file = g_fopen(path, "rb");
-   if(!file) return;
 
    MD5Init(&ctxt);
 
@@ -340,19 +340,33 @@ static void print_sum(char *path)
       if(!n) break;
 
       MD5Update(&ctxt, buf, n);
-      size += n;
    }
 
    MD5Final(digest, &ctxt);
    AsciiDigest(ascii_digest, digest);
-   printf("%s *%s\n", ascii_digest, path);
+   printf("%s *%s\n", ascii_digest, name);
+}
 
+static void print_sum(char *path)
+{  FILE *file = g_fopen(path, "rb");
+
+   if(!file) return;
+   sum_stream(file, path);
    fclose(file);
 }
 
 
 int main(int argc, char *argv[])
 {  int i;
+
+   if(argc < 2)   /* like md5sum: no file names, read stdin */
+   {
+#ifdef SYS_MINGW
+      _setmode(_fileno(stdin), _O_BINARY);
+#endif
+      sum_stream(stdin, "-");
+      return 0;
+   }
 
    for(i=1; i<argc; i++)
      print_sum(argv[i]);
