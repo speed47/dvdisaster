@@ -622,7 +622,9 @@ void RS01Verify(Image *image)
 	 if(!image->crcErrors)
 	 {  PrintLog(_("- good image       : all sectors present\n"
 		       "- image md5sum     : %s\n"),idigest);
-	    GuiSetLabelText(wl->cmpImageResult,_("<span %s>Good image.</span>"), Closure->greenMarkup);
+	    if(XorrisoCheckBad(vc->xorriso))
+	       GuiSetLabelText(wl->cmpImageResult, _("<span %s>Image does not match its xorriso MD5 checksums.</span>"), Closure->redMarkup);
+	    else GuiSetLabelText(wl->cmpImageResult,_("<span %s>Good image.</span>"), Closure->greenMarkup);
 	    GuiSetLabelText(wl->cmpImageMd5Sum, "%s", idigest);
 	 }
 	 else

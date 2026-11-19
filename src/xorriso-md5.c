@@ -382,28 +382,77 @@ static char* tag_name(int type)
    }
 }
 
+/* End of the image: a chain still open lacks its next tag */
+
+static void close_chain(XorrisoCheck *xc)
+{  if(xc->inChain)
+   {  add_result(xc, 0, RES_MISSING_NEXT, xc->expectedTag, xc->sessionStart);
+      xc->inChain = FALSE;
+   }
+}
+
+/* Number of bad tags, to be called after all sectors have been fed;
+   for the codecs' verdict on the image. */
+
+int XorrisoCheckBad(XorrisoCheck *xc)
+{  int i, bad = 0;
+
+   if(!xc)
+      return 0;
+
+   close_chain(xc);
+   for(i=0; i<xc->results->len; i++)
+      if(g_array_index(xc->results, TagResult, i).result != RES_GOOD)
+	 bad++;
+
+   return bad + (xc->brokenAt >= 0);
+}
+
+/* Append a result line to the log text and, if markup is not NULL,
+   to the GUI text (red if bad). */
+
+static void add_line(GString *out, GString *markup, int bad, char *format, ...) PRINTF_FORMAT(4);
+
+static void add_line(GString *out, GString *markup, int bad, char *format, ...)
+{  va_list args;
+   char *line;
+
+   va_start(args, format);
+   line = g_strdup_vprintf(format, args);
+   va_end(args);
+
+   g_string_append(out, line);
+   if(markup)
+   {  if(bad)
+	 g_string_append_printf(markup, "<span %s>%s</span>", Closure->redMarkup, line);
+      else g_string_append(markup, line);
+   }
+   g_free(line);
+}
+
 /* Print the results after the image has been read completely.
    Sets the exit code and the JSON report. Returns NULL if the image
-   has no tags, otherwise the printed text (to be freed by the caller). */
+   has no tags, otherwise the text for the GUI (with markup if wanted;
+   to be freed by the caller). */
 
-static char* finish(XorrisoCheck *xc, int repairable)
-{  GString *out;
+static char* finish(XorrisoCheck *xc, int repairable, int want_markup)
+{  GString *out, *markup;
    char *text;
    int i, good = 0, bad = 0;
 
    if(!xc)
       return NULL;
 
-   if(xc->inChain)   /* image ends before the next tag of the chain */
-   {  add_result(xc, 0, RES_MISSING_NEXT, xc->expectedTag, xc->sessionStart);
-      xc->inChain = FALSE;
-   }
+   close_chain(xc);
 
    if(!xc->results->len && xc->brokenAt < 0)
       return NULL;
 
    out = g_string_new(NULL);
-   g_string_append(out, _("\nxorriso MD5 checksum tags:\n"));
+   markup = want_markup ? g_string_new(NULL) : NULL;
+   add_line(out, markup, FALSE, "%s", _("\nxorriso MD5 checksum tags:\n"));
+   if(markup)   /* monospace, so that the ':' of the result lines align */
+      g_string_append(markup, "<tt>");
 
    for(i=0; i<xc->results->len; i++)
    {  TagResult *r = &g_array_index(xc->results, TagResult, i);
@@ -411,8 +460,8 @@ static char* finish(XorrisoCheck *xc, int repairable)
 
       if(r->result == RES_MISSING_NEXT)
       {  bad++;
-	 g_string_append_printf(out, _("- %-17s: missing (expected at sector %" PRId64 ")\n"),
-				tag_name(0), r->pos);
+	 add_line(out, markup, TRUE, _("- %-17s: missing (expected at sector %" PRId64 ")\n"),
+		  tag_name(0), r->pos);
 	 continue;
       }
 
@@ -425,21 +474,24 @@ static char* finish(XorrisoCheck *xc, int repairable)
       }
 
       if(r->type && r->start >= 0)
-	 g_string_append_printf(out, _("- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n"),
-				tag_name(r->type), result, r->pos, r->start, r->pos-1);
+	 add_line(out, markup, r->result != RES_GOOD,
+		  _("- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n"),
+		  tag_name(r->type), result, r->pos, r->start, r->pos-1);
       else  /* range unknown, or next tag of a chain itself unreadable */
-	 g_string_append_printf(out, _("- %-17s: %s (sector %" PRId64 ")\n"),
-				tag_name(r->type), result, r->pos);
+	 add_line(out, markup, r->result != RES_GOOD,
+		  _("- %-17s: %s (sector %" PRId64 ")\n"),
+		  tag_name(r->type), result, r->pos);
    }
 
    if(xc->brokenAt >= 0)
    {  bad++;
-      g_string_append_printf(out, _("* tag check aborted: internal error, got sector %" PRId64 " instead of %" PRId64 "\n"),
-			     xc->brokenAt, xc->nextLba);
+      add_line(out, markup, TRUE,
+	       _("* tag check aborted: internal error, got sector %" PRId64 " instead of %" PRId64 "\n"),
+	       xc->brokenAt, xc->nextLba);
    }
 
    if(!bad)
-      g_string_append(out, _("- all xorriso checksums are good.\n"));
+      add_line(out, markup, FALSE, "%s", _("- all xorriso checksums are good.\n"));
 
    PrintLog("%s", out->str);
 
@@ -454,8 +506,15 @@ static char* finish(XorrisoCheck *xc, int repairable)
    if(bad)
       SetExitCode(EXIT_FAILURE, repairable ? EXIT_CODE_DEFECTS : EXIT_CODE_INCOMPLETE);
 
-   text = g_strdup(g_strstrip(out->str));
+   if(markup)
+   {  if(markup->str[markup->len-1] == '\n')
+	 g_string_truncate(markup, markup->len-1);
+      g_string_append(markup, "</tt>");
+   }
+
+   text = g_strdup(g_strstrip(markup ? markup->str : out->str));
    g_string_free(out, TRUE);
+   if(markup) g_string_free(markup, TRUE);
 
    return text;
 }
@@ -472,7 +531,7 @@ void XorrisoCheckReport(XorrisoCheck *xc, int repairable, GtkWidget *label)
    if(!xc || Closure->stopActions)   /* image not read completely */
       return;
 
-   text = finish(xc, repairable);
+   text = finish(xc, repairable, label && Closure->guiMode);
    GuiSetLabelText(label, "%s", text ? text : "");
    g_free(text);
 }
