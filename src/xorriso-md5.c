@@ -123,6 +123,8 @@ static int parse_tag(unsigned char *buf, XorrisoTag *tag)
    tag->rangeStart = get_num(line, " range_start=");
    tag->rangeSize  = get_num(line, " range_size=");
    tag->next       = get_num(line, " next=");
+   if((type == SB_TAG || type == TREE_TAG) && tag->next < 0)
+      return NO_TAG;              /* no pointer to the next tag */
    memcpy(tag->md5, md5+5, 32);
    tag->md5[32] = 0;
 

@@ -35,6 +35,7 @@ RS01_xorriso_md5_multisession yes
 RS01_xorriso_md5_rlsb yes
 RS01_xorriso_md5_grown_from_0 yes
 RS01_xorriso_md5_foreign_damaged yes
+RS01_xorriso_md5_sb_no_next yes
 RS01_plus56_bytes yes
 RS01_image_plus56_bytes yes
 RS01_ecc_plus56_bytes yes
