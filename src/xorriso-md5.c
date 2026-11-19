@@ -159,6 +159,7 @@ struct _XorrisoCheck
    int sessionMissing;                /* missing sectors in sessionStart..current */
    struct MD5Context ctx;             /* md5 of sessionStart..current */
    int sawRlsb;                       /* relocated superblock tag seen */
+   gint64 brokenAt;                   /* >= 0: sector fed out of order */
 
    GArray *results;
 };
@@ -167,6 +168,7 @@ XorrisoCheck* XorrisoCheckNew(void)
 {  XorrisoCheck *xc = g_malloc0(sizeof(XorrisoCheck));
 
    xc->results = g_array_new(FALSE, FALSE, sizeof(TagResult));
+   xc->brokenAt = -1;
    return xc;
 }
 
@@ -292,14 +294,18 @@ static void look_for_tag(XorrisoCheck *xc, gint64 lba, unsigned char *buf)
 
 /* Feed the next image sector. Sectors must be fed in ascending order
    starting at sector 0, without gaps; present is FALSE for missing
-   (unreadable) sectors. Anything else is a bug in the calling codec. */
+   (unreadable) sectors. Anything else is a bug in the calling codec;
+   the check then ends and the report shows an internal error (no Stop()
+   here: it would bypass the caller's cleanup). */
 
 void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int present)
-{  if(!xc)
+{  if(!xc || xc->brokenAt >= 0)
       return;
    if(lba != xc->nextLba)
-      Stop("Internal error: XorrisoCheckSector() got sector %" PRId64 ", expected %" PRId64 "\n",
-	   lba, xc->nextLba);
+   {  xc->brokenAt = lba;
+      xc->inChain = FALSE;
+      return;
+   }
    xc->nextLba++;
 
    /* The ring is only read by look_for_tag(), i.e. outside of a chain.
@@ -393,7 +399,7 @@ static char* finish(XorrisoCheck *xc, int repairable)
       xc->inChain = FALSE;
    }
 
-   if(!xc->results->len)
+   if(!xc->results->len && xc->brokenAt < 0)
       return NULL;
 
    out = g_string_new(NULL);
@@ -424,6 +430,12 @@ static char* finish(XorrisoCheck *xc, int repairable)
       else  /* range unknown, or next tag of a chain itself unreadable */
 	 g_string_append_printf(out, _("- %-17s: %s (sector %" PRId64 ")\n"),
 				tag_name(r->type), result, r->pos);
+   }
+
+   if(xc->brokenAt >= 0)
+   {  bad++;
+      g_string_append_printf(out, _("* tag check aborted: internal error, got sector %" PRId64 " instead of %" PRId64 "\n"),
+			     xc->brokenAt, xc->nextLba);
    }
 
    if(!bad)
