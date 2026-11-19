@@ -1359,9 +1359,13 @@ void RS03Verify(Image *image)
    }
    else 
    {  if(!total_missing && !data_crc_errors && !syn_error)
-      {  GuiSetLabelText(wl->cmpImageErasure,  /* avoid two blank lines */
-			 _("<span %s>Good image.</span>"),
-			 Closure->greenMarkup);
+      {  if(XorrisoCheckBad(vc->xorriso))
+	    GuiSetLabelText(wl->cmpImageResult,
+			    _("<span %s>Image does not match its xorriso MD5 checksums.</span>"),
+			    Closure->redMarkup);
+	 else GuiSetLabelText(wl->cmpImageErasure,  /* avoid two blank lines */
+			      _("<span %s>Good image.</span>"),
+			      Closure->greenMarkup);
       }
       else
       {  GuiSetLabelText(wl->cmpImageResult,
