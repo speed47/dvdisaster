@@ -246,6 +246,15 @@ if try "xorriso md5 tags, session image for appending" xorriso_md5_offset_sessio
   run_regtest xorriso_md5_offset_session "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
+# ... and file data which merely looks like a damaged tag (wrong self=),
+# e.g. a copied tag line: its pos= is not its own sector.
+if try "xorriso md5 tags, damaged-looking tag in file data" xorriso_md5_foreign_damaged; then (
+  cp $MASTERISO $TMPISO
+  XORRISO_BAD_SELF=1 XORRISO_LBA_OFFSET=100 write_xorriso_tag $TMPISO libisofs_tree_checksum_tag_v1 500 0 600
+
+  run_regtest xorriso_md5_foreign_damaged "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
 # Second session not starting at a multiple of 32 (as on write-once media),
 # altered only in the second session.
 if try "xorriso md5 tags, second session altered" xorriso_md5_multisession; then (
