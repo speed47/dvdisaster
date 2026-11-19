@@ -183,7 +183,10 @@ Exit-Status ist 1, mit \-\-detailed-exit-status 2 wenn auch die
 Fehlerkorrektur-Daten Defekte im Abbild finden (eine Reparatur also
 versucht werden kann), sonst 3.
 Pr\[:u]fsummen, die zu etwas anderem geh\[:o]ren, z.B. zu einer als Datei
-im Abbild gespeicherten .iso mit Pr\[:u]fsummen, werden ignoriert.
+im Abbild gespeicherten .iso mit Pr\[:u]fsummen, werden ignoriert, ebenso
+die Pr\[:u]fsummen einer ersten, ab Sektor 0 geschriebenen Sitzung (z.B. von
+xorriso \-as mkisofs \-\-md5), wenn weitere Sitzungen angeh\[:a]ngt wurden:
+das Anh\[:a]ngen hat den Anfang dieser Sitzung \[:u]berschrieben.
 .TP
 .B \-u, \-\-unlink
 L\[:o]scht .iso - Dateien nach Beenden der vorherigen Aktionen.
