@@ -366,14 +366,22 @@ void XorrisoCheckSector(XorrisoCheck *xc, gint64 lba, unsigned char *buf, int pr
       look_for_tag(xc, lba, buf);
 }
 
+static char* tag_name(int type)
+{  switch(type)
+   {  case RLSB_TAG:    return _("relocated sb tag");
+      case SB_TAG:      return _("superblock tag");
+      case TREE_TAG:    return _("tree tag");
+      case SESSION_TAG: return _("session tag");
+      default:          return _("next tag");
+   }
+}
+
 /* Print the results after the image has been read completely.
    Sets the exit code and the JSON report. Returns NULL if the image
    has no tags, otherwise the printed text (to be freed by the caller). */
 
 static char* finish(XorrisoCheck *xc, int repairable)
-{  static char *names[] = { "next tag", "relocated sb tag", "superblock tag",
-			    "tree tag", "session tag" };
-   GString *out;
+{  GString *out;
    char *text;
    int i, good = 0, bad = 0;
 
@@ -398,7 +406,7 @@ static char* finish(XorrisoCheck *xc, int repairable)
       if(r->result == RES_MISSING_NEXT)
       {  bad++;
 	 g_string_append_printf(out, _("- %-17s: missing (expected at sector %" PRId64 ")\n"),
-				names[0], r->pos);
+				tag_name(0), r->pos);
 	 continue;
       }
 
@@ -411,11 +419,11 @@ static char* finish(XorrisoCheck *xc, int repairable)
       }
 
       if(r->type && r->start >= 0)
-	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n",
-				names[r->type], result, r->pos, r->start, r->pos-1);
+	 g_string_append_printf(out, _("- %-17s: %s (sector %" PRId64 ", covering sectors %" PRId64 "-%" PRId64 ")\n"),
+				tag_name(r->type), result, r->pos, r->start, r->pos-1);
       else  /* range unknown, or next tag of a chain itself unreadable */
-	 g_string_append_printf(out, "- %-17s: %s (sector %" PRId64 ")\n",
-				names[r->type], result, r->pos);
+	 g_string_append_printf(out, _("- %-17s: %s (sector %" PRId64 ")\n"),
+				tag_name(r->type), result, r->pos);
    }
 
    if(!bad)
