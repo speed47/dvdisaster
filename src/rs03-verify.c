@@ -719,7 +719,6 @@ void RS03Verify(Image *image)
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, vc);
-   vc->wl = (RS03Widgets*)self->widgetList;
    vc->image = image;
    vc->wl = wl;
 

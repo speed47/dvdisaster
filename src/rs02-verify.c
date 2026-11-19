@@ -619,7 +619,6 @@ void RS02Verify(Image *image)
    /*** Prepare for early termination */
 
    RegisterCleanup(_("Check aborted"), cleanup, cc);
-   cc->wl = (RS02Widgets*)self->widgetList;
    cc->wl = wl;
 
    /* extract some important information */
