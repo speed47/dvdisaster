@@ -199,6 +199,15 @@ if try "xorriso md5 tags, damaged superblock tag" xorriso_md5_damaged_sb; then (
   run_regtest xorriso_md5_damaged_sb "-t" $TMPISO $ISODIR/no.ecc EXITCODES
 ) & limit_jobs; fi
 
+# A superblock tag lacking next= (but with a correct self=) is malformed
+# and reported as damaged, like a tag with a wrong self checksum.
+if try "xorriso md5 tags, superblock tag without next=" xorriso_md5_sb_no_next; then (
+  cp $XORRISOISO $TMPISO
+  write_xorriso_tag $TMPISO libisofs_sb_checksum_tag_v1 20 0
+
+  run_regtest xorriso_md5_sb_no_next "-t" $TMPISO $ISODIR/no.ecc EXITCODES
+) & limit_jobs; fi
+
 if try "xorriso md5 tags, unreadable superblock tag" xorriso_md5_unreadable_sb; then (
   cp $XORRISOISO $TMPISO
   $NEWVER -i$TMPISO --debug --erase 20 >>$LOGFILE 2>&1
