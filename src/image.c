@@ -358,6 +358,7 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
       image = g_malloc0(sizeof(Image));
    }
 
+   // codeql[cpp/path-injection] ECC path given by the user, or picked from the user-given ecc directory; arbitrary paths are supported.
    image->eccFile = LargeOpen(filename, flags, mode);
    if(errno == EACCES)
         image->eccFileState = ECCFILE_NOPERM;
