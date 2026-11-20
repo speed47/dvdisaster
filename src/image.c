@@ -174,8 +174,7 @@ void WarnAboutImagePadding(Image *image)
  * Returns the newly allocated path of the single match, or NULL with
  * *state telling why: ECCFILE_MISSING (no match, or the fingerprint
  * could not be read; the caller then proceeds as without an ecc file)
- * or ECCFILE_CANCELLED; except when cancelled, the exit code is set
- * to failure since the ecc file was asked for explicitly.
+ * or ECCFILE_CANCELLED.
  * Stops in CLI mode if the directory can not be read or more than
  * one file matches; the GUI calls this from its main thread where
  * Stop() is not usable, so it shows the error and proceeds as
@@ -311,18 +310,12 @@ static char *find_ecc_file(Image *image, char *dir, int *state)
    {  PrintLog(_("Using ecc file %s\n"), found);
       *state = ECCFILE_PRESENT;
    }
-   else
-   {  /* The ecc file was asked for explicitly: do not report success
-	 although the action went on without it. */
-
-      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
-      if(fp_unreadable)
-	LogWarning(_("The fingerprint sector of the image is unreadable, so no ecc file in %s\n"
+   else if(fp_unreadable)
+     LogWarning(_("The fingerprint sector of the image is unreadable, so no ecc file in %s\n"
 		  "can be matched to it. Continuing without an ecc file;\n"
 		  "select the ecc file with -e to use it.\n"), dir);
-      else if(!ambiguous)
-	LogWarning(_("No ecc file in %s matches the image; continuing without an ecc file.\n"), dir);
-   }
+   else if(!ambiguous)
+     LogWarning(_("No ecc file in %s matches the image; continuing without an ecc file.\n"), dir);
 
    return found;
 }
@@ -346,6 +339,14 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
       if(!found)  /* proceed as if no ecc file had been given */
       {  image->eccFile = NULL;
 	 image->eccFileState = state;
+
+	 /* The directory was named on the command line: do not report
+	    success if no ecc data at all is available for the action.
+	    The GUI pre-fills the ecc name, so it is no request there. */
+
+	 if(   state != ECCFILE_CANCELLED && !image->eccMethod
+	    && Closure->eccNameExplicit && !Closure->guiMode)
+	   SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
 	 return image;
       }
       g_free(Closure->eccName);

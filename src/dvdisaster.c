@@ -409,6 +409,7 @@ int main(int argc, char *argv[])
 		   {  if(Closure->eccName)
 		         g_free(Closure->eccName);
 		      Closure->eccName = g_strdup(optarg);
+		      Closure->eccNameExplicit = TRUE;
 		   }
 	           break;
          case 'f': mode = MODE_SEQUENCE; sequence |= 1<<MODE_FIX; break;
@@ -474,6 +475,7 @@ int main(int argc, char *argv[])
 		      Closure->imageName = g_malloc(strlen(optarg)+5);
 		      g_sprintf(Closure->eccName,"%s.ecc",optarg);
 		      g_sprintf(Closure->imageName,"%s.iso",optarg);
+		      Closure->eccNameExplicit = TRUE;
 		   }
 	           break;
          case 'q': Closure->quiet = MIN(Closure->quiet+1, 2);
