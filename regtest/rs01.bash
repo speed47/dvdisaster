@@ -494,7 +494,8 @@ if try "ecc file found in directory" find_ecc_in_dir; then (
   run_regtest find_ecc_in_dir "-t" $TMPISO $TEST_TMPDIR/eccdir
 ) & limit_jobs; fi
 
-# Ecc file given as a directory, but no file in it matches the image
+# Ecc file given as a directory, but no file in it matches the image:
+# continue without an ecc file, but fail
 
 if try "no matching ecc file in directory" find_ecc_in_dir_no_match; then (
   mkdir -p $TEST_TMPDIR/eccdir
@@ -502,7 +503,7 @@ if try "no matching ecc file in directory" find_ecc_in_dir_no_match; then (
   cp $MASTERISO $TMPISO
   $NEWVER -i$TMPISO --debug --byteset 16,1,0 >>$LOGFILE 2>&1
 
-  run_regtest find_ecc_in_dir_no_match "-t" $TMPISO $TEST_TMPDIR/eccdir
+  run_regtest find_ecc_in_dir_no_match "-t" $TMPISO $TEST_TMPDIR/eccdir EXITCODE
 ) & limit_jobs; fi
 
 # Ecc file given as a directory, but two files in it match the image
@@ -513,6 +514,39 @@ if try "two matching ecc files in directory" find_ecc_in_dir_ambiguous; then (
   ln -sf $ECC_PLUS56 $TEST_TMPDIR/eccdir/plus56.ecc
 
   run_regtest find_ecc_in_dir_ambiguous "-t" $MASTERISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
+# Ecc file given as a directory holding two identical copies:
+# they count as one match and the first one is used
+
+if try "identical ecc file copies in directory" find_ecc_in_dir_copies; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  cp $MASTERECC $TEST_TMPDIR/eccdir/backup.ecc
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+
+  run_regtest find_ecc_in_dir_copies "-t" $MASTERISO $TEST_TMPDIR/eccdir
+) & limit_jobs; fi
+
+# Ecc file given as a directory, but the fingerprint sector is missing,
+# so no file can be matched: continue without an ecc file, but fail
+
+if try "ecc directory, fingerprint sector missing" find_ecc_in_dir_unreadable_fp; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+  cp $MASTERISO $TMPISO
+  $NEWVER -i$TMPISO --debug --erase 16 >>$LOGFILE 2>&1
+
+  run_regtest find_ecc_in_dir_unreadable_fp "-t" $TMPISO $TEST_TMPDIR/eccdir EXITCODE
+) & limit_jobs; fi
+
+# --auto-suffix must not turn the ecc directory into a file name
+
+if try "ecc directory with --auto-suffix" find_ecc_in_dir_auto_suffix; then (
+  mkdir -p $TEST_TMPDIR/eccdir
+  ln -sf $MASTERECC $TEST_TMPDIR/eccdir/master.ecc
+
+  extra_args="--auto-suffix"
+  run_regtest find_ecc_in_dir_auto_suffix "-t" $MASTERISO $TEST_TMPDIR/eccdir
 ) & limit_jobs; fi
 
 # CRC error in fingerprint sector

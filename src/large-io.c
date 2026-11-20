@@ -293,7 +293,10 @@ int LargeTruncate(LargeFile *lf, off_t length)
 char *ApplyAutoSuffix(char *filename, char *suffix)
 {  char *out;
 
-   if(!filename || !*filename || strrchr(filename, '.')) 
+   /* an existing directory is never suffixed: -e accepts one to search in */
+
+   if(!filename || !*filename || strrchr(filename, '.')
+      || g_file_test(filename, G_FILE_TEST_IS_DIR))
      return filename;
 
    out = g_strdup_printf("%s.%s",filename,suffix);

@@ -4,10 +4,12 @@ This software comes with  ABSOLUTELY NO WARRANTY.  This
 is free software and you are welcome to redistribute it
 under the conditions of the GNU GENERAL PUBLIC LICENSE.
 See the file "COPYING" for further information.
+* Warning: No ecc file in eccdir matches the image; continuing without an ecc file.
 
-*
-* dvdisaster - can not continue:
-*
-No ecc file in eccdir matches the image.
+rs01-tmp.iso: present, contains 21000 medium sectors.
+- good image       : all sectors present
+- image md5sum     : 7fa6a1e2a435c8840cb4241b705b3d6c
 
+eccdir: not present
 
+Exit status: 1
