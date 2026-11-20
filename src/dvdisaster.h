@@ -236,6 +236,7 @@ typedef struct _GlobalClosure
    GPtrArray *deviceNodes;  /* List of device nodes (C: or /dev/foo) */
    char *imageName;     /* complete path of current image file */
    char *eccName;       /* complete path of current ecc file */
+   int eccNameExplicit; /* eccName given with -e or -p, not a default */
    char *mapFile;       /* write ddrescue mapfile to this file */
    struct _Bitmap *mapBad;         /* sectors read individually and failed, or CRC bad */
    struct _Bitmap *mapFailedBlock; /* sectors of a failed multi-sector read */

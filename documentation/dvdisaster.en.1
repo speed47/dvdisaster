@@ -197,8 +197,9 @@ When reading, scanning, fixing or verifying, \fIeccfile\fP may also be a directo
 the .ecc file in it whose fingerprint matches the medium or image is used.
 Copies with identical headers count as one file.
 If no file matches, or the fingerprint sector is unreadable, a warning is
-printed and dvdisaster continues as without an error correction file,
-but exits with a failure status.
+printed and dvdisaster continues as without an error correction file.
+dvdisaster then exits with a failure status unless the image contains
+error correction data itself.
 .TP
 .B \-o, \-\-ecc-target file|image
 Specifies whether RS03 should create error correction files

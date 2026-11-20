@@ -124,8 +124,7 @@ if try "good image" good; then (
   run_regtest good "-t" $MASTERISO $NO_FILE EXITCODES
 ) & limit_jobs; fi
 
-# Ecc directory without a matching file: the augmented image is used,
-# but the exit status reports the missing ecc file
+# Ecc directory without a matching file: the augmented image is used
 
 if try "good image, ecc directory without match" good_find_ecc_in_dir_no_match; then (
   mkdir -p $TEST_TMPDIR/eccdir

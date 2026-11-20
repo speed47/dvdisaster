@@ -209,8 +209,9 @@ Beim Lesen, \[:U]berpr\[:u]fen auf Lesefehler, Reparieren und Pr\[:u]fen darf \f
 dann wird die .ecc-Datei darin verwendet, deren Fingerabdruck zum Datentr\[:a]ger oder Abbild passt.
 Kopien mit identischem Vorspann gelten als eine Datei.
 Passt keine Datei oder ist der Fingerabdruck-Sektor unlesbar, wird eine Warnung
-ausgegeben und ohne Fehlerkorrektur-Datei fortgefahren;
-dvdisaster endet dann aber mit einem Fehlerstatus.
+ausgegeben und ohne Fehlerkorrektur-Datei fortgefahren.
+dvdisaster endet dann mit einem Fehlerstatus, sofern das Abbild nicht
+selbst Fehlerkorrektur-Daten enth\[:a]lt.
 .TP
 .B \-o, \-\-ecc-target file|image
 Gibt an ob mit RS03 Fehlerkorrektur-Dateien oder erweiterte
