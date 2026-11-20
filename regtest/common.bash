@@ -40,7 +40,9 @@ else
 fi
 
 if ! $MD5SUM $RNDSEQ >/dev/null 2>&1; then
-    MD5SUM=../simple-md5sum
+    echo "No working md5 tool found (tried: $MD5SUM)."
+    echo "Please install md5sum (coreutils), or edit common.bash"
+    exit 1
 fi
 
 nbfailed=0
