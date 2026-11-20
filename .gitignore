@@ -9,7 +9,6 @@ configure.log
 locale/Makefile
 GNUmakefile
 .gitignore
-simple-md5sum
 inlined-icons.c
 help-dialogs.h
 dvdisaster

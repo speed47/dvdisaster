@@ -1,10 +1,6 @@
 #ifndef MD5_H
 #define MD5_H
 
-#if defined(SIMPLE_MD5SUM)
-typedef unsigned int guint32;
-#endif
-
 typedef struct MD5Context {
 	guint32 buf[4];
 	guint32 bits[2];

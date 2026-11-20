@@ -29,11 +29,7 @@
    guint32->unsigned char conversion 
    by Carsten Gn�rlich for the dvdisaster project, 2015. */
 
-#if defined(SIMPLE_MD5SUM)    	/* simple-md5sum*/
-  #include <string.h>
-#else                           /* dvdisaster */
-  #include "dvdisaster.h"
-#endif
+#include "dvdisaster.h"
 
 #include "md5.h"
 
@@ -311,67 +307,3 @@ void AsciiDigest(char *out, unsigned char *in)
    }
    out[o] = 0;
 }
-
-/*
- * Wrapper for creating a simple md5sum binary.
- * This emulates "md5sum -b", as md5sum is not available per
- * default on all target platforms. 
- */
-
-#ifdef SIMPLE_MD5SUM
-
-#include <stdio.h>
-#include <glib/gstdio.h>
-#ifdef SYS_MINGW
-#include <io.h>
-#include <fcntl.h>
-#endif
-
-static void sum_stream(FILE *file, char *name)
-{  struct MD5Context ctxt;
-   unsigned char buf[32768];
-   unsigned char digest[16];
-   char ascii_digest[33];
-
-   MD5Init(&ctxt);
-
-   while(!feof(file))
-   {  int n = fread(buf, 1, 32768, file);
-      if(!n) break;
-
-      MD5Update(&ctxt, buf, n);
-   }
-
-   MD5Final(digest, &ctxt);
-   AsciiDigest(ascii_digest, digest);
-   printf("%s *%s\n", ascii_digest, name);
-}
-
-static void print_sum(char *path)
-{  FILE *file = g_fopen(path, "rb");
-
-   if(!file) return;
-   sum_stream(file, path);
-   fclose(file);
-}
-
-
-int main(int argc, char *argv[])
-{  int i;
-
-   if(argc < 2)   /* like md5sum: no file names, read stdin */
-   {
-#ifdef SYS_MINGW
-      _setmode(_fileno(stdin), _O_BINARY);
-#endif
-      sum_stream(stdin, "-");
-      return 0;
-   }
-
-   for(i=1; i<argc; i++)
-     print_sum(argv[i]);
-
-  return 0;
-}
-
-#endif
