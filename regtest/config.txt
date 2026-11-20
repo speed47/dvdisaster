@@ -60,6 +60,9 @@ RS01_ecc_margin_bad_parity_json yes
 RS01_find_ecc_in_dir yes
 RS01_find_ecc_in_dir_no_match yes
 RS01_find_ecc_in_dir_ambiguous yes
+RS01_find_ecc_in_dir_copies yes
+RS01_find_ecc_in_dir_unreadable_fp yes
+RS01_find_ecc_in_dir_auto_suffix yes
 RS01_crc_in_fingerprint yes
 RS01_missing_fingerprint yes
 RS01_missing_ecc_header yes
@@ -436,6 +439,7 @@ RS03i_strip_crc_after_layer yes
 # Verify tests
 
 RS03i_good yes
+RS03i_good_find_ecc_in_dir_no_match yes
 RS03i_xorriso_md5_altered yes
 RS03i_good_quick yes
 RS03i_verify_displaced_crc yes

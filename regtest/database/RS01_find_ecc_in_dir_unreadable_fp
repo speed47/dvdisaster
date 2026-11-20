@@ -1,0 +1,17 @@
+ignore
+ignore
+This software comes with  ABSOLUTELY NO WARRANTY.  This
+is free software and you are welcome to redistribute it
+under the conditions of the GNU GENERAL PUBLIC LICENSE.
+See the file "COPYING" for further information.
+* Warning: The fingerprint sector of the image is unreadable, so no ecc file in eccdir
+*          can be matched to it. Continuing without an ecc file;
+*          select the ecc file with -e to use it.
+
+rs01-tmp.iso: present, contains 21000 medium sectors.
+* missing sector   : 16
+* BAD image        : 1 sectors missing
+
+eccdir: not present
+
+Exit status: 1

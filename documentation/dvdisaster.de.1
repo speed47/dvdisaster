@@ -205,8 +205,12 @@ Name der Abbild - Datei (Standard: medium.iso).
 .TP
 .B \-e, \-\-ecc eccfile
 Name der Fehlerkorrektur-Datei (Standard: medium.ecc).
-Beim Lesen, Reparieren und Pr\[:u]fen darf \fIeccfile\fP auch ein Verzeichnis sein;
+Beim Lesen, \[:U]berpr\[:u]fen auf Lesefehler, Reparieren und Pr\[:u]fen darf \fIeccfile\fP auch ein Verzeichnis sein;
 dann wird die .ecc-Datei darin verwendet, deren Fingerabdruck zum Datentr\[:a]ger oder Abbild passt.
+Kopien mit identischem Vorspann gelten als eine Datei.
+Passt keine Datei oder ist der Fingerabdruck-Sektor unlesbar, wird eine Warnung
+ausgegeben und ohne Fehlerkorrektur-Datei fortgefahren;
+dvdisaster endet dann aber mit einem Fehlerstatus.
 .TP
 .B \-o, \-\-ecc-target file|image
 Gibt an ob mit RS03 Fehlerkorrektur-Dateien oder erweiterte
@@ -332,7 +336,7 @@ und weitergelesen. N\[:u]tzlich f\[:u]r unbeaufsichtigte L\[:a]ufe.
 verwende optimierte Lesestrategie f\[:u]r defekte Datentr\[:a]ger.
 .TP
 .B \-\-auto-suffix
-automatisches Anf\[:u]gen der .iso- und .ecc-Dateiendungen.
+automatisches Anf\[:u]gen der .iso- und .ecc-Dateiendungen (nicht bei vorhandenen Verzeichnissen).
 .TP
 .B \-\-cache-size n
 Zwischenspeicher in MiB bei .ecc-Datei-Erzeugung - (Standard: 32MiB).

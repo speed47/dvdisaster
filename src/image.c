@@ -169,26 +169,69 @@ void WarnAboutImagePadding(Image *image)
  *** Search a directory for the .ecc file matching the image
  ***
  * Only *.ecc files directly inside the directory are examined.
- * A file matches if its header fingerprint equals the image fingerprint.
- * Returns the newly allocated path of the single match;
- * stops if there is no match or more than one.
+ * A file matches if its header fingerprint equals the image fingerprint;
+ * copies with identical headers count as one match.
+ * Returns the newly allocated path of the single match, or NULL with
+ * *state telling why: ECCFILE_MISSING (no match, or the fingerprint
+ * could not be read; the caller then proceeds as without an ecc file)
+ * or ECCFILE_CANCELLED; except when cancelled, the exit code is set
+ * to failure since the ecc file was asked for explicitly.
+ * Stops in CLI mode if the directory can not be read or more than
+ * one file matches; the GUI calls this from its main thread where
+ * Stop() is not usable, so it shows the error and proceeds as
+ * without an ecc file instead.
  */
 
 static gint compare_names(gconstpointer a, gconstpointer b)
 {  return strcmp(*(char**)a, *(char**)b);
 }
 
-static char *find_ecc_file(Image *image, char *dir)
+static void find_ecc_error(char *format, ...) PRINTF_FORMAT(1);
+
+static void find_ecc_error(char *format, ...)
+{  va_list argp;
+   char *msg;
+
+   va_start(argp, format);
+   msg = g_strdup_vprintf(format, argp);
+   va_end(argp);
+
+   if(!Closure->guiMode)
+     Stop("%s", msg);
+
+   LogWarning("%s", msg);
+#ifdef WITH_GUI_YES
+   {  char *utf_msg = g_locale_to_utf8(msg, -1, NULL, NULL, NULL);
+      char *markup = g_markup_escape_text(utf_msg ? utf_msg : msg, -1);
+
+      GuiShowMessage(Closure->window, markup, GTK_MESSAGE_ERROR);
+      g_free(markup);
+      g_free(utf_msg);
+   }
+#endif
+   g_free(msg);
+}
+
+static char *find_ecc_file(Image *image, char *dir, int *state)
 {  GError *err = NULL;
    GDir *gdir = g_dir_open(dir, 0, &err);
-   GPtrArray *names = g_ptr_array_new_with_free_func(g_free);
+   GPtrArray *names;
    const char *name;
    char *found = NULL;
+   EccHeader *found_eh = NULL;
+   int fp_unreadable = FALSE;
+   int ambiguous = FALSE;
    int n;
 
-   if(!gdir)
-     Stop(_("Can't open %s:\n%s"), dir, err->message);
+   *state = ECCFILE_MISSING;
 
+   if(!gdir)
+   {  find_ecc_error(_("Can't open %s:\n%s\n"), dir, err->message);
+      g_error_free(err);
+      return NULL;
+   }
+
+   names = g_ptr_array_new_with_free_func(g_free);
    while((name = g_dir_read_name(gdir)))
      if(strlen(name) >= 4 && !g_ascii_strcasecmp(name+strlen(name)-4, ".ecc"))
        g_ptr_array_add(names, g_build_path("/", dir, name, NULL));
@@ -198,9 +241,10 @@ static char *find_ecc_file(Image *image, char *dir)
 
    g_ptr_array_sort(names, (GCompareFunc)compare_names);
 
-   for(n=0; n<names->len; n++)
+   for(n=0; n<names->len && *state != ECCFILE_CANCELLED; n++)
    {  char *path = g_ptr_array_index(names, n);
       LargeFile *file = LargeOpen(path, O_RDONLY, IMG_PERMS);
+      EccHeader *eh = NULL;
       int i, match = FALSE;
 
       if(!file)
@@ -208,14 +252,22 @@ static char *find_ecc_file(Image *image, char *dir)
 
       for(i=0; i<Closure->methodList->len; i++)
       {  Method *method = g_ptr_array_index(Closure->methodList, i);
-	 EccHeader *eh;
-	 guint8 fp[16];
+	 int result;
 
-	 if(   method->recognizeEccFile
-	    && method->recognizeEccFile(file, &eh) == ECCFILE_PRESENT)
-	 {  match =    GetImageFingerprint(image, fp, eh->fpSector)
-	            && !memcmp(fp, eh->mediumFP, 16);
-	    g_free(eh);
+	 if(!method->recognizeEccFile)
+	   continue;
+
+	 result = method->recognizeEccFile(file, &eh);
+	 if(result == ECCFILE_CANCELLED)
+	 {  *state = ECCFILE_CANCELLED;
+	    break;
+	 }
+	 if(result == ECCFILE_PRESENT)
+	 {  guint8 fp[16];
+
+	    if(GetImageFingerprint(image, fp, eh->fpSector))
+	         match = !memcmp(fp, eh->mediumFP, 16);
+	    else fp_unreadable = TRUE;
 	    break;
 	 }
       }
@@ -223,17 +275,55 @@ static char *find_ecc_file(Image *image, char *dir)
 
       Verbose("find_ecc_file(): %s %s\n", path, match ? "matches" : "does not match");
       if(!match)
-	continue;
+      {  g_free(eh);
+	 continue;
+      }
+
+      /* A copy of the file already found is not ambiguous */
+
+      if(found && !memcmp(eh, found_eh, sizeof(EccHeader)))
+      {  Verbose("find_ecc_file(): %s has the same header as %s, ignored\n", path, found);
+	 g_free(eh);
+	 continue;
+      }
+
       if(found)
-	Stop(_("Both %s and %s match the image; please select one with -e.\n"), found, path);
+      {  find_ecc_error(_("Both %s and %s match the image; please select one with -e.\n"), found, path);
+	 g_free(eh);
+	 g_free(found);
+	 found = NULL;
+	 ambiguous = TRUE;
+	 break;
+      }
+
       found = g_strdup(path);
+      found_eh = eh;
    }
    g_ptr_array_free(names, TRUE);
+   g_free(found_eh);
 
-   if(!found)
-     Stop(_("No ecc file in %s matches the image.\n"), dir);
+   if(*state == ECCFILE_CANCELLED)
+   {  g_free(found);
+      return NULL;
+   }
 
-   PrintLog(_("Using ecc file %s\n"), found);
+   if(found)
+   {  PrintLog(_("Using ecc file %s\n"), found);
+      *state = ECCFILE_PRESENT;
+   }
+   else
+   {  /* The ecc file was asked for explicitly: do not report success
+	 although the action went on without it. */
+
+      SetExitCode(EXIT_FAILURE, EXIT_FAILURE);
+      if(fp_unreadable)
+	LogWarning(_("The fingerprint sector of the image is unreadable, so no ecc file in %s\n"
+		  "can be matched to it. Continuing without an ecc file;\n"
+		  "select the ecc file with -e to use it.\n"), dir);
+      else if(!ambiguous)
+	LogWarning(_("No ecc file in %s matches the image; continuing without an ecc file.\n"), dir);
+   }
+
    return found;
 }
 
@@ -250,8 +340,14 @@ Image* OpenEccFileForImage(Image *image, char *filename, int flags, mode_t mode)
       later messages and reopens refer to the selected file. */
 
    if(image && filename && g_file_test(filename, G_FILE_TEST_IS_DIR))
-   {  char *found = find_ecc_file(image, filename);
+   {  int state;
+      char *found = find_ecc_file(image, filename, &state);
 
+      if(!found)  /* proceed as if no ecc file had been given */
+      {  image->eccFile = NULL;
+	 image->eccFileState = state;
+	 return image;
+      }
       g_free(Closure->eccName);
       filename = Closure->eccName = found;
    }
