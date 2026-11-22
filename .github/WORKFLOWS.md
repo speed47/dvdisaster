@@ -91,6 +91,19 @@ paths, just like file selections made by the user; they are not confined to a
 base directory. Configuration files must therefore be trusted by the user
 running the application.
 
+## Linux AppImage
+
+The AppImage is built with `contrib/anylinux/` and
+[quick-sharun](https://github.com/pkgforge-dev/Anylinux-AppImages), inside an
+Ubuntu container. It bundles its own libc, so it does not need a minimum glibc
+on the host and also runs on musl based systems. Builds that rely on the host
+libc, like the former linuxdeploy based one, only run on systems at least as new
+as the build system.
+
+The container images (the build image and the old Ubuntu used to test the result)
+are pinned by digest, and `quick-sharun` by commit and SHA-256. To update one of
+them, change it in `release.yml`.
+
 ## Compatibility notes
 
 The November 2026 update was checked against the upstream release notes:
