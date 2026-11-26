@@ -115,6 +115,34 @@ static void cleanup_bundled_env(void)
       }
    }
 
+   /* The sharun based AppImage launcher does not save the original values like
+      the old one did. It keeps the original PATH and cache directory, and points
+      everything else into the bundle, which is gone when the viewer outlives us:
+      drop all variables which refer to the bundle, and the launcher's own. */
+   if (is_appimage) {
+      const char *dir = g_getenv("SHARUN_DIR") ? g_getenv("SHARUN_DIR") : g_getenv("APPDIR");
+      gchar *bundle = g_strdup(dir);
+      gchar **names;
+
+      if (g_getenv("HOSTPATH"))
+         g_setenv("PATH", g_getenv("HOSTPATH"), 1);
+      if (g_getenv("HOST_XDG_CACHE_HOME"))
+         g_setenv("XDG_CACHE_HOME", g_getenv("HOST_XDG_CACHE_HOME"), 1);
+
+      names = g_listenv();
+      for (int i = 0; names[i]; i++) {
+         const char *value = g_getenv(names[i]);
+
+         if (g_str_has_prefix(names[i], "APPIMAGE") || g_str_has_prefix(names[i], "APPOFFSET")
+             || g_str_has_prefix(names[i], "SHARUN_") || g_str_has_prefix(names[i], "URUNTIME")
+             || !strcmp(names[i], "ARG0") || !strcmp(names[i], "OWD") || !strcmp(names[i], "HOSTPATH")
+             || (bundle && value && strstr(value, bundle)))
+            g_unsetenv(names[i]);
+      }
+      g_strfreev(names);
+      g_free(bundle);
+   }
+
    g_unsetenv("DVDISASTER_APPIMAGE");
    g_unsetenv("DVDISASTER_MACOS_APP");
 }
